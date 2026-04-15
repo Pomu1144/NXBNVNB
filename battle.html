@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Blazing — Battle</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <!-- 16:9 Game Canvas Architecture -->
+  <link rel="stylesheet" href="css/game-canvas.css" />
+  <!-- Game UI Styles -->
+  <link rel="stylesheet" href="css/battle.css" />
+  <link rel="stylesheet" href="css/battle-ui-fixes.css" />
+  <!-- <link rel="stylesheet" href="css/battle-result-professional.css" /> File doesn't exist -->
+  <link rel="stylesheet" href="css/status_effects.css" />
+  <link rel="stylesheet" href="css/battle-team-holder.css" />
+  <link rel="stylesheet" href="css/battle-chakra-wheel.css" />
+  <link rel="stylesheet" href="css/battle-attack-names.css" />
+  <link rel="stylesheet" href="css/battle-equipped-ultimate.css" />
+  <style>
+    /* CRITICAL: Force unit sizing to prevent oversized units */
+    .battle-unit {
+      position: absolute !important;
+      width: 70px !important;
+      height: 70px !important;
+      transform: translate(-50%, -50%) !important;
+    }
+    .unit-sprite {
+      width: 70px !important;
+      height: 70px !important;
+      min-width: 70px !important;
+      min-height: 70px !important;
+      max-width: 70px !important;
+      max-height: 70px !important;
+      overflow: hidden !important;
+    }
+    .unit-sprite img {
+      width: 100% !important;
+      height: 100% !important;
+      max-width: 100% !important;
+      max-height: 100% !important;
+      object-fit: cover !important;
+    }
+    /* CRITICAL: Force speed gauge track sizing */
+    #speed-gauge-track {
+      position: absolute !important;
+      top: 30px !important;
+      left: 5% !important;
+      width: 90% !important;
+      height: 50px !important;
+      max-height: 80px !important;
+      overflow: visible !important;
+    }
+    .speed-marker {
+      position: absolute !important;
+      width: 40px !important;
+      height: 40px !important;
+      min-width: 40px !important;
+      min-height: 40px !important;
+      max-width: 40px !important;
+      max-height: 40px !important;
+      overflow: hidden !important;
+      transform: translateX(-50%) !important;
+    }
+    .speed-marker.acting {
+      width: 48px !important;
+      height: 48px !important;
+      min-width: 48px !important;
+      min-height: 48px !important;
+      max-width: 48px !important;
+      max-height: 48px !important;
+    }
+    .speed-marker img {
+      width: 100% !important;
+      height: 100% !important;
+      max-width: 100% !important;
+      max-height: 100% !important;
+      object-fit: cover !important;
+    }
+  </style>
+  <!-- Hide scrollbar but keep functionality -->
+  <style>
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    body::-webkit-scrollbar,
+    html::-webkit-scrollbar,
+    *::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* Hide scrollbar for IE, Edge and Firefox */
+    body, html, * {
+      -ms-overflow-style: none;  /* IE and Edge */
+      scrollbar-width: none;  /* Firefox */
+    }
+  </style>
+</head>
+<body class="page-battle">
+  <!-- 16:9 Game Canvas Wrapper -->
+  <div class="game-canvas-wrapper">
+    <div class="game-canvas">
+      <div class="game-content">
+        <header class="battle-hud">
+    <div class="hud-left">
+      <span class="hud-label">Team HP</span>
+      <div class="hp-track">
+        <div id="team-hp-bar" class="hp-fill"></div>
+      </div>
+      <span id="team-hp-text" class="hp-text">0 / 0</span>
+    </div>
+    <div class="hud-center">
+      <div id="commander-display" class="commander-display hidden">
+        <span class="commander-label">Commander</span>
+        <span id="commander-name" class="commander-name">-</span>
+        <div class="collective-chakra">
+          <span class="chakra-label">Collective Chakra:</span>
+          <span id="collective-chakra-text" class="chakra-value">0</span>
+          <span class="chakra-threshold">/16</span>
+        </div>
+      </div>
+    </div>
+    <div class="hud-right">
+      <span id="mission-title">Mission</span>
+      <span class="wave">Wave <span id="wave-current">1</span>/<span id="wave-total">1</span></span>
+    </div>
+  </header>
+  <main id="battle-scene">
+    <div id="speed-gauge-track"></div>
+    <div id="turn-icons"></div>
+
+    <!-- Team Holder - Shows all 4 unit cards with nested active+bench portraits -->
+    <div id="team-holder"></div>
+
+    <div id="battlefield-grid"></div>
+    <div id="damage-numbers"></div>
+    <div id="effects-layer"></div>
+    <div id="action-panel" class="hidden">
+      <img id="action-portrait" alt="Active unit portrait" src="assets/Main Background/Background.png" />
+      <div class="action-meta">
+        <div id="action-name">Name</div>
+        <div id="action-hp">HP: —</div>
+        <div id="action-chakra">Chakra: —</div>
+        <div class="skills-row">
+          <span id="action-skill-name">—</span>
+          <span id="action-ult-name">Locked</span>
+          <span id="action-secret-name">Locked</span>
+        </div>
+        <!-- Status Effects Display -->
+        <div id="action-status-effects" class="status-effects-container"></div>
+      </div>
+      <div class="action-buttons">
+        <button id="btn-attack">Attack</button>
+        <button id="btn-guard">Guard</button>
+        <button id="btn-jutsu">Jutsu</button>
+        <button id="btn-ultimate">Ultimate</button>
+        <button id="btn-secret">Secret</button>
+        <button id="btn-auto">Auto</button>
+        <button id="btn-speed">×1</button>
+        <!-- Last Stand Ultimate Button (Once-Per-Battle) -->
+        <button id="equipped-ultimate-btn" class="equipped-ultimate-btn" disabled>
+          <span>Last Stand</span>
+        </button>
+      </div>
+      <!-- Last Stand Ultimate Progress -->
+      <div class="equipped-ultimate-progress" id="equipped-ultimate-progress">0 / 3 Basic Attacks</div>
+    </div>
+  </main>
+  <div id="battle-result" class="hidden">
+    <div class="result-container">
+      <h1 id="result-title" class="result-title"></h1>
+      <div id="result-stats" class="result-content"></div>
+    </div>
+  </div>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" onerror="this.onerror=null;this.src='js/lib/anime.min.js';"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/howler@2.2.4/dist/howler.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8/hammer.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/localforage@1.10.0/dist/localforage.min.js"></script>
+  <script defer src="js/storage-manager.js"></script>
+  <script defer src="js/audio-manager.js"></script>
+  <script defer src="js/touch-manager.js"></script>
+  <script defer src="js/character_inv.js"></script>
+  <script defer src="js/character-equip.js"></script>
+  <script defer src="js/progression.js"></script>
+  <script defer src="js/status_effects.js"></script>
+  <script defer src="js/status_ui.js"></script>
+  <script defer src="js/battle/battle-core.js"></script>
+  <script defer src="js/battle/battle-chakra.js"></script>
+  <script defer src="js/battle/battle-chakra-wheel.js"></script>
+  <script defer src="js/battle/battle-team-holder.js"></script>
+  <script defer src="js/battle/battle-input-manager.js"></script>
+  <script defer src="js/battle/battle-attack-names.js"></script>
+  <script defer src="js/battle/battle-combat.js"></script>
+  <script defer src="js/battle/battle-units.js"></script>
+  <script defer src="js/battle/battle-drag.js"></script>
+  <script defer src="js/battle/battle-swap.js"></script>
+  <script defer src="js/battle/battle-buffs.js"></script>
+  <script defer src="js/battle/battle-passives.js"></script>
+  <script defer src="js/battle/battle-turns.js"></script>
+  <script defer src="js/battle/battle-particles.js"></script>
+  <script defer src="js/battle/battle-entrance.js"></script>
+  <script defer src="js/battle/battle-finish.js"></script>
+  <script defer src="js/battle/battle-rewards.js"></script>
+  <script defer src="js/battle/battle-modifiers.js"></script>
+  <script defer src="js/battle/battle-animations.js"></script>
+  <script defer src="js/battle/battle-physics.js"></script>
+  <script defer src="js/battle/battle-missions.js"></script>
+  <script defer src="js/battle/battle-narrator.js"></script>
+  <script defer src="js/battle/battle-hp-fix.js"></script>
+  <script defer src="js/battle/battle-equipped-ultimate.js"></script>
+  <!-- <script defer src="js/battle/battle-field-buddy.js"></script> Temporarily disabled -->
+  <script defer src="js/battle.js"></script>
+
+      </div><!-- .game-content -->
+    </div><!-- .game-canvas -->
+  </div><!-- .game-canvas-wrapper -->
+</body>
+</html>
