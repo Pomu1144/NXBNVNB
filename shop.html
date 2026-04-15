@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Blazing — Shop</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="css/shop.css" />
+  <link rel="stylesheet" href="css/background.css" />
+  <link rel="stylesheet" href="css/bottombar.css" />
+  <link rel="stylesheet" href="css/music-player.css" />
+  <!-- Hide scrollbar but keep functionality -->
+  <style>
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    body::-webkit-scrollbar,
+    html::-webkit-scrollbar,
+    *::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* Hide scrollbar for IE, Edge and Firefox */
+    body, html, * {
+      -ms-overflow-style: none;  /* IE and Edge */
+      scrollbar-width: none;  /* Firefox */
+    }
+  </style>
+</head>
+<body class="page-shop">
+  <div id="shop-bg"></div>
+
+  <!-- Resource Display -->
+  <div class="resource-bar">
+    <div class="resource-item">
+      <img src="assets/icons/currency/ninjapearl.png" alt="Ninja Pearls" class="resource-icon" onerror="this.style.display='none'">
+      <span class="resource-label">Ninja Pearls:</span>
+      <span id="currency-ninja-pearls" class="resource-value">0</span>
+    </div>
+    <div class="resource-item">
+      <img src="assets/icons/currency/shinobite.png" alt="Shinobites" class="resource-icon" onerror="this.style.display='none'">
+      <span class="resource-label">Shinobites:</span>
+      <span id="currency-shinobites" class="resource-value">0</span>
+    </div>
+    <div class="resource-item">
+      <img src="assets/icons/currency/ryo.png" alt="Ryo" class="resource-icon" onerror="this.style.display='none'">
+      <span class="resource-label">Ryo:</span>
+      <span id="currency-ryo" class="resource-value">0</span>
+    </div>
+    <div class="resource-item">
+      <img src="assets/items/granny_coin.png" alt="Granny Coins" class="resource-icon" onerror="this.style.display='none'">
+      <span class="resource-label">Granny Coins:</span>
+      <span id="currency-granny-coins" class="resource-value">0</span>
+    </div>
+  </div>
+
+  <main class="shop-content">
+    <h1 class="page-title">NINJA SHOP</h1>
+
+    <!-- Shop Tabs -->
+    <div class="shop-tabs">
+      <button class="shop-tab active" data-tab="ramen">Training Ramen</button>
+      <button class="shop-tab" data-tab="materials">Materials</button>
+      <button class="shop-tab" data-tab="resources">Resources</button>
+      <button class="shop-tab" data-tab="granny">Granny Cat Shop</button>
+    </div>
+
+    <!-- Ramen Tab -->
+    <div class="shop-tab-content active" id="tab-ramen">
+      <div class="shop-grid" id="ramen-grid"></div>
+    </div>
+
+    <!-- Materials Tab -->
+    <div class="shop-tab-content" id="tab-materials">
+      <div class="shop-grid" id="materials-grid"></div>
+    </div>
+
+    <!-- Resources Tab -->
+    <div class="shop-tab-content" id="tab-resources">
+      <div class="shop-grid" id="resources-grid"></div>
+    </div>
+
+    <!-- Granny Cat Shop Tab -->
+    <div class="shop-tab-content" id="tab-granny">
+      <div class="shop-grid" id="granny-grid"></div>
+    </div>
+  </main>
+
+  <!-- Purchase Confirmation Modal -->
+  <div id="purchase-modal" class="modal hidden">
+    <div class="modal-content">
+      <h2 class="modal-title">Confirm Purchase</h2>
+      <div class="purchase-preview">
+        <img id="purchase-item-icon" src="" alt="Item">
+        <div class="purchase-details">
+          <div class="purchase-item-name" id="purchase-item-name"></div>
+          <div class="purchase-item-desc" id="purchase-item-desc"></div>
+        </div>
+      </div>
+      <div class="quantity-selector">
+        <label>Quantity:</label>
+        <button class="qty-btn" id="qty-minus">-</button>
+        <input type="number" id="qty-input" value="1" min="1" max="99">
+        <button class="qty-btn" id="qty-plus">+</button>
+      </div>
+      <div class="purchase-cost">
+        <span>Total Cost:</span>
+        <span id="purchase-total-cost"></span>
+      </div>
+      <div class="modal-buttons">
+        <button class="btn-confirm" id="btn-confirm-purchase">Purchase</button>
+        <button class="btn-cancel" id="btn-cancel-purchase">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Success Modal -->
+  <div id="success-modal" class="modal hidden">
+    <div class="modal-content success-content">
+      <h2 class="success-title">Purchase Successful!</h2>
+      <div class="success-message" id="success-message"></div>
+      <button class="btn-confirm" id="btn-close-success">OK</button>
+    </div>
+  </div>
+
+  <!-- HUD Bottom Bar -->
+  <div class="bottom-bar">
+    <div class="bottom-bar-content">
+      <button class="hud-button" id="btn-village" aria-label="Village">
+        <img src="assets/icons/village_btm_btn.png" alt="Village">
+      </button>
+      <button class="hud-button" id="btn-characters" aria-label="Characters">
+        <img src="assets/icons/characters_icon.png" alt="Characters">
+      </button>
+      <button class="hud-button" id="btn-fusion" aria-label="Fusion">
+        <img src="assets/icons/fusion_btm_btn.png" alt="Fusion">
+      </button>
+      <button class="hud-button" id="btn-teams" aria-label="Teams">
+        <img src="assets/icons/teams_icon.png" alt="Teams">
+      </button>
+      <button class="hud-button" id="btn-tools" aria-label="Tools">
+        <img src="assets/icons/guilds_icon.png" alt="Tools">
+      </button>
+      <button class="hud-button" id="btn-summon" aria-label="Summon">
+        <img src="assets/icons/summon_btm_btn.png" alt="Summon">
+      </button>
+      <button class="hud-button" id="btn-missions" aria-label="Missions">
+        <img src="assets/icons/mission_btm_btn.png" alt="Missions">
+      </button>
+      <button class="hud-button" id="btn-inventory" aria-label="Inventory">
+        <img src="assets/icons/inventory_icon.png" alt="Inventory">
+      </button>
+      <button class="hud-button active" id="btn-shop" aria-label="Shop">
+        <img src="assets/icons/shop_btm_btn.png" alt="Shop">
+      </button>
+    </div>
+  </div>
+
+  <script src="js/audio-manager.js"></script>
+  <script src="js/resources.js"></script>
+  <script defer src="js/shop.js"></script>
+
+  <!-- Navigation Script -->
+  <script src="js/navigation.js"></script>
+
+  <!-- Music Initialization -->
+  <script>
+    // Music initialization - start BGM on page load
+    (function() {
+      if (typeof window.AudioManager === 'undefined') {
+        console.log('[Music] AudioManager not available on this page');
+        return;
+      }
+
+      console.log('[Music] Initializing background music...');
+
+      const startMusic = () => {
+        if (!window.AudioManager.musicPlaying) {
+          window.AudioManager.playBattleMusic();
+        }
+      };
+
+      // Try immediate playback (may be blocked by browser)
+      setTimeout(startMusic, 500);
+
+      // Also try on first click
+      document.addEventListener('click', startMusic, { once: true });
+    })();
+  </script>
+</body>
+</html>

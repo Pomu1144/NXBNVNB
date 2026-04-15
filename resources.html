@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Blazing — Resources</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="css/bottombar.css" />
+  <link rel="stylesheet" href="css/settings-modal.css" />
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&display=swap");
+
+    :root {
+      --gold: #d9b362;
+      --gold-deep: #a7822c;
+      --ink: #0b0b0f;
+      --ink-2: #121218;
+    }
+
+    body {
+      background: linear-gradient(180deg, #141014 0%, #1a1a1e 100%);
+      font-family: "Cinzel", "Times New Roman", serif;
+      color: #eee6d1;
+      margin: 0;
+      padding: 20px;
+      padding-bottom: 100px;
+      min-height: 100vh;
+    }
+
+    .page-title {
+      text-align: center;
+      font-size: 36px;
+      font-weight: 600;
+      color: var(--gold);
+      margin: 20px 0 30px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .resources-container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .resource-category {
+      background: rgba(20, 20, 24, 0.6);
+      border: 1px solid rgba(255, 215, 120, 0.15);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .category-title {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--gold);
+      margin-bottom: 16px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .resource-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px;
+      background: rgba(10, 10, 15, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+
+    .resource-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .resource-info {
+      flex: 1;
+    }
+
+    .resource-name {
+      font-size: 16px;
+      font-weight: 600;
+      color: #eee6d1;
+      margin-bottom: 4px;
+    }
+
+    .resource-desc {
+      font-size: 12px;
+      color: #999;
+      font-style: italic;
+    }
+
+    .resource-amount {
+      font-size: 24px;
+      font-weight: 600;
+      color: var(--gold);
+      min-width: 80px;
+      text-align: right;
+    }
+
+    .dev-controls {
+      background: rgba(179, 98, 217, 0.1);
+      border: 1px solid rgba(179, 98, 217, 0.3);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .dev-controls h3 {
+      margin-top: 0;
+      color: #b362d9;
+    }
+
+    .dev-button {
+      padding: 10px 18px;
+      font-family: "Cinzel", serif;
+      font-size: 14px;
+      font-weight: 600;
+      color: #fff;
+      background: linear-gradient(180deg, #62d98f 0%, #2ca765 100%);
+      border: 1px solid rgba(98, 217, 143, 0.4);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all .2s ease;
+      margin: 5px;
+    }
+
+    .dev-button:hover {
+      background: linear-gradient(180deg, #7ee6a6 0%, #42b876 100%);
+      transform: translateY(-1px);
+    }
+
+    .back-button {
+      padding: 12px 24px;
+      font-family: "Cinzel", serif;
+      font-size: 16px;
+      font-weight: 600;
+      color: #fff;
+      background: linear-gradient(180deg, #d9b362 0%, #a7822c 100%);
+      border: 1px solid rgba(217, 179, 98, 0.4);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all .2s ease;
+      display: block;
+      margin: 30px auto;
+      text-decoration: none;
+      text-align: center;
+    }
+
+    .back-button:hover {
+      background: linear-gradient(180deg, #e6c47e 0%, #b89642 100%);
+      transform: translateY(-1px);
+    }
+  </style>
+  <!-- Hide scrollbar but keep functionality -->
+  <style>
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    body::-webkit-scrollbar,
+    html::-webkit-scrollbar,
+    *::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* Hide scrollbar for IE, Edge and Firefox */
+    body, html, * {
+      -ms-overflow-style: none;  /* IE and Edge */
+      scrollbar-width: none;  /* Firefox */
+    }
+  </style>
+</head>
+<body class="page-resources">
+  <main class="resources-content">
+    <h1 class="page-title">Resources & Materials</h1>
+
+    <div class="resources-container">
+      <div class="dev-controls">
+        <h3>Developer Controls</h3>
+        <button class="dev-button" id="btn-add-materials-100">+100 All Materials</button>
+        <button class="dev-button" id="btn-add-materials-500">+500 All Materials</button>
+        <button class="dev-button" id="btn-add-ryo">+100,000 Ryo</button>
+        <button class="dev-button" id="btn-reset-materials">Reset to Defaults</button>
+      </div>
+
+      <div id="resources-list"></div>
+
+      <a href="village.html" class="back-button">Back to Main Menu</a>
+    </div>
+  </main>
+
+  <div class="bottom-bar">
+    <div class="bottom-bar-content">
+      <button class="hud-button" id="btn-village" aria-label="Village">
+        <img src="assets/icons/village_btm_btn.png" alt="Village">
+      </button>
+      <button class="hud-button" id="btn-characters" aria-label="Characters">
+        <img src="assets/icons/characters_icon.png" alt="Characters">
+      </button>
+      <button class="hud-button" id="btn-fusion" aria-label="Fusion">
+        <img src="assets/icons/fusion_btm_btn.png" alt="Fusion">
+      </button>
+      <button class="hud-button" id="btn-teams" aria-label="Teams">
+        <img src="assets/icons/teams_icon.png" alt="Teams">
+      </button>
+      <button class="hud-button" id="btn-tools" aria-label="Tools">
+        <img src="assets/icons/guilds_icon.png" alt="Tools">
+      </button>
+      <button class="hud-button" id="btn-summon" aria-label="Summon">
+        <img src="assets/icons/summon_btm_btn.png" alt="Summon">
+      </button>
+      <button class="hud-button" id="btn-missions" aria-label="Missions">
+        <img src="assets/icons/mission_btm_btn.png" alt="Missions">
+      </button>
+      <button class="hud-button" id="btn-inventory" aria-label="Inventory">
+        <img src="assets/icons/inventory_icon.png" alt="Inventory">
+      </button>
+      <button class="hud-button" id="btn-shop" aria-label="Shop">
+        <img src="assets/icons/shop_btm_btn.png" alt="Shop">
+      </button>
+    </div>
+  </div>
+
+  <script src="js/audio-manager.js"></script>
+  <script src="js/music-player.js"></script>
+  <script src="js/resources.js"></script>
+
+  <!-- Settings Modal Script -->
+  <script src="js/settings-modal.js?v=2"></script>
+
+  <script src="js/navigation.js"></script>
+  <script>
+    // Group materials by category
+    const categories = {
+      "Awakening Stones": ["awakening_stone_3", "awakening_stone_4", "awakening_stone_5", "awakening_stone_6", "awakening_stone_7", "awakening_stone_8", "awakening_stone_9"],
+      "Limit Break Materials": ["limit_break_crystal", "dupe_crystal"],
+      "Element Scrolls": ["scroll_body", "scroll_skill", "scroll_bravery", "scroll_wisdom", "scroll_heart"],
+      "Character Materials": ["character_stone"],
+      "Currency": ["ryo"]
+    };
+
+    function renderResources() {
+      const container = document.getElementById("resources-list");
+      if (!container || typeof window.Resources === "undefined") return;
+
+      let html = "";
+
+      for (const [categoryName, materialIds] of Object.entries(categories)) {
+        html += `<div class="resource-category">`;
+        html += `<div class="category-title">${categoryName}</div>`;
+
+        for (const matId of materialIds) {
+          const amount = window.Resources.get(matId);
+          const info = window.Resources.getMaterialInfo(matId);
+
+          html += `
+            <div class="resource-item">
+              <div class="resource-info">
+                <div class="resource-name">${info.name}</div>
+                <div class="resource-desc">${info.desc}</div>
+              </div>
+              <div class="resource-amount">${amount.toLocaleString()}</div>
+            </div>
+          `;
+        }
+
+        html += `</div>`;
+      }
+
+      container.innerHTML = html;
+    }
+
+    function addMaterials(amount) {
+      if (typeof window.Resources === "undefined") return;
+
+      const allTypes = Object.keys(window.Resources.MATERIAL_TYPES);
+      for (const matId of allTypes) {
+        if (matId !== "ryo") {
+          window.Resources.add(matId, amount);
+        }
+      }
+
+      renderResources();
+      alert(`Added ${amount} to all materials!`);
+    }
+
+    function addRyo(amount) {
+      if (typeof window.Resources === "undefined") return;
+      window.Resources.add("ryo", amount);
+      renderResources();
+      alert(`Added ${amount.toLocaleString()} Ryo!`);
+    }
+
+    function resetMaterials() {
+      if (!confirm("Reset all materials to default values?")) return;
+
+      localStorage.removeItem("blazing_resources_v1");
+      location.reload();
+    }
+
+    // Initial render
+    window.addEventListener("DOMContentLoaded", () => {
+      renderResources();
+
+      // Setup dev control button event listeners
+      document.getElementById("btn-add-materials-100")?.addEventListener("click", () => addMaterials(100));
+      document.getElementById("btn-add-materials-500")?.addEventListener("click", () => addMaterials(500));
+      document.getElementById("btn-add-ryo")?.addEventListener("click", () => addRyo(100000));
+      document.getElementById("btn-reset-materials")?.addEventListener("click", () => resetMaterials());
+    });
+
+    // Navigation is now handled by navigation.js
+  </script>
+
+  <!-- Music Initialization -->
+  <script>
+    // Music initialization - start BGM on page load
+    (function() {
+      if (typeof window.AudioManager === 'undefined') {
+        console.log('[Music] AudioManager not available on this page');
+        return;
+      }
+
+      console.log('[Music] Initializing background music...');
+
+      const startMusic = () => {
+        if (!window.AudioManager.musicPlaying) {
+          window.AudioManager.playBattleMusic();
+        }
+      };
+
+      // Try immediate playback (may be blocked by browser)
+      setTimeout(startMusic, 500);
+
+      // Also try on first click
+      document.addEventListener('click', startMusic, { once: true });
+    })();
+  </script>
+</body>
+</html>

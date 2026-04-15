@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inventory</title>
+  <link rel="stylesheet" href="css/inventory.css">
+  <link rel="stylesheet" href="css/background.css">
+  <link rel="stylesheet" href="css/music-player.css" />
+  <!-- Hide scrollbar but keep functionality -->
+  <style>
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    body::-webkit-scrollbar,
+    html::-webkit-scrollbar,
+    *::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* Hide scrollbar for IE, Edge and Firefox */
+    body, html, * {
+      -ms-overflow-style: none;  /* IE and Edge */
+      scrollbar-width: none;  /* Firefox */
+    }
+  </style>
+</head>
+<body>
+  <div id="full-bg" aria-hidden="true"></div>
+
+  <div class="inventory-page-container">
+    <h1 class="page-title">Item Inventory</h1>
+
+    <!-- Tabs for different item categories -->
+    <div class="inventory-tabs">
+      <button class="tab-btn active" data-tab="awakening">Awakening Materials</button>
+      <button class="tab-btn" data-tab="enhancement">Enhancement Items</button>
+      <button class="tab-btn" data-tab="ramen">Ramen</button>
+      <button class="tab-btn" data-tab="scrolls">Scrolls</button>
+    </div>
+
+    <!-- Tab Content -->
+    <div class="inventory-content">
+      <!-- Awakening Materials Tab -->
+      <div class="tab-panel active" id="tab-awakening">
+        <div class="items-grid" id="awakening-grid">
+          <!-- Items populated dynamically -->
+        </div>
+      </div>
+
+      <!-- Enhancement Items Tab -->
+      <div class="tab-panel" id="tab-enhancement">
+        <div class="items-grid" id="enhancement-grid">
+          <!-- Items populated dynamically -->
+        </div>
+      </div>
+
+      <!-- Ramen Tab -->
+      <div class="tab-panel" id="tab-ramen">
+        <div class="items-grid" id="ramen-grid">
+          <!-- Items populated dynamically -->
+        </div>
+      </div>
+
+      <!-- Scrolls Tab -->
+      <div class="tab-panel" id="tab-scrolls">
+        <div class="items-grid" id="scrolls-grid">
+          <!-- Items populated dynamically -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Item Detail Modal -->
+  <div id="item-modal" class="item-modal hidden">
+    <div class="modal-overlay"></div>
+    <div class="modal-content">
+      <button class="close-btn" id="close-modal">×</button>
+      <div class="item-details">
+        <img id="modal-item-icon" class="item-icon-large" src="" alt="Item">
+        <h2 id="modal-item-name" class="item-name"></h2>
+        <p id="modal-item-description" class="item-description"></p>
+        <div class="item-quantity-display">
+          <span class="quantity-label">Owned:</span>
+          <span id="modal-item-quantity" class="quantity-value">0</span>
+        </div>
+        <div id="item-usage-note" class="item-usage-note hidden"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HUD Bottom Bar -->
+  <div class="bottom-bar">
+    <div class="bottom-bar-content">
+      <button class="hud-button" id="btn-village" aria-label="Village">
+        <img src="assets/icons/village_btm_btn.png" alt="Village">
+      </button>
+      <button class="hud-button" id="btn-characters" aria-label="Characters">
+        <img src="assets/icons/characters_icon.png" alt="Characters">
+      </button>
+      <button class="hud-button" id="btn-fusion" aria-label="Fusion">
+        <img src="assets/icons/fusion_btm_btn.png" alt="Fusion">
+      </button>
+      <button class="hud-button" id="btn-teams" aria-label="Teams">
+        <img src="assets/icons/teams_icon.png" alt="Teams">
+      </button>
+      <button class="hud-button" id="btn-tools" aria-label="Tools">
+        <img src="assets/icons/guilds_icon.png" alt="Tools">
+      </button>
+      <button class="hud-button" id="btn-summon" aria-label="Summon">
+        <img src="assets/icons/summon_btm_btn.png" alt="Summon">
+      </button>
+      <button class="hud-button" id="btn-missions" aria-label="Missions">
+        <img src="assets/icons/mission_btm_btn.png" alt="Missions">
+      </button>
+      <button class="hud-button active" id="btn-inventory" aria-label="Inventory">
+        <img src="assets/icons/inventory_icon.png" alt="Inventory">
+      </button>
+      <button class="hud-button" id="btn-shop" aria-label="Shop">
+        <img src="assets/icons/shop_btm_btn.png" alt="Shop">
+      </button>
+    </div>
+  </div>
+
+  <script src="js/audio-manager.js"></script>
+  <script src="js/resources.js"></script>
+  <script src="js/inventory.js"></script>
+  <script src="js/navigation.js"></script>
+
+  <!-- Music Initialization -->
+  <script>
+    // Music initialization - start BGM on page load
+    (function() {
+      if (typeof window.AudioManager === 'undefined') {
+        console.log('[Music] AudioManager not available on this page');
+        return;
+      }
+
+      console.log('[Music] Initializing background music...');
+
+      const startMusic = () => {
+        if (!window.AudioManager.musicPlaying) {
+          window.AudioManager.playBattleMusic();
+        }
+      };
+
+      // Try immediate playback (may be blocked by browser)
+      setTimeout(startMusic, 500);
+
+      // Also try on first click
+      document.addEventListener('click', startMusic, { once: true });
+    })();
+  </script>
+</body>
+</html>

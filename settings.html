@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Settings - Naruto Blazing</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="css/background.css" />
+  <link rel="stylesheet" href="css/top-bar.css" />
+  <link rel="stylesheet" href="css/dashboard.css" />
+  <style>
+    body {
+      font-family: "Cinzel", serif;
+      color: #f4efe3;
+    }
+
+    .settings-container {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 30px;
+      background: rgba(20, 20, 30, 0.95);
+      border-radius: 12px;
+      border: 2px solid rgba(139, 115, 85, 0.6);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.8);
+    }
+
+    .settings-header {
+      font-size: 32px;
+      font-weight: 700;
+      color: #d4af37;
+      text-align: center;
+      margin-bottom: 30px;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+      border-bottom: 2px solid rgba(212, 175, 55, 0.4);
+      padding-bottom: 15px;
+    }
+
+    .settings-section {
+      margin-bottom: 30px;
+      padding: 20px;
+      background: rgba(30, 30, 40, 0.8);
+      border-radius: 8px;
+      border: 1px solid rgba(139, 115, 85, 0.3);
+    }
+
+    .settings-section-title {
+      font-size: 20px;
+      font-weight: 600;
+      color: #b8985f;
+      margin-bottom: 15px;
+      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.9);
+    }
+
+    .setting-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(139, 115, 85, 0.2);
+    }
+
+    .setting-row:last-child {
+      border-bottom: none;
+    }
+
+    .setting-label {
+      font-size: 16px;
+      color: #f0e6d1;
+    }
+
+    .setting-control {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .slider {
+      width: 200px;
+      height: 6px;
+      border-radius: 3px;
+      background: rgba(139, 115, 85, 0.3);
+      outline: none;
+      cursor: pointer;
+    }
+
+    .slider::-webkit-slider-thumb {
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #d4af37;
+      cursor: pointer;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    .slider::-moz-range-thumb {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #d4af37;
+      cursor: pointer;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+      border: none;
+    }
+
+    .volume-value {
+      min-width: 40px;
+      text-align: center;
+      font-weight: 600;
+      color: #d4af37;
+    }
+
+    .toggle-button {
+      padding: 8px 20px;
+      background: linear-gradient(135deg, #1f4d8b 0%, #2a5fa5 100%);
+      border: 2px solid #66c;
+      border-radius: 6px;
+      color: #e0f0ff;
+      font-family: "Cinzel", serif;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
+    }
+
+    .toggle-button:hover {
+      background: linear-gradient(135deg, #2c6bb2 0%, #3a7dc9 100%);
+      box-shadow: 0 4px 8px rgba(44, 107, 178, 0.7);
+    }
+
+    .toggle-button.active {
+      background: linear-gradient(135deg, #1f8b2c 0%, #2da83d 100%);
+      border-color: #6c6;
+      color: #e6ffe0;
+    }
+
+    .back-button {
+      display: block;
+      margin: 30px auto 0;
+      padding: 12px 40px;
+      background: linear-gradient(135deg, #8b1f1f 0%, #a52a2a 100%);
+      border: 2px solid #c66;
+      border-radius: 8px;
+      color: #fff0e0;
+      font-family: "Cinzel", serif;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
+      text-decoration: none;
+      text-align: center;
+    }
+
+    .back-button:hover {
+      background: linear-gradient(135deg, #b22c2c 0%, #c93a3a 100%);
+      box-shadow: 0 4px 8px rgba(178, 44, 44, 0.7);
+    }
+  </style>
+  <!-- Hide scrollbar but keep functionality -->
+  <style>
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    body::-webkit-scrollbar,
+    html::-webkit-scrollbar,
+    *::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* Hide scrollbar for IE, Edge and Firefox */
+    body, html, * {
+      -ms-overflow-style: none;  /* IE and Edge */
+      scrollbar-width: none;  /* Firefox */
+    }
+  </style>
+</head>
+
+<body>
+  <div id="full-bg" class="bg-1"></div>
+
+  <!-- Top Bar -->
+  <div class="top-bar">
+    <div class="ninja-rank-container">
+      <span class="ninja-rank-label">Ninja Rank:</span>
+      <span class="ninja-rank-value" id="ninja-rank-value">1</span>
+    </div>
+    <div class="player-username-container">
+      <span class="player-username" id="player-username">Player</span>
+    </div>
+    <div class="currency-hud">
+      <div class="currency-item ninja-pearls">
+        <img src="assets/icons/currency/ninjapearl.png" alt="Ninja Pearls" class="currency-icon" onerror="this.style.display='none';">
+        <span class="currency-amount" id="currency-ninja-pearls">0</span>
+      </div>
+      <div class="currency-item shinobites">
+        <img src="assets/icons/currency/shinobite.png" alt="Shinobites" class="currency-icon" onerror="this.style.display='none';">
+        <span class="currency-amount" id="currency-shinobites">0</span>
+      </div>
+      <div class="currency-item ryo">
+        <img src="assets/icons/currency/ryo.png" alt="Ryo" class="currency-icon" onerror="this.style.display='none';">
+        <span class="currency-amount" id="currency-ryo">0</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="settings-container">
+    <h1 class="settings-header">Settings</h1>
+
+    <!-- Audio Settings -->
+    <div class="settings-section">
+      <div class="settings-section-title">Audio</div>
+
+      <div class="setting-row">
+        <div class="setting-label">Background Music Volume</div>
+        <div class="setting-control">
+          <input type="range" min="0" max="100" value="30" class="slider" id="bgm-volume">
+          <span class="volume-value" id="bgm-value">30%</span>
+        </div>
+      </div>
+
+      <div class="setting-row">
+        <div class="setting-label">Sound Effects Volume</div>
+        <div class="setting-control">
+          <input type="range" min="0" max="100" value="50" class="slider" id="sfx-volume">
+          <span class="volume-value" id="sfx-value">50%</span>
+        </div>
+      </div>
+
+      <div class="setting-row">
+        <div class="setting-label">Mute All Audio</div>
+        <div class="setting-control">
+          <button class="toggle-button" id="mute-button">Unmuted</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Account Settings -->
+    <div class="settings-section">
+      <div class="settings-section-title">Account</div>
+
+      <div class="setting-row">
+        <div class="setting-label">Change Username</div>
+        <div class="setting-control">
+          <button class="toggle-button" id="change-username-button">Edit</button>
+        </div>
+      </div>
+
+      <div class="setting-row">
+        <div class="setting-label">Session</div>
+        <div class="setting-control">
+          <button class="toggle-button" id="logout-button" style="background: linear-gradient(135deg, #8b1f1f 0%, #a52a2a 100%); border-color: #c66;">Log Out</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gift Code -->
+    <div class="settings-section">
+      <div class="settings-section-title">Gift Code</div>
+
+      <div class="setting-row">
+        <div class="setting-label">Enter Gift Code</div>
+        <div class="setting-control" style="display: flex; gap: 10px;">
+          <input type="text" id="gift-code-input" placeholder="Enter code here" style="padding: 8px 16px; border-radius: 6px; background: rgba(30, 30, 40, 0.9); color: #f4efe3; border: 1px solid rgba(139, 115, 85, 0.6); font-family: 'Cinzel', serif; flex: 1; text-transform: uppercase;">
+          <button class="toggle-button" id="redeem-gift-code-button">Redeem</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Developer Tools -->
+    <div class="settings-section">
+      <div class="settings-section-title">Developer Tools</div>
+
+      <div class="setting-row">
+        <div class="setting-label">Add All Characters (Batch)</div>
+        <div class="setting-control">
+          <button class="toggle-button" id="batch-add-all-button" style="background: linear-gradient(135deg, #1f8b2c 0%, #2da83d 100%); border-color: #6c6;">Add All Units Now!</button>
+        </div>
+        <div style="font-size: 12px; color: #b8985f; margin-top: 8px;">
+          Instantly adds all 19 characters (evolved + unevolved) to your roster
+        </div>
+      </div>
+
+      <div class="setting-row">
+        <div class="setting-label">Add Unit Manually</div>
+        <div class="setting-control" style="display: flex; gap: 10px; flex-wrap: wrap;">
+          <input type="text" id="manual-unit-input" placeholder="naruto_01_3S*5" style="padding: 8px 16px; border-radius: 6px; background: rgba(30, 30, 40, 0.9); color: #f4efe3; border: 1px solid rgba(139, 115, 85, 0.6); font-family: 'Cinzel', serif; flex: 1; min-width: 200px;">
+          <button class="toggle-button" id="add-manual-unit-button">Add Unit</button>
+        </div>
+        <div style="font-size: 12px; color: #b8985f; margin-top: 8px;">
+          Format: <code style="background: rgba(0,0,0,0.3); padding: 2px 6px; border-radius: 3px;">characterId_tierCode*quantity</code>
+          <br>
+          Example: <code style="background: rgba(0,0,0,0.3); padding: 2px 6px; border-radius: 3px;">naruto_01_3S*5</code> (5 copies of Naruto at 3★)
+        </div>
+      </div>
+    </div>
+
+    <!-- Player Data Management -->
+    <div class="settings-section">
+      <div class="settings-section-title">Player Data</div>
+
+      <div class="setting-row">
+        <div class="setting-label">Clean Up Invalid Characters</div>
+        <div class="setting-control">
+          <button class="toggle-button" id="cleanup-characters-button">Clean Up</button>
+        </div>
+      </div>
+
+      <div class="setting-row">
+        <div class="setting-label">Export Save Data</div>
+        <div class="setting-control">
+          <button class="toggle-button" id="export-save-button">Download Save File</button>
+        </div>
+      </div>
+
+      <div class="setting-row">
+        <div class="setting-label">Import Save Data</div>
+        <div class="setting-control" style="display: flex; gap: 10px;">
+          <input type="file" id="import-save-input" accept=".json" style="display: none;">
+          <button class="toggle-button" id="import-save-button">Upload Save File</button>
+          <label style="font-size: 12px; color: #b8985f; align-self: center;">
+            (.json file from another device)
+          </label>
+        </div>
+      </div>
+
+      <div class="setting-row">
+        <div class="setting-label">Player ID</div>
+        <div class="setting-control">
+          <span id="player-id-display" style="font-size: 12px; color: #d4af37; font-family: monospace;">Loading...</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Visual Settings -->
+    <div class="settings-section">
+      <div class="settings-section-title">Visual</div>
+
+      <div class="setting-row">
+        <div class="setting-label">Background Theme</div>
+        <div class="setting-control">
+          <select id="background-select" style="padding: 8px 16px; border-radius: 6px; background: rgba(30, 30, 40, 0.9); color: #f4efe3; border: 1px solid rgba(139, 115, 85, 0.6); font-family: 'Cinzel', serif; cursor: pointer;">
+            <option value="1">Background 1</option>
+            <option value="2">Background 2</option>
+            <option value="3">Background 3</option>
+            <option value="4">Background 4</option>
+            <option value="5">Background 5</option>
+            <option value="6">Background 6</option>
+            <option value="7">Background 7</option>
+            <option value="8">Background 8</option>
+            <option value="9">Background 9</option>
+            <option value="10">Background 10</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <a href="village.html" class="back-button">Back to Home</a>
+  </div>
+
+  <script src="js/audio-manager.js"></script>
+  <script src="js/username.js"></script>
+  <script src="js/character_inv.js?v=3"></script>
+  <script src="js/resources.js"></script>
+  <script src="js/ninja-rank.js"></script>
+  <script src="js/exp-rewards.js"></script>
+  <script src="js/top-bar-enhanced.js"></script>
+  <script src="js/gift-code-system.js"></script>
+  <script src="js/dashboard-mailbox.js"></script>
+  <script src="js/player-save-system.js"></script>
+  <script src="js/batch-add-characters.js"></script>
+  <script src="js/navigation.js"></script>
+
+  <script>
+    // Initialize Mailbox System
+    if (window.DashboardMailbox) {
+      window.DashboardMailbox.init();
+      console.log('✅ Mailbox initialized in settings');
+    }
+
+    // Audio Settings
+    const bgmSlider = document.getElementById('bgm-volume');
+    const bgmValue = document.getElementById('bgm-value');
+    const sfxSlider = document.getElementById('sfx-volume');
+    const sfxValue = document.getElementById('sfx-value');
+    const muteButton = document.getElementById('mute-button');
+
+    // Load current audio settings
+    if (typeof AudioManager !== 'undefined' && typeof AudioManager.getSettings === 'function') {
+      try {
+        const settings = AudioManager.getSettings();
+        bgmSlider.value = Math.round(settings.bgmVolume * 100);
+        bgmValue.textContent = Math.round(settings.bgmVolume * 100) + '%';
+        sfxSlider.value = Math.round(settings.sfxVolume * 100);
+        sfxValue.textContent = Math.round(settings.sfxVolume * 100) + '%';
+        muteButton.textContent = settings.masterMuted ? 'Muted' : 'Unmuted';
+        muteButton.classList.toggle('active', !settings.masterMuted);
+      } catch (error) {
+        console.warn('[Settings] Could not load audio settings:', error);
+      }
+    }
+
+    // BGM Volume Control
+    bgmSlider.addEventListener('input', (e) => {
+      const volume = e.target.value / 100;
+      bgmValue.textContent = e.target.value + '%';
+      if (typeof AudioManager !== 'undefined') {
+        AudioManager.setBGMVolume(volume);
+      }
+    });
+
+    // SFX Volume Control
+    sfxSlider.addEventListener('input', (e) => {
+      const volume = e.target.value / 100;
+      sfxValue.textContent = e.target.value + '%';
+      if (typeof AudioManager !== 'undefined') {
+        AudioManager.setSFXVolume(volume);
+      }
+    });
+
+    // Mute Toggle
+    muteButton.addEventListener('click', () => {
+      if (typeof AudioManager !== 'undefined') {
+        const isMuted = AudioManager.toggleMasterMute();
+        muteButton.textContent = isMuted ? 'Muted' : 'Unmuted';
+        muteButton.classList.toggle('active', !isMuted);
+      }
+    });
+
+    // Username Change
+    document.getElementById('change-username-button').addEventListener('click', () => {
+      if (typeof window.Username !== 'undefined') {
+        window.Username.openEditor();
+      } else {
+        alert('Username system not loaded. Please return to home page.');
+      }
+    });
+
+    const logoutButton = document.getElementById('logout-button');
+    if (logoutButton) {
+      logoutButton.addEventListener('click', () => {
+        if (window.AccountSync?.syncNow) {
+          window.AccountSync.syncNow();
+        }
+
+        const keysToClear = [
+          'blazing-login-complete',
+          'blazing-login-username',
+          'blazing-player-id',
+          'blazing_inventory_v2',
+          'blazing_teams_v1',
+          'blazing_resources_v1',
+          'blazing_equipped_ultimates',
+          'blazing_username',
+          'blazing_user_profile'
+        ];
+
+        keysToClear.forEach((key) => {
+          try {
+            localStorage.removeItem(key);
+          } catch (error) {
+            // ignore cleanup failures
+          }
+        });
+
+        sessionStorage.clear();
+        window.location.href = 'index.html';
+      });
+    }
+
+    // Background Change
+    document.getElementById('background-select').addEventListener('change', (e) => {
+      const bgNum = e.target.value;
+      const el = document.getElementById("full-bg");
+      if (el) {
+        for (let i = 1; i <= 10; i++) {
+          el.classList.remove(`bg-${i}`);
+        }
+        el.classList.add(`bg-${bgNum}`);
+        console.log(`[Settings] Background changed to bg-${bgNum}`);
+      }
+    });
+
+    // Gift Code Redemption
+    // Initialize Gift Code System with proper async handling
+    let giftCodeSystemReady = false;
+
+    async function initializeGiftCodeSystem() {
+      if (window.GiftCodeSystem) {
+        try {
+          await window.GiftCodeSystem.init();
+          giftCodeSystemReady = true;
+          console.log('✅ Gift Code System ready with', window.GiftCodeSystem.codes.length, 'codes');
+          console.log('Available codes:', window.GiftCodeSystem.codes.map(c => c.code).join(', '));
+        } catch (error) {
+          console.error('❌ Failed to initialize Gift Code System:', error);
+        }
+      } else {
+        console.error('❌ GiftCodeSystem not found');
+      }
+    }
+
+    initializeGiftCodeSystem();
+
+    document.getElementById('redeem-gift-code-button').addEventListener('click', async () => {
+      const input = document.getElementById('gift-code-input');
+      const code = input.value.trim();
+
+      if (!code) {
+        alert('Please enter a gift code.');
+        return;
+      }
+
+      console.log('🎁 Attempting to redeem code:', code);
+
+      if (!window.GiftCodeSystem) {
+        alert('❌ Gift Code System not loaded. Please reload the page.');
+        console.error('GiftCodeSystem is undefined');
+        return;
+      }
+
+      if (!giftCodeSystemReady) {
+        alert('⏳ Gift Code System is still loading. Please wait a moment and try again.');
+        console.warn('Gift codes not loaded yet');
+        return;
+      }
+
+      console.log('📦 Current codes loaded:', window.GiftCodeSystem.codes.length);
+      console.log('🔍 Looking for code:', code);
+      console.log('📋 Available codes:', window.GiftCodeSystem.codes.map(c => c.code));
+
+      const result = await window.GiftCodeSystem.redeemCode(code);
+      console.log('🎁 Redemption result:', result);
+
+      if (result.success) {
+        alert(`✅ ${result.message}\n\n📬 Go to the main menu and click the Present Box icon to claim your rewards!`);
+        input.value = ''; // Clear input on success
+      } else {
+        alert(`❌ ${result.message}`);
+      }
+    });
+
+    // Batch Add All Characters
+    document.getElementById('batch-add-all-button').addEventListener('click', async () => {
+      if (!confirm('This will add all 19 characters (evolved + unevolved) to your roster. Continue?')) {
+        return;
+      }
+
+      if (typeof window.addAllCharacters === 'function') {
+        await window.addAllCharacters();
+      } else {
+        alert('❌ Batch add function not loaded. Please reload the page.');
+      }
+    });
+
+    // Manual Unit Addition
+    document.getElementById('add-manual-unit-button').addEventListener('click', async () => {
+      const input = document.getElementById('manual-unit-input');
+      const code = input.value.trim();
+
+      if (!code) {
+        alert('Please enter a unit code.');
+        return;
+      }
+
+      // Parse format: characterId_tierCode*quantity
+      // Example: naruto_01_3S*5
+      const match = code.match(/^(.+)_(\w+)\*(\d+)$/);
+
+      if (!match) {
+        alert('Invalid format. Use: characterId_tierCode*quantity\nExample: naruto_01_3S*5');
+        return;
+      }
+
+      const [, characterId, tierCode, quantityStr] = match;
+      const quantity = parseInt(quantityStr, 10);
+
+      if (quantity <= 0 || quantity > 100) {
+        alert('Quantity must be between 1 and 100.');
+        return;
+      }
+
+      // Verify character exists
+      try {
+        const res = await fetch('data/characters.json', { cache: 'no-store' });
+        if (!res.ok) throw new Error('Failed to load characters.json');
+        const data = await res.json();
+        const characters = Array.isArray(data) ? data : [];
+
+        const character = characters.find(c => c.id === characterId);
+        if (!character) {
+          alert(`Character ID '${characterId}' not found.\n\nAvailable IDs:\n${characters.map(c => c.id).join(', ')}`);
+          return;
+        }
+
+        // Add characters to inventory
+        if (!window.InventoryChar) {
+          alert('Inventory system not loaded. Please reload the page.');
+          return;
+        }
+
+        for (let i = 0; i < quantity; i++) {
+          window.InventoryChar.addCopy(characterId, 1, tierCode);
+        }
+
+        alert(`✅ Added ${quantity}x ${character.name} (${character.version || 'N/A'}) at ${tierCode} tier to your roster!`);
+        input.value = ''; // Clear input on success
+
+        // Refresh character grid if on characters page
+        if (typeof window.refreshCharacterGrid === 'function') {
+          window.refreshCharacterGrid();
+        }
+      } catch (error) {
+        alert('Failed to add unit: ' + error.message);
+        console.error('Manual unit addition error:', error);
+      }
+    });
+
+    // Player Data Management
+    // Display Player ID
+    if (window.PlayerSaveSystem) {
+      const playerId = window.PlayerSaveSystem.getOrCreatePlayerId();
+      document.getElementById('player-id-display').textContent = playerId;
+    }
+
+    // Clean Up Invalid Characters
+    document.getElementById('cleanup-characters-button').addEventListener('click', async () => {
+      if (!confirm('This will remove all characters with invalid IDs from your inventory. Continue?')) {
+        return;
+      }
+
+      try {
+        // Check if function exists
+        if (typeof window.InventoryChar === 'undefined') {
+          alert('InventoryChar system not loaded. Please reload the page.');
+          return;
+        }
+
+        if (typeof window.InventoryChar.cleanupInvalidCharacters !== 'function') {
+          alert('Cleanup function not available. Hard refresh the page (Ctrl+Shift+R or Cmd+Shift+R) to clear cache.');
+          return;
+        }
+
+        const result = await window.InventoryChar.cleanupInvalidCharacters();
+        alert(result.message);
+
+        if (result.removed > 0) {
+          // Reload page to refresh character display
+          setTimeout(() => {
+            window.location.reload();
+          }, 1000);
+        }
+      } catch (error) {
+        alert('Failed to cleanup characters: ' + error.message);
+      }
+    });
+
+    // Export Save Data
+    document.getElementById('export-save-button').addEventListener('click', async () => {
+      try {
+        const result = await window.PlayerSaveSystem.downloadSaveFile();
+        alert(result.message);
+      } catch (error) {
+        alert('Failed to export save: ' + error.message);
+      }
+    });
+
+    // Import Save Data
+    document.getElementById('import-save-button').addEventListener('click', () => {
+      document.getElementById('import-save-input').click();
+    });
+
+    document.getElementById('import-save-input').addEventListener('change', async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const mergeChoice = confirm(
+        'Import Options:\n\n' +
+        'OK = Merge with existing data (add to current save)\n' +
+        'Cancel = Overwrite existing data (replace current save)\n\n' +
+        'Choose wisely!'
+      );
+
+      try {
+        const result = await window.PlayerSaveSystem.uploadSaveFile(file, mergeChoice);
+        alert(result.message);
+
+        if (result.success) {
+          // Reload page to apply imported data
+          setTimeout(() => {
+            window.location.reload();
+          }, 1000);
+        }
+      } catch (error) {
+        alert('Failed to import save: ' + error.message);
+      }
+
+      // Reset file input
+      e.target.value = '';
+    });
+  </script>
+</body>
+</html>

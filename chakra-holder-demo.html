@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chakra Holder System</title>
+    <link rel="stylesheet" href="css/chakra-holder.css">
+  <!-- Hide scrollbar but keep functionality -->
+  <style>
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    body::-webkit-scrollbar,
+    html::-webkit-scrollbar,
+    *::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* Hide scrollbar for IE, Edge and Firefox */
+    body, html, * {
+      -ms-overflow-style: none;  /* IE and Edge */
+      scrollbar-width: none;  /* Firefox */
+    }
+  </style>
+</head>
+<body>
+    <div class="unit-slot" id="unit1">
+        <div class="unit-ring">
+            <img class="portrait" src="" alt="">
+            <div class="chakra-container">
+                <img class="chakra-segment" src="assets/ui/gauges/chakra.png" alt="">
+            </div>
+            <img class="chakra-frame" src="assets/ui/frames/chakraholder_icon.png" alt="">
+
+            <div class="mini-unit-ring">
+                <img class="portrait" src="" alt="">
+                <div class="chakra-container">
+                    <img class="chakra-segment" src="assets/ui/gauges/chakra.png" alt="">
+                </div>
+                <img class="chakra-frame" src="assets/ui/frames/chakraholder_icon.png" alt="">
+            </div>
+        </div>
+        <div class="unit-name"></div>
+    </div>
+
+    <div>
+        <button onclick="addChakra('unit1', 1)">Add 1 Chakra</button>
+        <button onclick="addChakra('unit1', 2)">Add 2 Chakra</button>
+        <button onclick="addChakra('unit1', 3)">Add 3 Chakra</button>
+    </div>
+
+    <script src="js/chakra-holder.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            initUnitRing('unit1', {
+                main: 'naruto',
+                support: 'sasuke',
+                name: 'Naruto Uzumaki'
+            });
+        });
+    </script>
+</body>
+</html>

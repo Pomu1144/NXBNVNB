@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Blazing — Village HUD</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <script src="js/session-gate.js"></script>
+  <!-- 16:9 Game Canvas Architecture -->
+  <link rel="stylesheet" href="css/game-canvas.css" />
+  <!-- Game UI Styles -->
+  <link rel="stylesheet" href="css/background.css?v=2" />
+  <link rel="stylesheet" href="css/top-bar.css?v=2" />
+  <link rel="stylesheet" href="css/character-vignette.css?v=2" />
+  <link rel="stylesheet" href="css/dashboard.css?v=2" />
+  <link rel="stylesheet" href="css/summon-banner-carousel.css?v=2" />
+  <link rel="stylesheet" href="css/ui-layout.css?v=2" />
+  <link rel="stylesheet" href="css/settings-modal.css?v=2" />
+  <link rel="stylesheet" href="css/modal-system.css?v=1" />
+  <!-- Hide scrollbar but keep functionality -->
+  <style>
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    body::-webkit-scrollbar,
+    html::-webkit-scrollbar,
+    *::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* Hide scrollbar for IE, Edge and Firefox */
+    body, html, * {
+      -ms-overflow-style: none;  /* IE and Edge */
+      scrollbar-width: none;  /* Firefox */
+    }
+  </style>
+</head>
+
+<body>
+  <!-- 16:9 Game Canvas Wrapper -->
+  <div class="game-canvas-wrapper">
+    <div class="game-canvas">
+      <div class="game-content">
+        <!-- Default background -->
+        <div id="full-bg" class="bg-1"></div>
+
+        <!-- Character Vignette Display -->
+        <div class="character-vignette-container"></div>
+
+        <!-- Vignette Edge Fading Effect -->
+        <div class="vignette-overlay"></div>
+
+        <!-- Wind Animation Particles -->
+        <div class="wind-container"></div>
+
+        <!-- Top Bar Overlay - Ninja Rank, Username & Currency HUD -->
+        <div class="top-bar">
+    <!-- Left: Ninja Rank -->
+    <div class="ninja-rank-container">
+      <div class="ninja-rank-info">
+        <span class="ninja-rank-label">Ninja Rank:</span>
+        <span class="ninja-rank-value" id="ninja-rank-value">1</span>
+      </div>
+      <div class="level-progress-bar-container">
+        <div class="level-progress-bar">
+          <div class="level-progress-fill" id="level-progress-fill"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Center: Player Username -->
+    <div class="username-container">
+      <div class="username-holder">
+        <span class="username-text" id="username-display">Ninja</span>
+      </div>
+    </div>
+
+    <!-- Right: Currency HUD -->
+    <div class="currency-hud">
+      <div class="currency-item ninja-pearls">
+        <img src="assets/icons/currency/ninjapearl.png" alt="Ninja Pearls" class="currency-icon"
+             onerror="this.style.display='none';">
+        <span class="currency-amount" id="currency-ninja-pearls">0</span>
+      </div>
+      <div class="currency-item shinobites">
+        <img src="assets/icons/currency/shinobite.png" alt="Shinobites" class="currency-icon"
+             onerror="this.style.display='none';">
+        <span class="currency-amount" id="currency-shinobites">0</span>
+      </div>
+      <div class="currency-item ryo">
+        <img src="assets/icons/currency/ryo.png" alt="Ryo" class="currency-icon"
+             onerror="this.style.display='none';">
+        <span class="currency-amount" id="currency-ryo">0</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Summon Banner Carousel (Left Side) -->
+  <div class="summon-banner-carousel">
+    <!-- Dynamically populated by navigation.js -->
+  </div>
+
+  <!-- Announcement Slideshow (Top Right, above banner panel) -->
+  <div class="announcement-slideshow">
+    <div class="announcement-track">
+      <!-- Dynamically populated by announcement.js -->
+    </div>
+    <div class="announcement-nav-dots">
+      <!-- Navigation dots -->
+    </div>
+  </div>
+
+  <!-- Right Banner Panel (5 Main Navigation Banners) -->
+  <div class="right-banner-panel">
+    <div class="banner-button missions">
+      <div class="banner-button-text">Missions</div>
+    </div>
+    <div class="banner-button characters">
+      <div class="banner-button-text">Characters</div>
+    </div>
+    <div class="banner-button summon">
+      <div class="banner-button-text">Summon</div>
+    </div>
+    <div class="banner-button fusion">
+      <div class="banner-button-text">Fusion</div>
+    </div>
+    <div class="banner-button shop">
+      <div class="banner-button-text">Shop</div>
+    </div>
+    <div class="banner-button arena">
+      <div class="banner-button-text">Arena</div>
+    </div>
+  </div>
+
+  <!-- Bottom Icon Bar (10 Utility Icons) -->
+  <div class="bottom-icon-bar">
+    <!-- Notice -->
+    <div class="bottom-icon" data-action="notice">
+      <img src="assets/icons/notice_icon.png" alt="Notice" class="bottom-icon-image" onerror="this.style.display='none';">
+      <span class="bottom-icon-label">Notice</span>
+    </div>
+
+    <!-- Present Box -->
+    <div class="bottom-icon" data-action="presents">
+      <div class="bottom-icon-notification" id="present-box-notification" style="display: none;"></div>
+      <img src="assets/icons/present_icon.png" alt="Presents" class="bottom-icon-image" onerror="this.style.display='none';">
+      <span class="bottom-icon-label">Presents</span>
+    </div>
+
+    <!-- Achievements -->
+    <div class="bottom-icon" data-action="achievements">
+      <img src="assets/icons/achievement_icon.png" alt="Achievements" class="bottom-icon-image" onerror="this.style.display='none';">
+      <span class="bottom-icon-label">Achievements</span>
+    </div>
+
+    <!-- Panel Missions -->
+    <div class="bottom-icon" data-action="panel-missions">
+      <img src="assets/icons/panel_missions_icon.png" alt="Panel Missions" class="bottom-icon-image" onerror="this.style.display='none';">
+      <span class="bottom-icon-label">Panel</span>
+    </div>
+
+    <!-- Chat -->
+    <div class="bottom-icon" data-action="chat">
+      <img src="assets/icons/chat_icon.png" alt="Chat" class="bottom-icon-image" onerror="this.style.display='none';">
+      <span class="bottom-icon-label">Chat</span>
+    </div>
+
+    <!-- Inventory -->
+    <div class="bottom-icon" data-action="inventory">
+      <img src="assets/icons/inventory_icon.png" alt="Inventory" class="bottom-icon-image" onerror="this.style.display='none';">
+      <span class="bottom-icon-label">Inventory</span>
+    </div>
+
+    <!-- Teams -->
+    <div class="bottom-icon" data-action="teams">
+      <img src="assets/icons/teams_icon.png" alt="Teams" class="bottom-icon-image" onerror="this.style.display='none';">
+      <span class="bottom-icon-label">Teams</span>
+    </div>
+
+    <!-- Resources -->
+    <div class="bottom-icon" data-action="resources">
+      <img src="assets/icons/resources_icon.png" alt="Resources" class="bottom-icon-image" onerror="this.style.display='none';">
+      <span class="bottom-icon-label">Resources</span>
+    </div>
+
+    <!-- Tools -->
+    <div class="bottom-icon" data-action="tools">
+      <img src="assets/icons/guilds_icon.png" alt="Tools" class="bottom-icon-image" onerror="this.style.display='none';">
+      <span class="bottom-icon-label">Tools</span>
+    </div>
+
+    <!-- Settings -->
+    <div class="bottom-icon" data-action="settings">
+      <img src="assets/icons/settings_icon.png" alt="Settings" class="bottom-icon-image" onerror="this.style.display='none';">
+      <span class="bottom-icon-label">Settings</span>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <!-- Core Libraries -->
+  <script src="https://cdn.jsdelivr.net/npm/howler@2.2.4/dist/howler.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8/hammer.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/localforage@1.10.0/dist/localforage.min.js"></script>
+
+  <!-- Manager Scripts -->
+  <script src="js/storage-manager.js"></script>
+  <script src="js/touch-manager.js"></script>
+
+  <!-- Game Scripts -->
+  <script src="js/modal-manager.js?v=1"></script>
+  <script src="js/user-profile.js?v=2"></script>
+  <script src="js/music-player.js?v=2"></script>
+  <script src="js/character_inv.js?v=2"></script>
+  <script src="js/resources.js?v=2"></script>
+  <script src="js/daily-missions.js?v=2"></script>
+  <script src="js/ninja-rank.js"></script>
+  <script src="js/exp-rewards.js"></script>
+  <script src="js/top-bar-enhanced.js"></script>
+  <script src="js/character-vignette.js?v=2"></script>
+  <script src="js/settings-modal.js?v=2"></script>
+  <script src="js/announcement-slideshow.js?v=2"></script>
+  <script src="js/dashboard-mailbox.js?v=2"></script>
+  <script src="js/panel-missions.js"></script>
+  <script src="js/index-banner-carousel.js?v=1"></script>
+  <script src="js/navigation.js?v=2"></script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      console.log("✅ JavaScript loaded!");
+
+      // Initialize username display
+      const usernameDisplay = document.getElementById("username-display");
+      if (usernameDisplay && typeof window.UserProfile !== "undefined") {
+        const username = window.UserProfile.getUsername();
+        usernameDisplay.textContent = username;
+        console.log(`👤 Username loaded: ${username}`);
+
+        // Listen for username changes
+        window.addEventListener("usernameChanged", (e) => {
+          usernameDisplay.textContent = e.detail.username;
+          console.log(`👤 Username updated: ${e.detail.username}`);
+        });
+      }
+
+      // Initialize Dashboard Systems
+      console.log("🎮 Initializing Dashboard Systems...");
+
+      // Initialize Calendar and Daily Streak
+      if (window.DashboardCalendar) {
+        window.DashboardCalendar.init();
+        await updateDailyLoginDisplay();
+      }
+
+      // Initialize Mailbox
+      if (window.DashboardMailbox) {
+        window.DashboardMailbox.init();
+        updateMailboxBadge();
+      }
+
+      // Initialize Stats
+      if (window.DashboardStats) {
+        await window.DashboardStats.init();
+        updateCollectionStats();
+      }
+
+      // Initialize Announcements
+      if (window.DashboardAnnouncements) {
+        await window.DashboardAnnouncements.init('announcement-banner-container');
+      }
+
+      // Initialize Banner Slideshow
+      if (window.DashboardBannerSlideshow) {
+        await window.DashboardBannerSlideshow.init('dashboard-banner-slideshow');
+      }
+
+      // Initialize Announcement Slideshow (Top Right)
+      if (window.AnnouncementSlideshow) {
+        await window.AnnouncementSlideshow.init();
+      }
+
+      // Initialize Panel Missions
+      if (window.PanelMissions) {
+        await window.PanelMissions.init();
+      }
+
+      // Update Ninja Rank Progress Bar
+      updateRankProgressBar();
+
+      // Process login bonus
+      if (typeof window.DailyMissions !== "undefined") {
+        const loginResult = await window.DailyMissions.processLogin();
+        if (loginResult.ok && !loginResult.alreadyClaimed) {
+          const rewardText = Object.entries(loginResult.reward)
+            .map(([mat, amt]) => `${mat}: ${amt}`)
+            .join(", ");
+          if (window.ModalManager) { window.ModalManager.showInfo(`Login Bonus Day ${loginResult.loginDay}!\n\nRewards:\n${rewardText}`); }
+        }
+      }
+
+      // ===== HELPER FUNCTIONS =====
+
+      async function updateDailyLoginDisplay() {
+        if (!window.DashboardCalendar) return;
+        const streak = window.DashboardCalendar.getStreak();
+        const dayElement = document.getElementById('daily-login-day');
+        const indicator = document.getElementById('daily-login-indicator');
+
+        if (dayElement) {
+          dayElement.textContent = `Day ${streak}/7`;
+        }
+
+        // Add notification dot if login bonus is available
+        if (window.DailyMissions) {
+          const loginStatus = await window.DailyMissions.getLoginStatus();
+          if (loginStatus && !loginStatus.claimedToday) {
+            indicator?.classList.add('has-reward');
+          }
+        }
+      }
+
+      function updateMailboxBadge() {
+        if (!window.DashboardMailbox) return;
+        const unreadCount = window.DashboardMailbox.getUnreadCount();
+        const badge = document.getElementById('mailbox-badge');
+        const presentNotification = document.getElementById('present-box-notification');
+
+        if (badge) {
+          if (unreadCount > 0) {
+            badge.textContent = unreadCount > 99 ? '99+' : unreadCount;
+            badge.style.display = 'flex';
+          } else {
+            badge.style.display = 'none';
+          }
+        }
+
+        // Show red orb on present box icon if there are any messages
+        if (presentNotification) {
+          if (unreadCount > 0) {
+            presentNotification.style.display = 'block';
+          } else {
+            presentNotification.style.display = 'none';
+          }
+        }
+      }
+
+      function updateCollectionStats() {
+        if (!window.DashboardStats) return;
+        const percentage = window.DashboardStats.getCollectionPercentage();
+        const valueElement = document.getElementById('collection-value');
+
+        if (valueElement) {
+          valueElement.textContent = percentage.toFixed(1) + '%';
+        }
+      }
+
+      function updateRankProgressBar() {
+        // Get current rank data from localStorage or default
+        const rankData = JSON.parse(localStorage.getItem('ninjaRank') || '{"level": 1, "xp": 0, "xpToNext": 100}');
+
+        const percentage = Math.min(100, (rankData.xp / rankData.xpToNext) * 100);
+        const fillElement = document.getElementById('rank-progress-bar-fill');
+        const textElement = document.getElementById('rank-progress-text');
+
+        if (fillElement) {
+          fillElement.style.width = percentage + '%';
+        }
+
+        if (textElement) {
+          textElement.textContent = Math.floor(percentage) + '%';
+        }
+      }
+
+      function navigateTo(url) {
+        console.log(`🚀 Navigating to: ${url}`);
+        document.body.style.transition = "opacity 0.2s linear";
+        document.body.style.opacity = "0";
+        setTimeout(() => {
+          window.location.href = url;
+        }, 200);
+      }
+
+      // ===== BACKGROUND CYCLING SYSTEM =====
+
+      const bgElement = document.getElementById("full-bg");
+      const totalBackgrounds = 10;
+      let currentBackground = 1;
+
+      function updateBG(n) {
+        if (!bgElement) return;
+        for (let i = 1; i <= totalBackgrounds; i++) {
+          bgElement.classList.remove(`bg-${i}`);
+        }
+        bgElement.classList.add(`bg-${n}`);
+        console.log(`🎨 Background changed to bg-${n}`);
+      }
+
+      // ===== RIGHT BANNER PANEL NAVIGATION =====
+
+      const bannerButtons = document.querySelectorAll('.right-banner-panel .banner-button');
+      bannerButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          const action = button.classList[1]; // missions, characters, summon, fusion, shop
+          console.log(`🎯 Banner clicked: ${action}`);
+
+          switch(action) {
+            case 'missions':
+              navigateTo('missions.html');
+              break;
+            case 'characters':
+              navigateTo('characters.html');
+              break;
+            case 'summon':
+              navigateTo('summon.html');
+              break;
+            case 'fusion':
+              navigateTo('fusion.html');
+              break;
+            case 'shop':
+              navigateTo('shop.html');
+              break;
+            case 'arena':
+              navigateTo('arena.html');
+              break;
+          }
+        });
+      });
+
+      // ===== BOTTOM ICON BAR NAVIGATION =====
+
+      const bottomIcons = document.querySelectorAll('.bottom-icon');
+      bottomIcons.forEach(icon => {
+        icon.addEventListener('click', () => {
+          const action = icon.dataset.action;
+          console.log(`🔷 Bottom icon clicked: ${action}`);
+
+          switch(action) {
+            case 'notice':
+              if (window.ModalManager) { window.ModalManager.showInfo('📢 Notice Board\n\nNo new notices at this time.'); }
+              break;
+            case 'presents':
+              if (window.DashboardMailbox) {
+                window.DashboardMailbox.openMailbox();
+              } else {
+                if (window.ModalManager) { window.ModalManager.showInfo('🎁 Present Box\n\nPresent box system not loaded. Please reload the page.'); }
+              }
+              break;
+            case 'achievements':
+              if (window.ModalManager) { window.ModalManager.showInfo('🏆 Achievements\n\nAchievement system coming soon!'); }
+              break;
+            case 'panel-missions':
+              if (window.PanelMissions) {
+                window.PanelMissions.openPanelModal();
+              } else {
+                if (window.ModalManager) { window.ModalManager.showInfo('📋 Panel Missions\n\nPanel missions system not loaded. Please reload the page.'); }
+              }
+              break;
+            case 'chat':
+              if (window.ModalManager) { window.ModalManager.showInfo('💬 Chat\n\nChat system coming soon!'); }
+              break;
+            case 'inventory':
+              navigateTo('inventory.html');
+              break;
+            case 'teams':
+              navigateTo('teams.html');
+              break;
+            case 'resources':
+              navigateTo('resources.html');
+              break;
+            case 'tools':
+              navigateTo('tools.html');
+              break;
+            case 'settings':
+              showSettingsMenu();
+              break;
+          }
+        });
+      });
+
+      // ===== SETTINGS MENU SYSTEM =====
+
+      function showSettingsMenu() {
+        const choice = prompt(
+          "⚙️ SETTINGS MENU\n\n" +
+          "1. Change Username\n" +
+          "2. Change Background (1-10)\n" +
+          "3. Audio Settings\n" +
+          "4. Select Character Display\n" +
+          "5. View Resources\n" +
+          "6. Cancel\n\n" +
+          "Enter your choice:"
+        );
+
+        if (choice === "1") {
+          const currentUsername = window.UserProfile.getUsername();
+          const newUsername = prompt(`Current username: ${currentUsername}\n\nEnter new username (max 20 characters):`);
+
+          if (newUsername && newUsername.trim()) {
+            const success = window.UserProfile.setUsername(newUsername);
+            if (success) {
+              if (window.ModalManager) { window.ModalManager.showInfo(`✅ Username changed to: ${newUsername.trim()}`); }
+            } else {
+              if (window.ModalManager) { window.ModalManager.showInfo("❌ Failed to change username. Please use 1-20 characters."); }
+            }
+          }
+        } else if (choice === "2") {
+          const bgNum = prompt("Enter background number (1-10):");
+          const num = parseInt(bgNum);
+          if (num >= 1 && num <= 10) {
+            currentBackground = num;
+            updateBG(currentBackground);
+            if (window.ModalManager) { window.ModalManager.showInfo(`✅ Background changed to #${num}`); }
+          } else {
+            if (window.ModalManager) { window.ModalManager.showInfo("❌ Invalid background number. Please enter 1-10."); }
+          }
+        } else if (choice === "3") {
+          showAudioSettings();
+        } else if (choice === "4") {
+          if (typeof window.CharacterVignette !== "undefined") {
+            window.CharacterVignette.openCharacterSelector();
+          } else {
+            if (window.ModalManager) { window.ModalManager.showInfo("Character Vignette system not loaded yet. Please reload the page."); }
+          }
+        } else if (choice === "5") {
+          navigateTo("resources.html");
+        }
+      }
+
+      // ===== AUDIO SETTINGS SUBMENU =====
+
+      function showAudioSettings() {
+        if (typeof window.AudioManager === "undefined") {
+          if (window.ModalManager) { window.ModalManager.showInfo("⚠️ Audio Manager not loaded. Please reload the page."); }
+          return;
+        }
+
+        const masterVol = window.AudioManager.getVolumePercent("master");
+        const bgmVol = window.AudioManager.getVolumePercent("bgm");
+        const sfxVol = window.AudioManager.getVolumePercent("sfx");
+        const settings = window.AudioManager.getSettings();
+
+        const choice = prompt(
+          "🔊 AUDIO SETTINGS\n\n" +
+          `Master Volume: ${masterVol}% ${settings.masterMuted ? "(MUTED)" : ""}\n` +
+          `BGM Volume: ${bgmVol}% ${settings.bgmMuted ? "(MUTED)" : ""}\n` +
+          `SFX Volume: ${sfxVol}% ${settings.sfxMuted ? "(MUTED)" : ""}\n\n` +
+          "1. Set Master Volume (0-100)\n" +
+          "2. Set BGM Volume (0-100)\n" +
+          "3. Set SFX Volume (0-100)\n" +
+          "4. Toggle Master Mute\n" +
+          "5. Toggle BGM Mute\n" +
+          "6. Toggle SFX Mute\n" +
+          "7. Reset to Defaults\n" +
+          "8. Back to Settings\n\n" +
+          "Enter your choice:"
+        );
+
+        if (choice === "1") {
+          const vol = prompt("Enter Master Volume (0-100):");
+          const num = parseInt(vol);
+          if (!isNaN(num) && num >= 0 && num <= 100) {
+            window.AudioManager.setMasterVolume(num / 100);
+            if (window.ModalManager) { window.ModalManager.showInfo(`✅ Master volume set to ${num}%`); }
+          } else {
+            if (window.ModalManager) { window.ModalManager.showInfo("❌ Invalid volume. Please enter 0-100."); }
+          }
+          showAudioSettings();
+        } else if (choice === "2") {
+          const vol = prompt("Enter BGM Volume (0-100):");
+          const num = parseInt(vol);
+          if (!isNaN(num) && num >= 0 && num <= 100) {
+            window.AudioManager.setBGMVolume(num / 100);
+            if (window.ModalManager) { window.ModalManager.showInfo(`✅ BGM volume set to ${num}%`); }
+          } else {
+            if (window.ModalManager) { window.ModalManager.showInfo("❌ Invalid volume. Please enter 0-100."); }
+          }
+          showAudioSettings();
+        } else if (choice === "3") {
+          const vol = prompt("Enter SFX Volume (0-100):");
+          const num = parseInt(vol);
+          if (!isNaN(num) && num >= 0 && num <= 100) {
+            window.AudioManager.setSFXVolume(num / 100);
+            if (window.ModalManager) { window.ModalManager.showInfo(`✅ SFX volume set to ${num}%`); }
+          } else {
+            if (window.ModalManager) { window.ModalManager.showInfo("❌ Invalid volume. Please enter 0-100."); }
+          }
+          showAudioSettings();
+        } else if (choice === "4") {
+          const muted = window.AudioManager.toggleMasterMute();
+          alert(muted ? "🔇 Master audio MUTED" : "🔊 Master audio UNMUTED");
+          showAudioSettings();
+        } else if (choice === "5") {
+          const muted = window.AudioManager.toggleBGMMute();
+          alert(muted ? "🔇 BGM MUTED" : "🔊 BGM UNMUTED");
+          showAudioSettings();
+        } else if (choice === "6") {
+          const muted = window.AudioManager.toggleSFXMute();
+          alert(muted ? "🔇 SFX MUTED" : "🔊 SFX UNMUTED");
+          showAudioSettings();
+        } else if (choice === "7") {
+          if (window.ModalManager) { window.ModalManager.showConfirm("Reset all audio settings to defaults?", () => {
+            window.AudioManager.reset();
+            if (window.ModalManager) { window.ModalManager.showInfo("✅ Audio settings reset to defaults"); }
+          }
+          showAudioSettings();
+        } else if (choice === "8") {
+          showSettingsMenu();
+        }
+      }
+
+      // ===== MUSIC INITIALIZATION =====
+      // Start background music using AudioManager
+      if (typeof window.AudioManager !== 'undefined') {
+        console.log('🎵 Starting background music...');
+
+        // Try to play after user interaction
+        const startMusic = () => {
+          window.AudioManager.playBattleMusic();
+            console.log('⚠️ Background music failed to start');
+          }
+        };
+
+        // Add one-time click listener to start music
+        document.addEventListener('click', () => {
+          if (!window.AudioManager.musicPlaying) {
+            startMusic();
+          }
+        }, { once: true });
+
+        // Also try immediately (may be blocked by browser autoplay policy)
+        setTimeout(() => {
+          if (!window.AudioManager.musicPlaying) {
+            startMusic();
+          }
+        }, 1000);
+      } else {
+        console.error('❌ AudioManager not found - music cannot play');
+      }
+
+      console.log("✅ All systems initialized!");
+    });
+  </script>
+
+      </div><!-- .game-content -->
+    </div><!-- .game-canvas -->
+  </div><!-- .game-canvas-wrapper -->
+</body>
+</html>

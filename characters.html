@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Blazing — Characters</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="css/characters.css" />
+  <link rel="stylesheet" href="css/background.css?v=3" />
+  <link rel="stylesheet" href="css/bottombar.css" />
+  <link rel="stylesheet" href="css/characters_abilities.css" />
+  <link rel="stylesheet" href="css/character_dupe_abilities.css" />
+  <link rel="stylesheet" href="css/character-equip.css" />
+  <link rel="stylesheet" href="css/character-profile-equipment.css" />
+  <link rel="stylesheet" href="css/settings-modal.css" />
+  <link rel="stylesheet" href="css/awakening-animation.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@700&display=swap" rel="stylesheet">
+  <!-- Hide scrollbar but keep functionality -->
+  <style>
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    body::-webkit-scrollbar,
+    html::-webkit-scrollbar,
+    *::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* Hide scrollbar for IE, Edge and Firefox */
+    body, html, * {
+      -ms-overflow-style: none;  /* IE and Edge */
+      scrollbar-width: none;  /* Firefox */
+    }
+  </style>
+</head>
+<body class="page-characters">
+  <div id="char-bg"></div>
+  <main class="char-content">
+    <h1 class="page-title">CHARACTERS</h1>
+    <section class="char-grid" aria-label="Character Grid"></section>
+  </main>
+
+  <div id="char-modal" aria-hidden="true">
+    <div class="char-modal-panel">
+      <div class="char-modal-art">
+        <img id="char-modal-img" src="" alt="Character full art" />
+        <div id="char-power-holder-container"></div>
+      </div>
+      <div class="char-modal-info">
+        <div class="nameplate">
+          <div class="nameplate-main">
+            <div class="nameplate-name" id="nameplate-name">Character</div>
+            <div class="nameplate-version" id="nameplate-version">Version</div>
+          </div>
+        </div>
+        <div class="nameplate-stars" id="nameplate-stars"></div>
+
+        <div class="char-tabs">
+          <button class="tab-btn is-active" data-tab="status">Status</button>
+          <button class="tab-btn" data-tab="awakening">Awakening</button>
+          <button class="tab-btn" data-tab="skills">Ninjutsu</button>
+          <button class="tab-btn" data-tab="support">Passives</button>
+          <button class="tab-btn" data-tab="abilities">Abilities</button>
+        </div>
+
+        <div class="tab-panels">
+          <section class="tab-panel is-active" id="tab-status">
+            <div class="stats-grid" id="char-stats"></div>
+          </section>
+
+          <section class="tab-panel" id="tab-awakening">
+            <div class="growth-ops">
+              <div class="level-strip">
+                <span class="level-badge">
+                  <span class="lv">Lv</span> <span id="status-level">1</span>
+                </span>
+                <span class="cap-sep">/</span>
+                <span id="status-cap">70</span>
+              </div>
+              <div class="growth-buttons">
+                <button class="btn-darkgold" id="btn-levelup">Level Up</button>
+                <button class="btn-dark" id="btn-feeddupe">Latent Awaken</button>
+                <button class="btn-awaken" id="btn-awaken" disabled>Awaken</button>
+                <button class="btn-limitbreak" id="btn-limitbreak" disabled>Limit Break</button>
+              </div>
+              <div class="limitbreak-info" id="limitbreak-info" style="display:none;">
+                <div class="lb-level">LB: <span id="lb-current">0</span>/<span id="lb-max">0</span></div>
+                <div class="lb-bonus" id="lb-bonus"></div>
+              </div>
+              <div class="tip-line" id="awaken-tip"></div>
+              <div class="materials-display" id="materials-display"></div>
+            </div>
+          </section>
+
+          <section class="tab-panel" id="tab-skills">
+            <div id="char-skills" class="skills-wrap"></div>
+            <!-- Jutsu/Ultimate Slots -->
+            <div class="jutsu-slots-container" id="jutsu-slots-container">
+              <button class="jutsu-slot" data-slot="jutsu1">
+                <img src="assets/ui/jutsuslotempty.png" alt="Jutsu Slot 1" class="jutsu-slot-bg">
+                <img src="" alt="" class="jutsu-slot-icon" style="display:none;">
+              </button>
+              <button class="jutsu-slot" data-slot="jutsu2">
+                <img src="assets/ui/jutsuslotempty.png" alt="Jutsu Slot 2" class="jutsu-slot-bg">
+                <img src="" alt="" class="jutsu-slot-icon" style="display:none;">
+              </button>
+              <button class="jutsu-slot" data-slot="jutsu3">
+                <img src="assets/ui/jutsuslotempty.png" alt="Jutsu Slot 3" class="jutsu-slot-bg">
+                <img src="" alt="" class="jutsu-slot-icon" style="display:none;">
+              </button>
+              <button class="ultimate-slot" data-slot="ultimate">
+                <img src="assets/ui/ultimateslotemtpy.png" alt="Ultimate Slot" class="ultimate-slot-bg">
+                <img src="" alt="" class="ultimate-slot-icon" style="display:none;">
+              </button>
+            </div>
+          </section>
+
+          <section class="tab-panel" id="tab-support">
+            <div class="support-wrap" id="char-support"></div>
+          </section>
+
+          <section class="tab-panel" id="tab-abilities">
+            <div class="abilities-wrap" id="char-abilities"></div>
+          </section>
+
+          <section class="tab-panel" id="tab-equip">
+            <div class="equip-wrap">
+              <div class="equip-header">
+                <h3 class="equip-title">Ultimate Equipment</h3>
+                <p class="equip-desc">Equip a once-per-battle ultimate ability</p>
+              </div>
+
+              <div class="equip-slot" id="equip-slot">
+                <div class="equip-slot-empty">
+                  <div class="equip-slot-text">No Ultimate Equipped</div>
+                  <button class="btn-equip" id="btn-select-ultimate">Select Ultimate</button>
+                </div>
+              </div>
+
+              <div class="equip-info" id="equip-info" style="display:none;">
+                <div class="ultimate-card">
+                  <div class="ultimate-icon" id="ultimate-icon"></div>
+                  <div class="ultimate-details">
+                    <div class="ultimate-name" id="ultimate-name"></div>
+                    <div class="ultimate-description" id="ultimate-description"></div>
+                    <div class="ultimate-stats">
+                      <span class="ultimate-cost" id="ultimate-cost"></span>
+                      <span class="ultimate-cooldown">Once per battle</span>
+                    </div>
+                  </div>
+                  <button class="btn-unequip" id="btn-unequip-ultimate">Unequip</button>
+                </div>
+              </div>
+
+              <div class="equip-info-icon" id="equip-info-icon" title="Click for information">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="12" cy="12" r="10" stroke="white" stroke-width="2"/>
+                  <text x="12" y="17" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="white" text-anchor="middle">?</text>
+                </svg>
+              </div>
+            </div>
+          </section>
+
+          <section class="tab-panel" id="tab-tools">
+            <div class="tools-wrap">
+              <div class="tools-header">
+                <h3 class="tools-title">Character Equipment</h3>
+                <p class="tools-desc">Equip items to boost your character's stats</p>
+              </div>
+
+              <!-- Power Display -->
+              <div class="tools-power-display">
+                <div class="tools-power-label">Personal Power</div>
+                <div class="tools-power-value" id="tools-power-value">0</div>
+              </div>
+
+              <!-- Equipment Slots Layout -->
+              <div class="tools-equipment-container">
+                <!-- Left Column -->
+                <div class="tools-equipment-column">
+                  <div class="tools-equipment-slot" data-slot="1">
+                    <div class="tools-slot-empty">
+                      <div class="tools-slot-label">Slot 1</div>
+                    </div>
+                  </div>
+                  <div class="tools-equipment-slot" data-slot="2">
+                    <div class="tools-slot-empty">
+                      <div class="tools-slot-label">Slot 2</div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Right Column -->
+                <div class="tools-equipment-column">
+                  <div class="tools-equipment-slot" data-slot="3">
+                    <div class="tools-slot-empty">
+                      <div class="tools-slot-label">Slot 3</div>
+                    </div>
+                  </div>
+                  <div class="tools-equipment-slot" data-slot="4">
+                    <div class="tools-slot-empty">
+                      <div class="tools-slot-label">Slot 4</div>
+                    </div>
+                  </div>
+                  <div class="tools-equipment-slot" data-slot="5">
+                    <div class="tools-slot-empty">
+                      <div class="tools-slot-label">Slot 5</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <div class="char-modal-actions">
+          <button class="char-close-btn" id="char-modal-close">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dupe Selector Modal -->
+  <div id="dupe-selector-modal" class="dupe-modal" aria-hidden="true">
+    <div class="dupe-modal-panel">
+      <h2 class="dupe-modal-title">Select Duplicate to Feed</h2>
+      <div class="dupe-grid" id="dupe-grid"></div>
+      <div class="dupe-modal-actions">
+        <button class="btn-dark" id="dupe-modal-cancel">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ramen Selector Modal -->
+  <div id="ramen-selector-modal" class="ramen-modal" aria-hidden="true">
+    <div class="ramen-modal-panel">
+      <h2 class="ramen-modal-title">Select Ramen to Feed</h2>
+      <div class="ramen-character-info">
+        <img id="ramen-char-portrait" class="ramen-char-img" src="" alt="">
+        <div class="ramen-char-details">
+          <div id="ramen-char-name" class="ramen-char-name"></div>
+          <div id="ramen-char-level" class="ramen-char-level"></div>
+        </div>
+      </div>
+      <div class="ramen-grid" id="ramen-grid"></div>
+      <div class="ramen-modal-actions">
+        <button class="btn-dark" id="ramen-modal-cancel">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Card Inventory Modal (for Equipment Slots) -->
+  <div id="card-inventory-modal" class="card-inventory-modal" aria-hidden="true">
+    <div class="card-inventory-panel">
+      <h2 class="card-inventory-title">Select Jutsu Card</h2>
+      <div class="card-inventory-grid" id="card-inventory-grid"></div>
+      <div class="card-inventory-actions">
+        <button class="btn-dark" id="card-inventory-cancel">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Jutsu Replacement Popup -->
+  <div id="jutsu-replacement-modal" class="jutsu-replacement-modal" aria-hidden="true">
+    <div class="jutsu-replacement-popup">
+      <h3 class="replacement-title">All Jutsu Slots Full!</h3>
+      <p class="replacement-message">Select which jutsu to replace:</p>
+      <div class="replacement-options" id="replacement-options"></div>
+      <button class="btn-dark" id="replacement-cancel">Cancel</button>
+    </div>
+  </div>
+
+  <!-- HUD Bottom Bar -->
+  <div class="bottom-bar">
+    <div class="bottom-bar-content">
+      <button class="hud-button" id="btn-village" aria-label="Village">
+        <img src="assets/icons/village_btm_btn.png" alt="Village">
+      </button>
+      <button class="hud-button active" id="btn-characters" aria-label="Characters">
+        <img src="assets/icons/characters_icon.png" alt="Characters">
+      </button>
+      <button class="hud-button" id="btn-fusion" aria-label="Fusion">
+        <img src="assets/icons/fusion_btm_btn.png" alt="Fusion">
+      </button>
+      <button class="hud-button" id="btn-teams" aria-label="Teams">
+        <img src="assets/icons/teams_icon.png" alt="Teams">
+      </button>
+      <button class="hud-button" id="btn-tools" aria-label="Tools">
+        <img src="assets/icons/guilds_icon.png" alt="Tools">
+      </button>
+      <button class="hud-button" id="btn-summon" aria-label="Summon">
+        <img src="assets/icons/summon_btm_btn.png" alt="Summon">
+      </button>
+      <button class="hud-button" id="btn-missions" aria-label="Missions">
+        <img src="assets/icons/mission_btm_btn.png" alt="Missions">
+      </button>
+      <button class="hud-button" id="btn-inventory" aria-label="Inventory">
+        <img src="assets/icons/inventory_icon.png" alt="Inventory">
+      </button>
+      <button class="hud-button" id="btn-shop" aria-label="Shop">
+        <img src="assets/icons/shop_btm_btn.png" alt="Shop">
+      </button>
+    </div>
+  </div>
+
+  <!-- Core Scripts -->
+  <script src="js/audio-manager.js"></script>
+  <script src="js/music-player.js"></script>
+  <script src="js/character_inv.js"></script>
+  <script src="js/progression.js"></script>
+  <script src="js/resources.js"></script>
+  <script src="js/daily-missions.js"></script>
+  <script src="js/awakening.js"></script>
+  <script src="js/awakening-animation.js"></script>
+  <script src="js/character-evolution.js"></script>
+  <script src="js/limit-break.js"></script>
+  <script src="js/characters.js"></script>
+
+  <!-- Abilities Systems -->
+  <script src="js/characters_abilities.js"></script>
+  <script src="js/character_dupe_abilities.js"></script>
+
+  <!-- Settings Modal Script -->
+  <script src="js/settings-modal.js?v=2"></script>
+
+  <!-- Navigation Script -->
+  <script src="js/navigation.js"></script>
+
+  <!-- Music Initialization -->
+  <script>
+    // Music initialization - start BGM on page load
+    (function() {
+      if (typeof window.AudioManager === 'undefined') {
+        console.log('[Music] AudioManager not available on this page');
+        return;
+      }
+
+      console.log('[Music] Initializing background music...');
+
+      const startMusic = () => {
+        if (!window.AudioManager.musicPlaying) {
+          window.AudioManager.playBattleMusic();
+          console.log('[Music] Background music started');
+        }
+      };
+
+      // Try immediate playback (may be blocked by browser)
+      setTimeout(startMusic, 500);
+
+      // Also try on first click
+      document.addEventListener('click', startMusic, { once: true });
+    })();
+  </script>
+</body>
+</html>
