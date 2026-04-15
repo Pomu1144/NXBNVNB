@@ -1,0 +1,1336 @@
+[
+  {
+    "id": "awakening_900",
+    "name": "Awakening Scroll",
+    "version": "Heart Book",
+    "element": null,
+    "rarity": 1,
+    "starMinCode": "1S",
+    "starMaxCode": "1S",
+    "lbEligible": false,
+    "portrait": "assets/awakening-materials/awakening_scroll_900/portrait_1S.png",
+    "full": "assets/awakening-materials/awakening_scroll_900/full_1S.png",
+    "ultimateAnimation": null,
+    "secretAnimation": null,
+    "artByTier": {
+      "1S": {
+        "portrait": "assets/awakening-materials/awakening_scroll_900/portrait_1S.png",
+        "full": "assets/awakening-materials/awakening_scroll_900/full_1S.png"
+      }
+    },
+    "statsBase": {},
+    "statsMax": {
+      "hp": 1,
+      "atk": 1
+    },
+    "growthCurve": {
+      "hp": 1.0,
+      "atk": 1.0,
+      "def": 1.0,
+      "speed": 1.0,
+      "chakra": 1.0
+    },
+    "powerRank": 0,
+    "powerWeights": {
+      "hp": 0.3,
+      "atk": 0.4,
+      "def": 0.1,
+      "speed": 0.15,
+      "chakra": 0.05
+    },
+    "range": "",
+    "luck": {
+      "base": 0,
+      "max": 0
+    },
+    "cost": {
+      "base": 0,
+      "max": 0
+    },
+    "affiliation": [],
+    "passiveIcons": {},
+    "skills": {},
+    "abilities": [],
+    "metadata": {
+      "cardNumber": 900,
+      "maxLevel": null,
+      "hitCount": 0
+    }
+  },
+  {
+    "id": "awakening_901",
+    "name": "Awakening Scroll",
+    "version": "Heart Book",
+    "element": null,
+    "rarity": 1,
+    "starMinCode": "1S",
+    "starMaxCode": "2S",
+    "lbEligible": false,
+    "portrait": "assets/awakening-materials/awakening_scroll_901/portrait_2S.png",
+    "full": "assets/awakening-materials/awakening_scroll_901/full_2S.png",
+    "ultimateAnimation": null,
+    "secretAnimation": null,
+    "artByTier": {
+      "2S": {
+        "portrait": "assets/awakening-materials/awakening_scroll_901/portrait_2S.png",
+        "full": "assets/awakening-materials/awakening_scroll_901/full_2S.png"
+      }
+    },
+    "statsBase": {},
+    "statsMax": {
+      "hp": 1,
+      "atk": 1
+    },
+    "growthCurve": {
+      "hp": 1.0,
+      "atk": 1.0,
+      "def": 1.0,
+      "speed": 1.0,
+      "chakra": 1.0
+    },
+    "powerRank": 0,
+    "powerWeights": {
+      "hp": 0.3,
+      "atk": 0.4,
+      "def": 0.1,
+      "speed": 0.15,
+      "chakra": 0.05
+    },
+    "range": "",
+    "luck": {
+      "base": 0,
+      "max": 0
+    },
+    "cost": {
+      "base": 0,
+      "max": 0
+    },
+    "affiliation": [],
+    "passiveIcons": {},
+    "skills": {},
+    "abilities": [],
+    "metadata": {
+      "cardNumber": 901,
+      "maxLevel": null,
+      "hitCount": 0
+    }
+  },
+  {
+    "id": "awakening_902",
+    "name": "Awakening Scroll",
+    "version": "Heart Book",
+    "element": null,
+    "rarity": 1,
+    "starMinCode": "1S",
+    "starMaxCode": "3S",
+    "lbEligible": false,
+    "portrait": "assets/awakening-materials/awakening_scroll_902/portrait_3S.png",
+    "full": "assets/awakening-materials/awakening_scroll_902/full_3S.png",
+    "ultimateAnimation": null,
+    "secretAnimation": null,
+    "artByTier": {
+      "3S": {
+        "portrait": "assets/awakening-materials/awakening_scroll_902/portrait_3S.png",
+        "full": "assets/awakening-materials/awakening_scroll_902/full_3S.png"
+      }
+    },
+    "statsBase": {},
+    "statsMax": {
+      "hp": 1,
+      "atk": 1
+    },
+    "growthCurve": {
+      "hp": 1.0,
+      "atk": 1.0,
+      "def": 1.0,
+      "speed": 1.0,
+      "chakra": 1.0
+    },
+    "powerRank": 0,
+    "powerWeights": {
+      "hp": 0.3,
+      "atk": 0.4,
+      "def": 0.1,
+      "speed": 0.15,
+      "chakra": 0.05
+    },
+    "range": "",
+    "luck": {
+      "base": 0,
+      "max": 0
+    },
+    "cost": {
+      "base": 0,
+      "max": 0
+    },
+    "affiliation": [],
+    "passiveIcons": {},
+    "skills": {},
+    "abilities": [],
+    "metadata": {
+      "cardNumber": 902,
+      "maxLevel": null,
+      "hitCount": 0
+    }
+  },
+  {
+    "id": "awakening_903",
+    "name": "Awakening Scroll",
+    "version": "Skill Book",
+    "element": null,
+    "rarity": 1,
+    "starMinCode": "1S",
+    "starMaxCode": "1S",
+    "lbEligible": false,
+    "portrait": "assets/awakening-materials/awakening_scroll_903/portrait_1S.png",
+    "full": "assets/awakening-materials/awakening_scroll_903/full_1S.png",
+    "ultimateAnimation": null,
+    "secretAnimation": null,
+    "artByTier": {
+      "1S": {
+        "portrait": "assets/awakening-materials/awakening_scroll_903/portrait_1S.png",
+        "full": "assets/awakening-materials/awakening_scroll_903/full_1S.png"
+      }
+    },
+    "statsBase": {},
+    "statsMax": {
+      "hp": 1,
+      "atk": 1
+    },
+    "growthCurve": {
+      "hp": 1.0,
+      "atk": 1.0,
+      "def": 1.0,
+      "speed": 1.0,
+      "chakra": 1.0
+    },
+    "powerRank": 0,
+    "powerWeights": {
+      "hp": 0.3,
+      "atk": 0.4,
+      "def": 0.1,
+      "speed": 0.15,
+      "chakra": 0.05
+    },
+    "range": "",
+    "luck": {
+      "base": 0,
+      "max": 0
+    },
+    "cost": {
+      "base": 0,
+      "max": 0
+    },
+    "affiliation": [],
+    "passiveIcons": {},
+    "skills": {},
+    "abilities": [],
+    "metadata": {
+      "cardNumber": 903,
+      "maxLevel": null,
+      "hitCount": 0
+    }
+  },
+  {
+    "id": "awakening_904",
+    "name": "Awakening Scroll",
+    "version": "Skill Book",
+    "element": null,
+    "rarity": 1,
+    "starMinCode": "1S",
+    "starMaxCode": "2S",
+    "lbEligible": false,
+    "portrait": "assets/awakening-materials/awakening_scroll_904/portrait_2S.png",
+    "full": "assets/awakening-materials/awakening_scroll_904/full_2S.png",
+    "ultimateAnimation": null,
+    "secretAnimation": null,
+    "artByTier": {
+      "2S": {
+        "portrait": "assets/awakening-materials/awakening_scroll_904/portrait_2S.png",
+        "full": "assets/awakening-materials/awakening_scroll_904/full_2S.png"
+      }
+    },
+    "statsBase": {},
+    "statsMax": {
+      "hp": 1,
+      "atk": 1
+    },
+    "growthCurve": {
+      "hp": 1.0,
+      "atk": 1.0,
+      "def": 1.0,
+      "speed": 1.0,
+      "chakra": 1.0
+    },
+    "powerRank": 0,
+    "powerWeights": {
+      "hp": 0.3,
+      "atk": 0.4,
+      "def": 0.1,
+      "speed": 0.15,
+      "chakra": 0.05
+    },
+    "range": "",
+    "luck": {
+      "base": 0,
+      "max": 0
+    },
+    "cost": {
+      "base": 0,
+      "max": 0
+    },
+    "affiliation": [],
+    "passiveIcons": {},
+    "skills": {},
+    "abilities": [],
+    "metadata": {
+      "cardNumber": 904,
+      "maxLevel": null,
+      "hitCount": 0
+    }
+  },
+  {
+    "id": "awakening_905",
+    "name": "Awakening Scroll",
+    "version": "Skill Book",
+    "element": null,
+    "rarity": 1,
+    "starMinCode": "1S",
+    "starMaxCode": "3S",
+    "lbEligible": false,
+    "portrait": "assets/awakening-materials/awakening_scroll_905/portrait_3S.png",
+    "full": "assets/awakening-materials/awakening_scroll_905/full_3S.png",
+    "ultimateAnimation": null,
+    "secretAnimation": null,
+    "artByTier": {
+      "3S": {
+        "portrait": "assets/awakening-materials/awakening_scroll_905/portrait_3S.png",
+        "full": "assets/awakening-materials/awakening_scroll_905/full_3S.png"
+      }
+    },
+    "statsBase": {},
+    "statsMax": {
+      "hp": 1,
+      "atk": 1
+    },
+    "growthCurve": {
+      "hp": 1.0,
+      "atk": 1.0,
+      "def": 1.0,
+      "speed": 1.0,
+      "chakra": 1.0
+    },
+    "powerRank": 0,
+    "powerWeights": {
+      "hp": 0.3,
+      "atk": 0.4,
+      "def": 0.1,
+      "speed": 0.15,
+      "chakra": 0.05
+    },
+    "range": "",
+    "luck": {
+      "base": 0,
+      "max": 0
+    },
+    "cost": {
+      "base": 0,
+      "max": 0
+    },
+    "affiliation": [],
+    "passiveIcons": {},
+    "skills": {},
+    "abilities": [],
+    "metadata": {
+      "cardNumber": 905,
+      "maxLevel": null,
+      "hitCount": 0
+    }
+  },
+  {
+    "id": "awakening_906",
+    "name": "Awakening Scroll",
+    "version": "Body Book",
+    "element": null,
+    "rarity": 1,
+    "starMinCode": "1S",
+    "starMaxCode": "1S",
+    "lbEligible": false,
+    "portrait": "assets/awakening-materials/awakening_scroll_906/portrait_1S.png",
+    "full": "assets/awakening-materials/awakening_scroll_906/full_1S.png",
+    "ultimateAnimation": null,
+    "secretAnimation": null,
+    "artByTier": {
+      "1S": {
+        "portrait": "assets/awakening-materials/awakening_scroll_906/portrait_1S.png",
+        "full": "assets/awakening-materials/awakening_scroll_906/full_1S.png"
+      }
+    },
+    "statsBase": {},
+    "statsMax": {
+      "hp": 1,
+      "atk": 1
+    },
+    "growthCurve": {
+      "hp": 1.0,
+      "atk": 1.0,
+      "def": 1.0,
+      "speed": 1.0,
+      "chakra": 1.0
+    },
+    "powerRank": 0,
+    "powerWeights": {
+      "hp": 0.3,
+      "atk": 0.4,
+      "def": 0.1,
+      "speed": 0.15,
+      "chakra": 0.05
+    },
+    "range": "",
+    "luck": {
+      "base": 0,
+      "max": 0
+    },
+    "cost": {
+      "base": 0,
+      "max": 0
+    },
+    "affiliation": [],
+    "passiveIcons": {},
+    "skills": {},
+    "abilities": [],
+    "metadata": {
+      "cardNumber": 906,
+      "maxLevel": null,
+      "hitCount": 0
+    }
+  },
+  {
+    "id": "awakening_907",
+    "name": "Awakening Scroll",
+    "version": "Body Book",
+    "element": null,
+    "rarity": 1,
+    "starMinCode": "1S",
+    "starMaxCode": "2S",
+    "lbEligible": false,
+    "portrait": "assets/awakening-materials/awakening_scroll_907/portrait_2S.png",
+    "full": "assets/awakening-materials/awakening_scroll_907/full_2S.png",
+    "ultimateAnimation": null,
+    "secretAnimation": null,
+    "artByTier": {
+      "2S": {
+        "portrait": "assets/awakening-materials/awakening_scroll_907/portrait_2S.png",
+        "full": "assets/awakening-materials/awakening_scroll_907/full_2S.png"
+      }
+    },
+    "statsBase": {},
+    "statsMax": {
+      "hp": 1,
+      "atk": 1
+    },
+    "growthCurve": {
+      "hp": 1.0,
+      "atk": 1.0,
+      "def": 1.0,
+      "speed": 1.0,
+      "chakra": 1.0
+    },
+    "powerRank": 0,
+    "powerWeights": {
+      "hp": 0.3,
+      "atk": 0.4,
+      "def": 0.1,
+      "speed": 0.15,
+      "chakra": 0.05
+    },
+    "range": "",
+    "luck": {
+      "base": 0,
+      "max": 0
+    },
+    "cost": {
+      "base": 0,
+      "max": 0
+    },
+    "affiliation": [],
+    "passiveIcons": {},
+    "skills": {},
+    "abilities": [],
+    "metadata": {
+      "cardNumber": 907,
+      "maxLevel": null,
+      "hitCount": 0
+    }
+  },
+  {
+    "id": "awakening_908",
+    "name": "Awakening Scroll",
+    "version": "Body Book",
+    "element": null,
+    "rarity": 1,
+    "starMinCode": "1S",
+    "starMaxCode": "3S",
+    "lbEligible": false,
+    "portrait": "assets/awakening-materials/awakening_scroll_908/portrait_3S.png",
+    "full": "assets/awakening-materials/awakening_scroll_908/full_3S.png",
+    "ultimateAnimation": null,
+    "secretAnimation": null,
+    "artByTier": {
+      "3S": {
+        "portrait": "assets/awakening-materials/awakening_scroll_908/portrait_3S.png",
+        "full": "assets/awakening-materials/awakening_scroll_908/full_3S.png"
+      }
+    },
+    "statsBase": {},
+    "statsMax": {
+      "hp": 1,
+      "atk": 1
+    },
+    "growthCurve": {
+      "hp": 1.0,
+      "atk": 1.0,
+      "def": 1.0,
+      "speed": 1.0,
+      "chakra": 1.0
+    },
+    "powerRank": 0,
+    "powerWeights": {
+      "hp": 0.3,
+      "atk": 0.4,
+      "def": 0.1,
+      "speed": 0.15,
+      "chakra": 0.05
+    },
+    "range": "",
+    "luck": {
+      "base": 0,
+      "max": 0
+    },
+    "cost": {
+      "base": 0,
+      "max": 0
+    },
+    "affiliation": [],
+    "passiveIcons": {},
+    "skills": {},
+    "abilities": [],
+    "metadata": {
+      "cardNumber": 908,
+      "maxLevel": null,
+      "hitCount": 0
+    }
+  },
+  {
+    "id": "awakening_909",
+    "name": "Awakening Scroll",
+    "version": "Bravery Book",
+    "element": null,
+    "rarity": 1,
+    "starMinCode": "1S",
+    "starMaxCode": "1S",
+    "lbEligible": false,
+    "portrait": "assets/awakening-materials/awakening_scroll_909/portrait_1S.png",
+    "full": "assets/awakening-materials/awakening_scroll_909/full_1S.png",
+    "ultimateAnimation": null,
+    "secretAnimation": null,
+    "artByTier": {
+      "1S": {
+        "portrait": "assets/awakening-materials/awakening_scroll_909/portrait_1S.png",
+        "full": "assets/awakening-materials/awakening_scroll_909/full_1S.png"
+      }
+    },
+    "statsBase": {},
+    "statsMax": {
+      "hp": 1,
+      "atk": 1
+    },
+    "growthCurve": {
+      "hp": 1.0,
+      "atk": 1.0,
+      "def": 1.0,
+      "speed": 1.0,
+      "chakra": 1.0
+    },
+    "powerRank": 0,
+    "powerWeights": {
+      "hp": 0.3,
+      "atk": 0.4,
+      "def": 0.1,
+      "speed": 0.15,
+      "chakra": 0.05
+    },
+    "range": "",
+    "luck": {
+      "base": 0,
+      "max": 0
+    },
+    "cost": {
+      "base": 0,
+      "max": 0
+    },
+    "affiliation": [],
+    "passiveIcons": {},
+    "skills": {},
+    "abilities": [],
+    "metadata": {
+      "cardNumber": 909,
+      "maxLevel": null,
+      "hitCount": 0
+    }
+  },
+  {
+    "id": "awakening_910",
+    "name": "Awakening Scroll",
+    "version": "Bravery Book",
+    "element": null,
+    "rarity": 1,
+    "starMinCode": "1S",
+    "starMaxCode": "2S",
+    "lbEligible": false,
+    "portrait": "assets/awakening-materials/awakening_scroll_910/portrait_2S.png",
+    "full": "assets/awakening-materials/awakening_scroll_910/full_2S.png",
+    "ultimateAnimation": null,
+    "secretAnimation": null,
+    "artByTier": {
+      "2S": {
+        "portrait": "assets/awakening-materials/awakening_scroll_910/portrait_2S.png",
+        "full": "assets/awakening-materials/awakening_scroll_910/full_2S.png"
+      }
+    },
+    "statsBase": {},
+    "statsMax": {
+      "hp": 1,
+      "atk": 1
+    },
+    "growthCurve": {
+      "hp": 1.0,
+      "atk": 1.0,
+      "def": 1.0,
+      "speed": 1.0,
+      "chakra": 1.0
+    },
+    "powerRank": 0,
+    "powerWeights": {
+      "hp": 0.3,
+      "atk": 0.4,
+      "def": 0.1,
+      "speed": 0.15,
+      "chakra": 0.05
+    },
+    "range": "",
+    "luck": {
+      "base": 0,
+      "max": 0
+    },
+    "cost": {
+      "base": 0,
+      "max": 0
+    },
+    "affiliation": [],
+    "passiveIcons": {},
+    "skills": {},
+    "abilities": [],
+    "metadata": {
+      "cardNumber": 910,
+      "maxLevel": null,
+      "hitCount": 0
+    }
+  },
+  {
+    "id": "awakening_911",
+    "name": "Awakening Scroll",
+    "version": "Bravery Book",
+    "element": null,
+    "rarity": 1,
+    "starMinCode": "1S",
+    "starMaxCode": "3S",
+    "lbEligible": false,
+    "portrait": "assets/awakening-materials/awakening_scroll_911/portrait_3S.png",
+    "full": "assets/awakening-materials/awakening_scroll_911/full_3S.png",
+    "ultimateAnimation": null,
+    "secretAnimation": null,
+    "artByTier": {
+      "3S": {
+        "portrait": "assets/awakening-materials/awakening_scroll_911/portrait_3S.png",
+        "full": "assets/awakening-materials/awakening_scroll_911/full_3S.png"
+      }
+    },
+    "statsBase": {},
+    "statsMax": {
+      "hp": 1,
+      "atk": 1
+    },
+    "growthCurve": {
+      "hp": 1.0,
+      "atk": 1.0,
+      "def": 1.0,
+      "speed": 1.0,
+      "chakra": 1.0
+    },
+    "powerRank": 0,
+    "powerWeights": {
+      "hp": 0.3,
+      "atk": 0.4,
+      "def": 0.1,
+      "speed": 0.15,
+      "chakra": 0.05
+    },
+    "range": "",
+    "luck": {
+      "base": 0,
+      "max": 0
+    },
+    "cost": {
+      "base": 0,
+      "max": 0
+    },
+    "affiliation": [],
+    "passiveIcons": {},
+    "skills": {},
+    "abilities": [],
+    "metadata": {
+      "cardNumber": 911,
+      "maxLevel": null,
+      "hitCount": 0
+    }
+  },
+  {
+    "id": "awakening_912",
+    "name": "Awakening Scroll",
+    "version": "Wisdom Book",
+    "element": null,
+    "rarity": 1,
+    "starMinCode": "1S",
+    "starMaxCode": "1S",
+    "lbEligible": false,
+    "portrait": "assets/awakening-materials/awakening_scroll_912/portrait_1S.png",
+    "full": "assets/awakening-materials/awakening_scroll_912/full_1S.png",
+    "ultimateAnimation": null,
+    "secretAnimation": null,
+    "artByTier": {
+      "1S": {
+        "portrait": "assets/awakening-materials/awakening_scroll_912/portrait_1S.png",
+        "full": "assets/awakening-materials/awakening_scroll_912/full_1S.png"
+      }
+    },
+    "statsBase": {},
+    "statsMax": {
+      "hp": 1,
+      "atk": 1
+    },
+    "growthCurve": {
+      "hp": 1.0,
+      "atk": 1.0,
+      "def": 1.0,
+      "speed": 1.0,
+      "chakra": 1.0
+    },
+    "powerRank": 0,
+    "powerWeights": {
+      "hp": 0.3,
+      "atk": 0.4,
+      "def": 0.1,
+      "speed": 0.15,
+      "chakra": 0.05
+    },
+    "range": "",
+    "luck": {
+      "base": 0,
+      "max": 0
+    },
+    "cost": {
+      "base": 0,
+      "max": 0
+    },
+    "affiliation": [],
+    "passiveIcons": {},
+    "skills": {},
+    "abilities": [],
+    "metadata": {
+      "cardNumber": 912,
+      "maxLevel": null,
+      "hitCount": 0
+    }
+  },
+  {
+    "id": "awakening_913",
+    "name": "Awakening Scroll",
+    "version": "Wisdom Book",
+    "element": null,
+    "rarity": 1,
+    "starMinCode": "1S",
+    "starMaxCode": "2S",
+    "lbEligible": false,
+    "portrait": "assets/awakening-materials/awakening_scroll_913/portrait_2S.png",
+    "full": "assets/awakening-materials/awakening_scroll_913/full_2S.png",
+    "ultimateAnimation": null,
+    "secretAnimation": null,
+    "artByTier": {
+      "2S": {
+        "portrait": "assets/awakening-materials/awakening_scroll_913/portrait_2S.png",
+        "full": "assets/awakening-materials/awakening_scroll_913/full_2S.png"
+      }
+    },
+    "statsBase": {},
+    "statsMax": {
+      "hp": 1,
+      "atk": 1
+    },
+    "growthCurve": {
+      "hp": 1.0,
+      "atk": 1.0,
+      "def": 1.0,
+      "speed": 1.0,
+      "chakra": 1.0
+    },
+    "powerRank": 0,
+    "powerWeights": {
+      "hp": 0.3,
+      "atk": 0.4,
+      "def": 0.1,
+      "speed": 0.15,
+      "chakra": 0.05
+    },
+    "range": "",
+    "luck": {
+      "base": 0,
+      "max": 0
+    },
+    "cost": {
+      "base": 0,
+      "max": 0
+    },
+    "affiliation": [],
+    "passiveIcons": {},
+    "skills": {},
+    "abilities": [],
+    "metadata": {
+      "cardNumber": 913,
+      "maxLevel": null,
+      "hitCount": 0
+    }
+  },
+  {
+    "id": "awakening_914",
+    "name": "Awakening Scroll",
+    "version": "Wisdom Book",
+    "element": null,
+    "rarity": 1,
+    "starMinCode": "1S",
+    "starMaxCode": "3S",
+    "lbEligible": false,
+    "portrait": "assets/awakening-materials/awakening_scroll_914/portrait_3S.png",
+    "full": "assets/awakening-materials/awakening_scroll_914/full_3S.png",
+    "ultimateAnimation": null,
+    "secretAnimation": null,
+    "artByTier": {
+      "3S": {
+        "portrait": "assets/awakening-materials/awakening_scroll_914/portrait_3S.png",
+        "full": "assets/awakening-materials/awakening_scroll_914/full_3S.png"
+      }
+    },
+    "statsBase": {},
+    "statsMax": {
+      "hp": 1,
+      "atk": 1
+    },
+    "growthCurve": {
+      "hp": 1.0,
+      "atk": 1.0,
+      "def": 1.0,
+      "speed": 1.0,
+      "chakra": 1.0
+    },
+    "powerRank": 0,
+    "powerWeights": {
+      "hp": 0.3,
+      "atk": 0.4,
+      "def": 0.1,
+      "speed": 0.15,
+      "chakra": 0.05
+    },
+    "range": "",
+    "luck": {
+      "base": 0,
+      "max": 0
+    },
+    "cost": {
+      "base": 0,
+      "max": 0
+    },
+    "affiliation": [],
+    "passiveIcons": {},
+    "skills": {},
+    "abilities": [],
+    "metadata": {
+      "cardNumber": 914,
+      "maxLevel": null,
+      "hitCount": 0
+    }
+  },
+  {
+    "id": "awakening_952",
+    "name": "Awakening Scroll",
+    "version": "Heart Book",
+    "element": null,
+    "rarity": 1,
+    "starMinCode": "1S",
+    "starMaxCode": "4S",
+    "lbEligible": false,
+    "portrait": "assets/awakening-materials/awakening_scroll_952/portrait_4S.png",
+    "full": "assets/awakening-materials/awakening_scroll_952/full_4S.png",
+    "ultimateAnimation": null,
+    "secretAnimation": null,
+    "artByTier": {
+      "4S": {
+        "portrait": "assets/awakening-materials/awakening_scroll_952/portrait_4S.png",
+        "full": "assets/awakening-materials/awakening_scroll_952/full_4S.png"
+      }
+    },
+    "statsBase": {},
+    "statsMax": {
+      "hp": 1,
+      "atk": 1
+    },
+    "growthCurve": {
+      "hp": 1.0,
+      "atk": 1.0,
+      "def": 1.0,
+      "speed": 1.0,
+      "chakra": 1.0
+    },
+    "powerRank": 0,
+    "powerWeights": {
+      "hp": 0.3,
+      "atk": 0.4,
+      "def": 0.1,
+      "speed": 0.15,
+      "chakra": 0.05
+    },
+    "range": "",
+    "luck": {
+      "base": 0,
+      "max": 0
+    },
+    "cost": {
+      "base": 0,
+      "max": 0
+    },
+    "affiliation": [],
+    "passiveIcons": {},
+    "skills": {},
+    "abilities": [],
+    "metadata": {
+      "cardNumber": 952,
+      "maxLevel": null,
+      "hitCount": 0
+    }
+  },
+  {
+    "id": "awakening_953",
+    "name": "Awakening Scroll",
+    "version": "Skill Book",
+    "element": null,
+    "rarity": 1,
+    "starMinCode": "1S",
+    "starMaxCode": "4S",
+    "lbEligible": false,
+    "portrait": "assets/awakening-materials/awakening_scroll_953/portrait_4S.png",
+    "full": "assets/awakening-materials/awakening_scroll_953/full_4S.png",
+    "ultimateAnimation": null,
+    "secretAnimation": null,
+    "artByTier": {
+      "4S": {
+        "portrait": "assets/awakening-materials/awakening_scroll_953/portrait_4S.png",
+        "full": "assets/awakening-materials/awakening_scroll_953/full_4S.png"
+      }
+    },
+    "statsBase": {},
+    "statsMax": {
+      "hp": 1,
+      "atk": 1
+    },
+    "growthCurve": {
+      "hp": 1.0,
+      "atk": 1.0,
+      "def": 1.0,
+      "speed": 1.0,
+      "chakra": 1.0
+    },
+    "powerRank": 0,
+    "powerWeights": {
+      "hp": 0.3,
+      "atk": 0.4,
+      "def": 0.1,
+      "speed": 0.15,
+      "chakra": 0.05
+    },
+    "range": "",
+    "luck": {
+      "base": 0,
+      "max": 0
+    },
+    "cost": {
+      "base": 0,
+      "max": 0
+    },
+    "affiliation": [],
+    "passiveIcons": {},
+    "skills": {},
+    "abilities": [],
+    "metadata": {
+      "cardNumber": 953,
+      "maxLevel": null,
+      "hitCount": 0
+    }
+  },
+  {
+    "id": "awakening_954",
+    "name": "Awakening Scroll",
+    "version": "Body Book",
+    "element": null,
+    "rarity": 1,
+    "starMinCode": "1S",
+    "starMaxCode": "4S",
+    "lbEligible": false,
+    "portrait": "assets/awakening-materials/awakening_scroll_954/portrait_4S.png",
+    "full": "assets/awakening-materials/awakening_scroll_954/full_4S.png",
+    "ultimateAnimation": null,
+    "secretAnimation": null,
+    "artByTier": {
+      "4S": {
+        "portrait": "assets/awakening-materials/awakening_scroll_954/portrait_4S.png",
+        "full": "assets/awakening-materials/awakening_scroll_954/full_4S.png"
+      }
+    },
+    "statsBase": {},
+    "statsMax": {
+      "hp": 1,
+      "atk": 1
+    },
+    "growthCurve": {
+      "hp": 1.0,
+      "atk": 1.0,
+      "def": 1.0,
+      "speed": 1.0,
+      "chakra": 1.0
+    },
+    "powerRank": 0,
+    "powerWeights": {
+      "hp": 0.3,
+      "atk": 0.4,
+      "def": 0.1,
+      "speed": 0.15,
+      "chakra": 0.05
+    },
+    "range": "",
+    "luck": {
+      "base": 0,
+      "max": 0
+    },
+    "cost": {
+      "base": 0,
+      "max": 0
+    },
+    "affiliation": [],
+    "passiveIcons": {},
+    "skills": {},
+    "abilities": [],
+    "metadata": {
+      "cardNumber": 954,
+      "maxLevel": null,
+      "hitCount": 0
+    }
+  },
+  {
+    "id": "awakening_955",
+    "name": "Awakening Scroll",
+    "version": "Bravery Book",
+    "element": null,
+    "rarity": 1,
+    "starMinCode": "1S",
+    "starMaxCode": "4S",
+    "lbEligible": false,
+    "portrait": "assets/awakening-materials/awakening_scroll_955/portrait_4S.png",
+    "full": "assets/awakening-materials/awakening_scroll_955/full_4S.png",
+    "ultimateAnimation": null,
+    "secretAnimation": null,
+    "artByTier": {
+      "4S": {
+        "portrait": "assets/awakening-materials/awakening_scroll_955/portrait_4S.png",
+        "full": "assets/awakening-materials/awakening_scroll_955/full_4S.png"
+      }
+    },
+    "statsBase": {},
+    "statsMax": {
+      "hp": 1,
+      "atk": 1
+    },
+    "growthCurve": {
+      "hp": 1.0,
+      "atk": 1.0,
+      "def": 1.0,
+      "speed": 1.0,
+      "chakra": 1.0
+    },
+    "powerRank": 0,
+    "powerWeights": {
+      "hp": 0.3,
+      "atk": 0.4,
+      "def": 0.1,
+      "speed": 0.15,
+      "chakra": 0.05
+    },
+    "range": "",
+    "luck": {
+      "base": 0,
+      "max": 0
+    },
+    "cost": {
+      "base": 0,
+      "max": 0
+    },
+    "affiliation": [],
+    "passiveIcons": {},
+    "skills": {},
+    "abilities": [],
+    "metadata": {
+      "cardNumber": 955,
+      "maxLevel": null,
+      "hitCount": 0
+    }
+  },
+  {
+    "id": "awakening_956",
+    "name": "Awakening Scroll",
+    "version": "Wisdom Book",
+    "element": null,
+    "rarity": 1,
+    "starMinCode": "1S",
+    "starMaxCode": "4S",
+    "lbEligible": false,
+    "portrait": "assets/awakening-materials/awakening_scroll_956/portrait_4S.png",
+    "full": "assets/awakening-materials/awakening_scroll_956/full_4S.png",
+    "ultimateAnimation": null,
+    "secretAnimation": null,
+    "artByTier": {
+      "4S": {
+        "portrait": "assets/awakening-materials/awakening_scroll_956/portrait_4S.png",
+        "full": "assets/awakening-materials/awakening_scroll_956/full_4S.png"
+      }
+    },
+    "statsBase": {},
+    "statsMax": {
+      "hp": 1,
+      "atk": 1
+    },
+    "growthCurve": {
+      "hp": 1.0,
+      "atk": 1.0,
+      "def": 1.0,
+      "speed": 1.0,
+      "chakra": 1.0
+    },
+    "powerRank": 0,
+    "powerWeights": {
+      "hp": 0.3,
+      "atk": 0.4,
+      "def": 0.1,
+      "speed": 0.15,
+      "chakra": 0.05
+    },
+    "range": "",
+    "luck": {
+      "base": 0,
+      "max": 0
+    },
+    "cost": {
+      "base": 0,
+      "max": 0
+    },
+    "affiliation": [],
+    "passiveIcons": {},
+    "skills": {},
+    "abilities": [],
+    "metadata": {
+      "cardNumber": 956,
+      "maxLevel": null,
+      "hitCount": 0
+    }
+  },
+  {
+    "id": "awakening_1255",
+    "name": "Awakening Charm",
+    "version": "Talisman of Legends",
+    "element": null,
+    "rarity": 1,
+    "starMinCode": "1S",
+    "starMaxCode": "1S",
+    "lbEligible": false,
+    "portrait": "assets/awakening-materials/awakening_scroll_1255/portrait_1S.png",
+    "full": "assets/awakening-materials/awakening_scroll_1255/full_1S.png",
+    "ultimateAnimation": null,
+    "secretAnimation": null,
+    "artByTier": {
+      "1S": {
+        "portrait": "assets/awakening-materials/awakening_scroll_1255/portrait_1S.png",
+        "full": "assets/awakening-materials/awakening_scroll_1255/full_1S.png"
+      }
+    },
+    "statsBase": {},
+    "statsMax": {
+      "hp": 1,
+      "atk": 1
+    },
+    "growthCurve": {
+      "hp": 1.0,
+      "atk": 1.0,
+      "def": 1.0,
+      "speed": 1.0,
+      "chakra": 1.0
+    },
+    "powerRank": 0,
+    "powerWeights": {
+      "hp": 0.3,
+      "atk": 0.4,
+      "def": 0.1,
+      "speed": 0.15,
+      "chakra": 0.05
+    },
+    "range": "",
+    "luck": {
+      "base": 0,
+      "max": 0
+    },
+    "cost": {
+      "base": 0,
+      "max": 0
+    },
+    "affiliation": [],
+    "passiveIcons": {},
+    "skills": {},
+    "abilities": [],
+    "metadata": {
+      "cardNumber": 1255,
+      "maxLevel": null,
+      "hitCount": 0
+    }
+  },
+  {
+    "id": "awakening_1256",
+    "name": "Awakening Scroll",
+    "version": "Book of Victor",
+    "element": null,
+    "rarity": 1,
+    "starMinCode": "1S",
+    "starMaxCode": "1S",
+    "lbEligible": false,
+    "portrait": "assets/awakening-materials/awakening_scroll_1256/portrait_1S.png",
+    "full": "assets/awakening-materials/awakening_scroll_1256/full_1S.png",
+    "ultimateAnimation": null,
+    "secretAnimation": null,
+    "artByTier": {
+      "1S": {
+        "portrait": "assets/awakening-materials/awakening_scroll_1256/portrait_1S.png",
+        "full": "assets/awakening-materials/awakening_scroll_1256/full_1S.png"
+      }
+    },
+    "statsBase": {},
+    "statsMax": {
+      "hp": 1,
+      "atk": 1
+    },
+    "growthCurve": {
+      "hp": 1.0,
+      "atk": 1.0,
+      "def": 1.0,
+      "speed": 1.0,
+      "chakra": 1.0
+    },
+    "powerRank": 0,
+    "powerWeights": {
+      "hp": 0.3,
+      "atk": 0.4,
+      "def": 0.1,
+      "speed": 0.15,
+      "chakra": 0.05
+    },
+    "range": "",
+    "luck": {
+      "base": 0,
+      "max": 0
+    },
+    "cost": {
+      "base": 0,
+      "max": 0
+    },
+    "affiliation": [],
+    "passiveIcons": {},
+    "skills": {},
+    "abilities": [],
+    "metadata": {
+      "cardNumber": 1256,
+      "maxLevel": null,
+      "hitCount": 0
+    }
+  },
+  {
+    "id": "awakening_1257",
+    "name": "Awakening Scroll",
+    "version": "Book of Victor",
+    "element": null,
+    "rarity": 1,
+    "starMinCode": "1S",
+    "starMaxCode": "1S",
+    "lbEligible": false,
+    "portrait": "assets/awakening-materials/awakening_scroll_1257/portrait_1S.png",
+    "full": "assets/awakening-materials/awakening_scroll_1257/full_1S.png",
+    "ultimateAnimation": null,
+    "secretAnimation": null,
+    "artByTier": {
+      "1S": {
+        "portrait": "assets/awakening-materials/awakening_scroll_1257/portrait_1S.png",
+        "full": "assets/awakening-materials/awakening_scroll_1257/full_1S.png"
+      }
+    },
+    "statsBase": {},
+    "statsMax": {
+      "hp": 1,
+      "atk": 1
+    },
+    "growthCurve": {
+      "hp": 1.0,
+      "atk": 1.0,
+      "def": 1.0,
+      "speed": 1.0,
+      "chakra": 1.0
+    },
+    "powerRank": 0,
+    "powerWeights": {
+      "hp": 0.3,
+      "atk": 0.4,
+      "def": 0.1,
+      "speed": 0.15,
+      "chakra": 0.05
+    },
+    "range": "",
+    "luck": {
+      "base": 0,
+      "max": 0
+    },
+    "cost": {
+      "base": 0,
+      "max": 0
+    },
+    "affiliation": [],
+    "passiveIcons": {},
+    "skills": {},
+    "abilities": [],
+    "metadata": {
+      "cardNumber": 1257,
+      "maxLevel": null,
+      "hitCount": 0
+    }
+  }
+]

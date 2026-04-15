@@ -1,0 +1,1847 @@
+[
+  {
+    "fromId": "akatsuchi_2078",
+    "toId": "akatsuchi_2079",
+    "tier": "6S"
+  },
+  {
+    "fromId": "ameyuri_484",
+    "toId": "ameyuri_485",
+    "tier": "6S"
+  },
+  {
+    "fromId": "anko_094",
+    "toId": "anko_095",
+    "tier": "4S"
+  },
+  {
+    "fromId": "anko_682",
+    "toId": "anko_683",
+    "tier": "6S"
+  },
+  {
+    "fromId": "ao_765",
+    "toId": "ao_766",
+    "tier": "6S"
+  },
+  {
+    "fromId": "ashura_2109",
+    "toId": "ashura_2110",
+    "tier": "6S"
+  },
+  {
+    "fromId": "ashura_517",
+    "toId": "ashura_518",
+    "tier": "6S"
+  },
+  {
+    "fromId": "ashura_789",
+    "toId": "ashura_790",
+    "tier": "6S"
+  },
+  {
+    "fromId": "asuma_214",
+    "toId": "asuma_215",
+    "tier": "5S"
+  },
+  {
+    "fromId": "asuma_848",
+    "toId": "asuma_849",
+    "tier": "6S"
+  },
+  {
+    "fromId": "baki_104",
+    "toId": "baki_105",
+    "tier": "4S"
+  },
+  {
+    "fromId": "cee_880",
+    "toId": "cee_881",
+    "tier": "6S"
+  },
+  {
+    "fromId": "chino_570",
+    "toId": "chino_571",
+    "tier": "6S"
+  },
+  {
+    "fromId": "chiriku_325",
+    "toId": "chiriku_326",
+    "tier": "6S"
+  },
+  {
+    "fromId": "chiyo_339",
+    "toId": "chiyo_340",
+    "tier": "6S"
+  },
+  {
+    "fromId": "choji_014",
+    "toId": "choji_015",
+    "tier": "4S"
+  },
+  {
+    "fromId": "choji_058",
+    "toId": "choji_059",
+    "tier": "5S"
+  },
+  {
+    "fromId": "choji_2040",
+    "toId": "choji_2041",
+    "tier": "6S"
+  },
+  {
+    "fromId": "choji_225",
+    "toId": "choji_226",
+    "tier": "6S"
+  },
+  {
+    "fromId": "chojuro_366",
+    "toId": "chojuro_367",
+    "tier": "6S"
+  },
+  {
+    "fromId": "chojuro_564",
+    "toId": "chojuro_565",
+    "tier": "6S"
+  },
+  {
+    "fromId": "choza_114",
+    "toId": "choza_115",
+    "tier": "4S"
+  },
+  {
+    "fromId": "dan_2066",
+    "toId": "dan_2067",
+    "tier": "6S"
+  },
+  {
+    "fromId": "danzo_2034",
+    "toId": "danzo_2035",
+    "tier": "6S"
+  },
+  {
+    "fromId": "danzo_373",
+    "toId": "danzo_374",
+    "tier": "6S"
+  },
+  {
+    "fromId": "darui_385",
+    "toId": "darui_386",
+    "tier": "6S"
+  },
+  {
+    "fromId": "darui_758",
+    "toId": "darui_759",
+    "tier": "6S"
+  },
+  {
+    "fromId": "deidara_219",
+    "toId": "deidara_220",
+    "tier": "6S"
+  },
+  {
+    "fromId": "deidara_350",
+    "toId": "deidara_351",
+    "tier": "6S"
+  },
+  {
+    "fromId": "deidara_440",
+    "toId": "deidara_441",
+    "tier": "6S"
+  },
+  {
+    "fromId": "deidara_731",
+    "toId": "deidara_732",
+    "tier": "6S"
+  },
+  {
+    "fromId": "deidara_836",
+    "toId": "deidara_837",
+    "tier": "6S"
+  },
+  {
+    "fromId": "deidara_884",
+    "toId": "deidara_885",
+    "tier": "6S"
+  },
+  {
+    "fromId": "fourth_356",
+    "toId": "fourth_357",
+    "tier": "6S"
+  },
+  {
+    "fromId": "fourth_466",
+    "toId": "fourth_467",
+    "tier": "6S"
+  },
+  {
+    "fromId": "fugaku_2022",
+    "toId": "fugaku_2023",
+    "tier": "6S"
+  },
+  {
+    "fromId": "fuguki_596",
+    "toId": "fuguki_597",
+    "tier": "6S"
+  },
+  {
+    "fromId": "fuu_413",
+    "toId": "fuu_414",
+    "tier": "6S"
+  },
+  {
+    "fromId": "gaara_050",
+    "toId": "gaara_051",
+    "tier": "6S"
+  },
+  {
+    "fromId": "gaara_173",
+    "toId": "gaara_174",
+    "tier": "6S"
+  },
+  {
+    "fromId": "gaara_185",
+    "toId": "gaara_186",
+    "tier": "5S"
+  },
+  {
+    "fromId": "gaara_267",
+    "toId": "gaara_268",
+    "tier": "6S"
+  },
+  {
+    "fromId": "gaara_283",
+    "toId": "gaara_284",
+    "tier": "6S"
+  },
+  {
+    "fromId": "gaara_436",
+    "toId": "gaara_437",
+    "tier": "6S"
+  },
+  {
+    "fromId": "gaara_729",
+    "toId": "gaara_730",
+    "tier": "6S"
+  },
+  {
+    "fromId": "gaara_834",
+    "toId": "gaara_835",
+    "tier": "6S"
+  },
+  {
+    "fromId": "gengetsu_488",
+    "toId": "gengetsu_489",
+    "tier": "6S"
+  },
+  {
+    "fromId": "gengo_298",
+    "toId": "gengo_299",
+    "tier": "6S"
+  },
+  {
+    "fromId": "hagoromo_2044",
+    "toId": "hagoromo_2045",
+    "tier": "6S"
+  },
+  {
+    "fromId": "haku_137",
+    "toId": "haku_138",
+    "tier": "5S"
+  },
+  {
+    "fromId": "haku_139",
+    "toId": "haku_140",
+    "tier": "6S"
+  },
+  {
+    "fromId": "haku_423",
+    "toId": "haku_424",
+    "tier": "6S"
+  },
+  {
+    "fromId": "han_543",
+    "toId": "han_544",
+    "tier": "6S"
+  },
+  {
+    "fromId": "hanabi_773",
+    "toId": "hanabi_774",
+    "tier": "6S"
+  },
+  {
+    "fromId": "hanzo_341",
+    "toId": "hanzo_342",
+    "tier": "6S"
+  },
+  {
+    "fromId": "hanzo_449",
+    "toId": "hanzo_450",
+    "tier": "6S"
+  },
+  {
+    "fromId": "hashirama_2017",
+    "toId": "hashirama_2018",
+    "tier": "6S"
+  },
+  {
+    "fromId": "hashirama_2057",
+    "toId": "hashirama_2058",
+    "tier": "6S"
+  },
+  {
+    "fromId": "hashirama_417",
+    "toId": "hashirama_418",
+    "tier": "6S"
+  },
+  {
+    "fromId": "hashirama_697",
+    "toId": "hashirama_698",
+    "tier": "6S"
+  },
+  {
+    "fromId": "hashirama_745",
+    "toId": "hashirama_746",
+    "tier": "6S"
+  },
+  {
+    "fromId": "hayate_096",
+    "toId": "hayate_097",
+    "tier": "4S"
+  },
+  {
+    "fromId": "hayate_183",
+    "toId": "hayate_184",
+    "tier": "5S"
+  },
+  {
+    "fromId": "hayate_778",
+    "toId": "hayate_779",
+    "tier": "6S"
+  },
+  {
+    "fromId": "hiashi_116",
+    "toId": "hiashi_117",
+    "tier": "4S"
+  },
+  {
+    "fromId": "hidan_321",
+    "toId": "hidan_322",
+    "tier": "6S"
+  },
+  {
+    "fromId": "hidan_829",
+    "toId": "hidan_830",
+    "tier": "6S"
+  },
+  {
+    "fromId": "hinata_016",
+    "toId": "hinata_017",
+    "tier": "4S"
+  },
+  {
+    "fromId": "hinata_060",
+    "toId": "hinata_061",
+    "tier": "5S"
+  },
+  {
+    "fromId": "hinata_156",
+    "toId": "hinata_157",
+    "tier": "5S"
+  },
+  {
+    "fromId": "hinata_2002",
+    "toId": "hinata_2003",
+    "tier": "6S"
+  },
+  {
+    "fromId": "hinata_242",
+    "toId": "hinata_243",
+    "tier": "6S"
+  },
+  {
+    "fromId": "hinata_275",
+    "toId": "hinata_276",
+    "tier": "6S"
+  },
+  {
+    "fromId": "hinata_329",
+    "toId": "hinata_330",
+    "tier": "6S"
+  },
+  {
+    "fromId": "hinata_756",
+    "toId": "hinata_757",
+    "tier": "6S"
+  },
+  {
+    "fromId": "hiruzen_070",
+    "toId": "hiruzen_071",
+    "tier": "5S"
+  },
+  {
+    "fromId": "hiruzen_200",
+    "toId": "hiruzen_201",
+    "tier": "6S"
+  },
+  {
+    "fromId": "hiruzen_798",
+    "toId": "hiruzen_799",
+    "tier": "6S"
+  },
+  {
+    "fromId": "hizashi_118",
+    "toId": "hizashi_119",
+    "tier": "4S"
+  },
+  {
+    "fromId": "ibiki_092",
+    "toId": "ibiki_093",
+    "tier": "4S"
+  },
+  {
+    "fromId": "indra_2111",
+    "toId": "indra_2112",
+    "tier": "6S"
+  },
+  {
+    "fromId": "indra_515",
+    "toId": "indra_516",
+    "tier": "6S"
+  },
+  {
+    "fromId": "indra_787",
+    "toId": "indra_788",
+    "tier": "6S"
+  },
+  {
+    "fromId": "ino_012",
+    "toId": "ino_013",
+    "tier": "4S"
+  },
+  {
+    "fromId": "ino_056",
+    "toId": "ino_057",
+    "tier": "5S"
+  },
+  {
+    "fromId": "ino_154",
+    "toId": "ino_155",
+    "tier": "5S"
+  },
+  {
+    "fromId": "ino_263",
+    "toId": "ino_264",
+    "tier": "6S"
+  },
+  {
+    "fromId": "ino_549",
+    "toId": "ino_550",
+    "tier": "6S"
+  },
+  {
+    "fromId": "ino_691",
+    "toId": "ino_692",
+    "tier": "6S"
+  },
+  {
+    "fromId": "inoichi_112",
+    "toId": "inoichi_113",
+    "tier": "4S"
+  },
+  {
+    "fromId": "iruka_022",
+    "toId": "iruka_023",
+    "tier": "4S"
+  },
+  {
+    "fromId": "iruka_871",
+    "toId": "iruka_872",
+    "tier": "6S"
+  },
+  {
+    "fromId": "itachi_088",
+    "toId": "itachi_089",
+    "tier": "5S"
+  },
+  {
+    "fromId": "itachi_2031",
+    "toId": "itachi_2032",
+    "tier": "6S"
+  },
+  {
+    "fromId": "itachi_208",
+    "toId": "itachi_209",
+    "tier": "5S"
+  },
+  {
+    "fromId": "itachi_210",
+    "toId": "itachi_211",
+    "tier": "6S"
+  },
+  {
+    "fromId": "itachi_308",
+    "toId": "itachi_309",
+    "tier": "6S"
+  },
+  {
+    "fromId": "itachi_387",
+    "toId": "itachi_388",
+    "tier": "6S"
+  },
+  {
+    "fromId": "itachi_504",
+    "toId": "itachi_505",
+    "tier": "6S"
+  },
+  {
+    "fromId": "itachi_699",
+    "toId": "itachi_700",
+    "tier": "6S"
+  },
+  {
+    "fromId": "izumo_844",
+    "toId": "izumo_845",
+    "tier": "6S"
+  },
+  {
+    "fromId": "izuna_2026",
+    "toId": "izuna_2027",
+    "tier": "6S"
+  },
+  {
+    "fromId": "izuna_751",
+    "toId": "izuna_752",
+    "tier": "6S"
+  },
+  {
+    "fromId": "izuna_775",
+    "toId": "izuna_776",
+    "tier": "6S"
+  },
+  {
+    "fromId": "jinin_581",
+    "toId": "jinin_582",
+    "tier": "6S"
+  },
+  {
+    "fromId": "jinpachi_562",
+    "toId": "jinpachi_563",
+    "tier": "6S"
+  },
+  {
+    "fromId": "jiraiya_072",
+    "toId": "jiraiya_073",
+    "tier": "5S"
+  },
+  {
+    "fromId": "jiraiya_246",
+    "toId": "jiraiya_247",
+    "tier": "6S"
+  },
+  {
+    "fromId": "jiraiya_335",
+    "toId": "jiraiya_336",
+    "tier": "6S"
+  },
+  {
+    "fromId": "jiraiya_444",
+    "toId": "jiraiya_445",
+    "tier": "6S"
+  },
+  {
+    "fromId": "jiraiya_610",
+    "toId": "jiraiya_611",
+    "tier": "6S"
+  },
+  {
+    "fromId": "jirobo_084",
+    "toId": "jirobo_085",
+    "tier": "5S"
+  },
+  {
+    "fromId": "jirobo_198",
+    "toId": "jirobo_199",
+    "tier": "5S"
+  },
+  {
+    "fromId": "jirobo_227",
+    "toId": "jirobo_228",
+    "tier": "6S"
+  },
+  {
+    "fromId": "jugo_306",
+    "toId": "jugo_307",
+    "tier": "6S"
+  },
+  {
+    "fromId": "jugo_623",
+    "toId": "jugo_624",
+    "tier": "6S"
+  },
+  {
+    "fromId": "juzo_716",
+    "toId": "juzo_717",
+    "tier": "6S"
+  },
+  {
+    "fromId": "kabuto_076",
+    "toId": "kabuto_077",
+    "tier": "5S"
+  },
+  {
+    "fromId": "kabuto_169",
+    "toId": "kabuto_170",
+    "tier": "5S"
+  },
+  {
+    "fromId": "kabuto_392",
+    "toId": "kabuto_393",
+    "tier": "6S"
+  },
+  {
+    "fromId": "kabuto_642",
+    "toId": "kabuto_643",
+    "tier": "6S"
+  },
+  {
+    "fromId": "kaguya_2042",
+    "toId": "kaguya_2043",
+    "tier": "6S"
+  },
+  {
+    "fromId": "kaguya_512",
+    "toId": "kaguya_513",
+    "tier": "6S"
+  },
+  {
+    "fromId": "kaguya_593",
+    "toId": "kaguya_594",
+    "tier": "6S"
+  },
+  {
+    "fromId": "kaguya_749",
+    "toId": "kaguya_750",
+    "tier": "6S"
+  },
+  {
+    "fromId": "kakashi_008",
+    "toId": "kakashi_009",
+    "tier": "5S"
+  },
+  {
+    "fromId": "kakashi_048",
+    "toId": "kakashi_049",
+    "tier": "6S"
+  },
+  {
+    "fromId": "kakashi_146",
+    "toId": "kakashi_147",
+    "tier": "6S"
+  },
+  {
+    "fromId": "kakashi_2125",
+    "toId": "kakashi_2126",
+    "tier": "6S"
+  },
+  {
+    "fromId": "kakashi_255",
+    "toId": "kakashi_256",
+    "tier": "6S"
+  },
+  {
+    "fromId": "kakashi_313",
+    "toId": "kakashi_314",
+    "tier": "6S"
+  },
+  {
+    "fromId": "kakashi_425",
+    "toId": "kakashi_426",
+    "tier": "6S"
+  },
+  {
+    "fromId": "kakashi_587",
+    "toId": "kakashi_588",
+    "tier": "6S"
+  },
+  {
+    "fromId": "kakashi_734",
+    "toId": "kakashi_735",
+    "tier": "6S"
+  },
+  {
+    "fromId": "kakashi_854",
+    "toId": "kakashi_855",
+    "tier": "6S"
+  },
+  {
+    "fromId": "kakkou_106",
+    "toId": "kakkou_107",
+    "tier": "4S"
+  },
+  {
+    "fromId": "kakuzu_323",
+    "toId": "kakuzu_324",
+    "tier": "6S"
+  },
+  {
+    "fromId": "kakuzu_693",
+    "toId": "kakuzu_694",
+    "tier": "6S"
+  },
+  {
+    "fromId": "kankuro_165",
+    "toId": "kankuro_166",
+    "tier": "5S"
+  },
+  {
+    "fromId": "kankuro_189",
+    "toId": "kankuro_190",
+    "tier": "5S"
+  },
+  {
+    "fromId": "kankuro_2055",
+    "toId": "kankuro_2056",
+    "tier": "6S"
+  },
+  {
+    "fromId": "kankuro_438",
+    "toId": "kankuro_439",
+    "tier": "6S"
+  },
+  {
+    "fromId": "karin_300",
+    "toId": "karin_301",
+    "tier": "6S"
+  },
+  {
+    "fromId": "karin_362",
+    "toId": "karin_363",
+    "tier": "6S"
+  },
+  {
+    "fromId": "kiba_018",
+    "toId": "kiba_019",
+    "tier": "4S"
+  },
+  {
+    "fromId": "kiba_062",
+    "toId": "kiba_063",
+    "tier": "5S"
+  },
+  {
+    "fromId": "kiba_223",
+    "toId": "kiba_224",
+    "tier": "5S"
+  },
+  {
+    "fromId": "kiba_566",
+    "toId": "kiba_567",
+    "tier": "6S"
+  },
+  {
+    "fromId": "kidomaru_080",
+    "toId": "kidomaru_081",
+    "tier": "5S"
+  },
+  {
+    "fromId": "kidomaru_194",
+    "toId": "kidomaru_195",
+    "tier": "5S"
+  },
+  {
+    "fromId": "kidomaru_233",
+    "toId": "kidomaru_234",
+    "tier": "6S"
+  },
+  {
+    "fromId": "killer_1155",
+    "toId": "killer_1156",
+    "tier": "6S"
+  },
+  {
+    "fromId": "killer_354",
+    "toId": "killer_355",
+    "tier": "6S"
+  },
+  {
+    "fromId": "killer_462",
+    "toId": "killer_463",
+    "tier": "6S"
+  },
+  {
+    "fromId": "kimimaro_086",
+    "toId": "kimimaro_087",
+    "tier": "5S"
+  },
+  {
+    "fromId": "kimimaro_273",
+    "toId": "kimimaro_274",
+    "tier": "6S"
+  },
+  {
+    "fromId": "kimimaro_886",
+    "toId": "kimimaro_887",
+    "tier": "6S"
+  },
+  {
+    "fromId": "kisame_090",
+    "toId": "kisame_091",
+    "tier": "5S"
+  },
+  {
+    "fromId": "kisame_319",
+    "toId": "kisame_320",
+    "tier": "6S"
+  },
+  {
+    "fromId": "kisame_719",
+    "toId": "kisame_720",
+    "tier": "6S"
+  },
+  {
+    "fromId": "konan_2048",
+    "toId": "konan_2049",
+    "tier": "6S"
+  },
+  {
+    "fromId": "konan_337",
+    "toId": "konan_338",
+    "tier": "6S"
+  },
+  {
+    "fromId": "konan_377",
+    "toId": "konan_378",
+    "tier": "6S"
+  },
+  {
+    "fromId": "konan_547",
+    "toId": "konan_548",
+    "tier": "6S"
+  },
+  {
+    "fromId": "konohamaru_100",
+    "toId": "konohamaru_101",
+    "tier": "4S"
+  },
+  {
+    "fromId": "konohamaru_346",
+    "toId": "konohamaru_347",
+    "tier": "6S"
+  },
+  {
+    "fromId": "kotetsu_852",
+    "toId": "kotetsu_853",
+    "tier": "6S"
+  },
+  {
+    "fromId": "kurenai_216",
+    "toId": "kurenai_217",
+    "tier": "5S"
+  },
+  {
+    "fromId": "kurotsuchi_526",
+    "toId": "kurotsuchi_527",
+    "tier": "6S"
+  },
+  {
+    "fromId": "kushimaru_545",
+    "toId": "kushimaru_546",
+    "tier": "6S"
+  },
+  {
+    "fromId": "kushina_231",
+    "toId": "kushina_232",
+    "tier": "6S"
+  },
+  {
+    "fromId": "kushina_296",
+    "toId": "kushina_297",
+    "tier": "6S"
+  },
+  {
+    "fromId": "kushina_530",
+    "toId": "kushina_531",
+    "tier": "6S"
+  },
+  {
+    "fromId": "kushina_839",
+    "toId": "kushina_840",
+    "tier": "6S"
+  },
+  {
+    "fromId": "madara_2024",
+    "toId": "madara_2025",
+    "tier": "6S"
+  },
+  {
+    "fromId": "madara_2059",
+    "toId": "madara_2060",
+    "tier": "6S"
+  },
+  {
+    "fromId": "madara_333",
+    "toId": "madara_334",
+    "tier": "6S"
+  },
+  {
+    "fromId": "madara_434",
+    "toId": "madara_435",
+    "tier": "6S"
+  },
+  {
+    "fromId": "madara_589",
+    "toId": "madara_590",
+    "tier": "6S"
+  },
+  {
+    "fromId": "madara_646",
+    "toId": "madara_647",
+    "tier": "6S"
+  },
+  {
+    "fromId": "madara_680",
+    "toId": "madara_681",
+    "tier": "6S"
+  },
+  {
+    "fromId": "madara_695",
+    "toId": "madara_696",
+    "tier": "6S"
+  },
+  {
+    "fromId": "madara_747",
+    "toId": "madara_748",
+    "tier": "6S"
+  },
+  {
+    "fromId": "madara_859",
+    "toId": "madara_860",
+    "tier": "6S"
+  },
+  {
+    "fromId": "mangetsu_629",
+    "toId": "mangetsu_630",
+    "tier": "6S"
+  },
+  {
+    "fromId": "masked_2102",
+    "toId": "masked_2103",
+    "tier": "6S"
+  },
+  {
+    "fromId": "masked_631",
+    "toId": "masked_632",
+    "tier": "6S"
+  },
+  {
+    "fromId": "mei_358",
+    "toId": "mei_359",
+    "tier": "6S"
+  },
+  {
+    "fromId": "might_212",
+    "toId": "might_213",
+    "tier": "6S"
+  },
+  {
+    "fromId": "might_315",
+    "toId": "might_316",
+    "tier": "6S"
+  },
+  {
+    "fromId": "might_432",
+    "toId": "might_433",
+    "tier": "6S"
+  },
+  {
+    "fromId": "might_486",
+    "toId": "might_487",
+    "tier": "6S"
+  },
+  {
+    "fromId": "might_591",
+    "toId": "might_592",
+    "tier": "6S"
+  },
+  {
+    "fromId": "might_657",
+    "toId": "might_658",
+    "tier": "6S"
+  },
+  {
+    "fromId": "minato_2100",
+    "toId": "minato_2101",
+    "tier": "6S"
+  },
+  {
+    "fromId": "minato_229",
+    "toId": "minato_230",
+    "tier": "6S"
+  },
+  {
+    "fromId": "minato_409",
+    "toId": "minato_410",
+    "tier": "6S"
+  },
+  {
+    "fromId": "minato_528",
+    "toId": "minato_529",
+    "tier": "6S"
+  },
+  {
+    "fromId": "minato_627",
+    "toId": "minato_628",
+    "tier": "6S"
+  },
+  {
+    "fromId": "minato_678",
+    "toId": "minato_679",
+    "tier": "6S"
+  },
+  {
+    "fromId": "minato_760",
+    "toId": "minato_761",
+    "tier": "6S"
+  },
+  {
+    "fromId": "mizuki_098",
+    "toId": "mizuki_099",
+    "tier": "4S"
+  },
+  {
+    "fromId": "nagato_360",
+    "toId": "nagato_361",
+    "tier": "6S"
+  },
+  {
+    "fromId": "nagato_534",
+    "toId": "nagato_535",
+    "tier": "6S"
+  },
+  {
+    "fromId": "nagato_823",
+    "toId": "nagato_824",
+    "tier": "6S"
+  },
+  {
+    "fromId": "naruto_044",
+    "toId": "naruto_045",
+    "tier": "6S"
+  },
+  {
+    "fromId": "naruto_135",
+    "toId": "naruto_136",
+    "tier": "4S"
+  },
+  {
+    "fromId": "naruto_161",
+    "toId": "naruto_162",
+    "tier": "6S"
+  },
+  {
+    "fromId": "naruto_179",
+    "toId": "naruto_180",
+    "tier": "5S"
+  },
+  {
+    "fromId": "naruto_2000",
+    "toId": "naruto_2001",
+    "tier": "6S"
+  },
+  {
+    "fromId": "naruto_2089",
+    "toId": "naruto_2090",
+    "tier": "7S"
+  },
+  {
+    "fromId": "naruto_2114",
+    "toId": "naruto_2115",
+    "tier": "7S"
+  },
+  {
+    "fromId": "naruto_2137",
+    "toId": "naruto_2138",
+    "tier": "6S"
+  },
+  {
+    "fromId": "naruto_237",
+    "toId": "naruto_238",
+    "tier": "6S"
+  },
+  {
+    "fromId": "naruto_259",
+    "toId": "naruto_260",
+    "tier": "6S"
+  },
+  {
+    "fromId": "naruto_281",
+    "toId": "naruto_282",
+    "tier": "6S"
+  },
+  {
+    "fromId": "naruto_327",
+    "toId": "naruto_328",
+    "tier": "6S"
+  },
+  {
+    "fromId": "naruto_348",
+    "toId": "naruto_349",
+    "tier": "6S"
+  },
+  {
+    "fromId": "naruto_383",
+    "toId": "naruto_384",
+    "tier": "6S"
+  },
+  {
+    "fromId": "naruto_400",
+    "toId": "naruto_401",
+    "tier": "6S"
+  },
+  {
+    "fromId": "naruto_421",
+    "toId": "naruto_422",
+    "tier": "6S"
+  },
+  {
+    "fromId": "naruto_427",
+    "toId": "naruto_428",
+    "tier": "6S"
+  },
+  {
+    "fromId": "naruto_482",
+    "toId": "naruto_483",
+    "tier": "6S"
+  },
+  {
+    "fromId": "naruto_551",
+    "toId": "naruto_552",
+    "tier": "6S"
+  },
+  {
+    "fromId": "naruto_583",
+    "toId": "naruto_584",
+    "tier": "6S"
+  },
+  {
+    "fromId": "naruto_659",
+    "toId": "naruto_660",
+    "tier": "6S"
+  },
+  {
+    "fromId": "naruto_665",
+    "toId": "naruto_666",
+    "tier": "6S"
+  },
+  {
+    "fromId": "naruto_800",
+    "toId": "naruto_801",
+    "tier": "6S"
+  },
+  {
+    "fromId": "naruto_819",
+    "toId": "naruto_820",
+    "tier": "6S"
+  },
+  {
+    "fromId": "naruto_891",
+    "toId": "naruto_892",
+    "tier": "6S"
+  },
+  {
+    "fromId": "neji_066",
+    "toId": "neji_067",
+    "tier": "5S"
+  },
+  {
+    "fromId": "neji_150",
+    "toId": "neji_151",
+    "tier": "6S"
+  },
+  {
+    "fromId": "neji_2004",
+    "toId": "neji_2005",
+    "tier": "6S"
+  },
+  {
+    "fromId": "obito_2071",
+    "toId": "obito_2072",
+    "tier": "6S"
+  },
+  {
+    "fromId": "obito_2080",
+    "toId": "obito_2081",
+    "tier": "6S"
+  },
+  {
+    "fromId": "obito_253",
+    "toId": "obito_254",
+    "tier": "6S"
+  },
+  {
+    "fromId": "obito_394",
+    "toId": "obito_395",
+    "tier": "6S"
+  },
+  {
+    "fromId": "obito_411",
+    "toId": "obito_412",
+    "tier": "6S"
+  },
+  {
+    "fromId": "obito_468",
+    "toId": "obito_469",
+    "tier": "6S"
+  },
+  {
+    "fromId": "obito_710",
+    "toId": "obito_711",
+    "tier": "6S"
+  },
+  {
+    "fromId": "obito_736",
+    "toId": "obito_737",
+    "tier": "6S"
+  },
+  {
+    "fromId": "obito_804",
+    "toId": "obito_805",
+    "tier": "6S"
+  },
+  {
+    "fromId": "obito_856",
+    "toId": "obito_857",
+    "tier": "6S"
+  },
+  {
+    "fromId": "ohnoki_368",
+    "toId": "ohnoki_369",
+    "tier": "6S"
+  },
+  {
+    "fromId": "omoi_821",
+    "toId": "omoi_822",
+    "tier": "6S"
+  },
+  {
+    "fromId": "orochimaru_074",
+    "toId": "orochimaru_075",
+    "tier": "5S"
+  },
+  {
+    "fromId": "orochimaru_171",
+    "toId": "orochimaru_172",
+    "tier": "5S"
+  },
+  {
+    "fromId": "orochimaru_269",
+    "toId": "orochimaru_270",
+    "tier": "6S"
+  },
+  {
+    "fromId": "orochimaru_446",
+    "toId": "orochimaru_447",
+    "tier": "6S"
+  },
+  {
+    "fromId": "orochimaru_831",
+    "toId": "orochimaru_832",
+    "tier": "6S"
+  },
+  {
+    "fromId": "orochimaru_888",
+    "toId": "orochimaru_889",
+    "tier": "6S"
+  },
+  {
+    "fromId": "pain_352",
+    "toId": "pain_353",
+    "tier": "6S"
+  },
+  {
+    "fromId": "pain_451",
+    "toId": "pain_452",
+    "tier": "6S"
+  },
+  {
+    "fromId": "pain_604",
+    "toId": "pain_605",
+    "tier": "6S"
+  },
+  {
+    "fromId": "pain_612",
+    "toId": "pain_613",
+    "tier": "6S"
+  },
+  {
+    "fromId": "pain_640",
+    "toId": "pain_641",
+    "tier": "6S"
+  },
+  {
+    "fromId": "pain_676",
+    "toId": "pain_677",
+    "tier": "6S"
+  },
+  {
+    "fromId": "pain_727",
+    "toId": "pain_728",
+    "tier": "6S"
+  },
+  {
+    "fromId": "pain_817",
+    "toId": "pain_818",
+    "tier": "6S"
+  },
+  {
+    "fromId": "pakura_815",
+    "toId": "pakura_816",
+    "tier": "6S"
+  },
+  {
+    "fromId": "rasa_442",
+    "toId": "rasa_443",
+    "tier": "6S"
+  },
+  {
+    "fromId": "rin_251",
+    "toId": "rin_252",
+    "tier": "6S"
+  },
+  {
+    "fromId": "rin_294",
+    "toId": "rin_295",
+    "tier": "6S"
+  },
+  {
+    "fromId": "rock_148",
+    "toId": "rock_149",
+    "tier": "6S"
+  },
+  {
+    "fromId": "rock_158",
+    "toId": "rock_159",
+    "tier": "5S"
+  },
+  {
+    "fromId": "rock_506",
+    "toId": "rock_507",
+    "tier": "6S"
+  },
+  {
+    "fromId": "rock_809",
+    "toId": "rock_810",
+    "tier": "6S"
+  },
+  {
+    "fromId": "roshi_553",
+    "toId": "roshi_554",
+    "tier": "6S"
+  },
+  {
+    "fromId": "roshi_896",
+    "toId": "roshi_897",
+    "tier": "6S"
+  },
+  {
+    "fromId": "rou_285",
+    "toId": "rou_286",
+    "tier": "6S"
+  },
+  {
+    "fromId": "sai_239",
+    "toId": "sai_240",
+    "tier": "6S"
+  },
+  {
+    "fromId": "sai_500",
+    "toId": "sai_501",
+    "tier": "6S"
+  },
+  {
+    "fromId": "sai_873",
+    "toId": "sai_874",
+    "tier": "6S"
+  },
+  {
+    "fromId": "sakon_082",
+    "toId": "sakon_083",
+    "tier": "5S"
+  },
+  {
+    "fromId": "sakon_196",
+    "toId": "sakon_197",
+    "tier": "5S"
+  },
+  {
+    "fromId": "sakumo_2010",
+    "toId": "sakumo_2011",
+    "tier": "6S"
+  },
+  {
+    "fromId": "sakura_006",
+    "toId": "sakura_007",
+    "tier": "4S"
+  },
+  {
+    "fromId": "sakura_052",
+    "toId": "sakura_053",
+    "tier": "5S"
+  },
+  {
+    "fromId": "sakura_152",
+    "toId": "sakura_153",
+    "tier": "6S"
+  },
+  {
+    "fromId": "sakura_2069",
+    "toId": "sakura_2070",
+    "tier": "6S"
+  },
+  {
+    "fromId": "sakura_235",
+    "toId": "sakura_236",
+    "tier": "6S"
+  },
+  {
+    "fromId": "sakura_277",
+    "toId": "sakura_278",
+    "tier": "6S"
+  },
+  {
+    "fromId": "sakura_364",
+    "toId": "sakura_365",
+    "tier": "6S"
+  },
+  {
+    "fromId": "sakura_379",
+    "toId": "sakura_380",
+    "tier": "5S"
+  },
+  {
+    "fromId": "sakura_398",
+    "toId": "sakura_399",
+    "tier": "6S"
+  },
+  {
+    "fromId": "sakura_480",
+    "toId": "sakura_481",
+    "tier": "6S"
+  },
+  {
+    "fromId": "sakura_510",
+    "toId": "sakura_511",
+    "tier": "6S"
+  },
+  {
+    "fromId": "sakura_754",
+    "toId": "sakura_755",
+    "tier": "6S"
+  },
+  {
+    "fromId": "sakura_868",
+    "toId": "sakura_869",
+    "tier": "6S"
+  },
+  {
+    "fromId": "sasori_221",
+    "toId": "sasori_222",
+    "tier": "6S"
+  },
+  {
+    "fromId": "sasori_644",
+    "toId": "sasori_645",
+    "tier": "6S"
+  },
+  {
+    "fromId": "sasori_784",
+    "toId": "sasori_785",
+    "tier": "6S"
+  },
+  {
+    "fromId": "sasori_882",
+    "toId": "sasori_883",
+    "tier": "6S"
+  },
+  {
+    "fromId": "sasuke_004",
+    "toId": "sasuke_005",
+    "tier": "4S"
+  },
+  {
+    "fromId": "sasuke_046",
+    "toId": "sasuke_047",
+    "tier": "6S"
+  },
+  {
+    "fromId": "sasuke_175",
+    "toId": "sasuke_176",
+    "tier": "6S"
+  },
+  {
+    "fromId": "sasuke_177",
+    "toId": "sasuke_178",
+    "tier": "6S"
+  },
+  {
+    "fromId": "sasuke_2012",
+    "toId": "sasuke_2013",
+    "tier": "6S"
+  },
+  {
+    "fromId": "sasuke_2029",
+    "toId": "sasuke_2030",
+    "tier": "6S"
+  },
+  {
+    "fromId": "sasuke_2116",
+    "toId": "sasuke_2117",
+    "tier": "7S"
+  },
+  {
+    "fromId": "sasuke_2131",
+    "toId": "sasuke_2132",
+    "tier": "6S"
+  },
+  {
+    "fromId": "sasuke_244",
+    "toId": "sasuke_245",
+    "tier": "6S"
+  },
+  {
+    "fromId": "sasuke_261",
+    "toId": "sasuke_262",
+    "tier": "6S"
+  },
+  {
+    "fromId": "sasuke_302",
+    "toId": "sasuke_303",
+    "tier": "6S"
+  },
+  {
+    "fromId": "sasuke_343",
+    "toId": "sasuke_344",
+    "tier": "6S"
+  },
+  {
+    "fromId": "sasuke_370",
+    "toId": "sasuke_371",
+    "tier": "6S"
+  },
+  {
+    "fromId": "sasuke_389",
+    "toId": "sasuke_390",
+    "tier": "6S"
+  },
+  {
+    "fromId": "sasuke_419",
+    "toId": "sasuke_420",
+    "tier": "6S"
+  },
+  {
+    "fromId": "sasuke_429",
+    "toId": "sasuke_430",
+    "tier": "6S"
+  },
+  {
+    "fromId": "sasuke_490",
+    "toId": "sasuke_491",
+    "tier": "6S"
+  },
+  {
+    "fromId": "sasuke_502",
+    "toId": "sasuke_503",
+    "tier": "6S"
+  },
+  {
+    "fromId": "sasuke_568",
+    "toId": "sasuke_569",
+    "tier": "6S"
+  },
+  {
+    "fromId": "sasuke_585",
+    "toId": "sasuke_586",
+    "tier": "6S"
+  },
+  {
+    "fromId": "sasuke_661",
+    "toId": "sasuke_662",
+    "tier": "6S"
+  },
+  {
+    "fromId": "sasuke_667",
+    "toId": "sasuke_668",
+    "tier": "6S"
+  },
+  {
+    "fromId": "sasuke_702",
+    "toId": "sasuke_703",
+    "tier": "6S"
+  },
+  {
+    "fromId": "sasuke_802",
+    "toId": "sasuke_803",
+    "tier": "6S"
+  },
+  {
+    "fromId": "shibi_108",
+    "toId": "shibi_109",
+    "tier": "4S"
+  },
+  {
+    "fromId": "shikaku_110",
+    "toId": "shikaku_111",
+    "tier": "4S"
+  },
+  {
+    "fromId": "shikamaru_010",
+    "toId": "shikamaru_011",
+    "tier": "4S"
+  },
+  {
+    "fromId": "shikamaru_054",
+    "toId": "shikamaru_055",
+    "tier": "5S"
+  },
+  {
+    "fromId": "shikamaru_181",
+    "toId": "shikamaru_182",
+    "tier": "5S"
+  },
+  {
+    "fromId": "shikamaru_291",
+    "toId": "shikamaru_292",
+    "tier": "6S"
+  },
+  {
+    "fromId": "shikamaru_807",
+    "toId": "shikamaru_808",
+    "tier": "6S"
+  },
+  {
+    "fromId": "shikamaru_846",
+    "toId": "shikamaru_847",
+    "tier": "6S"
+  },
+  {
+    "fromId": "shino_020",
+    "toId": "shino_021",
+    "tier": "4S"
+  },
+  {
+    "fromId": "shino_064",
+    "toId": "shino_065",
+    "tier": "5S"
+  },
+  {
+    "fromId": "shisui_396",
+    "toId": "shisui_397",
+    "tier": "6S"
+  },
+  {
+    "fromId": "shisui_714",
+    "toId": "shisui_715",
+    "tier": "6S"
+  },
+  {
+    "fromId": "shizune_102",
+    "toId": "shizune_103",
+    "tier": "4S"
+  },
+  {
+    "fromId": "shizune_712",
+    "toId": "shizune_713",
+    "tier": "6S"
+  },
+  {
+    "fromId": "soku_287",
+    "toId": "soku_288",
+    "tier": "6S"
+  },
+  {
+    "fromId": "suigetsu_304",
+    "toId": "suigetsu_305",
+    "tier": "6S"
+  },
+  {
+    "fromId": "suigetsu_621",
+    "toId": "suigetsu_622",
+    "tier": "6S"
+  },
+  {
+    "fromId": "tayuya_078",
+    "toId": "tayuya_079",
+    "tier": "5S"
+  },
+  {
+    "fromId": "tayuya_192",
+    "toId": "tayuya_193",
+    "tier": "5S"
+  },
+  {
+    "fromId": "tayuya_257",
+    "toId": "tayuya_258",
+    "tier": "6S"
+  },
+  {
+    "fromId": "temari_163",
+    "toId": "temari_164",
+    "tier": "5S"
+  },
+  {
+    "fromId": "temari_187",
+    "toId": "temari_188",
+    "tier": "5S"
+  },
+  {
+    "fromId": "temari_289",
+    "toId": "temari_290",
+    "tier": "6S"
+  },
+  {
+    "fromId": "tenten_068",
+    "toId": "tenten_069",
+    "tier": "5S"
+  },
+  {
+    "fromId": "tenten_265",
+    "toId": "tenten_266",
+    "tier": "6S"
+  },
+  {
+    "fromId": "tenten_579",
+    "toId": "tenten_580",
+    "tier": "6S"
+  },
+  {
+    "fromId": "tenten_795",
+    "toId": "tenten_796",
+    "tier": "6S"
+  },
+  {
+    "fromId": "tenzo_2046",
+    "toId": "tenzo_2047",
+    "tier": "6S"
+  },
+  {
+    "fromId": "third_470",
+    "toId": "third_471",
+    "tier": "6S"
+  },
+  {
+    "fromId": "tobi_317",
+    "toId": "tobi_318",
+    "tier": "6S"
+  },
+  {
+    "fromId": "tobirama_407",
+    "toId": "tobirama_408",
+    "tier": "6S"
+  },
+  {
+    "fromId": "tobirama_762",
+    "toId": "tobirama_763",
+    "tier": "6S"
+  },
+  {
+    "fromId": "torune_625",
+    "toId": "torune_626",
+    "tier": "6S"
+  },
+  {
+    "fromId": "tsume_120",
+    "toId": "tsume_121",
+    "tier": "4S"
+  },
+  {
+    "fromId": "tsunade_167",
+    "toId": "tsunade_168",
+    "tier": "6S"
+  },
+  {
+    "fromId": "tsunade_2014",
+    "toId": "tsunade_2015",
+    "tier": "6S"
+  },
+  {
+    "fromId": "tsunade_279",
+    "toId": "tsunade_280",
+    "tier": "6S"
+  },
+  {
+    "fromId": "tsunade_375",
+    "toId": "tsunade_376",
+    "tier": "6S"
+  },
+  {
+    "fromId": "tsunade_460",
+    "toId": "tsunade_461",
+    "tier": "6S"
+  },
+  {
+    "fromId": "tsunade_532",
+    "toId": "tsunade_533",
+    "tier": "6S"
+  },
+  {
+    "fromId": "ukonsakon_248",
+    "toId": "ukonsakon_249",
+    "tier": "6S"
+  },
+  {
+    "fromId": "utakata_310",
+    "toId": "utakata_311",
+    "tier": "6S"
+  },
+  {
+    "fromId": "utakata_648",
+    "toId": "utakata_649",
+    "tier": "6S"
+  },
+  {
+    "fromId": "yagura_464",
+    "toId": "yagura_465",
+    "tier": "6S"
+  },
+  {
+    "fromId": "yagura_606",
+    "toId": "yagura_607",
+    "tier": "6S"
+  },
+  {
+    "fromId": "yamato_271",
+    "toId": "yamato_272",
+    "tier": "6S"
+  },
+  {
+    "fromId": "yugito_331",
+    "toId": "yugito_332",
+    "tier": "6S"
+  },
+  {
+    "fromId": "yugito_608",
+    "toId": "yugito_609",
+    "tier": "6S"
+  },
+  {
+    "fromId": "zabuza_142",
+    "toId": "zabuza_143",
+    "tier": "6S"
+  },
+  {
+    "fromId": "zabuza_144",
+    "toId": "zabuza_145",
+    "tier": "5S"
+  },
+  {
+    "fromId": "zabuza_415",
+    "toId": "zabuza_416",
+    "tier": "6S"
+  },
+  {
+    "fromId": "zetsu_381",
+    "toId": "zetsu_382",
+    "tier": "6S"
+  }
+]

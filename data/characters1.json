@@ -1,0 +1,550 @@
+[
+  {
+    "id": "naruto_01",
+    "name": "Naruto Uzumaki",
+    "rarity": 3,
+    "starMinCode": "3S",
+    "starMaxCode": "5S",
+    "version": "Worst Loser",
+    "portrait": "assets/characters/naruto/narutoworsrloser/portrait_3S.png",
+    "full": "assets/characters/naruto/narutoworsrloser/full_3S.png",
+    "artByTier": {
+      "4S": {
+        "portrait": "assets/characters/naruto/narutoworsrloser/portrait_4S.png",
+        "full": "assets/characters/naruto/narutoworsrloser/full_4S.png"
+      },
+      "5S": {
+        "portrait": "assets/characters/naruto/narutoworsrloser/portrait_5S.png",
+        "full": "assets/characters/naruto/narutoworsrloser/full_5S.png"
+      }
+    },
+    "statsBase": { "hp": 428, "atk": 369, "def": 150, "speed": 90, "chakra": 6 },
+    "statsMax":  { "hp": 846, "atk": 738, "def": 420, "speed": 155, "chakra": 10 },
+    "growthCurve": { "hp": 1.12, "atk": 1.18, "def": 1.08, "speed": 1.05, "chakra": 1.00 },
+    "powerRank": 260,
+    "powerWeights": { "hp": 0.35, "atk": 0.35, "def": 0.15, "speed": 0.10, "chakra": 0.05 },
+    "luck": { "base": 1, "max": 50 },
+    "passiveIcons": {
+      "3S": ["hp_up", "heal_up"],
+      "4S": ["hp_up", "heal_up", "atk_up"],
+      "5S": ["hp_up", "heal_up", "atk_up", "def_up"]
+    },
+    "abilities": [
+      {
+        "name": "Never Give Up",
+        "description": "Increases HP by 100 and boosts chakra recovery by 10%."
+      },
+      {
+        "name": "Shadow Clone Mastery",
+        "description": "Boosts attack by 150 when HP is above 50%."
+      },
+      {
+        "name": "Nine Tails Chakra",
+        "description": "Restores 5% HP at the start of each turn."
+      },
+      {
+        "name": "Uzumaki Resilience",
+        "description": "Reduces damage taken by 15% when HP is below 30%."
+      }
+    ]
+  },
+
+  {
+    "id": "sasuke_01",
+    "name": "Sasuke Uchiha",
+    "rarity": 3,
+    "starMinCode": "3S",
+    "starMaxCode": "5S",
+    "version": "Avenger",
+    "portrait": "assets/characters/sasuke/portrait_3S.png",
+    "full": "assets/characters/sasuke/full_3S.png",
+    "artByTier": {
+      "4S": {
+        "portrait": "assets/characters/sasuke/portrait_4S.png",
+        "full": "assets/characters/sasuke/full_4S.png"
+      },
+      "5S": {
+        "portrait": "assets/characters/sasuke/portrait_5S.png",
+        "full": "assets/characters/sasuke/full_5S.png"
+      }
+    },
+    "statsBase": { "hp": 3000, "atk": 230, "def": 140, "speed": 120, "chakra": 7 },
+    "statsMax":  { "hp": 9400, "atk": 670, "def": 400, "speed": 165, "chakra": 11 },
+    "growthCurve": { "hp": 1.10, "atk": 1.22, "def": 1.05, "speed": 1.10, "chakra": 1.00 },
+    "powerRank": 280,
+    "powerWeights": { "hp": 0.25, "atk": 0.45, "def": 0.10, "speed": 0.15, "chakra": 0.05 },
+    "luck": { "base": 1, "max": 50 },
+    "passiveIcons": {
+      "3S": ["atk_up", "speed_up"],
+      "4S": ["atk_up", "speed_up", "crit_up"],
+      "5S": ["atk_up", "speed_up", "crit_up", "pierce"]
+    },
+    "abilities": [
+      {
+        "name": "Sharingan Awakening",
+        "description": "Boosts critical rate by 20% and grants a 15% chance to counter attacks."
+      },
+      {
+        "name": "Chidori Mastery",
+        "description": "Increases ninjutsu damage by 25% and reduces chakra cost by 1."
+      },
+      {
+        "name": "Avenger's Fury",
+        "description": "Increases attack by 200 when an ally is defeated."
+      }
+    ]
+  },
+
+  {
+    "id": "sakura_01",
+    "name": "Sakura Haruno",
+    "rarity": 3,
+    "starMinCode": "3S",
+    "starMaxCode": "4S",
+    "version": "Cherry Blossom Fist",
+    "portrait": "assets/characters/sakura/portrait_3S.png",
+    "full": "assets/characters/sakura/full_3S.png",
+    "artByTier": {
+      "4S": {
+        "portrait": "assets/characters/sakura/portrait_4S.png",
+        "full": "assets/characters/sakura/full_4S.png"
+      }
+    },
+    "statsBase": { "hp": 3600, "atk": 160, "def": 220, "speed": 100, "chakra": 7 },
+    "statsMax":  { "hp": 11000, "atk": 460, "def": 640, "speed": 130, "chakra": 12 },
+    "growthCurve": { "hp": 1.08, "atk": 1.06, "def": 1.12, "speed": 1.02, "chakra": 1.00 },
+    "powerRank": 240,
+    "powerWeights": { "hp": 0.40, "atk": 0.15, "def": 0.25, "speed": 0.07, "chakra": 0.13 },
+    "luck": { "base": 1, "max": 50 },
+    "passiveIcons": {
+      "3S": ["heal_up", "def_up"],
+      "4S": ["heal_up", "heal_up", "def_up", "hp_up"]
+    },
+    "abilities": [
+      {
+        "name": "Medical Ninjutsu",
+        "description": "Heals 8% HP to all allies at the start of each turn."
+      },
+      {
+        "name": "Cherry Blossom Impact",
+        "description": "Increases defense by 150 and boosts attack by 100."
+      },
+      {
+        "name": "Inner Sakura",
+        "description": "Grants a 25% chance to resist status ailments and increases HP by 200."
+      }
+    ]
+  },
+
+  {
+    "id": "madara_06sb",
+    "name": "Madara Uchiha",
+    "rarity": 6,
+    "starMinCode": "6S",
+    "starMaxCode": "6SB",
+    "version": "Blazing Emperor",
+    "portrait": "assets/characters/madara/portrait_6S.png",
+    "full": "assets/characters/madara/full_6S.png",
+    "artByTier": {
+      "6SB": {
+        "portrait": "assets/characters/madara/portrait_6SB.png",
+        "full": "assets/characters/madara/full_6SB.png"
+      }
+    },
+    "statsBase": { "hp": 24000, "atk": 1400, "def": 900, "speed": 185, "chakra": 18 },
+    "statsMax":  { "hp": 30000, "atk": 1900, "def": 1200, "speed": 205, "chakra": 22 },
+    "growthCurve": { "hp": 1.06, "atk": 1.08, "def": 1.05, "speed": 1.03, "chakra": 1.00 },
+    "powerRank": 780,
+    "powerWeights": { "hp": 0.38, "atk": 0.38, "def": 0.12, "speed": 0.08, "chakra": 0.04 },
+    "luck": { "base": 10, "max": 99 }
+  },
+
+  {
+    "id": "naruto_044",
+    "name": "Naruto Uzumaki",
+    "rarity": 5,
+    "starMinCode": "5S",
+    "starMaxCode": "6S",
+    "version": "No. 1 Maverick",
+    "portrait": "assets/characters/naruto/narutomaverick/portrait_5S.png",
+    "full": "assets/characters/naruto/narutomaverick/full_5S.png",
+    "artByTier": {
+      "5S": {
+        "portrait": "assets/characters/naruto/narutomaverick/portrait_5S.png",
+        "full": "assets/characters/naruto/narutomaverick/full_5S.png"
+      },
+      "6S": {
+        "portrait": "assets/characters/naruto/narutomaverick/portrait_6S.png",
+        "full": "assets/characters/naruto/narutomaverick/full_6S.png"
+      }
+    },
+    "statsBase": { "hp": 428, "atk": 369, "def": 150, "speed": 90, "chakra": 6 },
+    "statsMax":  { "hp": 846, "atk": 738, "def": 420, "speed": 155, "chakra": 10 },
+    "growthCurve": { "hp": 1.12, "atk": 1.18, "def": 1.08, "speed": 1.05, "chakra": 1.00 },
+    "powerRank": 260,
+    "powerWeights": { "hp": 0.35, "atk": 0.35, "def": 0.15, "speed": 0.10, "chakra": 0.05 },
+    "luck": { "base": 5, "max": 70 }
+  },
+  {
+  "id": "naruto_162",
+  "name": "Naruto Uzumaki",
+  "rarity": 5,
+  "starMinCode": "5S",
+  "starMaxCode": "6S",
+  "version": "Rasengan Mastered",
+  "portrait": "assets/characters/naruto/narutoraseganmastered/portrait_5S.png",
+  "full": "assets/characters/narutoraseganmastered/full_5S.png",
+  "artByTier": {
+    "6S": {
+      "portrait": "assets/characters/naruto/narutoraseganmastered/portrait_6S.png",
+      "full": "assets/characters/naruto/narutoraseganmastered/full_6S.png"
+    }
+  },
+  "statsBase": { "hp": 544, "atk": 710, "def": 400, "speed": 113, "chakra": 18 },
+  "statsMax":  { "hp": 1154, "atk": 1420, "def": 800, "speed": 150, "chakra": 22 },
+  "growthCurve": { "hp": 1.06, "atk": 1.08, "def": 1.05, "speed": 1.03, "chakra": 1.00 },
+  "powerRank": 780,
+  "powerWeights": { "hp": 0.38, "atk": 0.38, "def": 0.12, "speed": 0.08, "chakra": 0.04 },
+  "luck": { "base": 5, "max": 70 },
+
+  "skills": {
+    "jutsu": {
+      "name": "Rasengan",
+      "type": "Skill",
+      "byTier": {
+        "5S": {
+          "chakraCost": 4,
+          "cooldown": 2,
+          "range": "Single Enemy (Mid)",
+          "hits": 4,
+          "multiplier": "3.8x ATK",
+          "description": "Deals damage and pushes the enemy back slightly. Medium chance to Slip."
+        },
+        "6S": {
+          "chakraCost": 4,
+          "cooldown": 2,
+          "range": "Single Enemy (Mid)",
+          "hits": 5,
+          "multiplier": "4.2x ATK",
+          "description": "Deals greater damage and pushes the enemy back. Higher chance to inflict Slip."
+        }
+      }
+    },
+    "ultimate": {
+      "name": "Massive Rasengan Barrage",
+      "type": "Ultimate",
+      "byTier": {
+        "6S": {
+          "chakraCost": 8,
+          "cooldown": 4,
+          "range": "Single Enemy (Long)",
+          "hits": 8,
+          "multiplier": "9.0x ATK",
+          "description": "Massive damage; guaranteed Knock Back and increased Slip chance. Unlocked upon awakening to 6★."
+        }
+      }
+    }
+  }
+},
+  {
+    "id": "naruto_163",
+    "name": "Naruto Uzumaki",
+    "rarity": 5,
+    "starMinCode": "5S",
+    "starMaxCode": "6S",
+    "version": "Rasengan Mastered",
+    "portrait": "assets/characters/naruto/narutoraseganmastered/portrait_5S.png",
+    "full": "assets/characters/naruto/narutoraseganmastered/full_5S.png",
+    "artByTier": {
+      "6S": {
+        "portrait": "assets/characters/naruto/narutoraseganmastered/portrait_6S.png",
+        "full": "assets/characters/naruto/narutoraseganmastered/full_6S.png"
+      }
+    },
+    "statsBase": { "hp": 544, "atk": 710, "def": 400, "speed": 113, "chakra": 18 },
+    "statsMax":  { "hp": 1154, "atk": 1420, "def": 800, "speed": 150, "chakra": 22 },
+    "growthCurve": { "hp": 1.06, "atk": 1.08, "def": 1.05, "speed": 1.03, "chakra": 1.00 },
+    "powerRank": 780,
+    "powerWeights": { "hp": 0.38, "atk": 0.38, "def": 0.12, "speed": 0.08, "chakra": 0.04 },
+    "luck": { "base": 5, "max": 70 }
+  },
+  {
+  "id": "naruto_260",
+  "name": "Naruto Uzumaki",
+  "version": "Nine Tails' Shroud",
+  "rarity": 5,
+  "starMinCode": "5S",
+  "starMaxCode": "6S",
+  "portrait": "assets/characters/naruto/narutoninetailsshroud/portrait_6S.png",
+  "full": "assets/characters/naruto/narutoninetailsshroud/full_6S.png",
+  "statsBase": { "hp": 554, "atk": 1205, "def": 0, "speed": 101, "chakra": 10 },
+  "statsMax":  { "hp": 1108, "atk": 2410, "def": 0, "speed": 202, "chakra": 30 },
+  "statsPvP":  { "hp": 9418, "atk": 1928, "speed": 101 },
+  "statsPvPMax": { "hp": 18836, "atk": 3856, "speed": 202 },
+  "statsPvPFull": { "hp": 29206, "atk": 4864, "speed": 242 },
+  "growthCurve": { "hp": 1.07, "atk": 1.08, "speed": 1.03, "chakra": 1.00 },
+  "powerRank": 970,
+  "powerWeights": { "hp": 0.35, "atk": 0.45, "speed": 0.15, "chakra": 0.05 },
+  "range": "Short",
+  "luck": { "base": 10, "max": 99 },
+  "cost": { "base": 60, "max": 30 },
+  "affiliation": "Hidden Leaf",
+
+  "skills": {
+    "jutsu": {
+      "name": "Chakra-Infused Strike",
+      "type": "Skill",
+      "byTier": {
+        "6S": {
+          "chakraCost": 4,
+          "cooldown": 2,
+          "range": "All Enemies (Short)",
+          "hits": 6,
+          "multiplier": "4.5x ATK",
+          "description": "Deals damage to all enemies in range, removes their attack boost, and restores own chakra by 1."
+        }
+      }
+    },
+    "ultimate": {
+      "name": "Nine Tails Chakra Barrage",
+      "type": "Ultimate",
+      "byTier": {
+        "6S": {
+          "chakraCost": 8,
+          "cooldown": 4,
+          "range": "All Enemies (Mid)",
+          "hits": 10,
+          "multiplier": "8.5x ATK",
+          "description": "Massive area damage. 60% chance to Knock Back enemies and heal self for 20% of damage dealt."
+        }
+      }
+    },
+    "secret": {
+      "name": "Nine Tails' Protective Shroud",
+      "type": "Secret",
+      "byTier": {
+        "6S": {
+          "chakraCost": 12,
+          "cooldown": 8,
+          "range": "All Allies",
+          "description": "Channels the Nine Tails chakra to empower all allies.",
+          "effects": {
+            "target": "allAllies",
+            "durationTurns": 5,
+            "atkBoost": 300,
+            "defBoost": 200,
+            "speedBoostPercent": 25,
+            "critRatePercent": 15,
+            "damageReductionPercent": 20,
+            "tag": "nine_tails_shroud",
+            "unique": true
+          }
+        }
+      }
+    }
+  }
+},
+  {
+  "id": "sasuke_05",
+  "name": "Sasuke Uchiha",
+  "version": "A Lone Heart",
+  "rarity": 3,
+  "starMinCode": "3S",
+  "starMaxCode": "4S",
+  "portrait": "assets/characters/sasuke/sasukealoneheart/portrait_3S.png",
+  "full": "assets/characters/sasuke/sasukealoneheart/full_3S.png",
+  "artByTier": {
+    "4S": {
+      "portrait": "assets/characters/sasuke/sasukealoneheart/portrait_4S.png",
+      "full": "assets/characters/sasuke/sasukealoneheart/full_4S.png"
+    }
+  },
+  "statsBase": { "hp": 344, "atk": 379, "def": 0, "speed": 65, "chakra": 0 },
+  "statsMax":  { "hp": 688, "atk": 758, "def": 0, "speed": 131, "chakra": 0 },
+  "statsPvP":  { "hp": 7224, "atk": 758, "speed": 65 },
+  "statsPvPMax": { "hp": 14448, "atk": 1516, "speed": 131 },
+  "statsPvPFull": { "hp": 14548, "atk": 1566, "speed": 151 },
+  "growthCurve": { "hp": 1.00, "atk": 1.00, "speed": 1.00, "chakra": 1.00 },
+  "powerRank": 0,
+  "powerWeights": { "hp": 0.0, "atk": 0.0, "speed": 0.0, "chakra": 0.0 },
+  "range": "Short",
+  "luck": { "base": 1, "max": 60 },
+  "cost": { "base": 12, "max": 8 },
+  "affiliation": "Hidden Leaf",
+
+  "skills": {
+    "fieldSkill": {
+      "name": "Critical Rate Boost",
+      "type": "Field",
+      "byTier": {
+        "4S": {
+          "description": "Boosts critical rate by 1.2-1.7x."
+        }
+      }
+    },
+    "buddySkill": {
+      "name": "Slip Damage Reduction",
+      "type": "Buddy",
+      "byTier": {
+        "4S": {
+          "description": "Reduces the chance of receiving slip damage by 15% (Not Field Skills)."
+        }
+      }
+    }
+  },
+
+  "abilities": [
+    {
+      "name": "Combination Attack Boost",
+      "description": "Boosts attack by 1.1x during Combinations."
+    },
+    {
+      "name": "Combination Critical Rate Boost",
+      "description": "Boosts critical rate by 1.75x during Combinations."
+    },
+    {
+      "name": "Combination Critical Rate Boost",
+      "description": "Boosts critical rate by 1.75x during Combinations."
+    },
+    {
+      "name": "Slip Damage Rate Boost",
+      "description": "Boosts rate of slip damage by 10%."
+    }
+  ]
+},
+
+
+  {
+  "id": "takimitsuha_1190",
+  "name": "Taki & Mitsuha",
+  "version": "Bonds Across Time",
+  "rarity": 7,
+  "starMinCode": "7S",
+  "starMaxCode": "7S",
+  "portrait": "assets/characters/takimitsuha/portrait_7S.png",
+  "full": "assets/characters/takimitsuha/full_7S.png",
+  "ultimateAnimation": "assets/animations/takimitsuha/itomori_meteor.mp4",
+  "secretAnimation": "assets/animations/takimitsuha/fate_threads.gif",
+  "artByTier": {
+    "7S": {
+      "portrait": "assets/characters/takimitsuha/portrait_7S.png",
+      "full": "assets/characters/takimitsuha/full_7S.png"
+    }
+  },
+  "statsBase": {
+    "hp": 1712,
+    "atk": 1476,
+    "def": 600,
+    "speed": 360,
+    "chakra": 24
+  },
+  "statsMax": {
+    "hp": 3384,
+    "atk": 2952,
+    "def": 1680,
+    "speed": 620,
+    "chakra": 40
+  },
+  "growthCurve": {
+    "hp": 1.10,
+    "atk": 1.12,
+    "def": 1.06,
+    "speed": 1.05,
+    "chakra": 1.00
+  },
+  "powerRank": 1040,
+  "powerWeights": {
+    "hp": 0.35,
+    "atk": 0.40,
+    "def": 0.10,
+    "speed": 0.10,
+    "chakra": 0.05
+  },
+  "range": "Long",
+  "luck": { "base": 15, "max": 99 },
+  "cost": { "base": 80, "max": 60 },
+  "affiliation": "Bonds of Fate",
+  "passiveIcons": {
+    "7S": ["atk_up", "heal_up", "heal_up", "def_up", "speed_up", "speed_up", "speed_up"]
+  },
+  "skills": {
+    "ultimate": {
+      "name": "Celestial Impact — The Meteor of Itomori",
+      "type": "Ultimate",
+      "byTier": {
+        "7S": {
+          "chakraCost": 8,
+          "cooldown": 6,
+          "range": "All Enemies (Whole Map)",
+          "hits": 12,
+          "multiplier": "15.0x ATK",
+          "description": "Calls down a massive meteor that devastates the battlefield, dealing catastrophic damage to all enemies and destroying terrain. Visual cinematic plays of the comet striking the town.",
+          "animationGif": "assets/animations/takimitsuha/itomori_meteor.mp4"
+        }
+      }
+    },
+    "secret": {
+      "name": "Threads of Fate Rewoven",
+      "type": "Secret",
+      "byTier": {
+        "7S": {
+          "chakraCost": 10,
+          "cooldown": 7,
+          "range": "Self & Allies (Global)",
+          "description": "A divine temporal link restores all allies' bonds across time. Greatly boosts ATK (+500), increases SPD, heals allies by 60% HP, revives allies fallen within the last 3 turns, and cleanses negative ailments. Lasts 3 turns.",
+          "effects": {
+            "tag": "fateThreads",
+            "unique": true,
+            "stacking": { "mode": "refresh", "maxStacks": 1 },
+            "atkBoost": 500,
+            "speedBoostPercent": 25,
+            "healPercent": 60,
+            "revive": true,
+            "reviveWindowTurns": 3,
+            "cleanseDebuffs": true,
+            "cleanseTypes": ["poison","slip","burn","bleed","stun","seal","silence","slow","atkDown","defDown","spdDown","blind"],
+            "durationTurns": 3
+          }
+        }
+      }
+    }
+  },
+  "abilities": [
+    {
+      "name": "Fate Synchronization",
+      "description": "At the start of battle, fills chakra gauge by 3 and reduces all incoming debuffs by 50%."
+    },
+    {
+      "name": "Celestial Resonance",
+      "description": "Boosts Ultimate damage by 20% and reduces its cooldown by 1 when used after an ally's Secret Technique."
+    },
+    {
+      "name": "Temporal Strike",
+      "description": "Increases ATK by 250 and boosts combo damage by 15%."
+    },
+    {
+      "name": "Healing Threads",
+      "description": "Restores 200 HP at the start of each turn and boosts healing received by 20%."
+    },
+    {
+      "name": "Bonds of Protection",
+      "description": "Increases max HP by 500 and grants damage reduction of 10% when HP is above 70%."
+    },
+    {
+      "name": "Comet's Endurance",
+      "description": "Boosts DEF by 300 and reduces damage from critical hits by 25%."
+    },
+    {
+      "name": "Time Acceleration",
+      "description": "Increases SPD by 80 and grants 20% chance to take an extra turn after attacking."
+    }
+  ]
+}
+
+]
+
+
+
+
+
+

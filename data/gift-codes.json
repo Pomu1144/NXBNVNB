@@ -1,0 +1,52 @@
+{
+  "codes": [
+    {
+      "code": "TKMA777",
+      "description": "Special Gift - Taki & Mitsuha",
+      "expiryDate": null,
+      "maxRedemptions": null,
+      "rewards": {
+        "characters": [
+          {
+            "characterId": "takimitsuha_1190",
+            "quantity": 10,
+            "tierCode": "7S"
+          }
+        ],
+        "resources": [],
+        "message": "You've received 10 copies of Taki and Mitsuha! Check your present box to claim them."
+      }
+    },
+    {
+      "code": "ALLUNITS",
+      "description": "Developer Gift - All Units (Evolved & Unevolved)",
+      "expiryDate": null,
+      "maxRedemptions": null,
+      "rewards": {
+        "characters": [
+          {"characterId": "naruto_01", "quantity": 1, "tierCode": "3S"},
+          {"characterId": "naruto_01", "quantity": 1, "tierCode": "5S"},
+          {"characterId": "sasuke_01", "quantity": 1, "tierCode": "3S"},
+          {"characterId": "sasuke_01", "quantity": 1, "tierCode": "5S"},
+          {"characterId": "sakura_01", "quantity": 1, "tierCode": "3S"},
+          {"characterId": "sakura_01", "quantity": 1, "tierCode": "4S"},
+          {"characterId": "madara_06sb", "quantity": 1, "tierCode": "6S"},
+          {"characterId": "madara_06sb", "quantity": 1, "tierCode": "6SB"},
+          {"characterId": "naruto_044", "quantity": 1, "tierCode": "5S"},
+          {"characterId": "naruto_044", "quantity": 1, "tierCode": "6S"},
+          {"characterId": "naruto_162", "quantity": 1, "tierCode": "5S"},
+          {"characterId": "naruto_162", "quantity": 1, "tierCode": "6S"},
+          {"characterId": "naruto_163", "quantity": 1, "tierCode": "5S"},
+          {"characterId": "naruto_163", "quantity": 1, "tierCode": "6S"},
+          {"characterId": "naruto_260", "quantity": 1, "tierCode": "5S"},
+          {"characterId": "naruto_260", "quantity": 1, "tierCode": "6S"},
+          {"characterId": "sasuke_05", "quantity": 1, "tierCode": "3S"},
+          {"characterId": "sasuke_05", "quantity": 1, "tierCode": "4S"},
+          {"characterId": "takimitsuha_1190", "quantity": 1, "tierCode": "7S"}
+        ],
+        "resources": [],
+        "message": "You've received all characters in both evolved and unevolved forms! Check your present box to claim them."
+      }
+    }
+  ]
+}

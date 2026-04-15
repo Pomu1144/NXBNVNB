@@ -1,0 +1,162 @@
+{
+  "dailyMissions": [
+    {
+      "id": "daily_complete_mission",
+      "name": "Mission Completion",
+      "description": "Complete any mission",
+      "requirement": 1,
+      "reward": {
+        "ryo": 5000,
+        "scroll_body": 1
+      }
+    },
+    {
+      "id": "daily_level_up",
+      "name": "Training Time",
+      "description": "Level up any character",
+      "requirement": 1,
+      "reward": {
+        "ryo": 3000,
+        "scroll_skill": 1
+      }
+    },
+    {
+      "id": "daily_awaken",
+      "name": "Evolution",
+      "description": "Awaken a character",
+      "requirement": 1,
+      "reward": {
+        "pearls": 2,
+        "awakening_stone_4": 1
+      }
+    },
+    {
+      "id": "daily_summon",
+      "name": "Summoning Ritual",
+      "description": "Perform a summon",
+      "requirement": 1,
+      "reward": {
+        "ryo": 10000
+      }
+    },
+    {
+      "id": "daily_feed_dupe",
+      "name": "Ability Unlock",
+      "description": "Feed a duplicate to unlock an ability",
+      "requirement": 1,
+      "reward": {
+        "pearls": 1,
+        "dupe_crystal": 1
+      }
+    }
+  ],
+  "loginCalendar": [
+    {
+      "day": 1,
+      "reward": {
+        "ryo": 10000,
+        "scroll_body": 2
+      }
+    },
+    {
+      "day": 2,
+      "reward": {
+        "pearls": 1,
+        "scroll_skill": 2
+      }
+    },
+    {
+      "day": 3,
+      "reward": {
+        "ryo": 15000,
+        "scroll_bravery": 2
+      }
+    },
+    {
+      "day": 4,
+      "reward": {
+        "pearls": 1,
+        "awakening_stone_3": 3
+      }
+    },
+    {
+      "day": 5,
+      "reward": {
+        "ryo": 20000,
+        "scroll_wisdom": 3
+      }
+    },
+    {
+      "day": 6,
+      "reward": {
+        "pearls": 2,
+        "scroll_heart": 3
+      }
+    },
+    {
+      "day": 7,
+      "reward": {
+        "pearls": 5,
+        "awakening_stone_5": 5,
+        "character_stone": 3,
+        "ryo": 50000
+      }
+    },
+    {
+      "day": 8,
+      "reward": {
+        "ryo": 15000,
+        "scroll_body": 3
+      }
+    },
+    {
+      "day": 9,
+      "reward": {
+        "pearls": 2,
+        "scroll_skill": 3
+      }
+    },
+    {
+      "day": 10,
+      "reward": {
+        "ryo": 20000,
+        "awakening_stone_4": 3
+      }
+    },
+    {
+      "day": 11,
+      "reward": {
+        "pearls": 2,
+        "scroll_bravery": 4
+      }
+    },
+    {
+      "day": 12,
+      "reward": {
+        "ryo": 25000,
+        "scroll_wisdom": 4
+      }
+    },
+    {
+      "day": 13,
+      "reward": {
+        "pearls": 3,
+        "awakening_stone_5": 4
+      }
+    },
+    {
+      "day": 14,
+      "reward": {
+        "pearls": 10,
+        "awakening_stone_6": 5,
+        "limit_break_crystal": 1,
+        "dupe_crystal": 3,
+        "ryo": 100000
+      }
+    }
+  ],
+  "notes": {
+    "description": "Daily missions reset at midnight UTC",
+    "loginCalendar": "Repeats every 14 days, day 7 and 14 are special bonus days"
+  }
+}

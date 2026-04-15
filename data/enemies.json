@@ -1,0 +1,20 @@
+[
+  {
+    "id": "slime_01",
+    "name": "Green Slime",
+    "sprite": "assets/enemies/slime_01.png",
+    "stats": { "hp": 250, "atk": 3000, "def": 5, "speed": 120 }
+  },
+  {
+    "id": "goblin_archer_01",
+    "name": "Goblin Archer",
+    "sprite": "assets/enemies/goblin_archer_01.png",
+    "stats": { "hp": 420, "atk": 75, "def": 20, "speed": 120 }
+  },
+  {
+    "id": "rock_golem_01",
+    "name": "Rock Golem",
+    "sprite": "assets/enemies/rock_golem_01.png",
+    "stats": { "hp": 1200, "atk": 110, "def": 80, "speed": 100 }
+  }
+]

@@ -1,0 +1,798 @@
+[
+  {
+    "id": "naruto_0001",
+    "name": "Naruto Uzumaki",
+    "version": "The Worst Loser",
+    "rarity": 3,
+    "starMinCode": "3S",
+    "starMaxCode": "5S",
+    "portrait": "assets/characters/naruto_001/portrait_3S.png",
+    "full": "assets/characters/naruto_001/full_3S.png",
+    "ultimateAnimation": null,
+    "secretAnimation": null,
+    "element": "Heart",
+    "range": "Mid",
+    "affiliation": ["Hidden Leaf"],
+    "powerRank": null,
+    "artByTier": {
+      "3S": {
+        "portrait": "assets/characters/naruto_001/portrait_3S.png",
+        "full": "assets/characters/naruto_001/full_3S.png"
+      }
+    },
+    "statsBase": {
+      "hp": 190,
+      "atk": 161,
+      "def": null,
+      "speed": 54,
+      "chakra": null
+    },
+    "statsMax": {
+      "hp": 380,
+      "atk": 322,
+      "def": null,
+      "speed": 108,
+      "chakra": null
+    },
+    "statsLimitBreak": {
+      "hp": 430,
+      "atk": 347,
+      "speed": 123
+    },
+    "statsLimitBreakMaxAbilities": {
+      "hp": 480,
+      "atk": 322,
+      "speed": 108
+    },
+    "growthCurve": {
+      "hp": 1.0,
+      "atk": 1.0,
+      "def": 1.0,
+      "speed": 1.0,
+      "chakra": 1.0
+    },
+    "luck": { "base": 1, "max": 40 },
+    "cost": { "base": 5, "max": 4 },
+    "passiveIcons": {
+      "3S": []
+    },
+    "fieldSkill": {
+      "3S": "Boosts ATK by 65–130."
+    },
+    "buddySkill": {
+      "3S": "Boosts ATK by 50."
+    },
+    "syncSkills": [],
+    "skills": {
+      "ninjutsu": {
+        "name": "Evil Wind Shuriken: Shadow Windmill",
+        "type": "Ninjutsu",
+        "byTier": {
+          "3S": {
+            "chakraCost": 5,
+            "range": "Mid — Circle",
+            "hits": 4,
+            "multiplier": "2.2x ATK",
+            "description": "2.2x attack toward all enemies in range.",
+            "animationGif": null
+          }
+        }
+      }
+    },
+    "abilities": [
+      {
+        "name": "Combination Attack Boost",
+        "description": "Boosts ATK by 1.1x during Combos."
+      },
+      {
+        "name": "Health Recovery on Map Movement",
+        "description": "Restores 300 HP when moving to a new map."
+      },
+      {
+        "name": "Health Boost",
+        "description": "Boosts HP by +100 (up to +500 at max ability)."
+      }
+    ],
+    "metadata": {
+      "cardNumber": 1,
+      "maxLevel": 30,
+      "hitCount": 1
+    }
+  },
+
+  {
+  "id": "naruto_002",
+  "name": "Naruto Uzumaki",
+  "version": "The Worst Loser",
+  "rarity": 4,
+  "starMinCode": "4S",
+  "starMaxCode": "5S",
+  "portrait": "assets/characters/naruto_002/portrait_4S.png",
+  "full": "assets/characters/naruto_002/full_4S.png",
+  "ultimateAnimation": null,
+  "secretAnimation": null,
+
+  "element": "Heart",
+  "range": "Mid",
+  "affiliation": ["Hidden Leaf"],
+  "powerRank": null,
+
+  "artByTier": {
+    "4S": {
+      "portrait": "assets/characters/naruto_002/portrait_4S.png",
+      "full": "assets/characters/naruto_002/full_4S.png"
+    }
+  },
+
+  "statsBase": {
+    "hp": 278,
+    "atk": 251,
+    "def": null,
+    "speed": 72,
+    "chakra": null
+  },
+
+  "statsMax": {
+    "hp": 556,
+    "atk": 502,
+    "def": null,
+    "speed": 144,
+    "chakra": null
+  },
+
+  "statsLimitBreak": {
+    "hp": 656,
+    "atk": 552,
+    "speed": 164
+  },
+
+  "statsLimitBreakMaxAbilities": {
+    "hp": 756,
+    "atk": 502,
+    "speed": 144
+  },
+
+  "growthCurve": {
+    "hp": 1.00,
+    "atk": 1.00,
+    "def": 1.00,
+    "speed": 1.00,
+    "chakra": 1.00
+  },
+
+  "luck": { "base": 1, "max": 60 },
+  "cost": { "base": 10, "max": 6 },
+
+  "passiveIcons": {
+    "4S": []
+  },
+
+  "fieldSkill": {
+    "4S": "Boosts ATK by 70–140."
+  },
+
+  "buddySkill": {
+    "4S": "Boosts ATK by 70."
+  },
+
+  "syncSkills": [],
+
+  "skills": {
+    "ninjutsu": {
+      "name": "Evil Wind Shuriken: Shadow Windmill",
+      "type": "Ninjutsu",
+      "byTier": {
+        "4S": {
+          "chakraCost": 4,
+          "range": "Mid — Circle",
+          "hits": 4,
+          "multiplier": "2.2x ATK",
+          "description": "2.2x attack toward all enemies in range.",
+          "animationGif": null
+        }
+      }
+    }
+  },
+
+  "abilities": [
+    {
+      "name": "Combination Attack Boost",
+      "description": "Boosts ATK by 1.1x during Combos."
+    },
+    {
+      "name": "Health Recovery on Map Movement",
+      "description": "Restores 300 HP when moving to a new map."
+    },
+    {
+      "name": "Health Boost",
+      "description": "Boosts HP by +100 (up to +500 at max ability)."
+    },
+    {
+      "name": "Health Boost",
+      "description": "Boosts HP by +100 (up to +500 at max ability)."
+    }
+  ],
+
+  "metadata": {
+    "cardNumber": 2,
+    "maxLevel": 50,
+    "hitCount": 1
+  }
+},
+
+  {
+  "id": "naruto_003",
+  "name": "Naruto Uzumaki",
+  "version": "The Worst Loser",
+  "rarity": 5,
+  "starMinCode": "5S",
+  "starMaxCode": "5S",
+  "portrait": "assets/characters/naruto_003/portrait_5S.png",
+  "full": "assets/characters/naruto_003/full_5S.png",
+  "ultimateAnimation": null,
+  "secretAnimation": null,
+
+  "element": "Heart",
+  "range": "Mid",
+  "affiliation": ["Hidden Leaf"],
+  "powerRank": null,
+
+  "artByTier": {
+    "5S": {
+      "portrait": "assets/characters/naruto_003/portrait_5S.png",
+      "full": "assets/characters/naruto_003/full_5S.png"
+    }
+  },
+
+  "statsBase": {
+    "hp": 428,
+    "atk": 369,
+    "def": null,
+    "speed": 90,
+    "chakra": null
+  },
+
+  "statsMax": {
+    "hp": 856,
+    "atk": 738,
+    "def": null,
+    "speed": 180,
+    "chakra": null
+  },
+
+  "statsLimitBreak": {
+    "hp": 1056,
+    "atk": 813,
+    "speed": 205
+  },
+
+  "statsLimitBreakMaxAbilities": {
+    "hp": 1256,
+    "atk": 838,
+    "speed": 180
+  },
+
+  "growthCurve": {
+    "hp": 1.00,
+    "atk": 1.00,
+    "def": 1.00,
+    "speed": 1.00,
+    "chakra": 1.00
+  },
+
+  "luck": { "base": 1, "max": 80 },
+  "cost": { "base": 24, "max": 12 },
+
+  "passiveIcons": {
+    "5S": []
+  },
+
+  "fieldSkill": {
+    "5S": "Boosts ATK by 75–150."
+  },
+
+  "buddySkill": {
+    "5S": "Boosts ATK by 95."
+  },
+
+  "syncSkills": [
+    {
+      "condition": "Sync With Hidden Leaf",
+      "effect": "Boosts ATK by 50/100."
+    }
+  ],
+
+  "skills": {
+    "ninjutsu": {
+      "name": "Evil Wind Shuriken: Shadow Windmill",
+      "type": "Ninjutsu",
+      "byTier": {
+        "5S": {
+          "chakraCost": 3,
+          "range": "Mid — Circle",
+          "hits": 4,
+          "multiplier": "2.2x ATK",
+          "description": "2.2x attack toward all enemies in range.",
+          "animationGif": null
+        }
+      }
+    }
+  },
+
+  "abilities": [
+    {
+      "name": "Combination Attack Boost",
+      "description": "Boosts ATK by 1.1x during Combos."
+    },
+    {
+      "name": "Health Recovery on Map Movement",
+      "description": "Restores 300 HP when moving to a new map."
+    },
+    {
+      "name": "Health Boost",
+      "description": "Boosts HP by +100 (up to +500 at max ability)."
+    },
+    {
+      "name": "Health Boost",
+      "description": "Boosts HP by +100 (up to +500 at max ability)."
+    },
+    {
+      "name": "Attack Boost",
+      "description": "Boosts ATK by +100."
+    }
+  ],
+
+  "metadata": {
+    "cardNumber": 3,
+    "maxLevel": 70,
+    "hitCount": 1
+  }
+},
+
+
+{
+  "id": "sasuke_004",
+  "name": "Sasuke Uchiha",
+  "version": "A Lone Heart",
+  "rarity": 3,
+  "starMinCode": "3S",
+  "starMaxCode": "4S",
+  "lbEligible": false,
+
+  "portrait": "assets/characters/sasuke_004/portrait_3S.png",
+  "full": "assets/characters/sasuke_004/full_3S.png",
+
+  "element": "Skill",
+  "range": "Short",
+  "affiliation": ["Hidden Leaf", "Uchiha Clan"],
+
+  "artByTier": {
+    "3S": {
+      "portrait": "assets/characters/sasuke_004/portrait_3S.png",
+      "full": "assets/characters/sasuke_004/full_3S.png"
+    }
+  },
+
+  "statsBase": {
+    "hp": 226,
+    "atk": 241,
+    "def": null,
+    "speed": 52,
+    "chakra": null
+  },
+
+  "statsMax": {
+    "hp": 452,
+    "atk": 482,
+    "def": null,
+    "speed": 105,
+    "chakra": null
+  },
+
+  "statsLimitBreak": {
+    "hp": 502,
+    "atk": 507,
+    "speed": 120
+  },
+
+  "statsLimitBreakMaxAbilities": {
+    "hp": 452,
+    "atk": 482,
+    "speed": 105
+  },
+
+  "growthCurve": {
+    "hp": 1.0,
+    "atk": 1.0,
+    "def": 1.0,
+    "speed": 1.0,
+    "chakra": 1.0
+  },
+
+  "luck": { "base": 1, "max": 40 },
+  "cost": { "base": 5, "max": 4 },
+
+  "fieldSkill": {
+    "3S": "Boosts critical rate by 1.1–1.6x."
+  },
+
+  "buddySkill": {
+    "3S": "Reduces chance of receiving slip damage by 10% (Not Field Skills)."
+  },
+
+  "syncSkills": [],
+
+  "skills": {
+    "ninjutsu": {
+      "name": "Fire Style: Phoenix Flower Jutsu",
+      "type": "Ninjutsu",
+      "byTier": {
+        "3S": {
+          "chakraCost": 5,
+          "range": "Mid — Circle",
+          "hits": 4,
+          "multiplier": "2.2x ATK",
+          "description": "2.2x attack toward all enemies. 25% chance of slip damage for 5 turns.",
+          "extraEffects": {
+            "slipChance": 25,
+            "slipDuration": 5
+          }
+        }
+      }
+    }
+  },
+
+  "abilities": [
+    {
+      "name": "Combination Attack Boost",
+      "description": "Boosts ATK by 1.1x during Combos."
+    },
+    {
+      "name": "Combination Critical Rate Boost",
+      "description": "Boosts critical rate by 1.75x during Combos."
+    },
+    {
+      "name": "Combination Critical Rate Boost",
+      "description": "Boosts critical rate by 1.75x during Combos."
+    }
+  ],
+
+  "metadata": {
+    "cardNumber": 4,
+    "maxLevel": 30,
+    "hitCount": 1
+  }
+},
+
+
+{
+  "id": "sasuke_005",
+  "name": "Sasuke Uchiha",
+  "version": "A Lone Heart",
+  "rarity": 4,
+  "starMinCode": "4S",
+  "starMaxCode": "4S",
+  "lbEligible": false,
+
+  "portrait": "assets/characters/sasuke_005/portrait_4S.png",
+  "full": "assets/characters/sasuke_005/full_4S.png",
+
+  "element": "Skill",
+  "range": "Short",
+  "affiliation": ["Hidden Leaf", "Uchiha Clan"],
+
+  "artByTier": {
+    "4S": {
+      "portrait": "assets/characters/sasuke_005/portrait_4S.png",
+      "full": "assets/characters/sasuke_005/full_4S.png"
+    }
+  },
+
+  "statsBase": {
+    "hp": 344,
+    "atk": 379,
+    "def": null,
+    "speed": 65,
+    "chakra": null
+  },
+
+  "statsMax": {
+    "hp": 688,
+    "atk": 758,
+    "def": null,
+    "speed": 131,
+    "chakra": null
+  },
+
+  "statsLimitBreak": {
+    "hp": 788,
+    "atk": 808,
+    "speed": 151
+  },
+
+  "statsLimitBreakMaxAbilities": {
+    "hp": 688,
+    "atk": 758,
+    "speed": 131
+  },
+
+  "growthCurve": {
+    "hp": 1.0,
+    "atk": 1.0,
+    "def": 1.0,
+    "speed": 1.0,
+    "chakra": 1.0
+  },
+
+  "luck": { "base": 1, "max": 60 },
+  "cost": { "base": 12, "max": 8 },
+
+  "fieldSkill": {
+    "4S": "Boosts critical rate by 1.2–1.7x."
+  },
+
+  "buddySkill": {
+    "4S": "Reduces chance of receiving slip damage by 15% (Not Field Skills)."
+  },
+
+  "syncSkills": [],
+
+  "skills": {
+    "ninjutsu": {
+      "name": "Fire Style: Phoenix Flower Jutsu",
+      "type": "Ninjutsu",
+      "byTier": {
+        "4S": {
+          "chakraCost": 4,
+          "range": "Mid — Circle",
+          "hits": 4,
+          "multiplier": "2.2x ATK",
+          "description": "2.2x attack toward all enemies. 30% chance of slip damage for 5 turns.",
+          "extraEffects": {
+            "slipChance": 30,
+            "slipDuration": 5
+          }
+        }
+      }
+    }
+  },
+
+  "abilities": [
+    {
+      "name": "Combination Attack Boost",
+      "description": "Boosts ATK by 1.1x during Combos."
+    },
+    {
+      "name": "Combination Critical Rate Boost",
+      "description": "Boosts critical rate by 1.75x during Combos."
+    },
+    {
+      "name": "Combination Critical Rate Boost",
+      "description": "Boosts critical rate by 1.75x during Combos."
+    },
+    {
+      "name": "Slip Damage Rate Boost",
+      "description": "Boosts slip damage rate by 10%."
+    }
+  ],
+
+  "metadata": {
+    "cardNumber": 5,
+    "maxLevel": 50,
+    "hitCount": 1
+  }
+},
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  {
+    "id": "naruto_665",
+    "name": "Naruto Uzumaki",
+    "version": "The Inheritor",
+    "rarity": 6,
+    "starMinCode": "6S",
+    "starMaxCode": "6SB",
+    "portrait": "assets/characters/naruto_665/portrait_6S.png",
+    "full": "assets/characters/naruto_665/full_6S.png",
+    "ultimateAnimation": "assets/animations/naruto_665/secret.mp4",
+    "secretAnimation": "assets/animations/naruto_665/ninjutsu.gif",
+    "element": "Heart",
+    "range": "Mid",
+    "affiliation": ["Hidden Leaf", "Ninja Alliance"],
+    "powerRank": null,
+    "artByTier": {
+      "6S": {
+        "portrait": "assets/characters/naruto_665/portrait_6.png",
+        "full": "assets/characters/naruto_665/full_6.png"
+      },
+      "6SB": {
+        "portrait": "assets/characters/naruto_665/portrait_6S.png",
+        "full": "assets/characters/naruto_665/full_6S.png"
+      }
+    },
+    "statsBase": {
+      "hp": 743,
+      "atk": 686,
+      "def": null,
+      "speed": 110,
+      "chakra": null
+    },
+    "statsMax": {
+      "hp": 1486,
+      "atk": 1372,
+      "def": null,
+      "speed": 221,
+      "chakra": null
+    },
+    "statsLimitBreak": {
+      "hp": 1906,
+      "atk": 1772,
+      "def": null,
+      "speed": 241
+    },
+    "growthCurve": {
+      "hp": 1.0,
+      "atk": 1.0,
+      "def": 1.0,
+      "speed": 1.0,
+      "chakra": 1.0
+    },
+    "luck": { "base": 1, "max": 99 },
+    "cost": { "base": 100, "max": 50 },
+    "passiveIcons": {
+      "6S": [],
+      "6SB": []
+    },
+    "fieldSkill": {
+      "6S": "Reduces chance of receiving jutsu sealing by 20%-25% (Not Field Skills)."
+    },
+    "buddySkill": {
+      "6S": "Reduces chance of receiving jutsu sealing by 25% (Not Field Skills)."
+    },
+    "syncSkills": [
+      {
+        "condition": "Sync With Hidden Leaf",
+        "effect": "Reduces Body damage taken by 15%"
+      },
+      {
+        "condition": "Sync With Ninja Alliance",
+        "effect": "Restores 50/250 HP every turn"
+      }
+    ],
+    "skills": {
+      "ninjutsu": {
+        "name": "Dive Bomb Rasengan",
+        "type": "Ninjutsu",
+        "byTier": {
+          "6S": {
+            "chakraCost": 5,
+            "cooldown": null,
+            "range": "Short — Circle",
+            "hits": 7,
+            "multiplier": "5.1x ATK",
+            "description": "5.1x attack to 1 enemy, knocks back. 50% chance slip damage and/or ATK down for 4 turns.",
+            "extraEffects": {
+              "slipChance": 50,
+              "atkDownChance": 50,
+              "debuffDuration": 4
+            }
+          }
+        }
+      },
+      "ultimate": {
+        "name": "Tailed Beast Planetary Rasen Shuriken",
+        "type": "Secret",
+        "byTier": {
+          "6S": {
+            "chakraCost": 10,
+            "cooldown": null,
+            "range": "Long — Circle",
+            "hits": 10,
+            "multiplier": "8.0x ATK",
+            "description": "8x attack toward all enemies, knocks back, 70% ATK down (5T). Grants 20% damage reduction for 2 turns.",
+            "effects": {
+              "atkDownChance": 70,
+              "atkDownDuration": 5,
+              "damageReductionPercent": 20,
+              "damageReductionDuration": 2
+            }
+          }
+        }
+      }
+    },
+    "abilities": [
+      {
+        "name": "Reduce Bravery Damage",
+        "description": "Reduces Bravery damage taken by 20%."
+      },
+      {
+        "name": "Reduce Wisdom Damage",
+        "description": "Reduces Wisdom damage taken by 20%."
+      },
+      {
+        "name": "Jutsu Sealing Resistance",
+        "description": "Lowers rate of being jutsu sealed by 20% (Not Field Skills)."
+      },
+      {
+        "name": "Self-Healing",
+        "description": "Restores 300/600 HP every turn."
+      },
+      {
+        "name": "Jutsu Sealing Resistance",
+        "description": "Lowers rate of being jutsu sealed by 20% (Not Field Skills)."
+      }
+    ],
+    "metadata": {
+      "cardNumber": 665,
+      "maxLevel": 150,
+      "hitCount": 2
+    }
+  }
+]

@@ -1,0 +1,276 @@
+{
+  "version": "1.0",
+  "description": "Equippable once-per-battle ultimate abilities that unlock after 3 consecutive basic attacks",
+  "ultimates": [
+    {
+      "id": "rasengan_ultimate",
+      "name": "Massive Rasengan",
+      "description": "Unleash a massive chakra sphere that deals 500% ATK damage to all enemies and ignores 50% of their defense.",
+      "icon": "💥",
+      "image": "assets/ultimates/rasengan_ultimate.png",
+      "chakraCost": 10,
+      "power": 500,
+      "target": "all_enemies",
+      "allowedCharacters": [
+        "uzumaki-naruto",
+        "sage-mode-naruto",
+        "kcm-naruto",
+        "hokage-naruto"
+      ],
+      "effects": [
+        {
+          "type": "damage",
+          "multiplier": 5.0,
+          "ignoreDefense": 0.5
+        },
+        {
+          "type": "stun",
+          "chance": 0.2,
+          "duration": 1
+        }
+      ],
+      "animation": "rasengan_blast",
+      "unlock_requirement": 3
+    },
+    {
+      "id": "chidori_ultimate",
+      "name": "Lightning Blade",
+      "description": "Channel lightning through your hand for a devastating strike dealing 600% ATK damage with guaranteed critical hit.",
+      "icon": "⚡",
+      "image": "assets/ultimates/chidori_ultimate.png",
+      "chakraCost": 10,
+      "power": 600,
+      "target": "single_enemy",
+      "allowedCharacters": [
+        "sasuke-uchiha",
+        "curse-mark-sasuke",
+        "ems-sasuke",
+        "rinnegan-sasuke",
+        "hatake-kakashi",
+        "hokage-kakashi"
+      ],
+      "effects": [
+        {
+          "type": "damage",
+          "multiplier": 6.0,
+          "guaranteedCrit": true
+        },
+        {
+          "type": "pierce",
+          "value": true
+        }
+      ],
+      "animation": "chidori_strike",
+      "unlock_requirement": 3
+    },
+    {
+      "id": "sharingan_ultimate",
+      "name": "Mangekyō Sharingan",
+      "description": "Activate Mangekyō Sharingan to buff all allies with +100% ATK and +50% Speed for 3 turns.",
+      "icon": "👁️",
+      "image": "assets/ultimates/sharingan_ultimate.png",
+      "chakraCost": 12,
+      "power": 0,
+      "target": "all_allies",
+      "allowedCharacters": [
+        "sasuke-uchiha",
+        "curse-mark-sasuke",
+        "ems-sasuke",
+        "rinnegan-sasuke",
+        "itachi-uchiha",
+        "edo-itachi",
+        "obito-uchiha",
+        "madara-uchiha",
+        "edo-madara",
+        "hatake-kakashi",
+        "hokage-kakashi"
+      ],
+      "effects": [
+        {
+          "type": "buff",
+          "stat": "atk",
+          "multiplier": 2.0,
+          "duration": 3
+        },
+        {
+          "type": "buff",
+          "stat": "speed",
+          "multiplier": 1.5,
+          "duration": 3
+        }
+      ],
+      "animation": "sharingan_activation",
+      "unlock_requirement": 3
+    },
+    {
+      "id": "sage_mode_ultimate",
+      "name": "Sage Mode Activation",
+      "description": "Enter Sage Mode, healing all allies for 30% HP and granting immunity to debuffs for 2 turns.",
+      "icon": "🟠",
+      "image": "assets/ultimates/sage_mode_ultimate.png",
+      "chakraCost": 15,
+      "power": 0,
+      "target": "all_allies",
+      "allowedCharacters": [
+        "sage-mode-naruto",
+        "kcm-naruto",
+        "hokage-naruto",
+        "jiraiya",
+        "sage-jiraiya"
+      ],
+      "effects": [
+        {
+          "type": "heal",
+          "percent": 0.3
+        },
+        {
+          "type": "debuff_immunity",
+          "duration": 2
+        }
+      ],
+      "animation": "sage_mode_aura",
+      "unlock_requirement": 3
+    },
+    {
+      "id": "shadow_clone_ultimate",
+      "name": "Multi Shadow Clone Jutsu",
+      "description": "Create shadow clones to attack all enemies 5 times dealing 200% ATK damage each hit.",
+      "icon": "👥",
+      "image": "assets/ultimates/shadow_clone_ultimate.png",
+      "chakraCost": 12,
+      "power": 200,
+      "target": "all_enemies",
+      "allowedCharacters": [
+        "uzumaki-naruto",
+        "sage-mode-naruto",
+        "kcm-naruto",
+        "hokage-naruto"
+      ],
+      "effects": [
+        {
+          "type": "multi_hit",
+          "hits": 5,
+          "multiplier": 2.0
+        },
+        {
+          "type": "debuff",
+          "status": "confusion",
+          "chance": 0.3,
+          "duration": 2
+        }
+      ],
+      "animation": "shadow_clone_barrage",
+      "unlock_requirement": 3
+    },
+    {
+      "id": "fire_style_ultimate",
+      "name": "Great Fire Annihilation",
+      "description": "Unleash massive flames dealing 450% ATK damage to all enemies and inflicting burn for 3 turns.",
+      "icon": "🔥",
+      "image": "assets/ultimates/fire_style_ultimate.png",
+      "chakraCost": 11,
+      "power": 450,
+      "target": "all_enemies",
+      "allowedCharacters": [
+        "sasuke-uchiha",
+        "curse-mark-sasuke",
+        "ems-sasuke",
+        "rinnegan-sasuke",
+        "madara-uchiha",
+        "edo-madara",
+        "itachi-uchiha",
+        "edo-itachi"
+      ],
+      "effects": [
+        {
+          "type": "damage",
+          "multiplier": 4.5
+        },
+        {
+          "type": "debuff",
+          "status": "burn",
+          "duration": 3,
+          "damagePerTurn": 50
+        },
+        {
+          "type": "debuff",
+          "stat": "def",
+          "multiplier": 0.7,
+          "duration": 3
+        }
+      ],
+      "animation": "fire_annihilation",
+      "unlock_requirement": 3
+    },
+    {
+      "id": "byakugan_ultimate",
+      "name": "Eight Trigrams Sixty-Four Palms",
+      "description": "Precise chakra point strikes dealing 550% ATK damage and sealing the target's ninjutsu for 2 turns.",
+      "icon": "👁️‍🗨️",
+      "image": "assets/ultimates/byakugan_ultimate.png",
+      "chakraCost": 13,
+      "power": 550,
+      "target": "single_enemy",
+      "allowedCharacters": [
+        "hyuga-neji",
+        "neji-shippuden",
+        "hyuga-hinata",
+        "hinata-shippuden",
+        "hyuga-hanabi"
+      ],
+      "effects": [
+        {
+          "type": "damage",
+          "multiplier": 5.5
+        },
+        {
+          "type": "seal",
+          "ability": "ninjutsu",
+          "duration": 2
+        },
+        {
+          "type": "chakra_drain",
+          "percent": 0.5
+        }
+      ],
+      "animation": "sixty_four_palms",
+      "unlock_requirement": 3
+    },
+    {
+      "id": "healing_ultimate",
+      "name": "Mystical Palm Technique",
+      "description": "Advanced medical ninjutsu that heals all allies for 50% HP and removes all debuffs.",
+      "icon": "💚",
+      "image": "assets/ultimates/healing_ultimate.png",
+      "chakraCost": 14,
+      "power": 0,
+      "target": "all_allies",
+      "allowedCharacters": [
+        "sakura-haruno",
+        "sakura-shippuden",
+        "tsunade",
+        "hokage-tsunade",
+        "kabuto-yakushi",
+        "shizune"
+      ],
+      "effects": [
+        {
+          "type": "heal",
+          "percent": 0.5
+        },
+        {
+          "type": "cleanse",
+          "removeAll": true
+        },
+        {
+          "type": "buff",
+          "status": "regen",
+          "duration": 3,
+          "healPerTurn": 30
+        }
+      ],
+      "animation": "mystical_palm",
+      "unlock_requirement": 3
+    }
+  ]
+}

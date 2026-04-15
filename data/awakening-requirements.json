@@ -1,0 +1,117 @@
+{
+  "tierRequirements": {
+    "3S": {
+      "nextTier": "4S",
+      "materials": {
+        "awakening_stone_3": 5,
+        "scroll_body": 3,
+        "ryo": 5000
+      }
+    },
+    "4S": {
+      "nextTier": "5S",
+      "materials": {
+        "awakening_stone_4": 8,
+        "scroll_skill": 5,
+        "ryo": 10000
+      }
+    },
+    "5S": {
+      "nextTier": "6S",
+      "materials": {
+        "awakening_stone_5": 10,
+        "scroll_bravery": 8,
+        "character_stone": 3,
+        "ryo": 20000
+      }
+    },
+    "6S": {
+      "nextTier": "6SB",
+      "materials": {
+        "awakening_stone_6": 15,
+        "scroll_wisdom": 10,
+        "character_stone": 5,
+        "ryo": 35000
+      }
+    },
+    "6SB": {
+      "nextTier": "7S",
+      "materials": {
+        "awakening_stone_6": 20,
+        "scroll_heart": 15,
+        "character_stone": 8,
+        "dupe_crystal": 1,
+        "ryo": 50000
+      }
+    },
+    "7S": {
+      "nextTier": "7SL",
+      "materials": {
+        "awakening_stone_7": 15,
+        "scroll_body": 12,
+        "character_stone": 10,
+        "dupe_crystal": 2,
+        "ryo": 75000
+      }
+    },
+    "7SL": {
+      "nextTier": "8S",
+      "materials": {
+        "awakening_stone_7": 20,
+        "scroll_skill": 15,
+        "character_stone": 12,
+        "dupe_crystal": 3,
+        "ryo": 100000
+      }
+    },
+    "8S": {
+      "nextTier": "8SM",
+      "materials": {
+        "awakening_stone_8": 20,
+        "scroll_bravery": 20,
+        "character_stone": 15,
+        "dupe_crystal": 5,
+        "limit_break_crystal": 1,
+        "ryo": 150000
+      }
+    },
+    "8SM": {
+      "nextTier": "9S",
+      "materials": {
+        "awakening_stone_8": 25,
+        "scroll_wisdom": 25,
+        "character_stone": 20,
+        "dupe_crystal": 8,
+        "limit_break_crystal": 2,
+        "ryo": 200000
+      }
+    },
+    "9S": {
+      "nextTier": "9ST",
+      "materials": {
+        "awakening_stone_9": 20,
+        "scroll_heart": 30,
+        "character_stone": 25,
+        "dupe_crystal": 12,
+        "limit_break_crystal": 3,
+        "ryo": 300000
+      }
+    },
+    "9ST": {
+      "nextTier": "10SO",
+      "materials": {
+        "awakening_stone_9": 30,
+        "scroll_body": 40,
+        "character_stone": 30,
+        "dupe_crystal": 20,
+        "limit_break_crystal": 5,
+        "ryo": 500000
+      }
+    }
+  },
+  "notes": {
+    "description": "Awakening requirements for tier promotion",
+    "resetMode": "Level resets to 1 on awakening (default behavior)",
+    "limitBreak": "Limit Break is available at max tier only"
+  }
+}

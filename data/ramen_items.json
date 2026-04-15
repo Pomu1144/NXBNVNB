@@ -1,0 +1,1897 @@
+[
+  {
+    "id": "sand_127",
+    "name": "Sand Chunin Male",
+    "version": "Assassin from the Sand",
+    "element": null,
+    "rarity": 1,
+    "starMinCode": "1S",
+    "starMaxCode": "2S",
+    "lbEligible": false,
+    "portrait": "assets/ramen/sand_127/portrait_2S.png",
+    "full": "assets/ramen/sand_127/full_2S.png",
+    "ultimateAnimation": null,
+    "secretAnimation": null,
+    "artByTier": {
+      "2S": {
+        "portrait": "assets/ramen/sand_127/portrait_2S.png",
+        "full": "assets/ramen/sand_127/full_2S.png"
+      }
+    },
+    "statsBase": {
+      "hp": 2533,
+      "atk": 259,
+      "speed": 124
+    },
+    "statsMax": {
+      "hp": 5066,
+      "atk": 518,
+      "speed": 249
+    },
+    "growthCurve": {
+      "hp": 1.0,
+      "atk": 1.0,
+      "def": 1.0,
+      "speed": 1.0,
+      "chakra": 1.0
+    },
+    "powerRank": 1764,
+    "powerWeights": {
+      "hp": 0.3,
+      "atk": 0.4,
+      "def": 0.1,
+      "speed": 0.15,
+      "chakra": 0.05
+    },
+    "range": "",
+    "luck": {
+      "base": 0,
+      "max": 0
+    },
+    "cost": {
+      "base": 0,
+      "max": 0
+    },
+    "affiliation": [],
+    "passiveIcons": {},
+    "skills": {
+      "fieldSkill": {
+        "name": "Field Skill",
+        "type": "Field",
+        "description": "Boosts critical rate by 1.1-1.6x."
+      },
+      "buddySkill": {
+        "name": "Buddy Skill",
+        "type": "Buddy",
+        "description": "Boosts critical rate by 1.3x."
+      },
+      "jutsu": {
+        "name": "Clone Jutsu",
+        "type": "Jutsu",
+        "byTier": {
+          "2S": {
+            "chakraCost": 4,
+            "hits": null,
+            "shape": "\u2014",
+            "range": "\u2014",
+            "position": "\u2014",
+            "description": "Gives you 3 perfect dodge(s) for 3 turn(s)."
+          }
+        }
+      }
+    },
+    "abilities": [
+      {
+        "name": "Combination Critical Rate Boost",
+        "description": "Boosts critical rate by 1.75x during Combinations."
+      },
+      {
+        "name": "Health Boost",
+        "description": "Boosts health by 100 / 500 ."
+      }
+    ],
+    "metadata": {
+      "cardNumber": 127,
+      "maxLevel": null,
+      "hitCount": 0
+    }
+  },
+  {
+    "id": "heart_915",
+    "name": "Heart",
+    "version": "Ichiraku Ramen, Reg",
+    "element": null,
+    "rarity": 1,
+    "starMinCode": "1S",
+    "starMaxCode": "1S",
+    "lbEligible": false,
+    "portrait": "assets/ramen/heart_915/portrait_1S.png",
+    "full": "assets/ramen/heart_915/full_1S.png",
+    "ultimateAnimation": null,
+    "secretAnimation": null,
+    "artByTier": {
+      "1S": {
+        "portrait": "assets/ramen/heart_915/portrait_1S.png",
+        "full": "assets/ramen/heart_915/full_1S.png"
+      }
+    },
+    "statsBase": {},
+    "statsMax": {
+      "hp": 1,
+      "atk": 1
+    },
+    "growthCurve": {
+      "hp": 1.0,
+      "atk": 1.0,
+      "def": 1.0,
+      "speed": 1.0,
+      "chakra": 1.0
+    },
+    "powerRank": 0,
+    "powerWeights": {
+      "hp": 0.3,
+      "atk": 0.4,
+      "def": 0.1,
+      "speed": 0.15,
+      "chakra": 0.05
+    },
+    "range": "",
+    "luck": {
+      "base": 0,
+      "max": 0
+    },
+    "cost": {
+      "base": 0,
+      "max": 0
+    },
+    "affiliation": [],
+    "passiveIcons": {},
+    "skills": {},
+    "abilities": [],
+    "metadata": {
+      "cardNumber": 915,
+      "maxLevel": null,
+      "hitCount": 0
+    }
+  },
+  {
+    "id": "heart_916",
+    "name": "Heart",
+    "version": "Ichiraku Ramen, Large",
+    "element": null,
+    "rarity": 1,
+    "starMinCode": "1S",
+    "starMaxCode": "2S",
+    "lbEligible": false,
+    "portrait": "assets/ramen/heart_916/portrait_2S.png",
+    "full": "assets/ramen/heart_916/full_2S.png",
+    "ultimateAnimation": null,
+    "secretAnimation": null,
+    "artByTier": {
+      "2S": {
+        "portrait": "assets/ramen/heart_916/portrait_2S.png",
+        "full": "assets/ramen/heart_916/full_2S.png"
+      }
+    },
+    "statsBase": {},
+    "statsMax": {
+      "hp": 1,
+      "atk": 1
+    },
+    "growthCurve": {
+      "hp": 1.0,
+      "atk": 1.0,
+      "def": 1.0,
+      "speed": 1.0,
+      "chakra": 1.0
+    },
+    "powerRank": 0,
+    "powerWeights": {
+      "hp": 0.3,
+      "atk": 0.4,
+      "def": 0.1,
+      "speed": 0.15,
+      "chakra": 0.05
+    },
+    "range": "",
+    "luck": {
+      "base": 0,
+      "max": 0
+    },
+    "cost": {
+      "base": 0,
+      "max": 0
+    },
+    "affiliation": [],
+    "passiveIcons": {},
+    "skills": {},
+    "abilities": [],
+    "metadata": {
+      "cardNumber": 916,
+      "maxLevel": null,
+      "hitCount": 0
+    }
+  },
+  {
+    "id": "heart_917",
+    "name": "Heart",
+    "version": "Ichiraku Ramen, XL",
+    "element": null,
+    "rarity": 1,
+    "starMinCode": "1S",
+    "starMaxCode": "3S",
+    "lbEligible": false,
+    "portrait": "assets/ramen/heart_917/portrait_3S.png",
+    "full": "assets/ramen/heart_917/full_3S.png",
+    "ultimateAnimation": null,
+    "secretAnimation": null,
+    "artByTier": {
+      "3S": {
+        "portrait": "assets/ramen/heart_917/portrait_3S.png",
+        "full": "assets/ramen/heart_917/full_3S.png"
+      }
+    },
+    "statsBase": {},
+    "statsMax": {
+      "hp": 1,
+      "atk": 1
+    },
+    "growthCurve": {
+      "hp": 1.0,
+      "atk": 1.0,
+      "def": 1.0,
+      "speed": 1.0,
+      "chakra": 1.0
+    },
+    "powerRank": 0,
+    "powerWeights": {
+      "hp": 0.3,
+      "atk": 0.4,
+      "def": 0.1,
+      "speed": 0.15,
+      "chakra": 0.05
+    },
+    "range": "",
+    "luck": {
+      "base": 0,
+      "max": 0
+    },
+    "cost": {
+      "base": 0,
+      "max": 0
+    },
+    "affiliation": [],
+    "passiveIcons": {},
+    "skills": {},
+    "abilities": [],
+    "metadata": {
+      "cardNumber": 917,
+      "maxLevel": null,
+      "hitCount": 0
+    }
+  },
+  {
+    "id": "skill_918",
+    "name": "Skill",
+    "version": "Ichiraku Ramen, Reg",
+    "element": null,
+    "rarity": 1,
+    "starMinCode": "1S",
+    "starMaxCode": "1S",
+    "lbEligible": false,
+    "portrait": "assets/ramen/skill_918/portrait_1S.png",
+    "full": "assets/ramen/skill_918/full_1S.png",
+    "ultimateAnimation": null,
+    "secretAnimation": null,
+    "artByTier": {
+      "1S": {
+        "portrait": "assets/ramen/skill_918/portrait_1S.png",
+        "full": "assets/ramen/skill_918/full_1S.png"
+      }
+    },
+    "statsBase": {},
+    "statsMax": {
+      "hp": 1,
+      "atk": 1
+    },
+    "growthCurve": {
+      "hp": 1.0,
+      "atk": 1.0,
+      "def": 1.0,
+      "speed": 1.0,
+      "chakra": 1.0
+    },
+    "powerRank": 0,
+    "powerWeights": {
+      "hp": 0.3,
+      "atk": 0.4,
+      "def": 0.1,
+      "speed": 0.15,
+      "chakra": 0.05
+    },
+    "range": "",
+    "luck": {
+      "base": 0,
+      "max": 0
+    },
+    "cost": {
+      "base": 0,
+      "max": 0
+    },
+    "affiliation": [],
+    "passiveIcons": {},
+    "skills": {},
+    "abilities": [],
+    "metadata": {
+      "cardNumber": 918,
+      "maxLevel": null,
+      "hitCount": 0
+    }
+  },
+  {
+    "id": "skill_919",
+    "name": "Skill",
+    "version": "Ichiraku Ramen, Large",
+    "element": null,
+    "rarity": 1,
+    "starMinCode": "1S",
+    "starMaxCode": "2S",
+    "lbEligible": false,
+    "portrait": "assets/ramen/skill_919/portrait_2S.png",
+    "full": "assets/ramen/skill_919/full_2S.png",
+    "ultimateAnimation": null,
+    "secretAnimation": null,
+    "artByTier": {
+      "2S": {
+        "portrait": "assets/ramen/skill_919/portrait_2S.png",
+        "full": "assets/ramen/skill_919/full_2S.png"
+      }
+    },
+    "statsBase": {},
+    "statsMax": {
+      "hp": 1,
+      "atk": 1
+    },
+    "growthCurve": {
+      "hp": 1.0,
+      "atk": 1.0,
+      "def": 1.0,
+      "speed": 1.0,
+      "chakra": 1.0
+    },
+    "powerRank": 0,
+    "powerWeights": {
+      "hp": 0.3,
+      "atk": 0.4,
+      "def": 0.1,
+      "speed": 0.15,
+      "chakra": 0.05
+    },
+    "range": "",
+    "luck": {
+      "base": 0,
+      "max": 0
+    },
+    "cost": {
+      "base": 0,
+      "max": 0
+    },
+    "affiliation": [],
+    "passiveIcons": {},
+    "skills": {},
+    "abilities": [],
+    "metadata": {
+      "cardNumber": 919,
+      "maxLevel": null,
+      "hitCount": 0
+    }
+  },
+  {
+    "id": "skill_920",
+    "name": "Skill",
+    "version": "Ichiraku Ramen, XL",
+    "element": null,
+    "rarity": 1,
+    "starMinCode": "1S",
+    "starMaxCode": "3S",
+    "lbEligible": false,
+    "portrait": "assets/ramen/skill_920/portrait_3S.png",
+    "full": "assets/ramen/skill_920/full_3S.png",
+    "ultimateAnimation": null,
+    "secretAnimation": null,
+    "artByTier": {
+      "3S": {
+        "portrait": "assets/ramen/skill_920/portrait_3S.png",
+        "full": "assets/ramen/skill_920/full_3S.png"
+      }
+    },
+    "statsBase": {},
+    "statsMax": {
+      "hp": 1,
+      "atk": 1
+    },
+    "growthCurve": {
+      "hp": 1.0,
+      "atk": 1.0,
+      "def": 1.0,
+      "speed": 1.0,
+      "chakra": 1.0
+    },
+    "powerRank": 0,
+    "powerWeights": {
+      "hp": 0.3,
+      "atk": 0.4,
+      "def": 0.1,
+      "speed": 0.15,
+      "chakra": 0.05
+    },
+    "range": "",
+    "luck": {
+      "base": 0,
+      "max": 0
+    },
+    "cost": {
+      "base": 0,
+      "max": 0
+    },
+    "affiliation": [],
+    "passiveIcons": {},
+    "skills": {},
+    "abilities": [],
+    "metadata": {
+      "cardNumber": 920,
+      "maxLevel": null,
+      "hitCount": 0
+    }
+  },
+  {
+    "id": "body_921",
+    "name": "Body",
+    "version": "Ichiraku Ramen, Reg",
+    "element": null,
+    "rarity": 1,
+    "starMinCode": "1S",
+    "starMaxCode": "1S",
+    "lbEligible": false,
+    "portrait": "assets/ramen/body_921/portrait_1S.png",
+    "full": "assets/ramen/body_921/full_1S.png",
+    "ultimateAnimation": null,
+    "secretAnimation": null,
+    "artByTier": {
+      "1S": {
+        "portrait": "assets/ramen/body_921/portrait_1S.png",
+        "full": "assets/ramen/body_921/full_1S.png"
+      }
+    },
+    "statsBase": {},
+    "statsMax": {
+      "hp": 1,
+      "atk": 1
+    },
+    "growthCurve": {
+      "hp": 1.0,
+      "atk": 1.0,
+      "def": 1.0,
+      "speed": 1.0,
+      "chakra": 1.0
+    },
+    "powerRank": 0,
+    "powerWeights": {
+      "hp": 0.3,
+      "atk": 0.4,
+      "def": 0.1,
+      "speed": 0.15,
+      "chakra": 0.05
+    },
+    "range": "",
+    "luck": {
+      "base": 0,
+      "max": 0
+    },
+    "cost": {
+      "base": 0,
+      "max": 0
+    },
+    "affiliation": [],
+    "passiveIcons": {},
+    "skills": {},
+    "abilities": [],
+    "metadata": {
+      "cardNumber": 921,
+      "maxLevel": null,
+      "hitCount": 0
+    }
+  },
+  {
+    "id": "body_922",
+    "name": "Body",
+    "version": "Ichiraku Ramen, Large",
+    "element": null,
+    "rarity": 1,
+    "starMinCode": "1S",
+    "starMaxCode": "2S",
+    "lbEligible": false,
+    "portrait": "assets/ramen/body_922/portrait_2S.png",
+    "full": "assets/ramen/body_922/full_2S.png",
+    "ultimateAnimation": null,
+    "secretAnimation": null,
+    "artByTier": {
+      "2S": {
+        "portrait": "assets/ramen/body_922/portrait_2S.png",
+        "full": "assets/ramen/body_922/full_2S.png"
+      }
+    },
+    "statsBase": {},
+    "statsMax": {
+      "hp": 1,
+      "atk": 1
+    },
+    "growthCurve": {
+      "hp": 1.0,
+      "atk": 1.0,
+      "def": 1.0,
+      "speed": 1.0,
+      "chakra": 1.0
+    },
+    "powerRank": 0,
+    "powerWeights": {
+      "hp": 0.3,
+      "atk": 0.4,
+      "def": 0.1,
+      "speed": 0.15,
+      "chakra": 0.05
+    },
+    "range": "",
+    "luck": {
+      "base": 0,
+      "max": 0
+    },
+    "cost": {
+      "base": 0,
+      "max": 0
+    },
+    "affiliation": [],
+    "passiveIcons": {},
+    "skills": {},
+    "abilities": [],
+    "metadata": {
+      "cardNumber": 922,
+      "maxLevel": null,
+      "hitCount": 0
+    }
+  },
+  {
+    "id": "body_923",
+    "name": "Body",
+    "version": "Ichiraku Ramen, XL",
+    "element": null,
+    "rarity": 1,
+    "starMinCode": "1S",
+    "starMaxCode": "3S",
+    "lbEligible": false,
+    "portrait": "assets/ramen/body_923/portrait_3S.png",
+    "full": "assets/ramen/body_923/full_3S.png",
+    "ultimateAnimation": null,
+    "secretAnimation": null,
+    "artByTier": {
+      "3S": {
+        "portrait": "assets/ramen/body_923/portrait_3S.png",
+        "full": "assets/ramen/body_923/full_3S.png"
+      }
+    },
+    "statsBase": {},
+    "statsMax": {
+      "hp": 1,
+      "atk": 1
+    },
+    "growthCurve": {
+      "hp": 1.0,
+      "atk": 1.0,
+      "def": 1.0,
+      "speed": 1.0,
+      "chakra": 1.0
+    },
+    "powerRank": 0,
+    "powerWeights": {
+      "hp": 0.3,
+      "atk": 0.4,
+      "def": 0.1,
+      "speed": 0.15,
+      "chakra": 0.05
+    },
+    "range": "",
+    "luck": {
+      "base": 0,
+      "max": 0
+    },
+    "cost": {
+      "base": 0,
+      "max": 0
+    },
+    "affiliation": [],
+    "passiveIcons": {},
+    "skills": {},
+    "abilities": [],
+    "metadata": {
+      "cardNumber": 923,
+      "maxLevel": null,
+      "hitCount": 0
+    }
+  },
+  {
+    "id": "bravery_924",
+    "name": "Bravery",
+    "version": "Ichiraku Ramen, Reg",
+    "element": null,
+    "rarity": 1,
+    "starMinCode": "1S",
+    "starMaxCode": "1S",
+    "lbEligible": false,
+    "portrait": "assets/ramen/bravery_924/portrait_1S.png",
+    "full": "assets/ramen/bravery_924/full_1S.png",
+    "ultimateAnimation": null,
+    "secretAnimation": null,
+    "artByTier": {
+      "1S": {
+        "portrait": "assets/ramen/bravery_924/portrait_1S.png",
+        "full": "assets/ramen/bravery_924/full_1S.png"
+      }
+    },
+    "statsBase": {},
+    "statsMax": {
+      "hp": 1,
+      "atk": 1
+    },
+    "growthCurve": {
+      "hp": 1.0,
+      "atk": 1.0,
+      "def": 1.0,
+      "speed": 1.0,
+      "chakra": 1.0
+    },
+    "powerRank": 0,
+    "powerWeights": {
+      "hp": 0.3,
+      "atk": 0.4,
+      "def": 0.1,
+      "speed": 0.15,
+      "chakra": 0.05
+    },
+    "range": "",
+    "luck": {
+      "base": 0,
+      "max": 0
+    },
+    "cost": {
+      "base": 0,
+      "max": 0
+    },
+    "affiliation": [],
+    "passiveIcons": {},
+    "skills": {},
+    "abilities": [],
+    "metadata": {
+      "cardNumber": 924,
+      "maxLevel": null,
+      "hitCount": 0
+    }
+  },
+  {
+    "id": "bravery_925",
+    "name": "Bravery",
+    "version": "Ichiraku Ramen, Large",
+    "element": null,
+    "rarity": 1,
+    "starMinCode": "1S",
+    "starMaxCode": "2S",
+    "lbEligible": false,
+    "portrait": "assets/ramen/bravery_925/portrait_2S.png",
+    "full": "assets/ramen/bravery_925/full_2S.png",
+    "ultimateAnimation": null,
+    "secretAnimation": null,
+    "artByTier": {
+      "2S": {
+        "portrait": "assets/ramen/bravery_925/portrait_2S.png",
+        "full": "assets/ramen/bravery_925/full_2S.png"
+      }
+    },
+    "statsBase": {},
+    "statsMax": {
+      "hp": 1,
+      "atk": 1
+    },
+    "growthCurve": {
+      "hp": 1.0,
+      "atk": 1.0,
+      "def": 1.0,
+      "speed": 1.0,
+      "chakra": 1.0
+    },
+    "powerRank": 0,
+    "powerWeights": {
+      "hp": 0.3,
+      "atk": 0.4,
+      "def": 0.1,
+      "speed": 0.15,
+      "chakra": 0.05
+    },
+    "range": "",
+    "luck": {
+      "base": 0,
+      "max": 0
+    },
+    "cost": {
+      "base": 0,
+      "max": 0
+    },
+    "affiliation": [],
+    "passiveIcons": {},
+    "skills": {},
+    "abilities": [],
+    "metadata": {
+      "cardNumber": 925,
+      "maxLevel": null,
+      "hitCount": 0
+    }
+  },
+  {
+    "id": "bravery_926",
+    "name": "Bravery",
+    "version": "Ichiraku Ramen, XL",
+    "element": null,
+    "rarity": 1,
+    "starMinCode": "1S",
+    "starMaxCode": "3S",
+    "lbEligible": false,
+    "portrait": "assets/ramen/bravery_926/portrait_3S.png",
+    "full": "assets/ramen/bravery_926/full_3S.png",
+    "ultimateAnimation": null,
+    "secretAnimation": null,
+    "artByTier": {
+      "3S": {
+        "portrait": "assets/ramen/bravery_926/portrait_3S.png",
+        "full": "assets/ramen/bravery_926/full_3S.png"
+      }
+    },
+    "statsBase": {},
+    "statsMax": {
+      "hp": 1,
+      "atk": 1
+    },
+    "growthCurve": {
+      "hp": 1.0,
+      "atk": 1.0,
+      "def": 1.0,
+      "speed": 1.0,
+      "chakra": 1.0
+    },
+    "powerRank": 0,
+    "powerWeights": {
+      "hp": 0.3,
+      "atk": 0.4,
+      "def": 0.1,
+      "speed": 0.15,
+      "chakra": 0.05
+    },
+    "range": "",
+    "luck": {
+      "base": 0,
+      "max": 0
+    },
+    "cost": {
+      "base": 0,
+      "max": 0
+    },
+    "affiliation": [],
+    "passiveIcons": {},
+    "skills": {},
+    "abilities": [],
+    "metadata": {
+      "cardNumber": 926,
+      "maxLevel": null,
+      "hitCount": 0
+    }
+  },
+  {
+    "id": "wisdom_927",
+    "name": "Wisdom",
+    "version": "Ichiraku Ramen, Reg",
+    "element": null,
+    "rarity": 1,
+    "starMinCode": "1S",
+    "starMaxCode": "1S",
+    "lbEligible": false,
+    "portrait": "assets/ramen/wisdom_927/portrait_1S.png",
+    "full": "assets/ramen/wisdom_927/full_1S.png",
+    "ultimateAnimation": null,
+    "secretAnimation": null,
+    "artByTier": {
+      "1S": {
+        "portrait": "assets/ramen/wisdom_927/portrait_1S.png",
+        "full": "assets/ramen/wisdom_927/full_1S.png"
+      }
+    },
+    "statsBase": {},
+    "statsMax": {
+      "hp": 1,
+      "atk": 1
+    },
+    "growthCurve": {
+      "hp": 1.0,
+      "atk": 1.0,
+      "def": 1.0,
+      "speed": 1.0,
+      "chakra": 1.0
+    },
+    "powerRank": 0,
+    "powerWeights": {
+      "hp": 0.3,
+      "atk": 0.4,
+      "def": 0.1,
+      "speed": 0.15,
+      "chakra": 0.05
+    },
+    "range": "",
+    "luck": {
+      "base": 0,
+      "max": 0
+    },
+    "cost": {
+      "base": 0,
+      "max": 0
+    },
+    "affiliation": [],
+    "passiveIcons": {},
+    "skills": {},
+    "abilities": [],
+    "metadata": {
+      "cardNumber": 927,
+      "maxLevel": null,
+      "hitCount": 0
+    }
+  },
+  {
+    "id": "wisdom_928",
+    "name": "Wisdom",
+    "version": "Ichiraku Ramen, Large",
+    "element": null,
+    "rarity": 1,
+    "starMinCode": "1S",
+    "starMaxCode": "2S",
+    "lbEligible": false,
+    "portrait": "assets/ramen/wisdom_928/portrait_2S.png",
+    "full": "assets/ramen/wisdom_928/full_2S.png",
+    "ultimateAnimation": null,
+    "secretAnimation": null,
+    "artByTier": {
+      "2S": {
+        "portrait": "assets/ramen/wisdom_928/portrait_2S.png",
+        "full": "assets/ramen/wisdom_928/full_2S.png"
+      }
+    },
+    "statsBase": {},
+    "statsMax": {
+      "hp": 1,
+      "atk": 1
+    },
+    "growthCurve": {
+      "hp": 1.0,
+      "atk": 1.0,
+      "def": 1.0,
+      "speed": 1.0,
+      "chakra": 1.0
+    },
+    "powerRank": 0,
+    "powerWeights": {
+      "hp": 0.3,
+      "atk": 0.4,
+      "def": 0.1,
+      "speed": 0.15,
+      "chakra": 0.05
+    },
+    "range": "",
+    "luck": {
+      "base": 0,
+      "max": 0
+    },
+    "cost": {
+      "base": 0,
+      "max": 0
+    },
+    "affiliation": [],
+    "passiveIcons": {},
+    "skills": {},
+    "abilities": [],
+    "metadata": {
+      "cardNumber": 928,
+      "maxLevel": null,
+      "hitCount": 0
+    }
+  },
+  {
+    "id": "wisdom_929",
+    "name": "Wisdom",
+    "version": "Ichiraku Ramen, XL",
+    "element": null,
+    "rarity": 1,
+    "starMinCode": "1S",
+    "starMaxCode": "3S",
+    "lbEligible": false,
+    "portrait": "assets/ramen/wisdom_929/portrait_3S.png",
+    "full": "assets/ramen/wisdom_929/full_3S.png",
+    "ultimateAnimation": null,
+    "secretAnimation": null,
+    "artByTier": {
+      "3S": {
+        "portrait": "assets/ramen/wisdom_929/portrait_3S.png",
+        "full": "assets/ramen/wisdom_929/full_3S.png"
+      }
+    },
+    "statsBase": {},
+    "statsMax": {
+      "hp": 1,
+      "atk": 1
+    },
+    "growthCurve": {
+      "hp": 1.0,
+      "atk": 1.0,
+      "def": 1.0,
+      "speed": 1.0,
+      "chakra": 1.0
+    },
+    "powerRank": 0,
+    "powerWeights": {
+      "hp": 0.3,
+      "atk": 0.4,
+      "def": 0.1,
+      "speed": 0.15,
+      "chakra": 0.05
+    },
+    "range": "",
+    "luck": {
+      "base": 0,
+      "max": 0
+    },
+    "cost": {
+      "base": 0,
+      "max": 0
+    },
+    "affiliation": [],
+    "passiveIcons": {},
+    "skills": {},
+    "abilities": [],
+    "metadata": {
+      "cardNumber": 929,
+      "maxLevel": null,
+      "hitCount": 0
+    }
+  },
+  {
+    "id": "sand_957",
+    "name": "Sand Gourd",
+    "version": "Special Awakening Tool",
+    "element": null,
+    "rarity": 1,
+    "starMinCode": "1S",
+    "starMaxCode": "6S",
+    "lbEligible": false,
+    "portrait": "assets/ramen/sand_957/portrait_6S.png",
+    "full": "assets/ramen/sand_957/full_6S.png",
+    "ultimateAnimation": null,
+    "secretAnimation": null,
+    "artByTier": {
+      "6S": {
+        "portrait": "assets/ramen/sand_957/portrait_6S.png",
+        "full": "assets/ramen/sand_957/full_6S.png"
+      }
+    },
+    "statsBase": {},
+    "statsMax": {
+      "hp": 1,
+      "atk": 1
+    },
+    "growthCurve": {
+      "hp": 1.0,
+      "atk": 1.0,
+      "def": 1.0,
+      "speed": 1.0,
+      "chakra": 1.0
+    },
+    "powerRank": 0,
+    "powerWeights": {
+      "hp": 0.3,
+      "atk": 0.4,
+      "def": 0.1,
+      "speed": 0.15,
+      "chakra": 0.05
+    },
+    "range": "",
+    "luck": {
+      "base": 0,
+      "max": 0
+    },
+    "cost": {
+      "base": 0,
+      "max": 0
+    },
+    "affiliation": [],
+    "passiveIcons": {},
+    "skills": {},
+    "abilities": [],
+    "metadata": {
+      "cardNumber": 957,
+      "maxLevel": null,
+      "hitCount": 0
+    }
+  },
+  {
+    "id": "heart_967",
+    "name": "Heart",
+    "version": "Ichiraku Ramen, XXL",
+    "element": null,
+    "rarity": 1,
+    "starMinCode": "1S",
+    "starMaxCode": "4S",
+    "lbEligible": false,
+    "portrait": "assets/ramen/heart_967/portrait_4S.png",
+    "full": "assets/ramen/heart_967/full_4S.png",
+    "ultimateAnimation": null,
+    "secretAnimation": null,
+    "artByTier": {
+      "4S": {
+        "portrait": "assets/ramen/heart_967/portrait_4S.png",
+        "full": "assets/ramen/heart_967/full_4S.png"
+      }
+    },
+    "statsBase": {},
+    "statsMax": {
+      "hp": 1,
+      "atk": 1
+    },
+    "growthCurve": {
+      "hp": 1.0,
+      "atk": 1.0,
+      "def": 1.0,
+      "speed": 1.0,
+      "chakra": 1.0
+    },
+    "powerRank": 0,
+    "powerWeights": {
+      "hp": 0.3,
+      "atk": 0.4,
+      "def": 0.1,
+      "speed": 0.15,
+      "chakra": 0.05
+    },
+    "range": "",
+    "luck": {
+      "base": 0,
+      "max": 0
+    },
+    "cost": {
+      "base": 0,
+      "max": 0
+    },
+    "affiliation": [],
+    "passiveIcons": {},
+    "skills": {},
+    "abilities": [],
+    "metadata": {
+      "cardNumber": 967,
+      "maxLevel": null,
+      "hitCount": 0
+    }
+  },
+  {
+    "id": "skill_968",
+    "name": "Skill",
+    "version": "Ichiraku Ramen, XXL",
+    "element": null,
+    "rarity": 1,
+    "starMinCode": "1S",
+    "starMaxCode": "4S",
+    "lbEligible": false,
+    "portrait": "assets/ramen/skill_968/portrait_4S.png",
+    "full": "assets/ramen/skill_968/full_4S.png",
+    "ultimateAnimation": null,
+    "secretAnimation": null,
+    "artByTier": {
+      "4S": {
+        "portrait": "assets/ramen/skill_968/portrait_4S.png",
+        "full": "assets/ramen/skill_968/full_4S.png"
+      }
+    },
+    "statsBase": {},
+    "statsMax": {
+      "hp": 1,
+      "atk": 1
+    },
+    "growthCurve": {
+      "hp": 1.0,
+      "atk": 1.0,
+      "def": 1.0,
+      "speed": 1.0,
+      "chakra": 1.0
+    },
+    "powerRank": 0,
+    "powerWeights": {
+      "hp": 0.3,
+      "atk": 0.4,
+      "def": 0.1,
+      "speed": 0.15,
+      "chakra": 0.05
+    },
+    "range": "",
+    "luck": {
+      "base": 0,
+      "max": 0
+    },
+    "cost": {
+      "base": 0,
+      "max": 0
+    },
+    "affiliation": [],
+    "passiveIcons": {},
+    "skills": {},
+    "abilities": [],
+    "metadata": {
+      "cardNumber": 968,
+      "maxLevel": null,
+      "hitCount": 0
+    }
+  },
+  {
+    "id": "body_969",
+    "name": "Body",
+    "version": "Ichiraku Ramen, XXL",
+    "element": null,
+    "rarity": 1,
+    "starMinCode": "1S",
+    "starMaxCode": "4S",
+    "lbEligible": false,
+    "portrait": "assets/ramen/body_969/portrait_4S.png",
+    "full": "assets/ramen/body_969/full_4S.png",
+    "ultimateAnimation": null,
+    "secretAnimation": null,
+    "artByTier": {
+      "4S": {
+        "portrait": "assets/ramen/body_969/portrait_4S.png",
+        "full": "assets/ramen/body_969/full_4S.png"
+      }
+    },
+    "statsBase": {},
+    "statsMax": {
+      "hp": 1,
+      "atk": 1
+    },
+    "growthCurve": {
+      "hp": 1.0,
+      "atk": 1.0,
+      "def": 1.0,
+      "speed": 1.0,
+      "chakra": 1.0
+    },
+    "powerRank": 0,
+    "powerWeights": {
+      "hp": 0.3,
+      "atk": 0.4,
+      "def": 0.1,
+      "speed": 0.15,
+      "chakra": 0.05
+    },
+    "range": "",
+    "luck": {
+      "base": 0,
+      "max": 0
+    },
+    "cost": {
+      "base": 0,
+      "max": 0
+    },
+    "affiliation": [],
+    "passiveIcons": {},
+    "skills": {},
+    "abilities": [],
+    "metadata": {
+      "cardNumber": 969,
+      "maxLevel": null,
+      "hitCount": 0
+    }
+  },
+  {
+    "id": "bravery_970",
+    "name": "Bravery",
+    "version": "Ichiraku Ramen, XXL",
+    "element": null,
+    "rarity": 1,
+    "starMinCode": "1S",
+    "starMaxCode": "4S",
+    "lbEligible": false,
+    "portrait": "assets/ramen/bravery_970/portrait_4S.png",
+    "full": "assets/ramen/bravery_970/full_4S.png",
+    "ultimateAnimation": null,
+    "secretAnimation": null,
+    "artByTier": {
+      "4S": {
+        "portrait": "assets/ramen/bravery_970/portrait_4S.png",
+        "full": "assets/ramen/bravery_970/full_4S.png"
+      }
+    },
+    "statsBase": {},
+    "statsMax": {
+      "hp": 1,
+      "atk": 1
+    },
+    "growthCurve": {
+      "hp": 1.0,
+      "atk": 1.0,
+      "def": 1.0,
+      "speed": 1.0,
+      "chakra": 1.0
+    },
+    "powerRank": 0,
+    "powerWeights": {
+      "hp": 0.3,
+      "atk": 0.4,
+      "def": 0.1,
+      "speed": 0.15,
+      "chakra": 0.05
+    },
+    "range": "",
+    "luck": {
+      "base": 0,
+      "max": 0
+    },
+    "cost": {
+      "base": 0,
+      "max": 0
+    },
+    "affiliation": [],
+    "passiveIcons": {},
+    "skills": {},
+    "abilities": [],
+    "metadata": {
+      "cardNumber": 970,
+      "maxLevel": null,
+      "hitCount": 0
+    }
+  },
+  {
+    "id": "wisdom_971",
+    "name": "Wisdom",
+    "version": "Ichiraku Ramen, XXL",
+    "element": null,
+    "rarity": 1,
+    "starMinCode": "1S",
+    "starMaxCode": "4S",
+    "lbEligible": false,
+    "portrait": "assets/ramen/wisdom_971/portrait_4S.png",
+    "full": "assets/ramen/wisdom_971/full_4S.png",
+    "ultimateAnimation": null,
+    "secretAnimation": null,
+    "artByTier": {
+      "4S": {
+        "portrait": "assets/ramen/wisdom_971/portrait_4S.png",
+        "full": "assets/ramen/wisdom_971/full_4S.png"
+      }
+    },
+    "statsBase": {},
+    "statsMax": {
+      "hp": 1,
+      "atk": 1
+    },
+    "growthCurve": {
+      "hp": 1.0,
+      "atk": 1.0,
+      "def": 1.0,
+      "speed": 1.0,
+      "chakra": 1.0
+    },
+    "powerRank": 0,
+    "powerWeights": {
+      "hp": 0.3,
+      "atk": 0.4,
+      "def": 0.1,
+      "speed": 0.15,
+      "chakra": 0.05
+    },
+    "range": "",
+    "luck": {
+      "base": 0,
+      "max": 0
+    },
+    "cost": {
+      "base": 0,
+      "max": 0
+    },
+    "affiliation": [],
+    "passiveIcons": {},
+    "skills": {},
+    "abilities": [],
+    "metadata": {
+      "cardNumber": 971,
+      "maxLevel": null,
+      "hitCount": 0
+    }
+  },
+  {
+    "id": "heart_1070",
+    "name": "Heart Beads",
+    "version": "Battle Heart Beads",
+    "element": null,
+    "rarity": 1,
+    "starMinCode": "1S",
+    "starMaxCode": "4S",
+    "lbEligible": false,
+    "portrait": "assets/ramen/heart_1070/portrait_4S.png",
+    "full": "assets/ramen/heart_1070/full_4S.png",
+    "ultimateAnimation": null,
+    "secretAnimation": null,
+    "artByTier": {
+      "4S": {
+        "portrait": "assets/ramen/heart_1070/portrait_4S.png",
+        "full": "assets/ramen/heart_1070/full_4S.png"
+      }
+    },
+    "statsBase": {},
+    "statsMax": {
+      "hp": 1,
+      "atk": 1
+    },
+    "growthCurve": {
+      "hp": 1.0,
+      "atk": 1.0,
+      "def": 1.0,
+      "speed": 1.0,
+      "chakra": 1.0
+    },
+    "powerRank": 0,
+    "powerWeights": {
+      "hp": 0.3,
+      "atk": 0.4,
+      "def": 0.1,
+      "speed": 0.15,
+      "chakra": 0.05
+    },
+    "range": "",
+    "luck": {
+      "base": 0,
+      "max": 0
+    },
+    "cost": {
+      "base": 0,
+      "max": 0
+    },
+    "affiliation": [],
+    "passiveIcons": {},
+    "skills": {},
+    "abilities": [],
+    "metadata": {
+      "cardNumber": 1070,
+      "maxLevel": null,
+      "hitCount": 0
+    }
+  },
+  {
+    "id": "heart_1071",
+    "name": "Heart Beads",
+    "version": "Light Heart Beads",
+    "element": null,
+    "rarity": 1,
+    "starMinCode": "1S",
+    "starMaxCode": "5S",
+    "lbEligible": false,
+    "portrait": "assets/ramen/heart_1071/portrait_5S.png",
+    "full": "assets/ramen/heart_1071/full_5S.png",
+    "ultimateAnimation": null,
+    "secretAnimation": null,
+    "artByTier": {
+      "5S": {
+        "portrait": "assets/ramen/heart_1071/portrait_5S.png",
+        "full": "assets/ramen/heart_1071/full_5S.png"
+      }
+    },
+    "statsBase": {},
+    "statsMax": {
+      "hp": 1,
+      "atk": 1
+    },
+    "growthCurve": {
+      "hp": 1.0,
+      "atk": 1.0,
+      "def": 1.0,
+      "speed": 1.0,
+      "chakra": 1.0
+    },
+    "powerRank": 0,
+    "powerWeights": {
+      "hp": 0.3,
+      "atk": 0.4,
+      "def": 0.1,
+      "speed": 0.15,
+      "chakra": 0.05
+    },
+    "range": "",
+    "luck": {
+      "base": 0,
+      "max": 0
+    },
+    "cost": {
+      "base": 0,
+      "max": 0
+    },
+    "affiliation": [],
+    "passiveIcons": {},
+    "skills": {},
+    "abilities": [],
+    "metadata": {
+      "cardNumber": 1071,
+      "maxLevel": null,
+      "hitCount": 0
+    }
+  },
+  {
+    "id": "skill_1073",
+    "name": "Skill Beads",
+    "version": "Battle Skill Beads",
+    "element": null,
+    "rarity": 1,
+    "starMinCode": "1S",
+    "starMaxCode": "4S",
+    "lbEligible": false,
+    "portrait": "assets/ramen/skill_1073/portrait_4S.png",
+    "full": "assets/ramen/skill_1073/full_4S.png",
+    "ultimateAnimation": null,
+    "secretAnimation": null,
+    "artByTier": {
+      "4S": {
+        "portrait": "assets/ramen/skill_1073/portrait_4S.png",
+        "full": "assets/ramen/skill_1073/full_4S.png"
+      }
+    },
+    "statsBase": {},
+    "statsMax": {
+      "hp": 1,
+      "atk": 1
+    },
+    "growthCurve": {
+      "hp": 1.0,
+      "atk": 1.0,
+      "def": 1.0,
+      "speed": 1.0,
+      "chakra": 1.0
+    },
+    "powerRank": 0,
+    "powerWeights": {
+      "hp": 0.3,
+      "atk": 0.4,
+      "def": 0.1,
+      "speed": 0.15,
+      "chakra": 0.05
+    },
+    "range": "",
+    "luck": {
+      "base": 0,
+      "max": 0
+    },
+    "cost": {
+      "base": 0,
+      "max": 0
+    },
+    "affiliation": [],
+    "passiveIcons": {},
+    "skills": {},
+    "abilities": [],
+    "metadata": {
+      "cardNumber": 1073,
+      "maxLevel": null,
+      "hitCount": 0
+    }
+  },
+  {
+    "id": "skill_1074",
+    "name": "Skill Beads",
+    "version": "Light Skill Beads",
+    "element": null,
+    "rarity": 1,
+    "starMinCode": "1S",
+    "starMaxCode": "5S",
+    "lbEligible": false,
+    "portrait": "assets/ramen/skill_1074/portrait_5S.png",
+    "full": "assets/ramen/skill_1074/full_5S.png",
+    "ultimateAnimation": null,
+    "secretAnimation": null,
+    "artByTier": {
+      "5S": {
+        "portrait": "assets/ramen/skill_1074/portrait_5S.png",
+        "full": "assets/ramen/skill_1074/full_5S.png"
+      }
+    },
+    "statsBase": {},
+    "statsMax": {
+      "hp": 1,
+      "atk": 1
+    },
+    "growthCurve": {
+      "hp": 1.0,
+      "atk": 1.0,
+      "def": 1.0,
+      "speed": 1.0,
+      "chakra": 1.0
+    },
+    "powerRank": 0,
+    "powerWeights": {
+      "hp": 0.3,
+      "atk": 0.4,
+      "def": 0.1,
+      "speed": 0.15,
+      "chakra": 0.05
+    },
+    "range": "",
+    "luck": {
+      "base": 0,
+      "max": 0
+    },
+    "cost": {
+      "base": 0,
+      "max": 0
+    },
+    "affiliation": [],
+    "passiveIcons": {},
+    "skills": {},
+    "abilities": [],
+    "metadata": {
+      "cardNumber": 1074,
+      "maxLevel": null,
+      "hitCount": 0
+    }
+  },
+  {
+    "id": "body_1076",
+    "name": "Body Beads",
+    "version": "Battle Body Beads",
+    "element": null,
+    "rarity": 1,
+    "starMinCode": "1S",
+    "starMaxCode": "4S",
+    "lbEligible": false,
+    "portrait": "assets/ramen/body_1076/portrait_4S.png",
+    "full": "assets/ramen/body_1076/full_4S.png",
+    "ultimateAnimation": null,
+    "secretAnimation": null,
+    "artByTier": {
+      "4S": {
+        "portrait": "assets/ramen/body_1076/portrait_4S.png",
+        "full": "assets/ramen/body_1076/full_4S.png"
+      }
+    },
+    "statsBase": {},
+    "statsMax": {
+      "hp": 1,
+      "atk": 1
+    },
+    "growthCurve": {
+      "hp": 1.0,
+      "atk": 1.0,
+      "def": 1.0,
+      "speed": 1.0,
+      "chakra": 1.0
+    },
+    "powerRank": 0,
+    "powerWeights": {
+      "hp": 0.3,
+      "atk": 0.4,
+      "def": 0.1,
+      "speed": 0.15,
+      "chakra": 0.05
+    },
+    "range": "",
+    "luck": {
+      "base": 0,
+      "max": 0
+    },
+    "cost": {
+      "base": 0,
+      "max": 0
+    },
+    "affiliation": [],
+    "passiveIcons": {},
+    "skills": {},
+    "abilities": [],
+    "metadata": {
+      "cardNumber": 1076,
+      "maxLevel": null,
+      "hitCount": 0
+    }
+  },
+  {
+    "id": "body_1077",
+    "name": "Body Beads",
+    "version": "Light Body Beads",
+    "element": null,
+    "rarity": 1,
+    "starMinCode": "1S",
+    "starMaxCode": "5S",
+    "lbEligible": false,
+    "portrait": "assets/ramen/body_1077/portrait_5S.png",
+    "full": "assets/ramen/body_1077/full_5S.png",
+    "ultimateAnimation": null,
+    "secretAnimation": null,
+    "artByTier": {
+      "5S": {
+        "portrait": "assets/ramen/body_1077/portrait_5S.png",
+        "full": "assets/ramen/body_1077/full_5S.png"
+      }
+    },
+    "statsBase": {},
+    "statsMax": {
+      "hp": 1,
+      "atk": 1
+    },
+    "growthCurve": {
+      "hp": 1.0,
+      "atk": 1.0,
+      "def": 1.0,
+      "speed": 1.0,
+      "chakra": 1.0
+    },
+    "powerRank": 0,
+    "powerWeights": {
+      "hp": 0.3,
+      "atk": 0.4,
+      "def": 0.1,
+      "speed": 0.15,
+      "chakra": 0.05
+    },
+    "range": "",
+    "luck": {
+      "base": 0,
+      "max": 0
+    },
+    "cost": {
+      "base": 0,
+      "max": 0
+    },
+    "affiliation": [],
+    "passiveIcons": {},
+    "skills": {},
+    "abilities": [],
+    "metadata": {
+      "cardNumber": 1077,
+      "maxLevel": null,
+      "hitCount": 0
+    }
+  },
+  {
+    "id": "bravery_1079",
+    "name": "Bravery Beads",
+    "version": "Battle Bravery Beads",
+    "element": null,
+    "rarity": 1,
+    "starMinCode": "1S",
+    "starMaxCode": "4S",
+    "lbEligible": false,
+    "portrait": "assets/ramen/bravery_1079/portrait_4S.png",
+    "full": "assets/ramen/bravery_1079/full_4S.png",
+    "ultimateAnimation": null,
+    "secretAnimation": null,
+    "artByTier": {
+      "4S": {
+        "portrait": "assets/ramen/bravery_1079/portrait_4S.png",
+        "full": "assets/ramen/bravery_1079/full_4S.png"
+      }
+    },
+    "statsBase": {},
+    "statsMax": {
+      "hp": 1,
+      "atk": 1
+    },
+    "growthCurve": {
+      "hp": 1.0,
+      "atk": 1.0,
+      "def": 1.0,
+      "speed": 1.0,
+      "chakra": 1.0
+    },
+    "powerRank": 0,
+    "powerWeights": {
+      "hp": 0.3,
+      "atk": 0.4,
+      "def": 0.1,
+      "speed": 0.15,
+      "chakra": 0.05
+    },
+    "range": "",
+    "luck": {
+      "base": 0,
+      "max": 0
+    },
+    "cost": {
+      "base": 0,
+      "max": 0
+    },
+    "affiliation": [],
+    "passiveIcons": {},
+    "skills": {},
+    "abilities": [],
+    "metadata": {
+      "cardNumber": 1079,
+      "maxLevel": null,
+      "hitCount": 0
+    }
+  },
+  {
+    "id": "bravery_1080",
+    "name": "Bravery Beads",
+    "version": "Light Bravery Beads",
+    "element": null,
+    "rarity": 1,
+    "starMinCode": "1S",
+    "starMaxCode": "5S",
+    "lbEligible": false,
+    "portrait": "assets/ramen/bravery_1080/portrait_5S.png",
+    "full": "assets/ramen/bravery_1080/full_5S.png",
+    "ultimateAnimation": null,
+    "secretAnimation": null,
+    "artByTier": {
+      "5S": {
+        "portrait": "assets/ramen/bravery_1080/portrait_5S.png",
+        "full": "assets/ramen/bravery_1080/full_5S.png"
+      }
+    },
+    "statsBase": {},
+    "statsMax": {
+      "hp": 1,
+      "atk": 1
+    },
+    "growthCurve": {
+      "hp": 1.0,
+      "atk": 1.0,
+      "def": 1.0,
+      "speed": 1.0,
+      "chakra": 1.0
+    },
+    "powerRank": 0,
+    "powerWeights": {
+      "hp": 0.3,
+      "atk": 0.4,
+      "def": 0.1,
+      "speed": 0.15,
+      "chakra": 0.05
+    },
+    "range": "",
+    "luck": {
+      "base": 0,
+      "max": 0
+    },
+    "cost": {
+      "base": 0,
+      "max": 0
+    },
+    "affiliation": [],
+    "passiveIcons": {},
+    "skills": {},
+    "abilities": [],
+    "metadata": {
+      "cardNumber": 1080,
+      "maxLevel": null,
+      "hitCount": 0
+    }
+  },
+  {
+    "id": "wisdom_1082",
+    "name": "Wisdom Beads",
+    "version": "Battle Wisdom Beads",
+    "element": null,
+    "rarity": 1,
+    "starMinCode": "1S",
+    "starMaxCode": "4S",
+    "lbEligible": false,
+    "portrait": "assets/ramen/wisdom_1082/portrait_4S.png",
+    "full": "assets/ramen/wisdom_1082/full_4S.png",
+    "ultimateAnimation": null,
+    "secretAnimation": null,
+    "artByTier": {
+      "4S": {
+        "portrait": "assets/ramen/wisdom_1082/portrait_4S.png",
+        "full": "assets/ramen/wisdom_1082/full_4S.png"
+      }
+    },
+    "statsBase": {},
+    "statsMax": {
+      "hp": 1,
+      "atk": 1
+    },
+    "growthCurve": {
+      "hp": 1.0,
+      "atk": 1.0,
+      "def": 1.0,
+      "speed": 1.0,
+      "chakra": 1.0
+    },
+    "powerRank": 0,
+    "powerWeights": {
+      "hp": 0.3,
+      "atk": 0.4,
+      "def": 0.1,
+      "speed": 0.15,
+      "chakra": 0.05
+    },
+    "range": "",
+    "luck": {
+      "base": 0,
+      "max": 0
+    },
+    "cost": {
+      "base": 0,
+      "max": 0
+    },
+    "affiliation": [],
+    "passiveIcons": {},
+    "skills": {},
+    "abilities": [],
+    "metadata": {
+      "cardNumber": 1082,
+      "maxLevel": null,
+      "hitCount": 0
+    }
+  },
+  {
+    "id": "wisdom_1083",
+    "name": "Wisdom Beads",
+    "version": "Light Wisdom Beads",
+    "element": null,
+    "rarity": 1,
+    "starMinCode": "1S",
+    "starMaxCode": "5S",
+    "lbEligible": false,
+    "portrait": "assets/ramen/wisdom_1083/portrait_5S.png",
+    "full": "assets/ramen/wisdom_1083/full_5S.png",
+    "ultimateAnimation": null,
+    "secretAnimation": null,
+    "artByTier": {
+      "5S": {
+        "portrait": "assets/ramen/wisdom_1083/portrait_5S.png",
+        "full": "assets/ramen/wisdom_1083/full_5S.png"
+      }
+    },
+    "statsBase": {},
+    "statsMax": {
+      "hp": 1,
+      "atk": 1
+    },
+    "growthCurve": {
+      "hp": 1.0,
+      "atk": 1.0,
+      "def": 1.0,
+      "speed": 1.0,
+      "chakra": 1.0
+    },
+    "powerRank": 0,
+    "powerWeights": {
+      "hp": 0.3,
+      "atk": 0.4,
+      "def": 0.1,
+      "speed": 0.15,
+      "chakra": 0.05
+    },
+    "range": "",
+    "luck": {
+      "base": 0,
+      "max": 0
+    },
+    "cost": {
+      "base": 0,
+      "max": 0
+    },
+    "affiliation": [],
+    "passiveIcons": {},
+    "skills": {},
+    "abilities": [],
+    "metadata": {
+      "cardNumber": 1083,
+      "maxLevel": null,
+      "hitCount": 0
+    }
+  }
+]

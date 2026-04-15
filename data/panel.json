@@ -1,0 +1,116 @@
+{
+  "missions": [
+    {
+      "id": "mission_001",
+      "title": "Complete 5 Battles",
+      "description": "Win 5 battles to earn your first reward",
+      "reward": {
+        "type": "resource",
+        "resourceName": "Ninja Pearls",
+        "quantity": 50
+      },
+      "completed": false
+    },
+    {
+      "id": "mission_002",
+      "title": "Level Up a Character",
+      "description": "Increase any character to level 10",
+      "reward": {
+        "type": "resource",
+        "resourceName": "Ryo",
+        "quantity": 10000
+      },
+      "completed": false
+    },
+    {
+      "id": "mission_003",
+      "title": "Unlock 3 Characters",
+      "description": "Add 3 different characters to your roster",
+      "reward": {
+        "type": "resource",
+        "resourceName": "Shinobites",
+        "quantity": 5
+      },
+      "completed": false
+    },
+    {
+      "id": "mission_004",
+      "title": "Complete Daily Login",
+      "description": "Log in 7 days in a row",
+      "reward": {
+        "type": "resource",
+        "resourceName": "Ninja Pearls",
+        "quantity": 100
+      },
+      "completed": false
+    },
+    {
+      "id": "mission_005",
+      "title": "Awaken a Character",
+      "description": "Awaken any character to the next tier",
+      "reward": {
+        "type": "character",
+        "characterId": "example_character_001",
+        "quantity": 1,
+        "tierCode": "5S"
+      },
+      "completed": false
+    },
+    {
+      "id": "mission_006",
+      "title": "Reach Ninja Rank 10",
+      "description": "Level up your Ninja Rank to 10",
+      "reward": {
+        "type": "resource",
+        "resourceName": "Ryo",
+        "quantity": 50000
+      },
+      "completed": false
+    },
+    {
+      "id": "mission_007",
+      "title": "Complete 20 Battles",
+      "description": "Win 20 battles total",
+      "reward": {
+        "type": "resource",
+        "resourceName": "Ninja Pearls",
+        "quantity": 150
+      },
+      "completed": false
+    },
+    {
+      "id": "mission_008",
+      "title": "Max Level a Character",
+      "description": "Level any character to their maximum level",
+      "reward": {
+        "type": "character",
+        "characterId": "example_character_002",
+        "quantity": 1,
+        "tierCode": "6S"
+      },
+      "completed": false
+    },
+    {
+      "id": "mission_009",
+      "title": "Collect 10 Characters",
+      "description": "Build a roster of 10 unique characters",
+      "reward": {
+        "type": "resource",
+        "resourceName": "Shinobites",
+        "quantity": 20
+      },
+      "completed": false
+    },
+    {
+      "id": "mission_010",
+      "title": "Complete All Basic Missions",
+      "description": "Finish all previous panel missions",
+      "reward": {
+        "type": "resource",
+        "resourceName": "Ninja Pearls",
+        "quantity": 300
+      },
+      "completed": false
+    }
+  ]
+}

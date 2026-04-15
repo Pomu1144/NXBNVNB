@@ -1,0 +1,4635 @@
+{
+  "nextId": 1011,
+  "accounts": [
+    {
+      "id": 1001,
+      "username": "naruto",
+      "password": "shadowclone",
+      "resources": {
+        "ryo": 122665,
+        "ninja_pearls": 32,
+        "shinobites": 122,
+        "granny_coin": 22
+      },
+      "ninjas": [
+        {
+          "id": "pain_572",
+          "characterId": "pain_572",
+          "name": "Pain",
+          "version": "Eyes of Judgement",
+          "rank": "Genin",
+          "level": 26,
+          "element": "Neutral"
+        },
+        {
+          "id": "might_657",
+          "characterId": "might_657",
+          "name": "Might Dai",
+          "version": "Something to Protect",
+          "rank": "Chunin",
+          "level": 37,
+          "element": "Neutral"
+        },
+        {
+          "id": "hiruzen_799",
+          "characterId": "hiruzen_799",
+          "name": "Hiruzen Sarutobi",
+          "version": "Looking into the Future",
+          "rank": "Kage",
+          "level": 20,
+          "element": "Neutral"
+        },
+        {
+          "id": "haku_538",
+          "characterId": "haku_538",
+          "name": "Haku",
+          "version": "Chilling Edge",
+          "rank": "Genin",
+          "level": 1,
+          "element": "Neutral"
+        },
+        {
+          "id": "deidara_351",
+          "characterId": "deidara_351",
+          "name": "Deidara",
+          "version": "True Arts",
+          "rank": "Jonin",
+          "level": 7,
+          "element": "Neutral"
+        },
+        {
+          "id": "sasuke_457",
+          "characterId": "sasuke_457",
+          "name": "Sasuke Uchiha",
+          "version": "Parting Wings",
+          "rank": "Jonin",
+          "level": 40,
+          "element": "Neutral"
+        },
+        {
+          "id": "hinata_060",
+          "characterId": "hinata_060",
+          "name": "Hinata Hyuga",
+          "version": "Nice Girl",
+          "rank": "Jonin",
+          "level": 22,
+          "element": "Neutral"
+        },
+        {
+          "id": "sasuke_371",
+          "characterId": "sasuke_371",
+          "name": "Sasuke Uchiha",
+          "version": "Darkness of Deep Hatred",
+          "rank": "Jonin",
+          "level": 38,
+          "element": "Neutral"
+        },
+        {
+          "id": "zabuza_890",
+          "characterId": "zabuza_890",
+          "name": "Zabuza Momochi",
+          "version": "Unbounded Dread",
+          "rank": "Jonin",
+          "level": 30,
+          "element": "Neutral"
+        },
+        {
+          "id": "sasori_883",
+          "characterId": "sasori_883",
+          "name": "Sasori",
+          "version": "Eternal Creation",
+          "rank": "Kage",
+          "level": 24,
+          "element": "Neutral"
+        },
+        {
+          "id": "dosu_033",
+          "characterId": "dosu_033",
+          "name": "Dosu Kinuta",
+          "version": "The Cool, Calm Leader",
+          "rank": "Kage",
+          "level": 28,
+          "element": "Neutral"
+        },
+        {
+          "id": "hinata_811",
+          "characterId": "hinata_811",
+          "name": "Hinata Hyuga",
+          "version": "Beyond the Ceaseless",
+          "rank": "Kage",
+          "level": 26,
+          "element": "Neutral"
+        },
+        {
+          "id": "hinata_157",
+          "characterId": "hinata_157",
+          "name": "Hinata Hyuga",
+          "version": "Proof of Resolution",
+          "rank": "Genin",
+          "level": 6,
+          "element": "Neutral"
+        },
+        {
+          "id": "itachi_388",
+          "characterId": "itachi_388",
+          "name": "Itachi Uchiha",
+          "version": "Proof of Will",
+          "rank": "Genin",
+          "level": 30,
+          "element": "Neutral"
+        },
+        {
+          "id": "shikamaru_2106",
+          "characterId": "shikamaru_2106",
+          "name": "Shikamaru Nara",
+          "version": "View to Victory",
+          "rank": "Chunin",
+          "level": 14,
+          "element": "Neutral"
+        },
+        {
+          "id": "neji_151",
+          "characterId": "neji_151",
+          "name": "Neji Hyuga",
+          "version": "A Caged Bird",
+          "rank": "Kage",
+          "level": 31,
+          "element": "Neutral"
+        },
+        {
+          "id": "hayate_096",
+          "characterId": "hayate_096",
+          "name": "Hayate Gekko",
+          "version": "Third Round Prelim Judge",
+          "rank": "Jonin",
+          "level": 39,
+          "element": "Neutral"
+        },
+        {
+          "id": "sasuke_2013",
+          "characterId": "sasuke_2013",
+          "name": "Sasuke Uchiha",
+          "version": "Lightning Storm Genius",
+          "rank": "Kage",
+          "level": 23,
+          "element": "Neutral"
+        },
+        {
+          "id": "sasuke_262",
+          "characterId": "sasuke_262",
+          "name": "Sasuke Uchiha",
+          "version": "Curse Mark 2nd State",
+          "rank": "Jonin",
+          "level": 17,
+          "element": "Neutral"
+        },
+        {
+          "id": "ultimate_1130",
+          "characterId": "ultimate_1130",
+          "name": "Ultimate Treasure Chest",
+          "version": "Fighting Bravery Treasure",
+          "rank": "Kage",
+          "level": 17,
+          "element": "Neutral"
+        },
+        {
+          "id": "tayuya_257",
+          "characterId": "tayuya_257",
+          "name": "Tayuya",
+          "version": "A Bewitching Flute",
+          "rank": "Kage",
+          "level": 11,
+          "element": "Neutral"
+        },
+        {
+          "id": "minato_814",
+          "characterId": "minato_814",
+          "name": "Minato Namikaze",
+          "version": "Natural Talent",
+          "rank": "Genin",
+          "level": 33,
+          "element": "Neutral"
+        },
+        {
+          "id": "kiba_567",
+          "characterId": "kiba_567",
+          "name": "Kiba Inuzuka",
+          "version": "Well-Honed Fangs",
+          "rank": "Jonin",
+          "level": 36,
+          "element": "Neutral"
+        },
+        {
+          "id": "gamachan_1161",
+          "characterId": "gamachan_1161",
+          "name": "Gama-chan",
+          "version": "Millionaire",
+          "rank": "Jonin",
+          "level": 35,
+          "element": "Neutral"
+        },
+        {
+          "id": "naruto_583",
+          "characterId": "naruto_583",
+          "name": "Naruto Uzumaki",
+          "version": "Shining Warrior of Bonds",
+          "rank": "Chunin",
+          "level": 1,
+          "element": "Neutral"
+        },
+        {
+          "id": "sakura_398",
+          "characterId": "sakura_398",
+          "name": "Sakura Haruno",
+          "version": "Standing Equal",
+          "rank": "Genin",
+          "level": 33,
+          "element": "Neutral"
+        },
+        {
+          "id": "hidan_321",
+          "characterId": "hidan_321",
+          "name": "Hidan",
+          "version": "Worshiping a Mad God",
+          "rank": "Chunin",
+          "level": 28,
+          "element": "Neutral"
+        },
+        {
+          "id": "sasuke_490",
+          "characterId": "sasuke_490",
+          "name": "Sasuke Uchiha",
+          "version": "A Break from the Waves",
+          "rank": "Chunin",
+          "level": 39,
+          "element": "Neutral"
+        },
+        {
+          "id": "sasuke_867",
+          "characterId": "sasuke_867",
+          "name": "Sasuke Uchiha",
+          "version": "Buried Past",
+          "rank": "Jonin",
+          "level": 29,
+          "element": "Neutral"
+        },
+        {
+          "id": "fuu_838",
+          "characterId": "fuu_838",
+          "name": "Fuu",
+          "version": "Bright and Cheerful",
+          "rank": "Kage",
+          "level": 18,
+          "element": "Neutral"
+        },
+        {
+          "id": "hinata_496",
+          "characterId": "hinata_496",
+          "name": "Hinata Hyuga",
+          "version": "Unwavering Courage",
+          "rank": "Kage",
+          "level": 34,
+          "element": "Neutral"
+        },
+        {
+          "id": "gaara_173",
+          "characterId": "gaara_173",
+          "name": "Gaara",
+          "version": "The Sand's Final Weapon",
+          "rank": "Kage",
+          "level": 12,
+          "element": "Neutral"
+        },
+        {
+          "id": "kakashi_147",
+          "characterId": "kakashi_147",
+          "name": "Kakashi Hatake",
+          "version": "Hidden Left Eye",
+          "rank": "Kage",
+          "level": 2,
+          "element": "Neutral"
+        },
+        {
+          "id": "might_212",
+          "characterId": "might_212",
+          "name": "Might Guy",
+          "version": "Hot-Blooded Youth",
+          "rank": "Chunin",
+          "level": 3,
+          "element": "Neutral"
+        },
+        {
+          "id": "shikamaru_2105",
+          "characterId": "shikamaru_2105",
+          "name": "Shikamaru Nara",
+          "version": "View to Victory",
+          "rank": "Kage",
+          "level": 20,
+          "element": "Neutral"
+        },
+        {
+          "id": "minato_628",
+          "characterId": "minato_628",
+          "name": "Minato Namikaze",
+          "version": "Swift Flash",
+          "rank": "Chunin",
+          "level": 22,
+          "element": "Neutral"
+        },
+        {
+          "id": "indra_788",
+          "characterId": "indra_788",
+          "name": "Indra",
+          "version": "Unparalleled Genius",
+          "rank": "Jonin",
+          "level": 27,
+          "element": "Neutral"
+        },
+        {
+          "id": "tsunade_375",
+          "characterId": "tsunade_375",
+          "name": "Tsunade",
+          "version": "The Will of Blooming Flames",
+          "rank": "Chunin",
+          "level": 5,
+          "element": "Neutral"
+        },
+        {
+          "id": "naruto_260",
+          "characterId": "naruto_260",
+          "name": "Naruto Uzumaki",
+          "version": "Nine Tails' Shroud",
+          "rank": "Kage",
+          "level": 16,
+          "element": "Neutral"
+        },
+        {
+          "id": "yugito_609",
+          "characterId": "yugito_609",
+          "name": "Yugito Ni'i",
+          "version": "Unclouded Mind",
+          "rank": "Jonin",
+          "level": 18,
+          "element": "Neutral"
+        },
+        {
+          "id": "chojuro_564",
+          "characterId": "chojuro_564",
+          "name": "Chojuro",
+          "version": "Slashing Twinsword",
+          "rank": "Kage",
+          "level": 11,
+          "element": "Neutral"
+        },
+        {
+          "id": "sasori_785",
+          "characterId": "sasori_785",
+          "name": "Sasori",
+          "version": "Puppet Mastery",
+          "rank": "Chunin",
+          "level": 31,
+          "element": "Neutral"
+        },
+        {
+          "id": "izumo_844",
+          "characterId": "izumo_844",
+          "name": "Izumo Kamizuki",
+          "version": "Certainly Capable",
+          "rank": "Jonin",
+          "level": 6,
+          "element": "Neutral"
+        },
+        {
+          "id": "torune_626",
+          "characterId": "torune_626",
+          "name": "Torune Aburame",
+          "version": "Lurking Poison",
+          "rank": "Chunin",
+          "level": 21,
+          "element": "Neutral"
+        },
+        {
+          "id": "kushina_840",
+          "characterId": "kushina_840",
+          "name": "Kushina Uzumaki",
+          "version": "Fist of Hidden Embarrassment",
+          "rank": "Kage",
+          "level": 40,
+          "element": "Neutral"
+        },
+        {
+          "id": "orochimaru_831",
+          "characterId": "orochimaru_831",
+          "name": "Orochimaru",
+          "version": "Aspirations of Indulgence",
+          "rank": "Kage",
+          "level": 14,
+          "element": "Neutral"
+        },
+        {
+          "id": "sakura_794",
+          "characterId": "sakura_794",
+          "name": "Sakura Haruno",
+          "version": "Stunning Spring Breeze",
+          "rank": "Kage",
+          "level": 19,
+          "element": "Neutral"
+        },
+        {
+          "id": "chojuro_565",
+          "characterId": "chojuro_565",
+          "name": "Chojuro",
+          "version": "Slashing Twinsword",
+          "rank": "Genin",
+          "level": 32,
+          "element": "Neutral"
+        },
+        {
+          "id": "ferocious_1228",
+          "characterId": "ferocious_1228",
+          "name": "Ferocious Beads",
+          "version": "Freedom of Choice",
+          "rank": "Chunin",
+          "level": 6,
+          "element": "Neutral"
+        },
+        {
+          "id": "sasuke_004",
+          "characterId": "sasuke_004",
+          "name": "Sasuke Uchiha",
+          "version": "A Lone Heart",
+          "rank": "Genin",
+          "level": 1,
+          "element": "Neutral"
+        }
+      ]
+    },
+    {
+      "id": 1002,
+      "username": "sakura",
+      "password": "medical",
+      "resources": {
+        "ryo": 202478,
+        "ninja_pearls": 75,
+        "shinobites": 69,
+        "granny_coin": 36
+      },
+      "ninjas": [
+        {
+          "id": "cee_880",
+          "characterId": "cee_880",
+          "name": "Cee",
+          "version": "Earnest with Composure",
+          "rank": "Genin",
+          "level": 40,
+          "element": "Neutral"
+        },
+        {
+          "id": "chino_570",
+          "characterId": "chino_570",
+          "name": "Chino",
+          "version": "Ill-Omened Red Eyes",
+          "rank": "Kage",
+          "level": 19,
+          "element": "Neutral"
+        },
+        {
+          "id": "mizuki_099",
+          "characterId": "mizuki_099",
+          "name": "Mizuki",
+          "version": "Hidden Treachery",
+          "rank": "Genin",
+          "level": 14,
+          "element": "Neutral"
+        },
+        {
+          "id": "naruto_427",
+          "characterId": "naruto_427",
+          "name": "Naruto Uzumaki",
+          "version": "Seal of Light",
+          "rank": "Jonin",
+          "level": 9,
+          "element": "Neutral"
+        },
+        {
+          "id": "hinata_016",
+          "characterId": "hinata_016",
+          "name": "Hinata Hyuga",
+          "version": "Loyal Emotions",
+          "rank": "Chunin",
+          "level": 17,
+          "element": "Neutral"
+        },
+        {
+          "id": "chiyo_340",
+          "characterId": "chiyo_340",
+          "name": "Chiyo",
+          "version": "Joint Puppet Performance",
+          "rank": "Kage",
+          "level": 11,
+          "element": "Neutral"
+        },
+        {
+          "id": "shikamaru_807",
+          "characterId": "shikamaru_807",
+          "name": "Shikamaru Nara",
+          "version": "New Resolve",
+          "rank": "Kage",
+          "level": 18,
+          "element": "Neutral"
+        },
+        {
+          "id": "haku_137",
+          "characterId": "haku_137",
+          "name": "Haku",
+          "version": "The Icy Mask's Blades",
+          "rank": "Genin",
+          "level": 19,
+          "element": "Neutral"
+        },
+        {
+          "id": "sasori_652",
+          "characterId": "sasori_652",
+          "name": "Sasori",
+          "version": "The Ultimate Puppet",
+          "rank": "Genin",
+          "level": 9,
+          "element": "Neutral"
+        },
+        {
+          "id": "ashura_2110",
+          "characterId": "ashura_2110",
+          "name": "Ashura",
+          "version": "The Power of Bonds",
+          "rank": "Kage",
+          "level": 29,
+          "element": "Neutral"
+        },
+        {
+          "id": "kakashi_797",
+          "characterId": "kakashi_797",
+          "name": "Kakashi Hatake",
+          "version": "Battle Tactician",
+          "rank": "Chunin",
+          "level": 14,
+          "element": "Neutral"
+        },
+        {
+          "id": "kimimaro_087",
+          "characterId": "kimimaro_087",
+          "name": "Kimimaro",
+          "version": "Kimimaro of the Earth",
+          "rank": "Genin",
+          "level": 11,
+          "element": "Neutral"
+        },
+        {
+          "id": "madara_747",
+          "characterId": "madara_747",
+          "name": "Madara Uchiha",
+          "version": "Phantasy's Beckoning Light",
+          "rank": "Genin",
+          "level": 5,
+          "element": "Neutral"
+        },
+        {
+          "id": "kakashi_146",
+          "characterId": "kakashi_146",
+          "name": "Kakashi Hatake",
+          "version": "Hidden Left Eye",
+          "rank": "Chunin",
+          "level": 10,
+          "element": "Neutral"
+        },
+        {
+          "id": "zetsu_382",
+          "characterId": "zetsu_382",
+          "name": "Zetsu",
+          "version": "Black & White Shadow",
+          "rank": "Kage",
+          "level": 34,
+          "element": "Neutral"
+        },
+        {
+          "id": "hiashi_117",
+          "characterId": "hiashi_117",
+          "name": "Hiashi Hyuga",
+          "version": "A Strict Leader",
+          "rank": "Genin",
+          "level": 17,
+          "element": "Neutral"
+        },
+        {
+          "id": "tobirama_2006",
+          "characterId": "tobirama_2006",
+          "name": "Tobirama Senju",
+          "version": "Inherited Will of Fire",
+          "rank": "Genin",
+          "level": 16,
+          "element": "Neutral"
+        },
+        {
+          "id": "madara_681",
+          "characterId": "madara_681",
+          "name": "Madara Uchiha",
+          "version": "Power of Life or Death",
+          "rank": "Chunin",
+          "level": 9,
+          "element": "Neutral"
+        },
+        {
+          "id": "kisame_479",
+          "characterId": "kisame_479",
+          "name": "Kisame Hoshigaki",
+          "version": "Swordsman of the Raging Waves",
+          "rank": "Jonin",
+          "level": 8,
+          "element": "Neutral"
+        },
+        {
+          "id": "shikamaru_182",
+          "characterId": "shikamaru_182",
+          "name": "Shikamaru Nara",
+          "version": "The Decoy",
+          "rank": "Genin",
+          "level": 32,
+          "element": "Neutral"
+        },
+        {
+          "id": "yugito_331",
+          "characterId": "yugito_331",
+          "name": "Yugito Ni'i",
+          "version": "Unbreakable Will",
+          "rank": "Jonin",
+          "level": 27,
+          "element": "Neutral"
+        },
+        {
+          "id": "sakura_006",
+          "characterId": "sakura_006",
+          "name": "Sakura Haruno",
+          "version": "The Indomitable Maiden",
+          "rank": "Genin",
+          "level": 7,
+          "element": "Neutral"
+        },
+        {
+          "id": "pakura_816",
+          "characterId": "pakura_816",
+          "name": "Pakura",
+          "version": "Scorching Red",
+          "rank": "Genin",
+          "level": 39,
+          "element": "Neutral"
+        },
+        {
+          "id": "might_592",
+          "characterId": "might_592",
+          "name": "Might Guy",
+          "version": "Surging Blood",
+          "rank": "Chunin",
+          "level": 38,
+          "element": "Neutral"
+        },
+        {
+          "id": "rock_809",
+          "characterId": "rock_809",
+          "name": "Rock Lee",
+          "version": "The Path of Trust",
+          "rank": "Genin",
+          "level": 30,
+          "element": "Neutral"
+        },
+        {
+          "id": "sasori_882",
+          "characterId": "sasori_882",
+          "name": "Sasori",
+          "version": "Eternal Creation",
+          "rank": "Genin",
+          "level": 27,
+          "element": "Neutral"
+        },
+        {
+          "id": "darui_759",
+          "characterId": "darui_759",
+          "name": "Darui",
+          "version": "Carved Seal of Lightning",
+          "rank": "Kage",
+          "level": 18,
+          "element": "Neutral"
+        },
+        {
+          "id": "haku_423",
+          "characterId": "haku_423",
+          "name": "Haku",
+          "version": "Tears of the Ice Mirror",
+          "rank": "Chunin",
+          "level": 21,
+          "element": "Neutral"
+        },
+        {
+          "id": "naruto_584",
+          "characterId": "naruto_584",
+          "name": "Naruto Uzumaki",
+          "version": "Shining Warrior of Bonds",
+          "rank": "Kage",
+          "level": 33,
+          "element": "Neutral"
+        },
+        {
+          "id": "danzo_2034",
+          "characterId": "danzo_2034",
+          "name": "Danzo Shimura",
+          "version": "Embodiment of Darkness",
+          "rank": "Chunin",
+          "level": 29,
+          "element": "Neutral"
+        },
+        {
+          "id": "shikamaru_615",
+          "characterId": "shikamaru_615",
+          "name": "Shikamaru Nara",
+          "version": "Crucial Decision",
+          "rank": "Genin",
+          "level": 31,
+          "element": "Neutral"
+        },
+        {
+          "id": "kaguya_749",
+          "characterId": "kaguya_749",
+          "name": "Kaguya Otsutsuki",
+          "version": "Between Love and Madness",
+          "rank": "Kage",
+          "level": 32,
+          "element": "Neutral"
+        },
+        {
+          "id": "hinata_813",
+          "characterId": "hinata_813",
+          "name": "Hinata Hyuga",
+          "version": "Beyond the Ceaseless",
+          "rank": "Genin",
+          "level": 37,
+          "element": "Neutral"
+        },
+        {
+          "id": "ferocious_1220",
+          "characterId": "ferocious_1220",
+          "name": "Ferocious Beads",
+          "version": "Fortitude & Resolution",
+          "rank": "Genin",
+          "level": 28,
+          "element": "Neutral"
+        },
+        {
+          "id": "darui_385",
+          "characterId": "darui_385",
+          "name": "Darui",
+          "version": "Words of Conviction",
+          "rank": "Genin",
+          "level": 34,
+          "element": "Neutral"
+        },
+        {
+          "id": "obito_736",
+          "characterId": "obito_736",
+          "name": "Obito Uchiha",
+          "version": "Hollow Heart",
+          "rank": "Jonin",
+          "level": 4,
+          "element": "Neutral"
+        },
+        {
+          "id": "kankuro_438",
+          "characterId": "kankuro_438",
+          "name": "Kankuro",
+          "version": "Pride In His Work",
+          "rank": "Chunin",
+          "level": 19,
+          "element": "Neutral"
+        },
+        {
+          "id": "izumo_844",
+          "characterId": "izumo_844",
+          "name": "Izumo Kamizuki",
+          "version": "Certainly Capable",
+          "rank": "Kage",
+          "level": 27,
+          "element": "Neutral"
+        },
+        {
+          "id": "tenzo_2047",
+          "characterId": "tenzo_2047",
+          "name": "Tenzo",
+          "version": "Beneath the Sun",
+          "rank": "Jonin",
+          "level": 9,
+          "element": "Neutral"
+        },
+        {
+          "id": "fourth_467",
+          "characterId": "fourth_467",
+          "name": "Fourth Raikage: Ay",
+          "version": "Solid Lightning",
+          "rank": "Kage",
+          "level": 26,
+          "element": "Neutral"
+        },
+        {
+          "id": "yahiko_312",
+          "characterId": "yahiko_312",
+          "name": "Yahiko",
+          "version": "Aspiring for Peace",
+          "rank": "Chunin",
+          "level": 8,
+          "element": "Neutral"
+        },
+        {
+          "id": "sasuke_2029",
+          "characterId": "sasuke_2029",
+          "name": "Sasuke Uchiha",
+          "version": "Battling with your eyes",
+          "rank": "Kage",
+          "level": 3,
+          "element": "Neutral"
+        },
+        {
+          "id": "tayuya_192",
+          "characterId": "tayuya_192",
+          "name": "Tayuya",
+          "version": "Aggressive Strategist",
+          "rank": "Kage",
+          "level": 2,
+          "element": "Neutral"
+        },
+        {
+          "id": "itachi_210",
+          "characterId": "itachi_210",
+          "name": "Itachi Uchiha",
+          "version": "Beyond the Sharingan",
+          "rank": "Kage",
+          "level": 37,
+          "element": "Neutral"
+        },
+        {
+          "id": "hashirama_418",
+          "characterId": "hashirama_418",
+          "name": "Hashirama Senju",
+          "version": "Bravery Unrivalled",
+          "rank": "Genin",
+          "level": 39,
+          "element": "Neutral"
+        },
+        {
+          "id": "gaara_730",
+          "characterId": "gaara_730",
+          "name": "Gaara",
+          "version": "Sandstorm-Commanding Kage",
+          "rank": "Chunin",
+          "level": 23,
+          "element": "Neutral"
+        },
+        {
+          "id": "tobirama_408",
+          "characterId": "tobirama_408",
+          "name": "Tobirama Senju",
+          "version": "Enlightened Brilliance",
+          "rank": "Chunin",
+          "level": 39,
+          "element": "Neutral"
+        },
+        {
+          "id": "ino_549",
+          "characterId": "ino_549",
+          "name": "Ino Yamanaka",
+          "version": "Bittersweet Gift",
+          "rank": "Chunin",
+          "level": 1,
+          "element": "Neutral"
+        },
+        {
+          "id": "ferocious_1228",
+          "characterId": "ferocious_1228",
+          "name": "Ferocious Beads",
+          "version": "Freedom of Choice",
+          "rank": "Genin",
+          "level": 13,
+          "element": "Neutral"
+        },
+        {
+          "id": "sasuke_004",
+          "characterId": "sasuke_004",
+          "name": "Sasuke Uchiha",
+          "version": "A Lone Heart",
+          "rank": "Genin",
+          "level": 1,
+          "element": "Neutral"
+        }
+      ]
+    },
+    {
+      "id": 1003,
+      "username": "sasuke",
+      "password": "chidori",
+      "resources": {
+        "ryo": 76613,
+        "ninja_pearls": 97,
+        "shinobites": 61,
+        "granny_coin": 41
+      },
+      "ninjas": [
+        {
+          "id": "orochimaru_074",
+          "characterId": "orochimaru_074",
+          "name": "Orochimaru",
+          "version": "The Horror Returns",
+          "rank": "Chunin",
+          "level": 15,
+          "element": "Neutral"
+        },
+        {
+          "id": "naruto_482",
+          "characterId": "naruto_482",
+          "name": "Naruto Uzumaki",
+          "version": "Sea Spray Blast",
+          "rank": "Jonin",
+          "level": 1,
+          "element": "Neutral"
+        },
+        {
+          "id": "indra_515",
+          "characterId": "indra_515",
+          "name": "Indra",
+          "version": "Lone War God",
+          "rank": "Chunin",
+          "level": 8,
+          "element": "Neutral"
+        },
+        {
+          "id": "tobi_317",
+          "characterId": "tobi_317",
+          "name": "Tobi",
+          "version": "Evil Eyes Behind the Mask",
+          "rank": "Genin",
+          "level": 18,
+          "element": "Neutral"
+        },
+        {
+          "id": "tenten_796",
+          "characterId": "tenten_796",
+          "name": "Tenten",
+          "version": "Battle Blade Dance",
+          "rank": "Genin",
+          "level": 28,
+          "element": "Neutral"
+        },
+        {
+          "id": "kiba_223",
+          "characterId": "kiba_223",
+          "name": "Kiba Inuzuka",
+          "version": "Two-Headed Fangs",
+          "rank": "Genin",
+          "level": 22,
+          "element": "Neutral"
+        },
+        {
+          "id": "kankuro_439",
+          "characterId": "kankuro_439",
+          "name": "Kankuro",
+          "version": "Pride In His Work",
+          "rank": "Genin",
+          "level": 14,
+          "element": "Neutral"
+        },
+        {
+          "id": "hagoromo_2044",
+          "characterId": "hagoromo_2044",
+          "name": "Hagoromo Otsutsuki",
+          "version": "Truth of the Divine Tree",
+          "rank": "Chunin",
+          "level": 40,
+          "element": "Neutral"
+        },
+        {
+          "id": "fuu_414",
+          "characterId": "fuu_414",
+          "name": "Fuu",
+          "version": "Wild and Free",
+          "rank": "Jonin",
+          "level": 28,
+          "element": "Neutral"
+        },
+        {
+          "id": "orochimaru_171",
+          "characterId": "orochimaru_171",
+          "name": "Orochimaru",
+          "version": "The Snake Ninja",
+          "rank": "Jonin",
+          "level": 35,
+          "element": "Neutral"
+        },
+        {
+          "id": "orochimaru_447",
+          "characterId": "orochimaru_447",
+          "name": "Orochimaru",
+          "version": "Hidden Ambitions",
+          "rank": "Genin",
+          "level": 40,
+          "element": "Neutral"
+        },
+        {
+          "id": "kisame_479",
+          "characterId": "kisame_479",
+          "name": "Kisame Hoshigaki",
+          "version": "Swordsman of the Raging Waves",
+          "rank": "Jonin",
+          "level": 37,
+          "element": "Neutral"
+        },
+        {
+          "id": "kiba_224",
+          "characterId": "kiba_224",
+          "name": "Kiba Inuzuka",
+          "version": "Two-Headed Fangs",
+          "rank": "Chunin",
+          "level": 4,
+          "element": "Neutral"
+        },
+        {
+          "id": "hinata_811",
+          "characterId": "hinata_811",
+          "name": "Hinata Hyuga",
+          "version": "Beyond the Ceaseless",
+          "rank": "Jonin",
+          "level": 21,
+          "element": "Neutral"
+        },
+        {
+          "id": "shisui_396",
+          "characterId": "shisui_396",
+          "name": "Shisui Uchiha",
+          "version": "Hero Without Glory",
+          "rank": "Genin",
+          "level": 6,
+          "element": "Neutral"
+        },
+        {
+          "id": "hiruzen_070",
+          "characterId": "hiruzen_070",
+          "name": "Hiruzen Sarutobi",
+          "version": "The Third Hokage",
+          "rank": "Jonin",
+          "level": 25,
+          "element": "Neutral"
+        },
+        {
+          "id": "ultimate_1127",
+          "characterId": "ultimate_1127",
+          "name": "Ultimate Treasure Chest",
+          "version": "True Heart Treasure",
+          "rank": "Chunin",
+          "level": 27,
+          "element": "Neutral"
+        },
+        {
+          "id": "ferocious_1253",
+          "characterId": "ferocious_1253",
+          "name": "Ferocious Beads",
+          "version": "Cataclysm-Eaters",
+          "rank": "Jonin",
+          "level": 27,
+          "element": "Neutral"
+        },
+        {
+          "id": "ashura_2109",
+          "characterId": "ashura_2109",
+          "name": "Ashura",
+          "version": "The Power of Bonds",
+          "rank": "Jonin",
+          "level": 33,
+          "element": "Neutral"
+        },
+        {
+          "id": "temari_187",
+          "characterId": "temari_187",
+          "name": "Temari",
+          "version": "A Bold Analyzer",
+          "rank": "Chunin",
+          "level": 18,
+          "element": "Neutral"
+        },
+        {
+          "id": "jiraiya_072",
+          "characterId": "jiraiya_072",
+          "name": "Jiraiya",
+          "version": "Enter the Sage",
+          "rank": "Chunin",
+          "level": 17,
+          "element": "Neutral"
+        },
+        {
+          "id": "chino_570",
+          "characterId": "chino_570",
+          "name": "Chino",
+          "version": "Ill-Omened Red Eyes",
+          "rank": "Kage",
+          "level": 39,
+          "element": "Neutral"
+        },
+        {
+          "id": "kakashi_048",
+          "characterId": "kakashi_048",
+          "name": "Kakashi Hatake",
+          "version": "Copier of 1K Techniques",
+          "rank": "Genin",
+          "level": 23,
+          "element": "Neutral"
+        },
+        {
+          "id": "mahiru_025",
+          "characterId": "mahiru_025",
+          "name": "Mahiru",
+          "version": "Superior Swordsmanship",
+          "rank": "Kage",
+          "level": 11,
+          "element": "Neutral"
+        },
+        {
+          "id": "hinata_497",
+          "characterId": "hinata_497",
+          "name": "Hinata Hyuga",
+          "version": "Unwavering Courage",
+          "rank": "Genin",
+          "level": 3,
+          "element": "Neutral"
+        },
+        {
+          "id": "kakashi_587",
+          "characterId": "kakashi_587",
+          "name": "Kakashi Hatake",
+          "version": "Silent Sorcery",
+          "rank": "Genin",
+          "level": 1,
+          "element": "Neutral"
+        },
+        {
+          "id": "kushina_231",
+          "characterId": "kushina_231",
+          "name": "Kushina Uzumaki",
+          "version": "The Red-Hot Habanero",
+          "rank": "Chunin",
+          "level": 13,
+          "element": "Neutral"
+        },
+        {
+          "id": "asuma_214",
+          "characterId": "asuma_214",
+          "name": "Asuma Sarutobi",
+          "version": "All-Powerful Infighter",
+          "rank": "Kage",
+          "level": 11,
+          "element": "Neutral"
+        },
+        {
+          "id": "darui_386",
+          "characterId": "darui_386",
+          "name": "Darui",
+          "version": "Words of Conviction",
+          "rank": "Kage",
+          "level": 3,
+          "element": "Neutral"
+        },
+        {
+          "id": "hanabi_773",
+          "characterId": "hanabi_773",
+          "name": "Hanabi Hyuga",
+          "version": "Daughter of the Byakugan",
+          "rank": "Jonin",
+          "level": 27,
+          "element": "Neutral"
+        },
+        {
+          "id": "orochimaru_599",
+          "characterId": "orochimaru_599",
+          "name": "Orochimaru",
+          "version": "Winds of Chaos",
+          "rank": "Chunin",
+          "level": 8,
+          "element": "Neutral"
+        },
+        {
+          "id": "madara_772",
+          "characterId": "madara_772",
+          "name": "Madara Uchiha",
+          "version": "Solitary Devastation",
+          "rank": "Kage",
+          "level": 14,
+          "element": "Neutral"
+        },
+        {
+          "id": "choji_619",
+          "characterId": "choji_619",
+          "name": "Choji Akimichi",
+          "version": "Fluttering Butterfly",
+          "rank": "Chunin",
+          "level": 21,
+          "element": "Neutral"
+        },
+        {
+          "id": "shisui_2064",
+          "characterId": "shisui_2064",
+          "name": "Shisui Uchiha",
+          "version": "The Price of Pride",
+          "rank": "Genin",
+          "level": 29,
+          "element": "Neutral"
+        },
+        {
+          "id": "zetsu_381",
+          "characterId": "zetsu_381",
+          "name": "Zetsu",
+          "version": "Black & White Shadow",
+          "rank": "Jonin",
+          "level": 31,
+          "element": "Neutral"
+        },
+        {
+          "id": "itachi_088",
+          "characterId": "itachi_088",
+          "name": "Itachi Uchiha",
+          "version": "A Cold-Hearted Criminal",
+          "rank": "Genin",
+          "level": 4,
+          "element": "Neutral"
+        },
+        {
+          "id": "mist_126",
+          "characterId": "mist_126",
+          "name": "Mist Anbu Male",
+          "version": "Mask Without Mercy",
+          "rank": "Genin",
+          "level": 8,
+          "element": "Neutral"
+        },
+        {
+          "id": "kankuro_165",
+          "characterId": "kankuro_165",
+          "name": "Kankuro",
+          "version": "Orchestrator of Tragedy",
+          "rank": "Genin",
+          "level": 24,
+          "element": "Neutral"
+        },
+        {
+          "id": "ino_155",
+          "characterId": "ino_155",
+          "name": "Ino Yamanaka",
+          "version": "I Don't Want to Lose",
+          "rank": "Kage",
+          "level": 12,
+          "element": "Neutral"
+        },
+        {
+          "id": "sasuke_245",
+          "characterId": "sasuke_245",
+          "name": "Sasuke Uchiha",
+          "version": "Soul Shrouded in Sorrow",
+          "rank": "Kage",
+          "level": 24,
+          "element": "Neutral"
+        },
+        {
+          "id": "naruto_584",
+          "characterId": "naruto_584",
+          "name": "Naruto Uzumaki",
+          "version": "Shining Warrior of Bonds",
+          "rank": "Chunin",
+          "level": 39,
+          "element": "Neutral"
+        },
+        {
+          "id": "training_938",
+          "characterId": "training_938",
+          "name": "Training Weights",
+          "version": "Special Awakening Tool",
+          "rank": "Chunin",
+          "level": 37,
+          "element": "Neutral"
+        },
+        {
+          "id": "minato_814",
+          "characterId": "minato_814",
+          "name": "Minato Namikaze",
+          "version": "Natural Talent",
+          "rank": "Chunin",
+          "level": 28,
+          "element": "Neutral"
+        },
+        {
+          "id": "shikaku_111",
+          "characterId": "shikaku_111",
+          "name": "Shikaku Nara",
+          "version": "The Ino-",
+          "rank": "Genin",
+          "level": 11,
+          "element": "Neutral"
+        },
+        {
+          "id": "shisui_218",
+          "characterId": "shisui_218",
+          "name": "Shisui Uchiha",
+          "version": "Entrusted Wish",
+          "rank": "Chunin",
+          "level": 17,
+          "element": "Neutral"
+        },
+        {
+          "id": "zabuza_541",
+          "characterId": "zabuza_541",
+          "name": "Zabuza Momochi",
+          "version": "Demonic Presence",
+          "rank": "Genin",
+          "level": 31,
+          "element": "Neutral"
+        },
+        {
+          "id": "gaara_185",
+          "characterId": "gaara_185",
+          "name": "Gaara",
+          "version": "Sand Clad Demon",
+          "rank": "Jonin",
+          "level": 4,
+          "element": "Neutral"
+        },
+        {
+          "id": "naruto_2136",
+          "characterId": "naruto_2136",
+          "name": "Naruto Uzumaki",
+          "version": "Precious Feelings",
+          "rank": "Kage",
+          "level": 26,
+          "element": "Neutral"
+        },
+        {
+          "id": "deadly_1242",
+          "characterId": "deadly_1242",
+          "name": "Deadly Beads",
+          "version": "Truth of the Divine Tree",
+          "rank": "Kage",
+          "level": 20,
+          "element": "Neutral"
+        },
+        {
+          "id": "sasuke_004",
+          "characterId": "sasuke_004",
+          "name": "Sasuke Uchiha",
+          "version": "A Lone Heart",
+          "rank": "Genin",
+          "level": 1,
+          "element": "Neutral"
+        }
+      ]
+    },
+    {
+      "id": 1004,
+      "username": "kakashi",
+      "password": "sharingan",
+      "resources": {
+        "ryo": 225514,
+        "ninja_pearls": 28,
+        "shinobites": 117,
+        "granny_coin": 32
+      },
+      "ninjas": [
+        {
+          "id": "naruto_383",
+          "characterId": "naruto_383",
+          "name": "Naruto Uzumaki",
+          "version": "Two Suns",
+          "rank": "Jonin",
+          "level": 29,
+          "element": "Neutral"
+        },
+        {
+          "id": "obito_395",
+          "characterId": "obito_395",
+          "name": "Obito Uchiha",
+          "version": "Despair of Loneliness",
+          "rank": "Chunin",
+          "level": 22,
+          "element": "Neutral"
+        },
+        {
+          "id": "deadly_1165",
+          "characterId": "deadly_1165",
+          "name": "Deadly Beads",
+          "version": "All-Ending Thunderbolt",
+          "rank": "Jonin",
+          "level": 2,
+          "element": "Neutral"
+        },
+        {
+          "id": "tobirama_206",
+          "characterId": "tobirama_206",
+          "name": "Tobirama Senju",
+          "version": "Father of Reanimation",
+          "rank": "Jonin",
+          "level": 27,
+          "element": "Neutral"
+        },
+        {
+          "id": "killer_463",
+          "characterId": "killer_463",
+          "name": "Killer Bee",
+          "version": "Engraved Words",
+          "rank": "Jonin",
+          "level": 39,
+          "element": "Neutral"
+        },
+        {
+          "id": "baki_105",
+          "characterId": "baki_105",
+          "name": "Baki",
+          "version": "Protector of the Village",
+          "rank": "Chunin",
+          "level": 33,
+          "element": "Neutral"
+        },
+        {
+          "id": "hiruzen_071",
+          "characterId": "hiruzen_071",
+          "name": "Hiruzen Sarutobi",
+          "version": "The Third Hokage",
+          "rank": "Chunin",
+          "level": 10,
+          "element": "Neutral"
+        },
+        {
+          "id": "sasuke_783",
+          "characterId": "sasuke_783",
+          "name": "Sasuke Uchiha",
+          "version": "Catalyst of Ambition",
+          "rank": "Kage",
+          "level": 22,
+          "element": "Neutral"
+        },
+        {
+          "id": "sasuke_175",
+          "characterId": "sasuke_175",
+          "name": "Sasuke Uchiha",
+          "version": "Chidori: A New Skill",
+          "rank": "Genin",
+          "level": 7,
+          "element": "Neutral"
+        },
+        {
+          "id": "sasuke_371",
+          "characterId": "sasuke_371",
+          "name": "Sasuke Uchiha",
+          "version": "Darkness of Deep Hatred",
+          "rank": "Chunin",
+          "level": 40,
+          "element": "Neutral"
+        },
+        {
+          "id": "hayate_096",
+          "characterId": "hayate_096",
+          "name": "Hayate Gekko",
+          "version": "Third Round Prelim Judge",
+          "rank": "Jonin",
+          "level": 26,
+          "element": "Neutral"
+        },
+        {
+          "id": "sakura_869",
+          "characterId": "sakura_869",
+          "name": "Sakura Haruno",
+          "version": "Cherry Blossoms on the Front Line",
+          "rank": "Kage",
+          "level": 23,
+          "element": "Neutral"
+        },
+        {
+          "id": "minato_814",
+          "characterId": "minato_814",
+          "name": "Minato Namikaze",
+          "version": "Natural Talent",
+          "rank": "Chunin",
+          "level": 2,
+          "element": "Neutral"
+        },
+        {
+          "id": "izuna_775",
+          "characterId": "izuna_775",
+          "name": "Izuna Uchiha",
+          "version": "Intelligent Blade",
+          "rank": "Jonin",
+          "level": 10,
+          "element": "Neutral"
+        },
+        {
+          "id": "mizuki_098",
+          "characterId": "mizuki_098",
+          "name": "Mizuki",
+          "version": "Hidden Treachery",
+          "rank": "Chunin",
+          "level": 35,
+          "element": "Neutral"
+        },
+        {
+          "id": "gaara_050",
+          "characterId": "gaara_050",
+          "name": "Gaara",
+          "version": "Sand Defense",
+          "rank": "Genin",
+          "level": 29,
+          "element": "Neutral"
+        },
+        {
+          "id": "indra_515",
+          "characterId": "indra_515",
+          "name": "Indra",
+          "version": "Lone War God",
+          "rank": "Genin",
+          "level": 11,
+          "element": "Neutral"
+        },
+        {
+          "id": "tenten_069",
+          "characterId": "tenten_069",
+          "name": "Tenten",
+          "version": "Ninja Tool Specialist",
+          "rank": "Genin",
+          "level": 21,
+          "element": "Neutral"
+        },
+        {
+          "id": "ultimate_1127",
+          "characterId": "ultimate_1127",
+          "name": "Ultimate Treasure Chest",
+          "version": "True Heart Treasure",
+          "rank": "Kage",
+          "level": 31,
+          "element": "Neutral"
+        },
+        {
+          "id": "world_class_ramen_1188",
+          "characterId": "world_class_ramen_1188",
+          "name": "World-Class Ramen",
+          "version": "Ultimate Cup",
+          "rank": "Kage",
+          "level": 22,
+          "element": "Neutral"
+        },
+        {
+          "id": "sakura_480",
+          "characterId": "sakura_480",
+          "name": "Sakura Haruno",
+          "version": "Sandy Beach Dreams",
+          "rank": "Genin",
+          "level": 19,
+          "element": "Neutral"
+        },
+        {
+          "id": "shikamaru_617",
+          "characterId": "shikamaru_617",
+          "name": "Shikamaru Nara",
+          "version": "Crucial Decision",
+          "rank": "Kage",
+          "level": 35,
+          "element": "Neutral"
+        },
+        {
+          "id": "hiruzen_201",
+          "characterId": "hiruzen_201",
+          "name": "Hiruzen Sarutobi",
+          "version": "Ninja Clothes",
+          "rank": "Genin",
+          "level": 5,
+          "element": "Neutral"
+        },
+        {
+          "id": "shikaku_2061",
+          "characterId": "shikaku_2061",
+          "name": "Shikaku Nara",
+          "version": "Covert Operations",
+          "rank": "Genin",
+          "level": 5,
+          "element": "Neutral"
+        },
+        {
+          "id": "rock_148",
+          "characterId": "rock_148",
+          "name": "Rock Lee",
+          "version": "The Eight Gates",
+          "rank": "Kage",
+          "level": 7,
+          "element": "Neutral"
+        },
+        {
+          "id": "kakashi_735",
+          "characterId": "kakashi_735",
+          "name": "Kakashi Hatake",
+          "version": "Iron Resolve",
+          "rank": "Kage",
+          "level": 16,
+          "element": "Neutral"
+        },
+        {
+          "id": "hashirama_521",
+          "characterId": "hashirama_521",
+          "name": "Hashirama Senju",
+          "version": "Long-Held Dream",
+          "rank": "Kage",
+          "level": 39,
+          "element": "Neutral"
+        },
+        {
+          "id": "soku_288",
+          "characterId": "soku_288",
+          "name": "Soku",
+          "version": "Stubborn Will",
+          "rank": "Genin",
+          "level": 25,
+          "element": "Neutral"
+        },
+        {
+          "id": "kiba_018",
+          "characterId": "kiba_018",
+          "name": "Kiba Inuzuka",
+          "version": "Sharp Claws and Fangs",
+          "rank": "Jonin",
+          "level": 40,
+          "element": "Neutral"
+        },
+        {
+          "id": "kushina_231",
+          "characterId": "kushina_231",
+          "name": "Kushina Uzumaki",
+          "version": "The Red-Hot Habanero",
+          "rank": "Genin",
+          "level": 11,
+          "element": "Neutral"
+        },
+        {
+          "id": "kakashi_854",
+          "characterId": "kakashi_854",
+          "name": "Kakashi Hatake",
+          "version": "Friend's Way of Life",
+          "rank": "Kage",
+          "level": 25,
+          "element": "Neutral"
+        },
+        {
+          "id": "ashura_789",
+          "characterId": "ashura_789",
+          "name": "Ashura",
+          "version": "Devoted to Studies",
+          "rank": "Jonin",
+          "level": 31,
+          "element": "Neutral"
+        },
+        {
+          "id": "madara_2059",
+          "characterId": "madara_2059",
+          "name": "Madara Uchiha",
+          "version": "At the Battle's End",
+          "rank": "Kage",
+          "level": 27,
+          "element": "Neutral"
+        },
+        {
+          "id": "jirobo_199",
+          "characterId": "jirobo_199",
+          "name": "Jirobo",
+          "version": "Herculean Appetite",
+          "rank": "Jonin",
+          "level": 37,
+          "element": "Neutral"
+        },
+        {
+          "id": "shibi_109",
+          "characterId": "shibi_109",
+          "name": "Shibi Aburame",
+          "version": "A Reticent Man",
+          "rank": "Jonin",
+          "level": 23,
+          "element": "Neutral"
+        },
+        {
+          "id": "ferocious_1224",
+          "characterId": "ferocious_1224",
+          "name": "Ferocious Beads",
+          "version": "Endless Rebirth",
+          "rank": "Chunin",
+          "level": 9,
+          "element": "Neutral"
+        },
+        {
+          "id": "yamato_851",
+          "characterId": "yamato_851",
+          "name": "Yamato",
+          "version": "Unmalicious Murderous Intent",
+          "rank": "Kage",
+          "level": 1,
+          "element": "Neutral"
+        },
+        {
+          "id": "obito_669",
+          "characterId": "obito_669",
+          "name": "Obito Uchiha",
+          "version": "Into Total Darkness",
+          "rank": "Chunin",
+          "level": 31,
+          "element": "Neutral"
+        },
+        {
+          "id": "kakashi_313",
+          "characterId": "kakashi_313",
+          "name": "Kakashi Hatake",
+          "version": "Unique Eyes Blooming",
+          "rank": "Jonin",
+          "level": 35,
+          "element": "Neutral"
+        },
+        {
+          "id": "shikamaru_182",
+          "characterId": "shikamaru_182",
+          "name": "Shikamaru Nara",
+          "version": "The Decoy",
+          "rank": "Jonin",
+          "level": 1,
+          "element": "Neutral"
+        },
+        {
+          "id": "danzo_2034",
+          "characterId": "danzo_2034",
+          "name": "Danzo Shimura",
+          "version": "Embodiment of Darkness",
+          "rank": "Jonin",
+          "level": 22,
+          "element": "Neutral"
+        },
+        {
+          "id": "naruto_001",
+          "characterId": "naruto_001",
+          "name": "Naruto Uzumaki",
+          "version": "The Worst Loser",
+          "rank": "Kage",
+          "level": 31,
+          "element": "Neutral"
+        },
+        {
+          "id": "sasuke_743",
+          "characterId": "sasuke_743",
+          "name": "Sasuke Uchiha",
+          "version": "A New Ideal",
+          "rank": "Jonin",
+          "level": 24,
+          "element": "Neutral"
+        },
+        {
+          "id": "shisui_218",
+          "characterId": "shisui_218",
+          "name": "Shisui Uchiha",
+          "version": "Entrusted Wish",
+          "rank": "Chunin",
+          "level": 25,
+          "element": "Neutral"
+        },
+        {
+          "id": "temari_188",
+          "characterId": "temari_188",
+          "name": "Temari",
+          "version": "A Bold Analyzer",
+          "rank": "Chunin",
+          "level": 17,
+          "element": "Neutral"
+        },
+        {
+          "id": "kankuro_165",
+          "characterId": "kankuro_165",
+          "name": "Kankuro",
+          "version": "Orchestrator of Tragedy",
+          "rank": "Jonin",
+          "level": 9,
+          "element": "Neutral"
+        },
+        {
+          "id": "sakura_557",
+          "characterId": "sakura_557",
+          "name": "Sakura Haruno",
+          "version": "Unwavering Feelings",
+          "rank": "Jonin",
+          "level": 1,
+          "element": "Neutral"
+        },
+        {
+          "id": "naruto_045",
+          "characterId": "naruto_045",
+          "name": "Naruto Uzumaki",
+          "version": "No. 1 Maverick",
+          "rank": "Chunin",
+          "level": 24,
+          "element": "Neutral"
+        },
+        {
+          "id": "sai_239",
+          "characterId": "sai_239",
+          "name": "Sai",
+          "version": "Mask-like Smile",
+          "rank": "Genin",
+          "level": 29,
+          "element": "Neutral"
+        },
+        {
+          "id": "sasuke_004",
+          "characterId": "sasuke_004",
+          "name": "Sasuke Uchiha",
+          "version": "A Lone Heart",
+          "rank": "Genin",
+          "level": 1,
+          "element": "Neutral"
+        }
+      ]
+    },
+    {
+      "id": 1005,
+      "username": "hinata",
+      "password": "byakugan",
+      "resources": {
+        "ryo": 103931,
+        "ninja_pearls": 23,
+        "shinobites": 70,
+        "granny_coin": 87
+      },
+      "ninjas": [
+        {
+          "id": "ino_691",
+          "characterId": "ino_691",
+          "name": "Ino Yamanaka",
+          "version": "Flowers in Full Bloom",
+          "rank": "Kage",
+          "level": 3,
+          "element": "Neutral"
+        },
+        {
+          "id": "jugo_307",
+          "characterId": "jugo_307",
+          "name": "Jugo",
+          "version": "Scales of Ruin and Peace",
+          "rank": "Kage",
+          "level": 4,
+          "element": "Neutral"
+        },
+        {
+          "id": "kushina_231",
+          "characterId": "kushina_231",
+          "name": "Kushina Uzumaki",
+          "version": "The Red-Hot Habanero",
+          "rank": "Kage",
+          "level": 36,
+          "element": "Neutral"
+        },
+        {
+          "id": "anko_094",
+          "characterId": "anko_094",
+          "name": "Anko Mitarashi",
+          "version": "Dangerous Dumpling Lover",
+          "rank": "Genin",
+          "level": 35,
+          "element": "Neutral"
+        },
+        {
+          "id": "bandit_129",
+          "characterId": "bandit_129",
+          "name": "Bandit",
+          "version": "Mountain Thug",
+          "rank": "Chunin",
+          "level": 9,
+          "element": "Neutral"
+        },
+        {
+          "id": "darui_2129",
+          "characterId": "darui_2129",
+          "name": "Darui",
+          "version": "From the Heart",
+          "rank": "Jonin",
+          "level": 4,
+          "element": "Neutral"
+        },
+        {
+          "id": "pain_817",
+          "characterId": "pain_817",
+          "name": "Pain",
+          "version": "Visage of Justice",
+          "rank": "Jonin",
+          "level": 6,
+          "element": "Neutral"
+        },
+        {
+          "id": "ino_549",
+          "characterId": "ino_549",
+          "name": "Ino Yamanaka",
+          "version": "Bittersweet Gift",
+          "rank": "Genin",
+          "level": 3,
+          "element": "Neutral"
+        },
+        {
+          "id": "jiraiya_2077",
+          "characterId": "jiraiya_2077",
+          "name": "Jiraiya",
+          "version": "What Makes a Ninja",
+          "rank": "Jonin",
+          "level": 26,
+          "element": "Neutral"
+        },
+        {
+          "id": "chino_571",
+          "characterId": "chino_571",
+          "name": "Chino",
+          "version": "Ill-Omened Red Eyes",
+          "rank": "Chunin",
+          "level": 6,
+          "element": "Neutral"
+        },
+        {
+          "id": "jiraiya_861",
+          "characterId": "jiraiya_861",
+          "name": "Jiraiya",
+          "version": "A Tale Woven",
+          "rank": "Genin",
+          "level": 12,
+          "element": "Neutral"
+        },
+        {
+          "id": "kakashi_146",
+          "characterId": "kakashi_146",
+          "name": "Kakashi Hatake",
+          "version": "Hidden Left Eye",
+          "rank": "Genin",
+          "level": 8,
+          "element": "Neutral"
+        },
+        {
+          "id": "shikamaru_291",
+          "characterId": "shikamaru_291",
+          "name": "Shikamaru Nara",
+          "version": "Beyond Silence",
+          "rank": "Chunin",
+          "level": 1,
+          "element": "Neutral"
+        },
+        {
+          "id": "tsunade_533",
+          "characterId": "tsunade_533",
+          "name": "Tsunade",
+          "version": "Unbreakable Tree-Flower",
+          "rank": "Kage",
+          "level": 30,
+          "element": "Neutral"
+        },
+        {
+          "id": "tobirama_514",
+          "characterId": "tobirama_514",
+          "name": "Tobirama Senju",
+          "version": "Quiet Fighting Spirit",
+          "rank": "Kage",
+          "level": 16,
+          "element": "Neutral"
+        },
+        {
+          "id": "hinata_017",
+          "characterId": "hinata_017",
+          "name": "Hinata Hyuga",
+          "version": "Loyal Emotions",
+          "rank": "Chunin",
+          "level": 15,
+          "element": "Neutral"
+        },
+        {
+          "id": "gaara_284",
+          "characterId": "gaara_284",
+          "name": "Gaara",
+          "version": "Protector of the Sands",
+          "rank": "Jonin",
+          "level": 28,
+          "element": "Neutral"
+        },
+        {
+          "id": "killer_877",
+          "characterId": "killer_877",
+          "name": "Killer Bee",
+          "version": "Rumbling Strong Arm",
+          "rank": "Chunin",
+          "level": 8,
+          "element": "Neutral"
+        },
+        {
+          "id": "pain_605",
+          "characterId": "pain_605",
+          "name": "Pain",
+          "version": "Vessel of Madness",
+          "rank": "Genin",
+          "level": 4,
+          "element": "Neutral"
+        },
+        {
+          "id": "kakuzu_2050",
+          "characterId": "kakuzu_2050",
+          "name": "Kakuzu",
+          "version": "Menacing Man",
+          "rank": "Chunin",
+          "level": 4,
+          "element": "Neutral"
+        },
+        {
+          "id": "hinata_2002",
+          "characterId": "hinata_2002",
+          "name": "Hinata Hyuga",
+          "version": "Redemptive Words",
+          "rank": "Kage",
+          "level": 37,
+          "element": "Neutral"
+        },
+        {
+          "id": "minato_230",
+          "characterId": "minato_230",
+          "name": "Minato Namikaze",
+          "version": "Rapid Lightning",
+          "rank": "Chunin",
+          "level": 30,
+          "element": "Neutral"
+        },
+        {
+          "id": "minato_229",
+          "characterId": "minato_229",
+          "name": "Minato Namikaze",
+          "version": "Rapid Lightning",
+          "rank": "Jonin",
+          "level": 19,
+          "element": "Neutral"
+        },
+        {
+          "id": "tobirama_205",
+          "characterId": "tobirama_205",
+          "name": "Tobirama Senju",
+          "version": "Father of Reanimation",
+          "rank": "Chunin",
+          "level": 35,
+          "element": "Neutral"
+        },
+        {
+          "id": "cee_881",
+          "characterId": "cee_881",
+          "name": "Cee",
+          "version": "Earnest with Composure",
+          "rank": "Genin",
+          "level": 4,
+          "element": "Neutral"
+        },
+        {
+          "id": "deadly_1177",
+          "characterId": "deadly_1177",
+          "name": "Deadly Beads",
+          "version": "Between Love and Madness",
+          "rank": "Jonin",
+          "level": 35,
+          "element": "Neutral"
+        },
+        {
+          "id": "sasori_221",
+          "characterId": "sasori_221",
+          "name": "Sasori",
+          "version": "Eternal Art",
+          "rank": "Genin",
+          "level": 7,
+          "element": "Neutral"
+        },
+        {
+          "id": "asuma_849",
+          "characterId": "asuma_849",
+          "name": "Asuma Sarutobi",
+          "version": "Final Words",
+          "rank": "Genin",
+          "level": 4,
+          "element": "Neutral"
+        },
+        {
+          "id": "naruto_400",
+          "characterId": "naruto_400",
+          "name": "Naruto Uzumaki",
+          "version": "Proof of Bonds",
+          "rank": "Chunin",
+          "level": 22,
+          "element": "Neutral"
+        },
+        {
+          "id": "naruto_2000",
+          "characterId": "naruto_2000",
+          "name": "Naruto Uzumaki",
+          "version": "Beyond Rasen",
+          "rank": "Chunin",
+          "level": 22,
+          "element": "Neutral"
+        },
+        {
+          "id": "rin_252",
+          "characterId": "rin_252",
+          "name": "Rin Nohara",
+          "version": "Overflowing Kindness",
+          "rank": "Chunin",
+          "level": 11,
+          "element": "Neutral"
+        },
+        {
+          "id": "sasuke_585",
+          "characterId": "sasuke_585",
+          "name": "Sasuke Uchiha",
+          "version": "Violet Flame Hunter",
+          "rank": "Genin",
+          "level": 22,
+          "element": "Neutral"
+        },
+        {
+          "id": "ferocious_1186",
+          "characterId": "ferocious_1186",
+          "name": "Ferocious Beads",
+          "version": "Judicious Master",
+          "rank": "Chunin",
+          "level": 21,
+          "element": "Neutral"
+        },
+        {
+          "id": "minato_529",
+          "characterId": "minato_529",
+          "name": "Minato Namikaze",
+          "version": "Flash of Dawn",
+          "rank": "Jonin",
+          "level": 37,
+          "element": "Neutral"
+        },
+        {
+          "id": "pain_2087",
+          "characterId": "pain_2087",
+          "name": "Pain",
+          "version": "Godlike Power",
+          "rank": "Kage",
+          "level": 32,
+          "element": "Neutral"
+        },
+        {
+          "id": "sai_501",
+          "characterId": "sai_501",
+          "name": "Sai",
+          "version": "Ink Drawn from the Heart",
+          "rank": "Jonin",
+          "level": 33,
+          "element": "Neutral"
+        },
+        {
+          "id": "taiseki_024",
+          "characterId": "taiseki_024",
+          "name": "Taiseki",
+          "version": "Masterful Camouflage",
+          "rank": "Kage",
+          "level": 12,
+          "element": "Neutral"
+        },
+        {
+          "id": "minato_2100",
+          "characterId": "minato_2100",
+          "name": "Minato Namikaze",
+          "version": "Raikosekka",
+          "rank": "Chunin",
+          "level": 28,
+          "element": "Neutral"
+        },
+        {
+          "id": "yashamaru_039",
+          "characterId": "yashamaru_039",
+          "name": "Yashamaru",
+          "version": "All for his Late Sister",
+          "rank": "Kage",
+          "level": 9,
+          "element": "Neutral"
+        },
+        {
+          "id": "hinata_242",
+          "characterId": "hinata_242",
+          "name": "Hinata Hyuga",
+          "version": "Blooming Talent",
+          "rank": "Kage",
+          "level": 9,
+          "element": "Neutral"
+        },
+        {
+          "id": "choji_058",
+          "characterId": "choji_058",
+          "name": "Choji Akimichi",
+          "version": "Glutton",
+          "rank": "Kage",
+          "level": 5,
+          "element": "Neutral"
+        },
+        {
+          "id": "killer_463",
+          "characterId": "killer_463",
+          "name": "Killer Bee",
+          "version": "Engraved Words",
+          "rank": "Chunin",
+          "level": 35,
+          "element": "Neutral"
+        },
+        {
+          "id": "hayate_778",
+          "characterId": "hayate_778",
+          "name": "Hayate Gekko",
+          "version": "Composed Dexterity",
+          "rank": "Jonin",
+          "level": 39,
+          "element": "Neutral"
+        },
+        {
+          "id": "jiraiya_072",
+          "characterId": "jiraiya_072",
+          "name": "Jiraiya",
+          "version": "Enter the Sage",
+          "rank": "Chunin",
+          "level": 26,
+          "element": "Neutral"
+        },
+        {
+          "id": "fugaku_2023",
+          "characterId": "fugaku_2023",
+          "name": "Fugaku Uchiha",
+          "version": "Prosperity and Faith",
+          "rank": "Jonin",
+          "level": 2,
+          "element": "Neutral"
+        },
+        {
+          "id": "sasori_653",
+          "characterId": "sasori_653",
+          "name": "Sasori",
+          "version": "The Ultimate Puppet",
+          "rank": "Kage",
+          "level": 31,
+          "element": "Neutral"
+        },
+        {
+          "id": "konan_337",
+          "characterId": "konan_337",
+          "name": "Konan",
+          "version": "A God's Messenger",
+          "rank": "Genin",
+          "level": 23,
+          "element": "Neutral"
+        },
+        {
+          "id": "tayuya_193",
+          "characterId": "tayuya_193",
+          "name": "Tayuya",
+          "version": "Aggressive Strategist",
+          "rank": "Jonin",
+          "level": 27,
+          "element": "Neutral"
+        },
+        {
+          "id": "sasuke_723",
+          "characterId": "sasuke_723",
+          "name": "Sasuke Uchiha",
+          "version": "Pure Hatred",
+          "rank": "Kage",
+          "level": 23,
+          "element": "Neutral"
+        },
+        {
+          "id": "sasuke_004",
+          "characterId": "sasuke_004",
+          "name": "Sasuke Uchiha",
+          "version": "A Lone Heart",
+          "rank": "Genin",
+          "level": 1,
+          "element": "Neutral"
+        }
+      ]
+    },
+    {
+      "id": 1006,
+      "username": "rocklee",
+      "password": "lotus",
+      "resources": {
+        "ryo": 22595,
+        "ninja_pearls": 90,
+        "shinobites": 79,
+        "granny_coin": 89
+      },
+      "ninjas": [
+        {
+          "id": "madara_2025",
+          "characterId": "madara_2025",
+          "name": "Madara Uchiha",
+          "version": "An Imposing Air",
+          "rank": "Genin",
+          "level": 17,
+          "element": "Neutral"
+        },
+        {
+          "id": "deidara_220",
+          "characterId": "deidara_220",
+          "name": "Deidara",
+          "version": "Ephemeral Art",
+          "rank": "Jonin",
+          "level": 25,
+          "element": "Neutral"
+        },
+        {
+          "id": "madara_646",
+          "characterId": "madara_646",
+          "name": "Madara Uchiha",
+          "version": "Falling Into Place",
+          "rank": "Genin",
+          "level": 29,
+          "element": "Neutral"
+        },
+        {
+          "id": "hiruzen_2124",
+          "characterId": "hiruzen_2124",
+          "name": "Hiruzen Sarutobi",
+          "version": "The Makings of a Kage",
+          "rank": "Jonin",
+          "level": 4,
+          "element": "Neutral"
+        },
+        {
+          "id": "training_938",
+          "characterId": "training_938",
+          "name": "Training Weights",
+          "version": "Special Awakening Tool",
+          "rank": "Genin",
+          "level": 20,
+          "element": "Neutral"
+        },
+        {
+          "id": "sasuke_2012",
+          "characterId": "sasuke_2012",
+          "name": "Sasuke Uchiha",
+          "version": "Lightning Storm Genius",
+          "rank": "Kage",
+          "level": 15,
+          "element": "Neutral"
+        },
+        {
+          "id": "hanzo_450",
+          "characterId": "hanzo_450",
+          "name": "Hanzo",
+          "version": "Steadfast Veteran",
+          "rank": "Kage",
+          "level": 2,
+          "element": "Neutral"
+        },
+        {
+          "id": "might_316",
+          "characterId": "might_316",
+          "name": "Might Guy",
+          "version": "Exploding Fists",
+          "rank": "Jonin",
+          "level": 24,
+          "element": "Neutral"
+        },
+        {
+          "id": "hinata_812",
+          "characterId": "hinata_812",
+          "name": "Hinata Hyuga",
+          "version": "Beyond the Ceaseless",
+          "rank": "Genin",
+          "level": 4,
+          "element": "Neutral"
+        },
+        {
+          "id": "madara_771",
+          "characterId": "madara_771",
+          "name": "Madara Uchiha",
+          "version": "Solitary Devastation",
+          "rank": "Genin",
+          "level": 11,
+          "element": "Neutral"
+        },
+        {
+          "id": "sakura_511",
+          "characterId": "sakura_511",
+          "name": "Sakura Haruno",
+          "version": "Sheer Diligence",
+          "rank": "Jonin",
+          "level": 39,
+          "element": "Neutral"
+        },
+        {
+          "id": "shino_536",
+          "characterId": "shino_536",
+          "name": "Shino Aburame",
+          "version": "Raging Passion",
+          "rank": "Chunin",
+          "level": 34,
+          "element": "Neutral"
+        },
+        {
+          "id": "sasori_882",
+          "characterId": "sasori_882",
+          "name": "Sasori",
+          "version": "Eternal Creation",
+          "rank": "Jonin",
+          "level": 40,
+          "element": "Neutral"
+        },
+        {
+          "id": "shikamaru_291",
+          "characterId": "shikamaru_291",
+          "name": "Shikamaru Nara",
+          "version": "Beyond Silence",
+          "rank": "Kage",
+          "level": 10,
+          "element": "Neutral"
+        },
+        {
+          "id": "deadly_1165",
+          "characterId": "deadly_1165",
+          "name": "Deadly Beads",
+          "version": "All-Ending Thunderbolt",
+          "rank": "Genin",
+          "level": 36,
+          "element": "Neutral"
+        },
+        {
+          "id": "kakashi_2125",
+          "characterId": "kakashi_2125",
+          "name": "Kakashi Hatake",
+          "version": "Kage's Successor",
+          "rank": "Kage",
+          "level": 2,
+          "element": "Neutral"
+        },
+        {
+          "id": "gaara_051",
+          "characterId": "gaara_051",
+          "name": "Gaara",
+          "version": "Sand Defense",
+          "rank": "Genin",
+          "level": 5,
+          "element": "Neutral"
+        },
+        {
+          "id": "chino_571",
+          "characterId": "chino_571",
+          "name": "Chino",
+          "version": "Ill-Omened Red Eyes",
+          "rank": "Kage",
+          "level": 34,
+          "element": "Neutral"
+        },
+        {
+          "id": "sakura_236",
+          "characterId": "sakura_236",
+          "name": "Sakura Haruno",
+          "version": "Unrelenting Commitment",
+          "rank": "Genin",
+          "level": 14,
+          "element": "Neutral"
+        },
+        {
+          "id": "jinin_582",
+          "characterId": "jinin_582",
+          "name": "Jinin Akebino",
+          "version": "Crushing Bluntsword",
+          "rank": "Chunin",
+          "level": 12,
+          "element": "Neutral"
+        },
+        {
+          "id": "minato_628",
+          "characterId": "minato_628",
+          "name": "Minato Namikaze",
+          "version": "Swift Flash",
+          "rank": "Jonin",
+          "level": 12,
+          "element": "Neutral"
+        },
+        {
+          "id": "choza_114",
+          "characterId": "choza_114",
+          "name": "Choza Akimichi",
+          "version": "The Ino-Shika-",
+          "rank": "Jonin",
+          "level": 23,
+          "element": "Neutral"
+        },
+        {
+          "id": "hashirama_698",
+          "characterId": "hashirama_698",
+          "name": "Hashirama Senju",
+          "version": "Bravery Known Throughout the War",
+          "rank": "Kage",
+          "level": 12,
+          "element": "Neutral"
+        },
+        {
+          "id": "sakura_364",
+          "characterId": "sakura_364",
+          "name": "Sakura Haruno",
+          "version": "Heroine of the Battlefield",
+          "rank": "Jonin",
+          "level": 11,
+          "element": "Neutral"
+        },
+        {
+          "id": "orochimaru_600",
+          "characterId": "orochimaru_600",
+          "name": "Orochimaru",
+          "version": "Winds of Chaos",
+          "rank": "Jonin",
+          "level": 24,
+          "element": "Neutral"
+        },
+        {
+          "id": "madara_589",
+          "characterId": "madara_589",
+          "name": "Madara Uchiha",
+          "version": "Endless Moonlight",
+          "rank": "Jonin",
+          "level": 5,
+          "element": "Neutral"
+        },
+        {
+          "id": "naruto_282",
+          "characterId": "naruto_282",
+          "name": "Naruto Uzumaki",
+          "version": "Power of the Fourth Tail",
+          "rank": "Jonin",
+          "level": 20,
+          "element": "Neutral"
+        },
+        {
+          "id": "ino_154",
+          "characterId": "ino_154",
+          "name": "Ino Yamanaka",
+          "version": "I Don't Want to Lose",
+          "rank": "Kage",
+          "level": 29,
+          "element": "Neutral"
+        },
+        {
+          "id": "kiba_566",
+          "characterId": "kiba_566",
+          "name": "Kiba Inuzuka",
+          "version": "Well-Honed Fangs",
+          "rank": "Jonin",
+          "level": 7,
+          "element": "Neutral"
+        },
+        {
+          "id": "sasuke_569",
+          "characterId": "sasuke_569",
+          "name": "Sasuke Uchiha",
+          "version": "Long Road to Atonement",
+          "rank": "Kage",
+          "level": 33,
+          "element": "Neutral"
+        },
+        {
+          "id": "naruto_2119",
+          "characterId": "naruto_2119",
+          "name": "Naruto Uzumaki",
+          "version": "Brave, Unyielding Heart",
+          "rank": "Jonin",
+          "level": 20,
+          "element": "Neutral"
+        },
+        {
+          "id": "kisame_828",
+          "characterId": "kisame_828",
+          "name": "Kisame Hoshigaki",
+          "version": "Body and Blade as One",
+          "rank": "Chunin",
+          "level": 30,
+          "element": "Neutral"
+        },
+        {
+          "id": "haku_137",
+          "characterId": "haku_137",
+          "name": "Haku",
+          "version": "The Icy Mask's Blades",
+          "rank": "Jonin",
+          "level": 17,
+          "element": "Neutral"
+        },
+        {
+          "id": "ino_561",
+          "characterId": "ino_561",
+          "name": "Ino Yamanaka",
+          "version": "Promise Upheld",
+          "rank": "Genin",
+          "level": 6,
+          "element": "Neutral"
+        },
+        {
+          "id": "ferocious_1208",
+          "characterId": "ferocious_1208",
+          "name": "Ferocious Beads",
+          "version": "Final Words",
+          "rank": "Kage",
+          "level": 11,
+          "element": "Neutral"
+        },
+        {
+          "id": "shikamaru_054",
+          "characterId": "shikamaru_054",
+          "name": "Shikamaru Nara",
+          "version": "Lazy Guy",
+          "rank": "Genin",
+          "level": 14,
+          "element": "Neutral"
+        },
+        {
+          "id": "neji_151",
+          "characterId": "neji_151",
+          "name": "Neji Hyuga",
+          "version": "A Caged Bird",
+          "rank": "Chunin",
+          "level": 24,
+          "element": "Neutral"
+        },
+        {
+          "id": "neji_495",
+          "characterId": "neji_495",
+          "name": "Neji Hyuga",
+          "version": "Burden of Fate",
+          "rank": "Genin",
+          "level": 34,
+          "element": "Neutral"
+        },
+        {
+          "id": "kisame_720",
+          "characterId": "kisame_720",
+          "name": "Kisame Hoshigaki",
+          "version": "The Tailless Tailed Beast",
+          "rank": "Kage",
+          "level": 21,
+          "element": "Neutral"
+        },
+        {
+          "id": "naruto_2038",
+          "characterId": "naruto_2038",
+          "name": "Naruto Uzumaki",
+          "version": "True Peace",
+          "rank": "Chunin",
+          "level": 16,
+          "element": "Neutral"
+        },
+        {
+          "id": "tobirama_2008",
+          "characterId": "tobirama_2008",
+          "name": "Tobirama Senju",
+          "version": "Inherited Will of Fire",
+          "rank": "Genin",
+          "level": 37,
+          "element": "Neutral"
+        },
+        {
+          "id": "kaguya_512",
+          "characterId": "kaguya_512",
+          "name": "Kaguya Otsutsuki",
+          "version": "Founding Goddess",
+          "rank": "Genin",
+          "level": 37,
+          "element": "Neutral"
+        },
+        {
+          "id": "choji_225",
+          "characterId": "choji_225",
+          "name": "Choji Akimichi",
+          "version": "A Life Bet on Two Wings",
+          "rank": "Kage",
+          "level": 13,
+          "element": "Neutral"
+        },
+        {
+          "id": "madara_2098",
+          "characterId": "madara_2098",
+          "name": "Madara Uchiha",
+          "version": "Path of Dreams",
+          "rank": "Jonin",
+          "level": 35,
+          "element": "Neutral"
+        },
+        {
+          "id": "shizune_713",
+          "characterId": "shizune_713",
+          "name": "Shizune",
+          "version": "Benevolent Heart",
+          "rank": "Jonin",
+          "level": 35,
+          "element": "Neutral"
+        },
+        {
+          "id": "naruto_2133",
+          "characterId": "naruto_2133",
+          "name": "Naruto Uzumaki",
+          "version": "The Back of a Figure",
+          "rank": "Jonin",
+          "level": 1,
+          "element": "Neutral"
+        },
+        {
+          "id": "danzo_2035",
+          "characterId": "danzo_2035",
+          "name": "Danzo Shimura",
+          "version": "Embodiment of Darkness",
+          "rank": "Kage",
+          "level": 3,
+          "element": "Neutral"
+        },
+        {
+          "id": "akatsuchi_2079",
+          "characterId": "akatsuchi_2079",
+          "name": "Akatsuchi",
+          "version": "Unyielding Stone",
+          "rank": "Chunin",
+          "level": 5,
+          "element": "Neutral"
+        },
+        {
+          "id": "obito_254",
+          "characterId": "obito_254",
+          "name": "Obito Uchiha",
+          "version": "To Protect His Allies",
+          "rank": "Kage",
+          "level": 15,
+          "element": "Neutral"
+        },
+        {
+          "id": "sasuke_004",
+          "characterId": "sasuke_004",
+          "name": "Sasuke Uchiha",
+          "version": "A Lone Heart",
+          "rank": "Genin",
+          "level": 1,
+          "element": "Neutral"
+        }
+      ]
+    },
+    {
+      "id": 1007,
+      "username": "shikamaru",
+      "password": "shadow",
+      "resources": {
+        "ryo": 32082,
+        "ninja_pearls": 97,
+        "shinobites": 137,
+        "granny_coin": 123
+      },
+      "ninjas": [
+        {
+          "id": "tayuya_193",
+          "characterId": "tayuya_193",
+          "name": "Tayuya",
+          "version": "Aggressive Strategist",
+          "rank": "Chunin",
+          "level": 32,
+          "element": "Neutral"
+        },
+        {
+          "id": "thief_132",
+          "characterId": "thief_132",
+          "name": "Thief",
+          "version": "Heartless Burglar",
+          "rank": "Chunin",
+          "level": 7,
+          "element": "Neutral"
+        },
+        {
+          "id": "pain_2087",
+          "characterId": "pain_2087",
+          "name": "Pain",
+          "version": "Godlike Power",
+          "rank": "Chunin",
+          "level": 23,
+          "element": "Neutral"
+        },
+        {
+          "id": "tsunade_2014",
+          "characterId": "tsunade_2014",
+          "name": "Tsunade",
+          "version": "Protector of the Great Tree",
+          "rank": "Genin",
+          "level": 12,
+          "element": "Neutral"
+        },
+        {
+          "id": "itachi_575",
+          "characterId": "itachi_575",
+          "name": "Itachi Uchiha",
+          "version": "Eyes Gazing Over the Future",
+          "rank": "Kage",
+          "level": 31,
+          "element": "Neutral"
+        },
+        {
+          "id": "sakura_868",
+          "characterId": "sakura_868",
+          "name": "Sakura Haruno",
+          "version": "Cherry Blossoms on the Front Line",
+          "rank": "Genin",
+          "level": 26,
+          "element": "Neutral"
+        },
+        {
+          "id": "kidomaru_081",
+          "characterId": "kidomaru_081",
+          "name": "Kidomaru",
+          "version": "Kidomaru of the East Gate",
+          "rank": "Kage",
+          "level": 38,
+          "element": "Neutral"
+        },
+        {
+          "id": "haku_139",
+          "characterId": "haku_139",
+          "name": "Haku",
+          "version": "A Frozen Heart",
+          "rank": "Jonin",
+          "level": 37,
+          "element": "Neutral"
+        },
+        {
+          "id": "jiraiya_635",
+          "characterId": "jiraiya_635",
+          "name": "Jiraiya",
+          "version": "Hidden Heart",
+          "rank": "Kage",
+          "level": 28,
+          "element": "Neutral"
+        },
+        {
+          "id": "rasa_442",
+          "characterId": "rasa_442",
+          "name": "Rasa",
+          "version": "Family Values",
+          "rank": "Genin",
+          "level": 1,
+          "element": "Neutral"
+        },
+        {
+          "id": "pain_677",
+          "characterId": "pain_677",
+          "name": "Pain",
+          "version": "The Judge of Truth",
+          "rank": "Kage",
+          "level": 10,
+          "element": "Neutral"
+        },
+        {
+          "id": "nagato_534",
+          "characterId": "nagato_534",
+          "name": "Nagato",
+          "version": "Reunion with Hope",
+          "rank": "Chunin",
+          "level": 32,
+          "element": "Neutral"
+        },
+        {
+          "id": "itachi_2094",
+          "characterId": "itachi_2094",
+          "name": "Itachi Uchiha",
+          "version": "Talent and Burden",
+          "rank": "Genin",
+          "level": 27,
+          "element": "Neutral"
+        },
+        {
+          "id": "hinata_813",
+          "characterId": "hinata_813",
+          "name": "Hinata Hyuga",
+          "version": "Beyond the Ceaseless",
+          "rank": "Genin",
+          "level": 3,
+          "element": "Neutral"
+        },
+        {
+          "id": "naruto_453",
+          "characterId": "naruto_453",
+          "name": "Naruto Uzumaki",
+          "version": "Power of Determination",
+          "rank": "Kage",
+          "level": 22,
+          "element": "Neutral"
+        },
+        {
+          "id": "ao_765",
+          "characterId": "ao_765",
+          "name": "Ao",
+          "version": "An Eye of Mist",
+          "rank": "Kage",
+          "level": 8,
+          "element": "Neutral"
+        },
+        {
+          "id": "choji_619",
+          "characterId": "choji_619",
+          "name": "Choji Akimichi",
+          "version": "Fluttering Butterfly",
+          "rank": "Genin",
+          "level": 29,
+          "element": "Neutral"
+        },
+        {
+          "id": "konan_547",
+          "characterId": "konan_547",
+          "name": "Konan",
+          "version": "Wrapped in Sweetness",
+          "rank": "Chunin",
+          "level": 12,
+          "element": "Neutral"
+        },
+        {
+          "id": "mist_126",
+          "characterId": "mist_126",
+          "name": "Mist Anbu Male",
+          "version": "Mask Without Mercy",
+          "rank": "Kage",
+          "level": 14,
+          "element": "Neutral"
+        },
+        {
+          "id": "hashirama_745",
+          "characterId": "hashirama_745",
+          "name": "Hashirama Senju",
+          "version": "Amongst the Strongest",
+          "rank": "Jonin",
+          "level": 29,
+          "element": "Neutral"
+        },
+        {
+          "id": "mei_764",
+          "characterId": "mei_764",
+          "name": "Mei Terumi",
+          "version": "Enticing Charm",
+          "rank": "Chunin",
+          "level": 17,
+          "element": "Neutral"
+        },
+        {
+          "id": "sasuke_2029",
+          "characterId": "sasuke_2029",
+          "name": "Sasuke Uchiha",
+          "version": "Battling with your eyes",
+          "rank": "Kage",
+          "level": 21,
+          "element": "Neutral"
+        },
+        {
+          "id": "tobirama_408",
+          "characterId": "tobirama_408",
+          "name": "Tobirama Senju",
+          "version": "Enlightened Brilliance",
+          "rank": "Genin",
+          "level": 15,
+          "element": "Neutral"
+        },
+        {
+          "id": "naruto_384",
+          "characterId": "naruto_384",
+          "name": "Naruto Uzumaki",
+          "version": "Two Suns",
+          "rank": "Jonin",
+          "level": 19,
+          "element": "Neutral"
+        },
+        {
+          "id": "hanzo_341",
+          "characterId": "hanzo_341",
+          "name": "Hanzo",
+          "version": "Hero of Purple Poison",
+          "rank": "Kage",
+          "level": 21,
+          "element": "Neutral"
+        },
+        {
+          "id": "itachi_2096",
+          "characterId": "itachi_2096",
+          "name": "Itachi Uchiha",
+          "version": "Talent and Burden",
+          "rank": "Jonin",
+          "level": 27,
+          "element": "Neutral"
+        },
+        {
+          "id": "rou_285",
+          "characterId": "rou_285",
+          "name": "Rou",
+          "version": "Melting Presence",
+          "rank": "Genin",
+          "level": 9,
+          "element": "Neutral"
+        },
+        {
+          "id": "naruto_293",
+          "characterId": "naruto_293",
+          "name": "Naruto Uzumaki",
+          "version": "Bewitching Transformation",
+          "rank": "Chunin",
+          "level": 36,
+          "element": "Neutral"
+        },
+        {
+          "id": "shikamaru_292",
+          "characterId": "shikamaru_292",
+          "name": "Shikamaru Nara",
+          "version": "Beyond Silence",
+          "rank": "Jonin",
+          "level": 36,
+          "element": "Neutral"
+        },
+        {
+          "id": "jirobo_084",
+          "characterId": "jirobo_084",
+          "name": "Jirobo",
+          "version": "Jirobo of the South Gate",
+          "rank": "Genin",
+          "level": 7,
+          "element": "Neutral"
+        },
+        {
+          "id": "minato_459",
+          "characterId": "minato_459",
+          "name": "Minato Namikaze",
+          "version": "Flash of the Battlefield",
+          "rank": "Chunin",
+          "level": 5,
+          "element": "Neutral"
+        },
+        {
+          "id": "naruto_260",
+          "characterId": "naruto_260",
+          "name": "Naruto Uzumaki",
+          "version": "Nine Tails' Shroud",
+          "rank": "Jonin",
+          "level": 8,
+          "element": "Neutral"
+        },
+        {
+          "id": "might_316",
+          "characterId": "might_316",
+          "name": "Might Guy",
+          "version": "Exploding Fists",
+          "rank": "Genin",
+          "level": 34,
+          "element": "Neutral"
+        },
+        {
+          "id": "omoi_821",
+          "characterId": "omoi_821",
+          "name": "Omoi",
+          "version": "Intense Conviction",
+          "rank": "Genin",
+          "level": 33,
+          "element": "Neutral"
+        },
+        {
+          "id": "itachi_700",
+          "characterId": "itachi_700",
+          "name": "Itachi Uchiha",
+          "version": "Brotherly Pledge",
+          "rank": "Genin",
+          "level": 3,
+          "element": "Neutral"
+        },
+        {
+          "id": "kaguya_2043",
+          "characterId": "kaguya_2043",
+          "name": "Kaguya Otsutsuki",
+          "version": "Forbidden Fruit",
+          "rank": "Kage",
+          "level": 23,
+          "element": "Neutral"
+        },
+        {
+          "id": "sasuke_419",
+          "characterId": "sasuke_419",
+          "name": "Sasuke Uchiha",
+          "version": "Thunder of Retaliation",
+          "rank": "Kage",
+          "level": 40,
+          "element": "Neutral"
+        },
+        {
+          "id": "sasuke_430",
+          "characterId": "sasuke_430",
+          "name": "Sasuke Uchiha",
+          "version": "Seal of Shadow",
+          "rank": "Chunin",
+          "level": 18,
+          "element": "Neutral"
+        },
+        {
+          "id": "chojuro_367",
+          "characterId": "chojuro_367",
+          "name": "Chojuro",
+          "version": "Successor of the Ninja Sword",
+          "rank": "Kage",
+          "level": 18,
+          "element": "Neutral"
+        },
+        {
+          "id": "naruto_660",
+          "characterId": "naruto_660",
+          "name": "Naruto Uzumaki",
+          "version": "As a Friend",
+          "rank": "Kage",
+          "level": 26,
+          "element": "Neutral"
+        },
+        {
+          "id": "choji_620",
+          "characterId": "choji_620",
+          "name": "Choji Akimichi",
+          "version": "Fluttering Butterfly",
+          "rank": "Genin",
+          "level": 3,
+          "element": "Neutral"
+        },
+        {
+          "id": "attack_933",
+          "characterId": "attack_933",
+          "name": "Attack Boost",
+          "version": "Large Sphere of Strength",
+          "rank": "Kage",
+          "level": 38,
+          "element": "Neutral"
+        },
+        {
+          "id": "killer_462",
+          "characterId": "killer_462",
+          "name": "Killer Bee",
+          "version": "Engraved Words",
+          "rank": "Jonin",
+          "level": 38,
+          "element": "Neutral"
+        },
+        {
+          "id": "sakura_755",
+          "characterId": "sakura_755",
+          "name": "Sakura Haruno",
+          "version": "Rich Aroma",
+          "rank": "Kage",
+          "level": 12,
+          "element": "Neutral"
+        },
+        {
+          "id": "sakon_083",
+          "characterId": "sakon_083",
+          "name": "Sakon",
+          "version": "Sakon of the West Gate",
+          "rank": "Chunin",
+          "level": 25,
+          "element": "Neutral"
+        },
+        {
+          "id": "hayate_779",
+          "characterId": "hayate_779",
+          "name": "Hayate Gekko",
+          "version": "Composed Dexterity",
+          "rank": "Chunin",
+          "level": 31,
+          "element": "Neutral"
+        },
+        {
+          "id": "kisame_319",
+          "characterId": "kisame_319",
+          "name": "Kisame Hoshigaki",
+          "version": "Ruler of the Torrent",
+          "rank": "Jonin",
+          "level": 23,
+          "element": "Neutral"
+        },
+        {
+          "id": "pain_640",
+          "characterId": "pain_640",
+          "name": "Pain",
+          "version": "Limitless Maelstrom",
+          "rank": "Jonin",
+          "level": 17,
+          "element": "Neutral"
+        },
+        {
+          "id": "jiraiya_636",
+          "characterId": "jiraiya_636",
+          "name": "Jiraiya",
+          "version": "Hidden Heart",
+          "rank": "Kage",
+          "level": 13,
+          "element": "Neutral"
+        },
+        {
+          "id": "sasuke_004",
+          "characterId": "sasuke_004",
+          "name": "Sasuke Uchiha",
+          "version": "A Lone Heart",
+          "rank": "Genin",
+          "level": 1,
+          "element": "Neutral"
+        }
+      ]
+    },
+    {
+      "id": 1008,
+      "username": "gaara",
+      "password": "sandshield",
+      "resources": {
+        "ryo": 50938,
+        "ninja_pearls": 90,
+        "shinobites": 93,
+        "granny_coin": 114
+      },
+      "ninjas": [
+        {
+          "id": "sai_501",
+          "characterId": "sai_501",
+          "name": "Sai",
+          "version": "Ink Drawn from the Heart",
+          "rank": "Jonin",
+          "level": 6,
+          "element": "Neutral"
+        },
+        {
+          "id": "naruto_044",
+          "characterId": "naruto_044",
+          "name": "Naruto Uzumaki",
+          "version": "No. 1 Maverick",
+          "rank": "Kage",
+          "level": 29,
+          "element": "Neutral"
+        },
+        {
+          "id": "karin_362",
+          "characterId": "karin_362",
+          "name": "Karin",
+          "version": "Thousand-Mile Perception",
+          "rank": "Jonin",
+          "level": 17,
+          "element": "Neutral"
+        },
+        {
+          "id": "killer_876",
+          "characterId": "killer_876",
+          "name": "Killer Bee",
+          "version": "Rumbling Strong Arm",
+          "rank": "Jonin",
+          "level": 21,
+          "element": "Neutral"
+        },
+        {
+          "id": "naruto_241",
+          "characterId": "naruto_241",
+          "name": "Naruto Uzumaki",
+          "version": "Blowing Gale",
+          "rank": "Chunin",
+          "level": 2,
+          "element": "Neutral"
+        },
+        {
+          "id": "izuna_751",
+          "characterId": "izuna_751",
+          "name": "Izuna Uchiha",
+          "version": "Wishing for Peace",
+          "rank": "Chunin",
+          "level": 37,
+          "element": "Neutral"
+        },
+        {
+          "id": "kisame_828",
+          "characterId": "kisame_828",
+          "name": "Kisame Hoshigaki",
+          "version": "Body and Blade as One",
+          "rank": "Genin",
+          "level": 34,
+          "element": "Neutral"
+        },
+        {
+          "id": "deadly_1242",
+          "characterId": "deadly_1242",
+          "name": "Deadly Beads",
+          "version": "Truth of the Divine Tree",
+          "rank": "Chunin",
+          "level": 27,
+          "element": "Neutral"
+        },
+        {
+          "id": "jiraiya_335",
+          "characterId": "jiraiya_335",
+          "name": "Jiraiya",
+          "version": "Way of the Ninja",
+          "rank": "Genin",
+          "level": 2,
+          "element": "Neutral"
+        },
+        {
+          "id": "choji_058",
+          "characterId": "choji_058",
+          "name": "Choji Akimichi",
+          "version": "Glutton",
+          "rank": "Kage",
+          "level": 22,
+          "element": "Neutral"
+        },
+        {
+          "id": "killer_1156",
+          "characterId": "killer_1156",
+          "name": "Killer Bee",
+          "version": "Let's ",
+          "rank": "Kage",
+          "level": 11,
+          "element": "Neutral"
+        },
+        {
+          "id": "hashirama_204",
+          "characterId": "hashirama_204",
+          "name": "Hashirama Senju",
+          "version": "Father of Leaf Village",
+          "rank": "Genin",
+          "level": 5,
+          "element": "Neutral"
+        },
+        {
+          "id": "deadly_1209",
+          "characterId": "deadly_1209",
+          "name": "Deadly Beads",
+          "version": "Final Words",
+          "rank": "Kage",
+          "level": 38,
+          "element": "Neutral"
+        },
+        {
+          "id": "deadly_1152",
+          "characterId": "deadly_1152",
+          "name": "Deadly Beads",
+          "version": "The Inheritor",
+          "rank": "Genin",
+          "level": 10,
+          "element": "Neutral"
+        },
+        {
+          "id": "madara_647",
+          "characterId": "madara_647",
+          "name": "Madara Uchiha",
+          "version": "Falling Into Place",
+          "rank": "Kage",
+          "level": 37,
+          "element": "Neutral"
+        },
+        {
+          "id": "hashirama_2058",
+          "characterId": "hashirama_2058",
+          "name": "Hashirama Senju",
+          "version": "Resolve to Protect",
+          "rank": "Jonin",
+          "level": 14,
+          "element": "Neutral"
+        },
+        {
+          "id": "sasuke_702",
+          "characterId": "sasuke_702",
+          "name": "Sasuke Uchiha",
+          "version": "All-Ending Thunderbolt",
+          "rank": "Genin",
+          "level": 40,
+          "element": "Neutral"
+        },
+        {
+          "id": "minato_2100",
+          "characterId": "minato_2100",
+          "name": "Minato Namikaze",
+          "version": "Raikosekka",
+          "rank": "Jonin",
+          "level": 6,
+          "element": "Neutral"
+        },
+        {
+          "id": "obito_671",
+          "characterId": "obito_671",
+          "name": "Obito Uchiha",
+          "version": "Into Total Darkness",
+          "rank": "Chunin",
+          "level": 36,
+          "element": "Neutral"
+        },
+        {
+          "id": "choji_226",
+          "characterId": "choji_226",
+          "name": "Choji Akimichi",
+          "version": "A Life Bet on Two Wings",
+          "rank": "Genin",
+          "level": 2,
+          "element": "Neutral"
+        },
+        {
+          "id": "naruto_777",
+          "characterId": "naruto_777",
+          "name": "Naruto Uzumaki",
+          "version": "Name and Soul",
+          "rank": "Genin",
+          "level": 4,
+          "element": "Neutral"
+        },
+        {
+          "id": "itachi_726",
+          "characterId": "itachi_726",
+          "name": "Itachi Uchiha",
+          "version": "Eyes Which Weave Truth and Lies",
+          "rank": "Chunin",
+          "level": 10,
+          "element": "Neutral"
+        },
+        {
+          "id": "sakon_082",
+          "characterId": "sakon_082",
+          "name": "Sakon",
+          "version": "Sakon of the West Gate",
+          "rank": "Kage",
+          "level": 18,
+          "element": "Neutral"
+        },
+        {
+          "id": "shisui_806",
+          "characterId": "shisui_806",
+          "name": "Shisui Uchiha",
+          "version": "The Elite Who Makes His Mark",
+          "rank": "Chunin",
+          "level": 17,
+          "element": "Neutral"
+        },
+        {
+          "id": "akatsuchi_2079",
+          "characterId": "akatsuchi_2079",
+          "name": "Akatsuchi",
+          "version": "Unyielding Stone",
+          "rank": "Chunin",
+          "level": 1,
+          "element": "Neutral"
+        },
+        {
+          "id": "rasa_443",
+          "characterId": "rasa_443",
+          "name": "Rasa",
+          "version": "Family Values",
+          "rank": "Jonin",
+          "level": 33,
+          "element": "Neutral"
+        },
+        {
+          "id": "meizu_043",
+          "characterId": "meizu_043",
+          "name": "Meizu",
+          "version": "Poisonous Left Arm",
+          "rank": "Jonin",
+          "level": 1,
+          "element": "Neutral"
+        },
+        {
+          "id": "kiba_018",
+          "characterId": "kiba_018",
+          "name": "Kiba Inuzuka",
+          "version": "Sharp Claws and Fangs",
+          "rank": "Kage",
+          "level": 33,
+          "element": "Neutral"
+        },
+        {
+          "id": "sasuke_2140",
+          "characterId": "sasuke_2140",
+          "name": "Sasuke Uchiha",
+          "version": "Desired Future",
+          "rank": "Chunin",
+          "level": 15,
+          "element": "Neutral"
+        },
+        {
+          "id": "gamachan_937",
+          "characterId": "gamachan_937",
+          "name": "Gama-chan",
+          "version": "Big Spender",
+          "rank": "Jonin",
+          "level": 14,
+          "element": "Neutral"
+        },
+        {
+          "id": "kurenai_217",
+          "characterId": "kurenai_217",
+          "name": "Kurenai Yuhi",
+          "version": "Illusionary Expert",
+          "rank": "Jonin",
+          "level": 14,
+          "element": "Neutral"
+        },
+        {
+          "id": "sakura_868",
+          "characterId": "sakura_868",
+          "name": "Sakura Haruno",
+          "version": "Cherry Blossoms on the Front Line",
+          "rank": "Genin",
+          "level": 29,
+          "element": "Neutral"
+        },
+        {
+          "id": "fourth_356",
+          "characterId": "fourth_356",
+          "name": "Fourth Raikage: Ay",
+          "version": "Savage Lightning",
+          "rank": "Genin",
+          "level": 7,
+          "element": "Neutral"
+        },
+        {
+          "id": "killer_1155",
+          "characterId": "killer_1155",
+          "name": "Killer Bee",
+          "version": "Let's ",
+          "rank": "Jonin",
+          "level": 14,
+          "element": "Neutral"
+        },
+        {
+          "id": "kakashi_674",
+          "characterId": "kakashi_674",
+          "name": "Kakashi Hatake",
+          "version": "The Bitterness of Fate",
+          "rank": "Chunin",
+          "level": 40,
+          "element": "Neutral"
+        },
+        {
+          "id": "yamato_271",
+          "characterId": "yamato_271",
+          "name": "Yamato",
+          "version": "Heartless Thought",
+          "rank": "Kage",
+          "level": 19,
+          "element": "Neutral"
+        },
+        {
+          "id": "chojuro_565",
+          "characterId": "chojuro_565",
+          "name": "Chojuro",
+          "version": "Slashing Twinsword",
+          "rank": "Jonin",
+          "level": 7,
+          "element": "Neutral"
+        },
+        {
+          "id": "kisame_320",
+          "characterId": "kisame_320",
+          "name": "Kisame Hoshigaki",
+          "version": "Ruler of the Torrent",
+          "rank": "Kage",
+          "level": 38,
+          "element": "Neutral"
+        },
+        {
+          "id": "ino_012",
+          "characterId": "ino_012",
+          "name": "Ino Yamanaka",
+          "version": "Ever-Changing Movements",
+          "rank": "Genin",
+          "level": 7,
+          "element": "Neutral"
+        },
+        {
+          "id": "sai_874",
+          "characterId": "sai_874",
+          "name": "Sai",
+          "version": "Drawings Unleashed",
+          "rank": "Genin",
+          "level": 40,
+          "element": "Neutral"
+        },
+        {
+          "id": "tayuya_258",
+          "characterId": "tayuya_258",
+          "name": "Tayuya",
+          "version": "A Bewitching Flute",
+          "rank": "Genin",
+          "level": 8,
+          "element": "Neutral"
+        },
+        {
+          "id": "shikamaru_181",
+          "characterId": "shikamaru_181",
+          "name": "Shikamaru Nara",
+          "version": "The Decoy",
+          "rank": "Jonin",
+          "level": 39,
+          "element": "Neutral"
+        },
+        {
+          "id": "obito_769",
+          "characterId": "obito_769",
+          "name": "Obito Uchiha",
+          "version": "State of Carnage",
+          "rank": "Genin",
+          "level": 30,
+          "element": "Neutral"
+        },
+        {
+          "id": "dosu_033",
+          "characterId": "dosu_033",
+          "name": "Dosu Kinuta",
+          "version": "The Cool, Calm Leader",
+          "rank": "Kage",
+          "level": 24,
+          "element": "Neutral"
+        },
+        {
+          "id": "hinata_329",
+          "characterId": "hinata_329",
+          "name": "Hinata Hyuga",
+          "version": "Day of Happiness",
+          "rank": "Genin",
+          "level": 29,
+          "element": "Neutral"
+        },
+        {
+          "id": "sasuke_585",
+          "characterId": "sasuke_585",
+          "name": "Sasuke Uchiha",
+          "version": "Violet Flame Hunter",
+          "rank": "Kage",
+          "level": 34,
+          "element": "Neutral"
+        },
+        {
+          "id": "jiraiya_611",
+          "characterId": "jiraiya_611",
+          "name": "Jiraiya",
+          "version": "Moment of Choice",
+          "rank": "Genin",
+          "level": 17,
+          "element": "Neutral"
+        },
+        {
+          "id": "anko_095",
+          "characterId": "anko_095",
+          "name": "Anko Mitarashi",
+          "version": "Dangerous Dumpling Lover",
+          "rank": "Chunin",
+          "level": 1,
+          "element": "Neutral"
+        },
+        {
+          "id": "mahiru_025",
+          "characterId": "mahiru_025",
+          "name": "Mahiru",
+          "version": "Superior Swordsmanship",
+          "rank": "Chunin",
+          "level": 7,
+          "element": "Neutral"
+        },
+        {
+          "id": "sasuke_004",
+          "characterId": "sasuke_004",
+          "name": "Sasuke Uchiha",
+          "version": "A Lone Heart",
+          "rank": "Genin",
+          "level": 1,
+          "element": "Neutral"
+        }
+      ]
+    },
+    {
+      "id": 1009,
+      "username": "itachi",
+      "password": "tsukuyomi",
+      "resources": {
+        "ryo": 34045,
+        "ninja_pearls": 33,
+        "shinobites": 136,
+        "granny_coin": 33
+      },
+      "ninjas": [
+        {
+          "id": "rock_809",
+          "characterId": "rock_809",
+          "name": "Rock Lee",
+          "version": "The Path of Trust",
+          "rank": "Jonin",
+          "level": 20,
+          "element": "Neutral"
+        },
+        {
+          "id": "sakura_2097",
+          "characterId": "sakura_2097",
+          "name": "Sakura Haruno",
+          "version": "Critical Fist",
+          "rank": "Jonin",
+          "level": 10,
+          "element": "Neutral"
+        },
+        {
+          "id": "izuna_776",
+          "characterId": "izuna_776",
+          "name": "Izuna Uchiha",
+          "version": "Intelligent Blade",
+          "rank": "Kage",
+          "level": 11,
+          "element": "Neutral"
+        },
+        {
+          "id": "ao_765",
+          "characterId": "ao_765",
+          "name": "Ao",
+          "version": "An Eye of Mist",
+          "rank": "Genin",
+          "level": 29,
+          "element": "Neutral"
+        },
+        {
+          "id": "tenzo_2047",
+          "characterId": "tenzo_2047",
+          "name": "Tenzo",
+          "version": "Beneath the Sun",
+          "rank": "Genin",
+          "level": 12,
+          "element": "Neutral"
+        },
+        {
+          "id": "jiraiya_634",
+          "characterId": "jiraiya_634",
+          "name": "Jiraiya",
+          "version": "Hidden Heart",
+          "rank": "Jonin",
+          "level": 8,
+          "element": "Neutral"
+        },
+        {
+          "id": "tsunade_460",
+          "characterId": "tsunade_460",
+          "name": "Tsunade",
+          "version": "Brilliant Bravery",
+          "rank": "Chunin",
+          "level": 30,
+          "element": "Neutral"
+        },
+        {
+          "id": "pain_728",
+          "characterId": "pain_728",
+          "name": "Pain",
+          "version": "Palm that Touches the Soul",
+          "rank": "Jonin",
+          "level": 8,
+          "element": "Neutral"
+        },
+        {
+          "id": "hayate_096",
+          "characterId": "hayate_096",
+          "name": "Hayate Gekko",
+          "version": "Third Round Prelim Judge",
+          "rank": "Kage",
+          "level": 21,
+          "element": "Neutral"
+        },
+        {
+          "id": "naruto_259",
+          "characterId": "naruto_259",
+          "name": "Naruto Uzumaki",
+          "version": "Nine Tails' Shroud",
+          "rank": "Jonin",
+          "level": 27,
+          "element": "Neutral"
+        },
+        {
+          "id": "itachi_574",
+          "characterId": "itachi_574",
+          "name": "Itachi Uchiha",
+          "version": "Eyes Gazing Over the Future",
+          "rank": "Chunin",
+          "level": 37,
+          "element": "Neutral"
+        },
+        {
+          "id": "kaguya_594",
+          "characterId": "kaguya_594",
+          "name": "Kaguya Otsutsuki",
+          "version": "Divine Madness",
+          "rank": "Chunin",
+          "level": 31,
+          "element": "Neutral"
+        },
+        {
+          "id": "kakashi_426",
+          "characterId": "kakashi_426",
+          "name": "Kakashi Hatake",
+          "version": "Severing Lightning",
+          "rank": "Kage",
+          "level": 36,
+          "element": "Neutral"
+        },
+        {
+          "id": "minato_678",
+          "characterId": "minato_678",
+          "name": "Minato Namikaze",
+          "version": "The Silent Hero",
+          "rank": "Chunin",
+          "level": 30,
+          "element": "Neutral"
+        },
+        {
+          "id": "naruto_2089",
+          "characterId": "naruto_2089",
+          "name": "Naruto Uzumaki",
+          "version": "Endowed Power",
+          "rank": "Genin",
+          "level": 18,
+          "element": "Neutral"
+        },
+        {
+          "id": "madara_2025",
+          "characterId": "madara_2025",
+          "name": "Madara Uchiha",
+          "version": "An Imposing Air",
+          "rank": "Kage",
+          "level": 40,
+          "element": "Neutral"
+        },
+        {
+          "id": "third_470",
+          "characterId": "third_470",
+          "name": "Third Raikage: Ay",
+          "version": "One-Man Army",
+          "rank": "Jonin",
+          "level": 17,
+          "element": "Neutral"
+        },
+        {
+          "id": "obito_768",
+          "characterId": "obito_768",
+          "name": "Obito Uchiha",
+          "version": "State of Carnage",
+          "rank": "Genin",
+          "level": 33,
+          "element": "Neutral"
+        },
+        {
+          "id": "orochimaru_888",
+          "characterId": "orochimaru_888",
+          "name": "Orochimaru",
+          "version": "Endless Rebirth",
+          "rank": "Jonin",
+          "level": 28,
+          "element": "Neutral"
+        },
+        {
+          "id": "pain_604",
+          "characterId": "pain_604",
+          "name": "Pain",
+          "version": "Vessel of Madness",
+          "rank": "Chunin",
+          "level": 17,
+          "element": "Neutral"
+        },
+        {
+          "id": "yamato_851",
+          "characterId": "yamato_851",
+          "name": "Yamato",
+          "version": "Unmalicious Murderous Intent",
+          "rank": "Kage",
+          "level": 20,
+          "element": "Neutral"
+        },
+        {
+          "id": "madara_2059",
+          "characterId": "madara_2059",
+          "name": "Madara Uchiha",
+          "version": "At the Battle's End",
+          "rank": "Chunin",
+          "level": 24,
+          "element": "Neutral"
+        },
+        {
+          "id": "yugito_332",
+          "characterId": "yugito_332",
+          "name": "Yugito Ni'i",
+          "version": "Unbreakable Will",
+          "rank": "Chunin",
+          "level": 22,
+          "element": "Neutral"
+        },
+        {
+          "id": "third_471",
+          "characterId": "third_471",
+          "name": "Third Raikage: Ay",
+          "version": "One-Man Army",
+          "rank": "Genin",
+          "level": 21,
+          "element": "Neutral"
+        },
+        {
+          "id": "kankuro_165",
+          "characterId": "kankuro_165",
+          "name": "Kankuro",
+          "version": "Orchestrator of Tragedy",
+          "rank": "Genin",
+          "level": 30,
+          "element": "Neutral"
+        },
+        {
+          "id": "deadly_1160",
+          "characterId": "deadly_1160",
+          "name": "Deadly Beads",
+          "version": "Let's ",
+          "rank": "Chunin",
+          "level": 28,
+          "element": "Neutral"
+        },
+        {
+          "id": "naruto_482",
+          "characterId": "naruto_482",
+          "name": "Naruto Uzumaki",
+          "version": "Sea Spray Blast",
+          "rank": "Genin",
+          "level": 32,
+          "element": "Neutral"
+        },
+        {
+          "id": "hiashi_2092",
+          "characterId": "hiashi_2092",
+          "name": "Hiashi Hyuga",
+          "version": "Clan Head's Dignity",
+          "rank": "Jonin",
+          "level": 15,
+          "element": "Neutral"
+        },
+        {
+          "id": "orochimaru_831",
+          "characterId": "orochimaru_831",
+          "name": "Orochimaru",
+          "version": "Aspirations of Indulgence",
+          "rank": "Jonin",
+          "level": 18,
+          "element": "Neutral"
+        },
+        {
+          "id": "masked_2103",
+          "characterId": "masked_2103",
+          "name": "Masked Man",
+          "version": "Evil Heart",
+          "rank": "Kage",
+          "level": 25,
+          "element": "Neutral"
+        },
+        {
+          "id": "jiraiya_336",
+          "characterId": "jiraiya_336",
+          "name": "Jiraiya",
+          "version": "Way of the Ninja",
+          "rank": "Kage",
+          "level": 11,
+          "element": "Neutral"
+        },
+        {
+          "id": "yugito_331",
+          "characterId": "yugito_331",
+          "name": "Yugito Ni'i",
+          "version": "Unbreakable Will",
+          "rank": "Kage",
+          "level": 9,
+          "element": "Neutral"
+        },
+        {
+          "id": "konan_2049",
+          "characterId": "konan_2049",
+          "name": "Konan",
+          "version": "A New Light",
+          "rank": "Chunin",
+          "level": 2,
+          "element": "Neutral"
+        },
+        {
+          "id": "konan_547",
+          "characterId": "konan_547",
+          "name": "Konan",
+          "version": "Wrapped in Sweetness",
+          "rank": "Chunin",
+          "level": 39,
+          "element": "Neutral"
+        },
+        {
+          "id": "madara_2120",
+          "characterId": "madara_2120",
+          "name": "Madara Uchiha",
+          "version": "Power of Rinne",
+          "rank": "Chunin",
+          "level": 14,
+          "element": "Neutral"
+        },
+        {
+          "id": "sakura_379",
+          "characterId": "sakura_379",
+          "name": "Sakura Haruno",
+          "version": "Dancing Cherry Blossoms",
+          "rank": "Chunin",
+          "level": 2,
+          "element": "Neutral"
+        },
+        {
+          "id": "asuma_215",
+          "characterId": "asuma_215",
+          "name": "Asuma Sarutobi",
+          "version": "All-Powerful Infighter",
+          "rank": "Chunin",
+          "level": 38,
+          "element": "Neutral"
+        },
+        {
+          "id": "ashura_789",
+          "characterId": "ashura_789",
+          "name": "Ashura",
+          "version": "Devoted to Studies",
+          "rank": "Genin",
+          "level": 19,
+          "element": "Neutral"
+        },
+        {
+          "id": "hanabi_773",
+          "characterId": "hanabi_773",
+          "name": "Hanabi Hyuga",
+          "version": "Daughter of the Byakugan",
+          "rank": "Jonin",
+          "level": 40,
+          "element": "Neutral"
+        },
+        {
+          "id": "naruto_584",
+          "characterId": "naruto_584",
+          "name": "Naruto Uzumaki",
+          "version": "Shining Warrior of Bonds",
+          "rank": "Chunin",
+          "level": 40,
+          "element": "Neutral"
+        },
+        {
+          "id": "kabuto_519",
+          "characterId": "kabuto_519",
+          "name": "Kabuto Yakushi",
+          "version": "Warrior's Quest",
+          "rank": "Chunin",
+          "level": 37,
+          "element": "Neutral"
+        },
+        {
+          "id": "rou_285",
+          "characterId": "rou_285",
+          "name": "Rou",
+          "version": "Melting Presence",
+          "rank": "Genin",
+          "level": 21,
+          "element": "Neutral"
+        },
+        {
+          "id": "naruto_453",
+          "characterId": "naruto_453",
+          "name": "Naruto Uzumaki",
+          "version": "Power of Determination",
+          "rank": "Jonin",
+          "level": 39,
+          "element": "Neutral"
+        },
+        {
+          "id": "sakura_793",
+          "characterId": "sakura_793",
+          "name": "Sakura Haruno",
+          "version": "Stunning Spring Breeze",
+          "rank": "Kage",
+          "level": 16,
+          "element": "Neutral"
+        },
+        {
+          "id": "itachi_725",
+          "characterId": "itachi_725",
+          "name": "Itachi Uchiha",
+          "version": "Eyes Which Weave Truth and Lies",
+          "rank": "Kage",
+          "level": 21,
+          "element": "Neutral"
+        },
+        {
+          "id": "tobirama_2007",
+          "characterId": "tobirama_2007",
+          "name": "Tobirama Senju",
+          "version": "Inherited Will of Fire",
+          "rank": "Kage",
+          "level": 14,
+          "element": "Neutral"
+        },
+        {
+          "id": "naruto_238",
+          "characterId": "naruto_238",
+          "name": "Naruto Uzumaki",
+          "version": "Unshakeable Will",
+          "rank": "Chunin",
+          "level": 33,
+          "element": "Neutral"
+        },
+        {
+          "id": "tenten_795",
+          "characterId": "tenten_795",
+          "name": "Tenten",
+          "version": "Battle Blade Dance",
+          "rank": "Jonin",
+          "level": 24,
+          "element": "Neutral"
+        },
+        {
+          "id": "shikamaru_291",
+          "characterId": "shikamaru_291",
+          "name": "Shikamaru Nara",
+          "version": "Beyond Silence",
+          "rank": "Genin",
+          "level": 19,
+          "element": "Neutral"
+        },
+        {
+          "id": "sasuke_004",
+          "characterId": "sasuke_004",
+          "name": "Sasuke Uchiha",
+          "version": "A Lone Heart",
+          "rank": "Genin",
+          "level": 1,
+          "element": "Neutral"
+        }
+      ]
+    },
+    {
+      "id": 1010,
+      "username": "jiraiya",
+      "password": "toadsage",
+      "resources": {
+        "ryo": 188324,
+        "ninja_pearls": 94,
+        "shinobites": 127,
+        "granny_coin": 7
+      },
+      "ninjas": [
+        {
+          "id": "naruto_003",
+          "characterId": "naruto_003",
+          "name": "Naruto Uzumaki",
+          "version": "The Worst Loser",
+          "rank": "Kage",
+          "level": 35,
+          "element": "Neutral"
+        },
+        {
+          "id": "sakumo_2010",
+          "characterId": "sakumo_2010",
+          "name": "Sakumo Hatake",
+          "version": "Between Duty and Comrades",
+          "rank": "Chunin",
+          "level": 32,
+          "element": "Neutral"
+        },
+        {
+          "id": "kabuto_077",
+          "characterId": "kabuto_077",
+          "name": "Kabuto Yakushi",
+          "version": "The Sound's Spy",
+          "rank": "Genin",
+          "level": 5,
+          "element": "Neutral"
+        },
+        {
+          "id": "deidara_654",
+          "characterId": "deidara_654",
+          "name": "Deidara",
+          "version": "Pursued Aesthetic",
+          "rank": "Chunin",
+          "level": 38,
+          "element": "Neutral"
+        },
+        {
+          "id": "pain_686",
+          "characterId": "pain_686",
+          "name": "Pain",
+          "version": "Endless Cycle of Battle",
+          "rank": "Kage",
+          "level": 23,
+          "element": "Neutral"
+        },
+        {
+          "id": "ashura_517",
+          "characterId": "ashura_517",
+          "name": "Ashura",
+          "version": "Heir to the Ninja Creed",
+          "rank": "Kage",
+          "level": 19,
+          "element": "Neutral"
+        },
+        {
+          "id": "ibiki_092",
+          "characterId": "ibiki_092",
+          "name": "Ibiki Morino",
+          "version": "Sadist",
+          "rank": "Jonin",
+          "level": 26,
+          "element": "Neutral"
+        },
+        {
+          "id": "neji_494",
+          "characterId": "neji_494",
+          "name": "Neji Hyuga",
+          "version": "Burden of Fate",
+          "rank": "Genin",
+          "level": 29,
+          "element": "Neutral"
+        },
+        {
+          "id": "deadly_1265",
+          "characterId": "deadly_1265",
+          "name": "Deadly Beads",
+          "version": "Strength-Based Leadership",
+          "rank": "Chunin",
+          "level": 40,
+          "element": "Neutral"
+        },
+        {
+          "id": "minato_459",
+          "characterId": "minato_459",
+          "name": "Minato Namikaze",
+          "version": "Flash of the Battlefield",
+          "rank": "Jonin",
+          "level": 32,
+          "element": "Neutral"
+        },
+        {
+          "id": "choji_225",
+          "characterId": "choji_225",
+          "name": "Choji Akimichi",
+          "version": "A Life Bet on Two Wings",
+          "rank": "Kage",
+          "level": 23,
+          "element": "Neutral"
+        },
+        {
+          "id": "sakumo_2011",
+          "characterId": "sakumo_2011",
+          "name": "Sakumo Hatake",
+          "version": "Between Duty and Comrades",
+          "rank": "Jonin",
+          "level": 17,
+          "element": "Neutral"
+        },
+        {
+          "id": "kaguya_2043",
+          "characterId": "kaguya_2043",
+          "name": "Kaguya Otsutsuki",
+          "version": "Forbidden Fruit",
+          "rank": "Kage",
+          "level": 35,
+          "element": "Neutral"
+        },
+        {
+          "id": "gaara_436",
+          "characterId": "gaara_436",
+          "name": "Gaara",
+          "version": "Many Bonds",
+          "rank": "Chunin",
+          "level": 10,
+          "element": "Neutral"
+        },
+        {
+          "id": "sakura_364",
+          "characterId": "sakura_364",
+          "name": "Sakura Haruno",
+          "version": "Heroine of the Battlefield",
+          "rank": "Jonin",
+          "level": 38,
+          "element": "Neutral"
+        },
+        {
+          "id": "deadly_1246",
+          "characterId": "deadly_1246",
+          "name": "Deadly Beads",
+          "version": "At the Battle's End",
+          "rank": "Chunin",
+          "level": 27,
+          "element": "Neutral"
+        },
+        {
+          "id": "sai_239",
+          "characterId": "sai_239",
+          "name": "Sai",
+          "version": "Mask-like Smile",
+          "rank": "Genin",
+          "level": 35,
+          "element": "Neutral"
+        },
+        {
+          "id": "killer_462",
+          "characterId": "killer_462",
+          "name": "Killer Bee",
+          "version": "Engraved Words",
+          "rank": "Jonin",
+          "level": 19,
+          "element": "Neutral"
+        },
+        {
+          "id": "sasuke_2132",
+          "characterId": "sasuke_2132",
+          "name": "Sasuke Uchiha",
+          "version": "Rain of Extinction",
+          "rank": "Jonin",
+          "level": 19,
+          "element": "Neutral"
+        },
+        {
+          "id": "hinata_2009",
+          "characterId": "hinata_2009",
+          "name": "Hinata Hyuga",
+          "version": "Sunflower's Admiration",
+          "rank": "Jonin",
+          "level": 32,
+          "element": "Neutral"
+        },
+        {
+          "id": "deadly_1160",
+          "characterId": "deadly_1160",
+          "name": "Deadly Beads",
+          "version": "Let's ",
+          "rank": "Jonin",
+          "level": 37,
+          "element": "Neutral"
+        },
+        {
+          "id": "kiba_224",
+          "characterId": "kiba_224",
+          "name": "Kiba Inuzuka",
+          "version": "Two-Headed Fangs",
+          "rank": "Genin",
+          "level": 38,
+          "element": "Neutral"
+        },
+        {
+          "id": "jinin_581",
+          "characterId": "jinin_581",
+          "name": "Jinin Akebino",
+          "version": "Crushing Bluntsword",
+          "rank": "Jonin",
+          "level": 25,
+          "element": "Neutral"
+        },
+        {
+          "id": "naruto_136",
+          "characterId": "naruto_136",
+          "name": "Naruto Uzumaki",
+          "version": "Boy Who Aims to be Hokage",
+          "rank": "Kage",
+          "level": 24,
+          "element": "Neutral"
+        },
+        {
+          "id": "mu_391",
+          "characterId": "mu_391",
+          "name": "Mu",
+          "version": "Ingenuity Reborn",
+          "rank": "Genin",
+          "level": 19,
+          "element": "Neutral"
+        },
+        {
+          "id": "kushina_297",
+          "characterId": "kushina_297",
+          "name": "Kushina Uzumaki",
+          "version": "Enveloping Kindness",
+          "rank": "Chunin",
+          "level": 22,
+          "element": "Neutral"
+        },
+        {
+          "id": "ferocious_1151",
+          "characterId": "ferocious_1151",
+          "name": "Ferocious Beads",
+          "version": "The Inheritor",
+          "rank": "Jonin",
+          "level": 22,
+          "element": "Neutral"
+        },
+        {
+          "id": "madara_2025",
+          "characterId": "madara_2025",
+          "name": "Madara Uchiha",
+          "version": "An Imposing Air",
+          "rank": "Jonin",
+          "level": 37,
+          "element": "Neutral"
+        },
+        {
+          "id": "konan_548",
+          "characterId": "konan_548",
+          "name": "Konan",
+          "version": "Wrapped in Sweetness",
+          "rank": "Genin",
+          "level": 22,
+          "element": "Neutral"
+        },
+        {
+          "id": "thief_132",
+          "characterId": "thief_132",
+          "name": "Thief",
+          "version": "Heartless Burglar",
+          "rank": "Genin",
+          "level": 36,
+          "element": "Neutral"
+        },
+        {
+          "id": "naruto_455",
+          "characterId": "naruto_455",
+          "name": "Naruto Uzumaki",
+          "version": "Power of Determination",
+          "rank": "Chunin",
+          "level": 9,
+          "element": "Neutral"
+        },
+        {
+          "id": "gamachan_937",
+          "characterId": "gamachan_937",
+          "name": "Gama-chan",
+          "version": "Big Spender",
+          "rank": "Kage",
+          "level": 29,
+          "element": "Neutral"
+        },
+        {
+          "id": "itachi_575",
+          "characterId": "itachi_575",
+          "name": "Itachi Uchiha",
+          "version": "Eyes Gazing Over the Future",
+          "rank": "Kage",
+          "level": 37,
+          "element": "Neutral"
+        },
+        {
+          "id": "orochimaru_172",
+          "characterId": "orochimaru_172",
+          "name": "Orochimaru",
+          "version": "The Snake Ninja",
+          "rank": "Kage",
+          "level": 23,
+          "element": "Neutral"
+        },
+        {
+          "id": "sakura_399",
+          "characterId": "sakura_399",
+          "name": "Sakura Haruno",
+          "version": "Standing Equal",
+          "rank": "Jonin",
+          "level": 29,
+          "element": "Neutral"
+        },
+        {
+          "id": "gengetsu_488",
+          "characterId": "gengetsu_488",
+          "name": "Gengetsu Hozuki",
+          "version": "Mists Over the Darkness",
+          "rank": "Jonin",
+          "level": 25,
+          "element": "Neutral"
+        },
+        {
+          "id": "neji_2005",
+          "characterId": "neji_2005",
+          "name": "Neji Hyuga",
+          "version": "Freedom of Choice",
+          "rank": "Genin",
+          "level": 30,
+          "element": "Neutral"
+        },
+        {
+          "id": "zabuza_145",
+          "characterId": "zabuza_145",
+          "name": "Zabuza Momochi",
+          "version": "The Demon Returns",
+          "rank": "Chunin",
+          "level": 1,
+          "element": "Neutral"
+        },
+        {
+          "id": "sasuke_420",
+          "characterId": "sasuke_420",
+          "name": "Sasuke Uchiha",
+          "version": "Thunder of Retaliation",
+          "rank": "Genin",
+          "level": 33,
+          "element": "Neutral"
+        },
+        {
+          "id": "rasa_442",
+          "characterId": "rasa_442",
+          "name": "Rasa",
+          "version": "Family Values",
+          "rank": "Jonin",
+          "level": 7,
+          "element": "Neutral"
+        },
+        {
+          "id": "sasuke_867",
+          "characterId": "sasuke_867",
+          "name": "Sasuke Uchiha",
+          "version": "Buried Past",
+          "rank": "Chunin",
+          "level": 24,
+          "element": "Neutral"
+        },
+        {
+          "id": "hanzo_342",
+          "characterId": "hanzo_342",
+          "name": "Hanzo",
+          "version": "Hero of Purple Poison",
+          "rank": "Genin",
+          "level": 35,
+          "element": "Neutral"
+        },
+        {
+          "id": "yamato_271",
+          "characterId": "yamato_271",
+          "name": "Yamato",
+          "version": "Heartless Thought",
+          "rank": "Genin",
+          "level": 14,
+          "element": "Neutral"
+        },
+        {
+          "id": "naruto_819",
+          "characterId": "naruto_819",
+          "name": "Naruto Uzumaki",
+          "version": "Blind Rage",
+          "rank": "Jonin",
+          "level": 7,
+          "element": "Neutral"
+        },
+        {
+          "id": "kakashi_2053",
+          "characterId": "kakashi_2053",
+          "name": "Kakashi Hatake",
+          "version": "A Bolt from the Dark",
+          "rank": "Genin",
+          "level": 26,
+          "element": "Neutral"
+        },
+        {
+          "id": "indra_2112",
+          "characterId": "indra_2112",
+          "name": "Indra",
+          "version": "Strength-Based Leadership",
+          "rank": "Genin",
+          "level": 25,
+          "element": "Neutral"
+        },
+        {
+          "id": "sound_134",
+          "characterId": "sound_134",
+          "name": "Sound Ninja",
+          "version": "Orochimaru's Soldier",
+          "rank": "Genin",
+          "level": 13,
+          "element": "Neutral"
+        },
+        {
+          "id": "rin_251",
+          "characterId": "rin_251",
+          "name": "Rin Nohara",
+          "version": "Overflowing Kindness",
+          "rank": "Kage",
+          "level": 2,
+          "element": "Neutral"
+        },
+        {
+          "id": "kaguya_2021",
+          "characterId": "kaguya_2021",
+          "name": "Kaguya Otsutsuki",
+          "version": "Plot for Rebirth",
+          "rank": "Jonin",
+          "level": 22,
+          "element": "Neutral"
+        },
+        {
+          "id": "sasuke_004",
+          "characterId": "sasuke_004",
+          "name": "Sasuke Uchiha",
+          "version": "A Lone Heart",
+          "rank": "Genin",
+          "level": 1,
+          "element": "Neutral"
+        }
+      ]
+    }
+  ]
+}

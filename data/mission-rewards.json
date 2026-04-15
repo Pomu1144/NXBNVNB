@@ -1,0 +1,327 @@
+{
+  "rewards": {
+    "m_001": {
+      "C": {
+        "completion": {
+          "ryo": 1000,
+          "scroll_body": 1
+        },
+        "firstTime": {
+          "pearls": 1
+        },
+        "objectives": [
+          {
+            "description": "Clear without any ally falling",
+            "reward": { "pearls": 5 }
+          },
+          {
+            "description": "Clear in 5 turns or less",
+            "reward": { "awakening_stone_3": 1 }
+          },
+          {
+            "description": "Use only 3-star or lower characters",
+            "reward": { "ryo": 500 }
+          }
+        ]
+      },
+      "B": {
+        "completion": {
+          "ryo": 2000,
+          "scroll_body": 2
+        },
+        "firstTime": {
+          "pearls": 2
+        },
+        "objectives": [
+          {
+            "description": "Clear without any ally falling",
+            "reward": { "pearls": 1 }
+          },
+          {
+            "description": "Clear in 8 turns or less",
+            "reward": { "awakening_stone_3": 2 }
+          },
+          {
+            "description": "Use only 4-star or lower characters",
+            "reward": { "ryo": 1000 }
+          }
+        ]
+      }
+    },
+    "m_002": {
+      "C": {
+        "completion": {
+          "ryo": 1500,
+          "scroll_skill": 1
+        },
+        "firstTime": {
+          "pearls": 1
+        },
+        "objectives": [
+          {
+            "description": "Clear without any ally falling",
+            "reward": { "pearls": 1 }
+          },
+          {
+            "description": "Clear in 5 turns or less",
+            "reward": { "awakening_stone_3": 1 }
+          },
+          {
+            "description": "Defeat all enemies with jutsu",
+            "reward": { "scroll_skill": 2 }
+          }
+        ]
+      },
+      "A": {
+        "completion": {
+          "ryo": 3000,
+          "scroll_skill": 3
+        },
+        "firstTime": {
+          "pearls": 2
+        },
+        "objectives": [
+          {
+            "description": "Clear without any ally falling",
+            "reward": { "pearls": 2 }
+          },
+          {
+            "description": "Clear in 10 turns or less",
+            "reward": { "awakening_stone_4": 2 }
+          },
+          {
+            "description": "Use ultimate at least once",
+            "reward": { "scroll_skill": 3 }
+          }
+        ]
+      }
+    },
+    "m_003": {
+      "C": {
+        "completion": {
+          "ryo": 1500,
+          "scroll_bravery": 1
+        },
+        "firstTime": {
+          "pearls": 1
+        },
+        "objectives": [
+          {
+            "description": "Clear without any ally falling",
+            "reward": { "pearls": 1 }
+          },
+          {
+            "description": "Clear in 6 turns or less",
+            "reward": { "awakening_stone_3": 1 }
+          },
+          {
+            "description": "Complete without using items",
+            "reward": { "ryo": 1000 }
+          }
+        ]
+      },
+      "B": {
+        "completion": {
+          "ryo": 3000,
+          "scroll_bravery": 2
+        },
+        "firstTime": {
+          "pearls": 2
+        },
+        "objectives": [
+          {
+            "description": "Clear without any ally falling",
+            "reward": { "pearls": 1 }
+          },
+          {
+            "description": "Clear in 8 turns or less",
+            "reward": { "awakening_stone_4": 2 }
+          },
+          {
+            "description": "Use 3 or fewer characters",
+            "reward": { "scroll_bravery": 3 }
+          }
+        ]
+      }
+    },
+    "m_004": {
+      "B": {
+        "completion": {
+          "ryo": 3500,
+          "scroll_wisdom": 2
+        },
+        "firstTime": {
+          "pearls": 2
+        },
+        "objectives": [
+          {
+            "description": "Clear without any ally falling",
+            "reward": { "pearls": 1 }
+          },
+          {
+            "description": "Clear in 10 turns or less",
+            "reward": { "awakening_stone_4": 2 }
+          },
+          {
+            "description": "Defeat boss with ultimate",
+            "reward": { "scroll_wisdom": 3 }
+          }
+        ]
+      },
+      "S": {
+        "completion": {
+          "ryo": 5000,
+          "scroll_wisdom": 3,
+          "awakening_stone_5": 1
+        },
+        "firstTime": {
+          "pearls": 3
+        },
+        "objectives": [
+          {
+            "description": "Clear without any ally falling",
+            "reward": { "pearls": 2 }
+          },
+          {
+            "description": "Clear in 12 turns or less",
+            "reward": { "awakening_stone_5": 2 }
+          },
+          {
+            "description": "Use only 5-star or higher characters",
+            "reward": { "character_stone": 1 }
+          }
+        ]
+      }
+    },
+    "m_005": {
+      "C": {
+        "completion": {
+          "ryo": 2000,
+          "scroll_heart": 1
+        },
+        "firstTime": {
+          "pearls": 1
+        },
+        "objectives": [
+          {
+            "description": "Clear without any ally falling",
+            "reward": { "pearls": 1 }
+          },
+          {
+            "description": "Clear in 7 turns or less",
+            "reward": { "awakening_stone_3": 2 }
+          },
+          {
+            "description": "Win without using jutsu",
+            "reward": { "ryo": 1500 }
+          }
+        ]
+      },
+      "A": {
+        "completion": {
+          "ryo": 4000,
+          "scroll_heart": 3
+        },
+        "firstTime": {
+          "pearls": 2
+        },
+        "objectives": [
+          {
+            "description": "Clear without any ally falling",
+            "reward": { "pearls": 2 }
+          },
+          {
+            "description": "Clear in 10 turns or less",
+            "reward": { "awakening_stone_4": 2 }
+          },
+          {
+            "description": "All allies survive with over 50% HP",
+            "reward": { "scroll_heart": 4 }
+          }
+        ]
+      }
+    },
+    "m_006": {
+      "A": {
+        "completion": {
+          "ryo": 4500,
+          "scroll_body": 3,
+          "awakening_stone_4": 1
+        },
+        "firstTime": {
+          "pearls": 2
+        },
+        "objectives": [
+          {
+            "description": "Clear without any ally falling",
+            "reward": { "pearls": 2 }
+          },
+          {
+            "description": "Clear in 10 turns or less",
+            "reward": { "awakening_stone_4": 2 }
+          },
+          {
+            "description": "Complete in under 3 minutes",
+            "reward": { "scroll_body": 4 }
+          }
+        ]
+      },
+      "S": {
+        "completion": {
+          "ryo": 6000,
+          "scroll_body": 4,
+          "awakening_stone_5": 2
+        },
+        "firstTime": {
+          "pearls": 3
+        },
+        "objectives": [
+          {
+            "description": "Clear without any ally falling",
+            "reward": { "pearls": 3 }
+          },
+          {
+            "description": "Clear in 15 turns or less",
+            "reward": { "awakening_stone_5": 3 }
+          },
+          {
+            "description": "Use secret technique at least once",
+            "reward": { "character_stone": 2 }
+          }
+        ]
+      }
+    },
+    "event_lt": {
+      "S": {
+        "completion": {
+          "ryo": 8000,
+          "scroll_skill": 5,
+          "awakening_stone_6": 2
+        },
+        "firstTime": {
+          "pearls": 5
+        },
+        "objectives": [
+          {
+            "description": "Clear without any ally falling",
+            "reward": { "pearls": 3 }
+          },
+          {
+            "description": "Clear in 20 turns or less",
+            "reward": { "limit_break_crystal": 1 }
+          },
+          {
+            "description": "Defeat all enemies with perfect combo",
+            "reward": { "dupe_crystal": 2 }
+          }
+        ]
+      }
+    }
+  },
+  "notes": {
+    "description": "Mission rewards configuration",
+    "completion": "Rewards given every time mission is completed",
+    "firstTime": "Bonus rewards given only on first clear of each difficulty",
+    "objectives": "Optional challenge objectives for extra rewards (3-star system)"
+  }
+}

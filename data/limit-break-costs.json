@@ -1,0 +1,50 @@
+{
+  "tierCosts": {
+    "6S": {
+      "limit_break_crystal": 1,
+      "ryo": 10000
+    },
+    "6SB": {
+      "limit_break_crystal": 1,
+      "dupe_crystal": 1,
+      "ryo": 15000
+    },
+    "7S": {
+      "limit_break_crystal": 2,
+      "ryo": 20000
+    },
+    "7SL": {
+      "limit_break_crystal": 2,
+      "dupe_crystal": 1,
+      "ryo": 25000
+    },
+    "8S": {
+      "limit_break_crystal": 3,
+      "ryo": 30000
+    },
+    "8SM": {
+      "limit_break_crystal": 3,
+      "dupe_crystal": 2,
+      "ryo": 35000
+    },
+    "9S": {
+      "limit_break_crystal": 4,
+      "ryo": 40000
+    },
+    "9ST": {
+      "limit_break_crystal": 4,
+      "dupe_crystal": 3,
+      "ryo": 45000
+    },
+    "10SO": {
+      "limit_break_crystal": 5,
+      "dupe_crystal": 5,
+      "ryo": 50000
+    }
+  },
+  "notes": {
+    "description": "Base material costs for limit break per tier",
+    "costScaling": "Costs multiply by (current limit break level + 1)",
+    "example": "3rd limit break on 6S costs: 3 LB Crystals + 30,000 Ryo"
+  }
+}
