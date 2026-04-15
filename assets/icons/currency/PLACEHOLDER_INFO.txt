@@ -1,0 +1,15 @@
+PLACEHOLDER CURRENCY ICONS NEEDED
+==================================
+
+Please replace these placeholder files with actual currency icon PNG files:
+
+1. ninjapearl.png - Blue/aqua colored pearl icon
+2. shinobite.png - Purple/violet gem/crystal icon  
+3. ryo.png - Gold/yellow coin icon
+
+Recommended specs:
+- Size: 64x64px or 128x128px
+- Format: PNG with transparency
+- Style: Match the Naruto Blazing aesthetic
+
+Until replaced, the icons will not display but the currency amounts will still show.
