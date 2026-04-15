@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Blazing — Sign In</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <link rel="stylesheet" href="css/login-overlay.css" />
+  <link rel="stylesheet" href="css/loading-bridge.css" />
+  <style>
+    body,
+    html {
+      margin: 0;
+      min-height: 100vh;
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      background: #000;
+      color: #e9edf5;
+      overflow: hidden;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Loading bridge shown after login -->
+  <div id="login-loading" class="loading-bridge is-hidden" role="status" aria-live="polite">
+    <div class="loading-bridge__spinner" aria-hidden="true"></div>
+    <div class="loading-bridge__text" data-loading-message>Preparing village HUD…</div>
+  </div>
+
+  <!-- Login Overlay -->
+  <div id="login-overlay" class="login-overlay" role="dialog" aria-modal="true" aria-labelledby="login-title" data-redirect="village.html">
+    <div class="login-panel">
+      <div class="login-hero">
+        <div class="login-hero__glow"></div>
+        <div class="login-hero__content">
+          <p class="login-eyebrow">Village Access Gate</p>
+          <h2 id="login-title" class="login-heading">Sign in to enter the plaza</h2>
+          <p class="login-copy">Log in once to unlock the HUD. You will stay signed in when you return from other screens.</p>
+          <div class="login-actions">
+            <button type="button" class="login-primary" data-login-fast>Enter the Village</button>
+            <p class="login-hint">Already signed in? Tap the button above to dismiss this screen immediately.</p>
+          </div>
+          <ul class="login-perks">
+            <li>Sync ninja rank and currencies</li>
+            <li>Keep your username visible on the HUD</li>
+            <li>Skip this step next time on this device</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="login-form" data-login-form>
+        <form>
+          <label class="login-label" for="login-username">Username</label>
+          <input id="login-username" data-login-username type="text" name="username" maxlength="20" placeholder="Enter your ninja name" autocomplete="username" required />
+
+          <label class="login-label" for="login-password">Password</label>
+          <input id="login-password" data-login-password type="password" name="password" maxlength="32" placeholder="••••••••" autocomplete="current-password" required />
+
+          <button type="submit" class="login-primary">Log In</button>
+          <button type="button" class="login-create" data-login-create>Create Account</button>
+          <button type="button" class="login-secondary" data-login-guest>Continue as guest</button>
+
+          <div class="login-feedback" data-login-feedback aria-live="polite"></div>
+          <p class="login-note">Your session and new accounts are remembered locally so returning to the Village HUD won't prompt you again.</p>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Login Script -->
+  <script src="js/login-overlay.js"></script>
+</body>
+</html>
