@@ -1,0 +1,141 @@
+/* Bottom HUD - DEFINITIVE NO BORDER VERSION */
+.bottom-bar {
+  position: fixed !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 80px !important;
+  z-index: 1000 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: rgba(30, 30, 35, 0.4) !important;
+  backdrop-filter: blur(6px) !important;
+  box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.3) !important;
+  border: 0px solid transparent !important;
+  outline: 0px solid transparent !important;
+  border-width: 0 !important;
+  border-style: none !important;
+}
+
+.bottom-bar::before {
+  content: "";
+  position: absolute;
+  top: -3px;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background-image: url("../assets/bottom_hud/hud_bg1.png");
+  background-size: cover;
+  background-position: center;
+  opacity: 0.9;
+  pointer-events: none;
+  border: none !important;
+}
+
+.bottom-bar-content {
+  width: 100%;
+  max-width: 1200px; /* Increased to accommodate all buttons */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+  border: 0px solid transparent !important;
+  outline: 0px solid transparent !important;
+  pointer-events: auto !important;
+  z-index: 1001 !important; /* Above parent to ensure clickability */
+}
+
+.hud-button {
+  width: 70px !important;
+  height: 70px !important;
+  min-width: 70px !important;
+  min-height: 70px !important;
+  max-width: 70px !important;
+  max-height: 70px !important;
+  aspect-ratio: 1 !important;
+  border-radius: 50% !important;
+  background: radial-gradient(circle at 30% 30%, rgba(40, 40, 50, 0.9), rgba(20, 20, 30, 0.9));
+  border: 3px solid rgba(217, 179, 98, 0.4);
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.6),
+    0 0 20px rgba(217, 179, 98, 0.15),
+    inset 0 2px 4px rgba(255, 255, 255, 0.1),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  cursor: pointer !important;
+  pointer-events: auto !important;
+  position: relative;
+  transition: all 0.3s ease;
+  overflow: hidden;
+  flex-shrink: 0 !important;
+}
+
+.hud-button:hover {
+  transform: scale(1.15);
+  border-color: rgba(255, 215, 0, 0.8);
+  box-shadow:
+    0 6px 20px rgba(0, 0, 0, 0.7),
+    0 0 30px rgba(217, 179, 98, 0.4),
+    inset 0 2px 6px rgba(255, 255, 255, 0.15);
+}
+
+.hud-button:active {
+  transform: scale(1.05);
+  filter: brightness(0.95);
+}
+
+.hud-button.active {
+  border-color: rgba(255, 215, 0, 1);
+  background: radial-gradient(circle at 30% 30%, rgba(60, 50, 30, 0.9), rgba(40, 35, 25, 0.9));
+  box-shadow:
+    0 6px 20px rgba(0, 0, 0, 0.7),
+    0 0 35px rgba(255, 215, 0, 0.5),
+    inset 0 2px 6px rgba(255, 215, 0, 0.2);
+}
+
+.hud-button img {
+  width: 60% !important;
+  height: 60% !important;
+  aspect-ratio: 1 !important;
+  object-fit: contain !important;
+  object-position: center !important;
+  position: relative;
+  z-index: 1;
+  border-radius: 0 !important;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.6));
+}
+
+.hud-button::after {
+  content: attr(aria-label);
+  position: absolute;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(20, 20, 25, 0.9);
+  color: #f4efe3;
+  font-family: "Times New Roman", serif;
+  font-size: 16px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  opacity: 0;
+  pointer-events: none;
+  white-space: nowrap;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 215, 100, 0.3);
+  transition: opacity 0.2s ease-out, transform 0.2s ease-out;
+}
+
+.hud-button:hover::after {
+  opacity: 1;
+  transform: translateX(-50%) translateY(-5px);
+}
+
+/* KILL ALL RED BORDERS GLOBALLY */
+div[class*="bottom"] {
+  border: none !important;
+  outline: none !important;
+}

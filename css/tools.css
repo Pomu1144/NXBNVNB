@@ -1,0 +1,402 @@
+/* ---------- Base Setup ---------- */
+@import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&display=swap");
+
+:root {
+  --gold: #d9b362;
+  --gold-deep: #a7822c;
+  --gold-bright: #ffd700;
+  --ink: #0b0b0f;
+  --ink-2: #121218;
+  --ink-3: #1a1a1c;
+  --btn-dark: #202024;
+  --btn-border: #343438;
+  --btn-gold: linear-gradient(180deg, #d9b362 0%, #a7822c 100%);
+}
+
+/* ---------- Page Background ---------- */
+body.page-tools {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background: linear-gradient(180deg, #141014 0%, #1a1a1e 100%);
+  font-family: "Cinzel", "Times New Roman", serif;
+  color: #eee6d1;
+  overflow-y: auto;
+  padding-bottom: 120px;
+}
+
+#tools-bg {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at 50% 20%, rgba(217, 179, 98, 0.08) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.tools-content {
+  position: relative;
+  z-index: 1;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+/* ---------- Page Title ---------- */
+.page-title {
+  font-family: "Cinzel", serif;
+  font-size: 2.8rem;
+  font-weight: 700;
+  text-align: center;
+  color: var(--gold);
+  text-shadow: 0 0 30px rgba(217, 179, 98, 0.5), 0 4px 8px rgba(0, 0, 0, 0.8);
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  margin-bottom: 40px;
+}
+
+/* ---------- Character Selector ---------- */
+.character-selector {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.btn-select-character {
+  padding: 16px 40px;
+  font-family: "Cinzel", serif;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: var(--btn-gold);
+  border: 2px solid var(--gold);
+  border-radius: 8px;
+  color: var(--ink);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 16px rgba(217, 179, 98, 0.3);
+}
+
+.btn-select-character:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(217, 179, 98, 0.5);
+  filter: brightness(1.1);
+}
+
+.selected-character-info {
+  margin-top: 20px;
+}
+
+.character-name {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--gold);
+  letter-spacing: 0.05em;
+}
+
+.character-version {
+  font-size: 1rem;
+  color: rgba(238, 230, 209, 0.7);
+  margin-top: 4px;
+}
+
+/* ---------- Equipment Container ---------- */
+.equipment-container {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  gap: 40px;
+  align-items: center;
+  margin-bottom: 40px;
+  padding: 40px;
+  background: rgba(12, 12, 16, 0.6);
+  border: 2px solid rgba(217, 179, 98, 0.15);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(255, 215, 120, 0.05);
+}
+
+.equipment-column {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* ---------- Equipment Slots ---------- */
+.equipment-slot {
+  position: relative;
+  width: 100%;
+  height: 180px;
+  background: rgba(10, 10, 15, 0.8);
+  border: 2px solid rgba(217, 179, 98, 0.2);
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+.equipment-slot:hover {
+  transform: translateY(-4px);
+  border-color: rgba(217, 179, 98, 0.4);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6), 0 0 20px rgba(217, 179, 98, 0.2);
+}
+
+.slot-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.slot-label {
+  font-family: "Cinzel", serif;
+  font-size: 1rem;
+  color: rgba(217, 179, 98, 0.6);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.equipment-slot.filled {
+  border-color: rgba(217, 179, 98, 0.5);
+}
+
+/* ---------- Character Display ---------- */
+.character-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 20px;
+}
+
+.character-display img {
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+  object-fit: contain;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+.power-display {
+  text-align: center;
+  padding: 16px 32px;
+  background: rgba(10, 10, 15, 0.8);
+  border: 2px solid var(--gold);
+  border-radius: 12px;
+  box-shadow: 0 0 30px rgba(217, 179, 98, 0.3);
+}
+
+.power-label {
+  font-family: "Cinzel", serif;
+  font-size: 1rem;
+  color: rgba(238, 230, 209, 0.8);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.power-value {
+  font-family: "Cinzel", serif;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--gold-bright);
+  text-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+}
+
+/* ---------- Stats Display ---------- */
+.stats-display {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  padding: 30px;
+  background: rgba(12, 12, 16, 0.6);
+  border: 2px solid rgba(217, 179, 98, 0.15);
+  border-radius: 12px;
+  margin-bottom: 40px;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 16px;
+  background: rgba(10, 10, 15, 0.8);
+  border: 1px solid rgba(217, 179, 98, 0.2);
+  border-radius: 8px;
+}
+
+.stat-label {
+  font-size: 0.9rem;
+  color: rgba(238, 230, 209, 0.7);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.stat-value {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: var(--gold);
+}
+
+/* ---------- Modals ---------- */
+.modal {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(10, 10, 10, 0.85);
+  backdrop-filter: blur(8px);
+  z-index: 2000;
+}
+
+.modal.open {
+  display: flex;
+}
+
+.modal-panel {
+  position: relative;
+  width: 90%;
+  max-width: 900px;
+  max-height: 80vh;
+  background: var(--ink-3);
+  border: 2px solid rgba(217, 179, 98, 0.2);
+  border-radius: 16px;
+  padding: 30px;
+  overflow-y: auto;
+  box-shadow: 0 0 60px rgba(0, 0, 0, 0.8);
+}
+
+.modal-title {
+  font-family: "Cinzel", serif;
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: var(--gold);
+  text-align: center;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+}
+
+.modal-filters {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.search-input {
+  flex: 1;
+  padding: 12px 16px;
+  background: rgba(10, 10, 15, 0.8);
+  border: 1px solid rgba(217, 179, 98, 0.2);
+  border-radius: 8px;
+  font-family: "Cinzel", serif;
+  font-size: 0.9rem;
+  color: #eee6d1;
+}
+
+.search-input::placeholder {
+  color: rgba(238, 230, 209, 0.4);
+}
+
+.characters-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 12px;
+  max-height: 400px;
+  overflow-y: auto;
+  margin-bottom: 20px;
+  padding: 4px;
+}
+
+.character-card {
+  position: relative;
+  cursor: pointer;
+  border-radius: 12px;
+  overflow: hidden;
+  background: rgba(12, 12, 16, 0.5);
+  border: 1px solid rgba(217, 179, 98, 0.1);
+  transition: all 0.2s ease;
+}
+
+.character-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(217, 179, 98, 0.3);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+}
+
+.character-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.character-card-info {
+  padding: 8px;
+  background: rgba(5, 5, 8, 0.9);
+  border-top: 1px solid rgba(217, 179, 98, 0.1);
+}
+
+.character-card-name {
+  font-size: 0.75rem;
+  color: #eee6d1;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.btn-dark {
+  padding: 12px 32px;
+  font-family: "Cinzel", serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: var(--btn-dark);
+  border: 2px solid var(--btn-border);
+  border-radius: 8px;
+  color: #eee6d1;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-dark:hover {
+  border-color: rgba(217, 179, 98, 0.4);
+  background: rgba(32, 32, 36, 0.8);
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 1200px) {
+  .equipment-container {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  .equipment-column {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 768px) {
+  .page-title {
+    font-size: 2rem;
+  }
+
+  .stats-display {
+    grid-template-columns: 1fr;
+  }
+
+  .characters-grid {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  }
+}

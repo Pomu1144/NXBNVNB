@@ -1,0 +1,469 @@
+/* ========================================
+   BATTLE UI FIXES - Professional Gold Theme
+   ======================================== */
+
+/* ========================================
+   1. FIX: Position Numbers on Units
+   ======================================== */
+
+/* Hide the ugly position numbers */
+.unit-position-label {
+  display: none !important;
+}
+
+/* Optional: Show position in a better way (small corner badge) */
+.battle-unit[data-position-id]::before {
+  content: attr(data-position-id);
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 18px;
+  height: 18px;
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.9), rgba(255, 215, 0, 0.9));
+  border: 1px solid rgba(255, 215, 0, 0.5);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: #0a0f1e;
+  z-index: 10;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  pointer-events: none;
+}
+
+/* Only show on player units */
+.battle-unit.enemy::before {
+  display: none;
+}
+
+/* ========================================
+   2. FIX: Action Panel Buttons (Gold Theme)
+   ======================================== */
+
+/* Action Panel Container */
+#action-panel {
+  background: linear-gradient(135deg, #0a0f1e 0%, #141b2d 100%);
+  border: 2px solid rgba(212, 175, 55, 0.3);
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+}
+
+/* Button Base Styles */
+#action-panel button {
+  background: linear-gradient(135deg, #1a1f2e, #0f1419);
+  border: 2px solid rgba(212, 175, 55, 0.4);
+  color: #e8c468;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+/* Button Hover Effect */
+#action-panel button:hover:not(.disabled) {
+  background: linear-gradient(135deg, #252b3a, #1a1f2e);
+  border-color: rgba(212, 175, 55, 0.7);
+  color: #ffd700;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+}
+
+/* Button Active Effect */
+#action-panel button:active:not(.disabled) {
+  transform: translateY(0);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+}
+
+/* Shine Effect on Hover */
+#action-panel button::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(255, 215, 0, 0.2) 50%,
+    transparent 100%);
+  transform: translateX(-100%);
+  transition: transform 0.6s ease;
+}
+
+#action-panel button:hover::before {
+  transform: translateX(100%);
+}
+
+/* ========================================
+   Specific Button Styles
+   ======================================== */
+
+/* Attack Button - Bright Gold */
+#btn-attack {
+  background: linear-gradient(135deg, #d4af37, #b8860b);
+  border-color: rgba(255, 215, 0, 0.6);
+  color: #0a0f1e;
+  font-weight: 700;
+  box-shadow: 0 3px 10px rgba(212, 175, 55, 0.4);
+}
+
+#btn-attack:hover:not(.disabled) {
+  background: linear-gradient(135deg, #ffd700, #d4af37);
+  border-color: #ffd700;
+  box-shadow: 0 5px 16px rgba(255, 215, 0, 0.5);
+}
+
+/* Jutsu Button - Orange Gold */
+#btn-jutsu {
+  background: linear-gradient(135deg, #cd7f32, #a0522d);
+  border-color: rgba(205, 127, 50, 0.6);
+  color: #fff;
+}
+
+#btn-jutsu:hover:not(.disabled) {
+  background: linear-gradient(135deg, #d4941f, #cd7f32);
+  border-color: #d4941f;
+}
+
+/* Ultimate Button - Deep Gold */
+#btn-ultimate {
+  background: linear-gradient(135deg, #8b6914, #6b5310);
+  border-color: rgba(139, 105, 20, 0.6);
+  color: #e8c468;
+}
+
+#btn-ultimate:hover:not(.disabled) {
+  background: linear-gradient(135deg, #9d7a1a, #8b6914);
+  border-color: #9d7a1a;
+}
+
+/* Guard Button - Silver Gold */
+#btn-guard {
+  background: linear-gradient(135deg, #a8a8a8, #787878);
+  border-color: rgba(168, 168, 168, 0.6);
+  color: #fff;
+}
+
+#btn-guard:hover:not(.disabled) {
+  background: linear-gradient(135deg, #c0c0c0, #a8a8a8);
+  border-color: #c0c0c0;
+}
+
+/* Auto Button - Dark Gold */
+#btn-auto {
+  background: linear-gradient(135deg, #4a4a4a, #2a2a2a);
+  border-color: rgba(212, 175, 55, 0.3);
+}
+
+#btn-auto:hover:not(.disabled) {
+  background: linear-gradient(135deg, #5a5a5a, #3a3a3a);
+}
+
+#btn-auto.active {
+  background: linear-gradient(135deg, #d4af37, #b8860b);
+  border-color: #ffd700;
+  color: #0a0f1e;
+  box-shadow: 0 0 16px rgba(255, 215, 0, 0.5);
+}
+
+/* Speed Button - Similar to Auto */
+#btn-speed {
+  background: linear-gradient(135deg, #4a4a4a, #2a2a2a);
+  border-color: rgba(212, 175, 55, 0.3);
+}
+
+#btn-speed:hover:not(.disabled) {
+  background: linear-gradient(135deg, #5a5a5a, #3a3a3a);
+}
+
+/* Disabled Button State */
+#action-panel button.disabled {
+  background: linear-gradient(135deg, #1a1a1a, #0f0f0f);
+  border-color: rgba(100, 100, 100, 0.3);
+  color: #555;
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* ========================================
+   3. FIX: HP Bars (Animation & Position)
+   ======================================== */
+
+/* Unit Container - Ensure proper stacking */
+.battle-unit {
+  position: absolute !important;
+  width: 70px !important;
+  height: 70px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  z-index: 1;
+  transform: translate(-50%, -50%) !important;
+  pointer-events: auto;
+  cursor: grab;
+}
+
+.battle-unit:active {
+  cursor: grabbing;
+}
+
+/* Unit Sprite Container */
+.unit-sprite {
+  width: 70px !important;
+  height: 70px !important;
+  min-width: 70px !important;
+  min-height: 70px !important;
+  max-width: 70px !important;
+  max-height: 70px !important;
+  position: relative !important;
+  border-radius: 8px;
+  overflow: hidden !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  z-index: 2;
+  flex-shrink: 0 !important;
+}
+
+.unit-sprite img {
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  object-fit: cover !important;
+  display: block !important;
+}
+
+/* HP Bar Container - BELOW sprite */
+.unit-hp-bar {
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 64px;
+  height: 6px;
+  background: rgba(0, 0, 0, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 3px;
+  overflow: hidden;
+  z-index: 1;
+}
+
+/* HP Bar Fill - WITH ANIMATION */
+.unit-hp-fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  background: linear-gradient(90deg, #e74c3c, #ff6b6b);
+  transition: width 0.5s ease-out; /* SMOOTH ANIMATION */
+  border-radius: 2px;
+}
+
+/* HP Bar Color States - Player vs Enemy */
+.battle-unit.player .unit-hp-fill {
+  background: linear-gradient(90deg, #d4af37, #ff8c00); /* Ally - Gold to Orange */
+}
+
+.battle-unit.enemy .unit-hp-fill {
+  background: linear-gradient(90deg, #dc143c, #8b0000); /* Enemy - Red gradient */
+}
+
+/* Chakra Bar - BELOW HP bar */
+.unit-chakra-bar {
+  position: absolute;
+  bottom: -18px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 64px;
+  height: 4px;
+  background: rgba(0, 0, 0, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
+  overflow: hidden;
+  z-index: 1;
+}
+
+/* Chakra Bar Fill - WITH ANIMATION */
+.chakra-fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  transition: width 0.3s ease-out, background 0.3s ease; /* SMOOTH ANIMATION */
+  border-radius: 1px;
+}
+
+/* Chakra Bar Color States */
+.chakra-fill.neutral {
+  background: linear-gradient(90deg, #555, #888);
+}
+
+.chakra-fill.blue {
+  background: linear-gradient(90deg, #00BFFF, #1E90FF);
+}
+
+.chakra-fill.red {
+  background: linear-gradient(90deg, #FF4D4D, #FF1744);
+}
+
+.chakra-fill.secret {
+  background: linear-gradient(90deg, #C000FF, #FFD700);
+  box-shadow: 0 0 8px rgba(192, 0, 255, 0.6);
+}
+
+/* ========================================
+   4. ADDITIONAL POLISH
+   ======================================== */
+
+/* Player Unit Glow */
+.battle-unit.player .unit-sprite {
+  box-shadow: 0 0 12px rgba(88, 183, 255, 0.6);
+}
+
+/* Enemy Unit Glow */
+.battle-unit.enemy .unit-sprite {
+  box-shadow: 0 0 12px rgba(255, 107, 107, 0.6);
+}
+
+/* Unit Hover Effect */
+.battle-unit:hover .unit-sprite {
+  transform: scale(1.05);
+  transition: transform 0.2s ease;
+}
+
+/* Dead Unit State */
+.battle-unit[data-dead="true"] {
+  opacity: 0.4;
+  filter: grayscale(100%);
+  pointer-events: none;
+}
+
+.battle-unit[data-dead="true"] .unit-sprite {
+  box-shadow: none;
+}
+
+/* ========================================
+   5. ACTION PANEL LAYOUT
+   ======================================== */
+
+/* Action Panel Info Section */
+#action-panel .unit-info {
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+#action-name {
+  color: #ffd700;
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+#action-hp,
+#action-chakra {
+  color: #c5cad5;
+  font-size: 0.9rem;
+  margin-bottom: 0.25rem;
+}
+
+/* Skill Names */
+#action-skill-name,
+#action-ult-name {
+  color: #e8c468;
+  font-size: 0.85rem;
+  font-style: italic;
+  display: block;
+  margin-top: 0.25rem;
+}
+
+/* Button Grid */
+.action-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.action-buttons button {
+  width: 100%;
+}
+
+/* ========================================
+   6. BENCH UNITS
+   ======================================== */
+
+.bench-unit {
+  width: 56px;
+  height: 56px;
+  border: 2px solid rgba(212, 175, 55, 0.4);
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: grab;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.bench-unit:hover {
+  border-color: rgba(212, 175, 55, 0.8);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+}
+
+.bench-unit:active {
+  cursor: grabbing;
+}
+
+.bench-unit img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Bench HP Bar */
+.bench-hp-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.bench-hp-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #2ecc71, #27ae60);
+  transition: width 0.3s ease;
+}
+
+/* ========================================
+   7. RESPONSIVE ADJUSTMENTS
+   ======================================== */
+
+@media (max-width: 768px) {
+  .battle-unit {
+    width: 60px;
+    height: 60px;
+  }
+
+  .unit-sprite {
+    width: 60px;
+    height: 60px;
+  }
+
+  .unit-hp-bar,
+  .unit-chakra-bar {
+    width: 54px;
+  }
+
+  #action-panel button {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+  }
+}

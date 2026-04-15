@@ -1,0 +1,217 @@
+/* ==========================================
+   FIXED 16:9 GAME CANVAS ARCHITECTURE
+   ========================================== */
+
+/*
+  This architecture treats the game like a console game, not a responsive website.
+  - Fixed 16:9 aspect ratio maintained on all devices
+  - Uniform scaling (never stretching)
+  - Letterboxing on non-16:9 screens
+  - All UI positioned relative to game canvas, not viewport
+*/
+
+/* Black letterbox background for non-16:9 screens */
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #000;
+}
+
+/* Center the canvas vertically and horizontally */
+.game-canvas-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: #000;
+  overflow: hidden;
+  z-index: 1; /* CRITICAL: Must be below login (190) and intro (200) */
+}
+
+/* Main game container - enforces 16:9 aspect ratio */
+/* Uses absolute positioning with centering transform for perfect mobile + desktop alignment */
+.game-canvas {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  width: 100vw;
+  height: calc(100vw * 9 / 16); /* Force 16:9 from width */
+
+  max-height: 100vh;
+  max-width: calc(100vh * 16 / 9); /* Force 16:9 from height */
+
+  overflow: visible; /* Changed to visible to allow backgrounds */
+  background: #000;
+  z-index: 1; /* Keep at base level */
+}
+
+/* All game content must be inside this container */
+.game-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible; /* Allow backgrounds to render */
+  pointer-events: none; /* Allow clicks to pass through to children */
+}
+
+/* Re-enable pointer events for interactive elements */
+.game-content > * {
+  pointer-events: auto;
+}
+
+/* Scrollable content areas (for menus that need scrolling) */
+.game-scrollable {
+  position: absolute;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+}
+
+.game-scrollable::-webkit-scrollbar {
+  width: 8px;
+}
+
+.game-scrollable::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.game-scrollable::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+}
+
+.game-scrollable::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+/* Fixed aspect ratio for UI elements (prevents distortion) */
+.aspect-ratio-keeper {
+  position: relative;
+  width: 100%;
+}
+
+.aspect-ratio-keeper::before {
+  content: '';
+  display: block;
+  padding-top: 56.25%; /* 16:9 aspect ratio */
+}
+
+.aspect-ratio-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* Never stretch images */
+}
+
+/* Button grids that maintain aspect ratio */
+.button-grid {
+  display: grid;
+  gap: 10px;
+  width: 100%;
+  padding: 10px;
+}
+
+.button-grid-item {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9; /* Enforce aspect ratio */
+  overflow: hidden;
+}
+
+.button-grid-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* Never distort */
+}
+
+/* Bottom HUD bar (fixed height, no compression) */
+.game-bottom-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 80px; /* Fixed pixel height */
+  min-height: 80px; /* Prevent compression */
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  z-index: 1000;
+}
+
+.game-bottom-bar button {
+  height: 60px;
+  min-height: 60px; /* Prevent vertical squashing */
+  aspect-ratio: 1 / 1; /* Keep buttons square */
+}
+
+.game-bottom-bar button img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Safe area padding for notched devices (iPhone X, etc.) */
+@supports (padding: max(0px)) {
+  .game-canvas {
+    padding-left: max(0px, env(safe-area-inset-left));
+    padding-right: max(0px, env(safe-area-inset-right));
+  }
+
+  .game-bottom-bar {
+    padding-bottom: max(0px, env(safe-area-inset-bottom));
+  }
+}
+
+/* Landscape orientation hint for mobile */
+@media (orientation: portrait) and (max-width: 768px) {
+  .landscape-hint {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.95);
+    color: white;
+    padding: 30px;
+    border-radius: 10px;
+    text-align: center;
+    z-index: 10000;
+    font-size: 18px;
+  }
+
+  .landscape-hint::before {
+    content: '📱';
+    display: block;
+    font-size: 48px;
+    margin-bottom: 15px;
+  }
+}
+
+/* Debug helper - shows 16:9 boundary */
+.game-canvas.debug {
+  border: 3px solid red;
+}
+
+.game-canvas.debug::after {
+  content: '16:9 Canvas';
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: red;
+  color: white;
+  padding: 5px 10px;
+  font-size: 12px;
+  z-index: 10000;
+}

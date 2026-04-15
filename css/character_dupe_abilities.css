@@ -1,0 +1,493 @@
+/* ==========================================
+   CHARACTER DUPE ABILITIES SYSTEM
+   Abilities Tab - Vertical List of Character Abilities
+   Unlocked by Feeding Duplicates
+   ========================================== */
+
+/* Main Abilities Container - Abilities Tab Placement */
+.dupe-abilities-tab {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 20px;
+  animation: fadeIn 0.5s ease-out;
+  width: 90%;
+  max-width: 900px;
+  margin: 0 auto;
+  height: 100%;
+  overflow-y: auto;
+}
+
+/* Abilities Header */
+.abilities-header {
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.92), rgba(30, 25, 10, 0.88));
+  border: 2px solid rgba(139, 101, 8, 0.6);
+  border-radius: 12px;
+  padding: 12px 16px;
+  box-shadow:
+    0 4px 16px rgba(0, 0, 0, 0.8),
+    inset 0 1px 3px rgba(184, 134, 11, 0.1),
+    0 0 0 1px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+  pointer-events: all;
+}
+
+.abilities-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 6px;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+}
+
+.abilities-unlock-count {
+  font-size: 13px;
+  font-weight: 600;
+  color: #8B6508;
+  text-shadow: 0 2px 6px rgba(139, 101, 8, 0.5);
+}
+
+/* Abilities List Container */
+.abilities-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Individual Ability Item */
+.ability-item {
+  position: relative;
+  background-color: transparent;
+  background-image: url('../update/abilitiesslab.png');
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  border: none;
+  border-radius: 10px;
+  padding: 14px 16px 14px 56px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.7),
+    inset 0 1px 3px rgba(255, 255, 255, 0.08),
+    0 0 0 1px rgba(0, 0, 0, 0.5);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: all;
+  cursor: default;
+  backdrop-filter: blur(8px);
+  min-height: 72px;
+}
+
+/* Unlocked Ability State */
+.ability-item.unlocked {
+  border-color: rgba(139, 101, 8, 0.8);
+}
+
+.ability-item.unlocked:hover {
+  border-color: rgba(184, 134, 11, 0.9);
+  box-shadow:
+    0 6px 18px rgba(139, 101, 8, 0.5),
+    inset 0 1px 4px rgba(184, 134, 11, 0.15),
+    0 0 0 1px rgba(139, 101, 8, 0.4),
+    0 0 25px rgba(184, 134, 11, 0.3);
+  transform: translateX(4px);
+}
+
+/* Locked Ability State */
+.ability-item.locked {
+  border-color: rgba(80, 80, 80, 0.5);
+  opacity: 0.7;
+  position: relative;
+}
+
+.ability-item.locked::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(128, 128, 128, 0.5);
+  border-radius: 10px;
+  pointer-events: none;
+  backdrop-filter: grayscale(100%);
+}
+
+.ability-item.locked:hover {
+  border-color: rgba(120, 120, 120, 0.6);
+  transform: translateX(2px);
+}
+
+/* Ability Number Badge */
+.ability-badge {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, rgba(139, 101, 8, 0.9), rgba(120, 85, 5, 0.85));
+  border: 2px solid rgba(100, 70, 0, 0.8);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 700;
+  color: #ffffff;
+  box-shadow:
+    0 3px 8px rgba(0, 0, 0, 0.6),
+    inset 0 1px 2px rgba(184, 134, 11, 0.2);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+.ability-item.unlocked .ability-badge {
+  background: linear-gradient(135deg, rgba(184, 134, 11, 0.9), rgba(139, 101, 8, 0.85));
+  border-color: rgba(100, 70, 0, 0.9);
+}
+
+.ability-item.locked .ability-badge {
+  background: linear-gradient(135deg, rgba(60, 60, 60, 0.8), rgba(40, 40, 40, 0.75));
+  border-color: rgba(100, 100, 100, 0.3);
+  color: #888888;
+  position: relative;
+  z-index: 1;
+}
+
+/* Ability Content */
+.ability-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  position: relative;
+  z-index: 1;
+}
+
+.ability-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1.3;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
+  letter-spacing: 0.3px;
+}
+
+.ability-description {
+  font-size: 12px;
+  font-weight: 400;
+  color: #cccccc;
+  line-height: 1.5;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.7);
+}
+
+/* Locked Ability Display */
+.ability-locked-text {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 0;
+  position: relative;
+  z-index: 1;
+}
+
+.locked-icon {
+  font-size: 20px;
+  opacity: 0.6;
+  filter: grayscale(0.5);
+}
+
+.locked-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #888888;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Ability Status Indicator */
+.ability-status {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  z-index: 1;
+}
+
+.ability-status.unlocked {
+  background: rgba(139, 101, 8, 0.3);
+  border: 2px solid rgba(184, 134, 11, 0.6);
+  color: #B8860B;
+}
+
+.ability-status.unlocked .status-icon {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.ability-status.locked {
+  background: rgba(80, 80, 80, 0.3);
+  border: 2px solid rgba(100, 100, 100, 0.4);
+  color: #888888;
+  font-size: 10px;
+}
+
+/* Unlock Instructions/Hint */
+.abilities-unlock-hint {
+  background: linear-gradient(135deg, rgba(40, 30, 0, 0.88), rgba(60, 50, 0, 0.85));
+  border: 2px solid rgba(184, 134, 11, 0.5);
+  border-radius: 10px;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.7),
+    inset 0 1px 3px rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  pointer-events: all;
+}
+
+.unlock-hint-icon {
+  font-size: 24px;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.8));
+}
+
+.unlock-hint-text {
+  font-size: 12px;
+  font-weight: 600;
+  color: #B8860B;
+  line-height: 1.4;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
+  letter-spacing: 0.3px;
+}
+
+/* Fade In Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Stagger Animation for Abilities */
+.ability-item:nth-child(1) { animation: fadeInAbility 0.5s ease-out 0.1s backwards; }
+.ability-item:nth-child(2) { animation: fadeInAbility 0.5s ease-out 0.2s backwards; }
+.ability-item:nth-child(3) { animation: fadeInAbility 0.5s ease-out 0.3s backwards; }
+.ability-item:nth-child(4) { animation: fadeInAbility 0.5s ease-out 0.4s backwards; }
+.ability-item:nth-child(5) { animation: fadeInAbility 0.5s ease-out 0.5s backwards; }
+.ability-item:nth-child(6) { animation: fadeInAbility 0.5s ease-out 0.6s backwards; }
+
+@keyframes fadeInAbility {
+  from {
+    opacity: 0;
+    transform: translateX(-20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+/* Unlock Animation (triggered when ability is unlocked) */
+@keyframes unlockPulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 4px 12px rgba(139, 101, 8, 0.3);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 8px 24px rgba(184, 134, 11, 0.8);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 4px 12px rgba(139, 101, 8, 0.3);
+  }
+}
+
+.ability-item.newly-unlocked {
+  animation: unlockPulse 0.6s ease-out;
+}
+
+/* Empty State */
+.dupe-abilities-tab:empty {
+  display: none;
+}
+
+/* Responsive Design - Tablet */
+@media (max-width: 1024px) {
+  .dupe-abilities-tab {
+    padding: 16px;
+    gap: 10px;
+  }
+
+  .abilities-header {
+    padding: 10px 14px;
+  }
+
+  .abilities-title {
+    font-size: 14px;
+  }
+
+  .abilities-unlock-count {
+    font-size: 12px;
+  }
+
+  .ability-item {
+    padding: 12px 14px 12px 52px;
+    min-height: 66px;
+  }
+
+  .ability-badge {
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+  }
+
+  .ability-name {
+    font-size: 13px;
+  }
+
+  .ability-description {
+    font-size: 11px;
+  }
+}
+
+/* Responsive Design - Mobile */
+@media (max-width: 768px) {
+  .dupe-abilities-tab {
+    padding: 12px;
+    gap: 8px;
+  }
+
+  .abilities-header {
+    padding: 8px 12px;
+  }
+
+  .abilities-title {
+    font-size: 13px;
+    letter-spacing: 1px;
+  }
+
+  .abilities-unlock-count {
+    font-size: 11px;
+  }
+
+  .ability-item {
+    padding: 10px 12px 10px 48px;
+    min-height: 60px;
+  }
+
+  .ability-badge {
+    width: 28px;
+    height: 28px;
+    font-size: 13px;
+    left: 10px;
+  }
+
+  .ability-name {
+    font-size: 12px;
+  }
+
+  .ability-description {
+    font-size: 10px;
+  }
+
+  .abilities-unlock-hint {
+    padding: 10px 12px;
+  }
+
+  .unlock-hint-icon {
+    font-size: 20px;
+  }
+
+  .unlock-hint-text {
+    font-size: 11px;
+  }
+}
+
+/* Responsive Design - Small Mobile */
+@media (max-width: 480px) {
+  .dupe-abilities-tab {
+    padding: 10px;
+  }
+
+  .abilities-title {
+    font-size: 12px;
+  }
+
+  .ability-item {
+    padding: 8px 10px 8px 44px;
+    min-height: 56px;
+  }
+
+  .ability-badge {
+    width: 26px;
+    height: 26px;
+    font-size: 12px;
+  }
+
+  .ability-name {
+    font-size: 11px;
+  }
+
+  .ability-description {
+    font-size: 9px;
+  }
+}
+
+/* Ensure proper positioning relative to art container */
+.char-modal-art {
+  position: relative;
+  overflow: visible;
+}
+
+/* Accessibility - Focus States */
+.ability-item:focus {
+  outline: 2px solid rgba(100, 150, 255, 0.8);
+  outline-offset: 2px;
+}
+
+/* Print Styles */
+@media print {
+  .dupe-abilities-tab {
+    display: none;
+  }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  .ability-item {
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.92), rgba(10, 10, 20, 0.88));
+  }
+
+  .abilities-header {
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.95), rgba(15, 15, 25, 0.92));
+  }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  .ability-item,
+  .dupe-abilities-tab,
+  .ability-badge,
+  .ability-status {
+    animation: none;
+    transition: none;
+  }
+
+  .ability-item:hover {
+    transform: none;
+  }
+}

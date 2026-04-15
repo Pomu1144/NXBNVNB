@@ -1,0 +1,151 @@
+/* ==========================================
+   DEV PANEL - Currency Management (Temporary)
+   ========================================== */
+
+.dev-panel {
+  position: fixed;
+  top: 80px;
+  right: 20px;
+  background: rgba(20, 20, 20, 0.95);
+  border: 2px solid #ff6b00;
+  border-radius: 12px;
+  padding: 20px;
+  z-index: 1000;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(255, 107, 0, 0.3);
+  min-width: 250px;
+}
+
+.dev-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #ff6b00;
+}
+
+.dev-panel-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #ff6b00;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.dev-panel-toggle {
+  background: none;
+  border: none;
+  color: #ff6b00;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 0;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+}
+
+.dev-panel-toggle:hover {
+  transform: rotate(90deg);
+}
+
+.dev-panel-content {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.dev-panel.collapsed .dev-panel-content {
+  display: none;
+}
+
+.dev-currency-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.dev-currency-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dev-currency-label img {
+  width: 20px;
+  height: 20px;
+}
+
+.dev-currency-buttons {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 5px;
+}
+
+.dev-add-btn {
+  background: linear-gradient(135deg, #ff6b00, #ff8c00);
+  border: none;
+  border-radius: 6px;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(255, 107, 0, 0.3);
+}
+
+.dev-add-btn:hover {
+  background: linear-gradient(135deg, #ff8c00, #ffa500);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 107, 0, 0.5);
+}
+
+.dev-add-btn:active {
+  transform: translateY(0);
+}
+
+.dev-divider {
+  height: 1px;
+  background: rgba(255, 107, 0, 0.3);
+  margin: 5px 0;
+}
+
+.dev-reset-btn {
+  background: linear-gradient(135deg, #dc3545, #c82333);
+  border: none;
+  border-radius: 6px;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(220, 53, 69, 0.3);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.dev-reset-btn:hover {
+  background: linear-gradient(135deg, #c82333, #bd2130);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(220, 53, 69, 0.5);
+}
+
+.dev-reset-btn:active {
+  transform: translateY(0);
+}
+
+.dev-info {
+  font-size: 11px;
+  color: #999;
+  text-align: center;
+  margin-top: 5px;
+  font-style: italic;
+}

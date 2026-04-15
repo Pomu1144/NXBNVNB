@@ -1,0 +1,179 @@
+.status-effects-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 8px;
+  padding: 6px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 6px;
+  min-height: 30px;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Individual Status Effect Badge */
+.status-effect {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 10px;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  cursor: help;
+  transition: all 0.2s ease;
+  animation: statusAppear 0.3s ease;
+}
+
+.status-effect:hover {
+  transform: scale(1.15);
+  z-index: 10;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+}
+
+@keyframes statusAppear {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Status Effect Types */
+.status-effect.buff {
+  background: linear-gradient(135deg, rgba(0, 200, 100, 0.8), rgba(0, 150, 80, 0.9));
+  border-color: rgba(0, 255, 100, 0.5);
+  box-shadow: 0 0 10px rgba(0, 200, 100, 0.4);
+}
+
+.status-effect.debuff {
+  background: linear-gradient(135deg, rgba(200, 0, 0, 0.8), rgba(150, 0, 0, 0.9));
+  border-color: rgba(255, 0, 0, 0.5);
+  box-shadow: 0 0 10px rgba(200, 0, 0, 0.4);
+}
+
+/* Status Icon */
+.status-icon {
+  font-size: 14px;
+  line-height: 1;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.8));
+}
+
+/* Status Duration Badge */
+.status-duration {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  width: 16px;
+  height: 16px;
+  background: rgba(0, 0, 0, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 8px;
+  font-weight: 900;
+  color: #ffdd00;
+}
+
+/* Status Tooltip */
+.status-tooltip {
+  position: absolute;
+  bottom: 120%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 8px 12px;
+  background: rgba(0, 0, 0, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 6px;
+  font-size: 11px;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  z-index: 100;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.8);
+}
+
+.status-effect:hover .status-tooltip {
+  opacity: 1;
+}
+
+.status-tooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-top-color: rgba(0, 0, 0, 0.95);
+}
+
+.status-tooltip-name {
+  font-weight: 700;
+  margin-bottom: 4px;
+  color: #ffdd00;
+}
+
+.status-tooltip-desc {
+  color: #ccc;
+  font-size: 10px;
+}
+
+/* Stack Counter */
+.status-stack {
+  position: absolute;
+  bottom: -6px;
+  right: -6px;
+  width: 18px;
+  height: 18px;
+  background: linear-gradient(135deg, #ff6600, #ff3300);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  font-weight: 900;
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+/* Pulsing Animation for Active Effects */
+.status-effect.active {
+  animation: statusPulse 2s ease-in-out infinite;
+}
+
+@keyframes statusPulse {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(255, 255, 100, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(255, 255, 100, 0.8);
+  }
+}
+
+/* Specific Status Colors */
+.status-effect[data-effect="stun"] { background: linear-gradient(135deg, #ffaa00, #ff8800); }
+.status-effect[data-effect="poison"] { background: linear-gradient(135deg, #aa00ff, #8800cc); }
+.status-effect[data-effect="burn"] { background: linear-gradient(135deg, #ff4400, #cc2200); }
+.status-effect[data-effect="paralysis"] { background: linear-gradient(135deg, #ffff00, #dddd00); }
+.status-effect[data-effect="genjutsu"] { background: linear-gradient(135deg, #ff00ff, #cc00cc); }
+.status-effect[data-effect="marked"] { background: linear-gradient(135deg, #ff0000, #cc0000); }
+.status-effect[data-effect="drowned"] { background: linear-gradient(135deg, #0088ff, #0066cc); }
+.status-effect[data-effect="shock"] { background: linear-gradient(135deg, #ffff44, #ffcc00); }
+
+/* Empty State */
+.status-effects-empty {
+  color: #666;
+  font-size: 9px;
+  font-style: italic;
+}

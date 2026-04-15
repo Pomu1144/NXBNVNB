@@ -1,0 +1,391 @@
+/* css/battle_character_system.css - Character cards, speed gauge, targeting */
+
+/* ===== Speed Gauge Container ===== */
+.speed-gauge-container {
+  position: fixed;
+  bottom: 130px;
+  left: 0;
+  right: 0;
+  height: 80px;
+  background: linear-gradient(180deg, rgba(10,10,15,0.95) 0%, rgba(15,15,20,0.9) 100%);
+  border-top: 2px solid rgba(217,179,98,0.3);
+  border-bottom: 2px solid rgba(217,179,98,0.3);
+  backdrop-filter: blur(8px);
+  z-index: 850;
+  padding: 10px 20px;
+}
+
+.speed-gauge-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #d9b362;
+  letter-spacing: 1.5px;
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.speed-gauge-track {
+  position: relative;
+  height: 50px;
+  background: rgba(0,0,0,0.5);
+  border: 2px solid rgba(217,179,98,0.4);
+  border-radius: 25px;
+  overflow: visible;
+}
+
+.speed-gauge-finish-line {
+  position: absolute;
+  right: 2%;
+  top: -5px;
+  bottom: -5px;
+  width: 4px;
+  background: linear-gradient(180deg,
+    transparent 0%,
+    #f39c12 20%,
+    #e74c3c 50%,
+    #f39c12 80%,
+    transparent 100%
+  );
+  box-shadow: 0 0 15px rgba(243,156,18,0.8);
+  animation: finishLinePulse 2s ease-in-out infinite;
+}
+
+@keyframes finishLinePulse {
+  0%, 100% { opacity: 0.6; transform: scaleX(1); }
+  50% { opacity: 1; transform: scaleX(1.5); }
+}
+
+#speed-gauge-markers {
+  position: relative;
+  height: 100%;
+}
+
+/* ===== Speed Markers ===== */
+.speed-marker {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 48px;
+  height: 48px;
+  transition: left 0.3s ease-out;
+  z-index: 10;
+}
+
+.speed-marker-portrait {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 3px solid rgba(255,255,255,0.3);
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.6);
+  background: rgba(0,0,0,0.4);
+}
+
+.speed-marker.player .speed-marker-portrait {
+  border-color: #2ecc71;
+  box-shadow: 0 0 12px rgba(46,204,113,0.6);
+}
+
+.speed-marker.enemy .speed-marker-portrait {
+  border-color: #e74c3c;
+  box-shadow: 0 0 12px rgba(231,76,60,0.6);
+}
+
+.speed-marker-portrait img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.speed-marker-gauge {
+  position: absolute;
+  bottom: -18px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 9px;
+  font-weight: 700;
+  color: #d9b362;
+  background: rgba(0,0,0,0.8);
+  padding: 2px 6px;
+  border-radius: 8px;
+  border: 1px solid rgba(217,179,98,0.4);
+  white-space: nowrap;
+}
+
+/* ===== Character Cards on Map ===== */
+.character-card {
+  position: absolute;
+  width: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  transition: transform 0.2s ease, filter 0.2s ease;
+  z-index: 100;
+}
+
+.character-card:hover {
+  transform: scale(1.1);
+  z-index: 150;
+}
+
+.character-card.draggable {
+  cursor: grab;
+}
+
+.character-card.dragging {
+  opacity: 0.6;
+  cursor: grabbing;
+}
+
+.character-card.player-card {
+  filter: drop-shadow(0 4px 8px rgba(46,204,113,0.5));
+}
+
+.character-card.enemy-card {
+  filter: drop-shadow(0 4px 8px rgba(231,76,60,0.5));
+}
+
+.card-portrait {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  border: 3px solid rgba(217,179,98,0.6);
+  overflow: hidden;
+  background: rgba(0,0,0,0.4);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+}
+
+.player-card .card-portrait {
+  border-color: #2ecc71;
+}
+
+.enemy-card .card-portrait {
+  border-color: #e74c3c;
+}
+
+.card-portrait img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card-info {
+  width: 100%;
+  background: rgba(0,0,0,0.85);
+  border: 1px solid rgba(217,179,98,0.3);
+  border-radius: 8px;
+  padding: 4px 6px;
+}
+
+.card-name {
+  font-size: 10px;
+  font-weight: 700;
+  color: #fff;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 4px;
+}
+
+.card-hp-bar,
+.card-chakra-bar {
+  height: 4px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.card-hp-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #2ecc71 0%, #27ae60 100%);
+  transition: width 0.3s ease;
+}
+
+.card-chakra-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #3498db 0%, #2980b9 100%);
+  transition: width 0.3s ease;
+}
+
+.card-speed-indicator {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  width: 24px;
+  height: 24px;
+  background: linear-gradient(135deg, #d9b362 0%, #a7822c 100%);
+  border: 2px solid #0a0a0f;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 700;
+  color: #111;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.6);
+}
+
+/* ===== Targeting Overlay ===== */
+.targeting-overlay {
+  position: absolute;
+  pointer-events: none;
+  z-index: 200;
+  transform: translate(-50%, -50%);
+  transition: left 0.05s linear, top 0.05s linear;
+}
+
+.targeting-shape {
+  border: 3px solid #fff;
+  background: rgba(255,255,255,0.15);
+  transition: all 0.2s ease;
+  box-shadow: 0 0 20px currentColor;
+}
+
+/* Glow effects for different ability types */
+.targeting-shape.glow-blue {
+  border-color: #3498db;
+  background: rgba(52,152,219,0.2);
+  box-shadow:
+    0 0 20px rgba(52,152,219,0.8),
+    0 0 40px rgba(52,152,219,0.4),
+    inset 0 0 20px rgba(52,152,219,0.3);
+  animation: pulseBlue 1.5s ease-in-out infinite;
+}
+
+.targeting-shape.glow-red {
+  border-color: #e74c3c;
+  background: rgba(231,76,60,0.25);
+  box-shadow:
+    0 0 25px rgba(231,76,60,0.9),
+    0 0 50px rgba(231,76,60,0.5),
+    inset 0 0 25px rgba(231,76,60,0.4);
+  animation: pulseRed 1s ease-in-out infinite;
+}
+
+@keyframes pulseBlue {
+  0%, 100% {
+    box-shadow:
+      0 0 20px rgba(52,152,219,0.6),
+      0 0 40px rgba(52,152,219,0.3),
+      inset 0 0 20px rgba(52,152,219,0.2);
+  }
+  50% {
+    box-shadow:
+      0 0 30px rgba(52,152,219,1),
+      0 0 60px rgba(52,152,219,0.5),
+      inset 0 0 30px rgba(52,152,219,0.4);
+  }
+}
+
+@keyframes pulseRed {
+  0%, 100% {
+    box-shadow:
+      0 0 25px rgba(231,76,60,0.7),
+      0 0 50px rgba(231,76,60,0.4),
+      inset 0 0 25px rgba(231,76,60,0.3);
+  }
+  50% {
+    box-shadow:
+      0 0 40px rgba(231,76,60,1),
+      0 0 80px rgba(231,76,60,0.6),
+      inset 0 0 40px rgba(231,76,60,0.5);
+  }
+}
+
+/* AOE pulse animation */
+.targeting-shape.aoe-pulse {
+  animation: aoePulse 2s ease-in-out infinite;
+}
+
+@keyframes aoePulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+}
+
+/* Shape-specific styles */
+.targeting-shape.circle {
+  border-radius: 50%;
+}
+
+.targeting-shape.square {
+  border-radius: 8px;
+}
+
+.targeting-shape.line {
+  border-radius: 30px;
+}
+
+.targeting-shape.cone {
+  background: transparent !important;
+  border: none !important;
+}
+
+/* Targeting crosshair */
+.targeting-overlay::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 20px;
+  height: 20px;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  box-shadow: 0 0 10px rgba(255,255,255,0.8);
+  pointer-events: none;
+}
+
+.targeting-overlay::after {
+  content: '+';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 24px;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 0 0 10px rgba(255,255,255,0.8);
+  pointer-events: none;
+}
+
+/* ===== Responsive Adjustments ===== */
+@media (max-width: 768px) {
+  .speed-gauge-container {
+    bottom: 100px;
+    height: 60px;
+  }
+
+  .speed-marker {
+    width: 36px;
+    height: 36px;
+  }
+
+  .speed-marker-portrait {
+    width: 36px;
+    height: 36px;
+  }
+
+  .character-card {
+    width: 60px;
+  }
+
+  .card-portrait {
+    width: 50px;
+    height: 50px;
+  }
+}

@@ -1,0 +1,152 @@
+/* ==========================================
+   css/background.css  (Final — Crisp & Responsive)
+   ========================================== */
+/* --- Base Background Style --- */
+#full-bg {
+  position: absolute; /* Changed from fixed to work with game-canvas */
+  inset: 0;
+  z-index: -1;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transition: opacity 0.5s ease-in-out;
+  opacity: 1;
+  image-rendering: optimizeSpeed;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+  image-rendering: pixelated;
+  -ms-interpolation-mode: nearest-neighbor;
+}
+
+/* --- INDIVIDUAL BACKGROUND IMAGE CLASSES --- */
+.bg-1  { background-image: url("../assets/Main Background/Background.png"); }
+.bg-2  { background-image: url("../assets/Main Background/Background2.gif"); }
+.bg-3  { background-image: url("../assets/Main Background/Background3.gif"); }
+.bg-4  { background-image: url("../assets/Main Background/Background4.gif"); }
+.bg-5  { background-image: url("../assets/Main Background/Background5.gif"); }
+.bg-6  { background-image: url("../assets/Main Background/Background6.gif"); }
+.bg-7  { background-image: url("../assets/Main Background/Background7.gif"); }
+.bg-8  { background-image: url("../assets/Main Background/Background8.gif"); }
+.bg-9  { background-image: url("../assets/Main Background/Background9.gif"); }
+.bg-10 { background-image: url("../assets/Main Background/Background10.gif"); }
+
+/* --- PAGE-SPECIFIC BACKGROUNDS --- */
+.page-missions #full-bg {
+  background-image: url("../assets/Main Background/Background.gif");
+  filter: blur(5px) brightness(0.7);
+  transform: scale(1.05);
+}
+
+.page-summon #full-bg {
+  background-image: url("../assets/Main Background/Background.gif");
+}
+
+.page-characters #char-bg {
+  background: url("../assets/Main Background/character_background.png") center top / 110% auto no-repeat;
+  filter: brightness(0.95);
+}
+
+.page-fusion #fusion-bg {
+  background: url("../assets/Main Background/fusion_background1.png") center top / 110% auto no-repeat;
+  filter: brightness(0.95);
+}
+
+.page-teams #team-bg {
+  position: fixed;
+  inset: 0;
+  background: url("../assets/teams/teamsbackground.png") center top / 110% auto no-repeat;
+  filter: brightness(0.95);
+  z-index: -1;
+}
+
+/* ==========================================
+   HUD & Button Layout (PERFECT CIRCLES)
+   ========================================== */
+/* --- Bottom Bar --- */
+.bottom-bar {
+  position: absolute; /* Changed from fixed to work with game-canvas */
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 80px;
+  min-height: 70px; /* Prevent compression */
+  max-height: 80px; /* Prevent overflow */
+  background: rgba(30, 30, 40, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 20px;
+  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(8px);
+  z-index: 10;
+  box-sizing: border-box;
+  border: none !important;
+  outline: none !important;
+}
+
+.bottom-bar-content {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  justify-content: center;
+  border: none !important;
+  flex-shrink: 0;
+}
+
+.hud-button {
+  width: 60px;
+  height: 60px;
+  min-width: 60px;
+  min-height: 60px;
+  max-width: 60px;
+  max-height: 60px;
+  border: none;
+  background: rgba(50, 50, 60, 0.7);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  flex-shrink: 0;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  position: relative;
+}
+
+.hud-button:hover {
+  transform: scale(1.1);
+  background: rgba(70, 70, 85, 0.9);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
+}
+
+.hud-button:active {
+  transform: scale(0.95);
+}
+
+.hud-button img {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+  display: block;
+  pointer-events: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Active state for current page */
+.hud-button.active {
+  background: rgba(255, 165, 0, 0.8);
+  box-shadow: 0 0 15px rgba(255, 165, 0, 0.6), 0 4px 8px rgba(0, 0, 0, 0.3);
+  border: 2px solid rgba(255, 200, 0, 0.9);
+}
+
+.hud-button.active:hover {
+  background: rgba(255, 180, 0, 0.9);
+  box-shadow: 0 0 20px rgba(255, 165, 0, 0.8), 0 6px 12px rgba(0, 0, 0, 0.5);
+}

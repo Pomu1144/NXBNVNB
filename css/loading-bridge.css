@@ -1,0 +1,42 @@
+/* Loading bridge shown when transitioning from login to the village hub */
+.loading-bridge {
+  position: fixed;
+  inset: 0;
+  z-index: 250;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 16px;
+  background: radial-gradient(circle at 30% 20%, rgba(255, 210, 138, 0.12), transparent 40%),
+    radial-gradient(circle at 70% 70%, rgba(120, 190, 255, 0.1), transparent 42%),
+    linear-gradient(180deg, rgba(10, 14, 22, 0.96), rgba(6, 8, 14, 0.98));
+  color: #f5f7ff;
+  backdrop-filter: blur(8px);
+  transition: opacity 0.45s ease;
+}
+
+.loading-bridge.is-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.loading-bridge__spinner {
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  border: 6px solid rgba(255, 255, 255, 0.12);
+  border-top-color: #ffd28a;
+  animation: loading-bridge-spin 1s linear infinite;
+  box-shadow: 0 0 0 10px rgba(255, 210, 138, 0.08);
+}
+
+.loading-bridge__text {
+  font-size: 18px;
+  letter-spacing: 0.5px;
+  text-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+}
+
+@keyframes loading-bridge-spin {
+  to { transform: rotate(360deg); }
+}

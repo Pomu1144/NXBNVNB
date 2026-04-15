@@ -1,0 +1,210 @@
+/* ===================================================
+   ATTACK NAME DISPLAY SYSTEM
+   Storm 4 / Anime-Style Attack Name Splash
+   =================================================== */
+
+/* === Base Attack Name Container === */
+.attack-name-display {
+  position: fixed;
+  top: 8%;
+  left: 50%;
+  transform: translate(-50%, 0) scale(0.7);
+  z-index: 9999;
+
+  /* Typography */
+  font-family: "Cinzel", serif;
+  font-size: 48px;
+  font-weight: 700;
+  font-style: italic;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  white-space: nowrap;
+
+  /* Initial state */
+  opacity: 0;
+  pointer-events: none;
+
+  /* Ensure no collisions */
+  max-width: 90vw;
+  overflow: visible;
+}
+
+/* === ULTIMATE JUTSU (DARK Red with Thin Gold Stroke) === */
+.attack-name-ultimate {
+  color: #5C0000; /* Much darker red */
+  text-shadow:
+    /* Thin gold stroke (2px instead of 4px) */
+    -2px -2px 0 #D4AF37,
+    2px -2px 0 #D4AF37,
+    -2px 2px 0 #D4AF37,
+    2px 2px 0 #D4AF37,
+    /* Red inner glow */
+    0 0 15px rgba(200, 0, 0, 0.8),
+    0 0 30px rgba(200, 0, 0, 0.6),
+    0 0 45px rgba(200, 0, 0, 0.4);
+}
+
+/* === SECRET TECHNIQUE (DARK DARK Gold with Thin White Lines) === */
+.attack-name-secret {
+  color: #8B7500; /* Dark dark gold */
+  text-shadow:
+    /* Thin white lines (2px) */
+    -2px -2px 0 #FFFFFF,
+    2px -2px 0 #FFFFFF,
+    -2px 2px 0 #FFFFFF,
+    2px 2px 0 #FFFFFF,
+    /* Gold sparkle glow */
+    0 0 20px rgba(212, 175, 55, 1),
+    0 0 40px rgba(212, 175, 55, 0.8),
+    0 0 60px rgba(212, 175, 55, 0.6);
+}
+
+/* === REGULAR JUTSU (Blue with Light Blue Stroke) === */
+.attack-name-jutsu {
+  color: #4169E1; /* Royal blue */
+  text-shadow:
+    /* Light blue stroke */
+    -3px -3px 0 #87CEEB,
+    3px -3px 0 #87CEEB,
+    -3px 3px 0 #87CEEB,
+    3px 3px 0 #87CEEB,
+    -3px 0 0 #87CEEB,
+    3px 0 0 #87CEEB,
+    0 -3px 0 #87CEEB,
+    0 3px 0 #87CEEB,
+    /* Blue flame glow */
+    0 0 15px rgba(65, 105, 225, 0.9),
+    0 0 30px rgba(65, 105, 225, 0.7),
+    0 0 45px rgba(100, 150, 255, 0.5);
+}
+
+/* === NORMAL ATTACK (White with Black Outline) === */
+.attack-name-normal {
+  color: #FFFFFF;
+  font-size: 32px; /* Smaller */
+  text-shadow:
+    /* Black outline */
+    -2px -2px 0 #000000,
+    2px -2px 0 #000000,
+    -2px 2px 0 #000000,
+    2px 2px 0 #000000,
+    -2px 0 0 #000000,
+    2px 0 0 #000000,
+    0 -2px 0 #000000,
+    0 2px 0 #000000;
+}
+
+/* === ANIMATION PHASES === */
+
+/* Phase 1: Scale Up (0.25s) */
+.attack-name-display.phase-scale {
+  animation: attackNameScaleUp 0.25s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+}
+
+@keyframes attackNameScaleUp {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 0) scale(0.7);
+  }
+  60% {
+    opacity: 1;
+    transform: translate(-50%, 0) scale(1.1);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, 0) scale(1);
+  }
+}
+
+/* Phase 2: Glow Pulse (0.15s) */
+.attack-name-display.phase-glow {
+  animation: attackNameGlow 0.15s ease-out;
+}
+
+@keyframes attackNameGlow {
+  0% {
+    filter: brightness(1);
+  }
+  50% {
+    filter: brightness(1.4) drop-shadow(0 0 20px currentColor);
+  }
+  100% {
+    filter: brightness(1);
+  }
+}
+
+/* Phase 3: Hold (automatic - no animation needed) */
+
+/* Phase 4: Fade Out with Upward Drift (0.6s) */
+.attack-name-display.phase-fadeout {
+  animation: attackNameFadeOut 0.6s ease-in forwards;
+}
+
+@keyframes attackNameFadeOut {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, 0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -30px) scale(0.95);
+  }
+}
+
+/* === Special Effects === */
+
+/* Slight shake for Ultimate names */
+.attack-name-ultimate.phase-scale {
+  animation:
+    attackNameScaleUp 0.25s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards,
+    attackNameShake 0.15s 0.25s ease-in-out;
+}
+
+@keyframes attackNameShake {
+  0%, 100% { transform: translate(-50%, 0) scale(1); }
+  25% { transform: translate(-48%, 0) scale(1); }
+  75% { transform: translate(-52%, 0) scale(1); }
+}
+
+/* Particle burst effect (optional - can be added later) */
+.attack-name-display.phase-scale::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 200%;
+  height: 200%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, transparent 70%);
+  opacity: 0;
+  pointer-events: none;
+  z-index: -1;
+  animation: particleBurst 0.4s ease-out;
+}
+
+@keyframes particleBurst {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.5);
+  }
+  50% {
+    opacity: 0.6;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1.5);
+  }
+}
+
+/* === Responsive Design === */
+@media (max-width: 768px) {
+  .attack-name-display {
+    font-size: 32px;
+    top: 10%;
+  }
+
+  .attack-name-normal {
+    font-size: 24px;
+  }
+}

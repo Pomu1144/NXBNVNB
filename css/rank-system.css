@@ -1,0 +1,298 @@
+/* ===================================================
+   NINJA RANK EXP SYSTEM - Progress Bar & Animations
+   =================================================== */
+
+/* === Enhanced Ninja Rank Container === */
+.ninja-rank-container {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 180px;
+}
+
+.ninja-rank-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ninja-rank-label {
+  font-size: 14px;
+  color: #b8985f;
+  font-weight: 600;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
+  letter-spacing: 0.5px;
+}
+
+.ninja-rank-value {
+  font-size: 18px;
+  color: #d4af37;
+  font-weight: 700;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9);
+  min-width: 40px;
+  text-align: center;
+  background: rgba(212, 175, 55, 0.1);
+  padding: 4px 12px;
+  border-radius: 6px;
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+/* Max Rank Styling */
+.ninja-rank-value.max-rank {
+  color: #ffd700;
+  border-color: rgba(255, 215, 0, 0.6);
+  background: rgba(255, 215, 0, 0.15);
+  box-shadow: 0 0 12px rgba(255, 215, 0, 0.3);
+}
+
+.ninja-rank-value.max-rank::after {
+  content: "MAX";
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  font-size: 8px;
+  background: #ffd700;
+  color: #000;
+  padding: 2px 4px;
+  border-radius: 3px;
+  font-weight: 900;
+}
+
+/* === EXP Progress Bar === */
+.rank-progress-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.rank-progress-bar {
+  flex: 1;
+  height: 8px;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 4px;
+  border: 1px solid rgba(139, 115, 85, 0.4);
+  overflow: hidden;
+  position: relative;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.rank-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #b8985f, #d4af37);
+  border-radius: 4px;
+  transition: width 0.5s ease, background 0.3s ease;
+  position: relative;
+  box-shadow: 0 0 8px rgba(212, 175, 55, 0.5);
+}
+
+/* Shimmer effect on progress bar */
+.rank-progress-fill::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+
+/* Near rank-up (80%+) glow effect */
+.rank-progress-fill.near-rankup {
+  background: linear-gradient(90deg, #d4af37, #ffd700);
+  box-shadow: 0 0 12px rgba(255, 215, 0, 0.8);
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    box-shadow: 0 0 12px rgba(255, 215, 0, 0.8);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(255, 215, 0, 1);
+  }
+}
+
+/* Max rank progress bar */
+.rank-progress-fill.max-rank {
+  background: linear-gradient(90deg, #ffd700, #ffed4e);
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.9);
+}
+
+.rank-progress-text {
+  font-size: 11px;
+  color: #b8985f;
+  white-space: nowrap;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
+  min-width: 80px;
+  text-align: right;
+}
+
+/* === Rank Up Animation === */
+@keyframes rankUp {
+  0%, 100% {
+    transform: scale(1);
+  }
+  25% {
+    transform: scale(1.3) rotate(-5deg);
+  }
+  50% {
+    transform: scale(1.3) rotate(5deg);
+  }
+  75% {
+    transform: scale(1.3) rotate(-5deg);
+  }
+}
+
+@keyframes glowPulse {
+  0%, 100% {
+    box-shadow: 0 0 12px rgba(255, 215, 0, 0.6);
+  }
+  50% {
+    box-shadow: 0 0 24px rgba(255, 215, 0, 1);
+  }
+}
+
+.ninja-rank-value.rank-up-animation {
+  animation: rankUp 0.6s ease, glowPulse 0.6s ease;
+  color: #ffd700 !important;
+  border-color: rgba(255, 215, 0, 0.9) !important;
+}
+
+/* === Rank Up Notification === */
+.rank-up-notification {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  z-index: 9999;
+  opacity: 0;
+  transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  pointer-events: none;
+}
+
+.rank-up-notification.show {
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 1;
+}
+
+.rank-up-content {
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.95), rgba(160, 127, 80, 0.95));
+  padding: 30px 50px;
+  border-radius: 16px;
+  border: 3px solid #ffd700;
+  box-shadow:
+    0 0 30px rgba(255, 215, 0, 0.8),
+    0 10px 40px rgba(0, 0, 0, 0.8);
+  text-align: center;
+}
+
+.rank-up-title {
+  font-size: 32px;
+  font-weight: 900;
+  color: #fff;
+  text-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.9),
+    0 0 20px rgba(255, 215, 0, 0.8);
+  margin-bottom: 12px;
+  font-family: "Cinzel", serif;
+  letter-spacing: 2px;
+}
+
+.rank-up-rank {
+  font-size: 24px;
+  font-weight: 700;
+  color: #ffd700;
+  text-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.9),
+    0 0 15px rgba(255, 255, 255, 0.5);
+  font-family: "Cinzel", serif;
+}
+
+/* === EXP Gain Indicator === */
+.exp-gain-indicator {
+  position: fixed;
+  font-size: 18px;
+  font-weight: 700;
+  color: #4CAF50;
+  text-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.9),
+    0 0 10px rgba(76, 175, 80, 0.8);
+  pointer-events: none;
+  z-index: 1001;
+  animation: expFloat 1s ease-out forwards;
+}
+
+@keyframes expFloat {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+}
+
+/* === Responsive Design === */
+@media (max-width: 768px) {
+  .ninja-rank-container {
+    min-width: 150px;
+  }
+
+  .ninja-rank-label {
+    font-size: 12px;
+  }
+
+  .ninja-rank-value {
+    font-size: 16px;
+    padding: 3px 10px;
+  }
+
+  .rank-progress-bar {
+    height: 6px;
+  }
+
+  .rank-progress-text {
+    font-size: 10px;
+    min-width: 70px;
+  }
+
+  .rank-up-title {
+    font-size: 24px;
+  }
+
+  .rank-up-rank {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .ninja-rank-container {
+    min-width: 120px;
+  }
+
+  .rank-progress-container {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .rank-progress-text {
+    font-size: 9px;
+    min-width: auto;
+  }
+}

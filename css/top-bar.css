@@ -1,0 +1,327 @@
+/* ===================================================
+   TOP BAR OVERLAY - Ninja Rank & Currency HUD
+   =================================================== */
+
+/* === Body Padding to Prevent Cutoff === */
+body {
+  padding-top: 70px; /* Top bar height (60px) + spacing (10px) */
+  box-sizing: border-box;
+}
+
+/* === Top Bar Container === */
+.top-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  background: linear-gradient(180deg, rgba(10, 10, 15, 0.95), rgba(10, 10, 15, 0.85));
+  border-bottom: 2px solid rgba(139, 115, 85, 0.6);
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding: 0 20px;
+  z-index: 1000;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(8px);
+  font-family: "Cinzel", serif;
+}
+
+/* === Left Section - Ninja Rank === */
+.ninja-rank-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
+}
+
+.ninja-rank-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ninja-rank-label {
+  font-size: 14px;
+  color: #b8985f;
+  font-weight: 600;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
+  letter-spacing: 0.5px;
+}
+
+.ninja-rank-value {
+  font-size: 18px;
+  color: #8b6914;
+  font-weight: 700;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9);
+  min-width: 40px;
+  text-align: center;
+  background: rgba(212, 175, 55, 0.1);
+  padding: 4px 12px;
+  border-radius: 6px;
+  border: 1px solid rgba(212, 175, 55, 0.3);
+}
+
+/* === Level Progress Bar === */
+.level-progress-bar-container {
+  width: 150px;
+  min-width: 150px;
+}
+
+.level-progress-bar {
+  width: 100%;
+  height: 12px;
+  background: linear-gradient(180deg,
+    #d4af37 0%,
+    #f0d670 20%,
+    #d4af37 40%,
+    #b8935f 60%,
+    #8b7355 80%,
+    #6b5a42 100%
+  );
+  border-radius: 6px;
+  border: 2px solid rgba(139, 115, 85, 0.8);
+  box-shadow:
+    inset 0 2px 4px rgba(0, 0, 0, 0.4),
+    inset 0 -2px 4px rgba(255, 255, 255, 0.2),
+    0 2px 6px rgba(0, 0, 0, 0.6);
+  overflow: hidden;
+  position: relative;
+}
+
+.level-progress-bar::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 40%;
+  background: linear-gradient(180deg,
+    rgba(255, 255, 255, 0.3) 0%,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent 100%
+  );
+  border-radius: 4px 4px 0 0;
+}
+
+.level-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg,
+    #cc4400 0%,
+    #e65500 25%,
+    #cc4400 50%,
+    #b33800 75%,
+    #992d00 100%
+  );
+  border-radius: 4px;
+  transition: width 0.4s ease;
+  box-shadow:
+    inset 0 1px 2px rgba(255, 255, 255, 0.3),
+    0 0 8px rgba(204, 68, 0, 0.6);
+  position: relative;
+  width: 65%;
+}
+
+.level-progress-fill::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background: linear-gradient(180deg,
+    rgba(255, 255, 255, 0.4) 0%,
+    transparent 100%
+  );
+  border-radius: 4px 4px 0 0;
+}
+
+/* === Center Section - Username Display === */
+.username-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  min-width: 221px;
+  max-width: 340px;
+}
+
+.username-holder {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 28px 27px;
+  min-width: 204px;
+}
+
+/* Name Holder Background PNG */
+.username-holder::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("../assets/ui/name_holder.png");
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.9;
+  z-index: 1;
+  pointer-events: none;
+  border-radius: 20px;
+}
+
+.username-text {
+  position: relative;
+  z-index: 2;
+  font-size: 18px;
+  font-weight: 700;
+  color: #000000;
+  text-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.9),
+    0 0 10px rgba(212, 175, 55, 0.3);
+  letter-spacing: 1px;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 255px;
+  transition: all 0.3s ease;
+}
+
+.username-holder:hover .username-text {
+  color: #d4af37;
+  text-shadow:
+    0 2px 6px rgba(0, 0, 0, 0.9),
+    0 0 15px rgba(212, 175, 55, 0.6);
+  transform: scale(1.05);
+}
+
+/* === Right Section - Currency HUD === */
+.currency-hud {
+  justify-self: end;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  margin-right: 20px; /* Add space from edge */
+  padding-right: 10px; /* Additional padding to prevent cutoff */
+}
+
+.currency-item {
+  display: flex;
+  align-items: center;
+  gap: 12px; /* Increased gap between icon and amount */
+  background: rgba(20, 20, 30, 0.8);
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 1px solid rgba(139, 115, 85, 0.4);
+  transition: all 0.2s ease;
+}
+
+.currency-item:hover {
+  background: rgba(30, 30, 40, 0.9);
+  border-color: rgba(212, 175, 55, 0.6);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+}
+
+.currency-icon {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.7));
+}
+
+.currency-amount {
+  font-size: 16px;
+  color: #ffffff; /* Changed to pure white */
+  font-weight: 600;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
+  min-width: 50px;
+  text-align: right;
+  letter-spacing: 0.3px;
+}
+
+/* === Currency Specific Styles - Removed color overrides for white text === */
+
+/* === Animation for Currency Update === */
+@keyframes currencyUpdate {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); color: #d4af37; }
+  100% { transform: scale(1); }
+}
+
+.currency-amount.updated {
+  animation: currencyUpdate 0.3s ease;
+}
+
+/* === Responsive Design === */
+@media (max-width: 768px) {
+  body {
+    padding-top: 60px; /* Reduced padding for tablet */
+  }
+
+  .top-bar {
+    height: 50px;
+    padding: 0 12px;
+  }
+
+  .ninja-rank-label {
+    font-size: 12px;
+  }
+
+  .ninja-rank-value {
+    font-size: 16px;
+    padding: 3px 10px;
+  }
+
+  .currency-hud {
+    gap: 12px;
+  }
+
+  .currency-item {
+    padding: 4px 10px;
+  }
+
+  .currency-icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  .currency-amount {
+    font-size: 14px;
+    min-width: 40px;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    padding-top: 100px; /* More padding for collapsed mobile view */
+  }
+
+  .top-bar {
+    flex-direction: column;
+    height: auto;
+    padding: 8px 12px;
+    gap: 8px;
+  }
+
+  .currency-hud {
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .currency-item {
+    padding: 3px 8px;
+  }
+
+  .currency-icon {
+    width: 18px;
+    height: 18px;
+  }
+
+  .currency-amount {
+    font-size: 12px;
+    min-width: 35px;
+  }
+}

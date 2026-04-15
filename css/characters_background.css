@@ -1,0 +1,40 @@
+/* CHARACTER PAGE BACKGROUND (applies to body, not a div) */
+
+html, body {
+  height: 100%;
+}
+
+body.page-characters {
+  position: relative;
+  background-image: url("../assets/Main Background/Characters Background/2.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  filter: brightness(0.95);
+}
+
+/* Optional overlay for contrast */
+body.page-characters::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.25);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Make sure content sits above overlay */
+.char-content,
+.char-grid,
+.back-button {
+  position: relative;
+  z-index: 1;
+}
+
+/* Modal always on top */
+#char-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+}

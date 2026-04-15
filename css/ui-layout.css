@@ -1,0 +1,553 @@
+/* ==========================================
+   UI Layout - Banner Panel & Bottom Icons
+   ========================================== */
+
+/* ==========================================
+   ANNOUNCEMENT SLIDESHOW (Top Right)
+   ========================================== */
+
+.announcement-slideshow {
+  position: fixed;
+  right: 50px;
+  top: 90px;
+  z-index: 50;
+  width: 298px;
+  height: 120px;
+  overflow: visible;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.7);
+  border: 2px solid rgba(255, 165, 0, 0.4);
+  background: rgba(20, 20, 30, 0.95);
+  backdrop-filter: blur(8px);
+  font-family: "Cinzel", serif;
+}
+
+.announcement-track {
+  display: flex;
+  height: 100%;
+  overflow: hidden;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.announcement-slide {
+  min-width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.announcement-slide h3 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #ff6b00;
+  margin: 0 0 8px 0;
+  text-align: center;
+}
+
+.announcement-slide p {
+  font-size: 14px;
+  color: #ddd;
+  margin: 0;
+  text-align: center;
+  line-height: 1.5;
+}
+
+.announcement-nav-dots {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  z-index: 10;
+}
+
+.announcement-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.announcement-dot:hover {
+  background: rgba(255, 255, 255, 0.5);
+  transform: scale(1.2);
+}
+
+.announcement-dot.active {
+  background: #ff6b00;
+  border-color: #ff6b00;
+  box-shadow: 0 0 8px rgba(255, 107, 0, 0.8);
+  transform: scale(1.2);
+}
+
+/* ==========================================
+   RIGHT BANNER PANEL (5 Banner Buttons)
+   ========================================== */
+
+.right-banner-panel {
+  position: absolute; /* Changed from fixed - positioned relative to game-canvas */
+  right: 2%; /* Use percentage to prevent overflow on small screens */
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 50;
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Two equal columns */
+  grid-auto-rows: minmax(70px, 9vh); /* Flexible height with minimum, prevents compression */
+  gap: 10px; /* Reduced gap for better fit */
+  pointer-events: auto;
+  width: min(280px, 23vw); /* Reduced width to prevent clash */
+  max-width: 280px; /* Hard cap to prevent overflow */
+  max-height: 75vh; /* Prevent overflow on short screens */
+  overflow-y: auto; /* Enable scrolling if content doesn't fit */
+  overflow-x: hidden;
+  padding: 8px;
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+}
+
+.banner-button {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  min-height: 70px; /* Reduced to fit better */
+  max-height: 90px; /* Prevent buttons from getting too large */
+  aspect-ratio: 3 / 1; /* Maintain button proportions */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 165, 0, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Missions banner spans both columns (full width) */
+.banner-button.missions {
+  grid-column: 1 / 3; /* Span both columns */
+  min-height: 70px; /* Reduced to fit better */
+  max-height: 90px; /* Prevent overflow */
+  aspect-ratio: 6 / 1; /* Wider aspect ratio for full-width button */
+}
+
+/* Explicit grid positioning for 2×2 layout below Missions */
+.banner-button.characters {
+  grid-column: 1; /* Left column */
+  grid-row: 2; /* Second row */
+}
+
+.banner-button.summon {
+  grid-column: 2; /* Right column */
+  grid-row: 2; /* Second row */
+}
+
+.banner-button.fusion {
+  grid-column: 1; /* Left column */
+  grid-row: 3; /* Third row */
+}
+
+.banner-button.shop {
+  grid-column: 2; /* Right column */
+  grid-row: 3; /* Third row */
+}
+
+.banner-button.arena {
+  grid-column: 1 / 3; /* Span both columns */
+  grid-row: 4; /* Fourth row */
+  min-height: 70px;
+  max-height: 90px;
+  aspect-ratio: 6 / 1; /* Wider aspect ratio for full-width button */
+}
+
+/* Hover effect */
+.banner-button:hover {
+  transform: translateX(-5px) scale(1.02); /* Reduced 55%: -10px × 0.45 = -5px */
+  box-shadow: 0 4px 14px rgba(255, 165, 0, 0.5); /* Reduced 55%: 8px → 4px, 30px → 14px */
+  border-color: rgba(255, 165, 0, 0.8);
+}
+
+.banner-button:active {
+  transform: translateX(-2px) scale(0.98); /* Reduced 55%: -5px × 0.45 = -2px */
+}
+
+/* Glow effect on hover */
+.banner-button::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255, 165, 0, 0.1), transparent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.banner-button:hover::before {
+  opacity: 1;
+}
+
+/* Banner background images with dark metallic gold fallbacks */
+.banner-button.missions {
+  background:
+    url('../assets/banners/missions_banner.png') center/cover no-repeat,
+    linear-gradient(135deg, rgba(61, 48, 32, 0.85), rgba(90, 74, 47, 0.9));
+}
+
+.banner-button.characters {
+  background:
+    url('../assets/banners/characters_banner.png') center/cover no-repeat,
+    linear-gradient(135deg, rgba(61, 48, 32, 0.85), rgba(90, 74, 47, 0.9));
+}
+
+.banner-button.summon {
+  background:
+    url('../assets/banners/summon_banner.png') center/cover no-repeat,
+    linear-gradient(135deg, rgba(61, 48, 32, 0.85), rgba(90, 74, 47, 0.9));
+}
+
+.banner-button.fusion {
+  background:
+    url('../assets/banners/fusion_banner.png') center/cover no-repeat,
+    linear-gradient(135deg, rgba(61, 48, 32, 0.85), rgba(90, 74, 47, 0.9));
+}
+
+.banner-button.shop {
+  background:
+    url('../assets/banners/shop_banner.png') center/cover no-repeat,
+    linear-gradient(135deg, rgba(61, 48, 32, 0.85), rgba(90, 74, 47, 0.9));
+}
+
+.banner-button.arena {
+  background:
+    url('../assets/ui/arena_banner_btn.png') center/cover no-repeat,
+    linear-gradient(135deg, rgba(61, 48, 32, 0.85), rgba(90, 74, 47, 0.9));
+}
+
+/* Hide banner text overlays (PNGs already have text) */
+.banner-button-text {
+  display: none;
+}
+
+/* ==========================================
+   BOTTOM ICON BAR (10 Icon Buttons)
+   ========================================== */
+
+.bottom-icon-bar {
+  position: absolute; /* Changed from fixed - positioned relative to game-canvas */
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 80px; /* Reduced from 90px to prevent cutoff */
+  min-height: 70px; /* Prevent compression */
+  max-height: 80px; /* Prevent overflow */
+  background: rgba(10, 10, 15, 0.95);
+  border-top: 2px solid rgba(139, 115, 85, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: clamp(10px, 2vw, 28px); /* Responsive gap that shrinks on mobile */
+  padding: 0 10px; /* Reduced padding */
+  z-index: 100;
+  box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(10px);
+  overflow: hidden; /* Prevent icons from extending outside */
+}
+
+.bottom-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  pointer-events: auto;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.bottom-icon:hover {
+  transform: translateY(-5px);
+}
+
+.bottom-icon:active {
+  transform: translateY(-2px);
+}
+
+/* Icon image */
+.bottom-icon-image {
+  width: clamp(36px, 4vw, 48px); /* Responsive size that shrinks on mobile */
+  height: clamp(36px, 4vw, 48px);
+  min-width: 32px; /* Prevent shrinking too small */
+  min-height: 32px;
+  max-width: 48px; /* Prevent growing too large */
+  max-height: 48px;
+  aspect-ratio: 1 / 1; /* Keep icons square */
+  object-fit: contain; /* Never distort */
+  filter: brightness(0.9) drop-shadow(0 2px 6px rgba(0, 0, 0, 0.8));
+  transition: all 0.2s ease;
+}
+
+.bottom-icon:hover .bottom-icon-image {
+  filter: brightness(1.2) drop-shadow(0 4px 12px rgba(255, 165, 0, 0.6));
+}
+
+/* Icon label */
+.bottom-icon-label {
+  font-size: 12px;
+  color: #b8985f;
+  font-weight: 600;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+  font-family: "Cinzel", serif;
+}
+
+.bottom-icon:hover .bottom-icon-label {
+  color: #d4af37;
+}
+
+/* Notification dot */
+.bottom-icon-notification {
+  position: absolute;
+  top: -2px;
+  right: 4px;
+  width: 10px;
+  height: 10px;
+  background: #ff3333;
+  border-radius: 50%;
+  border: 2px solid rgba(10, 10, 15, 0.95);
+  box-shadow: 0 0 8px rgba(255, 51, 51, 0.8);
+  animation: notificationPulse 2s ease-in-out infinite;
+}
+
+@keyframes notificationPulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.8;
+  }
+}
+
+/* Placeholder icon style (if PNG not loaded) */
+.bottom-icon-image[src*="placeholder"],
+.bottom-icon-image:not([src]) {
+  background: rgba(139, 115, 85, 0.3);
+  border: 2px solid rgba(139, 115, 85, 0.6);
+  border-radius: 50%;
+}
+
+/* ==========================================
+   SUMMON BANNER CAROUSEL (Index.html)
+   ========================================== */
+
+.summon-banner-carousel {
+  position: fixed;
+  left: 20px;
+  top: 20%;
+  transform: translateY(-50%);
+  z-index: 50;
+  width: 380px;
+  height: 180px;
+  overflow: hidden;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.8);
+  border: 3px solid rgba(200, 100, 255, 0.6);
+}
+
+.summon-carousel-track {
+  display: flex;
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  height: 100%;
+}
+
+/* Individual summon banner card - VISUAL ONLY (non-clickable) */
+.summon-banner-card {
+  min-width: 380px;
+  width: 380px;
+  height: 180px;
+  background-image: linear-gradient(135deg, rgba(80, 40, 120, 0.9), rgba(120, 60, 180, 0.95)); /* Default fallback */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+/* Gradient fallbacks for different banner types */
+.summon-banner-card.banner-type-blazing-festival {
+  background-image: linear-gradient(135deg, rgba(180, 20, 20, 0.9), rgba(220, 60, 60, 0.95));
+  border-color: rgba(255, 100, 100, 0.8);
+}
+
+.summon-banner-card.banner-type-blazing-bash {
+  background-image: linear-gradient(135deg, rgba(20, 80, 180, 0.9), rgba(60, 120, 220, 0.95));
+  border-color: rgba(100, 150, 255, 0.8);
+}
+
+.summon-banner-card.banner-type-anniversary {
+  background-image: linear-gradient(135deg, rgba(180, 120, 20, 0.9), rgba(220, 160, 60, 0.95));
+  border-color: rgba(255, 200, 100, 0.8);
+}
+
+.summon-banner-card.banner-type-birthday {
+  background-image: linear-gradient(135deg, rgba(180, 20, 120, 0.9), rgba(220, 60, 160, 0.95));
+  border-color: rgba(255, 100, 200, 0.8);
+}
+
+.summon-banner-card:hover {
+  transform: translateX(10px) scale(1.05);
+  box-shadow: 0 8px 30px rgba(200, 100, 255, 0.7);
+  border-color: rgba(200, 100, 255, 0.9);
+} */
+
+/* .summon-banner-card:active {
+  transform: translateX(5px) scale(1.02);
+} */
+
+/* Banner card glow */
+.summon-banner-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(200, 100, 255, 0.2), transparent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+/* Hover glow DISABLED - visual only mode */
+/* .summon-banner-card:hover::before {
+  opacity: 1;
+} */
+
+/* Banner card title */
+.summon-banner-title {
+  position: absolute;
+  top: 10px; /* Reduced from 15px */
+  left: 14px; /* Reduced from 20px */
+  font-size: 15px; /* Reduced 30%: 22px × 0.7 = 15.4px ≈ 15px */
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 0 2px 7px rgba(0, 0, 0, 0.9); /* Reduced from 3px 10px */
+  letter-spacing: 0.35px; /* Reduced from 0.5px */
+  font-family: "Cinzel", serif;
+}
+
+/* Banner card subtitle */
+.summon-banner-subtitle {
+  position: absolute;
+  top: 32px; /* Reduced from 45px */
+  left: 14px; /* Reduced from 20px */
+  font-size: 10px; /* Reduced 30%: 14px × 0.7 = 9.8px ≈ 10px */
+  color: #ddd;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.9); /* Reduced from 2px 6px */
+  font-family: "Cinzel", serif;
+}
+
+/* ==========================================
+   RESPONSIVE DESIGN
+   ========================================== */
+
+@media (max-width: 1400px) {
+  .right-banner-panel {
+    width: 350px;
+  }
+
+  .banner-button {
+    width: 350px;
+    height: 130px;
+  }
+
+  .banner-button.missions {
+    height: 170px;
+  }
+
+  .summon-banner-carousel {
+    width: 320px;
+  }
+
+  .summon-banner-card {
+    width: 320px;
+    height: 150px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .right-banner-panel {
+    right: 10px;
+  }
+
+  .summon-banner-carousel {
+    left: 10px;
+  }
+
+  .bottom-icon-bar {
+    gap: 20px;
+    padding: 0 10px;
+  }
+
+  .bottom-icon-image {
+    width: 42px;
+    height: 42px;
+  }
+
+  .bottom-icon-label {
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 768px) {
+  .right-banner-panel,
+  .summon-banner-carousel {
+    display: none; /* Hide on mobile, show only bottom bar */
+  }
+
+  .bottom-icon-bar {
+    gap: 12px;
+    height: 80px;
+    overflow-x: auto;
+    justify-content: flex-start;
+  }
+
+  .bottom-icon-image {
+    width: 38px;
+    height: 38px;
+  }
+
+  .bottom-icon-label {
+    font-size: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .bottom-icon-bar {
+    gap: 8px;
+    padding: 0 8px;
+  }
+
+  .bottom-icon-image {
+    width: 36px;
+    height: 36px;
+  }
+
+  .bottom-icon-label {
+    font-size: 9px;
+  }
+}

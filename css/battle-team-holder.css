@@ -1,0 +1,212 @@
+/* ===================================================
+   TEAM HOLDER - Character Portrait Display with Chakra Wheels
+   =================================================== */
+
+/* === Team Holder Container === */
+#team-holder {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 40px; /* Increased gap to prevent chakra wheel overlap */
+  padding: 20px 40px; /* Increased padding for larger units */
+  background: linear-gradient(180deg, rgba(10, 10, 15, 0.5), rgba(10, 10, 15, 0.95));
+  border-top: 2px solid rgba(139, 115, 85, 0.6);
+  border-radius: 12px 12px 0 0;
+  z-index: 100;
+  box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.7);
+  width: auto; /* Let flexbox calculate width based on content */
+  min-width: fit-content; /* Ensure it fits all units */
+}
+
+/* === Single Unit Card (contains both active + bench portraits) === */
+.unit-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  transition: transform 0.2s ease;
+}
+
+.unit-card:hover {
+  transform: translateY(-6px);
+}
+
+/* === Active Portrait Container (Large) === */
+.active-portrait-container {
+  position: relative;
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background: transparent; /* Let chakraholder frame show */
+  border: none; /* Chakraholder frame provides the border */
+  box-shadow: none; /* Chakraholder frame provides the shadow */
+  transition: all 0.2s ease;
+  overflow: visible; /* Allow chakraholder to show fully */
+}
+
+.active-portrait-container:hover {
+  /* Hover effect handled by unit-ring in battle-chakra-wheel.css */
+}
+
+.active-portrait-container.drag-over {
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.9);
+  transform: scale(1.05);
+}
+
+/* Portrait styling is handled by .portrait class in battle-chakra-wheel.css */
+
+/* === Bench Portrait Container (Small, staggered nested below active) === */
+.bench-portrait-container {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    overflow: visible;
+    left: 0;
+    bottom: -1px;
+    z-index: 10;
+    cursor: grab;
+}
+
+.bench-portrait-container:active {
+    cursor: grabbing;
+}
+
+/* Portrait styling is handled by .portrait class in battle-chakra-wheel.css */
+
+/* === Unit Info (Name, HP) === */
+.unit-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  font-family: "Cinzel", serif;
+  font-size: 11px;
+  color: #f0e6d1;
+  text-align: center;
+  min-width: 100px;
+}
+
+.unit-name {
+  font-weight: 600;
+  color: #b8985f;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
+  white-space: nowrap;
+}
+
+.unit-hp-bar {
+  width: 80px;
+  height: 5px;
+  background: rgba(0, 0, 0, 0.7);
+  border: 1px solid rgba(139, 115, 85, 0.5);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.unit-hp-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #d4af37, #ff8c00); /* Gold to Orange */
+  transition: width 0.3s ease;
+}
+
+/* === Acting Unit Indicator === */
+.unit-card.is-acting .active-portrait-container {
+  border-color: #d4af37;
+  box-shadow: 0 0 24px rgba(212, 175, 55, 0.9);
+  animation: actingPulse 1.2s ease-in-out infinite;
+}
+
+@keyframes actingPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.06); }
+}
+
+/* === Dead Unit === */
+.unit-card.is-dead {
+  opacity: 0.35;
+  filter: grayscale(100%);
+}
+
+.unit-card.is-dead .active-portrait-container,
+.unit-card.is-dead .bench-portrait-container {
+  border-color: rgba(100, 100, 100, 0.4);
+}
+
+/* === Unit Switch Animation === */
+/* Bench portraits are clickable to swap with active */
+.bench-portrait-container {
+  cursor: pointer;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.bench-portrait-container:hover {
+  transform: scale(1.1);
+  border-color: rgba(212, 175, 55, 0.8);
+}
+
+/* Switch animation states */
+.active-portrait-container.switching {
+  animation: activeSpin 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  filter: brightness(1.3) drop-shadow(0 0 10px rgba(100, 180, 255, 0.8));
+  z-index: 100;
+}
+
+.bench-portrait-container.switching {
+  animation: benchSwap 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  filter: brightness(1.3) drop-shadow(0 0 10px rgba(255, 215, 0, 0.8));
+  z-index: 101;
+}
+
+/* Active portrait spins in place */
+@keyframes activeSpin {
+  0% { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(180deg) scale(1.15); }
+  100% { transform: rotate(360deg) scale(1); }
+}
+
+/* Bench portrait moves in curved arc */
+@keyframes benchSwap {
+  0% {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: translate(30px, -40px) scale(1.3);
+    opacity: 0.7;
+  }
+  100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+  }
+}
+
+/* Sparkle trail effect */
+.chakra-sparkle {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: radial-gradient(circle, rgba(100, 180, 255, 1) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 100;
+  animation: sparkleTrail 0.6s ease-out forwards;
+}
+
+@keyframes sparkleTrail {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.3) translateY(20px);
+  }
+}

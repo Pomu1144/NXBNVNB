@@ -1,0 +1,170 @@
+/* ==========================================
+   Character Vignette Display
+   ========================================== */
+
+/* Vignette Overlay - Creates edge fading effect */
+.vignette-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0.2) 50%,
+    rgba(0, 0, 0, 0.7) 100%
+  );
+}
+
+/* Character Display Container */
+.character-vignette-container {
+  position: fixed;
+  bottom: 80px; /* Above bottom bar */
+  left: 0;
+  right: 0;
+  height: 60vh;
+  z-index: 1;
+  pointer-events: none;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  overflow: hidden;
+}
+
+/* Individual Character Display */
+.vignette-character {
+  position: relative;
+  height: 100%;
+  opacity: 0;
+  transform: translateY(50px) skewX(-5deg);
+  animation: characterFadeIn 1s ease-out forwards;
+  filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.8));
+  transition: transform 0.3s ease;
+}
+
+/* Stagger animation delays for multiple characters */
+.vignette-character:nth-child(1) { animation-delay: 0.1s; }
+.vignette-character:nth-child(2) { animation-delay: 0.2s; }
+.vignette-character:nth-child(3) { animation-delay: 0.3s; }
+.vignette-character:nth-child(4) { animation-delay: 0.4s; }
+.vignette-character:nth-child(5) { animation-delay: 0.5s; }
+
+/* Character Image */
+.vignette-character img {
+  height: 100%;
+  width: auto;
+  object-fit: contain;
+  object-position: bottom;
+}
+
+/* Floating/Idle Animation */
+@keyframes characterFloat {
+  0%, 100% {
+    transform: translateY(0) skewX(-5deg);
+  }
+  50% {
+    transform: translateY(-15px) skewX(-5deg);
+  }
+}
+
+.vignette-character {
+  animation: characterFadeIn 1s ease-out forwards,
+             characterFloat 4s ease-in-out infinite;
+}
+
+/* Vary floating animation timing for natural feel */
+.vignette-character:nth-child(1) { animation-duration: 1s, 4.2s; }
+.vignette-character:nth-child(2) { animation-duration: 1s, 3.8s; }
+.vignette-character:nth-child(3) { animation-duration: 1s, 4.5s; }
+.vignette-character:nth-child(4) { animation-duration: 1s, 3.5s; }
+.vignette-character:nth-child(5) { animation-duration: 1s, 4.0s; }
+
+/* Fade-in animation */
+@keyframes characterFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(50px) skewX(-5deg);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) skewX(-5deg);
+  }
+}
+
+/* Wind Particle Effect */
+.wind-container {
+  position: fixed;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.wind-particle {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 50%;
+  animation: windFlow linear infinite;
+  box-shadow: 0 0 4px rgba(255, 255, 255, 0.8);
+}
+
+/* Different wind particle styles */
+.wind-particle.leaf {
+  width: 8px;
+  height: 6px;
+  background: rgba(180, 255, 180, 0.5);
+  border-radius: 50% 0;
+  transform: rotate(45deg);
+}
+
+.wind-particle.streak {
+  width: 20px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  border-radius: 0;
+}
+
+@keyframes windFlow {
+  0% {
+    transform: translate(-100px, 0) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(calc(100vw + 100px), -100vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .character-vignette-container {
+    height: 40vh;
+  }
+
+  .vignette-character {
+    transform: translateY(30px) skewX(-3deg);
+  }
+
+  @keyframes characterFloat {
+    0%, 100% {
+      transform: translateY(0) skewX(-3deg);
+    }
+    50% {
+      transform: translateY(-10px) skewX(-3deg);
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .character-vignette-container {
+    height: 30vh;
+  }
+}

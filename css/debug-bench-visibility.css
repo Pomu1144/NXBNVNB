@@ -1,0 +1,58 @@
+/*
+ * TEMPORARY DEBUG STYLES FOR BENCH CHAKRA RINGS
+ * Add this to battle.html to make bench rings very obvious
+ * Remove after debugging
+ */
+
+/* Make bench container highly visible */
+.bench-portrait-container {
+  outline: 3px dashed lime !important;
+  background: rgba(0, 255, 0, 0.2) !important;
+  box-shadow: 0 0 20px rgba(0, 255, 0, 0.8) !important;
+}
+
+/* Make bench unit-ring highly visible */
+.bench-portrait-container .unit-ring {
+  outline: 2px solid red !important;
+  background: rgba(255, 0, 0, 0.2) !important;
+}
+
+/* Make bench chakra frame highly visible */
+.bench-portrait-container .chakra-frame {
+  filter: drop-shadow(0 0 10px cyan) !important;
+}
+
+/* Add label to bench containers */
+.bench-portrait-container::before {
+  content: "BENCH";
+  position: absolute;
+  top: -20px;
+  left: 0;
+  font-size: 10px;
+  font-weight: bold;
+  color: lime;
+  background: black;
+  padding: 2px 5px;
+  border-radius: 3px;
+  z-index: 1000;
+}
+
+/* Make active container also visible for comparison */
+.active-portrait-container {
+  outline: 2px solid yellow !important;
+}
+
+/* Add label to active containers */
+.active-portrait-container::before {
+  content: "ACTIVE";
+  position: absolute;
+  top: -20px;
+  left: 0;
+  font-size: 10px;
+  font-weight: bold;
+  color: yellow;
+  background: black;
+  padding: 2px 5px;
+  border-radius: 3px;
+  z-index: 1000;
+}

@@ -1,0 +1,358 @@
+/* ===================================================
+   CHAKRA HOLDER SYSTEM - Image-Based Circular Gauge
+   Using original structure with chakra-container
+   =================================================== */
+
+/* === Unit Ring Container (active) === */
+.unit-ring {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  cursor: pointer;
+  object-fit: fill;
+  transition: transform 0.2s ease;
+  display: inline-block;
+}
+
+.unit-ring:hover {
+  transform: scale(1.05);
+}
+
+/* Bench units (60×60 - smaller version for clarity) */
+.bench-portrait-container .unit-ring {
+  width: 60px;
+  height: 60px;
+}
+
+/* =========================================
+   PORTRAIT  (BOTTOM LAYER, z-index: 1)
+   ========================================= */
+.portrait {
+    position: absolute;
+    top: 30px;
+    left: 25px;
+    width: 100px;
+    height: 98px;
+    object-fit: cover;
+    border-radius: 50%;
+    clip-path: circle(50%);
+    z-index: 1;
+}
+
+/* Bench portrait: perfectly centered in 60×60 holder */
+.bench-portrait-container .portrait {
+  top: 2px;
+  left: 2px;
+  width: 56px;
+  height: 56px;
+}
+
+/* =========================================
+   CHAKRA CONTAINER (MIDDLE LAYER, z-index: 11)
+   ========================================= */
+.chakra-container {
+    position: absolute;
+    top: 34px;
+    left: 30px;
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    clip-path: circle(50%);
+    overflow: hidden;
+    z-index: 11;
+    pointer-events: none;
+}
+
+.bench-portrait-container .chakra-container {
+  top: 2px;
+  left: 2px;
+  width: 56px;
+  height: 56px;
+}
+
+/* Chakra segments - individual segments positioned at fixed angles */
+.chakra-segment {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  object-fit: contain;
+  transform-origin: center center;
+  opacity: 0; /* Hidden by default */
+  transition: opacity 0.3s ease-in-out;
+}
+
+/* Active segments are visible */
+.chakra-segment.active {
+  opacity: 1;
+}
+
+/* Jutsu range segments (blue-ish tint) */
+.chakra-segment.active.jutsu-range {
+  filter: brightness(1.1) hue-rotate(-10deg);
+}
+
+/* Ultimate range segments (stronger, more intense) */
+.chakra-segment.active.ultimate-range {
+  filter: brightness(1.3) saturate(1.4);
+}
+
+/* =========================================
+   CHAKRA HOLDER FRAME (TOP LAYER, z-index: 10)
+   ========================================= */
+.chakra-frame {
+    position: absolute;
+    top: -70px;
+    left: -68px;
+    width: 300px !important;
+    height: 300px !important;
+    pointer-events: none;
+    z-index: 10;
+}
+
+/* Bench frame = 60×60 scaled (40-50% smaller using dedicated asset) */
+.bench-portrait-container .chakra-frame {
+  top: -45px;
+  left: -45px;
+  width: 150px !important;
+  height: 150px !important;
+  object-fit: fill !important;
+}
+
+/* =========================================
+   OPTIONAL STATES
+   ========================================= */
+.unit-ring.ultimate-ready .chakra-frame {
+  filter: drop-shadow(0 0 8px rgba(255, 50, 50, 0.9))
+          drop-shadow(0 0 16px rgba(255, 50, 50, 0.6));
+  animation: ultimateReadyPulse 1s ease-in-out infinite;
+}
+
+@keyframes ultimateReadyPulse {
+  0%, 100% {
+    filter: drop-shadow(0 0 8px rgba(255, 50, 50, 0.9))
+            drop-shadow(0 0 16px rgba(255, 50, 50, 0.6));
+  }
+  50% {
+    filter: drop-shadow(0 0 12px rgba(255, 50, 50, 1))
+            drop-shadow(0 0 24px rgba(255, 50, 50, 0.8));
+  }
+}
+
+/* === Chakra Gain Flash Effect === */
+.chakra-segment.chakra-gain-flash {
+  animation: chakraGainFlash 0.5s ease-out;
+}
+
+@keyframes chakraGainFlash {
+  0% {
+    filter: brightness(1);
+    opacity: 0;
+  }
+  50% {
+    filter: brightness(2) drop-shadow(0 0 10px rgba(100, 150, 255, 1));
+    opacity: 1;
+  }
+  100% {
+    filter: brightness(1);
+    opacity: 1;
+  }
+}
+
+/* === LIGHTNING EFFECT (Jagged Bolts Around Chakra Frame) === */
+/* Lightning wraps around the wheel's edge, NOT radiating outward */
+/* IMPORTANT: pointer-events MUST be none so drag targeting works */
+.lightning-effect {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 160%;
+  height: 160%;
+  transform: translate(-50%, -50%);
+  pointer-events: none !important; /* CRITICAL: Must not block dragging */
+  z-index: 200;
+  animation: lightningFlicker 0.3s steps(3) infinite;
+}
+
+@keyframes lightningFlicker {
+  0%, 40%, 100% { opacity: 1; }
+  20%, 60%, 80% { opacity: 0.6; }
+}
+
+/* Jagged lightning bolt wrapping the rim */
+.lightning-bolt {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 50%;
+  height: 50%;
+  transform-origin: 0% 0%;
+  filter: blur(0.5px);
+  clip-path: polygon(
+    0% 0%,
+    8% 5%,
+    3% 15%,
+    12% 22%,
+    6% 35%,
+    15% 42%,
+    10% 55%,
+    18% 63%,
+    12% 78%,
+    20% 85%,
+    15% 100%,
+    10% 85%,
+    5% 70%,
+    2% 50%,
+    0% 30%,
+    0% 0%
+  );
+}
+
+/* === RED LIGHTNING (Ultimate - Double Click) === */
+/* Short, sharp, aggressive red bolts with quick flicker */
+.lightning-effect.red {
+  animation-duration: 0.3s;
+}
+
+.lightning-effect.red .lightning-bolt {
+  background: radial-gradient(ellipse at center,
+    rgba(255, 60, 60, 1) 0%,
+    rgba(255, 40, 40, 1) 40%,
+    rgba(200, 30, 30, 0.8) 70%,
+    rgba(150, 20, 20, 0) 100%
+  );
+  box-shadow:
+    0 0 6px rgba(255, 50, 50, 1),
+    0 0 14px rgba(255, 50, 50, 0.8),
+    0 0 22px rgba(255, 80, 80, 0.4);
+  animation: redLightningPulse 0.3s ease-out;
+}
+
+/* Position bolts around the rim (9 bolts) - varied spacing to prevent overlap */
+.lightning-effect.red .lightning-bolt:nth-child(1) { transform: rotate(0deg); }
+.lightning-effect.red .lightning-bolt:nth-child(2) { transform: rotate(45deg); }
+.lightning-effect.red .lightning-bolt:nth-child(3) { transform: rotate(85deg); }
+.lightning-effect.red .lightning-bolt:nth-child(4) { transform: rotate(130deg); }
+.lightning-effect.red .lightning-bolt:nth-child(5) { transform: rotate(170deg); }
+.lightning-effect.red .lightning-bolt:nth-child(6) { transform: rotate(210deg); }
+.lightning-effect.red .lightning-bolt:nth-child(7) { transform: rotate(250deg); }
+.lightning-effect.red .lightning-bolt:nth-child(8) { transform: rotate(295deg); }
+.lightning-effect.red .lightning-bolt:nth-child(9) { transform: rotate(335deg); }
+
+@keyframes redLightningPulse {
+  0% { opacity: 0; transform: scale(0.8); }
+  30% { opacity: 1; transform: scale(1); }
+  60% { opacity: 0.7; }
+  100% { opacity: 1; }
+}
+
+/* === GOLD LIGHTNING (Secret Technique - Triple Click) === */
+/* Thicker, brighter gold-white bolts with dramatic glow bloom */
+.lightning-effect.gold {
+  animation-duration: 0.6s;
+}
+
+.lightning-effect.gold .lightning-bolt {
+  width: 55%;
+  height: 55%;
+  background: radial-gradient(ellipse at center,
+    rgba(255, 255, 240, 1) 0%,
+    rgba(255, 235, 120, 1) 30%,
+    rgba(255, 215, 0, 0.9) 60%,
+    rgba(200, 165, 0, 0) 100%
+  );
+  box-shadow:
+    0 0 8px rgba(255, 255, 255, 1),
+    0 0 18px rgba(255, 215, 0, 1),
+    0 0 32px rgba(255, 215, 0, 0.8),
+    0 0 48px rgba(255, 235, 120, 0.6);
+  filter: blur(1px);
+  animation: goldLightningPulse 0.6s ease-out;
+}
+
+/* Position bolts around the rim (10 bolts, more coverage) - organic spacing */
+.lightning-effect.gold .lightning-bolt:nth-child(1) { transform: rotate(0deg); }
+.lightning-effect.gold .lightning-bolt:nth-child(2) { transform: rotate(38deg); }
+.lightning-effect.gold .lightning-bolt:nth-child(3) { transform: rotate(74deg); }
+.lightning-effect.gold .lightning-bolt:nth-child(4) { transform: rotate(112deg); }
+.lightning-effect.gold .lightning-bolt:nth-child(5) { transform: rotate(148deg); }
+.lightning-effect.gold .lightning-bolt:nth-child(6) { transform: rotate(186deg); }
+.lightning-effect.gold .lightning-bolt:nth-child(7) { transform: rotate(222deg); }
+.lightning-effect.gold .lightning-bolt:nth-child(8) { transform: rotate(260deg); }
+.lightning-effect.gold .lightning-bolt:nth-child(9) { transform: rotate(296deg); }
+.lightning-effect.gold .lightning-bolt:nth-child(10) { transform: rotate(334deg); }
+
+@keyframes goldLightningPulse {
+  0% { opacity: 0; transform: scale(0.7); filter: blur(2px); }
+  20% { opacity: 1; transform: scale(1); filter: blur(1px); }
+  40% { opacity: 0.85; filter: blur(0.8px); }
+  60% { opacity: 1; filter: blur(1px); }
+  80% { opacity: 0.9; filter: blur(0.9px); }
+  100% { opacity: 1; filter: blur(1px); }
+}
+
+/* === Attack Type Selected Feedback === */
+.unit-ring.attack-selected {
+  filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.8));
+  animation: attackSelectedPulse 0.5s ease-out;
+}
+
+@keyframes attackSelectedPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
+
+/* === Targeting Overlay (Drag-to-Target System) === */
+.targeting-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.2);
+  pointer-events: none;
+  z-index: 999;
+}
+
+.targeting-indicator {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  border: 3px solid rgba(212, 175, 55, 0.9);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(212, 175, 55, 0.3) 0%, transparent 70%);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  animation: targetingPulse 0.8s ease-in-out infinite;
+}
+
+@keyframes targetingPulse {
+  0%, 100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.2);
+    opacity: 1;
+  }
+}
+
+/* Debug helpers */
+.unit-ring.debug { outline: 2px dashed rgba(255,0,0,0.4); }
+.chakra-container.debug { outline: 1px dashed rgba(0,255,0,0.4); }
+.portrait.debug { outline: 1px dashed rgba(0,0,255,0.4); }
+
+/* === Professional Styling === */
+/* Ensure no distortion, proper centering, and smooth performance */
+.unit-ring * {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+}
+
+.chakra-segment {
+  will-change: transform;
+  backface-visibility: hidden;
+  -webkit-font-smoothing: subpixel-antialiased;
+}
