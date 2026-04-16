@@ -64,7 +64,7 @@
       // Background Music
       // Using existing music file location
       this.sounds.battleBGM = new Howl({
-        src: ['assets/music/general.mp3'],
+        src: ['assets/audio/menu.mp3'],
         loop: true,
         volume: this.getEffectiveVolume('music'),
         preload: true,

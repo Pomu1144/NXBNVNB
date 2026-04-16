@@ -23,8 +23,8 @@
       'BattleEquippedUltimate',
       'CharacterEquip',
       'BattleMissions',
-      'BattleRewards'
-      // 'BattleFieldBuddy' // Temporarily disabled until we debug the loading issue
+      'BattleRewards',
+      'BattleFieldBuddy'
     ];
 
     const allLoaded = requiredModules.every(mod => window[mod]);
@@ -85,6 +85,12 @@
           }
 
           console.log("[Battle] ✅ Last Stand Ultimate system initialized");
+        }
+
+        // Initialize Field & Buddy Skill system
+        if (window.BattleFieldBuddy && this.activeTeam?.length > 0) {
+          window.BattleFieldBuddy.init(this);
+          console.log("[Battle] ✅ Field & Buddy skill system initialized");
         }
 
         console.log("[Battle] ✅ Battle system ready with all modules");

@@ -1,20 +1,130 @@
 [
   {
-    "id": "slime_01",
-    "name": "Green Slime",
-    "sprite": "assets/enemies/slime_01.png",
-    "stats": { "hp": 250, "atk": 3000, "def": 5, "speed": 120 }
+    "id": "mizuki_enemy",
+    "name": "Mizuki",
+    "characterId": "mizuki_030",
+    "sprite": "assets/characters/mizuki_030/portrait_3S.png",
+    "stats": { "hp": 2200, "atk": 180, "def": 10, "speed": 110 },
+    "tier": "3S"
   },
   {
-    "id": "goblin_archer_01",
-    "name": "Goblin Archer",
-    "sprite": "assets/enemies/goblin_archer_01.png",
-    "stats": { "hp": 420, "atk": 75, "def": 20, "speed": 120 }
+    "id": "zabuza_enemy",
+    "name": "Zabuza Momochi",
+    "characterId": "zabuza_142",
+    "sprite": "assets/characters/zabuza_142/portrait_5S.png",
+    "stats": { "hp": 7572, "atk": 853, "def": 40, "speed": 99 },
+    "tier": "5S"
   },
   {
-    "id": "rock_golem_01",
-    "name": "Rock Golem",
-    "sprite": "assets/enemies/rock_golem_01.png",
-    "stats": { "hp": 1200, "atk": 110, "def": 80, "speed": 100 }
+    "id": "haku_enemy",
+    "name": "Haku",
+    "characterId": "haku_137",
+    "sprite": "assets/characters/haku_137/portrait_5S.png",
+    "stats": { "hp": 6517, "atk": 412, "def": 25, "speed": 95 },
+    "tier": "5S"
+  },
+  {
+    "id": "orochimaru_enemy",
+    "name": "Orochimaru",
+    "characterId": "orochimaru_074",
+    "sprite": "assets/characters/orochimaru_074/portrait_5S.png",
+    "stats": { "hp": 9800, "atk": 720, "def": 35, "speed": 131 },
+    "tier": "5S"
+  },
+  {
+    "id": "kabuto_enemy",
+    "name": "Kabuto Yakushi",
+    "characterId": "kabuto_076",
+    "sprite": "assets/characters/kabuto_076/portrait_5S.png",
+    "stats": { "hp": 6821, "atk": 405, "def": 20, "speed": 92 },
+    "tier": "5S"
+  },
+  {
+    "id": "itachi_enemy",
+    "name": "Itachi Uchiha",
+    "characterId": "itachi_088",
+    "sprite": "assets/characters/itachi_088/portrait_5S.png",
+    "stats": { "hp": 12000, "atk": 980, "def": 50, "speed": 83 },
+    "tier": "5S"
+  },
+  {
+    "id": "kisame_enemy",
+    "name": "Kisame Hoshigaki",
+    "characterId": "kisame_090",
+    "sprite": "assets/characters/kisame_090/portrait_5S.png",
+    "stats": { "hp": 14000, "atk": 850, "def": 60, "speed": 104 },
+    "tier": "5S"
+  },
+  {
+    "id": "deidara_enemy",
+    "name": "Deidara",
+    "characterId": "deidara_219",
+    "sprite": "assets/characters/deidara_219/portrait_5S.png",
+    "stats": { "hp": 7599, "atk": 848, "def": 30, "speed": 104 },
+    "tier": "5S"
+  },
+  {
+    "id": "sasori_enemy",
+    "name": "Sasori",
+    "characterId": "sasori_221",
+    "sprite": "assets/characters/sasori_221/portrait_5S.png",
+    "stats": { "hp": 16296, "atk": 997, "def": 70, "speed": 44 },
+    "tier": "5S"
+  },
+  {
+    "id": "hidan_enemy",
+    "name": "Hidan",
+    "characterId": "hidan_321",
+    "sprite": "assets/characters/hidan_321/portrait_5S.png",
+    "stats": { "hp": 19173, "atk": 1068, "def": 55, "speed": 62 },
+    "tier": "5S"
+  },
+  {
+    "id": "kakuzu_enemy",
+    "name": "Kakuzu",
+    "characterId": "kakuzu_323",
+    "sprite": "assets/characters/kakuzu_323/portrait_5S.png",
+    "stats": { "hp": 7146, "atk": 669, "def": 80, "speed": 88 },
+    "tier": "5S"
+  },
+  {
+    "id": "pain_enemy",
+    "name": "Pain",
+    "characterId": "pain_352",
+    "sprite": "assets/characters/pain_352/portrait_5S.png",
+    "stats": { "hp": 20000, "atk": 1200, "def": 65, "speed": 90 },
+    "tier": "5S"
+  },
+  {
+    "id": "konan_enemy",
+    "name": "Konan",
+    "characterId": "konan_337",
+    "sprite": "assets/characters/konan_337/portrait_5S.png",
+    "stats": { "hp": 7676, "atk": 766, "def": 35, "speed": 69 },
+    "tier": "5S"
+  },
+  {
+    "id": "obito_enemy",
+    "name": "Obito Uchiha",
+    "characterId": "obito_253",
+    "sprite": "assets/characters/obito_253/portrait_5S.png",
+    "stats": { "hp": 18000, "atk": 1100, "def": 60, "speed": 78 },
+    "tier": "5S"
+  },
+  {
+    "id": "madara_enemy",
+    "name": "Madara Uchiha",
+    "characterId": "madara_333",
+    "sprite": "assets/characters/madara_333/portrait_5S.png",
+    "stats": { "hp": 28000, "atk": 1500, "def": 90, "speed": 106 },
+    "tier": "6S"
+  },
+  {
+    "id": "kaguya_enemy",
+    "name": "Kaguya Otsutsuki",
+    "characterId": "kaguya_512",
+    "sprite": "assets/characters/kaguya_512/portrait_5S.png",
+    "stats": { "hp": 35000, "atk": 1800, "def": 100, "speed": 83 },
+    "tier": "6S"
   }
 ]

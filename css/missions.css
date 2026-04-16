@@ -18,7 +18,7 @@ body {
   position: fixed;
   inset: 0;
   z-index: -1;
-  background-image: url('../assets/missions-bg.gif');
+  background-image: url('../assets/2_backgrounds/mission_bg.gif');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
