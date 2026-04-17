@@ -20,7 +20,7 @@
   <div class="bottom-bar">
     <div class="bottom-bar-content">
       <button class="hud-button" id="btn-village" aria-label="Village"><img src="assets/icons/village_btm_btn.png" alt="Village"></button>
-      <button class="hud-button" id="btn-characters" aria-label="Characters"><img src="assets/icons/characters_icon.png" alt="Characters"></button>
+      <button class="hud-button" id="btn-characters" aria-label="Characters"><img src="assets/icons/characters_icon.png" alt="Characters" onerror="this.style.display='none'"></button>
       <button class="hud-button" id="btn-fusion" aria-label="Fusion"><img src="assets/icons/fusion_btm_btn.png" alt="Fusion"></button>
       <button class="hud-button" id="btn-teams" aria-label="Teams"><img src="assets/icons/teams_icon.png" alt="Teams"></button>
       <button class="hud-button" id="btn-tools" aria-label="Tools"><img src="assets/icons/guilds_icon.png" alt="Tools"></button>
@@ -31,6 +31,7 @@
     </div>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/howler@2.2.4/dist/howler.min.js"></script>
   <script src="js/audio-manager.js"></script>
   <script src="js/resources.js"></script>
   <script src="js/summon.js"></script>

@@ -1,6 +1,15 @@
 /* ==========================================
    css/background.css  (Final — Crisp & Responsive)
    ========================================== */
+
+/* Smooth page fade-in on every navigation */
+@keyframes pageFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+body {
+  animation: pageFadeIn 0.25s ease-in forwards;
+}
 /* --- Base Background Style --- */
 #full-bg {
   position: absolute; /* Changed from fixed to work with game-canvas */
