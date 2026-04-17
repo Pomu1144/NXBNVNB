@@ -33,8 +33,9 @@
 
       // Get DOM elements
       this.rankValueEl = document.getElementById("ninja-rank-value");
-      this.rankProgressBar = document.getElementById("rank-progress-fill");
-      this.rankProgressText = document.getElementById("rank-progress-text");
+      this.rankProgressBar = document.getElementById("level-progress-fill");
+      this.rankProgressText = document.getElementById("rank-progress-text") ||
+                              document.getElementById("rank-progress-bar-fill");
       this.currencyElements = {
         ninja_pearls: document.getElementById("currency-ninja-pearls"),
         shinobites: document.getElementById("currency-shinobites"),

@@ -33,9 +33,9 @@
 
 /* --- PAGE-SPECIFIC BACKGROUNDS --- */
 .page-missions #full-bg {
-  background-image: url("../assets/Main Background/Background.gif");
-  filter: blur(5px) brightness(0.7);
-  transform: scale(1.05);
+  position: fixed;
+  background-image: url("../assets/2_backgrounds/mission_bg.gif");
+  filter: brightness(0.75);
 }
 
 .page-summon #full-bg {

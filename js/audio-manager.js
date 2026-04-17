@@ -281,17 +281,71 @@
       } catch (e) {
         console.error('[AudioManager] Failed to load volume settings:', e);
       }
+    },
+
+    /**
+     * Get current settings snapshot (used by settings.html)
+     */
+    getSettings() {
+      return {
+        bgmVolume: this.volumes.music,
+        sfxVolume: this.volumes.sfx,
+        masterMuted: this.muted
+      };
+    },
+
+    /**
+     * Alias used by settings.html
+     */
+    setBGMVolume(volume) {
+      this.setMusicVolume(volume);
+    },
+
+    /**
+     * Alias used by settings.html
+     */
+    toggleMasterMute() {
+      return this.toggleMute();
+    },
+
+    /**
+     * General BGM play — starts the background music on any page
+     */
+    playBGM() {
+      this.playBattleMusic();
     }
   };
 
   // Export to window
   window.AudioManager = AudioManager;
 
+  // Start BGM on first user interaction (required by browser autoplay policy)
+  function _startBGMOnInteraction() {
+    const isLoginPage = window.location.pathname.endsWith('index.html') ||
+                        window.location.pathname === '/' ||
+                        window.location.pathname === '';
+    if (!isLoginPage) {
+      const handler = () => {
+        AudioManager.playBGM();
+        document.removeEventListener('click', handler);
+        document.removeEventListener('touchstart', handler);
+        document.removeEventListener('keydown', handler);
+      };
+      document.addEventListener('click', handler);
+      document.addEventListener('touchstart', handler);
+      document.addEventListener('keydown', handler);
+    }
+  }
+
   // Auto-initialize on load
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => AudioManager.init());
+    document.addEventListener('DOMContentLoaded', () => {
+      AudioManager.init();
+      _startBGMOnInteraction();
+    });
   } else {
     AudioManager.init();
+    _startBGMOnInteraction();
   }
 
   console.log("[AudioManager] Module loaded ✅");

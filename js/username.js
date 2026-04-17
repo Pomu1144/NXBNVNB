@@ -87,7 +87,7 @@
 
   // ---------- Editor Dialog ----------
   function openEditor() {
-    if (window.ModalManager) {
+    if (window.ModalManager && typeof window.ModalManager.showPrompt === 'function') {
       window.ModalManager.showPrompt(
         `Enter your username (max 20 characters):\n\nCurrent: ${_username}`,
         _username,
@@ -100,6 +100,14 @@
         },
         null
       );
+    } else {
+      const newName = prompt(`Enter new username (max 20 characters):\nCurrent: ${_username}`, _username);
+      if (newName === null) return;
+      if (setUsername(newName)) {
+        alert(`Username updated to: ${getUsername()}`);
+      } else {
+        alert('Invalid username. Must be 1–20 characters and not empty.');
+      }
     }
   }
 

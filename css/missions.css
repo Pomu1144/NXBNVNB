@@ -13,16 +13,7 @@ body {
   min-height: 100vh;
 }
 
-/* Missions Background with GIF */
-#full-bg {
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  background-image: url('../assets/2_backgrounds/mission_bg.gif');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-}
+/* Background handled by background.css + .page-missions #full-bg rule */
 
 /* Mission Container - Positioned on the Right */
 .mission-page-container {

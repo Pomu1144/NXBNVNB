@@ -62,6 +62,7 @@
         <div class="level-progress-bar">
           <div class="level-progress-fill" id="level-progress-fill"></div>
         </div>
+        <div id="rank-progress-text" style="font-size:10px;color:#b8985f;text-align:right;margin-top:2px;letter-spacing:0.3px;"></div>
       </div>
     </div>
 
@@ -351,19 +352,21 @@
       }
 
       function updateRankProgressBar() {
-        // Get current rank data from localStorage or default
-        const rankData = JSON.parse(localStorage.getItem('ninjaRank') || '{"level": 1, "xp": 0, "xpToNext": 100}');
+        if (!window.NinjaRank) return;
 
-        const percentage = Math.min(100, (rankData.xp / rankData.xpToNext) * 100);
-        const fillElement = document.getElementById('rank-progress-bar-fill');
+        const progress = window.NinjaRank.getExpProgress();
+        const expToNext = window.NinjaRank.getExpToNextRank();
+        const isMax = window.NinjaRank.isMaxRank();
+
+        const fillElement = document.getElementById('level-progress-fill');
         const textElement = document.getElementById('rank-progress-text');
 
         if (fillElement) {
-          fillElement.style.width = percentage + '%';
+          fillElement.style.width = (progress * 100).toFixed(1) + '%';
         }
 
         if (textElement) {
-          textElement.textContent = Math.floor(percentage) + '%';
+          textElement.textContent = isMax ? 'MAX' : `${expToNext} to next`;
         }
       }
 

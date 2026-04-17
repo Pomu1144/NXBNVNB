@@ -171,6 +171,16 @@
       -ms-overflow-style: none;  /* IE and Edge */
       scrollbar-width: none;  /* Firefox */
     }
+
+    /* Keep background covering full viewport at all scroll depths */
+    html, body {
+      background: #0a0a12;
+      min-height: 100%;
+    }
+
+    #full-bg {
+      position: fixed !important;
+    }
   </style>
 </head>
 
