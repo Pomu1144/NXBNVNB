@@ -180,3 +180,27 @@ div[class*="bottom"] {
   border: none !important;
   outline: none !important;
 }
+
+/* Landscape mobile — max 420px tall */
+@media (max-height: 420px) and (orientation: landscape) {
+  .bottom-bar {
+    height: 55px !important;
+    min-height: 50px !important;
+    max-height: 55px !important;
+  }
+
+  .hud-button {
+    width: 44px !important;
+    height: 44px !important;
+    min-width: 44px !important;
+    min-height: 44px !important;
+    max-width: 44px !important;
+    max-height: 44px !important;
+    border-width: 2px !important;
+  }
+
+  .bottom-bar-content {
+    gap: clamp(4px, 1.2vw, 12px);
+    padding: 0 6px;
+  }
+}

@@ -69,6 +69,10 @@ body {
   z-index: -1;
 }
 
+.page-arena #full-bg {
+  background-image: url("../assets/Main Background/arena_background.png");
+}
+
 /* ==========================================
    HUD & Button Layout (PERFECT CIRCLES)
    ========================================== */

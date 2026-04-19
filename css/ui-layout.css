@@ -551,3 +551,44 @@
     font-size: 9px;
   }
 }
+
+/* Landscape mobile (iPhone SE, iPhone 8, iPhone 12 mini, etc.) — max 420px tall */
+@media (max-height: 420px) and (orientation: landscape) {
+  .bottom-icon-bar {
+    height: 55px;
+    min-height: 50px;
+    max-height: 55px;
+    gap: clamp(4px, 1.2vw, 12px);
+    padding: 0 6px;
+  }
+
+  .bottom-icon {
+    gap: 2px;
+  }
+
+  .bottom-icon-image {
+    width: 26px;
+    height: 26px;
+    min-width: 22px;
+    min-height: 22px;
+    max-width: 30px;
+    max-height: 30px;
+  }
+
+  .bottom-icon-label {
+    font-size: 7px;
+    letter-spacing: 0;
+  }
+
+  .announcement-slideshow {
+    width: 210px;
+    height: 80px;
+    top: 50px;
+    right: 10px;
+  }
+
+  .right-banner-panel,
+  .summon-banner-carousel {
+    display: none;
+  }
+}
