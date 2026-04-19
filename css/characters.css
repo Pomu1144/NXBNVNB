@@ -7,7 +7,6 @@
 
 html {
   overflow-x: hidden;
-  overflow-y: auto;
   /* Prevent overscrolling that shows white space */
   overscroll-behavior: none;
 }
@@ -27,13 +26,7 @@ body.page-characters {
   background: linear-gradient(180deg, #141014 0%, #1a1a1e 100%);
   font-family: "Cinzel", "Times New Roman", serif;
   color: #eee6d1;
-  overflow-y: auto;
   overflow-x: hidden;
-  /* Hide scrollbar but keep functionality */
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE and Edge */
-  /* Prevent overscrolling/bouncing that shows white space */
-  overscroll-behavior: none;
   /* Ensure min height covers viewport */
   min-height: 100vh;
   /* Prevent white space below content */
