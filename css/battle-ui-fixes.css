@@ -198,8 +198,8 @@
 /* Unit Container - Ensure proper stacking */
 .battle-unit {
   position: absolute !important;
-  width: 70px !important;
-  height: 70px !important;
+  width: var(--battle-unit-size, 70px) !important;
+  height: var(--battle-unit-size, 70px) !important;
   display: flex !important;
   flex-direction: column !important;
   align-items: center !important;
@@ -216,12 +216,12 @@
 
 /* Unit Sprite Container */
 .unit-sprite {
-  width: 70px !important;
-  height: 70px !important;
-  min-width: 70px !important;
-  min-height: 70px !important;
-  max-width: 70px !important;
-  max-height: 70px !important;
+  width: var(--battle-unit-size, 70px) !important;
+  height: var(--battle-unit-size, 70px) !important;
+  min-width: var(--battle-unit-size, 70px) !important;
+  min-height: var(--battle-unit-size, 70px) !important;
+  max-width: var(--battle-unit-size, 70px) !important;
+  max-height: var(--battle-unit-size, 70px) !important;
   position: relative !important;
   border-radius: 8px;
   overflow: hidden !important;
@@ -245,7 +245,7 @@
   bottom: -10px;
   left: 50%;
   transform: translateX(-50%);
-  width: 64px;
+  width: clamp(44px, 90%, 64px);
   height: 6px;
   background: rgba(0, 0, 0, 0.8);
   border: 1px solid rgba(255, 255, 255, 0.3);

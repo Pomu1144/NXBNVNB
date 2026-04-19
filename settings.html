@@ -156,6 +156,42 @@
       background: linear-gradient(135deg, #b22c2c 0%, #c93a3a 100%);
       box-shadow: 0 4px 8px rgba(178, 44, 44, 0.7);
     }
+
+    @media (max-width: 768px) {
+      .settings-container {
+        margin: 16px 10px;
+        padding: 16px;
+      }
+
+      .settings-header {
+        font-size: 24px;
+        margin-bottom: 16px;
+      }
+
+      .settings-section {
+        margin-bottom: 16px;
+        padding: 14px;
+      }
+
+      .settings-section-title {
+        font-size: 17px;
+      }
+
+      .setting-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+
+      .setting-control {
+        width: 100%;
+        justify-content: space-between;
+      }
+
+      .slider {
+        width: min(100%, 240px);
+      }
+    }
   </style>
   <!-- Hide scrollbar but keep functionality -->
   <style>
