@@ -16,20 +16,27 @@
   <link rel="stylesheet" href="css/battle-attack-names.css" />
   <link rel="stylesheet" href="css/battle-equipped-ultimate.css" />
   <style>
+    :root {
+      --battle-unit-size: clamp(46px, 7.2vw, 70px);
+      --battle-speed-marker-size: clamp(28px, 4.2vw, 40px);
+      --battle-speed-marker-acting-size: clamp(34px, 5vw, 48px);
+      --battle-speed-track-height: clamp(36px, 5.2vw, 50px);
+    }
+
     /* CRITICAL: Force unit sizing to prevent oversized units */
     .battle-unit {
       position: absolute !important;
-      width: 70px !important;
-      height: 70px !important;
+      width: var(--battle-unit-size) !important;
+      height: var(--battle-unit-size) !important;
       transform: translate(-50%, -50%) !important;
     }
     .unit-sprite {
-      width: 70px !important;
-      height: 70px !important;
-      min-width: 70px !important;
-      min-height: 70px !important;
-      max-width: 70px !important;
-      max-height: 70px !important;
+      width: var(--battle-unit-size) !important;
+      height: var(--battle-unit-size) !important;
+      min-width: var(--battle-unit-size) !important;
+      min-height: var(--battle-unit-size) !important;
+      max-width: var(--battle-unit-size) !important;
+      max-height: var(--battle-unit-size) !important;
       overflow: hidden !important;
     }
     .unit-sprite img {
@@ -45,28 +52,28 @@
       top: 30px !important;
       left: 5% !important;
       width: 90% !important;
-      height: 50px !important;
+      height: var(--battle-speed-track-height) !important;
       max-height: 80px !important;
       overflow: visible !important;
     }
     .speed-marker {
       position: absolute !important;
-      width: 40px !important;
-      height: 40px !important;
-      min-width: 40px !important;
-      min-height: 40px !important;
-      max-width: 40px !important;
-      max-height: 40px !important;
+      width: var(--battle-speed-marker-size) !important;
+      height: var(--battle-speed-marker-size) !important;
+      min-width: var(--battle-speed-marker-size) !important;
+      min-height: var(--battle-speed-marker-size) !important;
+      max-width: var(--battle-speed-marker-size) !important;
+      max-height: var(--battle-speed-marker-size) !important;
       overflow: hidden !important;
       transform: translateX(-50%) !important;
     }
     .speed-marker.acting {
-      width: 48px !important;
-      height: 48px !important;
-      min-width: 48px !important;
-      min-height: 48px !important;
-      max-width: 48px !important;
-      max-height: 48px !important;
+      width: var(--battle-speed-marker-acting-size) !important;
+      height: var(--battle-speed-marker-acting-size) !important;
+      min-width: var(--battle-speed-marker-acting-size) !important;
+      min-height: var(--battle-speed-marker-acting-size) !important;
+      max-width: var(--battle-speed-marker-acting-size) !important;
+      max-height: var(--battle-speed-marker-acting-size) !important;
     }
     .speed-marker img {
       width: 100% !important;

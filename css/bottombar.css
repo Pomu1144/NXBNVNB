@@ -35,7 +35,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 30px;
+  gap: clamp(6px, 2vw, 30px);
+  padding: 0 clamp(8px, 2vw, 20px);
+  box-sizing: border-box;
   border: 0px solid transparent !important;
   outline: 0px solid transparent !important;
   pointer-events: auto !important;
@@ -128,6 +130,49 @@
 .hud-button:hover::after {
   opacity: 1;
   transform: translateX(-50%) translateY(-5px);
+}
+
+@media (max-width: 1024px) {
+  .bottom-bar {
+    height: 72px !important;
+  }
+
+  .hud-button {
+    width: 58px !important;
+    height: 58px !important;
+    min-width: 58px !important;
+    min-height: 58px !important;
+    max-width: 58px !important;
+    max-height: 58px !important;
+    border-width: 2px;
+  }
+
+  .hud-button::after {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .bottom-bar {
+    height: 64px !important;
+  }
+
+  .bottom-bar-content {
+    justify-content: flex-start;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .hud-button {
+    width: 50px !important;
+    height: 50px !important;
+    min-width: 50px !important;
+    min-height: 50px !important;
+    max-width: 50px !important;
+    max-height: 50px !important;
+  }
 }
 
 /* KILL ALL RED BORDERS GLOBALLY */
