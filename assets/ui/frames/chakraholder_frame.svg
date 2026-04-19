@@ -1,0 +1,24 @@
+<svg width="500" height="500" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="goldGradient" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#FFD700;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#DAA520;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#B8860B;stop-opacity:1" />
+    </radialGradient>
+  </defs>
+
+  <!-- Outer ring -->
+  <circle cx="250" cy="250" r="240" fill="url(#goldGradient)" />
+
+  <!-- Inner shadow ring -->
+  <circle cx="250" cy="250" r="220" fill="#8B5A00" />
+
+  <!-- Inner bright ring -->
+  <circle cx="250" cy="250" r="205" fill="#FFD700" />
+
+  <!-- Cut out center -->
+  <circle cx="250" cy="250" r="190" fill="transparent" />
+
+  <!-- Decorative element at bottom -->
+  <polygon points="250,410 265,430 250,440 235,430" fill="#DAA520" stroke="#8B5A00" stroke-width="2"/>
+</svg>

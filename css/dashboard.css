@@ -744,7 +744,31 @@
 }
 
 .banner-button.full-width {
-  grid-column: 1 / -1; /* Span both columns */
+  grid-column: 1 / -1;
+}
+
+/* Arena button — full-width image banner */
+.banner-button.arena {
+  grid-column: 1 / -1;
+  padding: 0;
+  background: none;
+  border: none;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.banner-button.arena:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.1);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.7), 0 0 20px rgba(212,175,55,0.3);
+}
+
+.banner-btn-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 6px;
+  pointer-events: none;
 }
 
 .banner-button-text {

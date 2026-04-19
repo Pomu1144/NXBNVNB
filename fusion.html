@@ -9,12 +9,110 @@
   <link rel="stylesheet" href="css/bottombar.css" />
 </head>
 <body class="page-fusion">
-  <div id="fusion-bg"></div>
+  <div id="full-bg"></div>
+
+  <!-- ==================== MAIN FUSION UI ==================== -->
   <main class="fusion-content">
     <h1 class="page-title">FUSION</h1>
-    <section id="fusion-root"></section>
+
+    <div id="fusion-root" class="fusion-layout">
+
+      <!-- ---- Left: Available Recipes ---- -->
+      <section class="fusion-recipes-panel">
+        <h2 class="panel-title">Fusion Recipes</h2>
+        <div id="fusions-grid" class="fusions-grid"></div>
+      </section>
+
+      <!-- ---- Right: Active Fusion Workspace ---- -->
+      <section class="fusion-workspace-panel">
+
+        <!-- Unit Slots -->
+        <div class="fusion-slots-row">
+          <div class="fusion-slot-wrapper">
+            <div id="slot-1" class="fusion-slot">
+              <div class="slot-placeholder">
+                <div class="slot-icon">+</div>
+                <div class="slot-label">Select Unit 1</div>
+              </div>
+            </div>
+            <div id="info-1" class="fusion-slot-info"></div>
+          </div>
+
+          <div class="fusion-plus-sign">+</div>
+
+          <div class="fusion-slot-wrapper">
+            <div id="slot-2" class="fusion-slot">
+              <div class="slot-placeholder">
+                <div class="slot-icon">+</div>
+                <div class="slot-label">Select Unit 2</div>
+              </div>
+            </div>
+            <div id="info-2" class="fusion-slot-info"></div>
+          </div>
+
+          <div class="fusion-arrow-sign">→</div>
+
+          <div class="fusion-slot-wrapper">
+            <div id="result-slot" class="fusion-slot result-slot">
+              <div class="slot-placeholder">
+                <div class="slot-icon">?</div>
+                <div class="slot-label">Result</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Requirements -->
+        <div id="fusion-requirements" class="fusion-requirements" style="display:none;">
+          <h3 class="requirements-title">Requirements</h3>
+          <div id="requirements-grid" class="requirements-grid"></div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="fusion-actions">
+          <button id="btn-fuse" class="fusion-btn fuse-btn" disabled>Fuse</button>
+          <button id="btn-clear" class="fusion-btn clear-btn">Clear</button>
+        </div>
+
+      </section>
+    </div>
   </main>
 
+  <!-- ==================== UNIT SELECTOR MODAL ==================== -->
+  <div id="unit-selector-modal" class="modal-overlay" aria-hidden="true">
+    <div class="modal-panel">
+      <div class="modal-header">
+        <h2 class="modal-title">Select Unit</h2>
+        <div class="modal-filters">
+          <input type="text" id="unit-search" class="modal-search" placeholder="Search by name…">
+          <select id="tier-filter" class="modal-tier-filter">
+            <option value="">All Tiers</option>
+            <option value="3S">3★</option>
+            <option value="4S">4★</option>
+            <option value="5S">5★</option>
+            <option value="6S">6★</option>
+            <option value="6SB">6★B</option>
+            <option value="7S">7★</option>
+          </select>
+        </div>
+      </div>
+      <div id="units-grid" class="units-grid"></div>
+      <div class="modal-footer">
+        <button id="modal-cancel" class="fusion-btn clear-btn">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== FUSION SUCCESS MODAL ==================== -->
+  <div id="fusion-success-modal" class="modal-overlay success-modal" aria-hidden="true">
+    <div class="modal-panel success-panel">
+      <h2 class="success-title">Fusion Complete!</h2>
+      <div id="success-content" class="success-content"></div>
+      <button id="success-close" class="fusion-btn fuse-btn">Awesome!</button>
+    </div>
+  </div>
+
+  <!-- ==================== BOTTOM NAV ==================== -->
   <div class="bottom-bar">
     <div class="bottom-bar-content">
       <button class="hud-button" id="btn-village" aria-label="Village"><img src="assets/icons/village_btm_btn.png" alt="Village"></button>
@@ -32,6 +130,8 @@
   <script src="https://cdn.jsdelivr.net/npm/howler@2.2.4/dist/howler.min.js"></script>
   <script src="js/audio-manager.js"></script>
   <script src="js/resources.js"></script>
+  <script src="js/character_inv.js?v=3"></script>
+  <script src="js/progression.js"></script>
   <script src="js/fusion.js"></script>
   <script src="js/navigation.js"></script>
 </body>

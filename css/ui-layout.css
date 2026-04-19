@@ -227,7 +227,7 @@
 
 .banner-button.arena {
   background:
-    url('../assets/ui/arena_banner_btn.png') center/cover no-repeat,
+    url('../assets/6_icon/arena_banner_btn.png') center/cover no-repeat,
     linear-gradient(135deg, rgba(61, 48, 32, 0.85), rgba(90, 74, 47, 0.9));
 }
 
