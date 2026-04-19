@@ -43,7 +43,7 @@ body {
 /* --- PAGE-SPECIFIC BACKGROUNDS --- */
 .page-missions #full-bg {
   position: fixed;
-  background-image: url("../assets/2_backgrounds/mission_bg.gif");
+  background-image: url("../assets/mission_bg.gif");
   filter: brightness(0.75);
 }
 
