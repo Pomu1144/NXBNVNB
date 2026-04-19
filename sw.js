@@ -1,20 +1,21 @@
 const CACHE = 'blazing-shell-v1';
+const BASE = new URL('./', self.location.href).pathname;
 const SHELL = [
-  '/index.html',
-  '/village.html',
-  '/battle.html',
-  '/characters.html',
-  '/summon.html',
-  '/fusion.html',
-  '/shop.html',
-  '/missions.html',
-  '/teams.html',
-  '/inventory.html',
-  '/resources.html',
-  '/settings.html',
-  '/arena.html',
-  '/tools.html',
-];
+  'index.html',
+  'village.html',
+  'battle.html',
+  'characters.html',
+  'summon.html',
+  'fusion.html',
+  'shop.html',
+  'missions.html',
+  'teams.html',
+  'inventory.html',
+  'resources.html',
+  'settings.html',
+  'arena.html',
+  'tools.html',
+].map(f => BASE + f);
 
 self.addEventListener('install', e => {
   e.waitUntil(
@@ -37,7 +38,8 @@ self.addEventListener('fetch', e => {
   if (e.request.method !== 'GET' || url.origin !== location.origin) return;
 
   // Large binary assets — network only, no cache bloat
-  if (url.pathname.startsWith('/assets/') || url.pathname.startsWith('/data/') || url.pathname.startsWith('/animations/')) {
+  const rel = url.pathname.slice(BASE.length);
+  if (rel.startsWith('assets/') || rel.startsWith('data/') || rel.startsWith('animations/')) {
     return;
   }
 
