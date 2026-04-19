@@ -699,3 +699,217 @@ body.page-fusion {
     grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
   }
 }
+
+/* ---------- Layout (HTML uses these class names) ---------- */
+.fusion-layout {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 30px;
+  align-items: start;
+}
+
+@media (max-width: 1024px) {
+  .fusion-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.fusion-recipes-panel {
+  background: rgba(12, 12, 16, 0.6);
+  border: 2px solid rgba(217, 179, 98, 0.15);
+  border-radius: 16px;
+  padding: 24px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.fusion-workspace-panel {
+  background: rgba(12, 12, 16, 0.6);
+  border: 2px solid rgba(217, 179, 98, 0.15);
+  border-radius: 16px;
+  padding: 30px;
+}
+
+.panel-title {
+  font-family: "Cinzel", serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--gold);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin: 0 0 16px;
+  text-align: center;
+}
+
+/* ---------- Fusion Slots Row ---------- */
+.fusion-slots-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+
+.fusion-slot-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.fusion-slot-info {
+  width: 180px;
+  padding: 10px 12px;
+  background: rgba(10, 10, 15, 0.6);
+  border: 1px solid rgba(217, 179, 98, 0.15);
+  border-radius: 8px;
+  font-size: 0.8rem;
+  color: #eee6d1;
+  min-height: 48px;
+  text-align: center;
+}
+
+/* ---------- Slot separator signs ---------- */
+.fusion-plus-sign,
+.fusion-arrow-sign {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--gold);
+  text-shadow: 0 0 15px rgba(217, 179, 98, 0.6);
+  flex-shrink: 0;
+  user-select: none;
+}
+
+/* ---------- Result slot alias ---------- */
+.result-slot {
+  border-color: rgba(255, 215, 0, 0.3);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4), 0 0 30px rgba(255, 215, 0, 0.1);
+  cursor: default;
+}
+
+/* ---------- Button aliases (HTML uses fusion-btn / fuse-btn / clear-btn) ---------- */
+.fusion-btn {
+  padding: 14px 36px;
+  font-family: "Cinzel", serif;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border: 2px solid;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fuse-btn {
+  background: var(--btn-gold);
+  border-color: var(--gold);
+  color: var(--ink);
+  box-shadow: 0 4px 16px rgba(217, 179, 98, 0.3);
+}
+
+.fuse-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(217, 179, 98, 0.5);
+  filter: brightness(1.1);
+}
+
+.fuse-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  filter: grayscale(60%);
+}
+
+.clear-btn {
+  background: var(--btn-dark);
+  border-color: var(--btn-border);
+  color: #eee6d1;
+}
+
+.clear-btn:hover:not(:disabled) {
+  border-color: rgba(217, 179, 98, 0.4);
+  background: rgba(32, 32, 36, 0.8);
+}
+
+/* ---------- Modal overlay (HTML uses modal-overlay, not .modal) ---------- */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(10, 10, 10, 0.85);
+  backdrop-filter: blur(8px);
+  z-index: 2000;
+}
+
+.modal-overlay.open {
+  display: flex;
+}
+
+/* ---------- Modal structure ---------- */
+.modal-header {
+  margin-bottom: 20px;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: center;
+  padding-top: 16px;
+  border-top: 1px solid rgba(217, 179, 98, 0.15);
+  margin-top: 16px;
+}
+
+/* Input/select aliases (HTML uses modal-search / modal-tier-filter) */
+.modal-search,
+.modal-tier-filter {
+  flex: 1;
+  padding: 10px 14px;
+  background: rgba(10, 10, 15, 0.8);
+  border: 1px solid rgba(217, 179, 98, 0.2);
+  border-radius: 8px;
+  font-family: "Cinzel", serif;
+  font-size: 0.9rem;
+  color: #eee6d1;
+}
+
+.modal-search::placeholder {
+  color: rgba(238, 230, 209, 0.4);
+}
+
+/* ---------- Success modal content ---------- */
+.success-content {
+  padding: 20px;
+  background: rgba(10, 10, 15, 0.6);
+  border: 2px solid rgba(255, 215, 0, 0.3);
+  border-radius: 12px;
+  margin-bottom: 24px;
+  text-align: center;
+  color: #eee6d1;
+}
+
+/* ---------- Recipes grid tweak for narrow panel ---------- */
+.fusion-recipes-panel .fusions-grid {
+  grid-template-columns: 1fr;
+}
+
+/* ---------- Slot size on mobile ---------- */
+@media (max-width: 600px) {
+  .fusion-slot {
+    width: 120px;
+    height: 160px;
+  }
+
+  .fusion-slots-row {
+    gap: 8px;
+  }
+
+  .fusion-plus-sign,
+  .fusion-arrow-sign {
+    font-size: 1.4rem;
+  }
+}
