@@ -364,8 +364,11 @@
         stats = window.LimitBreak.applyLimitBreakToStats(stats, inst.limitBreakLevel);
       }
 
-      // Calculate power: Health + Attack + Speed
-      const power = (stats.hp || 0) + (stats.atk || 0) + (stats.speed || 0);
+      // Calculate power: Health + Attack + Speed + equipped card bonus
+      const cardBonus = (window.CardSystem && inst.equippedJutsu)
+        ? window.CardSystem.getEquippedCardsPowerContribution(inst.equippedJutsu)
+        : 0;
+      const power = (stats.hp || 0) + (stats.atk || 0) + (stats.speed || 0) + cardBonus;
 
       // Save power data for sync with Tools page
       if (inst.uid) {
@@ -426,8 +429,11 @@
     } else {
       const s = c.statsBase || {};
 
-      // Calculate power: Health + Attack + Speed
-      const power = (s.hp || 0) + (s.atk || 0) + (s.speed || 0);
+      // Calculate power: Health + Attack + Speed + equipped card bonus
+      const cardBonus2 = (window.CardSystem && inst.equippedJutsu)
+        ? window.CardSystem.getEquippedCardsPowerContribution(inst.equippedJutsu)
+        : 0;
+      const power = (s.hp || 0) + (s.atk || 0) + (s.speed || 0) + cardBonus2;
 
       // Save power data for sync with Tools page
       if (inst.uid) {
@@ -1795,12 +1801,21 @@
   let currentSlotType = null; // Track which type of slot was clicked ('jutsu', 'ultimate', or 'equipment')
   let currentSlotNumber = null; // Track equipment slot number (1-5)
 
-  // Load jutsu cards JSON
+  // Load jutsu cards JSON — prefers CardSystem (which already loaded cards.json),
+  // falls back to direct fetch if CardSystem isn't ready yet.
   async function loadJutsuCards() {
     try {
-      const response = await fetch('data/jutsu_cards.json');
-      const data = await response.json();
-      jutsuCardsData = data.cards || [];
+      // Give CardSystem a brief window to finish its own async load
+      if (window.CardSystem && !window.CardSystem.isLoaded()) {
+        await window.CardSystem.loadCardsData();
+      }
+      if (window.CardSystem && window.CardSystem.isLoaded()) {
+        jutsuCardsData = window.CardSystem.getAllCards();
+      } else {
+        const response = await fetch('data/cards.json');
+        const data = await response.json();
+        jutsuCardsData = data.cards || [];
+      }
       console.log('[Jutsu Equipment] Loaded', jutsuCardsData.length, 'jutsu cards');
     } catch (error) {
       console.error('[Jutsu Equipment] Failed to load jutsu cards:', error);
@@ -1842,6 +1857,14 @@
     const equipped = getEquippedJutsu(uid);
     if (!equipped) return;
 
+    const resolvePath = window.CardSystem
+      ? window.CardSystem.resolveCardPath
+      : (p => p);
+
+    const getLevel = window.CardSystem
+      ? window.CardSystem.getCardLevel
+      : () => 1;
+
     // Render jutsu slots
     ['jutsu1', 'jutsu2', 'jutsu3'].forEach(slotName => {
       const slotBtn = document.querySelector(`.jutsu-slot[data-slot="${slotName}"]`);
@@ -1850,11 +1873,23 @@
       const icon = slotBtn.querySelector('.jutsu-slot-icon');
       const cardId = equipped[slotName];
 
+      // Remove any old level badge
+      slotBtn.querySelectorAll('.jutsu-slot-level').forEach(el => el.remove());
+
       if (cardId) {
         const card = jutsuCardsData.find(c => c.id === cardId);
         if (card && icon) {
-          icon.src = card.icon;
+          icon.src = resolvePath(card.icon);
           icon.style.display = 'block';
+          icon.title = card.jutsuName || card.name;
+
+          // Add level badge
+          const maxLv = window.CardSystem ? window.CardSystem.getCardMaxLevel(card) : 70;
+          const curLv = getLevel(cardId);
+          const badge = document.createElement('div');
+          badge.className = 'jutsu-slot-level';
+          badge.textContent = `${curLv}`;
+          slotBtn.appendChild(badge);
         }
       } else if (icon) {
         icon.src = '';
@@ -1867,12 +1902,20 @@
     if (ultimateSlot) {
       const icon = ultimateSlot.querySelector('.ultimate-slot-icon');
       const cardId = equipped.ultimate;
+      ultimateSlot.querySelectorAll('.jutsu-slot-level').forEach(el => el.remove());
 
       if (cardId) {
         const card = jutsuCardsData.find(c => c.id === cardId);
         if (card && icon) {
-          icon.src = card.icon;
+          icon.src = resolvePath(card.icon);
           icon.style.display = 'block';
+          icon.title = card.jutsuName || card.name;
+
+          const curLv = getLevel(cardId);
+          const badge = document.createElement('div');
+          badge.className = 'jutsu-slot-level';
+          badge.textContent = `${curLv}`;
+          ultimateSlot.appendChild(badge);
         }
       } else if (icon) {
         icon.src = '';
@@ -1891,23 +1934,19 @@
       if (cardId) {
         const card = jutsuCardsData.find(c => c.id === cardId);
         if (card) {
-          // Clear slot content
-          equipSlot.innerHTML = '';
-
-          // Create and add card image
-          const cardImg = document.createElement('img');
-          cardImg.src = card.fullArt || card.icon;
-          cardImg.alt = card.name;
-          cardImg.style.width = '100%';
-          cardImg.style.height = '100%';
-          cardImg.style.objectFit = 'cover';
-          cardImg.onerror = () => { cardImg.src = card.icon; };
-
-          equipSlot.appendChild(cardImg);
+          const curLv = getLevel(cardId);
+          const maxLv = window.CardSystem ? window.CardSystem.getCardMaxLevel(card) : 70;
+          const imgSrc = resolvePath(card.fullArt || card.icon);
+          const iconSrc = resolvePath(card.icon);
+          equipSlot.innerHTML = `
+            <img src="${imgSrc}" alt="${card.name}"
+                 style="width:100%;height:100%;object-fit:cover;"
+                 onerror="this.src='${iconSrc}';">
+            <div class="equip-slot-level">Lv ${curLv}</div>
+          `;
           equipSlot.classList.add('filled');
         }
       } else {
-        // Restore empty slot
         equipSlot.innerHTML = `
           <div class="tools-slot-empty">
             <div class="tools-slot-label">Slot ${i}</div>
@@ -1964,12 +2003,13 @@
       const card = jutsuCardsData.find(c => c.id === cardId);
       if (!card) return;
 
+      const resolvePath = window.CardSystem ? window.CardSystem.resolveCardPath : (p => p);
       const option = document.createElement('div');
       option.className = 'replacement-option';
       option.dataset.slot = slotName;
       option.innerHTML = `
-        <img src="${card.icon}" alt="${card.name}">
-        <span class="replacement-option-name">${card.name}</span>
+        <img src="${resolvePath(card.icon)}" alt="${card.name}" onerror="this.src='${card.icon}';">
+        <span class="replacement-option-name">${card.jutsuName || card.name}</span>
       `;
 
       option.addEventListener('click', () => {
@@ -1989,17 +2029,178 @@
     pendingCardToEquip = null;
   }
 
+  /* ========== Card Detail Modal ========== */
+  const CARD_DETAIL_MODAL = document.getElementById('card-detail-modal');
+
+  let _detailCardId  = null;
+  let _detailSlotName = null;
+  let _detailUid     = null;
+
+  function openCardDetailModal(uid, cardId, slotName) {
+    if (!CARD_DETAIL_MODAL) return;
+    const card = jutsuCardsData.find(c => c.id === cardId);
+    if (!card) return;
+
+    _detailCardId  = cardId;
+    _detailSlotName = slotName;
+    _detailUid     = uid;
+
+    const resolvePath = window.CardSystem ? window.CardSystem.resolveCardPath : (p => p);
+    const curLv  = window.CardSystem ? window.CardSystem.getCardLevel(cardId) : 1;
+    const maxLv  = window.CardSystem ? window.CardSystem.getCardMaxLevel(card) : 70;
+    const stats  = window.CardSystem
+      ? window.CardSystem.getCardCurrentStats(card)
+      : (card.stats || {});
+    const nextStats = (window.CardSystem && curLv < maxLv)
+      ? window.CardSystem.getCardStatsAtLevel(card, curLv + 1)
+      : null;
+
+    const artSrc  = resolvePath(card.fullArt || card.icon);
+    const iconSrc = resolvePath(card.icon);
+    const isMaxLv = curLv >= maxLv;
+
+    function statRow(label, cur, nxt) {
+      const arrow = (!isMaxLv && nxt !== undefined && nxt > cur)
+        ? `<span class="cd-stat-next"> → ${nxt}</span>` : '';
+      return `<div class="cd-stat-row"><span class="cd-stat-label">${label}</span><span class="cd-stat-val">${cur}${arrow}</span></div>`;
+    }
+
+    CARD_DETAIL_MODAL.innerHTML = `
+      <div class="card-detail-panel">
+        <div class="card-detail-art-wrap">
+          <img class="card-detail-art" src="${artSrc}" alt="${card.name}"
+               onerror="this.src='${iconSrc}';">
+          <img class="card-detail-icon-overlay" src="${iconSrc}" alt="${card.jutsuName || card.name}"
+               onerror="this.style.display='none';">
+        </div>
+        <div class="card-detail-body">
+          <div class="card-detail-jutsu-name">${card.jutsuName || card.name}</div>
+          <div class="card-detail-card-name">${card.name}</div>
+          <div class="card-detail-level-row">
+            <span class="cd-lv-label">Lv</span>
+            <span class="cd-lv-val">${curLv}</span>
+            <span class="cd-lv-sep">/</span>
+            <span class="cd-lv-max">${maxLv}</span>
+            ${isMaxLv ? '<span class="cd-lv-max-badge">MAX</span>' : ''}
+          </div>
+          <div class="card-detail-stats">
+            ${statRow('HP',  stats.hp,  nextStats?.hp)}
+            ${statRow('ATK', stats.atk, nextStats?.atk)}
+            ${statRow('DEF', stats.def, nextStats?.def)}
+            ${statRow('CP',  stats.cp,  nextStats?.cp)}
+            <div class="cd-stat-row"><span class="cd-stat-label">CRI</span><span class="cd-stat-val">${stats.cri}</span></div>
+            <div class="cd-stat-row"><span class="cd-stat-label">EVA</span><span class="cd-stat-val">${stats.eva}</span></div>
+          </div>
+          <div class="card-detail-actions">
+            ${isMaxLv
+              ? '<button class="btn-cd btn-cd-lvup" disabled>MAX LEVEL</button>'
+              : '<button class="btn-cd btn-cd-lvup" id="btn-card-lvup">Level Up (+1)</button>'}
+            <button class="btn-cd btn-cd-unequip" id="btn-card-unequip">Unequip</button>
+            <button class="btn-cd btn-cd-close" id="btn-card-detail-close">Close</button>
+          </div>
+        </div>
+      </div>
+    `;
+
+    // Wire buttons
+    const btnLvUp = CARD_DETAIL_MODAL.querySelector('#btn-card-lvup');
+    if (btnLvUp) {
+      btnLvUp.addEventListener('click', () => {
+        if (!window.CardSystem) return;
+        const result = window.CardSystem.levelUpCard(_detailCardId, 1);
+        if (result.ok) {
+          renderJutsuSlots(_detailUid);
+          openCardDetailModal(_detailUid, _detailCardId, _detailSlotName);
+          // Refresh power display
+          if (typeof renderStatusTab === 'function') {
+            const charModal = document.getElementById('char-modal');
+            const uid2 = charModal?.dataset?.currentUid;
+            if (uid2 && window.InventoryChar) {
+              const inst = window.InventoryChar.getByUid(uid2);
+              // Trigger re-render of status tab to update POW
+              const statusTab = document.querySelector('[data-tab="status"]');
+              if (statusTab && statusTab.classList.contains('active')) {
+                // simulate re-render by dispatching a synthetic re-open event
+                document.dispatchEvent(new CustomEvent('card-leveled', { detail: { uid: uid2 } }));
+              }
+            }
+          }
+        } else {
+          alert('Card is already at max level!');
+        }
+      });
+    }
+
+    const btnUnequip = CARD_DETAIL_MODAL.querySelector('#btn-card-unequip');
+    if (btnUnequip) {
+      btnUnequip.addEventListener('click', () => {
+        if (!_detailUid || !_detailSlotName) return;
+        const equipped = getEquippedJutsu(_detailUid);
+        if (equipped) {
+          equipped[_detailSlotName] = null;
+          saveEquippedJutsu(_detailUid, equipped);
+          renderJutsuSlots(_detailUid);
+        }
+        closeCardDetailModal();
+      });
+    }
+
+    const btnClose = CARD_DETAIL_MODAL.querySelector('#btn-card-detail-close');
+    if (btnClose) {
+      btnClose.addEventListener('click', closeCardDetailModal);
+    }
+
+    CARD_DETAIL_MODAL.setAttribute('aria-hidden', 'false');
+  }
+
+  function closeCardDetailModal() {
+    if (CARD_DETAIL_MODAL) CARD_DETAIL_MODAL.setAttribute('aria-hidden', 'true');
+    _detailCardId = null;
+    _detailSlotName = null;
+    _detailUid = null;
+  }
+
+  if (CARD_DETAIL_MODAL) {
+    CARD_DETAIL_MODAL.addEventListener('click', e => {
+      if (e.target === CARD_DETAIL_MODAL) closeCardDetailModal();
+    });
+  }
+
+  /* ===== Modified slot click — filled slot → detail, empty → inventory ===== */
+  function getSlotNameForElement(slotEl) {
+    if (slotEl.classList.contains('jutsu-slot')) return slotEl.dataset.slot;          // jutsu1/2/3
+    if (slotEl.classList.contains('ultimate-slot')) return 'ultimate';
+    if (slotEl.classList.contains('tools-equipment-slot')) return `equipment${slotEl.dataset.slot}`;
+    return null;
+  }
+
   function handleSlotClick(event) {
     event.preventDefault();
     event.stopPropagation();
-    openCardInventory(event.currentTarget);
+    const slotEl = event.currentTarget;
+    const charModal = document.getElementById('char-modal');
+    const uid = charModal?.dataset?.currentUid;
+
+    if (uid) {
+      const slotName = getSlotNameForElement(slotEl);
+      if (slotName) {
+        const equipped = getEquippedJutsu(uid);
+        if (equipped && equipped[slotName]) {
+          // Slot is filled — open card detail
+          openCardDetailModal(uid, equipped[slotName], slotName);
+          return;
+        }
+      }
+    }
+    // Slot is empty — open card inventory
+    openCardInventory(slotEl);
   }
 
   function handleSlotKeydown(event) {
     if (event.key === 'Enter' || event.key === ' ') {
       event.preventDefault();
       event.stopPropagation();
-      openCardInventory(event.currentTarget);
+      handleSlotClick(event);
     }
   }
 
@@ -2062,27 +2263,36 @@
       return;
     }
 
-    // Filter cards based on eligibility
-    const eligibleCards = jutsuCardsData.filter(card => {
-      // If no eligibleCharacters array, or it's empty, card is available to all
-      if (!card.eligibleCharacters || card.eligibleCharacters.length === 0) {
-        return true;
-      }
-      // Check if this character is in the eligible list
-      return card.eligibleCharacters.includes(characterId);
-    });
+    // Filter cards based on eligibility (first-name match)
+    const eligibleCards = window.CardSystem
+      ? window.CardSystem.filterCardsForCharacter(jutsuCardsData, characterId)
+      : jutsuCardsData.filter(card => {
+          if (!card.eligibleCharacters || card.eligibleCharacters.length === 0) return true;
+          const charFirst = characterId.split('_')[0].toLowerCase();
+          return card.eligibleCharacters.some(eid => eid.split('_')[0].toLowerCase() === charFirst);
+        });
 
     console.log(`[Jutsu Equipment] Showing ${eligibleCards.length} eligible cards for ${characterId}`);
 
+    const resolvePath = window.CardSystem ? window.CardSystem.resolveCardPath : (p => p);
+    const getCardLv  = window.CardSystem ? window.CardSystem.getCardLevel  : () => 1;
+
     // Render jutsu cards (only eligible ones)
     CARD_GRID.innerHTML = eligibleCards.map(card => {
+      const iconSrc = resolvePath(card.icon);
+      const fullSrc = resolvePath(card.fullArt || card.icon);
+      const jutsuName = card.jutsuName || card.name;
+      const curLv = getCardLv(card.id);
+      const maxLv = window.CardSystem ? window.CardSystem.getCardMaxLevel(card) : 70;
       return `
         <div class="card-inventory-item" data-card-id="${card.id}">
-          <img src="${card.fullArt || card.icon}"
-               alt="${card.name}"
-               onerror="this.src='${card.icon}';">
-          <div style="position:absolute;bottom:4px;left:4px;right:4px;background:rgba(0,0,0,0.8);padding:4px;font-size:10px;text-align:center;border-radius:4px;">
-            ${card.name}
+          <img src="${fullSrc}" alt="${card.name}" onerror="this.src='${iconSrc}';">
+          <div class="card-inv-icon-wrap">
+            <img class="card-inv-jutsu-icon" src="${iconSrc}" alt="${jutsuName}" onerror="this.style.display='none';">
+          </div>
+          <div class="card-inv-label">
+            <div class="card-inv-jutsu-name">${jutsuName}</div>
+            <div class="card-inv-level">Lv ${curLv} / ${maxLv}</div>
           </div>
         </div>
       `;
@@ -2123,12 +2333,16 @@
       return;
     }
 
-    // Validate character eligibility
+    // Validate character eligibility (first-name match)
     const charInstance = window.InventoryChar?.getByUid(uid);
     const characterId = charInstance?.charId;
 
     if (card.eligibleCharacters && card.eligibleCharacters.length > 0) {
-      if (!card.eligibleCharacters.includes(characterId)) {
+      const charFirst = characterId ? characterId.split('_')[0].toLowerCase() : '';
+      const isEligible = card.eligibleCharacters.some(eid =>
+        eid.split('_')[0].toLowerCase() === charFirst
+      );
+      if (!isEligible) {
         alert(`${card.name} cannot be equipped by this character!\n\nThis jutsu is restricted to specific characters.`);
         console.warn(`[Jutsu Equipment] ${characterId} cannot equip ${card.name}`);
         return;
@@ -2195,26 +2409,15 @@
   }
 
   // Delegate click handler for equipment slots AND jutsu/ultimate slots
+  // Uses smart handleSlotClick: filled → card detail, empty → card inventory
   document.addEventListener('click', (e) => {
-    const equipmentSlot = e.target.closest('.equipment-slot, .tools-equipment-slot');
-    const jutsuSlot = e.target.closest('.jutsu-slot');
-    const ultimateSlot = e.target.closest('.ultimate-slot');
-
-    if (equipmentSlot) {
-      console.log('[Jutsu Equipment] Equipment slot clicked');
+    const slotEl = e.target.closest('.tools-equipment-slot, .jutsu-slot, .ultimate-slot');
+    if (slotEl) {
       e.preventDefault();
       e.stopPropagation();
-      openCardInventory(equipmentSlot);
-    } else if (jutsuSlot) {
-      console.log('[Jutsu Equipment] Jutsu slot clicked');
-      e.preventDefault();
-      e.stopPropagation();
-      openCardInventory(jutsuSlot);
-    } else if (ultimateSlot) {
-      console.log('[Jutsu Equipment] Ultimate slot clicked');
-      e.preventDefault();
-      e.stopPropagation();
-      openCardInventory(ultimateSlot);
+      // Simulate a currentTarget for handleSlotClick
+      const fakeEvent = { preventDefault: ()=>{}, stopPropagation: ()=>{}, currentTarget: slotEl };
+      handleSlotClick(fakeEvent);
     }
   });
 
