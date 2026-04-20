@@ -228,13 +228,15 @@
       // Random variance (90% - 110%)
       damage *= (0.9 + Math.random() * 0.2);
 
-      // Critical hit chance (15% base + buff bonus + passive bonus)
-      const critChance = 0.15 + (attackerBuffs.critRatePercent / 100) + (attackerPassives.critRatePercent / 100);
+      // Critical hit chance (15% base + card bonus + buff bonus + passive bonus)
+      const cardCritRate = (attacker.stats?.critRate || 0) / 100;
+      const critChance = 0.15 + cardCritRate + (attackerBuffs.critRatePercent / 100) + (attackerPassives.critRatePercent / 100);
       const isCritical = Math.random() < critChance;
 
       if (isCritical) {
-        // Critical damage multiplier (1.5x base + buff bonus + passive bonus)
-        const critMultiplier = 1.5 + (attackerBuffs.critDmgPercent / 100) + (attackerPassives.critDmgPercent / 100);
+        // Critical damage multiplier (1.5x base + card bonus + buff bonus + passive bonus)
+        const cardCritDmg = (attacker.stats?.critDmg || 0) / 100;
+        const critMultiplier = 1.5 + cardCritDmg + (attackerBuffs.critDmgPercent / 100) + (attackerPassives.critDmgPercent / 100);
         damage *= critMultiplier;
       }
 

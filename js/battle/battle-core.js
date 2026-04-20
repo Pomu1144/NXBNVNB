@@ -141,14 +141,16 @@
       const missionId = localStorage.getItem("currentMissionId") || "m_001";
       const preferredDifficulty = localStorage.getItem("currentDifficulty") || "C";
 
-      const [missions, enemies, characters] = await Promise.all([
+      const [missions, enemies, characters, jutsuCards] = await Promise.all([
         fetchJSON("data/missions.json", []),
         fetchJSON("data/enemies.json", []),
-        fetchJSON("data/characters.json", [])
+        fetchJSON("data/characters.json", []),
+        fetchJSON("data/jutsu_cards.json", { cards: [] })
       ]);
 
       this.enemiesData = enemies;
       this.charactersData = Array.isArray(characters) ? characters : (characters?.characters || []);
+      this.jutsuCardsData = jutsuCards?.cards || [];
       this.missionData = (Array.isArray(missions) ? missions : []).find(m => m.id === missionId);
 
       if (!this.missionData) {
@@ -677,7 +679,28 @@
       return { portrait: fbPortrait, full: fbFull };
     },
 
+    _getCardStatBonuses(equippedJutsu) {
+      const out = { hp: 0, atk: 0, def: 0, spd: 0, critRate: 0, critDmg: 0, evaRate: 0 };
+      if (!equippedJutsu || !this.jutsuCardsData?.length) return out;
+      for (let i = 1; i <= 5; i++) {
+        const cardId = equippedJutsu[`equipment${i}`];
+        if (!cardId) continue;
+        const card = this.jutsuCardsData.find(c => c.id === cardId);
+        if (!card?.stats) continue;
+        out.hp       += card.stats.hp_bonus        || 0;
+        out.atk      += card.stats.atk_bonus       || 0;
+        out.def      += card.stats.def_bonus       || 0;
+        out.spd      += card.stats.spd_bonus       || 0;
+        out.critRate += card.stats.crit_rate_bonus || 0;
+        out.critDmg  += card.stats.crit_dmg_bonus  || 0;
+        out.evaRate  += card.stats.eva_rate_bonus  || 0;
+      }
+      return out;
+    },
+
     computeStatsFallback(char, instance) {
+      const cardBonuses = this._getCardStatBonuses(instance?.equippedJutsu);
+
       if (window.Progression?.computeEffectiveStatsLoreTier) {
         const tier = instance?.tierCode || char?.starMinCode || "5S";
         const lvl = Number(instance?.level || 1);
@@ -687,23 +710,29 @@
         const s = result?.stats || {};
 
         return {
-          hp: s.hp ?? 1000,
-          maxHP: s.hp ?? 1000,
-          atk: s.atk ?? 100,
-          def: s.def ?? 50,
-          speed: s.speed ?? 100,
-          chakraBase: s.chakra ?? 10
+          hp:          (s.hp    ?? 1000) + cardBonuses.hp,
+          maxHP:       (s.hp    ?? 1000) + cardBonuses.hp,
+          atk:         (s.atk   ?? 100)  + cardBonuses.atk,
+          def:         (s.def   ?? 50)   + cardBonuses.def,
+          speed:       (s.speed ?? 100)  + cardBonuses.spd,
+          chakraBase:  s.chakra ?? 10,
+          critRate:    cardBonuses.critRate,
+          critDmg:     cardBonuses.critDmg,
+          evaRate:     cardBonuses.evaRate,
         };
       }
 
       const base = char?.statsMax || char?.statsBase || {};
       return {
-        hp: base.hp || 1000,
-        maxHP: base.hp || 1000,
-        atk: base.atk || 100,
-        def: base.def || 50,
-        speed: base.speed || 100,
-        chakraBase: base.chakra || 10
+        hp:         (base.hp    || 1000) + cardBonuses.hp,
+        maxHP:      (base.hp    || 1000) + cardBonuses.hp,
+        atk:        (base.atk   || 100)  + cardBonuses.atk,
+        def:        (base.def   || 50)   + cardBonuses.def,
+        speed:      (base.speed || 100)  + cardBonuses.spd,
+        chakraBase: base.chakra || 10,
+        critRate:   cardBonuses.critRate,
+        critDmg:    cardBonuses.critDmg,
+        evaRate:    cardBonuses.evaRate,
       };
     },
 
