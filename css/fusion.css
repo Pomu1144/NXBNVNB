@@ -703,9 +703,35 @@ body.page-fusion {
 /* ---------- Layout (HTML uses these class names) ---------- */
 .fusion-layout {
   display: grid;
-  grid-template-columns: 320px 1fr;
-  gap: 30px;
+  grid-template-columns: 300px 1fr;
+  gap: 24px;
   align-items: start;
+}
+
+/* Compact recipe-card previews inside the narrow left panel */
+.fusion-recipes-panel .fusion-preview {
+  gap: 6px;
+  padding: 10px 6px;
+}
+.fusion-recipes-panel .fusion-preview-unit {
+  width: 72px;
+  min-height: auto;
+}
+.fusion-recipes-panel .fusion-preview-icon {
+  width: 60px;
+  height: 60px;
+}
+.fusion-recipes-panel .fusion-preview-name {
+  font-size: 0.7rem;
+  max-width: 68px;
+}
+.fusion-recipes-panel .fusion-preview-version {
+  font-size: 0.6rem;
+  width: 68px;
+}
+.fusion-recipes-panel .fusion-preview-plus,
+.fusion-recipes-panel .fusion-preview-arrow {
+  font-size: 1rem;
 }
 
 @media (max-width: 1024px) {

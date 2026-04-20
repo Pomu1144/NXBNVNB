@@ -308,6 +308,10 @@
       // Bench units accumulate chakra (equivalent to guarding/passing)
       this.accumulateBenchChakra(core);
 
+      // Decrement skill cooldowns each speed-bar cycle
+      if (this.currentUnit.jutsuCooldown > 0)    this.currentUnit.jutsuCooldown--;
+      if (this.currentUnit.ultimateCooldown > 0) this.currentUnit.ultimateCooldown--;
+
       // Reset gauge to 0 after acting
       this.currentUnit.speedGauge = 0;
       this.currentUnit.isPaused = false;
@@ -378,22 +382,28 @@
       const unitLevel = window.BattleCombat?.getUnitLevel(unit) ?? 1;
       const unitTier = window.BattleCombat?.getTierForUnit(unit) ?? "3S";
 
-      // Check if skills are usable (both unlocked AND have enough chakra)
-      const canJutsu = !!skills.jutsu && jutsuUnlocked && unit.chakra >= jCost;
-      const canUlt = !!skills.ultimate && ultUnlocked && unit.chakra >= uCost;
-      const canSecret = !!skills.secret && secretUnlocked && unit.chakra >= sCost;
+      // Check cooldowns
+      const jutsuOnCd  = (unit.jutsuCooldown    || 0) > 0;
+      const ultOnCd    = (unit.ultimateCooldown  || 0) > 0;
+
+      // Check if skills are usable (unlocked, enough chakra, not on cooldown)
+      const canJutsu  = !!skills.jutsu   && jutsuUnlocked  && unit.chakra >= jCost && !jutsuOnCd;
+      const canUlt    = !!skills.ultimate && ultUnlocked    && unit.chakra >= uCost && !ultOnCd;
+      const canSecret = !!skills.secret  && secretUnlocked && unit.chakra >= sCost;
 
       // Update button states
       core.dom.btnJutsu?.classList.toggle("disabled", !canJutsu);
       core.dom.btnUltimate?.classList.toggle("disabled", !canUlt);
       core.dom.btnSecret?.classList.toggle("disabled", !canSecret);
 
-      // Update skill names with lock status
+      // Update skill names with lock / cooldown status
       if (core.dom.actionSkillName) {
         if (!skills.jutsu) {
           core.dom.actionSkillName.textContent = "—";
         } else if (!jutsuUnlocked) {
           core.dom.actionSkillName.textContent = `LOCKED (Lv ${unitLevel}/20)`;
+        } else if (jutsuOnCd) {
+          core.dom.actionSkillName.textContent = `${skills.jutsu.meta.name} — CD ${unit.jutsuCooldown}`;
         } else {
           core.dom.actionSkillName.textContent = `${skills.jutsu.meta.name} (${jCost})`;
         }
@@ -403,6 +413,8 @@
           core.dom.actionUltName.textContent = "—";
         } else if (!ultUnlocked) {
           core.dom.actionUltName.textContent = `LOCKED (Lv ${unitLevel}/50)`;
+        } else if (ultOnCd) {
+          core.dom.actionUltName.textContent = `${skills.ultimate.meta.name} — CD ${unit.ultimateCooldown}`;
         } else {
           core.dom.actionUltName.textContent = `${skills.ultimate.meta.name} (${uCost})`;
         }
@@ -453,6 +465,14 @@
         return;
       }
 
+      // Check cooldown
+      if ((this.currentUnit.jutsuCooldown || 0) > 0) {
+        const cd = this.currentUnit.jutsuCooldown;
+        console.warn(`[Turns] Jutsu on cooldown: ${cd} turn(s) remaining`);
+        if (window.BattleNarrator) window.BattleNarrator.narrate(`Jutsu on cooldown! (${cd} turn${cd > 1 ? 's' : ''} left)`, core);
+        return;
+      }
+
       // Check if jutsu is unlocked
       const jutsuUnlocked = window.BattleCombat?.isJutsuUnlocked(this.currentUnit) ?? true;
       if (!jutsuUnlocked) {
@@ -470,6 +490,8 @@
         return;
       }
 
+      // Set cooldown: 2-3 turns on speed bar
+      this.currentUnit.jutsuCooldown = 2 + Math.floor(Math.random() * 2); // 2 or 3
       core.queuedAction = "jutsu";
       this.highlightEnemies(core);
       console.log("[Turns] Jutsu mode - click or drag to enemy");
@@ -486,6 +508,14 @@
       // Check if ultimate exists
       if (!skills?.ultimate) {
         console.warn("[Turns] No ultimate skill available");
+        return;
+      }
+
+      // Check cooldown
+      if ((this.currentUnit.ultimateCooldown || 0) > 0) {
+        const cd = this.currentUnit.ultimateCooldown;
+        console.warn(`[Turns] Ultimate on cooldown: ${cd} turn(s) remaining`);
+        if (window.BattleNarrator) window.BattleNarrator.narrate(`Ultimate on cooldown! (${cd} turn${cd > 1 ? 's' : ''} left)`, core);
         return;
       }
 
@@ -507,6 +537,8 @@
         return;
       }
 
+      // Set cooldown: 5-6 turns on speed bar
+      this.currentUnit.ultimateCooldown = 5 + Math.floor(Math.random() * 2); // 5 or 6
       core.queuedAction = "ultimate";
       this.highlightEnemies(core);
       console.log("[Turns] Ultimate mode - will hit all enemies");

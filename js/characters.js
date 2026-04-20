@@ -343,6 +343,28 @@
   wireTabs();
 
   /* ---------- STATUS tab ---------- */
+
+  // Sum stat bonuses from all equipped equipment-slot cards
+  function getEquippedCardBonuses(uid) {
+    const out = { hp: 0, atk: 0, def: 0, spd: 0, critRate: 0, critDmg: 0, evaRate: 0 };
+    const inst = window.InventoryChar?.getByUid(uid);
+    if (!inst?.equippedJutsu) return out;
+    for (let i = 1; i <= 5; i++) {
+      const cardId = inst.equippedJutsu[`equipment${i}`];
+      if (!cardId || !window.getJutsuCardById) continue;
+      const card = window.getJutsuCardById(cardId);
+      if (!card?.stats) continue;
+      out.hp       += card.stats.hp_bonus        || 0;
+      out.atk      += card.stats.atk_bonus       || 0;
+      out.def      += card.stats.def_bonus       || 0;
+      out.spd      += card.stats.spd_bonus       || 0;
+      out.critRate += card.stats.crit_rate_bonus || 0;
+      out.critDmg  += card.stats.crit_dmg_bonus  || 0;
+      out.evaRate  += card.stats.eva_rate_bonus  || 0;
+    }
+    return out;
+  }
+
   async function renderStatusTab(c, inst, tier) {
     // Compute stats (with limit break if applicable)
     let stats = {};
@@ -364,17 +386,23 @@
         stats = window.LimitBreak.applyLimitBreakToStats(stats, inst.limitBreakLevel);
       }
 
-      // Calculate power: Health + Attack + Speed
-      const power = (stats.hp || 0) + (stats.atk || 0) + (stats.speed || 0);
+      // Apply equipped card stat bonuses
+      const cardBonuses = getEquippedCardBonuses(inst.uid);
+      const displayHp  = (stats.hp    || 0) + cardBonuses.hp;
+      const displayAtk = (stats.atk   || 0) + cardBonuses.atk;
+      const displaySpd = (stats.speed || 0) + cardBonuses.spd;
+
+      // Calculate power: Health + Attack + Speed (including card bonuses)
+      const power = displayHp + displayAtk + displaySpd;
 
       // Save power data for sync with Tools page
       if (inst.uid) {
         const powerData = {
           uid: inst.uid,
           power: power,
-          health: stats.hp || 0,
-          attack: stats.atk || 0,
-          speed: stats.speed || 0,
+          health: displayHp,
+          attack: displayAtk,
+          speed: displaySpd,
           lastUpdated: Date.now()
         };
         localStorage.setItem(`character_power_${inst.uid}`, JSON.stringify(powerData));
@@ -393,17 +421,29 @@
         <div class="stat-row">
           <img src="assets/ui/healthstat.png" alt="Health" />
           <span class="stat-label">Health</span>
-          <span class="stat-value">${stats.hp ?? "-"}</span>
+          <span class="stat-value">${displayHp}</span>
         </div>
         <div class="stat-row">
           <img src="assets/ui/strengthstat.png" alt="Attack" />
           <span class="stat-label">Attack</span>
-          <span class="stat-value">${stats.atk ?? "-"}</span>
+          <span class="stat-value">${displayAtk}</span>
         </div>
         <div class="stat-row">
           <img src="assets/ui/speedstat.png" alt="Speed" />
           <span class="stat-label">Speed</span>
-          <span class="stat-value">${stats.speed ?? "-"}</span>
+          <span class="stat-value">${displaySpd}</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">Critical Rate</span>
+          <span class="stat-value">${cardBonuses.critRate.toFixed(2)}%</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">Critical Damage</span>
+          <span class="stat-value">${cardBonuses.critDmg.toFixed(1)}%</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">Evasion Rate</span>
+          <span class="stat-value">${cardBonuses.evaRate.toFixed(2)}%</span>
         </div>
         <div class="equip-divider">
           <img src="assets/Stats/equipdiv.png" alt="" onerror="this.style.display='none';" />
@@ -426,17 +466,23 @@
     } else {
       const s = c.statsBase || {};
 
-      // Calculate power: Health + Attack + Speed
-      const power = (s.hp || 0) + (s.atk || 0) + (s.speed || 0);
+      // Apply equipped card stat bonuses
+      const cardBonuses2 = getEquippedCardBonuses(inst.uid);
+      const displayHp2  = (s.hp    || 0) + cardBonuses2.hp;
+      const displayAtk2 = (s.atk   || 0) + cardBonuses2.atk;
+      const displaySpd2 = (s.speed || 0) + cardBonuses2.spd;
+
+      // Calculate power: Health + Attack + Speed (including card bonuses)
+      const power = displayHp2 + displayAtk2 + displaySpd2;
 
       // Save power data for sync with Tools page
       if (inst.uid) {
         const powerData = {
           uid: inst.uid,
           power: power,
-          health: s.hp || 0,
-          attack: s.atk || 0,
-          speed: s.speed || 0,
+          health: displayHp2,
+          attack: displayAtk2,
+          speed: displaySpd2,
           lastUpdated: Date.now()
         };
         localStorage.setItem(`character_power_${inst.uid}`, JSON.stringify(powerData));
@@ -455,17 +501,29 @@
         <div class="stat-row">
           <img src="assets/ui/healthstat.png" alt="Health" />
           <span class="stat-label">Health</span>
-          <span class="stat-value">${s.hp ?? "-"}</span>
+          <span class="stat-value">${displayHp2}</span>
         </div>
         <div class="stat-row">
           <img src="assets/ui/strengthstat.png" alt="Attack" />
           <span class="stat-label">Attack</span>
-          <span class="stat-value">${s.atk ?? "-"}</span>
+          <span class="stat-value">${displayAtk2}</span>
         </div>
         <div class="stat-row">
           <img src="assets/ui/speedstat.png" alt="Speed" />
           <span class="stat-label">Speed</span>
-          <span class="stat-value">${s.speed ?? "-"}</span>
+          <span class="stat-value">${displaySpd2}</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">Critical Rate</span>
+          <span class="stat-value">${cardBonuses2.critRate.toFixed(2)}%</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">Critical Damage</span>
+          <span class="stat-value">${cardBonuses2.critDmg.toFixed(1)}%</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">Evasion Rate</span>
+          <span class="stat-value">${cardBonuses2.evaRate.toFixed(2)}%</span>
         </div>
         <div class="equip-divider">
           <img src="assets/Stats/equipdiv.png" alt="" onerror="this.style.display='none';" />
@@ -2210,33 +2268,31 @@
     });
   }
 
-  // Delegate click handler for equipment slots AND jutsu/ultimate slots
-  document.addEventListener('click', (e) => {
+  function handleSlotOpen(e) {
     const equipmentSlot = e.target.closest('.equipment-slot, .tools-equipment-slot');
     const jutsuSlot = e.target.closest('.jutsu-slot');
     const ultimateSlot = e.target.closest('.ultimate-slot');
 
     if (equipmentSlot) {
-      console.log('[Jutsu Equipment] Equipment slot clicked');
-      e.preventDefault();
-      e.stopPropagation();
+      e.preventDefault(); e.stopPropagation();
       openCardInventory(equipmentSlot);
     } else if (jutsuSlot) {
-      console.log('[Jutsu Equipment] Jutsu slot clicked');
-      e.preventDefault();
-      e.stopPropagation();
+      e.preventDefault(); e.stopPropagation();
       openCardInventory(jutsuSlot);
     } else if (ultimateSlot) {
-      console.log('[Jutsu Equipment] Ultimate slot clicked');
-      e.preventDefault();
-      e.stopPropagation();
+      e.preventDefault(); e.stopPropagation();
       openCardInventory(ultimateSlot);
     }
-  });
+  }
 
-  // Expose function to render jutsu slots when character modal opens
+  // Single click opens selector; double-click also reopens it (useful on mobile / after equip)
+  document.addEventListener('click', handleSlotOpen);
+  document.addEventListener('dblclick', handleSlotOpen);
+
+  // Expose card lookup and slot renderer globally
   window.renderJutsuSlots = renderJutsuSlots;
   window.refreshJutsuEquipmentBindings = refreshSlotBindings;
+  window.getJutsuCardById = (id) => jutsuCardsData.find(c => c.id === id);
 
   // Load jutsu cards on init
   loadJutsuCards();

@@ -84,7 +84,16 @@
         "naruto_2136",
         "naruto_2137",
         "naruto_2138"
-      ]
+      ],
+      "stats": {
+        "hp_bonus": 827,
+        "atk_bonus": 148,
+        "def_bonus": 61,
+        "spd_bonus": 9,
+        "crit_rate_bonus": 0.99,
+        "crit_dmg_bonus": 2.8,
+        "eva_rate_bonus": 0.15
+      }
     },
     {
       "id": "rasengan",
@@ -163,7 +172,16 @@
         "naruto_2136",
         "naruto_2137",
         "naruto_2138"
-      ]
+      ],
+      "stats": {
+        "hp_bonus": 879,
+        "atk_bonus": 142,
+        "def_bonus": 97,
+        "spd_bonus": 11,
+        "crit_rate_bonus": 0.56,
+        "crit_dmg_bonus": 2.6,
+        "eva_rate_bonus": 0.35
+      }
     },
     {
       "id": "big_ball_rasengan",
@@ -235,7 +253,16 @@
         "naruto_2136",
         "naruto_2137",
         "naruto_2138"
-      ]
+      ],
+      "stats": {
+        "hp_bonus": 808,
+        "atk_bonus": 126,
+        "def_bonus": 95,
+        "spd_bonus": 8,
+        "crit_rate_bonus": 1.93,
+        "crit_dmg_bonus": 6.2,
+        "eva_rate_bonus": 0.63
+      }
     },
     {
       "id": "vermillion_rasengan",
@@ -307,7 +334,16 @@
         "naruto_2136",
         "naruto_2137",
         "naruto_2138"
-      ]
+      ],
+      "stats": {
+        "hp_bonus": 729,
+        "atk_bonus": 191,
+        "def_bonus": 111,
+        "spd_bonus": 5,
+        "crit_rate_bonus": 2.02,
+        "crit_dmg_bonus": 3.0,
+        "eva_rate_bonus": 0.63
+      }
     },
     {
       "id": "rasenshuriken",
@@ -379,7 +415,16 @@
         "naruto_2136",
         "naruto_2137",
         "naruto_2138"
-      ]
+      ],
+      "stats": {
+        "hp_bonus": 1484,
+        "atk_bonus": 339,
+        "def_bonus": 177,
+        "spd_bonus": 15,
+        "crit_rate_bonus": 2.31,
+        "crit_dmg_bonus": 8.8,
+        "eva_rate_bonus": 0.72
+      }
     },
     {
       "id": "planetary_rasengan",
@@ -440,7 +485,16 @@
         "naruto_2136",
         "naruto_2137",
         "naruto_2138"
-      ]
+      ],
+      "stats": {
+        "hp_bonus": 676,
+        "atk_bonus": 187,
+        "def_bonus": 111,
+        "spd_bonus": 5,
+        "crit_rate_bonus": 1.96,
+        "crit_dmg_bonus": 5.2,
+        "eva_rate_bonus": 1.46
+      }
     },
     {
       "id": "tailed_beast_bomb",
@@ -512,7 +566,16 @@
         "naruto_2136",
         "naruto_2137",
         "naruto_2138"
-      ]
+      ],
+      "stats": {
+        "hp_bonus": 1587,
+        "atk_bonus": 320,
+        "def_bonus": 220,
+        "spd_bonus": 14,
+        "crit_rate_bonus": 4.49,
+        "crit_dmg_bonus": 11.2,
+        "eva_rate_bonus": 1.72
+      }
     },
     {
       "id": "flying_raijin_rasengan",
@@ -544,7 +607,16 @@
         "minato_2100",
         "minato_2101",
         "minato_2118"
-      ]
+      ],
+      "stats": {
+        "hp_bonus": 795,
+        "atk_bonus": 169,
+        "def_bonus": 105,
+        "spd_bonus": 6,
+        "crit_rate_bonus": 0.59,
+        "crit_dmg_bonus": 3.4,
+        "eva_rate_bonus": 0.43
+      }
     },
     {
       "id": "flying_thunder_god",
@@ -576,7 +648,16 @@
         "minato_2100",
         "minato_2101",
         "minato_2118"
-      ]
+      ],
+      "stats": {
+        "hp_bonus": 540,
+        "atk_bonus": 179,
+        "def_bonus": 115,
+        "spd_bonus": 6,
+        "crit_rate_bonus": 1.26,
+        "crit_dmg_bonus": 4.7,
+        "eva_rate_bonus": 1.25
+      }
     },
     {
       "id": "Summoning Jutsu: Bring Down the House Jutsu",
@@ -608,7 +689,16 @@
         "minato_2100",
         "minato_2101",
         "minato_2118"
-      ]
+      ],
+      "stats": {
+        "hp_bonus": 583,
+        "atk_bonus": 214,
+        "def_bonus": 82,
+        "spd_bonus": 8,
+        "crit_rate_bonus": 1.84,
+        "crit_dmg_bonus": 6.2,
+        "eva_rate_bonus": 1.03
+      }
     },
     {
       "id": "Sage_Mode_Massive_Rasengan",
@@ -634,7 +724,16 @@
         "jiraiya_636",
         "jiraiya_861",
         "jiraiya_2077"
-      ]
+      ],
+      "stats": {
+        "hp_bonus": 1273,
+        "atk_bonus": 455,
+        "def_bonus": 231,
+        "spd_bonus": 12,
+        "crit_rate_bonus": 3.6,
+        "crit_dmg_bonus": 7.4,
+        "eva_rate_bonus": 0.92
+      }
     },
     {
       "id": "massive_rasengan",
@@ -660,7 +759,16 @@
         "jiraiya_636",
         "jiraiya_861",
         "jiraiya_2077"
-      ]
+      ],
+      "stats": {
+        "hp_bonus": 638,
+        "atk_bonus": 176,
+        "def_bonus": 103,
+        "spd_bonus": 10,
+        "crit_rate_bonus": 2.19,
+        "crit_dmg_bonus": 6.7,
+        "eva_rate_bonus": 0.34
+      }
     },
     {
       "id": "fire_bomb_jutsu",
@@ -686,7 +794,16 @@
         "jiraiya_636",
         "jiraiya_861",
         "jiraiya_2077"
-      ]
+      ],
+      "stats": {
+        "hp_bonus": 516,
+        "atk_bonus": 200,
+        "def_bonus": 85,
+        "spd_bonus": 9,
+        "crit_rate_bonus": 0.63,
+        "crit_dmg_bonus": 7.5,
+        "eva_rate_bonus": 0.85
+      }
     },
     {
       "id": "wild_lions_mane",
@@ -712,7 +829,16 @@
         "jiraiya_636",
         "jiraiya_861",
         "jiraiya_2077"
-      ]
+      ],
+      "stats": {
+        "hp_bonus": 867,
+        "atk_bonus": 200,
+        "def_bonus": 73,
+        "spd_bonus": 12,
+        "crit_rate_bonus": 1.29,
+        "crit_dmg_bonus": 7.5,
+        "eva_rate_bonus": 0.69
+      }
     },
     {
       "id": "sage_art_goemon",
@@ -738,7 +864,16 @@
         "jiraiya_636",
         "jiraiya_861",
         "jiraiya_2077"
-      ]
+      ],
+      "stats": {
+        "hp_bonus": 635,
+        "atk_bonus": 155,
+        "def_bonus": 75,
+        "spd_bonus": 9,
+        "crit_rate_bonus": 1.99,
+        "crit_dmg_bonus": 4.6,
+        "eva_rate_bonus": 0.88
+      }
     },
     {
       "id": "fireball_jutsu",
@@ -842,7 +977,16 @@
         "itachi_2096",
         "itachi_2199",
         "itachi_2200"
-      ]
+      ],
+      "stats": {
+        "hp_bonus": 685,
+        "atk_bonus": 176,
+        "def_bonus": 68,
+        "spd_bonus": 12,
+        "crit_rate_bonus": 0.68,
+        "crit_dmg_bonus": 2.3,
+        "eva_rate_bonus": 0.16
+      }
     },
     {
       "id": "phoenix_flower_jutsu",
@@ -946,7 +1090,16 @@
         "itachi_2096",
         "itachi_2199",
         "itachi_2200"
-      ]
+      ],
+      "stats": {
+        "hp_bonus": 821,
+        "atk_bonus": 160,
+        "def_bonus": 110,
+        "spd_bonus": 11,
+        "crit_rate_bonus": 1.69,
+        "crit_dmg_bonus": 4.3,
+        "eva_rate_bonus": 0.89
+      }
     },
     {
       "id": "dragon_flame_jutsu",
@@ -1050,7 +1203,16 @@
         "itachi_2096",
         "itachi_2199",
         "itachi_2200"
-      ]
+      ],
+      "stats": {
+        "hp_bonus": 739,
+        "atk_bonus": 184,
+        "def_bonus": 95,
+        "spd_bonus": 5,
+        "crit_rate_bonus": 1.86,
+        "crit_dmg_bonus": 2.7,
+        "eva_rate_bonus": 1.33
+      }
     },
     {
       "id": "chidori_sasuke",
@@ -1120,7 +1282,16 @@
         "sasuke_2139",
         "sasuke_2140",
         "sasuke_2141"
-      ]
+      ],
+      "stats": {
+        "hp_bonus": 1968,
+        "atk_bonus": 368,
+        "def_bonus": 248,
+        "spd_bonus": 15,
+        "crit_rate_bonus": 2.33,
+        "crit_dmg_bonus": 9.3,
+        "eva_rate_bonus": 0.91
+      }
     },
     {
       "id": "chidori_stream",
@@ -1178,7 +1349,16 @@
         "sasuke_2139",
         "sasuke_2140",
         "sasuke_2141"
-      ]
+      ],
+      "stats": {
+        "hp_bonus": 869,
+        "atk_bonus": 187,
+        "def_bonus": 92,
+        "spd_bonus": 7,
+        "crit_rate_bonus": 1.52,
+        "crit_dmg_bonus": 2.6,
+        "eva_rate_bonus": 0.94
+      }
     },
     {
       "id": "chidori_spear",
@@ -1236,7 +1416,16 @@
         "sasuke_2139",
         "sasuke_2140",
         "sasuke_2141"
-      ]
+      ],
+      "stats": {
+        "hp_bonus": 827,
+        "atk_bonus": 249,
+        "def_bonus": 98,
+        "spd_bonus": 8,
+        "crit_rate_bonus": 0.81,
+        "crit_dmg_bonus": 6.6,
+        "eva_rate_bonus": 0.81
+      }
     },
     {
       "id": "kirin",
@@ -1294,7 +1483,16 @@
         "sasuke_2139",
         "sasuke_2140",
         "sasuke_2141"
-      ]
+      ],
+      "stats": {
+        "hp_bonus": 1997,
+        "atk_bonus": 435,
+        "def_bonus": 150,
+        "spd_bonus": 15,
+        "crit_rate_bonus": 3.47,
+        "crit_dmg_bonus": 6.1,
+        "eva_rate_bonus": 0.73
+      }
     },
     {
       "id": "amaterasu_sasuke",
@@ -1354,7 +1552,16 @@
         "sasuke_2139",
         "sasuke_2140",
         "sasuke_2141"
-      ]
+      ],
+      "stats": {
+        "hp_bonus": 1514,
+        "atk_bonus": 361,
+        "def_bonus": 157,
+        "spd_bonus": 13,
+        "crit_rate_bonus": 4.63,
+        "crit_dmg_bonus": 14.5,
+        "eva_rate_bonus": 0.17
+      }
     },
     {
       "id": "blaze_release_kagutsuchi",
@@ -1414,7 +1621,16 @@
         "sasuke_2139",
         "sasuke_2140",
         "sasuke_2141"
-      ]
+      ],
+      "stats": {
+        "hp_bonus": 748,
+        "atk_bonus": 137,
+        "def_bonus": 108,
+        "spd_bonus": 7,
+        "crit_rate_bonus": 0.76,
+        "crit_dmg_bonus": 4.9,
+        "eva_rate_bonus": 0.82
+      }
     },
     {
       "id": "indras_arrow",
@@ -1449,7 +1665,16 @@
         "sasuke_2139",
         "sasuke_2140",
         "sasuke_2141"
-      ]
+      ],
+      "stats": {
+        "hp_bonus": 1471,
+        "atk_bonus": 435,
+        "def_bonus": 227,
+        "spd_bonus": 16,
+        "crit_rate_bonus": 4.89,
+        "crit_dmg_bonus": 14.3,
+        "eva_rate_bonus": 1.51
+      }
     },
     {
       "id": "chidori_kakashi",
@@ -1495,7 +1720,16 @@
         "kakashi_2091",
         "kakashi_2125",
         "kakashi_2126"
-      ]
+      ],
+      "stats": {
+        "hp_bonus": 853,
+        "atk_bonus": 171,
+        "def_bonus": 105,
+        "spd_bonus": 9,
+        "crit_rate_bonus": 1.3,
+        "crit_dmg_bonus": 6.0,
+        "eva_rate_bonus": 0.56
+      }
     },
     {
       "id": "lightning_blade",
@@ -1541,7 +1775,16 @@
         "kakashi_2091",
         "kakashi_2125",
         "kakashi_2126"
-      ]
+      ],
+      "stats": {
+        "hp_bonus": 764,
+        "atk_bonus": 235,
+        "def_bonus": 67,
+        "spd_bonus": 8,
+        "crit_rate_bonus": 0.95,
+        "crit_dmg_bonus": 4.0,
+        "eva_rate_bonus": 0.88
+      }
     },
     {
       "id": "purple_lightning",
@@ -1587,7 +1830,16 @@
         "kakashi_2091",
         "kakashi_2125",
         "kakashi_2126"
-      ]
+      ],
+      "stats": {
+        "hp_bonus": 617,
+        "atk_bonus": 176,
+        "def_bonus": 60,
+        "spd_bonus": 6,
+        "crit_rate_bonus": 1.92,
+        "crit_dmg_bonus": 2.4,
+        "eva_rate_bonus": 0.1
+      }
     },
     {
       "id": "water_dragon_jutsu_kakashi",
@@ -1645,7 +1897,16 @@
         "tobirama_2006",
         "tobirama_2007",
         "tobirama_2008"
-      ]
+      ],
+      "stats": {
+        "hp_bonus": 516,
+        "atk_bonus": 204,
+        "def_bonus": 64,
+        "spd_bonus": 8,
+        "crit_rate_bonus": 1.06,
+        "crit_dmg_bonus": 4.9,
+        "eva_rate_bonus": 0.81
+      }
     },
     {
       "id": "earth_wall",
@@ -1698,7 +1959,16 @@
         "hiruzen_798",
         "hiruzen_799",
         "hiruzen_2124"
-      ]
+      ],
+      "stats": {
+        "hp_bonus": 870,
+        "atk_bonus": 241,
+        "def_bonus": 75,
+        "spd_bonus": 12,
+        "crit_rate_bonus": 2.11,
+        "crit_dmg_bonus": 3.1,
+        "eva_rate_bonus": 0.15
+      }
     },
     {
       "id": "kamui",
@@ -1744,7 +2014,16 @@
         "kakashi_2091",
         "kakashi_2125",
         "kakashi_2126"
-      ]
+      ],
+      "stats": {
+        "hp_bonus": 1641,
+        "atk_bonus": 390,
+        "def_bonus": 204,
+        "spd_bonus": 16,
+        "crit_rate_bonus": 3.4,
+        "crit_dmg_bonus": 12.3,
+        "eva_rate_bonus": 1.35
+      }
     },
     {
       "id": "amaterasu_itachi",
@@ -1785,7 +2064,16 @@
         "itachi_2096",
         "itachi_2199",
         "itachi_2200"
-      ]
+      ],
+      "stats": {
+        "hp_bonus": 1861,
+        "atk_bonus": 325,
+        "def_bonus": 157,
+        "spd_bonus": 16,
+        "crit_rate_bonus": 4.18,
+        "crit_dmg_bonus": 13.0,
+        "eva_rate_bonus": 0.22
+      }
     },
     {
       "id": "tsukuyomi",
@@ -1826,7 +2114,16 @@
         "itachi_2096",
         "itachi_2199",
         "itachi_2200"
-      ]
+      ],
+      "stats": {
+        "hp_bonus": 1396,
+        "atk_bonus": 348,
+        "def_bonus": 218,
+        "spd_bonus": 17,
+        "crit_rate_bonus": 2.42,
+        "crit_dmg_bonus": 6.8,
+        "eva_rate_bonus": 0.93
+      }
     },
     {
       "id": "clone_great_explosion",
@@ -1867,7 +2164,16 @@
         "itachi_2096",
         "itachi_2199",
         "itachi_2200"
-      ]
+      ],
+      "stats": {
+        "hp_bonus": 538,
+        "atk_bonus": 233,
+        "def_bonus": 111,
+        "spd_bonus": 6,
+        "crit_rate_bonus": 0.6,
+        "crit_dmg_bonus": 8.0,
+        "eva_rate_bonus": 1.25
+      }
     },
     {
       "id": "water_severing_wave",
@@ -1890,7 +2196,16 @@
         "tobirama_2006",
         "tobirama_2007",
         "tobirama_2008"
-      ]
+      ],
+      "stats": {
+        "hp_bonus": 547,
+        "atk_bonus": 180,
+        "def_bonus": 70,
+        "spd_bonus": 11,
+        "crit_rate_bonus": 1.47,
+        "crit_dmg_bonus": 3.3,
+        "eva_rate_bonus": 0.6
+      }
     },
     {
       "id": "water_dragon_jutsu_tobirama",
@@ -1913,7 +2228,16 @@
         "tobirama_2006",
         "tobirama_2007",
         "tobirama_2008"
-      ]
+      ],
+      "stats": {
+        "hp_bonus": 530,
+        "atk_bonus": 162,
+        "def_bonus": 84,
+        "spd_bonus": 5,
+        "crit_rate_bonus": 2.47,
+        "crit_dmg_bonus": 3.6,
+        "eva_rate_bonus": 1.18
+      }
     },
     {
       "id": "flying_thunder_god_tobirama",
@@ -1936,7 +2260,16 @@
         "tobirama_2006",
         "tobirama_2007",
         "tobirama_2008"
-      ]
+      ],
+      "stats": {
+        "hp_bonus": 732,
+        "atk_bonus": 193,
+        "def_bonus": 87,
+        "spd_bonus": 12,
+        "crit_rate_bonus": 0.81,
+        "crit_dmg_bonus": 3.8,
+        "eva_rate_bonus": 1.45
+      }
     },
     {
       "id": "tandem_paper_bombs",
@@ -1959,7 +2292,16 @@
         "tobirama_2006",
         "tobirama_2007",
         "tobirama_2008"
-      ]
+      ],
+      "stats": {
+        "hp_bonus": 1793,
+        "atk_bonus": 488,
+        "def_bonus": 219,
+        "spd_bonus": 10,
+        "crit_rate_bonus": 4.24,
+        "crit_dmg_bonus": 5.6,
+        "eva_rate_bonus": 1.17
+      }
     },
     {
       "id": "deep_forest_emergence",
@@ -1987,7 +2329,16 @@
         "hashirama_2028",
         "hashirama_2057",
         "hashirama_2058"
-      ]
+      ],
+      "stats": {
+        "hp_bonus": 1714,
+        "atk_bonus": 435,
+        "def_bonus": 170,
+        "spd_bonus": 10,
+        "crit_rate_bonus": 4.88,
+        "crit_dmg_bonus": 5.8,
+        "eva_rate_bonus": 0.37
+      }
     },
     {
       "id": "wood_dragon_jutsu",
@@ -2015,7 +2366,16 @@
         "hashirama_2028",
         "hashirama_2057",
         "hashirama_2058"
-      ]
+      ],
+      "stats": {
+        "hp_bonus": 804,
+        "atk_bonus": 137,
+        "def_bonus": 103,
+        "spd_bonus": 8,
+        "crit_rate_bonus": 1.31,
+        "crit_dmg_bonus": 7.6,
+        "eva_rate_bonus": 0.85
+      }
     },
     {
       "id": "wooden_golem",
@@ -2043,7 +2403,16 @@
         "hashirama_2028",
         "hashirama_2057",
         "hashirama_2058"
-      ]
+      ],
+      "stats": {
+        "hp_bonus": 796,
+        "atk_bonus": 130,
+        "def_bonus": 99,
+        "spd_bonus": 6,
+        "crit_rate_bonus": 1.34,
+        "crit_dmg_bonus": 5.5,
+        "eva_rate_bonus": 0.78
+      }
     },
     {
       "id": "sand_coffin",
@@ -2075,7 +2444,16 @@
         "gaara_835",
         "gaara_879",
         "gaara_2127"
-      ]
+      ],
+      "stats": {
+        "hp_bonus": 633,
+        "atk_bonus": 172,
+        "def_bonus": 102,
+        "spd_bonus": 10,
+        "crit_rate_bonus": 0.98,
+        "crit_dmg_bonus": 4.4,
+        "eva_rate_bonus": 1.01
+      }
     },
     {
       "id": "sand_burial",
@@ -2107,7 +2485,16 @@
         "gaara_835",
         "gaara_879",
         "gaara_2127"
-      ]
+      ],
+      "stats": {
+        "hp_bonus": 653,
+        "atk_bonus": 237,
+        "def_bonus": 80,
+        "spd_bonus": 6,
+        "crit_rate_bonus": 0.52,
+        "crit_dmg_bonus": 5.7,
+        "eva_rate_bonus": 0.84
+      }
     },
     {
       "id": "grand_sand_mausoleum",
@@ -2139,7 +2526,16 @@
         "gaara_835",
         "gaara_879",
         "gaara_2127"
-      ]
+      ],
+      "stats": {
+        "hp_bonus": 1302,
+        "atk_bonus": 318,
+        "def_bonus": 218,
+        "spd_bonus": 13,
+        "crit_rate_bonus": 3.52,
+        "crit_dmg_bonus": 6.3,
+        "eva_rate_bonus": 0.7
+      }
     },
     {
       "id": "shield_of_sand",
@@ -2171,7 +2567,16 @@
         "gaara_835",
         "gaara_879",
         "gaara_2127"
-      ]
+      ],
+      "stats": {
+        "hp_bonus": 535,
+        "atk_bonus": 182,
+        "def_bonus": 83,
+        "spd_bonus": 9,
+        "crit_rate_bonus": 0.82,
+        "crit_dmg_bonus": 7.0,
+        "eva_rate_bonus": 1.06
+      }
     }
   ]
 }
