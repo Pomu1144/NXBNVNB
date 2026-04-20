@@ -347,25 +347,30 @@
   // Sum stat bonuses from all equipped equipment-slot cards
   function getEquippedCardBonuses(uid) {
     const out = { hp: 0, atk: 0, def: 0, spd: 0, critRate: 0, critDmg: 0, evaRate: 0 };
-    const inst = window.InventoryChar?.getByUid(uid);
-    if (!inst?.equippedJutsu) return out;
-    for (let i = 1; i <= 5; i++) {
-      const cardId = inst.equippedJutsu[`equipment${i}`];
-      if (!cardId || !window.getJutsuCardById) continue;
-      const card = window.getJutsuCardById(cardId);
-      if (!card?.stats) continue;
-      out.hp       += card.stats.hp_bonus        || 0;
-      out.atk      += card.stats.atk_bonus       || 0;
-      out.def      += card.stats.def_bonus       || 0;
-      out.spd      += card.stats.spd_bonus       || 0;
-      out.critRate += card.stats.crit_rate_bonus || 0;
-      out.critDmg  += card.stats.crit_dmg_bonus  || 0;
-      out.evaRate  += card.stats.eva_rate_bonus  || 0;
+    try {
+      const inst = window.InventoryChar?.getByUid(uid);
+      if (!inst?.equippedJutsu) return out;
+      for (let i = 1; i <= 5; i++) {
+        const cardId = inst.equippedJutsu[`equipment${i}`];
+        if (!cardId || !window.getJutsuCardById) continue;
+        const card = window.getJutsuCardById(cardId);
+        if (!card?.stats) continue;
+        out.hp       += Number(card.stats.hp_bonus  ?? card.stats.hp)        || 0;
+        out.atk      += Number(card.stats.atk_bonus ?? card.stats.atk)       || 0;
+        out.def      += Number(card.stats.def_bonus ?? card.stats.def)       || 0;
+        out.spd      += Number(card.stats.spd_bonus ?? card.stats.spd)       || 0;
+        out.critRate += Number(card.stats.crit_rate_bonus ?? card.stats.cri) || 0;
+        out.critDmg  += Number(card.stats.crit_dmg_bonus  ?? card.stats.critDmg) || 0;
+        out.evaRate  += Number(card.stats.eva_rate_bonus  ?? card.stats.eva) || 0;
+      }
+    } catch (e) {
+      console.error('[characters] getEquippedCardBonuses error:', e);
     }
     return out;
   }
 
   async function renderStatusTab(c, inst, tier) {
+    try {
     // Compute stats (with limit break if applicable)
     let stats = {};
     if (hasProg && window.Progression.computeEffectiveStatsLoreTier) {
@@ -414,10 +419,6 @@
       const totalPower = power + (unlockedAbilities * 30000);
 
       // Render stats
-      const hpBonusTag  = cardContrib.hp  > 0 ? `<span class="stat-card-bonus">(+${cardContrib.hp})</span>`  : '';
-      const atkBonusTag = cardContrib.atk > 0 ? `<span class="stat-card-bonus">(+${cardContrib.atk})</span>` : '';
-      const setBadge    = cardContrib.setBonus ? '<div class="set-bonus-badge">SET BONUS ACTIVE +30%</div>' : '';
-
       STATS_WRAP.innerHTML = `
         <div class="stats-divider">
           <img src="assets/Stats/statsdiv.png" alt="" onerror="this.style.display='none';" />
@@ -439,32 +440,16 @@
         </div>
         <div class="stat-row">
           <span class="stat-label">Critical Rate</span>
-          <span class="stat-value">${cardBonuses.critRate.toFixed(2)}%</span>
+          <span class="stat-value">${(+cardBonuses.critRate || 0).toFixed(2)}%</span>
         </div>
         <div class="stat-row">
           <span class="stat-label">Critical Damage</span>
-          <span class="stat-value">${cardBonuses.critDmg.toFixed(1)}%</span>
+          <span class="stat-value">${(+cardBonuses.critDmg || 0).toFixed(1)}%</span>
         </div>
         <div class="stat-row">
           <span class="stat-label">Evasion Rate</span>
-          <span class="stat-value">${cardBonuses.evaRate.toFixed(2)}%</span>
+          <span class="stat-value">${(+cardBonuses.evaRate || 0).toFixed(2)}%</span>
         </div>
-        <div class="stat-row stat-row-derived">
-          <span class="stat-derived-pip stat-cri-pip"></span>
-          <span class="stat-label">Critical Rate</span>
-          <span class="stat-value">${cardContrib.cri.toFixed(2)}%</span>
-        </div>
-        <div class="stat-row stat-row-derived">
-          <span class="stat-derived-pip stat-critdmg-pip"></span>
-          <span class="stat-label">Critical Damage</span>
-          <span class="stat-value">${cardContrib.critDmg.toFixed(1)}%</span>
-        </div>
-        <div class="stat-row stat-row-derived">
-          <span class="stat-derived-pip stat-eva-pip"></span>
-          <span class="stat-label">Evasion Rate</span>
-          <span class="stat-value">${cardContrib.eva.toFixed(2)}%</span>
-        </div>
-        ${setBadge}
         <div class="equip-divider">
           <img src="assets/Stats/equipdiv.png" alt="" onerror="this.style.display='none';" />
         </div>
@@ -514,10 +499,6 @@
       const totalPower = power + (unlockedAbilities * 30000);
 
       // Render stats
-      const hpBonusTag2  = cardContrib2.hp  > 0 ? `<span class="stat-card-bonus">(+${cardContrib2.hp})</span>`  : '';
-      const atkBonusTag2 = cardContrib2.atk > 0 ? `<span class="stat-card-bonus">(+${cardContrib2.atk})</span>` : '';
-      const setBadge2    = cardContrib2.setBonus ? '<div class="set-bonus-badge">SET BONUS ACTIVE +30%</div>' : '';
-
       STATS_WRAP.innerHTML = `
         <div class="stats-divider">
           <img src="assets/Stats/statsdiv.png" alt="" onerror="this.style.display='none';" />
@@ -539,32 +520,16 @@
         </div>
         <div class="stat-row">
           <span class="stat-label">Critical Rate</span>
-          <span class="stat-value">${cardBonuses2.critRate.toFixed(2)}%</span>
+          <span class="stat-value">${(+cardBonuses2.critRate || 0).toFixed(2)}%</span>
         </div>
         <div class="stat-row">
           <span class="stat-label">Critical Damage</span>
-          <span class="stat-value">${cardBonuses2.critDmg.toFixed(1)}%</span>
+          <span class="stat-value">${(+cardBonuses2.critDmg || 0).toFixed(1)}%</span>
         </div>
         <div class="stat-row">
           <span class="stat-label">Evasion Rate</span>
-          <span class="stat-value">${cardBonuses2.evaRate.toFixed(2)}%</span>
+          <span class="stat-value">${(+cardBonuses2.evaRate || 0).toFixed(2)}%</span>
         </div>
-        <div class="stat-row stat-row-derived">
-          <span class="stat-derived-pip stat-cri-pip"></span>
-          <span class="stat-label">Critical Rate</span>
-          <span class="stat-value">${cardContrib2.cri.toFixed(2)}%</span>
-        </div>
-        <div class="stat-row stat-row-derived">
-          <span class="stat-derived-pip stat-critdmg-pip"></span>
-          <span class="stat-label">Critical Damage</span>
-          <span class="stat-value">${cardContrib2.critDmg.toFixed(1)}%</span>
-        </div>
-        <div class="stat-row stat-row-derived">
-          <span class="stat-derived-pip stat-eva-pip"></span>
-          <span class="stat-label">Evasion Rate</span>
-          <span class="stat-value">${cardContrib2.eva.toFixed(2)}%</span>
-        </div>
-        ${setBadge2}
         <div class="equip-divider">
           <img src="assets/Stats/equipdiv.png" alt="" onerror="this.style.display='none';" />
         </div>
@@ -654,6 +619,10 @@
     }
 
     wireStatusButtons(c, inst, tier);
+    } catch (e) {
+      console.error('[characters] renderStatusTab error:', e);
+      if (STATS_WRAP) STATS_WRAP.innerHTML = `<div class="stat-row"><span class="stat-label" style="color:#f66">Error loading stats</span><span class="stat-value" style="color:#f66;font-size:11px">${e.message}</span></div>`;
+    }
   }
   window.renderStatusTab = renderStatusTab;
 
