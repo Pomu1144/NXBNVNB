@@ -1,264 +1,153 @@
 /* ============================================================
    js/battle/battle-passives.js — Character Passive Abilities Engine
    ------------------------------------------------------------
-   - Applies permanent character abilities when entering battle
-   - Handles stat bonuses, conditional effects, and turn-based triggers
-   - Integrates with BattleBuffs for timed effects
+   Applies permanent character abilities when entering battle.
+   Uses keyword matching against real ability names from characters.json
+   so that any ability name containing a known keyword gets an effect.
    ============================================================ */
 (() => {
   "use strict";
 
-  /**
-   * Passive ability patterns for parsing text descriptions
-   * Maps ability names to structured effects
-   */
-  const ABILITY_PATTERNS = {
-    // HP bonuses
-    "Never Give Up": {
-      type: "permanent_stat",
-      stats: { hp: 100, maxHP: 100 },
-      onTurnStart: { chakraRegenPercent: 10 }
-    },
+  // Checked in order; first match wins per ability.
+  // stats → applied once at battle start (permanent)
+  // turnStart → applied each turn (regen, chakra)
+  // special → stored in specialEffects (evasion, counter, immunity)
+  const KEYWORD_EFFECTS = [
+    // ── ATK ──────────────────────────────────────────────────────────────
+    { match: 'combination attack boost',      stats: { atkFlat: 120 } },
+    { match: 'attack boost',                  stats: { atkFlat: 100 } },
+    { match: 'damage boost against',          stats: { atkFlat: 80  } },
+    { match: 'attack reduction rate boost',   stats: { atkFlat: 60  } },
+    { match: 'slip damage rate boost',        stats: { atkFlat: 60  } },
+    { match: 'status ailment rate boost',     stats: { atkFlat: 50  } },
+    { match: 'chakra gauge reduction',        stats: { atkFlat: 50  } },
 
-    // Conditional ATK bonuses
-    "Shadow Clone Mastery": {
-      type: "conditional_stat",
-      condition: { stat: "hp", operator: ">", threshold: 0.5, relative: true },
-      stats: { atk: 150 }
-    },
+    // ── HP / HEAL ─────────────────────────────────────────────────────────
+    { match: 'health boost',                  stats: { hpFlat: 500 } },
+    { match: 'self-healing',                  turnStart: { healFlat: 150 } },
+    { match: 'health recovers',               turnStart: { healFlat: 80  } },
 
-    // Turn-based HP regeneration
-    "Nine Tails Chakra": {
-      type: "turn_regen",
-      onTurnStart: { healPercent: 5 }
-    },
+    // ── SPEED ─────────────────────────────────────────────────────────────
+    { match: 'speed boost',                   stats: { speedFlat: 30 } },
 
-    // Conditional damage reduction
-    "Uzumaki Resilience": {
-      type: "conditional_reduction",
-      condition: { stat: "hp", operator: "<", threshold: 0.3, relative: true },
-      effects: { damageReductionPercent: 15 }
-    },
+    // ── CRIT ──────────────────────────────────────────────────────────────
+    { match: 'combination critical rate boost', stats: { critRatePercent: 10 } },
+    { match: 'critical rate boost',             stats: { critRatePercent: 15 } },
 
-    // Sharingan abilities
-    "Sharingan Awakening": {
-      type: "permanent_stat",
-      stats: { critRatePercent: 20 },
-      special: { counterChance: 0.15 }
-    },
+    // ── DAMAGE REDUCTION ──────────────────────────────────────────────────
+    { match: 'reduce wisdom damage',          stats: { damageReductionPercent: 8  } },
+    { match: 'reduce bravery damage',         stats: { damageReductionPercent: 8  } },
+    { match: 'reduce heart damage',           stats: { damageReductionPercent: 8  } },
+    { match: 'reduce body damage',            stats: { damageReductionPercent: 8  } },
+    { match: 'reduce skill damage',           stats: { damageReductionPercent: 8  } },
+    { match: 'reduce damage',                 stats: { damageReductionPercent: 12 } },
+    { match: 'nullifies element affinity',    stats: { damageReductionPercent: 10 } },
 
-    "Chidori Mastery": {
-      type: "permanent_stat",
-      stats: { jutsuDamagePercent: 25 },
-      effects: { chakraCostReduction: 1 }
-    },
+    // ── CHAKRA ────────────────────────────────────────────────────────────
+    { match: '0 chakra req',                  stats: { chakraCostReduction: 4 } },
+    { match: 'chakra recovery when receiving', turnStart: { chakraRegen: 1 } },
+    { match: 'chakra recovers',               turnStart: { chakraRegen: 1 } },
 
-    "Avenger's Fury": {
-      type: "conditional_stat",
-      condition: { trigger: "ally_defeated" },
-      stats: { atk: 200 }
-    }
-  };
+    // ── EVASION / COUNTER ─────────────────────────────────────────────────
+    { match: 'substitution jutsu',            special: { evasionChance: 0.10 } },
+    { match: 'counter sensor',                special: { counterChance: 0.12 } },
+    { match: 'ignore substitution',           special: { ignoreEvasion: true } },
+    { match: 'nullifies immobilization',      special: { immuneImmobilize: true } },
+
+    // ── RESISTANCES (no direct combat stat, but logged) ───────────────────
+    { match: 'jutsu sealing resistance',            stats: {} },
+    { match: 'immobilization resistance',           stats: {} },
+    { match: 'attack reduction resistance',         stats: {} },
+    { match: 'slip damage resistance',              stats: {} },
+    { match: 'chakra recovery sealing resistance',  stats: {} },
+    { match: 'jutsu sealing rate boost',            stats: {} },
+    { match: 'immobilization rate boost',           stats: {} },
+  ];
+
+  function findKeywordEffect(abilityName) {
+    const lower = (abilityName || '').toLowerCase();
+    return KEYWORD_EFFECTS.find(ke => lower.includes(ke.match)) || null;
+  }
 
   const BattlePassives = {
-    /**
-     * Initialize passive abilities for a unit when entering battle
-     * @param {Object} unit - The combat unit
-     * @param {Object} core - BattleCore reference
-     */
     initializePassives(unit, core) {
-      if (!unit || !unit._ref?.base?.abilities) {
-        return;
-      }
+      if (!unit || !unit._ref?.base?.abilities) return;
 
       const abilities = unit._ref.base.abilities;
 
-      // Initialize passive effects storage
       if (!unit.passiveEffects) {
         unit.passiveEffects = {
           permanentStats: {},
-          conditionalStats: [],
           turnHooks: [],
           specialEffects: {}
         };
       }
 
-      console.log(`[Passives] Initializing abilities for ${unit.name}:`, abilities.map(a => a.name));
+      console.log(`[Passives] Initializing for ${unit.name}:`, abilities.map(a => a.name));
 
-      // Process each ability
       abilities.forEach(ability => {
-        const pattern = ABILITY_PATTERNS[ability.name];
-
-        if (!pattern) {
-          console.warn(`[Passives] Unknown ability: ${ability.name}`);
+        const ke = findKeywordEffect(ability.name);
+        if (!ke) {
+          console.log(`[Passives] No match: "${ability.name}"`);
           return;
         }
-
-        this.applyAbility(unit, ability, pattern, core);
+        this._applyKeywordEffect(unit, ability.name, ke);
       });
 
-      // Apply permanent stat bonuses immediately
       this.applyPermanentStats(unit);
-
-      console.log(`[Passives] ✅ Initialized ${abilities.length} abilities for ${unit.name}`);
+      console.log(`[Passives] ✅ Done for ${unit.name}`, unit.passiveEffects);
     },
 
-    /**
-     * Apply a single ability based on its pattern
-     */
-    applyAbility(unit, ability, pattern, core) {
-      switch (pattern.type) {
-        case "permanent_stat":
-          this.registerPermanentStat(unit, pattern);
-          break;
-
-        case "conditional_stat":
-          this.registerConditionalStat(unit, ability, pattern);
-          break;
-
-        case "turn_regen":
-          this.registerTurnRegen(unit, pattern);
-          break;
-
-        case "conditional_reduction":
-          this.registerConditionalReduction(unit, pattern);
-          break;
-      }
-
-      // Register turn hooks
-      if (pattern.onTurnStart) {
-        unit.passiveEffects.turnHooks.push({
-          trigger: "turnStart",
-          ability: ability.name,
-          effect: pattern.onTurnStart
+    _applyKeywordEffect(unit, name, ke) {
+      if (ke.stats) {
+        Object.entries(ke.stats).forEach(([stat, val]) => {
+          unit.passiveEffects.permanentStats[stat] =
+            (unit.passiveEffects.permanentStats[stat] || 0) + val;
         });
       }
 
-      if (pattern.onTurnEnd) {
+      if (ke.turnStart) {
         unit.passiveEffects.turnHooks.push({
-          trigger: "turnEnd",
-          ability: ability.name,
-          effect: pattern.onTurnEnd
+          trigger: 'turnStart',
+          ability: name,
+          effect: ke.turnStart
         });
       }
 
-      // Register special effects
-      if (pattern.special) {
-        Object.assign(unit.passiveEffects.specialEffects, pattern.special);
-      }
-    },
-
-    /**
-     * Register permanent stat bonuses
-     */
-    registerPermanentStat(unit, pattern) {
-      if (!pattern.stats) return;
-
-      Object.entries(pattern.stats).forEach(([stat, value]) => {
-        if (!unit.passiveEffects.permanentStats[stat]) {
-          unit.passiveEffects.permanentStats[stat] = 0;
-        }
-        unit.passiveEffects.permanentStats[stat] += value;
-      });
-    },
-
-    /**
-     * Register conditional stat bonuses
-     */
-    registerConditionalStat(unit, ability, pattern) {
-      unit.passiveEffects.conditionalStats.push({
-        ability: ability.name,
-        condition: pattern.condition,
-        stats: pattern.stats || {}
-      });
-    },
-
-    /**
-     * Register turn-based regeneration
-     */
-    registerTurnRegen(unit, pattern) {
-      if (pattern.onTurnStart) {
-        unit.passiveEffects.turnHooks.push({
-          trigger: "turnStart",
-          ability: "HP Regeneration",
-          effect: pattern.onTurnStart
+      if (ke.special) {
+        Object.entries(ke.special).forEach(([k, v]) => {
+          if (typeof v === 'boolean') {
+            unit.passiveEffects.specialEffects[k] = true;
+          } else {
+            unit.passiveEffects.specialEffects[k] =
+              (unit.passiveEffects.specialEffects[k] || 0) + v;
+          }
         });
       }
     },
 
-    /**
-     * Register conditional damage reduction
-     */
-    registerConditionalReduction(unit, pattern) {
-      unit.passiveEffects.conditionalStats.push({
-        ability: "Damage Reduction",
-        condition: pattern.condition,
-        effects: pattern.effects || {}
-      });
-    },
-
-    /**
-     * Apply permanent stat bonuses to unit stats
-     */
     applyPermanentStats(unit) {
       const perma = unit.passiveEffects?.permanentStats || {};
 
-      if (perma.hp) {
-        unit.stats.hp += perma.hp;
-        unit.stats.maxHP += perma.maxHP || perma.hp;
+      if (perma.hpFlat) {
+        unit.stats.hp    = (unit.stats.hp    || 0) + perma.hpFlat;
+        unit.stats.maxHP = (unit.stats.maxHP || 0) + perma.hpFlat;
       }
-
-      if (perma.atk) {
-        unit.stats.atk += perma.atk;
+      if (perma.atkFlat) {
+        unit.stats.atk = (unit.stats.atk || 0) + perma.atkFlat;
       }
-
-      if (perma.def) {
-        unit.stats.def += perma.def;
+      if (perma.defFlat) {
+        unit.stats.def = (unit.stats.def || 0) + perma.defFlat;
       }
-
-      if (perma.speed) {
-        unit.stats.speed += perma.speed;
+      if (perma.speedFlat) {
+        unit.stats.speed = (unit.stats.speed || 0) + perma.speedFlat;
       }
+      // critRatePercent, damageReductionPercent, chakraCostReduction kept in
+      // permanentStats and read via getActiveModifiers() during combat
     },
 
-    /**
-     * Check if a condition is met
-     */
-    checkCondition(unit, condition) {
-      if (!condition) return true;
-
-      // HP threshold conditions
-      if (condition.stat === "hp") {
-        const currentHP = unit.stats.hp;
-        const maxHP = unit.stats.maxHP;
-        const ratio = currentHP / maxHP;
-        const threshold = condition.relative ? condition.threshold : condition.threshold / maxHP;
-
-        switch (condition.operator) {
-          case ">": return ratio > threshold;
-          case ">=": return ratio >= threshold;
-          case "<": return ratio < threshold;
-          case "<=": return ratio <= threshold;
-          case "==": return ratio === threshold;
-          default: return false;
-        }
-      }
-
-      // Trigger-based conditions (ally defeated, etc.)
-      if (condition.trigger) {
-        // These need to be set externally when events occur
-        return unit.passiveEffects?.triggers?.[condition.trigger] || false;
-      }
-
-      return false;
-    },
-
-    /**
-     * Get active conditional modifiers for a unit
-     * Call this during damage calculation to get current passive bonuses
-     */
     getActiveModifiers(unit) {
-      const modifiers = {
+      const mods = {
         atkFlat: 0,
         defFlat: 0,
         speedPercent: 0,
@@ -266,114 +155,78 @@
         critRatePercent: 0,
         critDmgPercent: 0,
         jutsuDamagePercent: 0,
-        chakraCostReduction: 0
+        chakraCostReduction: 0,
+        evasionChance: 0,
+        counterChance: 0
       };
+      if (!unit.passiveEffects) return mods;
 
-      if (!unit.passiveEffects) return modifiers;
-
-      // Add permanent stats
       const perma = unit.passiveEffects.permanentStats || {};
-      if (perma.critRatePercent) modifiers.critRatePercent += perma.critRatePercent;
-      if (perma.jutsuDamagePercent) modifiers.jutsuDamagePercent += perma.jutsuDamagePercent;
+      if (perma.critRatePercent)        mods.critRatePercent        += perma.critRatePercent;
+      if (perma.critDmgPercent)         mods.critDmgPercent         += perma.critDmgPercent;
+      if (perma.damageReductionPercent) mods.damageReductionPercent += perma.damageReductionPercent;
+      if (perma.chakraCostReduction)    mods.chakraCostReduction    += perma.chakraCostReduction;
+      if (perma.jutsuDamagePercent)     mods.jutsuDamagePercent     += perma.jutsuDamagePercent;
 
-      // Check conditional stats
-      (unit.passiveEffects.conditionalStats || []).forEach(conditional => {
-        if (this.checkCondition(unit, conditional.condition)) {
-          // Apply conditional stats
-          if (conditional.stats?.atk) modifiers.atkFlat += conditional.stats.atk;
-          if (conditional.stats?.def) modifiers.defFlat += conditional.stats.def;
+      const special = unit.passiveEffects.specialEffects || {};
+      if (special.evasionChance) mods.evasionChance = special.evasionChance;
+      if (special.counterChance) mods.counterChance = special.counterChance;
 
-          // Apply conditional effects
-          if (conditional.effects?.damageReductionPercent) {
-            modifiers.damageReductionPercent += conditional.effects.damageReductionPercent;
-          }
-        }
-      });
-
-      return modifiers;
+      return mods;
     },
 
-    /**
-     * Handle turn start hooks for a unit
-     * Call this at the start of each unit's turn
-     */
     onTurnStart(core, unit) {
       if (!unit.passiveEffects?.turnHooks) return;
 
       unit.passiveEffects.turnHooks
-        .filter(hook => hook.trigger === "turnStart")
+        .filter(h => h.trigger === 'turnStart')
         .forEach(hook => {
           const effect = hook.effect;
 
-          // HP regeneration
-          if (effect.healPercent) {
-            const healAmount = Math.floor((effect.healPercent / 100) * unit.stats.maxHP);
-            unit.stats.hp = Math.min(unit.stats.maxHP, unit.stats.hp + healAmount);
-
-            // Show heal animation
+          if (effect.healFlat) {
+            const heal = effect.healFlat;
+            unit.stats.hp = Math.min(unit.stats.maxHP, unit.stats.hp + heal);
             if (window.BattleAnimations) {
-              window.BattleAnimations.showDamageNumber(unit, healAmount, true, false);
+              window.BattleAnimations.showDamageNumber(unit, heal, true, false);
             }
-
-            console.log(`[Passives] ${unit.name} regenerated ${healAmount} HP from ${hook.ability}`);
+            console.log(`[Passives] ${unit.name} healed ${heal} from "${hook.ability}"`);
           }
 
-          // Chakra regeneration boost
-          if (effect.chakraRegenPercent) {
-            const baseRegen = 1; // Normal chakra gain per turn
-            const boostedRegen = Math.floor(baseRegen * (1 + effect.chakraRegenPercent / 100));
-            const bonus = boostedRegen - baseRegen;
-
-            if (bonus > 0 && window.BattleBuffs) {
-              window.BattleBuffs.giveChakra(core, unit, bonus);
+          if (effect.healPercent) {
+            const heal = Math.floor((effect.healPercent / 100) * unit.stats.maxHP);
+            unit.stats.hp = Math.min(unit.stats.maxHP, unit.stats.hp + heal);
+            if (window.BattleAnimations) {
+              window.BattleAnimations.showDamageNumber(unit, heal, true, false);
             }
+          }
+
+          if (effect.chakraRegen) {
+            const oldChakra = unit.chakra || 0;
+            unit.chakra = Math.min(unit.maxChakra || 10, oldChakra + effect.chakraRegen);
+            if (window.BattleBuffs && unit.chakra > oldChakra) {
+              window.BattleBuffs.giveChakra?.(core, unit, unit.chakra - oldChakra);
+            }
+            console.log(`[Passives] ${unit.name} gained chakra from "${hook.ability}"`);
           }
         });
     },
 
-    /**
-     * Handle turn end hooks for a unit
-     */
     onTurnEnd(core, unit) {
-      if (!unit.passiveEffects?.turnHooks) return;
-
-      unit.passiveEffects.turnHooks
-        .filter(hook => hook.trigger === "turnEnd")
-        .forEach(hook => {
-          // Add turn end effects here if needed
-        });
+      // Reserved for future turn-end passive effects
     },
 
-    /**
-     * Trigger passive effects based on battle events
-     * @param {Object} unit - Unit to trigger for
-     * @param {string} eventType - Event type (e.g., "ally_defeated")
-     */
     triggerEvent(unit, eventType) {
-      if (!unit.passiveEffects) {
-        unit.passiveEffects = { triggers: {} };
-      }
-
-      if (!unit.passiveEffects.triggers) {
-        unit.passiveEffects.triggers = {};
-      }
-
+      if (!unit.passiveEffects) unit.passiveEffects = { specialEffects: {} };
+      if (!unit.passiveEffects.triggers) unit.passiveEffects.triggers = {};
       unit.passiveEffects.triggers[eventType] = true;
       console.log(`[Passives] Triggered ${eventType} for ${unit.name}`);
     },
 
-    /**
-     * Clear temporary event triggers (call at end of battle or wave)
-     */
     clearEventTriggers(unit) {
-      if (unit.passiveEffects?.triggers) {
-        unit.passiveEffects.triggers = {};
-      }
+      if (unit.passiveEffects?.triggers) unit.passiveEffects.triggers = {};
     }
   };
 
-  // Export globally
   window.BattlePassives = BattlePassives;
-
   console.log("[BattlePassives] Module loaded ✅");
 })();

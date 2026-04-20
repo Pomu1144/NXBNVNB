@@ -429,7 +429,97 @@
         }
       }
 
+      // Render equipped jutsu card icons
+      this.renderEquippedJutsuIcons(unit, core);
+
       core.dom.actionPanel.classList.remove("hidden");
+    },
+
+    /**
+     * Render equipped jutsu/ultimate card icons in the action panel.
+     * Each icon shows the card art, its chakra cost, and a cooldown overlay.
+     * Clicking an available icon queues the action and highlights targets.
+     */
+    renderEquippedJutsuIcons(unit, core) {
+      const container = document.getElementById('equipped-jutsu-icons');
+      if (!container) return;
+      container.innerHTML = '';
+
+      const equipped   = unit.equippedJutsu || {};
+      const cardsData  = core.jutsuCardsData || [];
+      const resolve    = window.CardSystem?.resolveCardPath || (p => p);
+
+      const jutsuSlots = ['jutsu1', 'jutsu2', 'jutsu3'];
+
+      jutsuSlots.forEach(slot => {
+        const cardId = equipped[slot];
+        const el = document.createElement('div');
+        el.className = 'battle-jutsu-icon';
+
+        if (!cardId) {
+          el.classList.add('empty');
+          el.innerHTML = '<span class="jutsu-icon-plus">+</span>';
+        } else {
+          const card   = cardsData.find(c => c.id === cardId);
+          const cost   = Number(card?.stats?.cp ?? 4);
+          const onCd   = (unit.jutsuCooldown || 0) > 0;
+          const canUse = unit.chakra >= cost && !onCd;
+
+          const src = card?.icon ? resolve(card.icon)
+            : `assets/cardsandicons/${cardId}_icon.png`;
+
+          el.innerHTML = `
+            <img src="${src}" alt="${card?.jutsuName || cardId}"
+                 onerror="this.src='assets/Stats/emptyslot.png';">
+            <span class="jutsu-icon-cost">${cost}</span>
+            ${onCd ? `<div class="jutsu-icon-cd">${unit.jutsuCooldown}</div>` : ''}
+          `;
+          if (!canUse) el.classList.add('disabled');
+
+          el.addEventListener('click', () => {
+            if (!canUse) return;
+            unit.jutsuCooldown = 2 + Math.floor(Math.random() * 2);
+            unit._activeCardSlot = slot;
+            core.queuedAction = 'jutsu';
+            this.highlightEnemies(core);
+          });
+        }
+
+        container.appendChild(el);
+      });
+
+      // Ultimate card slot
+      const ultId = equipped.ultimate;
+      if (ultId) {
+        const card   = cardsData.find(c => c.id === ultId);
+        const cost   = Number(card?.stats?.cp ?? 8);
+        const onCd   = (unit.ultimateCooldown || 0) > 0;
+        const canUse = unit.chakra >= cost && !onCd;
+
+        const el  = document.createElement('div');
+        el.className = 'battle-jutsu-icon battle-ult-icon';
+
+        const src = card?.icon ? resolve(card.icon)
+          : `assets/cardsandicons/${ultId}_icon.png`;
+
+        el.innerHTML = `
+          <img src="${src}" alt="${card?.jutsuName || ultId}"
+               onerror="this.src='assets/Stats/emptyslot.png';">
+          <span class="jutsu-icon-cost">${cost}</span>
+          ${onCd ? `<div class="jutsu-icon-cd">${unit.ultimateCooldown}</div>` : ''}
+        `;
+        if (!canUse) el.classList.add('disabled');
+
+        el.addEventListener('click', () => {
+          if (!canUse) return;
+          unit.ultimateCooldown = 5 + Math.floor(Math.random() * 2);
+          unit._activeCardSlot = 'ultimate';
+          core.queuedAction = 'ultimate';
+          this.highlightEnemies(core);
+        });
+
+        container.appendChild(el);
+      }
     },
 
     /**
