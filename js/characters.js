@@ -877,6 +877,13 @@
           inst.level = newLevel;
           window.InventoryChar.updateInstance(inst.uid, inst);
 
+          // Award player 10% of fed EXP as ninja rank EXP
+          let playerExpGain = 0;
+          if (window.NinjaRank) {
+            playerExpGain = Math.floor(totalExp * 0.1);
+            window.NinjaRank.addExp(playerExpGain);
+          }
+
           // Daily mission check
           if (window.DailyMissions) {
             const result = window.DailyMissions.recordAction('level_up_character');
@@ -886,7 +893,8 @@
           }
 
           // Success message
-          if (window.ModalManager) { window.ModalManager.showInfo(`Success!\n\n+${totalExp.toLocaleString()} EXP\n${levelsGained > 0 ? `Gained ${levelsGained} level${levelsGained > 1 ? 's' : ''}!` : 'EXP stored for next level'}\n\nNew Level: ${newLevel}/${cap}`); }
+          const playerExpLine = playerExpGain > 0 ? `\n+${playerExpGain} Player EXP` : '';
+          if (window.ModalManager) { window.ModalManager.showInfo(`Success!\n\n+${totalExp.toLocaleString()} EXP\n${levelsGained > 0 ? `Gained ${levelsGained} level${levelsGained > 1 ? 's' : ''}!` : 'EXP stored for next level'}\n\nNew Level: ${newLevel}/${cap}${playerExpLine}`); }
 
           // Close modal and refresh grid
           closeRamenModal();
@@ -909,6 +917,13 @@
     inst.level = newLevel;
     window.InventoryChar.updateInstance(inst.uid, inst);
 
+    // Award player 10% of fed EXP as ninja rank EXP
+    let playerExpGainFallback = 0;
+    if (window.NinjaRank) {
+      playerExpGainFallback = Math.floor(totalExp * 0.1);
+      window.NinjaRank.addExp(playerExpGainFallback);
+    }
+
     // Refresh UI
     LV_VALUE_EL.textContent = (newLevel >= cap) ? "MAX" : String(newLevel);
     if (character) window.renderStatusTab(character, inst, inst.tierCode || minTier(character));
@@ -922,7 +937,8 @@
     }
 
     // Success message
-    if (window.ModalManager) { window.ModalManager.showInfo(`Success!\n\n+${totalExp.toLocaleString()} EXP\n${levelsGained > 0 ? `Gained ${levelsGained} level${levelsGained > 1 ? 's' : ''}!` : 'EXP stored for next level'}\n\nNew Level: ${newLevel}/${cap}`); }
+    const playerExpLineFallback = playerExpGainFallback > 0 ? `\n+${playerExpGainFallback} Player EXP` : '';
+    if (window.ModalManager) { window.ModalManager.showInfo(`Success!\n\n+${totalExp.toLocaleString()} EXP\n${levelsGained > 0 ? `Gained ${levelsGained} level${levelsGained > 1 ? 's' : ''}!` : 'EXP stored for next level'}\n\nNew Level: ${newLevel}/${cap}${playerExpLineFallback}`); }
 
     // Close modal and refresh grid
     closeRamenModal();

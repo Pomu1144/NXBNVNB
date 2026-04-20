@@ -3,22 +3,125 @@
 <head>
   <meta charset="UTF-8" />
   <title>Blazing — Arena</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <!-- PWA App Container -->
+  <link rel="manifest" href="manifest.json" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-fullscreen" />
+  <meta name="apple-mobile-web-app-title" content="Blazing" />
+  <meta name="theme-color" content="#000000" />
+  <link rel="apple-touch-icon" href="assets/icons/achievement_icon.png" />
+  <script src="js/pwa-register.js"></script>
+  <script src="js/session-gate.js"></script>
+  <link rel="stylesheet" href="css/game-canvas.css" />
   <link rel="stylesheet" href="css/background.css" />
+  <link rel="stylesheet" href="css/top-bar.css" />
+  <link rel="stylesheet" href="css/ui-layout.css" />
   <style>
-    body { margin: 0; font-family: Arial, sans-serif; color: #fff; background: #111; }
-    .arena-page { display: grid; place-items: center; min-height: 100vh; text-align: center; padding: 24px; }
-    .arena-card { background: rgba(0,0,0,.6); border: 1px solid #444; border-radius: 12px; padding: 24px; max-width: 520px; }
-    a { color: #8cc8ff; }
+    body::-webkit-scrollbar, html::-webkit-scrollbar, *::-webkit-scrollbar { display: none; }
+    body, html, * { -ms-overflow-style: none; scrollbar-width: none; }
+
+    .arena-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg,
+        rgba(0, 0, 0, 0.3) 0%,
+        rgba(0, 0, 0, 0.1) 40%,
+        rgba(0, 0, 0, 0.5) 100%
+      );
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .arena-content {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      z-index: 10;
+      pointer-events: auto;
+    }
+
+    .arena-title {
+      font-size: clamp(28px, 6vw, 64px);
+      font-family: "Cinzel", serif;
+      color: #d4af37;
+      text-shadow:
+        0 4px 20px rgba(212, 175, 55, 0.9),
+        0 0 60px rgba(255, 120, 0, 0.5),
+        0 2px 4px rgba(0, 0, 0, 0.9);
+      letter-spacing: clamp(2px, 0.5vw, 6px);
+      margin: 0 0 12px 0;
+    }
+
+    .arena-subtitle {
+      font-size: clamp(11px, 1.8vw, 18px);
+      color: rgba(255, 220, 150, 0.85);
+      font-family: "Cinzel", serif;
+      letter-spacing: clamp(1px, 0.3vw, 3px);
+      margin: 0 0 28px 0;
+      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
+    }
+
+    .arena-back-btn {
+      background: rgba(10, 10, 20, 0.85);
+      border: 2px solid rgba(212, 175, 55, 0.7);
+      color: #d4af37;
+      font-family: "Cinzel", serif;
+      font-size: clamp(11px, 1.4vw, 15px);
+      padding: clamp(7px, 1.2vh, 12px) clamp(16px, 2.5vw, 28px);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      letter-spacing: 1px;
+      text-decoration: none;
+      display: inline-block;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
+    }
+
+    .arena-back-btn:hover {
+      background: rgba(212, 175, 55, 0.2);
+      border-color: rgba(212, 175, 55, 1);
+      box-shadow: 0 0 24px rgba(212, 175, 55, 0.5), 0 4px 16px rgba(0, 0, 0, 0.6);
+      transform: translateY(-2px);
+    }
+
+    .arena-back-btn:active {
+      transform: translateY(0);
+    }
+
+    @media (max-height: 420px) and (orientation: landscape) {
+      .arena-content {
+        top: 48%;
+      }
+
+      .arena-subtitle {
+        margin-bottom: 14px;
+      }
+    }
   </style>
 </head>
-<body>
-  <main class="arena-page">
-    <div class="arena-card">
-      <h1>ARENA</h1>
-      <p>The Arena screen is not implemented yet.</p>
-      <p><a href="village.html">Return to Village</a></p>
-    </div>
-  </main>
+<body class="page-arena">
+  <div class="game-canvas-wrapper">
+    <div class="game-canvas">
+      <div class="game-content">
+
+        <!-- Arena background -->
+        <div id="full-bg"></div>
+
+        <!-- Subtle darkening overlay for readability -->
+        <div class="arena-overlay"></div>
+
+        <!-- Arena centre content -->
+        <div class="arena-content">
+          <h1 class="arena-title">ARENA</h1>
+          <p class="arena-subtitle">Coming Soon</p>
+          <a href="village.html" class="arena-back-btn">Return to Village</a>
+        </div>
+
+      </div><!-- .game-content -->
+    </div><!-- .game-canvas -->
+  </div><!-- .game-canvas-wrapper -->
 </body>
 </html>

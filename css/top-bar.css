@@ -325,3 +325,72 @@ body {
     min-width: 35px;
   }
 }
+
+/* Landscape mobile (iPhone SE, iPhone 8, iPhone 12 mini, etc.) — max 420px tall */
+@media (max-height: 420px) and (orientation: landscape) {
+  body {
+    padding-top: 44px;
+  }
+
+  .top-bar {
+    height: 44px;
+    padding: 0 10px;
+  }
+
+  .ninja-rank-container {
+    gap: 8px;
+  }
+
+  .ninja-rank-info {
+    gap: 6px;
+  }
+
+  .ninja-rank-label {
+    font-size: 10px;
+  }
+
+  .ninja-rank-value {
+    font-size: 13px;
+    padding: 2px 8px;
+    min-width: 28px;
+  }
+
+  .level-progress-bar-container {
+    width: 90px;
+    min-width: 70px;
+  }
+
+  .level-progress-bar {
+    height: 8px;
+  }
+
+  .username-holder {
+    padding: 14px 16px;
+    min-width: 120px;
+  }
+
+  .username-text {
+    font-size: 13px;
+    max-width: 140px;
+  }
+
+  .currency-hud {
+    gap: 6px;
+    margin-right: 8px;
+  }
+
+  .currency-item {
+    padding: 2px 6px;
+    gap: 5px;
+  }
+
+  .currency-icon {
+    width: 15px;
+    height: 15px;
+  }
+
+  .currency-amount {
+    font-size: 11px;
+    min-width: 28px;
+  }
+}

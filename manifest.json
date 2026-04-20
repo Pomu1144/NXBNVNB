@@ -1,0 +1,19 @@
+{
+  "name": "Blazing",
+  "short_name": "Blazing",
+  "description": "Naruto Blazing fan game",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "landscape",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "icons": [
+    {
+      "src": "assets/icons/achievement_icon.png",
+      "sizes": "any",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
