@@ -2036,6 +2036,72 @@ body.page-characters::-webkit-scrollbar {
   flex: 1;
 }
 
+/* ========== Derived stat rows (Critical Rate, Critical Damage, Evasion) ========== */
+.stat-row-derived {
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  margin-top: 2px;
+}
+
+/* Coloured left pip for each derived stat */
+.stat-derived-pip {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-right: 4px;
+}
+
+.stat-cri-pip     { background: #ff9b1a; box-shadow: 0 0 5px #ff9b1a; }
+.stat-critdmg-pip { background: #ff3c3c; box-shadow: 0 0 5px #ff3c3c; }
+.stat-eva-pip     { background: #3caaff; box-shadow: 0 0 5px #3caaff; }
+
+/* Card HP/ATK bonus shown inline next to the base stat */
+.stat-card-bonus {
+  font-size: 10px;
+  color: #4cff8a;
+  margin-left: 5px;
+  font-family: "Cinzel", serif;
+  font-weight: 600;
+}
+
+/* Set bonus banner */
+.set-bonus-badge {
+  text-align: center;
+  background: linear-gradient(135deg, rgba(217,179,98,0.25), rgba(217,179,98,0.1));
+  border: 1px solid rgba(217,179,98,0.5);
+  border-radius: 6px;
+  padding: 5px 10px;
+  font-family: "Cinzel", serif;
+  font-size: 10px;
+  font-weight: 700;
+  color: #d9b362;
+  letter-spacing: 0.06em;
+  margin: 4px 0;
+  animation: set-bonus-pulse 2s ease-in-out infinite;
+}
+
+@keyframes set-bonus-pulse {
+  0%, 100% { box-shadow: 0 0 6px rgba(217,179,98,0.3); }
+  50%       { box-shadow: 0 0 12px rgba(217,179,98,0.7); }
+}
+
+/* Ultimate slot banner inside card detail */
+.card-detail-ult-banner {
+  background: linear-gradient(135deg, #a07830, #d9b362);
+  color: #1a0800;
+  font-family: "Cinzel", serif;
+  font-size: 10px;
+  font-weight: 900;
+  text-align: center;
+  padding: 5px 10px;
+  border-radius: 6px;
+  letter-spacing: 0.08em;
+  margin-bottom: 4px;
+}
+
 /* ========== Card Inventory Item (improved) ========== */
 .card-inventory-item {
   display: flex;

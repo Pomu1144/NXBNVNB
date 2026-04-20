@@ -364,19 +364,22 @@
         stats = window.LimitBreak.applyLimitBreakToStats(stats, inst.limitBreakLevel);
       }
 
-      // Calculate power: Health + Attack + Speed + equipped card bonus
-      const cardBonus = (window.CardSystem && inst.equippedJutsu)
-        ? window.CardSystem.getEquippedCardsPowerContribution(inst.equippedJutsu)
-        : 0;
-      const power = (stats.hp || 0) + (stats.atk || 0) + (stats.speed || 0) + cardBonus;
+      // Card contributions: HP/ATK bonuses + CRI/CRIT DMG/EVA derived stats
+      const cardContrib = (window.CardSystem && inst.equippedJutsu)
+        ? window.CardSystem.getEquippedContributions(inst.equippedJutsu)
+        : { hp: 0, atk: 0, cri: 0, critDmg: 0, eva: 0, setBonus: false };
+
+      const totalHp  = (stats.hp  || 0) + cardContrib.hp;
+      const totalAtk = (stats.atk || 0) + cardContrib.atk;
+      const power    = totalHp + totalAtk + (stats.speed || 0);
 
       // Save power data for sync with Tools page
       if (inst.uid) {
         const powerData = {
           uid: inst.uid,
           power: power,
-          health: stats.hp || 0,
-          attack: stats.atk || 0,
+          health: totalHp,
+          attack: totalAtk,
           speed: stats.speed || 0,
           lastUpdated: Date.now()
         };
@@ -389,6 +392,10 @@
       const totalPower = power + (unlockedAbilities * 30000);
 
       // Render stats
+      const hpBonusTag  = cardContrib.hp  > 0 ? `<span class="stat-card-bonus">(+${cardContrib.hp})</span>`  : '';
+      const atkBonusTag = cardContrib.atk > 0 ? `<span class="stat-card-bonus">(+${cardContrib.atk})</span>` : '';
+      const setBadge    = cardContrib.setBonus ? '<div class="set-bonus-badge">SET BONUS ACTIVE +30%</div>' : '';
+
       STATS_WRAP.innerHTML = `
         <div class="stats-divider">
           <img src="assets/Stats/statsdiv.png" alt="" onerror="this.style.display='none';" />
@@ -396,18 +403,34 @@
         <div class="stat-row">
           <img src="assets/ui/healthstat.png" alt="Health" />
           <span class="stat-label">Health</span>
-          <span class="stat-value">${stats.hp ?? "-"}</span>
+          <span class="stat-value">${totalHp}${hpBonusTag}</span>
         </div>
         <div class="stat-row">
           <img src="assets/ui/strengthstat.png" alt="Attack" />
           <span class="stat-label">Attack</span>
-          <span class="stat-value">${stats.atk ?? "-"}</span>
+          <span class="stat-value">${totalAtk}${atkBonusTag}</span>
         </div>
         <div class="stat-row">
           <img src="assets/ui/speedstat.png" alt="Speed" />
           <span class="stat-label">Speed</span>
           <span class="stat-value">${stats.speed ?? "-"}</span>
         </div>
+        <div class="stat-row stat-row-derived">
+          <span class="stat-derived-pip stat-cri-pip"></span>
+          <span class="stat-label">Critical Rate</span>
+          <span class="stat-value">${cardContrib.cri.toFixed(2)}%</span>
+        </div>
+        <div class="stat-row stat-row-derived">
+          <span class="stat-derived-pip stat-critdmg-pip"></span>
+          <span class="stat-label">Critical Damage</span>
+          <span class="stat-value">${cardContrib.critDmg.toFixed(1)}%</span>
+        </div>
+        <div class="stat-row stat-row-derived">
+          <span class="stat-derived-pip stat-eva-pip"></span>
+          <span class="stat-label">Evasion Rate</span>
+          <span class="stat-value">${cardContrib.eva.toFixed(2)}%</span>
+        </div>
+        ${setBadge}
         <div class="equip-divider">
           <img src="assets/Stats/equipdiv.png" alt="" onerror="this.style.display='none';" />
         </div>
@@ -429,19 +452,22 @@
     } else {
       const s = c.statsBase || {};
 
-      // Calculate power: Health + Attack + Speed + equipped card bonus
-      const cardBonus2 = (window.CardSystem && inst.equippedJutsu)
-        ? window.CardSystem.getEquippedCardsPowerContribution(inst.equippedJutsu)
-        : 0;
-      const power = (s.hp || 0) + (s.atk || 0) + (s.speed || 0) + cardBonus2;
+      // Card contributions: HP/ATK bonuses + CRI/CRIT DMG/EVA derived stats
+      const cardContrib2 = (window.CardSystem && inst.equippedJutsu)
+        ? window.CardSystem.getEquippedContributions(inst.equippedJutsu)
+        : { hp: 0, atk: 0, cri: 0, critDmg: 0, eva: 0, setBonus: false };
+
+      const totalHp2  = (s.hp  || 0) + cardContrib2.hp;
+      const totalAtk2 = (s.atk || 0) + cardContrib2.atk;
+      const power     = totalHp2 + totalAtk2 + (s.speed || 0);
 
       // Save power data for sync with Tools page
       if (inst.uid) {
         const powerData = {
           uid: inst.uid,
           power: power,
-          health: s.hp || 0,
-          attack: s.atk || 0,
+          health: totalHp2,
+          attack: totalAtk2,
           speed: s.speed || 0,
           lastUpdated: Date.now()
         };
@@ -454,6 +480,10 @@
       const totalPower = power + (unlockedAbilities * 30000);
 
       // Render stats
+      const hpBonusTag2  = cardContrib2.hp  > 0 ? `<span class="stat-card-bonus">(+${cardContrib2.hp})</span>`  : '';
+      const atkBonusTag2 = cardContrib2.atk > 0 ? `<span class="stat-card-bonus">(+${cardContrib2.atk})</span>` : '';
+      const setBadge2    = cardContrib2.setBonus ? '<div class="set-bonus-badge">SET BONUS ACTIVE +30%</div>' : '';
+
       STATS_WRAP.innerHTML = `
         <div class="stats-divider">
           <img src="assets/Stats/statsdiv.png" alt="" onerror="this.style.display='none';" />
@@ -461,18 +491,34 @@
         <div class="stat-row">
           <img src="assets/ui/healthstat.png" alt="Health" />
           <span class="stat-label">Health</span>
-          <span class="stat-value">${s.hp ?? "-"}</span>
+          <span class="stat-value">${totalHp2}${hpBonusTag2}</span>
         </div>
         <div class="stat-row">
           <img src="assets/ui/strengthstat.png" alt="Attack" />
           <span class="stat-label">Attack</span>
-          <span class="stat-value">${s.atk ?? "-"}</span>
+          <span class="stat-value">${totalAtk2}${atkBonusTag2}</span>
         </div>
         <div class="stat-row">
           <img src="assets/ui/speedstat.png" alt="Speed" />
           <span class="stat-label">Speed</span>
           <span class="stat-value">${s.speed ?? "-"}</span>
         </div>
+        <div class="stat-row stat-row-derived">
+          <span class="stat-derived-pip stat-cri-pip"></span>
+          <span class="stat-label">Critical Rate</span>
+          <span class="stat-value">${cardContrib2.cri.toFixed(2)}%</span>
+        </div>
+        <div class="stat-row stat-row-derived">
+          <span class="stat-derived-pip stat-critdmg-pip"></span>
+          <span class="stat-label">Critical Damage</span>
+          <span class="stat-value">${cardContrib2.critDmg.toFixed(1)}%</span>
+        </div>
+        <div class="stat-row stat-row-derived">
+          <span class="stat-derived-pip stat-eva-pip"></span>
+          <span class="stat-label">Evasion Rate</span>
+          <span class="stat-value">${cardContrib2.eva.toFixed(2)}%</span>
+        </div>
+        ${setBadge2}
         <div class="equip-divider">
           <img src="assets/Stats/equipdiv.png" alt="" onerror="this.style.display='none';" />
         </div>
@@ -2074,6 +2120,7 @@
     const artSrc  = resolvePath(card.fullArt || card.icon);
     const iconSrc = resolvePath(card.icon);
     const isMaxLv = curLv >= maxLv;
+    const isUltSlot = (slotName === 'ultimate');
 
     function statRow(label, cur, nxt) {
       const arrow = (!isMaxLv && nxt !== undefined && nxt > cur)
@@ -2090,6 +2137,7 @@
                onerror="this.style.display='none';">
         </div>
         <div class="card-detail-body">
+          ${isUltSlot ? '<div class="card-detail-ult-banner">ULTIMATE SLOT — Stats x3.5</div>' : ''}
           <div class="card-detail-jutsu-name">${card.jutsuName || card.name}</div>
           <div class="card-detail-card-name">${card.name}</div>
           <div class="card-detail-level-row">
@@ -2365,41 +2413,38 @@
       }
     }
 
-    const equipped = getEquippedJutsu(uid);
+    // Route card to the correct slot based on which slot was clicked
+    // Ultimate slot accepts ANY card (same eligibility as jutsu slots), buffed 250% by stats system
 
-    // Handle equipment slot clicks
+    // Equipment tab slots (1-5)
     if (currentSlotType === 'equipment' && currentSlotNumber) {
-      const slotName = `equipment${currentSlotNumber}`;
-      equipCard(uid, cardId, slotName);
+      equipCard(uid, cardId, `equipment${currentSlotNumber}`);
       closeCardInventory();
       return;
     }
 
-    // Handle jutsu/ultimate slots
-    if (card.type === 'ultimate') {
-      // Equip to ultimate slot
+    // Ultimate slot — any card type allowed, stats boosted 250% by the contributions system
+    if (currentSlotType === 'ultimate') {
       equipCard(uid, cardId, 'ultimate');
       closeCardInventory();
-    } else if (card.type === 'jutsu') {
-      // If clicking from jutsu slot directly, equip to that slot
-      if (currentSlotType === 'jutsu' && currentSlotNumber) {
-        equipCard(uid, cardId, currentSlotNumber);
-        closeCardInventory();
-        return;
-      }
+      return;
+    }
 
-      // Find empty jutsu slot
-      const emptySlot = findEmptyJutsuSlot(uid);
+    // Jutsu slot clicked directly — equip to that specific slot
+    if (currentSlotType === 'jutsu' && currentSlotNumber) {
+      equipCard(uid, cardId, currentSlotNumber);
+      closeCardInventory();
+      return;
+    }
 
-      if (emptySlot) {
-        // Equip to empty slot
-        equipCard(uid, cardId, emptySlot);
-        closeCardInventory();
-      } else {
-        // All slots full - show replacement popup
-        closeCardInventory();
-        showReplacementPopup(uid, card);
-      }
+    // Auto-assign: find first empty jutsu slot
+    const emptySlot = findEmptyJutsuSlot(uid);
+    if (emptySlot) {
+      equipCard(uid, cardId, emptySlot);
+      closeCardInventory();
+    } else {
+      closeCardInventory();
+      showReplacementPopup(uid, card);
     }
   }
 
