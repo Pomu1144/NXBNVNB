@@ -519,6 +519,9 @@
             window.BattleAnimations.showDamage(target, damage, isCritical, core.dom, false, breakdown);
           }
 
+          // Apply description-based skill effects (immobilize, seal, heal, etc.)
+          this.applyDescriptionEffects(j.data.description, attacker, [target], core);
+
           // Update displays
           if (core.units) {
             core.units.updateUnitDisplay(attacker, core);
@@ -550,6 +553,9 @@
         }, 700);
 
         target.stats.hp = Math.max(0, target.stats.hp - damage);
+
+        // Apply description-based skill effects
+        this.applyDescriptionEffects(j.data.description, attacker, [target], core);
 
         setTimeout(() => {
           if (window.BattlePhysics) {
@@ -711,6 +717,9 @@
                 }
               });
             }
+
+            // Apply description-based skill effects to this target
+            this.applyDescriptionEffects(u.data.description, attacker, [target], core);
 
             // Update target display
             if (core.units) {
@@ -1268,6 +1277,143 @@
      */
     previewDamage(attacker, defender, multiplier = 1) {
       return this.calculateDamage(attacker, defender, multiplier);
+    },
+
+    /**
+     * Parse a skill description text and apply any secondary effects
+     * (immobilization, jutsu sealing, attack reduction, healing, barriers, etc.)
+     * to the given targets.  Probability checks are rolled here.
+     */
+    applyDescriptionEffects(description, attacker, targets, core) {
+      if (!description || !targets?.length) return;
+      const desc = description.toLowerCase();
+
+      targets.forEach(target => {
+        if (!target || target.stats.hp <= 0) return;
+
+        // ── Immobilization ───────────────────────────────────────────────
+        const immobMatch = desc.match(/(\d+)%\s*chance\s*of\s*immobilization\s*for\s*(\d+)\s*turn/);
+        if (immobMatch) {
+          const chance = Number(immobMatch[1]);
+          const turns  = Number(immobMatch[2]);
+          if (Math.random() * 100 < chance) {
+            target.statusEffects = target.statusEffects || [];
+            target.statusEffects.push({
+              type: 'immobilization', kind: 'debuff', tag: 'immobilized',
+              name: 'Immobilized', color: '#888',
+              prevent_action: true, turnsRemaining: turns
+            });
+            console.log(`[Combat] ${target.name} immobilized for ${turns} turn(s)`);
+            if (window.BattleEffects) {
+              window.BattleEffects.showEffectIndicator(target, 'IMMOBILIZED', '#888888', core);
+            }
+          }
+        }
+
+        // ── Jutsu Sealing ────────────────────────────────────────────────
+        // Covers: "jutsu sealing", "sealing and/or attack reduction"
+        const sealMatch = desc.match(/(\d+)%\s*chance\s*of\s*jutsu\s*seal/);
+        if (sealMatch) {
+          const chance = Number(sealMatch[1]);
+          const turns  = Number(desc.match(/jutsu\s*seal(?:ing)?\s*for\s*(\d+)\s*turn/)?.[1] || 2);
+          if (Math.random() * 100 < chance) {
+            target.statusEffects = target.statusEffects || [];
+            target.statusEffects.push({
+              type: 'jutsu_seal', kind: 'debuff', tag: 'sealed',
+              name: 'Jutsu Sealed', color: '#666',
+              prevent_jutsu: true, prevent_ultimate: true, turnsRemaining: turns
+            });
+            console.log(`[Combat] ${target.name} jutsu sealed for ${turns} turn(s)`);
+            if (window.BattleEffects) {
+              window.BattleEffects.showEffectIndicator(target, 'SEALED', '#666666', core);
+            }
+          }
+        }
+
+        // ── Attack Reduction ─────────────────────────────────────────────
+        const atkRedMatch = desc.match(/(\d+)%\s*(?:chance\s*of\s*)?attack\s*reduction\s*for\s*(\d+)\s*turn/);
+        if (atkRedMatch) {
+          const pct   = Number(atkRedMatch[1]);
+          const turns = Number(atkRedMatch[2]);
+          const atkDebuff = Math.floor((target.stats.atk || 0) * pct / 100);
+          target.statusEffects = target.statusEffects || [];
+          target.statusEffects.push({
+            type: 'atk_reduction', kind: 'buff', tag: 'atkDown',
+            name: `ATK -${pct}%`, value: -atkDebuff,
+            payload: { atkBoost: -atkDebuff },
+            turnsRemaining: turns
+          });
+          console.log(`[Combat] ${target.name} ATK reduced by ${pct}% for ${turns} turn(s)`);
+          if (window.BattleEffects) {
+            window.BattleEffects.showEffectIndicator(target, `ATK-${pct}%`, '#cc4444', core);
+          }
+        }
+
+        // ── Slip Damage ──────────────────────────────────────────────────
+        const slipMatch = desc.match(/(\d+)%\s*chance\s*of\s*slip\s*damage\s*for\s*(\d+)\s*turn/);
+        if (slipMatch) {
+          const chance = Number(slipMatch[1]);
+          const turns  = Number(slipMatch[2]);
+          if (Math.random() * 100 < chance) {
+            const slipAmt = Math.floor((target.stats.maxHP || target.stats.hp) * 0.05);
+            target.statusEffects = target.statusEffects || [];
+            target.statusEffects.push({
+              type: 'slip', kind: 'debuff', tag: 'slip',
+              name: 'Slip Damage', color: '#cc6600',
+              slipDamagePerTurn: slipAmt,
+              turnsRemaining: turns
+            });
+            console.log(`[Combat] ${target.name} afflicted with slip damage for ${turns} turn(s)`);
+            if (window.BattleEffects) {
+              window.BattleEffects.showEffectIndicator(target, 'SLIP', '#cc6600', core);
+            }
+          }
+        }
+
+        // ── Barrier (applied to attacker/caster, not target) ────────────
+        const barrierMatch = desc.match(/puts up a barrier.*?(\d+)\s*damage.*?for\s*(\d+)\s*turn/);
+        if (barrierMatch) {
+          const hp    = Number(barrierMatch[1]);
+          const turns = Number(barrierMatch[2]);
+          attacker.statusEffects = attacker.statusEffects || [];
+          attacker.statusEffects.push({
+            type: 'barrier', kind: 'buff', tag: 'barrier',
+            name: `Barrier ${hp}`, barrierHP: hp, turnsRemaining: turns,
+            payload: { barrierHP: hp }
+          });
+          console.log(`[Combat] ${attacker.name} raised a ${hp} HP barrier`);
+          if (window.BattleEffects) {
+            window.BattleEffects.showEffectIndicator(attacker, 'BARRIER', '#44aaff', core);
+          }
+        }
+      });
+
+      // ── Self-Heal (applied to attacker) ──────────────────────────────
+      const healFlatMatch = description.match(/[Rr]estores?\s*([\d,]+)\s*health/);
+      const healPctMatch  = description.match(/restores?\s*(\d+)%\s*HP/i);
+      if (healFlatMatch) {
+        const heal = Number(healFlatMatch[1].replace(/,/g, ''));
+        attacker.stats.hp = Math.min(attacker.stats.maxHP, attacker.stats.hp + heal);
+        if (window.BattleAnimations) {
+          window.BattleAnimations.showDamageNumber?.(attacker, heal, true, false);
+        }
+        console.log(`[Combat] ${attacker.name} healed ${heal} HP`);
+      } else if (healPctMatch) {
+        const heal = Math.floor((Number(healPctMatch[1]) / 100) * attacker.stats.maxHP);
+        attacker.stats.hp = Math.min(attacker.stats.maxHP, attacker.stats.hp + heal);
+        if (window.BattleAnimations) {
+          window.BattleAnimations.showDamageNumber?.(attacker, heal, true, false);
+        }
+        console.log(`[Combat] ${attacker.name} healed ${heal} HP (${healPctMatch[1]}%)`);
+      }
+
+      // ── Chakra Recovery ───────────────────────────────────────────────
+      const chakraMatch = description.match(/restores?\s*Chakra\s*Gauge\s*by\s*(\d+)/i);
+      if (chakraMatch) {
+        const gain = Number(chakraMatch[1]);
+        attacker.chakra = Math.min(attacker.maxChakra || 10, (attacker.chakra || 0) + gain);
+        console.log(`[Combat] ${attacker.name} recovered ${gain} chakra`);
+      }
     },
 
     /**

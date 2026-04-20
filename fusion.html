@@ -23,6 +23,14 @@
   <main class="fusion-content">
     <h1 class="page-title">FUSION</h1>
 
+    <!-- ---- Fusion Tabs ---- -->
+    <div class="fusion-tabs">
+      <button class="fusion-tab active" data-tab="fusions">Fusions</button>
+      <button class="fusion-tab" data-tab="exchanges">Exchanges</button>
+    </div>
+
+    <!-- ---- Tab: Fusions ---- -->
+    <div id="tab-fusions" class="fusion-tab-content active">
     <div id="fusion-root" class="fusion-layout">
 
       <!-- ---- Left: Available Recipes ---- -->
@@ -83,7 +91,37 @@
         </div>
 
       </section>
-    </div>
+    </div><!-- /#fusion-root -->
+    </div><!-- /#tab-fusions -->
+
+    <!-- ---- Tab: Exchanges ---- -->
+    <div id="tab-exchanges" class="fusion-tab-content">
+      <section class="exchange-panel">
+        <h2 class="panel-title">Character Exchanges</h2>
+        <p class="exchange-desc">Select a character group and choose 5 copies to trade for a better version.</p>
+
+        <!-- Search / filter -->
+        <div class="exchange-filters">
+          <input type="text" id="exchange-search" class="modal-search" placeholder="Search by name…">
+        </div>
+
+        <!-- Character name groups -->
+        <div id="exchange-groups" class="exchange-groups"></div>
+
+        <!-- Selection area -->
+        <div id="exchange-selection" class="exchange-selection hidden">
+          <h3 class="exchange-sel-title">Selected for Exchange (<span id="exchange-sel-count">0</span> / 5)</h3>
+          <div id="exchange-sel-units" class="exchange-sel-units"></div>
+          <div class="exchange-cost-row">
+            <span class="exchange-cost-label">Cost:</span>
+            <img src="assets/icons/currency/ryo.png" alt="Ryo" class="exchange-cost-icon" onerror="this.style.display='none'">
+            <span id="exchange-ryo-cost" class="exchange-cost-value">20,000</span>
+          </div>
+          <button id="btn-exchange" class="fusion-btn fuse-btn" disabled>Exchange</button>
+        </div>
+      </section>
+    </div><!-- /#tab-exchanges -->
+
   </main>
 
   <!-- ==================== UNIT SELECTOR MODAL ==================== -->
@@ -137,6 +175,183 @@
 
   <script src="https://cdn.jsdelivr.net/npm/howler@2.2.4/dist/howler.min.js"></script>
   <script src="js/audio-manager.js"></script>
+  <script>
+  // ── Fusion page tab switching ──────────────────────────────────
+  document.querySelectorAll('.fusion-tab').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.fusion-tab').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.fusion-tab-content').forEach(c => c.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('tab-' + btn.dataset.tab)?.classList.add('active');
+      if (btn.dataset.tab === 'exchanges') ExchangeSystem.render();
+    });
+  });
+
+  // ── Exchanges System ──────────────────────────────────────────
+  const ExchangeSystem = {
+    selected: [],         // array of { uid, portrait, tier }
+    tierOrder: ['3S','4S','5S','6S','6SB','7S'],
+
+    render() {
+      const inv = window.InventoryChar?.allInstances() || [];
+      // Group instances by base character name
+      const groups = {};
+      inv.forEach(inst => {
+        const base = window.CharacterInventory?.getCharacterById?.(inst.charId);
+        if (!base) return;
+        const key = base.name;
+        if (!groups[key]) groups[key] = { name: key, units: [] };
+        groups[key].units.push({ inst, base });
+      });
+
+      const container = document.getElementById('exchange-groups');
+      if (!container) return;
+      container.innerHTML = '';
+
+      const search = (document.getElementById('exchange-search')?.value || '').toLowerCase();
+
+      Object.values(groups)
+        .filter(g => g.units.length >= 2 && g.name.toLowerCase().includes(search))
+        .sort((a,b) => b.units.length - a.units.length)
+        .forEach(g => {
+          const el = document.createElement('div');
+          el.className = 'exchange-group';
+          const tier = (t) => t || '?';
+          el.innerHTML = `
+            <div class="exchange-group-header">
+              <span class="exchange-group-name">${g.name}</span>
+              <span class="exchange-group-count">${g.units.length} copies</span>
+            </div>
+            <div class="exchange-group-units">
+              ${g.units.map(({inst, base}) => {
+                const art = this._portrait(base, inst.tierCode);
+                const isSelected = this.selected.some(s => s.uid === inst.uid);
+                return `<div class="exchange-unit-card${isSelected ? ' selected' : ''}"
+                              data-uid="${inst.uid}" data-name="${g.name}">
+                  <img src="${art}" alt="${base.name}" onerror="this.src='assets/Main Background/Background.png'">
+                  <div class="exchange-unit-tier">${tier(inst.tierCode)}</div>
+                </div>`;
+              }).join('')}
+            </div>`;
+          container.appendChild(el);
+        });
+
+      // Wire unit card clicks
+      container.querySelectorAll('.exchange-unit-card').forEach(card => {
+        card.addEventListener('click', () => this.toggleSelect(card));
+      });
+
+      this.updateSelectionUI();
+    },
+
+    _portrait(base, tierCode) {
+      if (!base || !tierCode) return 'assets/Main Background/Background.png';
+      const tiers = base.tiers || [];
+      const t = tiers.find(t => t.tier === tierCode) || tiers[0];
+      return t?.portrait || t?.art || 'assets/Main Background/Background.png';
+    },
+
+    toggleSelect(card) {
+      const uid = card.dataset.uid;
+      const name = card.dataset.name;
+      const idx = this.selected.findIndex(s => s.uid === uid);
+      if (idx !== -1) {
+        this.selected.splice(idx, 1);
+        card.classList.remove('selected');
+      } else {
+        if (this.selected.length >= 5) {
+          alert('You can only select 5 units for exchange.');
+          return;
+        }
+        // Must be same name group
+        if (this.selected.length > 0 && this.selected[0].name !== name) {
+          alert('All 5 units must be from the same character group.');
+          return;
+        }
+        const inst = window.InventoryChar?.getByUid(uid);
+        const base = window.CharacterInventory?.getCharacterById?.(inst?.charId);
+        this.selected.push({ uid, name, portrait: this._portrait(base, inst?.tierCode), tier: inst?.tierCode });
+        card.classList.add('selected');
+      }
+      this.updateSelectionUI();
+    },
+
+    updateSelectionUI() {
+      const selSection = document.getElementById('exchange-selection');
+      const selCount = document.getElementById('exchange-sel-count');
+      const selUnits = document.getElementById('exchange-sel-units');
+      const btnExchange = document.getElementById('btn-exchange');
+      if (!selSection) return;
+
+      selCount.textContent = this.selected.length;
+      selSection.classList.toggle('hidden', this.selected.length === 0);
+
+      selUnits.innerHTML = this.selected.map((s,i) => `
+        <div class="exchange-sel-unit">
+          <img src="${s.portrait}" alt="" onerror="this.src='assets/Main Background/Background.png'">
+          <button class="exchange-sel-remove" data-idx="${i}">×</button>
+        </div>`).join('');
+
+      selUnits.querySelectorAll('.exchange-sel-remove').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const idx = parseInt(btn.dataset.idx);
+          this.selected.splice(idx, 1);
+          this.render();
+        });
+      });
+
+      btnExchange.disabled = this.selected.length !== 5;
+    },
+
+    doExchange() {
+      if (this.selected.length !== 5) return;
+      const inv = window.InventoryChar;
+      if (!inv) return;
+
+      // Remove the 5 selected units
+      const name = this.selected[0].name;
+      this.selected.forEach(s => inv.removeByUid?.(s.uid));
+
+      // Find the next tier up for this character group
+      const remaining = inv.allInstances().filter(inst => {
+        const base = window.CharacterInventory?.getCharacterById?.(inst.charId);
+        return base?.name === name;
+      });
+      const usedTiers = this.selected.map(s => s.tier);
+      const highestUsed = usedTiers.reduce((best, t) => {
+        return (this.tierOrder.indexOf(t) > this.tierOrder.indexOf(best)) ? t : best;
+      }, usedTiers[0]);
+      const nextTierIdx = Math.min(this.tierOrder.indexOf(highestUsed) + 1, this.tierOrder.length - 1);
+      const nextTier = this.tierOrder[nextTierIdx];
+
+      // Find a base character with this name at the next tier
+      const allChars = window.CharacterInventory?.allCharacters?.() || [];
+      const candidates = allChars.filter(c => c.name === name && (c.tiers || []).some(t => t.tier === nextTier));
+      const grantChar = candidates[Math.floor(Math.random() * candidates.length)] || candidates[0];
+
+      if (grantChar) {
+        inv.addInstance?.({ charId: grantChar.id, tierCode: nextTier, level: 1 });
+      }
+
+      this.selected = [];
+
+      // Show success modal
+      const modal = document.getElementById('fusion-success-modal');
+      const content = document.getElementById('success-content');
+      if (modal && content) {
+        content.innerHTML = `<p style="color:#d9b362;font-size:1.1rem;font-family:'Cinzel',serif">
+          Exchanged 5 ${name} copies for a <strong>${nextTier}</strong> version!
+        </p>`;
+        modal.setAttribute('aria-hidden', 'false');
+      }
+
+      this.render();
+    }
+  };
+
+  document.getElementById('exchange-search')?.addEventListener('input', () => ExchangeSystem.render());
+  document.getElementById('btn-exchange')?.addEventListener('click', () => ExchangeSystem.doExchange());
+  </script>
   <script src="js/resources.js"></script>
   <script src="js/character_inv.js?v=3"></script>
   <script src="js/progression.js"></script>
