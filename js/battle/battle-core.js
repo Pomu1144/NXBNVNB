@@ -145,7 +145,7 @@
         fetchJSON("data/missions.json", []),
         fetchJSON("data/enemies.json", []),
         fetchJSON("data/characters.json", []),
-        fetchJSON("data/jutsu_cards.json", { cards: [] })
+        fetchJSON("data/cards.json", null).then(d => d || fetchJSON("data/jutsu_cards.json", { cards: [] }))
       ]);
 
       this.enemiesData = enemies;
@@ -687,13 +687,13 @@
         if (!cardId) continue;
         const card = this.jutsuCardsData.find(c => c.id === cardId);
         if (!card?.stats) continue;
-        out.hp       += card.stats.hp_bonus        || 0;
-        out.atk      += card.stats.atk_bonus       || 0;
-        out.def      += card.stats.def_bonus       || 0;
-        out.spd      += card.stats.spd_bonus       || 0;
-        out.critRate += card.stats.crit_rate_bonus || 0;
-        out.critDmg  += card.stats.crit_dmg_bonus  || 0;
-        out.evaRate  += card.stats.eva_rate_bonus  || 0;
+        out.hp       += Number(card.stats.hp_bonus  ?? card.stats.hp)        || 0;
+        out.atk      += Number(card.stats.atk_bonus ?? card.stats.atk)       || 0;
+        out.def      += Number(card.stats.def_bonus ?? card.stats.def)       || 0;
+        out.spd      += Number(card.stats.spd_bonus ?? card.stats.spd)       || 0;
+        out.critRate += Number(card.stats.crit_rate_bonus ?? card.stats.cri) || 0;
+        out.critDmg  += Number(card.stats.crit_dmg_bonus  ?? card.stats.critDmg) || 0;
+        out.evaRate  += Number(card.stats.eva_rate_bonus  ?? card.stats.eva) || 0;
       }
       return out;
     },
