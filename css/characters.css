@@ -2035,3 +2035,351 @@ body.page-characters::-webkit-scrollbar {
   color: #fff;
   flex: 1;
 }
+
+/* ========== Card Inventory Item (improved) ========== */
+.card-inventory-item {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  aspect-ratio: unset;
+  min-height: 160px;
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: rgba(10, 10, 15, 0.85);
+  border: 2px solid rgba(217, 179, 98, 0.25);
+}
+
+.card-inventory-item > img:first-child {
+  width: 100%;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 10px 10px 0 0;
+  flex-shrink: 0;
+}
+
+.card-inv-icon-wrap {
+  position: absolute;
+  bottom: 38px;
+  right: 6px;
+  width: 32px;
+  height: 32px;
+  background: rgba(0,0,0,0.7);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(217,179,98,0.4);
+}
+
+.card-inv-jutsu-icon {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+}
+
+.card-inv-label {
+  padding: 4px 6px;
+  background: rgba(0,0,0,0.75);
+  flex-shrink: 0;
+}
+
+.card-inv-jutsu-name {
+  font-family: "Cinzel", serif;
+  font-size: 9px;
+  color: #d9b362;
+  text-align: center;
+  line-height: 1.2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.card-inv-level {
+  font-size: 9px;
+  color: #aaa;
+  text-align: center;
+  margin-top: 2px;
+}
+
+/* ========== Jutsu Slot Level Badge ========== */
+.jutsu-slot-level {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #ffd700;
+  font-size: 8px;
+  font-weight: bold;
+  font-family: "Cinzel", serif;
+  padding: 1px 3px;
+  border-radius: 3px;
+  pointer-events: none;
+  z-index: 2;
+  line-height: 1;
+}
+
+/* ========== Equipment Slot Level Badge ========== */
+.equip-slot-level {
+  position: absolute;
+  bottom: 4px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.75);
+  color: #ffd700;
+  font-size: 10px;
+  font-family: "Cinzel", serif;
+  font-weight: bold;
+  padding: 2px 0;
+  pointer-events: none;
+}
+
+.tools-equipment-slot {
+  position: relative;
+}
+
+/* ========== Card Detail Modal ========== */
+.card-detail-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.88);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 2100;
+  backdrop-filter: blur(6px);
+}
+
+.card-detail-modal[aria-hidden="false"] {
+  display: flex;
+}
+
+.card-detail-panel {
+  display: flex;
+  flex-direction: row;
+  gap: 0;
+  width: min(680px, 95vw);
+  max-height: 88vh;
+  background-image: url('../assets/ui/infoframe.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  padding: 32px;
+  overflow-y: auto;
+}
+
+.card-detail-art-wrap {
+  position: relative;
+  width: 200px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: flex-start;
+}
+
+.card-detail-art {
+  width: 100%;
+  border-radius: 10px;
+  object-fit: cover;
+  max-height: 320px;
+}
+
+.card-detail-icon-overlay {
+  position: absolute;
+  bottom: 8px;
+  right: -12px;
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  object-fit: contain;
+  background: rgba(0,0,0,0.75);
+  border: 2px solid rgba(217,179,98,0.5);
+  padding: 3px;
+}
+
+.card-detail-body {
+  flex: 1;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.card-detail-jutsu-name {
+  font-family: "Cinzel", serif;
+  font-size: 16px;
+  color: #d9b362;
+  font-weight: 700;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+  line-height: 1.3;
+}
+
+.card-detail-card-name {
+  font-family: "Cinzel", serif;
+  font-size: 11px;
+  color: #aaa;
+  margin-top: -4px;
+}
+
+.card-detail-level-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(0,0,0,0.4);
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(217,179,98,0.2);
+}
+
+.cd-lv-label {
+  font-size: 11px;
+  color: #aaa;
+  font-family: "Cinzel", serif;
+}
+
+.cd-lv-val {
+  font-size: 20px;
+  font-weight: 900;
+  color: #fff;
+  font-family: "Cinzel", serif;
+}
+
+.cd-lv-sep {
+  font-size: 14px;
+  color: #666;
+}
+
+.cd-lv-max {
+  font-size: 14px;
+  color: #aaa;
+  font-family: "Cinzel", serif;
+}
+
+.cd-lv-max-badge {
+  margin-left: 6px;
+  background: #d9b362;
+  color: #000;
+  font-size: 10px;
+  font-weight: 900;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: "Cinzel", serif;
+  letter-spacing: 0.05em;
+}
+
+.card-detail-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+}
+
+.cd-stat-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(255,255,255,0.04);
+  padding: 5px 8px;
+  border-radius: 6px;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+.cd-stat-label {
+  font-size: 10px;
+  color: #888;
+  font-family: "Cinzel", serif;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.cd-stat-val {
+  font-size: 12px;
+  color: #e0e0e0;
+  font-weight: 600;
+  font-family: "Cinzel", serif;
+}
+
+.cd-stat-next {
+  color: #4cff8a;
+  font-size: 10px;
+  margin-left: 3px;
+}
+
+.card-detail-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: auto;
+  padding-top: 10px;
+}
+
+.btn-cd {
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-family: "Cinzel", serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  transition: all 0.25s ease;
+}
+
+.btn-cd-lvup {
+  background: linear-gradient(135deg, #d9b362, #a07830);
+  color: #1a0a00;
+}
+
+.btn-cd-lvup:hover:not(:disabled) {
+  background: linear-gradient(135deg, #ffe07a, #c09040);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(217,179,98,0.4);
+}
+
+.btn-cd-lvup:disabled {
+  background: rgba(100, 100, 100, 0.5);
+  color: #888;
+  cursor: not-allowed;
+}
+
+.btn-cd-unequip {
+  background: rgba(180, 50, 50, 0.8);
+  color: #fff;
+}
+
+.btn-cd-unequip:hover {
+  background: rgba(220, 60, 60, 0.9);
+  transform: translateY(-2px);
+}
+
+.btn-cd-close {
+  background: rgba(60, 60, 80, 0.7);
+  color: #ccc;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.btn-cd-close:hover {
+  background: rgba(80, 80, 100, 0.9);
+  color: #fff;
+}
+
+@media (max-width: 600px) {
+  .card-detail-panel {
+    flex-direction: column;
+    padding: 20px;
+  }
+  .card-detail-art-wrap {
+    width: 100%;
+  }
+  .card-detail-art {
+    max-height: 200px;
+    width: 100%;
+    object-fit: cover;
+  }
+  .card-detail-body {
+    padding-left: 0;
+    padding-top: 12px;
+  }
+}
