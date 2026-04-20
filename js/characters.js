@@ -2070,9 +2070,9 @@
     if (modal?.dataset?.currentUid !== uid) return;
     const inst = window.InventoryChar?.getByUid(uid);
     const char = inst && window.CharacterInventory?.getCharacterById(inst.charId);
-    if (char && inst) {
+    if (char && inst && window.renderStatusTab) {
       const tier = inst.tierCode || (typeof minTier === 'function' ? minTier(char) : '3S');
-      renderStatusTab(char, inst, tier);
+      window.renderStatusTab(char, inst, tier);
     }
   }
 

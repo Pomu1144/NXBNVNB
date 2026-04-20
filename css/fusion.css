@@ -710,28 +710,44 @@ body.page-fusion {
 
 /* Compact recipe-card previews inside the narrow left panel */
 .fusion-recipes-panel .fusion-preview {
-  gap: 6px;
-  padding: 10px 6px;
+  gap: 4px;
+  padding: 8px 4px;
+  flex-wrap: nowrap;
+  overflow: hidden;
 }
 .fusion-recipes-panel .fusion-preview-unit {
-  width: 72px;
+  width: 56px;
   min-height: auto;
+  flex-shrink: 0;
 }
 .fusion-recipes-panel .fusion-preview-icon {
-  width: 60px;
-  height: 60px;
+  width: 48px;
+  height: 48px;
 }
 .fusion-recipes-panel .fusion-preview-name {
-  font-size: 0.7rem;
-  max-width: 68px;
+  font-size: 0.62rem;
+  max-width: 54px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .fusion-recipes-panel .fusion-preview-version {
-  font-size: 0.6rem;
-  width: 68px;
+  font-size: 0.55rem;
+  width: 54px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .fusion-recipes-panel .fusion-preview-plus,
 .fusion-recipes-panel .fusion-preview-arrow {
-  font-size: 1rem;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+/* Prevent recipe cards from overflowing the panel */
+.fusion-recipes-panel .fusion-card {
+  padding: 14px 12px;
+  overflow: hidden;
 }
 
 @media (max-width: 1024px) {
@@ -744,9 +760,10 @@ body.page-fusion {
   background: rgba(12, 12, 16, 0.6);
   border: 2px solid rgba(217, 179, 98, 0.15);
   border-radius: 16px;
-  padding: 24px;
+  padding: 16px 12px;
   max-height: 80vh;
   overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .fusion-workspace-panel {
@@ -939,3 +956,230 @@ body.page-fusion {
     font-size: 1.4rem;
   }
 }
+
+/* ======================================================
+   FUSION PAGE TABS
+   ====================================================== */
+.fusion-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid rgba(217, 179, 98, 0.2);
+  padding-bottom: 0;
+}
+
+.fusion-tab {
+  font-family: "Cinzel", serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  padding: 10px 20px;
+  background: transparent;
+  border: none;
+  border-bottom: 3px solid transparent;
+  color: rgba(217, 179, 98, 0.5);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-transform: uppercase;
+}
+
+.fusion-tab.active {
+  color: #d9b362;
+  border-bottom-color: #d9b362;
+}
+
+.fusion-tab:hover:not(.active) {
+  color: rgba(217, 179, 98, 0.8);
+}
+
+.fusion-tab-content {
+  display: none;
+}
+
+.fusion-tab-content.active {
+  display: block;
+}
+
+/* ======================================================
+   EXCHANGES TAB
+   ====================================================== */
+.exchange-panel {
+  background: rgba(12, 12, 16, 0.6);
+  border: 2px solid rgba(217, 179, 98, 0.15);
+  border-radius: 16px;
+  padding: 28px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.exchange-desc {
+  color: rgba(238, 230, 209, 0.65);
+  font-size: 0.85rem;
+  margin: 4px 0 18px;
+  line-height: 1.5;
+}
+
+.exchange-filters {
+  margin-bottom: 16px;
+}
+
+.exchange-groups {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-height: 55vh;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.exchange-group {
+  background: rgba(20, 18, 28, 0.7);
+  border: 1px solid rgba(217, 179, 98, 0.12);
+  border-radius: 10px;
+  padding: 14px 16px;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.exchange-group:hover {
+  border-color: rgba(217, 179, 98, 0.35);
+}
+
+.exchange-group-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.exchange-group-name {
+  font-family: "Cinzel", serif;
+  font-size: 0.95rem;
+  color: #d9b362;
+  font-weight: 600;
+}
+
+.exchange-group-count {
+  font-size: 0.75rem;
+  color: rgba(217, 179, 98, 0.55);
+  margin-left: auto;
+}
+
+.exchange-group-units {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.exchange-unit-card {
+  width: 60px;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 8px;
+  border: 2px solid rgba(217, 179, 98, 0.15);
+  overflow: hidden;
+  background: rgba(0,0,0,0.4);
+  transition: border-color 0.15s, transform 0.15s;
+  flex-shrink: 0;
+}
+
+.exchange-unit-card:hover {
+  border-color: rgba(217, 179, 98, 0.5);
+  transform: scale(1.05);
+}
+
+.exchange-unit-card.selected {
+  border-color: #d9b362;
+  box-shadow: 0 0 10px rgba(217, 179, 98, 0.5);
+}
+
+.exchange-unit-card img {
+  width: 100%;
+  height: 60px;
+  object-fit: cover;
+  display: block;
+}
+
+.exchange-unit-tier {
+  font-size: 9px;
+  color: #d9b362;
+  padding: 2px 0;
+  font-family: "Cinzel", serif;
+}
+
+/* Selection area */
+.exchange-selection {
+  margin-top: 20px;
+  border-top: 1px solid rgba(217, 179, 98, 0.15);
+  padding-top: 16px;
+}
+
+.exchange-sel-title {
+  font-family: "Cinzel", serif;
+  font-size: 0.9rem;
+  color: #d9b362;
+  margin: 0 0 12px;
+}
+
+.exchange-sel-units {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  min-height: 44px;
+  margin-bottom: 14px;
+}
+
+.exchange-cost-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 14px;
+  font-size: 0.85rem;
+  color: rgba(238, 230, 209, 0.75);
+}
+
+.exchange-cost-icon {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+}
+
+.exchange-cost-value {
+  color: #d9b362;
+  font-weight: 600;
+  font-family: "Cinzel", serif;
+}
+
+.exchange-sel-unit {
+  position: relative;
+  width: 56px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 2px solid rgba(217, 179, 98, 0.4);
+}
+
+.exchange-sel-unit img {
+  width: 100%;
+  height: 56px;
+  object-fit: cover;
+  display: block;
+}
+
+.exchange-sel-remove {
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  background: rgba(180, 30, 30, 0.85);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  font-size: 10px;
+  cursor: pointer;
+  line-height: 16px;
+  padding: 0;
+  text-align: center;
+}
+
+.exchange-selection.hidden { display: none; }

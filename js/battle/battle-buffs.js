@@ -246,6 +246,18 @@
     onTurnEnd(core, unit) {
       if (!unit?.statusEffects?.length) return;
 
+      // Apply slip damage before decrementing turns
+      unit.statusEffects.forEach(se => {
+        if (se.type === 'slip' && se.slipDamagePerTurn > 0 && se.turnsRemaining > 0) {
+          const dmg = se.slipDamagePerTurn;
+          unit.stats.hp = Math.max(0, unit.stats.hp - dmg);
+          if (window.BattleAnimations) {
+            window.BattleAnimations.showDamageNumber?.(unit, dmg, false, false);
+          }
+          console.log(`[Buffs] ${unit.name} took ${dmg} slip damage`);
+        }
+      });
+
       for (const se of unit.statusEffects) {
         if (typeof se.turnsRemaining === "number" && se.turnsRemaining > 0) {
           se.turnsRemaining -= 1;

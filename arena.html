@@ -13,115 +13,441 @@
   <link rel="apple-touch-icon" href="assets/icons/achievement_icon.png" />
   <script src="js/pwa-register.js"></script>
   <script src="js/session-gate.js"></script>
-  <link rel="stylesheet" href="css/game-canvas.css" />
-  <link rel="stylesheet" href="css/background.css" />
-  <link rel="stylesheet" href="css/top-bar.css" />
-  <link rel="stylesheet" href="css/ui-layout.css" />
+  <link rel="stylesheet" href="css/bottombar.css" />
   <style>
-    body::-webkit-scrollbar, html::-webkit-scrollbar, *::-webkit-scrollbar { display: none; }
-    body, html, * { -ms-overflow-style: none; scrollbar-width: none; }
+    @import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&display=swap");
 
-    .arena-overlay {
+    *, *::before, *::after { box-sizing: border-box; }
+    body::-webkit-scrollbar, *::-webkit-scrollbar { display: none; }
+    body, * { -ms-overflow-style: none; scrollbar-width: none; }
+
+    html, body {
+      margin: 0; padding: 0;
+      width: 100%; height: 100%;
+      background: #080810;
+      color: #eee6d1;
+      font-family: "Cinzel", serif;
+      overflow-x: hidden;
+    }
+
+    /* ── Background ─────────────────────────────────────────── */
+    #arena-bg {
+      position: fixed;
+      inset: 0;
+      background-image: url('assets/Main Background/arena_background.png');
+      background-size: cover;
+      background-position: center top;
+      background-repeat: no-repeat;
+      z-index: 0;
+    }
+
+    #arena-bg::after {
+      content: '';
       position: absolute;
       inset: 0;
       background: linear-gradient(180deg,
-        rgba(0, 0, 0, 0.3) 0%,
-        rgba(0, 0, 0, 0.1) 40%,
-        rgba(0, 0, 0, 0.5) 100%
+        rgba(0,0,0,0.45) 0%,
+        rgba(0,0,0,0.25) 35%,
+        rgba(0,0,0,0.65) 100%
       );
-      pointer-events: none;
+    }
+
+    /* ── Layout ─────────────────────────────────────────────── */
+    .arena-page {
+      position: relative;
       z-index: 1;
+      min-height: 100vh;
+      padding: 20px 16px 100px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
-    .arena-content {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      text-align: center;
-      z-index: 10;
-      pointer-events: auto;
-    }
-
-    .arena-title {
-      font-size: clamp(28px, 6vw, 64px);
-      font-family: "Cinzel", serif;
+    h1.arena-title {
+      font-size: clamp(26px, 5vw, 52px);
       color: #d4af37;
+      letter-spacing: clamp(3px, 0.6vw, 8px);
       text-shadow:
-        0 4px 20px rgba(212, 175, 55, 0.9),
-        0 0 60px rgba(255, 120, 0, 0.5),
-        0 2px 4px rgba(0, 0, 0, 0.9);
-      letter-spacing: clamp(2px, 0.5vw, 6px);
-      margin: 0 0 12px 0;
+        0 4px 20px rgba(212,175,55,0.9),
+        0 0 60px rgba(255,120,0,0.45),
+        0 2px 4px rgba(0,0,0,0.9);
+      margin: 0 0 6px;
+      text-align: center;
     }
 
     .arena-subtitle {
-      font-size: clamp(11px, 1.8vw, 18px);
-      color: rgba(255, 220, 150, 0.85);
-      font-family: "Cinzel", serif;
-      letter-spacing: clamp(1px, 0.3vw, 3px);
-      margin: 0 0 28px 0;
-      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
+      font-size: clamp(10px, 1.5vw, 14px);
+      color: rgba(255,220,150,0.7);
+      letter-spacing: 2px;
+      margin: 0 0 28px;
+      text-align: center;
     }
 
-    .arena-back-btn {
-      background: rgba(10, 10, 20, 0.85);
-      border: 2px solid rgba(212, 175, 55, 0.7);
+    /* ── Player Rank Card ───────────────────────────────────── */
+    .player-rank-card {
+      background: rgba(10,10,20,0.88);
+      border: 2px solid rgba(212,175,55,0.5);
+      border-radius: 14px;
+      padding: 18px 26px;
+      width: 100%;
+      max-width: 480px;
+      margin-bottom: 22px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.7);
+    }
+
+    .rank-badge {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 40% 35%, #ffd700, #a7822c 70%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      border: 2px solid rgba(255,215,0,0.6);
+      box-shadow: 0 0 16px rgba(255,215,0,0.4);
+    }
+
+    .rank-badge-stars {
+      font-size: 9px;
+      color: #fff;
+      letter-spacing: -1px;
+      line-height: 1;
+    }
+
+    .rank-badge-label {
+      font-size: 7px;
+      color: rgba(255,255,255,0.85);
+      text-align: center;
+      line-height: 1.2;
+      margin-top: 2px;
+    }
+
+    .rank-info { flex: 1; }
+
+    .rank-name {
+      font-size: 1.1rem;
       color: #d4af37;
+      font-weight: 700;
+    }
+
+    .rank-tier-label {
+      font-size: 0.75rem;
+      color: rgba(217,179,98,0.6);
+      margin-top: 2px;
+    }
+
+    .rank-stars-bar {
+      margin-top: 8px;
+      background: rgba(255,255,255,0.07);
+      border-radius: 20px;
+      height: 8px;
+      overflow: hidden;
+    }
+
+    .rank-stars-fill {
+      height: 100%;
+      border-radius: 20px;
+      background: linear-gradient(90deg, #d4af37, #ffd700);
+      transition: width 0.5s ease;
+    }
+
+    .rank-stars-text {
+      font-size: 0.7rem;
+      color: rgba(217,179,98,0.65);
+      margin-top: 4px;
+    }
+
+    /* ── Action Buttons ─────────────────────────────────────── */
+    .arena-actions {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 28px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .arena-btn {
       font-family: "Cinzel", serif;
-      font-size: clamp(11px, 1.4vw, 15px);
-      padding: clamp(7px, 1.2vh, 12px) clamp(16px, 2.5vw, 28px);
+      font-size: clamp(10px, 1.3vw, 13px);
+      font-weight: 600;
+      letter-spacing: 1px;
+      padding: clamp(10px,1.5vh,14px) clamp(18px,3vw,32px);
       border-radius: 8px;
       cursor: pointer;
       transition: all 0.2s ease;
-      letter-spacing: 1px;
-      text-decoration: none;
-      display: inline-block;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
+      text-transform: uppercase;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.6);
     }
 
-    .arena-back-btn:hover {
-      background: rgba(212, 175, 55, 0.2);
-      border-color: rgba(212, 175, 55, 1);
-      box-shadow: 0 0 24px rgba(212, 175, 55, 0.5), 0 4px 16px rgba(0, 0, 0, 0.6);
+    .arena-btn-primary {
+      background: linear-gradient(135deg, #a7822c, #d4af37);
+      border: 2px solid rgba(212,175,55,0.7);
+      color: #0a0a0a;
+    }
+
+    .arena-btn-primary:hover {
+      background: linear-gradient(135deg, #d4af37, #ffd700);
+      box-shadow: 0 0 24px rgba(212,175,55,0.6), 0 4px 14px rgba(0,0,0,0.6);
       transform: translateY(-2px);
     }
 
-    .arena-back-btn:active {
-      transform: translateY(0);
+    .arena-btn-secondary {
+      background: rgba(10,10,20,0.85);
+      border: 2px solid rgba(212,175,55,0.35);
+      color: #d4af37;
     }
 
-    @media (max-height: 420px) and (orientation: landscape) {
-      .arena-content {
-        top: 48%;
-      }
+    .arena-btn-secondary:hover {
+      border-color: rgba(212,175,55,0.7);
+      background: rgba(212,175,55,0.12);
+      transform: translateY(-2px);
+    }
 
-      .arena-subtitle {
-        margin-bottom: 14px;
-      }
+    .arena-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      transform: none !important;
+    }
+
+    /* ── Ranking Table ──────────────────────────────────────── */
+    .ranking-section {
+      width: 100%;
+      max-width: 680px;
+    }
+
+    .ranking-section-title {
+      font-size: 0.85rem;
+      color: rgba(217,179,98,0.6);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      text-align: center;
+    }
+
+    .rank-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: rgba(8,8,16,0.85);
+      border: 1px solid rgba(217,179,98,0.15);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .rank-table thead th {
+      padding: 10px 14px;
+      text-align: left;
+      font-size: 0.7rem;
+      letter-spacing: 1.5px;
+      color: rgba(217,179,98,0.6);
+      border-bottom: 1px solid rgba(217,179,98,0.15);
+      background: rgba(217,179,98,0.05);
+    }
+
+    .rank-table tbody tr {
+      border-bottom: 1px solid rgba(217,179,98,0.07);
+      transition: background 0.15s;
+    }
+
+    .rank-table tbody tr:last-child { border-bottom: none; }
+    .rank-table tbody tr:hover { background: rgba(217,179,98,0.06); }
+
+    .rank-table tbody tr.current-rank {
+      background: rgba(212,175,55,0.12);
+      border-left: 3px solid #d4af37;
+    }
+
+    .rank-table tbody td {
+      padding: 10px 14px;
+      font-size: 0.8rem;
+    }
+
+    .rank-name-cell {
+      color: #d4af37;
+      font-weight: 600;
+    }
+
+    .rank-tier-cell {
+      color: rgba(238,230,209,0.6);
+      font-size: 0.72rem;
+    }
+
+    .rank-stars-cell {
+      color: rgba(238,230,209,0.85);
+      font-size: 0.75rem;
+    }
+
+    .rank-star-icon { color: #ffd700; }
+
+    /* ── Back link ──────────────────────────────────────────── */
+    .arena-back-btn {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 10px 22px;
+      background: rgba(10,10,20,0.85);
+      border: 2px solid rgba(212,175,55,0.5);
+      border-radius: 8px;
+      color: #d4af37;
+      font-family: "Cinzel", serif;
+      font-size: 0.8rem;
+      cursor: pointer;
+      text-decoration: none;
+      letter-spacing: 1px;
+      transition: all 0.2s;
+    }
+
+    .arena-back-btn:hover {
+      background: rgba(212,175,55,0.15);
+      border-color: rgba(212,175,55,0.9);
+      box-shadow: 0 0 20px rgba(212,175,55,0.4);
+    }
+
+    @media (max-width: 500px) {
+      .player-rank-card { padding: 14px 16px; }
+      .rank-badge { width: 52px; height: 52px; }
     }
   </style>
 </head>
-<body class="page-arena">
-  <div class="game-canvas-wrapper">
-    <div class="game-canvas">
-      <div class="game-content">
+<body>
+  <div id="arena-bg"></div>
 
-        <!-- Arena background -->
-        <div id="full-bg"></div>
+  <div class="arena-page">
+    <h1 class="arena-title">ARENA</h1>
+    <p class="arena-subtitle">Prove your worth as a shinobi</p>
 
-        <!-- Subtle darkening overlay for readability -->
-        <div class="arena-overlay"></div>
-
-        <!-- Arena centre content -->
-        <div class="arena-content">
-          <h1 class="arena-title">ARENA</h1>
-          <p class="arena-subtitle">Coming Soon</p>
-          <a href="village.html" class="arena-back-btn">Return to Village</a>
+    <!-- Player's current rank -->
+    <div class="player-rank-card" id="player-rank-card">
+      <div class="rank-badge" id="rank-badge">
+        <div class="rank-badge-stars" id="rank-badge-stars">☆☆</div>
+        <div class="rank-badge-label" id="rank-badge-label">Academy<br>Student</div>
+      </div>
+      <div class="rank-info">
+        <div class="rank-name" id="rank-name-display">Academy Student</div>
+        <div class="rank-tier-label" id="rank-tier-display">Tier 2 — 0 / 2 Stars</div>
+        <div class="rank-stars-bar">
+          <div class="rank-stars-fill" id="rank-stars-fill" style="width:0%"></div>
         </div>
+        <div class="rank-stars-text" id="rank-stars-text">0 Arena Stars total</div>
+      </div>
+    </div>
 
-      </div><!-- .game-content -->
-    </div><!-- .game-canvas -->
-  </div><!-- .game-canvas-wrapper -->
+    <!-- Action buttons -->
+    <div class="arena-actions">
+      <button class="arena-btn arena-btn-primary" id="btn-battle-arena" onclick="alert('Arena battles coming soon!')">
+        ⚔ Battle
+      </button>
+      <button class="arena-btn arena-btn-secondary" onclick="alert('Defense team setup coming soon!')">
+        🛡 Set Defense
+      </button>
+      <button class="arena-btn arena-btn-secondary" onclick="alert('Season rewards coming soon!')">
+        🏆 Rewards
+      </button>
+    </div>
+
+    <!-- Full ranking table -->
+    <div class="ranking-section">
+      <div class="ranking-section-title">Rank Progression</div>
+      <table class="rank-table" id="rank-table">
+        <thead>
+          <tr>
+            <th>Rank</th>
+            <th>Tiers</th>
+            <th>Stars Required</th>
+          </tr>
+        </thead>
+        <tbody id="rank-table-body"></tbody>
+      </table>
+    </div>
+
+    <a href="village.html" class="arena-back-btn">← Return to Village</a>
+  </div>
+
+  <script src="js/resources.js"></script>
+  <script>
+  // ── Arena Rank Definitions ──────────────────────────────────────────────
+  const ARENA_RANKS = [
+    { name: 'Academy Student', tiers: 2, starsPerTier: 2 },
+    { name: 'Genin',           tiers: 3, starsPerTier: 3 },
+    { name: 'Chunin',          tiers: 3, starsPerTier: 4 },
+    { name: 'Special Jounin',  tiers: 2, starsPerTier: 4 },
+    { name: 'Jounin',          tiers: 2, starsPerTier: 5 },
+    { name: 'Elite Jounin',    tiers: 2, starsPerTier: 5 },
+    { name: 'ANBU',            tiers: 2, starsPerTier: 6 },
+    { name: 'ANBU Captain',    tiers: 2, starsPerTier: 6 },
+    { name: 'Shadow Kage',     tiers: 1, starsPerTier: 7  },
+    { name: 'Sannin',          tiers: 1, starsPerTier: 8  },
+    { name: 'Kage',            tiers: 1, starsPerTier: 10 },
+    { name: 'Six Paths',       tiers: 1, starsPerTier: 12 },
+    { name: 'Shinobi Legend',  tiers: 1, starsPerTier: 15 },
+  ];
+
+  function buildRankList() {
+    const list = [];
+    ARENA_RANKS.forEach(r => {
+      for (let t = r.tiers; t >= 1; t--) {
+        list.push({
+          name: r.name,
+          tier: r.tiers > 1 ? `T${t}` : 'T1',
+          starsNeeded: r.starsPerTier,
+          label: r.tiers > 1 ? `${r.name} T${t}` : r.name,
+          totalStarsLabel: r.tiers > 1 ? `${r.starsPerTier} ★ per tier` : `${r.starsPerTier} ★`
+        });
+      }
+    });
+    return list;
+  }
+
+  function getArenaStars() {
+    return Number(localStorage.getItem('arena_stars') || 0);
+  }
+
+  function getCurrentRankIndex(stars) {
+    const list = buildRankList();
+    let cumulative = 0;
+    for (let i = 0; i < list.length; i++) {
+      cumulative += list[i].starsNeeded;
+      if (stars < cumulative) return { idx: i, starsInTier: stars - (cumulative - list[i].starsNeeded), rank: list[i] };
+    }
+    return { idx: list.length - 1, starsInTier: stars, rank: list[list.length - 1] };
+  }
+
+  function renderRankTable() {
+    const tbody = document.getElementById('rank-table-body');
+    if (!tbody) return;
+    const stars = getArenaStars();
+    const { idx } = getCurrentRankIndex(stars);
+    const list = buildRankList();
+
+    tbody.innerHTML = list.map((r, i) => `
+      <tr class="${i === idx ? 'current-rank' : ''}">
+        <td class="rank-name-cell">${r.label}${i === idx ? ' ← You' : ''}</td>
+        <td class="rank-tier-cell">${r.tier}</td>
+        <td class="rank-stars-cell"><span class="rank-star-icon">★</span> ${r.totalStarsLabel}</td>
+      </tr>`).join('');
+  }
+
+  function renderPlayerRank() {
+    const stars = getArenaStars();
+    const { idx, starsInTier, rank } = getCurrentRankIndex(stars);
+
+    document.getElementById('rank-name-display').textContent = rank.label;
+    document.getElementById('rank-tier-display').textContent = `${rank.tier} — ${starsInTier} / ${rank.starsNeeded} ★`;
+    document.getElementById('rank-badge-label').textContent = rank.name.replace(' ', '\n');
+    document.getElementById('rank-badge-stars').textContent = '★'.repeat(Math.min(starsInTier, rank.starsNeeded));
+    document.getElementById('rank-stars-text').textContent = `${stars} Arena Stars total`;
+
+    const pct = Math.min(100, Math.round((starsInTier / rank.starsNeeded) * 100));
+    document.getElementById('rank-stars-fill').style.width = pct + '%';
+    document.getElementById('rank-tier-display').textContent =
+      `${rank.tier} — ${starsInTier} / ${rank.starsNeeded} Stars`;
+  }
+
+  renderRankTable();
+  renderPlayerRank();
+  </script>
 </body>
 </html>
