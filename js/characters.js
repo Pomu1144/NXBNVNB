@@ -2061,7 +2061,19 @@
     equipped[slotName] = cardId;
     saveEquippedJutsu(uid, equipped);
     renderJutsuSlots(uid);
+    _refreshStatsPanel(uid);
     console.log(`[Jutsu Equipment] Equipped ${cardId} to ${slotName}`);
+  }
+
+  function _refreshStatsPanel(uid) {
+    const modal = document.getElementById('char-modal');
+    if (modal?.dataset?.currentUid !== uid) return;
+    const inst = window.InventoryChar?.getByUid(uid);
+    const char = inst && window.CharacterInventory?.getCharacterById(inst.charId);
+    if (char && inst) {
+      const tier = inst.tierCode || (typeof minTier === 'function' ? minTier(char) : '3S');
+      renderStatusTab(char, inst, tier);
+    }
   }
 
   // Show replacement popup when all jutsu slots full
@@ -2219,6 +2231,7 @@
           equipped[_detailSlotName] = null;
           saveEquippedJutsu(_detailUid, equipped);
           renderJutsuSlots(_detailUid);
+          _refreshStatsPanel(_detailUid);
         }
         closeCardDetailModal();
       });
