@@ -455,8 +455,43 @@
         <div class="equip-divider">
           <img src="assets/Stats/equipdiv.png" alt="" onerror="this.style.display='none';" />
         </div>
-        <div class="equipment-grid">
-          ${Array(5).fill(0).map((_, i) => `<div class="equipment-slot" data-slot="${i + 1}"><img src="assets/Stats/emptyslot.png" alt="Empty Slot ${i + 1}" onerror="this.style.display='none';" /></div>`).join('')}
+        <div class="stat-equip-rows">
+          <div class="stat-equip-row">
+            <button class="jutsu-slot" data-slot="jutsu1" aria-label="Jutsu Slot 1">
+              <img src="assets/ui/jutsuslotempty.png" class="jutsu-slot-bg" alt="">
+              <img src="" class="jutsu-slot-icon" style="display:none" alt="">
+            </button>
+            <button class="jutsu-slot" data-slot="jutsu2" aria-label="Jutsu Slot 2">
+              <img src="assets/ui/jutsuslotempty.png" class="jutsu-slot-bg" alt="">
+              <img src="" class="jutsu-slot-icon" style="display:none" alt="">
+            </button>
+            <button class="jutsu-slot" data-slot="jutsu3" aria-label="Jutsu Slot 3">
+              <img src="assets/ui/jutsuslotempty.png" class="jutsu-slot-bg" alt="">
+              <img src="" class="jutsu-slot-icon" style="display:none" alt="">
+            </button>
+            <button class="ultimate-slot" data-slot="ultimate" aria-label="Ultimate Slot">
+              <img src="assets/ui/ultimateslotemtpy.png" class="ultimate-slot-bg" alt="">
+              <img src="" class="ultimate-slot-icon" style="display:none" alt="">
+            </button>
+          </div>
+          <div class="stat-equip-row">
+            <button class="jutsu-slot" data-slot="equipment1" aria-label="Equipment Slot 1">
+              <img src="assets/ui/jutsuslotempty.png" class="jutsu-slot-bg" alt="">
+              <img src="" class="jutsu-slot-icon" style="display:none" alt="">
+            </button>
+            <button class="jutsu-slot" data-slot="equipment2" aria-label="Equipment Slot 2">
+              <img src="assets/ui/jutsuslotempty.png" class="jutsu-slot-bg" alt="">
+              <img src="" class="jutsu-slot-icon" style="display:none" alt="">
+            </button>
+            <button class="jutsu-slot" data-slot="equipment3" aria-label="Equipment Slot 3">
+              <img src="assets/ui/jutsuslotempty.png" class="jutsu-slot-bg" alt="">
+              <img src="" class="jutsu-slot-icon" style="display:none" alt="">
+            </button>
+            <button class="jutsu-slot" data-slot="equipment4" aria-label="Equipment Slot 4">
+              <img src="assets/ui/jutsuslotempty.png" class="jutsu-slot-bg" alt="">
+              <img src="" class="jutsu-slot-icon" style="display:none" alt="">
+            </button>
+          </div>
         </div>`;
 
       // Render power holder under character art
@@ -535,8 +570,43 @@
         <div class="equip-divider">
           <img src="assets/Stats/equipdiv.png" alt="" onerror="this.style.display='none';" />
         </div>
-        <div class="equipment-grid">
-          ${Array(5).fill(0).map((_, i) => `<div class="equipment-slot" data-slot="${i + 1}"><img src="assets/Stats/emptyslot.png" alt="Empty Slot ${i + 1}" onerror="this.style.display='none';" /></div>`).join('')}
+        <div class="stat-equip-rows">
+          <div class="stat-equip-row">
+            <button class="jutsu-slot" data-slot="jutsu1" aria-label="Jutsu Slot 1">
+              <img src="assets/ui/jutsuslotempty.png" class="jutsu-slot-bg" alt="">
+              <img src="" class="jutsu-slot-icon" style="display:none" alt="">
+            </button>
+            <button class="jutsu-slot" data-slot="jutsu2" aria-label="Jutsu Slot 2">
+              <img src="assets/ui/jutsuslotempty.png" class="jutsu-slot-bg" alt="">
+              <img src="" class="jutsu-slot-icon" style="display:none" alt="">
+            </button>
+            <button class="jutsu-slot" data-slot="jutsu3" aria-label="Jutsu Slot 3">
+              <img src="assets/ui/jutsuslotempty.png" class="jutsu-slot-bg" alt="">
+              <img src="" class="jutsu-slot-icon" style="display:none" alt="">
+            </button>
+            <button class="ultimate-slot" data-slot="ultimate" aria-label="Ultimate Slot">
+              <img src="assets/ui/ultimateslotemtpy.png" class="ultimate-slot-bg" alt="">
+              <img src="" class="ultimate-slot-icon" style="display:none" alt="">
+            </button>
+          </div>
+          <div class="stat-equip-row">
+            <button class="jutsu-slot" data-slot="equipment1" aria-label="Equipment Slot 1">
+              <img src="assets/ui/jutsuslotempty.png" class="jutsu-slot-bg" alt="">
+              <img src="" class="jutsu-slot-icon" style="display:none" alt="">
+            </button>
+            <button class="jutsu-slot" data-slot="equipment2" aria-label="Equipment Slot 2">
+              <img src="assets/ui/jutsuslotempty.png" class="jutsu-slot-bg" alt="">
+              <img src="" class="jutsu-slot-icon" style="display:none" alt="">
+            </button>
+            <button class="jutsu-slot" data-slot="equipment3" aria-label="Equipment Slot 3">
+              <img src="assets/ui/jutsuslotempty.png" class="jutsu-slot-bg" alt="">
+              <img src="" class="jutsu-slot-icon" style="display:none" alt="">
+            </button>
+            <button class="jutsu-slot" data-slot="equipment4" aria-label="Equipment Slot 4">
+              <img src="assets/ui/jutsuslotempty.png" class="jutsu-slot-bg" alt="">
+              <img src="" class="jutsu-slot-icon" style="display:none" alt="">
+            </button>
+          </div>
         </div>`;
 
       // Render power holder under character art
@@ -1944,31 +2014,47 @@
       ? window.CardSystem.getCardLevel
       : () => 1;
 
-    // Render jutsu slots
+    // Render jutsu slots — querySelectorAll so both ninjutsu tab and status tab slots update
     ['jutsu1', 'jutsu2', 'jutsu3'].forEach(slotName => {
-      const slotBtn = document.querySelector(`.jutsu-slot[data-slot="${slotName}"]`);
-      if (!slotBtn) return;
+      document.querySelectorAll(`.jutsu-slot[data-slot="${slotName}"]`).forEach(slotBtn => {
+        const icon = slotBtn.querySelector('.jutsu-slot-icon');
+        const cardId = equipped[slotName];
+        slotBtn.querySelectorAll('.jutsu-slot-level').forEach(el => el.remove());
+        if (cardId) {
+          const card = jutsuCardsData.find(c => c.id === cardId);
+          if (card && icon) {
+            icon.src = resolvePath(card.icon);
+            icon.style.display = 'block';
+            icon.title = card.jutsuName || card.name;
+            const curLv = getLevel(cardId);
+            const badge = document.createElement('div');
+            badge.className = 'jutsu-slot-level';
+            badge.textContent = String(curLv);
+            slotBtn.appendChild(badge);
+          }
+        } else if (icon) {
+          icon.src = '';
+          icon.style.display = 'none';
+        }
+      });
+    });
 
-      const icon = slotBtn.querySelector('.jutsu-slot-icon');
-      const cardId = equipped[slotName];
-
-      // Remove any old level badge
-      slotBtn.querySelectorAll('.jutsu-slot-level').forEach(el => el.remove());
-
+    // Render ultimate slots (querySelectorAll covers both tabs)
+    document.querySelectorAll('.ultimate-slot[data-slot="ultimate"]').forEach(ultimateSlot => {
+      const icon = ultimateSlot.querySelector('.ultimate-slot-icon');
+      const cardId = equipped.ultimate;
+      ultimateSlot.querySelectorAll('.jutsu-slot-level').forEach(el => el.remove());
       if (cardId) {
         const card = jutsuCardsData.find(c => c.id === cardId);
         if (card && icon) {
           icon.src = resolvePath(card.icon);
           icon.style.display = 'block';
           icon.title = card.jutsuName || card.name;
-
-          // Add level badge
-          const maxLv = window.CardSystem ? window.CardSystem.getCardMaxLevel(card) : 70;
           const curLv = getLevel(cardId);
           const badge = document.createElement('div');
           badge.className = 'jutsu-slot-level';
-          badge.textContent = `${curLv}`;
-          slotBtn.appendChild(badge);
+          badge.textContent = String(curLv);
+          ultimateSlot.appendChild(badge);
         }
       } else if (icon) {
         icon.src = '';
@@ -1976,64 +2062,51 @@
       }
     });
 
-    // Render ultimate slot
-    const ultimateSlot = document.querySelector('.ultimate-slot[data-slot="ultimate"]');
-    if (ultimateSlot) {
-      const icon = ultimateSlot.querySelector('.ultimate-slot-icon');
-      const cardId = equipped.ultimate;
-      ultimateSlot.querySelectorAll('.jutsu-slot-level').forEach(el => el.remove());
-
-      if (cardId) {
-        const card = jutsuCardsData.find(c => c.id === cardId);
-        if (card && icon) {
-          icon.src = resolvePath(card.icon);
-          icon.style.display = 'block';
-          icon.title = card.jutsuName || card.name;
-
-          const curLv = getLevel(cardId);
-          const badge = document.createElement('div');
-          badge.className = 'jutsu-slot-level';
-          badge.textContent = `${curLv}`;
-          ultimateSlot.appendChild(badge);
-        }
-      } else if (icon) {
-        icon.src = '';
-        icon.style.display = 'none';
-      }
-    }
-
-    // Render equipment slots (1-5)
-    for (let i = 1; i <= 5; i++) {
-      const slotName = `equipment${i}`;
-      const equipSlot = document.querySelector(`.tools-equipment-slot[data-slot="${i}"]`);
-      if (!equipSlot) continue;
-
+    // Render equipment slots — stat-tab buttons (data-slot="equipment1".."equipment4")
+    // and tools-tab slots (data-slot="1".."5")
+    ['equipment1', 'equipment2', 'equipment3', 'equipment4', 'equipment5'].forEach((slotName, idx) => {
       const cardId = equipped[slotName];
-
-      if (cardId) {
-        const card = jutsuCardsData.find(c => c.id === cardId);
-        if (card) {
-          const curLv = getLevel(cardId);
-          const maxLv = window.CardSystem ? window.CardSystem.getCardMaxLevel(card) : 70;
-          const imgSrc = resolvePath(card.fullArt || card.icon);
-          const iconSrc = resolvePath(card.icon);
-          equipSlot.innerHTML = `
-            <img src="${imgSrc}" alt="${card.name}"
-                 style="width:100%;height:100%;object-fit:cover;"
-                 onerror="this.src='${iconSrc}';">
-            <div class="equip-slot-level">Lv ${curLv}</div>
-          `;
-          equipSlot.classList.add('filled');
+      // stat-tab jutsu-slot buttons
+      document.querySelectorAll(`.jutsu-slot[data-slot="${slotName}"]`).forEach(slotBtn => {
+        const icon = slotBtn.querySelector('.jutsu-slot-icon');
+        slotBtn.querySelectorAll('.jutsu-slot-level').forEach(el => el.remove());
+        if (cardId) {
+          const card = jutsuCardsData.find(c => c.id === cardId);
+          if (card && icon) {
+            icon.src = resolvePath(card.icon);
+            icon.style.display = 'block';
+            icon.title = card.jutsuName || card.name;
+            const curLv = getLevel(cardId);
+            const badge = document.createElement('div');
+            badge.className = 'jutsu-slot-level';
+            badge.textContent = String(curLv);
+            slotBtn.appendChild(badge);
+          }
+        } else if (icon) {
+          icon.src = '';
+          icon.style.display = 'none';
         }
-      } else {
-        equipSlot.innerHTML = `
-          <div class="tools-slot-empty">
-            <div class="tools-slot-label">Slot ${i}</div>
-          </div>
-        `;
-        equipSlot.classList.remove('filled');
+      });
+      // tools-tab legacy divs
+      const toolsSlot = document.querySelector(`.tools-equipment-slot[data-slot="${idx + 1}"]`);
+      if (toolsSlot) {
+        if (cardId) {
+          const card = jutsuCardsData.find(c => c.id === cardId);
+          if (card) {
+            const curLv = getLevel(cardId);
+            const imgSrc = resolvePath(card.fullArt || card.icon);
+            const iconSrc = resolvePath(card.icon);
+            toolsSlot.innerHTML = `
+              <img src="${imgSrc}" alt="${card.name}" style="width:100%;height:100%;object-fit:cover;" onerror="this.src='${iconSrc}';">
+              <div class="equip-slot-level">Lv ${curLv}</div>`;
+            toolsSlot.classList.add('filled');
+          }
+        } else {
+          toolsSlot.innerHTML = `<div class="tools-slot-empty"><div class="tools-slot-label">Slot ${idx + 1}</div></div>`;
+          toolsSlot.classList.remove('filled');
+        }
       }
-    }
+    });
   }
 
   // Check if card is already equipped
@@ -2067,14 +2140,17 @@
     console.log(`[Jutsu Equipment] Equipped ${cardId} to ${slotName}`);
   }
 
-  function _refreshStatsPanel(uid) {
+  async function _refreshStatsPanel(uid) {
     const modal = document.getElementById('char-modal');
     if (modal?.dataset?.currentUid !== uid) return;
     const inst = window.InventoryChar?.getByUid(uid);
     const char = inst && window.CharacterInventory?.getCharacterById(inst.charId);
     if (char && inst && window.renderStatusTab) {
       const tier = inst.tierCode || (typeof minTier === 'function' ? minTier(char) : '3S');
-      window.renderStatusTab(char, inst, tier);
+      await window.renderStatusTab(char, inst, tier);
+      renderJutsuSlots(uid);
+      refreshSlotBindings();
+      _bindSlotTooltips();
     }
   }
 
@@ -2316,6 +2392,7 @@
         slot.setAttribute('tabindex', '0');
       }
     });
+    _bindSlotTooltips();
   }
 
   // Open card inventory modal
@@ -2521,6 +2598,131 @@
   document.addEventListener('dblclick', handleSlotOpen);
 
   // Expose card lookup and slot renderer globally
+  /* ===== Card Stat Tooltip ===== */
+  let _tooltipCardId = null;
+  let _tooltipTimer  = null;
+
+  function _ensureTooltip() {
+    let tip = document.getElementById('card-slot-tooltip');
+    if (!tip) {
+      tip = document.createElement('div');
+      tip.id = 'card-slot-tooltip';
+      tip.className = 'card-slot-tooltip';
+      tip.setAttribute('aria-hidden', 'true');
+      tip.innerHTML = `
+        <div class="cst-head">
+          <img class="cst-icon" src="" alt="">
+          <div class="cst-info">
+            <div class="cst-name"></div>
+            <div class="cst-rarity"></div>
+          </div>
+        </div>
+        <div class="cst-body">
+          <div class="cst-stat"><span class="cst-label">HP</span><span class="cst-hp">—</span></div>
+          <div class="cst-stat"><span class="cst-label">ATK</span><span class="cst-atk">—</span></div>
+          <div class="cst-stat"><span class="cst-label">DEF</span><span class="cst-def">—</span></div>
+          <div class="cst-stat"><span class="cst-label">CRI</span><span class="cst-cri">—</span></div>
+          <div class="cst-stat"><span class="cst-label">EVA</span><span class="cst-eva">—</span></div>
+        </div>
+        <button class="cst-lvup-btn" id="cst-lvup-btn">⬆ Level Up</button>
+      `;
+      document.body.appendChild(tip);
+
+      tip.addEventListener('mouseleave', () => _hideTooltip());
+      tip.addEventListener('mouseenter', () => { clearTimeout(_tooltipTimer); });
+
+      document.getElementById('cst-lvup-btn').addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (!_tooltipCardId || !window.CardSystem) return;
+        const result = window.CardSystem.levelUpCard(_tooltipCardId, 1);
+        if (result?.ok) {
+          _showTooltipForCard(_tooltipCardId, null);
+          const charModal = document.getElementById('char-modal');
+          const uid = charModal?.dataset?.currentUid;
+          if (uid) _refreshStatsPanel(uid);
+        } else {
+          const btn = document.getElementById('cst-lvup-btn');
+          if (btn) { btn.textContent = 'Max Level'; btn.disabled = true; }
+        }
+      });
+    }
+    return tip;
+  }
+
+  function _showTooltipForCard(cardId, anchorEl) {
+    if (!cardId) return;
+    const card = jutsuCardsData.find(c => c.id === cardId);
+    if (!card) return;
+    _tooltipCardId = cardId;
+
+    const tip = _ensureTooltip();
+    const resolvePath = window.CardSystem ? window.CardSystem.resolveCardPath : (p => p);
+
+    tip.querySelector('.cst-icon').src = resolvePath(card.icon);
+    tip.querySelector('.cst-name').textContent = card.name || card.jutsuName || '';
+    tip.querySelector('.cst-rarity').textContent = card.rarity || '';
+    tip.querySelector('.cst-hp').textContent  = card.stats?.hp  ?? '—';
+    tip.querySelector('.cst-atk').textContent = card.stats?.atk ?? '—';
+    tip.querySelector('.cst-def').textContent = card.stats?.def ?? '—';
+    tip.querySelector('.cst-cri').textContent = card.stats?.cri ?? '—';
+    tip.querySelector('.cst-eva').textContent = card.stats?.eva ?? '—';
+
+    const lvup = document.getElementById('cst-lvup-btn');
+    if (lvup) {
+      lvup.textContent = '⬆ Level Up';
+      lvup.disabled = false;
+      if (window.CardSystem) {
+        const curLv = window.CardSystem.getCardLevel(cardId);
+        const maxLv = window.CardSystem.getCardMaxLevel(card);
+        if (curLv >= maxLv) { lvup.textContent = 'Max Level'; lvup.disabled = true; }
+      }
+    }
+
+    if (anchorEl) {
+      const rect = anchorEl.getBoundingClientRect();
+      tip.style.left = Math.min(rect.right + 8, window.innerWidth - 200) + 'px';
+      tip.style.top  = Math.max(8, rect.top - 20) + 'px';
+    }
+
+    tip.style.display = 'block';
+    tip.setAttribute('aria-hidden', 'false');
+  }
+
+  function _hideTooltip() {
+    _tooltipTimer = setTimeout(() => {
+      const tip = document.getElementById('card-slot-tooltip');
+      if (tip) { tip.style.display = 'none'; tip.setAttribute('aria-hidden', 'true'); }
+      _tooltipCardId = null;
+    }, 120);
+  }
+
+  function _bindSlotTooltips() {
+    document.querySelectorAll('.jutsu-slot, .ultimate-slot').forEach(slot => {
+      if (slot.dataset.tooltipBound === 'true') return;
+      slot.dataset.tooltipBound = 'true';
+
+      slot.addEventListener('mouseenter', () => {
+        clearTimeout(_tooltipTimer);
+        const charModal = document.getElementById('char-modal');
+        const uid = charModal?.dataset?.currentUid;
+        if (!uid) return;
+        const slotName = getSlotNameForElement(slot);
+        if (!slotName) return;
+        const equipped = getEquippedJutsu(uid);
+        const cardId = equipped?.[slotName];
+        if (cardId) _showTooltipForCard(cardId, slot);
+      });
+
+      slot.addEventListener('mouseleave', () => {
+        _tooltipTimer = setTimeout(() => {
+          const tip = document.getElementById('card-slot-tooltip');
+          if (tip) { tip.style.display = 'none'; tip.setAttribute('aria-hidden', 'true'); }
+          _tooltipCardId = null;
+        }, 180);
+      });
+    });
+  }
+
   window.renderJutsuSlots = renderJutsuSlots;
   window.refreshJutsuEquipmentBindings = refreshSlotBindings;
   window.getJutsuCardById = (id) => jutsuCardsData.find(c => c.id === id);
