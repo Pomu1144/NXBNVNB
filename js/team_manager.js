@@ -12,11 +12,13 @@
   const MAX_COST = 408;
   const DISPLAY_MODE = "pvp"; // "pvp" | "pve" – which stats to show on cards & totals
 
+  const TEAM_NAMES_KEY = 'blazing_team_names';
   let currentTeam = 1;
   let activeSlot = null;
-  let teams = { 1: {}, 2: {}, 3: {} };
-  let BASE = [];          // full character list (array)
-  let BYID = {};          // id -> character
+  let teams = { 1:{}, 2:{}, 3:{}, 4:{}, 5:{}, 6:{}, 7:{}, 8:{} };
+  let teamNames = { 1:'Team 1', 2:'Team 2', 3:'Team 3', 4:'Team 4', 5:'Team 5', 6:'Team 6', 7:'Team 7', 8:'Team 8' };
+  let BASE = [];
+  let BYID = {};
 
   /* ---------- DOM ---------- */
   const teamTabs = document.querySelectorAll(".team-tab");
@@ -215,23 +217,49 @@
   function saveTeams() {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(teams));
+      window.dispatchEvent(new CustomEvent('blazing_teams_updated'));
       console.log("[Team Manager] Teams saved");
     } catch (err) {
       console.error("[Team Manager] Save failed:", err);
     }
   }
 
+  function saveTeamNames() {
+    try { localStorage.setItem(TEAM_NAMES_KEY, JSON.stringify(teamNames)); } catch(e) {}
+  }
+
+  function loadTeamNames() {
+    try {
+      const raw = localStorage.getItem(TEAM_NAMES_KEY);
+      if (raw) Object.assign(teamNames, JSON.parse(raw));
+    } catch(e) {}
+  }
+
   function loadTeams() {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
       if (raw) {
-        teams = JSON.parse(raw);
+        const parsed = JSON.parse(raw);
+        for (let i = 1; i <= 8; i++) {
+          teams[i] = parsed[i] || parsed[String(i)] || {};
+        }
         console.log("[Team Manager] Teams loaded");
       }
     } catch (err) {
       console.error("[Team Manager] Load failed:", err);
-      teams = { 1: {}, 2: {}, 3: {} };
+      teams = { 1:{}, 2:{}, 3:{}, 4:{}, 5:{}, 6:{}, 7:{}, 8:{} };
     }
+  }
+
+  function renameCurrentTeam() {
+    const current = teamNames[currentTeam] || `Team ${currentTeam}`;
+    const newName = prompt(`New name for Team ${currentTeam}:`, current);
+    if (!newName || !newName.trim() || newName.trim() === current) return;
+    const trimmed = newName.trim().substring(0, 24);
+    teamNames[currentTeam] = trimmed;
+    saveTeamNames();
+    const tab = document.querySelector(`.team-tab[data-team="${currentTeam}"]`);
+    if (tab) tab.textContent = trimmed;
   }
 
   /* =========================
@@ -751,8 +779,19 @@
 
     await loadCharacters();
     loadTeams();
-    renderTeam();
+    loadTeamNames();
 
+    // Apply saved names to all tabs
+    document.querySelectorAll(".team-tab").forEach(tab => {
+      const n = Number(tab.dataset.team);
+      if (teamNames[n]) tab.textContent = teamNames[n];
+    });
+
+    // Wire rename button
+    const renameBtn = document.getElementById("btn-rename-team");
+    if (renameBtn) renameBtn.addEventListener("click", renameCurrentTeam);
+
+    renderTeam();
     console.log("[Team Manager] Ready!");
   })();
 

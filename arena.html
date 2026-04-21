@@ -595,7 +595,7 @@
     // Build team cards HTML
     function buildTeamCard(teamNum) {
       const team = savedTeams[teamNum] || {};
-      const slots = ['slot1','slot2','slot3','slot4','slot5'];
+      const slots = ['front-1','front-2','front-3','front-4','back-1','back-2','back-3','back-4','commander'];
       const members = slots.map(s => {
         const entry = team[s];
         if (!entry) return null;
@@ -651,9 +651,9 @@
     const modal = document.createElement('div');
     // Build resolved player team data for all 3 teams (for use in VS modal)
     const resolvedTeams = {};
-    for (let tn = 1; tn <= 3; tn++) {
+    for (let tn = 1; tn <= 8; tn++) {
       const team = savedTeams[tn] || {};
-      const slots = ['slot1','slot2','slot3','slot4','slot5'];
+      const slots = ['front-1','front-2','front-3','front-4','back-1','back-2','back-3','back-4','commander'];
       resolvedTeams[tn] = slots.map(s => {
         const entry = team[s];
         if (!entry) return null;
@@ -682,9 +682,7 @@
           <button class="atp-close" onclick="document.getElementById('arena-team-picker').remove()">X</button>
         </div>
         <div class="atp-teams">
-          ${buildTeamCard(1)}
-          ${buildTeamCard(2)}
-          ${buildTeamCard(3)}
+          ${[1,2,3,4,5,6,7,8].map(n => buildTeamCard(n)).join('')}
         </div>
         <div class="atp-footer">
           <a href="teams.html" class="atp-link-btn">Manage Teams</a>
@@ -796,8 +794,11 @@
             <span class="arena-map-label">Battle Map</span>
           </div>
         </div>
+        <div style="margin-top:14px;padding:10px 14px;background:rgba(212,175,55,0.08);border-radius:8px;border:1px solid rgba(212,175,55,0.2);text-align:center;font-size:12px;color:#b8985f;letter-spacing:1px;">
+          Teams locked in — Battle will begin immediately
+        </div>
         <button class="arena-start-match-btn" onclick="startArenaBattle(${JSON.stringify(enemyTeam).replace(/"/g, '&quot;')}, '${mapPath}')">
-          Start Matching
+          BEGIN BATTLE
         </button>
       </div>`;
 
@@ -910,7 +911,8 @@
       .atp-title { font-size:20px;font-weight:700;color:#d4af37;letter-spacing:1px; }
       .atp-desc { font-size:12px;color:#9a8060;margin-top:3px; }
       .atp-close { background:rgba(220,53,69,0.18);border:1.5px solid rgba(220,53,69,0.45);color:#ff6b6b;font-size:16px;width:30px;height:30px;border-radius:50%;cursor:pointer;font-weight:700;line-height:1;display:flex;align-items:center;justify-content:center; }
-      .atp-teams { display:flex;flex-direction:column;gap:12px; }
+      .atp-teams { display:grid;grid-template-columns:1fr 1fr;gap:12px; }
+      @media(max-width:700px) { .atp-teams { grid-template-columns:1fr; } }
       .atp-team-card {
         background:rgba(18,22,42,0.7);border:2px solid rgba(139,115,85,0.3);border-radius:12px;
         padding:14px 16px;cursor:pointer;transition:all 0.2s;position:relative;

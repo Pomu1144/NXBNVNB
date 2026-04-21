@@ -30,6 +30,34 @@
       -ms-overflow-style: none;  /* IE and Edge */
       scrollbar-width: none;  /* Firefox */
     }
+
+    .team-tabs-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+    }
+    .team-selector {
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+    .btn-rename-team {
+      font-family: "Cinzel", serif;
+      font-size: 12px;
+      background: rgba(212,175,55,0.1);
+      border: 1px solid rgba(212,175,55,0.4);
+      color: #d4af37;
+      padding: 6px 18px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.2s;
+      letter-spacing: 0.5px;
+    }
+    .btn-rename-team:hover {
+      background: rgba(212,175,55,0.2);
+      border-color: #d4af37;
+    }
   </style>
 </head>
 <body class="page-teams">
@@ -39,9 +67,17 @@
     <h1 class="page-title">TEAM SETUP</h1>
 
     <div class="team-selector">
-      <button class="team-tab active" data-team="1">Team 1</button>
-      <button class="team-tab" data-team="2">Team 2</button>
-      <button class="team-tab" data-team="3">Team 3</button>
+      <div class="team-tabs-row">
+        <button class="team-tab active" data-team="1">Team 1</button>
+        <button class="team-tab" data-team="2">Team 2</button>
+        <button class="team-tab" data-team="3">Team 3</button>
+        <button class="team-tab" data-team="4">Team 4</button>
+        <button class="team-tab" data-team="5">Team 5</button>
+        <button class="team-tab" data-team="6">Team 6</button>
+        <button class="team-tab" data-team="7">Team 7</button>
+        <button class="team-tab" data-team="8">Team 8</button>
+      </div>
+      <button id="btn-rename-team" class="btn-rename-team">Rename Team</button>
     </div>
 
     <section class="team-formation">
@@ -287,6 +323,7 @@
     }
     refreshBtn();
     window.addEventListener("storage", e => { if (e.key === "blazing_teams_v1") refreshBtn(); });
+    window.addEventListener("blazing_teams_updated", refreshBtn);
 
     btn.addEventListener("click", () => {
       if (btn.disabled) return;
