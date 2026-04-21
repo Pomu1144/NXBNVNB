@@ -161,11 +161,28 @@ class SummonUIController {
     }
   }
 
+  _showSummonToast(msg) {
+    const existing = document.getElementById('summon-toast');
+    if (existing) existing.remove();
+    const t = document.createElement('div');
+    t.id = 'summon-toast';
+    t.textContent = msg;
+    t.style.cssText = 'position:fixed;top:70px;left:50%;transform:translateX(-50%);background:rgba(180,30,30,0.92);color:#fff;padding:10px 22px;border-radius:20px;font-size:13px;font-weight:700;z-index:99999;border:1px solid rgba(255,100,100,0.5);animation:summonToastAnim 0.25s ease;pointer-events:none;';
+    if (!document.getElementById('summon-toast-style')) {
+      const s = document.createElement('style');
+      s.id = 'summon-toast-style';
+      s.textContent = '@keyframes summonToastAnim{from{opacity:0;top:60px}to{opacity:1;top:70px}}';
+      document.head.appendChild(s);
+    }
+    document.body.appendChild(t);
+    setTimeout(() => t.remove(), 2500);
+  }
+
   async handleSingleSummon() {
     const pearls = window.Resources?.get('ninja_pearls') || 0;
 
     if (pearls < this.costs.single) {
-      alert('Not enough Ninja Pearls!');
+      this._showSummonToast('Not enough Ninja Pearls!');
       return;
     }
 
@@ -196,7 +213,7 @@ class SummonUIController {
     const pearls = window.Resources?.get('ninja_pearls') || 0;
 
     if (pearls < this.costs.multi) {
-      alert('Not enough Ninja Pearls!');
+      this._showSummonToast('Not enough Ninja Pearls!');
       return;
     }
 
@@ -325,9 +342,10 @@ class SummonUIController {
 
   showResults() {
     if (this.elements.modal) {
+      this.elements.modal.style.display = 'flex';
+      this.elements.modal.classList.add('visible');
       this.elements.modal.classList.remove('hidden');
     }
-
     if (this.elements.resultDisplay) {
       this.elements.resultDisplay.classList.remove('hidden');
     }
@@ -335,35 +353,20 @@ class SummonUIController {
 
   hideResults() {
     if (this.elements.modal) {
+      this.elements.modal.style.display = 'none';
+      this.elements.modal.classList.remove('visible');
       this.elements.modal.classList.add('hidden');
     }
-
     if (this.elements.resultDisplay) {
       this.elements.resultDisplay.classList.add('hidden');
     }
-
     if (this.elements.resultGrid) {
       this.elements.resultGrid.innerHTML = '';
     }
   }
 
   showRatesInfo() {
-    const rates = window.FibonacciSummonEngine?.getRatesDisplay();
-    if (!rates) return;
-
-    const message = `
-Current Summon Rates:
-━━━━━━━━━━━━━━━━━━━
-Multi Step: ${rates.multiStep}
-Gold Chance: ${rates.goldChance}
-Featured Chance: ${rates.featuredChance}
-
-Session Stats:
-Total Golds: ${rates.totalGolds}
-Featured Golds: ${rates.featuredGolds}
-    `;
-
-    alert(message);
+    // Handled by summon.html inline script using the info modal
   }
 }
 

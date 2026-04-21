@@ -4,6 +4,7 @@ class DashboardMailbox {
   constructor() {
     this.messages = [];
     this.unreadCount = 0;
+    this.init();
   }
 
   init() {

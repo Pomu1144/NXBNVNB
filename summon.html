@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <title>Blazing — Summon</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <!-- PWA App Container -->
   <link rel="manifest" href="manifest.json" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-fullscreen" />
@@ -12,64 +11,550 @@
   <meta name="theme-color" content="#000000" />
   <link rel="apple-touch-icon" href="assets/icons/achievement_icon.png" />
   <script src="js/pwa-register.js"></script>
-  <link rel="stylesheet" href="css/summon.css" />
   <link rel="stylesheet" href="css/summon-results.css" />
   <link rel="stylesheet" href="css/summon-dev-panel.css" />
-  <link rel="stylesheet" href="css/background.css" />
   <link rel="stylesheet" href="css/bottombar.css" />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { width: 100%; height: 100%; overflow: hidden; }
+    body::-webkit-scrollbar, *::-webkit-scrollbar { display: none; }
+    body { -ms-overflow-style: none; scrollbar-width: none; }
+
+    body.page-summon {
+      font-family: 'Cinzel', Georgia, serif;
+      background: #040408;
+      color: #e8e0d0;
+    }
+
+    /* ── Full-screen background ───────────────────────────────── */
+    #summon-bg {
+      position: fixed;
+      inset: 0;
+      background: url('assets/Main Background/summon_bg.png') center/cover no-repeat;
+      z-index: 0;
+    }
+    #summon-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg,
+        rgba(4,4,8,0.3) 0%,
+        rgba(4,4,8,0.15) 40%,
+        rgba(4,4,8,0.7) 100%);
+    }
+
+    /* ── Page scaffold ────────────────────────────────────────── */
+    .summon-page {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      padding-bottom: 80px; /* bottom nav */
+    }
+
+    /* ── Top bar ──────────────────────────────────────────────── */
+    .summon-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px 0;
+      flex-shrink: 0;
+    }
+
+    #btn-back-to-home {
+      background: rgba(0,0,0,0.55);
+      border: 1px solid rgba(184,152,95,0.45);
+      border-radius: 22px;
+      color: #d4af37;
+      font-family: 'Cinzel', serif;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 6px 14px;
+      cursor: pointer;
+      letter-spacing: 0.5px;
+      transition: all 0.2s;
+    }
+    #btn-back-to-home:hover { background: rgba(184,152,95,0.18); border-color: #d4af37; }
+
+    .summon-currency-hud {
+      display: flex;
+      gap: 8px;
+    }
+    .currency-chip {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(0,0,0,0.6);
+      border: 1px solid rgba(184,152,95,0.4);
+      border-radius: 20px;
+      padding: 5px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #d4af37;
+    }
+    .currency-icon { width: 16px; height: 16px; object-fit: contain; }
+
+    /* ── Banner carousel area ─────────────────────────────────── */
+    .banner-carousel-wrap {
+      position: relative;
+      flex-shrink: 0;
+      margin: 8px 10px 0;
+      height: clamp(180px, 38vh, 340px);
+      border-radius: 16px;
+      overflow: hidden;
+      border: 2px solid rgba(184,152,95,0.4);
+      box-shadow: 0 8px 40px rgba(0,0,0,0.7), 0 0 0 1px rgba(184,152,95,0.15);
+    }
+
+    #main-carousel {
+      width: 100%;
+      height: 100%;
+      background: rgba(10,10,22,0.85);
+      position: relative;
+    }
+
+    /* Arrow buttons overlay */
+    .banner-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 10;
+      background: rgba(0,0,0,0.55);
+      border: 2px solid rgba(184,152,95,0.45);
+      color: #d4af37;
+      font-size: 22px;
+      width: 36px;
+      height: 56px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .banner-arrow:hover { background: rgba(184,152,95,0.25); border-color: #d4af37; }
+    .arrow-left  { left: 6px; }
+    .arrow-right { right: 6px; }
+
+    /* Banner placeholder shimmer */
+    .banner-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .banner-placeholder-shimmer {
+      width: 70%;
+      height: 35%;
+      background: linear-gradient(90deg, rgba(184,152,95,0.08), rgba(212,175,55,0.22), rgba(184,152,95,0.08));
+      border-radius: 8px;
+      animation: shimmer 1.8s infinite;
+    }
+    @keyframes shimmer { 0%,100%{opacity:0.4} 50%{opacity:1} }
+
+    /* ── Preview strip ────────────────────────────────────────── */
+    #banner-preview-scroll {
+      display: flex;
+      gap: 7px;
+      overflow-x: auto;
+      padding: 8px 10px 4px;
+      flex-shrink: 0;
+      scrollbar-width: none;
+    }
+    #banner-preview-scroll::-webkit-scrollbar { display: none; }
+
+    .preview-thumb {
+      flex-shrink: 0;
+      width: 80px;
+      height: 46px;
+      border-radius: 7px;
+      overflow: hidden;
+      border: 2px solid rgba(184,152,95,0.3);
+      cursor: pointer;
+      transition: all 0.2s;
+      background: rgba(10,10,22,0.8);
+    }
+    .preview-thumb img { width: 100%; height: 100%; object-fit: cover; }
+    .preview-thumb:hover { border-color: #d4af37; transform: scale(1.04); }
+    .preview-thumb.active { border-color: #d4af37; box-shadow: 0 0 10px rgba(212,175,55,0.5); }
+
+    /* ── Banner info strip ────────────────────────────────────── */
+    .banner-info-section {
+      padding: 6px 14px 2px;
+      flex-shrink: 0;
+    }
+    #banner-name {
+      font-size: clamp(14px, 2.5vw, 18px);
+      font-weight: 700;
+      color: #d4af37;
+      letter-spacing: 1px;
+      line-height: 1.2;
+    }
+    #banner-description {
+      font-size: 11px;
+      color: #b8a078;
+      margin-top: 2px;
+    }
+    #banner-timer {
+      font-size: 11px;
+      color: #ff7070;
+      margin-top: 2px;
+      font-weight: 600;
+    }
+
+    /* ── Step progress ────────────────────────────────────────── */
+    .step-progress {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 14px;
+      font-size: 12px;
+      color: #d4af37;
+      flex-shrink: 0;
+    }
+    .step-progress.hidden { display: none; }
+    .step-label { color: #b8a078; letter-spacing: 0.5px; text-transform: uppercase; font-size: 10px; }
+    .step-sep { color: rgba(184,152,95,0.5); }
+    .step-bar {
+      flex: 1;
+      height: 4px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .step-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #b8985f, #d4af37);
+      border-radius: 2px;
+      transition: width 0.4s ease;
+    }
+
+    /* ── Summon buttons ───────────────────────────────────────── */
+    .summon-buttons {
+      display: flex;
+      gap: 10px;
+      padding: 8px 10px;
+      flex-shrink: 0;
+    }
+
+    .summon-btn {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      padding: 12px 8px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-family: 'Cinzel', serif;
+      font-weight: 700;
+      transition: all 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+    .summon-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(255,255,255,0.08) 0%, transparent 100%);
+      pointer-events: none;
+    }
+    .summon-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none !important; }
+
+    .summon-btn-single {
+      background: linear-gradient(135deg, #0f2040, #1a3a70);
+      border: 2px solid #3a7acc;
+      color: #7ac4ff;
+    }
+    .summon-btn-single:hover:not(:disabled) {
+      background: linear-gradient(135deg, #1a3060, #2a50a0);
+      border-color: #5aa0ff;
+      box-shadow: 0 0 20px rgba(90,160,255,0.35);
+      transform: translateY(-2px);
+    }
+    .summon-btn-multi {
+      background: linear-gradient(135deg, #2a1500, #6b3e00);
+      border: 2px solid #d4af37;
+      color: #ffd700;
+    }
+    .summon-btn-multi:hover:not(:disabled) {
+      background: linear-gradient(135deg, #3a2000, #8a5200);
+      border-color: #ffd700;
+      box-shadow: 0 0 20px rgba(212,175,55,0.45);
+      transform: translateY(-2px);
+    }
+
+    .summon-btn-label {
+      font-size: clamp(11px, 1.6vw, 14px);
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+    .summon-btn-cost {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 12px;
+      opacity: 0.9;
+    }
+    .btn-cost-icon { width: 13px; height: 13px; object-fit: contain; }
+
+    /* ── Info buttons ─────────────────────────────────────────── */
+    .summon-info-buttons {
+      display: flex;
+      gap: 8px;
+      padding: 0 10px 10px;
+      flex-shrink: 0;
+    }
+    .summon-info-btn {
+      flex: 1;
+      padding: 8px 6px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(184,152,95,0.25);
+      border-radius: 8px;
+      color: #9a8060;
+      font-family: 'Cinzel', serif;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+    .summon-info-btn:hover {
+      background: rgba(184,152,95,0.14);
+      border-color: rgba(212,175,55,0.5);
+      color: #d4af37;
+    }
+
+    /* ── Results modal ────────────────────────────────────────── */
+    .summon-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: none;
+    }
+    .summon-modal.visible { display: flex; align-items: center; justify-content: center; }
+
+    .modal-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.92);
+      backdrop-filter: blur(6px);
+    }
+
+    .modal-content {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px 14px;
+      overflow-y: auto;
+      gap: 12px;
+    }
+
+    .result-display {
+      text-align: center;
+    }
+
+    .result-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+      width: 100%;
+      max-width: 640px;
+    }
+    .result-grid.single {
+      grid-template-columns: minmax(0, 200px);
+      justify-content: center;
+    }
+
+    .result-card {
+      background: rgba(20,20,35,0.9);
+      border: 2px solid rgba(139,115,85,0.4);
+      border-radius: 10px;
+      padding: 8px 6px;
+      text-align: center;
+      transition: transform 0.2s;
+      cursor: pointer;
+      animation: cardReveal 0.4s ease backwards;
+    }
+    .result-card:hover { transform: scale(1.05); }
+    .result-card.rarity-gold { border-color: #d4af37; box-shadow: 0 0 12px rgba(212,175,55,0.4); }
+    .result-card.featured { border-color: #ff6b35; box-shadow: 0 0 16px rgba(255,107,53,0.5); }
+
+    @keyframes cardReveal {
+      from { opacity: 0; transform: scale(0.8) translateY(10px); }
+      to   { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .result-card img {
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: cover;
+      border-radius: 6px;
+      margin-bottom: 4px;
+    }
+    .result-card-name { font-size: 9px; color: #e8e0d0; line-height: 1.2; }
+    .result-card-rarity { font-size: 10px; color: #d4af37; margin-top: 2px; }
+    .result-card-featured { font-size: 8px; color: #ff6b35; font-weight: 700; margin-top: 2px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+    .btn-continue {
+      padding: 14px 48px;
+      background: linear-gradient(135deg, #b8985f, #d4af37);
+      border: 2px solid #d4af37;
+      border-radius: 10px;
+      color: #1a1400;
+      font-family: 'Cinzel', serif;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      letter-spacing: 1px;
+      transition: all 0.2s;
+      margin-top: auto;
+    }
+    .btn-continue:hover {
+      background: linear-gradient(135deg, #d4af37, #f0c840);
+      box-shadow: 0 0 20px rgba(212,175,55,0.5);
+    }
+
+    /* ── Info modal (rates, featured, contents) ───────────────── */
+    .summon-info-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 9998;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .sim-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      backdrop-filter: blur(6px);
+    }
+    .sim-panel {
+      position: relative;
+      background: linear-gradient(135deg,rgba(12,16,38,0.99),rgba(6,8,20,0.99));
+      border: 2px solid #b8985f;
+      border-radius: 16px;
+      padding: 24px;
+      width: min(560px, 94vw);
+      max-height: 86vh;
+      overflow-y: auto;
+      box-shadow: 0 0 50px rgba(184,152,95,0.35);
+    }
+    .sim-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(184,152,95,0.25);
+    }
+    .sim-title { font-size: 18px; font-weight: 700; color: #d4af37; letter-spacing: 1px; }
+    .sim-close {
+      background: rgba(220,53,69,0.18);
+      border: 1px solid rgba(220,53,69,0.45);
+      color: #ff6b6b;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .sim-body { font-size: 13px; color: #b8a080; line-height: 1.7; }
+    .sim-rate-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 12px;
+      background: rgba(20,20,35,0.5);
+      border-radius: 7px;
+      margin-bottom: 6px;
+      border: 1px solid rgba(184,152,95,0.15);
+    }
+    .sim-rate-label { color: #d4af37; font-weight: 600; }
+    .sim-rate-value { color: #6bcf7f; font-weight: 700; }
+    .sim-char-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+      gap: 8px;
+      margin-top: 12px;
+    }
+    .sim-char-card {
+      background: rgba(20,20,35,0.7);
+      border: 1px solid rgba(184,152,95,0.25);
+      border-radius: 8px;
+      padding: 8px;
+      text-align: center;
+    }
+    .sim-char-card img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 5px; margin-bottom: 4px; }
+    .sim-char-name { font-size: 9px; color: #e8e0d0; }
+
+    @media (max-width: 480px) {
+      .result-grid { grid-template-columns: repeat(4, 1fr); gap: 6px; }
+      .summon-btn-label { font-size: 11px; }
+    }
+  </style>
 </head>
 <body class="page-summon">
   <div id="summon-bg"></div>
 
-  <main class="summon-content">
-
-    <!-- Currency HUD -->
-    <div class="summon-currency-hud">
-      <div class="currency-chip">
-        <img src="assets/icons/currency/ninjapearl.png" alt="Ninja Pearls" class="currency-icon" onerror="this.style.display='none'">
-        <span id="currency-ninja-pearls">0</span>
-      </div>
-      <div class="currency-chip">
-        <img src="assets/icons/currency/ryo.png" alt="Ryo" class="currency-icon" onerror="this.style.display='none'">
-        <span id="currency-ryo">0</span>
+  <div class="summon-page">
+    <!-- Top bar -->
+    <div class="summon-topbar">
+      <button id="btn-back-to-home">← Village</button>
+      <div class="summon-currency-hud">
+        <div class="currency-chip">
+          <img src="assets/icons/currency/ninjapearl.png" alt="Pearls" class="currency-icon" onerror="this.style.display='none'">
+          <span id="currency-ninja-pearls">0</span>
+        </div>
+        <div class="currency-chip">
+          <img src="assets/icons/currency/ryo.png" alt="Ryo" class="currency-icon" onerror="this.style.display='none'">
+          <span id="currency-ryo">0</span>
+        </div>
       </div>
     </div>
-
-    <!-- Back button -->
-    <button class="summon-back-btn" id="btn-back-to-home">← Village</button>
 
     <!-- Banner carousel -->
     <div class="banner-carousel-wrap">
       <button class="banner-arrow arrow-left" id="arrow-left">‹</button>
-
-      <div class="banner-main-carousel" id="main-carousel">
-        <!-- Banner art populated by JS -->
+      <div id="main-carousel">
         <div class="banner-placeholder">
           <div class="banner-placeholder-shimmer"></div>
         </div>
       </div>
-
       <button class="banner-arrow arrow-right" id="arrow-right">›</button>
     </div>
 
-    <!-- Banner preview strip -->
-    <div class="banner-preview-scroll" id="banner-preview-scroll">
-      <!-- Preview thumbnails populated by JS -->
-    </div>
+    <!-- Preview strip -->
+    <div id="banner-preview-scroll"></div>
 
     <!-- Banner info -->
     <div class="banner-info-section">
-      <div class="banner-name" id="banner-name">Loading Banner...</div>
-      <div class="banner-description" id="banner-description">Summon powerful ninja!</div>
-      <div class="banner-timer" id="banner-timer"></div>
+      <div id="banner-name">Loading Banner…</div>
+      <div id="banner-description">Summon powerful ninja!</div>
+      <div id="banner-timer"></div>
     </div>
 
-    <!-- Step progress (hidden unless step-up banner) -->
+    <!-- Step progress -->
     <div class="step-progress hidden" id="step-progress">
       <span class="step-label">Step</span>
       <span id="step-current">1</span>
       <span class="step-sep">/</span>
       <span id="step-total">8</span>
+      <div class="step-bar">
+        <div class="step-bar-fill" id="step-bar-fill" style="width:12.5%"></div>
+      </div>
     </div>
 
     <!-- Summon buttons -->
@@ -90,7 +575,7 @@
       </button>
     </div>
 
-    <!-- Info action buttons -->
+    <!-- Info buttons -->
     <div class="summon-info-buttons">
       <button class="summon-info-btn" id="btn-rates">Rates</button>
       <button class="summon-info-btn" id="btn-featured">Featured</button>
@@ -99,24 +584,31 @@
 
     <!-- Summon root (used by JS modules) -->
     <section id="summon-root"></section>
+  </div>
 
-  </main>
-
-  <!-- ── Results Modal ─────────────────────────────────────────── -->
-  <div class="summon-modal" id="summon-modal" style="display:none;">
+  <!-- Results Modal -->
+  <div class="summon-modal" id="summon-modal">
     <div class="modal-overlay"></div>
     <div class="modal-content">
-      <div class="result-display" id="result-display">
-        <!-- Stats injected by JS -->
-      </div>
-      <div class="result-grid" id="result-grid">
-        <!-- Result cards injected by JS -->
-      </div>
+      <div class="result-display" id="result-display"></div>
+      <div class="result-grid" id="result-grid"></div>
       <button class="btn-continue" id="btn-continue">Continue</button>
     </div>
   </div>
 
-  <!-- ── Bottom nav ─────────────────────────────────────────────── -->
+  <!-- Info modal (Rates / Featured / Contents) -->
+  <div class="summon-info-modal" id="summon-info-modal" style="display:none">
+    <div class="sim-overlay" onclick="document.getElementById('summon-info-modal').style.display='none'"></div>
+    <div class="sim-panel">
+      <div class="sim-header">
+        <span class="sim-title" id="sim-modal-title">Info</span>
+        <button class="sim-close" onclick="document.getElementById('summon-info-modal').style.display='none'">✕</button>
+      </div>
+      <div class="sim-body" id="sim-modal-body"></div>
+    </div>
+  </div>
+
+  <!-- Bottom nav -->
   <div class="bottom-bar">
     <div class="bottom-bar-content">
       <button class="hud-button" id="btn-village" aria-label="Village"><img src="assets/icons/village_btm_btn.png" alt="Village"></button>
@@ -131,228 +623,6 @@
     </div>
   </div>
 
-  <!-- Inline styles for new summon UI elements not covered by summon.css -->
-  <style>
-    .summon-currency-hud {
-      position: fixed;
-      top: 12px;
-      right: 12px;
-      display: flex;
-      gap: 8px;
-      z-index: 100;
-    }
-    .currency-chip {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      background: rgba(0,0,0,0.7);
-      border: 1px solid rgba(184,152,95,0.5);
-      border-radius: 20px;
-      padding: 5px 12px;
-      font-size: 14px;
-      font-weight: 700;
-      color: #d4af37;
-    }
-    .currency-icon { width: 18px; height: 18px; }
-    .summon-back-btn {
-      position: fixed;
-      top: 12px;
-      left: 12px;
-      z-index: 100;
-      background: rgba(0,0,0,0.6);
-      border: 1px solid rgba(184,152,95,0.4);
-      border-radius: 20px;
-      color: #d4af37;
-      padding: 6px 14px;
-      font-size: 13px;
-      font-weight: 700;
-      cursor: pointer;
-    }
-    .banner-carousel-wrap {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      margin-top: 60px;
-      padding: 0 8px;
-    }
-    .banner-main-carousel {
-      flex: 1;
-      max-width: 480px;
-      height: 220px;
-      border-radius: 16px;
-      overflow: hidden;
-      border: 2px solid rgba(184,152,95,0.5);
-      background: rgba(20,20,35,0.8);
-      position: relative;
-    }
-    .banner-placeholder {
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(135deg, rgba(26,31,58,0.9), rgba(15,20,35,0.9));
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .banner-placeholder-shimmer {
-      width: 80%;
-      height: 40%;
-      background: linear-gradient(90deg, rgba(184,152,95,0.1), rgba(212,175,55,0.3), rgba(184,152,95,0.1));
-      border-radius: 8px;
-      animation: shimmer 2s infinite;
-    }
-    @keyframes shimmer {
-      0%,100% { opacity: 0.4; }
-      50% { opacity: 1; }
-    }
-    .banner-arrow {
-      background: rgba(0,0,0,0.6);
-      border: 2px solid rgba(184,152,95,0.5);
-      color: #d4af37;
-      font-size: 28px;
-      width: 40px;
-      height: 60px;
-      border-radius: 10px;
-      cursor: pointer;
-      flex-shrink: 0;
-      transition: all 0.2s;
-    }
-    .banner-arrow:hover { background: rgba(184,152,95,0.2); border-color: #d4af37; }
-    .banner-preview-scroll {
-      display: flex;
-      gap: 8px;
-      overflow-x: auto;
-      padding: 10px 12px;
-      scrollbar-width: none;
-    }
-    .banner-preview-scroll::-webkit-scrollbar { display: none; }
-    .banner-info-section {
-      padding: 8px 16px;
-      text-align: center;
-    }
-    .banner-name {
-      font-size: 18px;
-      font-weight: 700;
-      color: #d4af37;
-      text-shadow: 0 2px 8px rgba(0,0,0,0.8);
-    }
-    .banner-description {
-      font-size: 13px;
-      color: #b8a080;
-      margin-top: 4px;
-    }
-    .banner-timer {
-      font-size: 12px;
-      color: #ff6b6b;
-      margin-top: 4px;
-    }
-    .step-progress {
-      text-align: center;
-      font-size: 14px;
-      color: #d4af37;
-      margin: 4px 0;
-    }
-    .step-progress.hidden { display: none; }
-    .step-label { margin-right: 4px; }
-    .step-sep { margin: 0 2px; }
-    .summon-buttons {
-      display: flex;
-      gap: 10px;
-      padding: 8px 12px;
-    }
-    .summon-btn {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 5px;
-      padding: 12px 10px;
-      border-radius: 12px;
-      cursor: pointer;
-      border: 2px solid;
-      font-weight: 700;
-      transition: all 0.2s;
-    }
-    .summon-btn-label { font-size: 14px; }
-    .summon-btn-cost {
-      display: flex;
-      align-items: center;
-      gap: 3px;
-      font-size: 13px;
-    }
-    .btn-cost-icon { width: 14px; height: 14px; }
-    .summon-btn-single {
-      background: linear-gradient(135deg, #1a3a6a, #2a5aaa);
-      border-color: #4a8aee;
-      color: #aad4ff;
-    }
-    .summon-btn-single:hover:not(:disabled) {
-      background: linear-gradient(135deg, #2a4a8a, #3a6acc);
-      border-color: #6ab0ff;
-      transform: translateY(-2px);
-    }
-    .summon-btn-multi {
-      background: linear-gradient(135deg, #3d2a00, #7a5500);
-      border-color: #d4af37;
-      color: #ffd700;
-    }
-    .summon-btn-multi:hover:not(:disabled) {
-      background: linear-gradient(135deg, #5a4000, #9a7000);
-      border-color: #ffd700;
-      transform: translateY(-2px);
-    }
-    .summon-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-    .summon-info-buttons {
-      display: flex;
-      gap: 8px;
-      padding: 0 12px 8px;
-    }
-    .summon-info-btn {
-      flex: 1;
-      padding: 8px;
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(184,152,95,0.3);
-      border-radius: 8px;
-      color: #b8985f;
-      font-size: 12px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-    .summon-info-btn:hover { background: rgba(184,152,95,0.15); color: #d4af37; }
-    /* Results modal fix */
-    .summon-modal {
-      position: fixed;
-      inset: 0;
-      z-index: 9999;
-    }
-    .summon-modal .modal-overlay {
-      position: absolute;
-      inset: 0;
-      background: rgba(0,0,0,0.9);
-    }
-    .summon-modal .modal-content {
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      height: 100%;
-      overflow-y: auto;
-      padding: 20px;
-    }
-    .btn-continue {
-      margin-top: auto;
-      padding: 14px 40px;
-      background: linear-gradient(135deg, #b8985f, #d4af37);
-      border: 2px solid #d4af37;
-      border-radius: 10px;
-      color: #1a1f3a;
-      font-size: 16px;
-      font-weight: 700;
-      cursor: pointer;
-    }
-  </style>
-
   <script src="https://cdn.jsdelivr.net/npm/howler@2.2.4/dist/howler.min.js"></script>
   <script src="js/audio-manager.js"></script>
   <script src="js/resources.js"></script>
@@ -365,5 +635,74 @@
   <script src="js/summon/summon-dev-panel.js"></script>
   <script src="js/summon.js"></script>
   <script src="js/navigation.js"></script>
+
+  <!-- Override info buttons to use the new inline modal instead of alert() -->
+  <script>
+  (function() {
+    function showSummonInfoModal(title, bodyHTML) {
+      const modal = document.getElementById('summon-info-modal');
+      const titleEl = document.getElementById('sim-modal-title');
+      const bodyEl  = document.getElementById('sim-modal-body');
+      if (!modal || !titleEl || !bodyEl) return;
+      titleEl.textContent = title;
+      bodyEl.innerHTML = bodyHTML;
+      modal.style.display = 'flex';
+    }
+
+    // Override showRatesInfo to use modal
+    document.addEventListener('DOMContentLoaded', function() {
+      document.getElementById('btn-rates')?.addEventListener('click', () => {
+        const rates = window.FibonacciSummonEngine?.getRatesDisplay?.();
+        const step  = rates?.multiStep ?? '—';
+        const gold  = rates?.goldChance ?? '—';
+        const feat  = rates?.featuredChance ?? '—';
+        const tg    = rates?.totalGolds ?? '0';
+        const fg    = rates?.featuredGolds ?? '0';
+        showSummonInfoModal('📊 Summon Rates', `
+          <div class="sim-rate-row"><span class="sim-rate-label">Multi Step</span><span class="sim-rate-value">${step}</span></div>
+          <div class="sim-rate-row"><span class="sim-rate-label">Gold Chance</span><span class="sim-rate-value">${gold}</span></div>
+          <div class="sim-rate-row"><span class="sim-rate-label">Featured Chance</span><span class="sim-rate-value">${feat}</span></div>
+          <div style="margin-top:14px;color:#d4af37;font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Session</div>
+          <div class="sim-rate-row"><span class="sim-rate-label">Total Golds</span><span class="sim-rate-value">${tg}</span></div>
+          <div class="sim-rate-row"><span class="sim-rate-label">Featured Golds</span><span class="sim-rate-value">${fg}</span></div>
+        `);
+      }, { capture: true });
+
+      document.getElementById('btn-featured')?.addEventListener('click', () => {
+        const featured = window.SummonSystem?.getFeaturedUnits?.() || [];
+        if (featured.length === 0) {
+          showSummonInfoModal('⭐ Featured Units',
+            '<p style="color:#b8a080;text-align:center;padding:20px">No featured units in this banner.</p>');
+          return;
+        }
+        const cards = featured.map(c => {
+          const portrait = c.portrait || c.full || '';
+          const stars = '★'.repeat(Math.min(c.rarity || 4, 7));
+          return `<div class="sim-char-card">
+            ${portrait ? `<img src="${portrait}" alt="${c.name}" onerror="this.style.display='none'">` : '<div style="aspect-ratio:1;background:rgba(255,255,255,0.05);border-radius:5px;margin-bottom:4px"></div>'}
+            <div class="sim-char-name">${c.name}</div>
+            <div style="font-size:10px;color:#d4af37;margin-top:2px">${stars}</div>
+          </div>`;
+        }).join('');
+        showSummonInfoModal('⭐ Featured Units',
+          `<p style="color:#b8a080;margin-bottom:12px;font-size:12px">${featured.length} featured unit${featured.length > 1 ? 's' : ''} in this banner.</p>
+           <div class="sim-char-grid">${cards}</div>`);
+      }, { capture: true });
+
+      document.getElementById('btn-contents')?.addEventListener('click', () => {
+        const rates = window.FibonacciSummonEngine?.getRatesDisplay?.();
+        const pool  = window.SummonSystem?.getCurrentPool?.() || [];
+        const feat  = window.SummonSystem?.getFeaturedUnits?.() || [];
+        showSummonInfoModal('📦 Banner Contents', `
+          <div class="sim-rate-row"><span class="sim-rate-label">Total Characters</span><span class="sim-rate-value">${pool.length}</span></div>
+          <div class="sim-rate-row"><span class="sim-rate-label">Featured Units</span><span class="sim-rate-value">${feat.length}</span></div>
+          <div class="sim-rate-row"><span class="sim-rate-label">Gold Chance</span><span class="sim-rate-value">${rates?.goldChance ?? '—'}</span></div>
+          <div class="sim-rate-row"><span class="sim-rate-label">Featured Chance</span><span class="sim-rate-value">${rates?.featuredChance ?? '—'}</span></div>
+          <div class="sim-rate-row"><span class="sim-rate-label">Multi Step</span><span class="sim-rate-value">${rates?.multiStep ?? '—'}</span></div>
+        `);
+      }, { capture: true });
+    });
+  })();
+  </script>
 </body>
 </html>

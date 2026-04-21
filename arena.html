@@ -339,16 +339,19 @@
       <button class="arena-btn arena-btn-primary" id="btn-battle-arena" onclick="openArenaBattle()">
         ⚔ Battle
       </button>
-      <button class="arena-btn arena-btn-secondary" onclick="alert('Defense team setup coming soon!')">
+      <button class="arena-btn arena-btn-secondary" onclick="openDefenseSetup()">
         🛡 Set Defense
       </button>
-      <button class="arena-btn arena-btn-secondary" onclick="alert('Season rewards coming soon!')">
+      <button class="arena-btn arena-btn-secondary" onclick="openSeasonRewards()">
         🏆 Rewards
+      </button>
+      <button class="arena-btn arena-btn-secondary" onclick="toggleRanksTable()">
+        📊 Ranks
       </button>
     </div>
 
-    <!-- Full ranking table -->
-    <div class="ranking-section">
+    <!-- Collapsible ranking table (hidden by default) -->
+    <div class="ranking-section" id="ranking-section" style="display:none;">
       <div class="ranking-section-title">Rank Progression</div>
       <table class="rank-table" id="rank-table">
         <thead>
@@ -538,15 +541,24 @@
     }
 
     const shuffle = arr => [...arr].sort(() => Math.random() - 0.5);
-    const enemyTeam = shuffle(pool).slice(0, 4).map(c => ({
-      id: c.id,
-      name: c.name,
-      rarity: c.rarity || c.starMinCode || '1',
-      icon: c.icon || '',
-      hp: (c.statsMax && c.statsMax.hp) || 5000,
-      atk: (c.statsMax && c.statsMax.atk) || 800,
-      spd: (c.statsMax && c.statsMax.spd) || 100,
-    }));
+    const enemyTeam = shuffle(pool).slice(0, 4).map(c => {
+      // Resolve portrait: try artByTier first, fallback to top-level portrait
+      const tierCode = c.starMaxCode || c.starMinCode || '3S';
+      const portrait = (c.artByTier && c.artByTier[tierCode]?.portrait)
+        || c.portrait || c.full || '';
+      return {
+        id: c.id,
+        name: c.name,
+        version: c.version || '',
+        rarity: c.rarity || parseInt((c.starMinCode || '3').charAt(0)) || 3,
+        icon: portrait,
+        hp: (c.statsMax && c.statsMax.hp) || 5000,
+        atk: (c.statsMax && c.statsMax.atk) || 800,
+        spd: (c.statsMax && (c.statsMax.speed || c.statsMax.spd)) || 100,
+        skills: c.skills || {},
+        element: c.element || null,
+      };
+    });
 
     showTeamSelectorModal(enemyTeam);
   }
@@ -561,10 +573,16 @@
 
     const mapPath = randomMap();
 
+    const rarityColor = r => r >= 6 ? '#ff4444' : r >= 5 ? '#ffd700' : r >= 4 ? '#a78bfa' : '#6bcf7f';
     const enemyHTML = enemyTeam.map(e => `
       <div class="arena-team-member">
-        <div class="arena-member-avatar" style="${e.icon ? `background-image:url('${e.icon}')` : 'background:#333'}"></div>
-        <div class="arena-member-name">${e.name}</div>
+        <div class="arena-member-avatar" style="${e.icon ? `background-image:url('${e.icon}');background-size:cover;background-position:center top;` : 'background:#333'};border-color:${rarityColor(e.rarity)}"></div>
+        <div class="arena-member-name">${e.name}${e.version ? `<br><span style="font-size:9px;opacity:0.7">${e.version}</span>` : ''}</div>
+        <div class="arena-member-stats">
+          <span title="HP">❤ ${(e.hp/1000).toFixed(1)}k</span>
+          <span title="ATK">⚔ ${e.atk}</span>
+          <span title="SPD">⚡ ${e.spd}</span>
+        </div>
       </div>`).join('');
 
     const playerHTML = playerTeam.length > 0
@@ -631,7 +649,9 @@
         .arena-team-grid { display:grid;grid-template-columns:1fr 1fr;gap:8px; }
         .arena-team-member { display:flex;flex-direction:column;align-items:center;gap:5px; }
         .arena-member-avatar { width:60px;height:60px;border-radius:50%;background-size:cover;background-position:center;border:2px solid #b8985f; }
-        .arena-member-name { font-size:11px;color:#f0e6d1;text-align:center;max-width:70px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap; }
+        .arena-member-name { font-size:11px;color:#f0e6d1;text-align:center;max-width:70px;overflow:hidden;text-overflow:ellipsis; }
+        .arena-member-stats { display:flex;gap:4px;font-size:9px;color:#a0a0c0;flex-wrap:wrap;justify-content:center;margin-top:2px; }
+        .arena-member-stats span { background:rgba(255,255,255,0.08);padding:1px 4px;border-radius:3px; }
         .arena-no-team { color:#b8985f;font-size:13px;text-align:center;padding:20px; }
         .arena-vs-badge { font-size:28px;font-weight:900;color:#ff6b6b;text-shadow:0 0 20px rgba(255,107,107,0.8);flex-shrink:0; }
         .arena-map-preview { height:80px;border-radius:10px;background-size:cover;background-position:center;border:2px solid #b8985f;display:flex;align-items:flex-end;padding:8px; }
@@ -652,14 +672,78 @@
   }
 
   function startArenaBattle(enemyTeam, mapPath) {
-    // Store arena battle data in localStorage
     localStorage.setItem('arena_battle_mode', '1');
     localStorage.setItem('arena_enemies', JSON.stringify(enemyTeam));
     localStorage.setItem('arena_map', mapPath);
-    // Navigate to battle
     window.location.href = 'battle.html';
   }
-  </script>
+
+  function toggleRanksTable() {
+    const section = document.getElementById('ranking-section');
+    if (!section) return;
+    const isHidden = section.style.display === 'none';
+    section.style.display = isHidden ? 'block' : 'none';
+  }
+
+  function openDefenseSetup() {
+    _showArenaInfoModal('🛡 Defense Team',
+      `<p style="color:#b8a080;line-height:1.6">Set your defense team that opponents will face when they challenge you.</p>
+       <p style="color:#6bcf7f;margin-top:12px">Use the <strong>Teams</strong> page to configure your team composition, then set it as your active defense team here.</p>
+       <div style="margin-top:16px;padding:12px;background:rgba(212,175,55,0.1);border:1px solid rgba(212,175,55,0.3);border-radius:8px;">
+         <div style="color:#d4af37;font-weight:700;margin-bottom:6px">Defense Tips</div>
+         <ul style="color:#b8a080;font-size:13px;line-height:1.8;padding-left:16px">
+           <li>High SPD characters defend better</li>
+           <li>Balance ATK and HP for optimal defense</li>
+           <li>Use your strongest 4 characters</li>
+         </ul>
+       </div>`
+    );
+  }
+
+  function openSeasonRewards() {
+    const stars = getArenaStars();
+    const { rank } = getCurrentRankIndex(stars);
+    _showArenaInfoModal('🏆 Season Rewards',
+      `<p style="color:#b8a080;line-height:1.6">Earn Arena Stars by winning battles to climb the ranks and claim season rewards.</p>
+       <div style="margin-top:14px;display:flex;flex-direction:column;gap:10px">
+         ${[
+           { rank: 'Genin',        pearl: 10,  ryo: 5000  },
+           { rank: 'Chunin',       pearl: 20,  ryo: 10000 },
+           { rank: 'Jounin',       pearl: 50,  ryo: 25000 },
+           { rank: 'ANBU Captain', pearl: 100, ryo: 50000 },
+           { rank: 'Kage',         pearl: 200, ryo: 100000},
+           { rank: 'Shinobi Legend',pearl:500, ryo: 250000},
+         ].map(r => `
+           <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:rgba(20,20,35,0.6);border-radius:8px;border:1px solid rgba(184,152,95,0.2)">
+             <span style="color:#d4af37;font-weight:600">${r.rank}</span>
+             <span style="color:#6bcf7f;font-size:13px">💎 ${r.pearl} Pearls &nbsp;|&nbsp; 🪙 ${r.ryo.toLocaleString()} Ryo</span>
+           </div>`).join('')}
+       </div>
+       <p style="color:#d4af37;margin-top:14px;font-size:13px">Current Rank: <strong>${rank.label}</strong> — ${stars} Stars</p>`
+    );
+  }
+
+  function _showArenaInfoModal(title, bodyHTML) {
+    document.getElementById('arena-info-modal')?.remove();
+    const modal = document.createElement('div');
+    modal.id = 'arena-info-modal';
+    modal.innerHTML = `
+      <div style="position:fixed;inset:0;background:rgba(0,0,0,0.85);backdrop-filter:blur(6px);z-index:9998;"
+           onclick="document.getElementById('arena-info-modal').remove()"></div>
+      <div style="position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:9999;
+                  background:linear-gradient(135deg,rgba(15,20,45,0.98),rgba(8,10,25,0.98));
+                  border:3px solid #b8985f;border-radius:18px;padding:28px;width:min(540px,92vw);
+                  max-height:88vh;overflow-y:auto;box-shadow:0 0 60px rgba(184,152,95,0.4);">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;padding-bottom:12px;border-bottom:2px solid rgba(184,152,95,0.3);">
+          <span style="font-size:20px;font-weight:700;color:#d4af37;letter-spacing:1px">${title}</span>
+          <button onclick="document.getElementById('arena-info-modal').remove()"
+                  style="background:rgba(220,53,69,0.2);border:2px solid rgba(220,53,69,0.5);color:#ff6b6b;font-size:18px;width:32px;height:32px;border-radius:50%;cursor:pointer">✕</button>
+        </div>
+        <div style="font-size:14px;">${bodyHTML}</div>
+      </div>`;
+    document.body.appendChild(modal);
+  }
+</script>
 
   <script src="js/navigation.js"></script>
 </body>

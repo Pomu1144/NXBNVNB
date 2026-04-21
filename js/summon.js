@@ -168,46 +168,17 @@
   }
 
   // =======================================================
-  //  Show Featured Units Modal
+  //  Show Featured Units Modal (handled by summon.html inline)
   // =======================================================
   function showFeaturedUnits() {
-    if (featuredCharacters.length === 0) {
-      alert('No featured units in this banner.');
-      return;
-    }
-
-    const text = featuredCharacters
-      .map(c => `• ${c.name} (${c.rarity}★)`)
-      .join('\n');
-
-    alert(`Featured Units:\n\n${text}`);
+    // Delegated to summon.html's inline info modal handler
   }
 
   // =======================================================
-  //  Show Summon Contents & Rates
+  //  Show Summon Contents (handled by summon.html inline)
   // =======================================================
   function showSummonContents() {
-    const rates = window.FibonacciSummonEngine?.getRatesDisplay();
-    if (!rates) return;
-
-    const message = `
-Summon Contents
-━━━━━━━━━━━━━━━━━━━
-
-Current Rates:
-• Multi Step: ${rates.multiStep}
-• Gold Chance: ${rates.goldChance}
-• Featured Chance: ${rates.featuredChance}
-
-Total Characters Available: ${currentPool.length}
-Featured Characters: ${featuredCharacters.length}
-
-Session Statistics:
-${rates.totalGolds}
-${rates.featuredGolds}
-`;
-
-    alert(message);
+    // Delegated to summon.html's inline info modal handler
   }
 
   // =======================================================
