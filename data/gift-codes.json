@@ -48,5 +48,75 @@
         "message": "You've received all characters in both evolved and unevolved forms! Check your present box to claim them."
       }
     }
+  ,
+    {
+      "code": "FUSIONTEST1",
+      "description": "Fusion Test - Kakashi Legacy Step 1 ingredients",
+      "expiryDate": null,
+      "maxRedemptions": null,
+      "rewards": {
+        "characters": [
+          { "characterId": "kakashi_673", "quantity": 1, "tierCode": "3S" },
+          { "characterId": "rin_251",     "quantity": 1, "tierCode": "3S" }
+        ],
+        "resources": [{ "type": "ryo", "amount": 50000 }],
+        "message": "Received Kakashi (kakashi_673) and Rin (rin_251) for Fusion Step 1."
+      }
+    },
+    {
+      "code": "FUSIONTEST2",
+      "description": "Fusion Test - Kakashi Legacy Steps 2-3 ingredients",
+      "expiryDate": null,
+      "maxRedemptions": null,
+      "rewards": {
+        "characters": [
+          { "characterId": "kakashi_2052", "quantity": 1, "tierCode": "3S" },
+          { "characterId": "might_707",    "quantity": 1, "tierCode": "3S" },
+          { "characterId": "kakashi_049",  "quantity": 1, "tierCode": "3S" },
+          { "characterId": "itachi_089",   "quantity": 1, "tierCode": "3S" }
+        ],
+        "resources": [{ "type": "ryo", "amount": 100000 }],
+        "message": "Received Kakashi variants, Might Guy, and Itachi for Fusion Steps 2 & 3."
+      }
+    },
+    {
+      "code": "FUSIONTEST3",
+      "description": "Fusion Test - Kakashi Legacy Steps 4-6 ingredients",
+      "expiryDate": null,
+      "maxRedemptions": null,
+      "rewards": {
+        "characters": [
+          { "characterId": "kakashi_147",  "quantity": 1, "tierCode": "3S" },
+          { "characterId": "deidara_731",  "quantity": 1, "tierCode": "3S" },
+          { "characterId": "kakashi_705",  "quantity": 1, "tierCode": "3S" },
+          { "characterId": "madara_646",   "quantity": 1, "tierCode": "3S" }
+        ],
+        "resources": [{ "type": "ryo", "amount": 200000 }],
+        "message": "Received Kakashi, Deidara, and Madara variants for Fusion Steps 4 & 5."
+      }
+    },
+    {
+      "code": "FUSIONALL",
+      "description": "Fusion Test - All Kakashi Legacy fusion ingredients at once",
+      "expiryDate": null,
+      "maxRedemptions": null,
+      "rewards": {
+        "characters": [
+          { "characterId": "kakashi_673",  "quantity": 1, "tierCode": "3S" },
+          { "characterId": "rin_251",      "quantity": 1, "tierCode": "3S" },
+          { "characterId": "kakashi_2051", "quantity": 1, "tierCode": "3S" },
+          { "characterId": "kakashi_2052", "quantity": 1, "tierCode": "3S" },
+          { "characterId": "might_707",    "quantity": 1, "tierCode": "3S" },
+          { "characterId": "kakashi_049",  "quantity": 1, "tierCode": "3S" },
+          { "characterId": "itachi_089",   "quantity": 1, "tierCode": "3S" },
+          { "characterId": "kakashi_147",  "quantity": 1, "tierCode": "3S" },
+          { "characterId": "deidara_731",  "quantity": 1, "tierCode": "3S" },
+          { "characterId": "kakashi_705",  "quantity": 1, "tierCode": "3S" },
+          { "characterId": "madara_646",   "quantity": 1, "tierCode": "3S" }
+        ],
+        "resources": [{ "type": "ryo", "amount": 500000 }],
+        "message": "Received all Kakashi Legacy fusion ingredients! Check your inventory."
+      }
+    }
   ]
 }
