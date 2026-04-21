@@ -280,7 +280,9 @@
       font-size: 0.75rem;
     }
 
-    .rank-star-icon { color: #ffd700; }
+    .rank-star-icon { width: 12px; height: 12px; vertical-align: middle; margin-right: 1px; }
+    .rank-star-text { color: #ffd700; font-size: 0.75rem; }
+    .rank-stars-imgs { display: flex; align-items: center; gap: 1px; }
 
     /* ── Back link ──────────────────────────────────────────── */
     .arena-back-btn {
@@ -337,16 +339,16 @@
     <!-- Action buttons -->
     <div class="arena-actions">
       <button class="arena-btn arena-btn-primary" id="btn-battle-arena" onclick="openArenaBattle()">
-        ⚔ Battle
+        Battle
       </button>
       <button class="arena-btn arena-btn-secondary" onclick="openDefenseSetup()">
-        🛡 Set Defense
+        Set Defense
       </button>
       <button class="arena-btn arena-btn-secondary" onclick="openSeasonRewards()">
-        🏆 Rewards
+        Rewards
       </button>
       <button class="arena-btn arena-btn-secondary" onclick="toggleRanksTable()">
-        📊 Ranks
+        Ranks
       </button>
     </div>
 
@@ -457,11 +459,12 @@
     const { idx } = getCurrentRankIndex(stars);
     const list = buildRankList();
 
+    const starImg = '<img src="assets/ui/NormalStar.png" class="rank-star-icon" alt="*" onerror="this.style.display=\'none\'">';
     tbody.innerHTML = list.map((r, i) => `
       <tr class="${i === idx ? 'current-rank' : ''}">
-        <td class="rank-name-cell">${r.label}${i === idx ? ' ← You' : ''}</td>
+        <td class="rank-name-cell">${r.label}</td>
         <td class="rank-tier-cell">${r.tier}</td>
-        <td class="rank-stars-cell"><span class="rank-star-icon">★</span> ${r.totalStarsLabel}</td>
+        <td class="rank-stars-cell"><span class="rank-stars-imgs">${starImg} <span class="rank-star-text">${r.totalStarsLabel}</span></span></td>
       </tr>`).join('');
   }
 
@@ -472,7 +475,8 @@
     document.getElementById('rank-name-display').textContent = rank.label;
     document.getElementById('rank-tier-display').textContent = `${rank.tier} — ${starsInTier} / ${rank.starsNeeded} ★`;
     document.getElementById('rank-badge-label').textContent = rank.name.replace(' ', '\n');
-    document.getElementById('rank-badge-stars').textContent = '★'.repeat(Math.min(starsInTier, rank.starsNeeded));
+    const starHtml = '<img src="assets/ui/NormalStar.png" style="width:10px;height:10px;" onerror="this.style.display=\'none\'">';
+    document.getElementById('rank-badge-stars').innerHTML = starHtml.repeat(Math.min(starsInTier, rank.starsNeeded)) || starHtml;
     document.getElementById('rank-stars-text').textContent = `${stars} Arena Stars total`;
 
     const pct = Math.min(100, Math.round((starsInTier / rank.starsNeeded) * 100));
@@ -560,40 +564,211 @@
       };
     });
 
-    showTeamSelectorModal(enemyTeam);
+    // Show offense team picker first, then VS modal
+    openArenaTeamPicker('offense', enemyTeam);
   }
 
-  function showTeamSelectorModal(enemyTeam) {
-    // Load player's team from localStorage
-    let playerTeam = [];
+  // ── Arena Team Picker ────────────────────────────────────────────────────
+  async function openArenaTeamPicker(mode, enemyTeam = null) {
+    // Load teams + inventory + characters
+    let savedTeams = {};
+    let inventory = {};
+    let allChars = {};
+    try { savedTeams = JSON.parse(localStorage.getItem('blazing_teams_v1') || '{}'); } catch(e) {}
     try {
-      const saved = localStorage.getItem('blazing_active_team') || localStorage.getItem('currentTeam');
-      if (saved) playerTeam = JSON.parse(saved);
+      const invArr = JSON.parse(localStorage.getItem('blazing_inventory_v2') || '[]');
+      if (Array.isArray(invArr)) invArr.forEach(inst => { inventory[inst.uid] = inst; });
     } catch(e) {}
+    try {
+      const r = await fetch('data/characters.json');
+      const d = await r.json();
+      allChars = Array.isArray(d) ? Object.fromEntries(d.map(c=>[c.id,c])) : d;
+    } catch(e) {}
+
+    const currentDefenseTeam = (() => {
+      try { return JSON.parse(localStorage.getItem('arena_defense_team') || 'null'); } catch(e) { return null; }
+    })();
+    const currentOffenseTeam = (() => {
+      try { return JSON.parse(localStorage.getItem('arena_offense_team') || 'null'); } catch(e) { return null; }
+    })();
+
+    // Build team cards HTML
+    function buildTeamCard(teamNum) {
+      const team = savedTeams[teamNum] || {};
+      const slots = ['slot1','slot2','slot3','slot4','slot5'];
+      const members = slots.map(s => {
+        const entry = team[s];
+        if (!entry) return null;
+        const inst = inventory[entry.uid] || { charId: entry.charId, level: 1, tierCode: null };
+        const char = allChars[inst.charId || entry.charId] || null;
+        if (!char) return null;
+        const tierCode = inst.tierCode || char.starMaxCode || char.starMinCode || '3S';
+        const portrait = (char.artByTier && char.artByTier[tierCode]?.portrait) || char.portrait || char.full || '';
+        const jutsuName = char.skills?.jutsu?.name || 'Jutsu';
+        const jutsuTier = char.skills?.jutsu?.byTier?.[tierCode] || Object.values(char.skills?.jutsu?.byTier || {})[0] || {};
+        const chakra = jutsuTier.chakraCost || '—';
+        const hp = char.statsMax?.hp || char.statsBase?.hp || 0;
+        const atk = char.statsMax?.atk || char.statsBase?.atk || 0;
+        return { portrait, name: char.name, version: char.version || '', jutsuName, chakra, hp, atk, rarity: char.rarity || 3 };
+      }).filter(Boolean);
+
+      if (members.length === 0) {
+        return `<div class="atp-team-card empty" data-team="${teamNum}">
+          <div class="atp-team-label">Team ${teamNum}</div>
+          <div class="atp-empty-msg">No characters assigned</div>
+        </div>`;
+      }
+
+      const rarityBorder = r => r >= 7 ? '#ff2244' : r >= 6 ? '#ffd700' : r >= 5 ? '#c084fc' : '#4ade80';
+      const memberCards = members.map(m => `
+        <div class="atp-member">
+          <div class="atp-portrait" style="background-image:url('${m.portrait}');border-color:${rarityBorder(m.rarity)}"></div>
+          <div class="atp-member-info">
+            <div class="atp-member-name">${m.name}</div>
+            ${m.version ? `<div class="atp-member-ver">${m.version}</div>` : ''}
+            <div class="atp-jutsu-row">
+              <div class="atp-jutsu-icon" style="background-image:url('${m.portrait}')"></div>
+              <div class="atp-jutsu-name">${m.jutsuName}</div>
+              <div class="atp-chakra">${m.chakra}C</div>
+            </div>
+          </div>
+        </div>`).join('');
+
+      const isActiveMode = mode === 'offense' ? currentOffenseTeam === teamNum : currentDefenseTeam === teamNum;
+      return `<div class="atp-team-card ${isActiveMode ? 'atp-active' : ''}" data-team="${teamNum}" onclick="selectArenaTeam(${teamNum})">
+        <div class="atp-team-label">Team ${teamNum}</div>
+        <div class="atp-members">${memberCards}</div>
+        ${isActiveMode ? '<div class="atp-active-badge">Current</div>' : ''}
+      </div>`;
+    }
+
+    const title = mode === 'offense' ? 'Select Offense Team' : 'Select Defense Team';
+    const desc  = mode === 'offense'
+      ? 'Choose which team you will battle with in the Arena.'
+      : 'Choose which team opponents will face when they challenge you.';
+
+    document.getElementById('arena-team-picker')?.remove();
+    const modal = document.createElement('div');
+    // Build resolved player team data for all 3 teams (for use in VS modal)
+    const resolvedTeams = {};
+    for (let tn = 1; tn <= 3; tn++) {
+      const team = savedTeams[tn] || {};
+      const slots = ['slot1','slot2','slot3','slot4','slot5'];
+      resolvedTeams[tn] = slots.map(s => {
+        const entry = team[s];
+        if (!entry) return null;
+        const inst = inventory[entry.uid] || { charId: entry.charId };
+        const char = allChars[inst.charId || entry.charId] || null;
+        if (!char) return null;
+        const tierCode = inst.tierCode || char.starMaxCode || char.starMinCode || '3S';
+        const portrait = (char.artByTier && char.artByTier[tierCode]?.portrait) || char.portrait || char.full || '';
+        return { name: char.name, version: char.version || '', portrait, rarity: char.rarity || 3 };
+      }).filter(Boolean);
+    }
+
+    modal.id = 'arena-team-picker';
+    modal.dataset.mode = mode;
+    modal.dataset.resolvedTeams = JSON.stringify(resolvedTeams);
+    if (enemyTeam) modal.dataset.enemyTeam = JSON.stringify(enemyTeam);
+
+    modal.innerHTML = `
+      <div class="atp-overlay" onclick="document.getElementById('arena-team-picker').remove()"></div>
+      <div class="atp-panel">
+        <div class="atp-header">
+          <div>
+            <div class="atp-title">${title}</div>
+            <div class="atp-desc">${desc}</div>
+          </div>
+          <button class="atp-close" onclick="document.getElementById('arena-team-picker').remove()">X</button>
+        </div>
+        <div class="atp-teams">
+          ${buildTeamCard(1)}
+          ${buildTeamCard(2)}
+          ${buildTeamCard(3)}
+        </div>
+        <div class="atp-footer">
+          <a href="teams.html" class="atp-link-btn">Manage Teams</a>
+          <button class="atp-confirm" id="atp-confirm-btn" onclick="confirmArenaTeam()" disabled>
+            ${mode === 'offense' ? 'Battle with this team' : 'Set as Defense Team'}
+          </button>
+        </div>
+      </div>`;
+
+    _injectArenaTeamPickerStyles();
+    document.body.appendChild(modal);
+
+    // Auto-select current team if set
+    const currentNum = mode === 'offense' ? currentOffenseTeam : currentDefenseTeam;
+    if (currentNum) {
+      window._arenaPickerSelected = currentNum;
+      document.getElementById('atp-confirm-btn').disabled = false;
+    }
+  }
+
+  window._arenaPickerSelected = null;
+
+  function selectArenaTeam(teamNum) {
+    window._arenaPickerSelected = teamNum;
+    document.querySelectorAll('.atp-team-card').forEach(c => {
+      c.classList.toggle('atp-selected', parseInt(c.dataset.team) === teamNum);
+    });
+    const btn = document.getElementById('atp-confirm-btn');
+    if (btn) btn.disabled = false;
+  }
+
+  async function confirmArenaTeam() {
+    const modal = document.getElementById('arena-team-picker');
+    if (!modal) return;
+    const mode = modal.dataset.mode;
+    const teamNum = window._arenaPickerSelected;
+    if (!teamNum) return;
+
+    if (mode === 'defense') {
+      localStorage.setItem('arena_defense_team', JSON.stringify(teamNum));
+      modal.remove();
+      _showArenaInfoModal('Defense Team Set',
+        `<p style="color:#6bcf7f;text-align:center;padding:16px 0;font-size:15px">Team ${teamNum} has been set as your Arena Defense Team.</p>`);
+      return;
+    }
+
+    // Offense: store and proceed to VS modal
+    localStorage.setItem('arena_offense_team', JSON.stringify(teamNum));
+
+    let enemyTeam = [];
+    let resolvedTeams = {};
+    try { enemyTeam = JSON.parse(modal.dataset.enemyTeam || '[]'); } catch(e) {}
+    try { resolvedTeams = JSON.parse(modal.dataset.resolvedTeams || '{}'); } catch(e) {}
+    modal.remove();
+
+    const playerMembers = resolvedTeams[teamNum] || [];
+    showTeamSelectorModal(playerMembers, enemyTeam);
+  }
+
+  function showTeamSelectorModal(playerMembers, enemyTeam) {
+    // playerMembers: pre-resolved array of { name, version, portrait, rarity }
+    // enemyTeam:     array from openArenaBattle
 
     const mapPath = randomMap();
 
     const rarityColor = r => r >= 6 ? '#ff4444' : r >= 5 ? '#ffd700' : r >= 4 ? '#a78bfa' : '#6bcf7f';
+
     const enemyHTML = enemyTeam.map(e => `
       <div class="arena-team-member">
-        <div class="arena-member-avatar" style="${e.icon ? `background-image:url('${e.icon}');background-size:cover;background-position:center top;` : 'background:#333'};border-color:${rarityColor(e.rarity)}"></div>
+        <div class="arena-member-avatar" style="${e.icon ? `background-image:url('${e.icon}');background-size:cover;background-position:center top;` : 'background:#333'};border-color:${rarityColor(e.rarity || 3)}"></div>
         <div class="arena-member-name">${e.name}${e.version ? `<br><span style="font-size:9px;opacity:0.7">${e.version}</span>` : ''}</div>
         <div class="arena-member-stats">
-          <span title="HP">❤ ${(e.hp/1000).toFixed(1)}k</span>
-          <span title="ATK">⚔ ${e.atk}</span>
-          <span title="SPD">⚡ ${e.spd}</span>
+          <span title="HP">HP ${(e.hp/1000).toFixed(1)}k</span>
+          <span title="ATK">ATK ${e.atk}</span>
+          <span title="SPD">SPD ${e.spd}</span>
         </div>
       </div>`).join('');
 
-    const playerHTML = playerTeam.length > 0
-      ? playerTeam.slice(0, 4).map(uid => {
-          const inv = (() => { try { return JSON.parse(localStorage.getItem('blazing_character_inventory_v3') || '{}'); } catch(e) { return {}; } })();
-          const inst = inv[uid] || {};
-          return `<div class="arena-team-member">
-            <div class="arena-member-avatar" style="${inst.icon ? `background-image:url('${inst.icon}')` : 'background:#444'}"></div>
-            <div class="arena-member-name">${inst.name || uid}</div>
-          </div>`;
-        }).join('')
+    const playerHTML = playerMembers.length > 0
+      ? playerMembers.slice(0, 4).map(m => `
+          <div class="arena-team-member">
+            <div class="arena-member-avatar" style="${m.portrait ? `background-image:url('${m.portrait}');background-size:cover;background-position:center top;` : 'background:#444'};border-color:${rarityColor(m.rarity || 3)}"></div>
+            <div class="arena-member-name">${m.name}${m.version ? `<br><span style="font-size:9px;opacity:0.7">${m.version}</span>` : ''}</div>
+          </div>`).join('')
       : '<div class="arena-no-team">No team set — default characters will be used</div>';
 
     const modal = document.createElement('div');
@@ -602,8 +777,8 @@
       <div class="arena-modal-overlay" onclick="document.getElementById('arena-team-modal').remove()"></div>
       <div class="arena-modal-panel">
         <div class="arena-modal-header">
-          <span class="arena-modal-title">⚔ Arena Battle</span>
-          <button class="arena-modal-close" onclick="document.getElementById('arena-team-modal').remove()">✕</button>
+          <span class="arena-modal-title">Arena Battle</span>
+          <button class="arena-modal-close" onclick="document.getElementById('arena-team-modal').remove()">X</button>
         </div>
         <div class="arena-modal-body">
           <div class="arena-teams-row">
@@ -686,41 +861,90 @@
   }
 
   function openDefenseSetup() {
-    _showArenaInfoModal('🛡 Defense Team',
-      `<p style="color:#b8a080;line-height:1.6">Set your defense team that opponents will face when they challenge you.</p>
-       <p style="color:#6bcf7f;margin-top:12px">Use the <strong>Teams</strong> page to configure your team composition, then set it as your active defense team here.</p>
-       <div style="margin-top:16px;padding:12px;background:rgba(212,175,55,0.1);border:1px solid rgba(212,175,55,0.3);border-radius:8px;">
-         <div style="color:#d4af37;font-weight:700;margin-bottom:6px">Defense Tips</div>
-         <ul style="color:#b8a080;font-size:13px;line-height:1.8;padding-left:16px">
-           <li>High SPD characters defend better</li>
-           <li>Balance ATK and HP for optimal defense</li>
-           <li>Use your strongest 4 characters</li>
-         </ul>
-       </div>`
-    );
+    openArenaTeamPicker('defense');
   }
 
   function openSeasonRewards() {
     const stars = getArenaStars();
     const { rank } = getCurrentRankIndex(stars);
-    _showArenaInfoModal('🏆 Season Rewards',
-      `<p style="color:#b8a080;line-height:1.6">Earn Arena Stars by winning battles to climb the ranks and claim season rewards.</p>
-       <div style="margin-top:14px;display:flex;flex-direction:column;gap:10px">
+    const pearlIcon = '<img src="assets/icons/currency/ninjapearl.png" style="width:14px;height:14px;vertical-align:middle;margin-right:3px;">';
+    const ryoIcon   = '<img src="assets/icons/currency/ryo.png" style="width:14px;height:14px;vertical-align:middle;margin-right:3px;">';
+    const shinIcon  = '<img src="assets/icons/currency/shinobite.png" style="width:14px;height:14px;vertical-align:middle;margin-right:3px;">';
+    _showArenaInfoModal('Season Rewards',
+      `<p style="color:#b8a080;line-height:1.6;margin-bottom:14px">Earn Arena Stars by winning battles to climb the ranks and claim season rewards.</p>
+       <div style="display:flex;flex-direction:column;gap:8px">
          ${[
-           { rank: 'Genin',        pearl: 10,  ryo: 5000  },
-           { rank: 'Chunin',       pearl: 20,  ryo: 10000 },
-           { rank: 'Jounin',       pearl: 50,  ryo: 25000 },
-           { rank: 'ANBU Captain', pearl: 100, ryo: 50000 },
-           { rank: 'Kage',         pearl: 200, ryo: 100000},
-           { rank: 'Shinobi Legend',pearl:500, ryo: 250000},
+           { rank: 'Genin',         pearl: 10,  ryo: 5000,   shin: 2   },
+           { rank: 'Chunin',        pearl: 20,  ryo: 10000,  shin: 5   },
+           { rank: 'Jounin',        pearl: 50,  ryo: 25000,  shin: 10  },
+           { rank: 'ANBU Captain',  pearl: 100, ryo: 50000,  shin: 20  },
+           { rank: 'Kage',          pearl: 200, ryo: 100000, shin: 50  },
+           { rank: 'Shinobi Legend',pearl: 500, ryo: 250000, shin: 100 },
          ].map(r => `
-           <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:rgba(20,20,35,0.6);border-radius:8px;border:1px solid rgba(184,152,95,0.2)">
-             <span style="color:#d4af37;font-weight:600">${r.rank}</span>
-             <span style="color:#6bcf7f;font-size:13px">💎 ${r.pearl} Pearls &nbsp;|&nbsp; 🪙 ${r.ryo.toLocaleString()} Ryo</span>
+           <div style="display:flex;justify-content:space-between;align-items:center;padding:9px 12px;background:rgba(20,20,35,0.6);border-radius:8px;border:1px solid rgba(184,152,95,0.2)">
+             <span style="color:#d4af37;font-weight:600;font-size:13px">${r.rank}</span>
+             <span style="color:#e0e0e0;font-size:12px;display:flex;gap:10px;align-items:center">
+               <span>${pearlIcon}${r.pearl}</span>
+               <span>${ryoIcon}${r.ryo.toLocaleString()}</span>
+               <span>${shinIcon}${r.shin}</span>
+             </span>
            </div>`).join('')}
        </div>
-       <p style="color:#d4af37;margin-top:14px;font-size:13px">Current Rank: <strong>${rank.label}</strong> — ${stars} Stars</p>`
+       <p style="color:#d4af37;margin-top:14px;font-size:12px">Current Rank: <strong>${rank.label}</strong> &mdash; ${stars} Stars</p>`
     );
+  }
+
+  function _injectArenaTeamPickerStyles() {
+    if (document.getElementById('atp-styles')) return;
+    const s = document.createElement('style');
+    s.id = 'atp-styles';
+    s.textContent = `
+      #arena-team-picker { position:fixed;inset:0;z-index:10000;display:flex;align-items:center;justify-content:center; }
+      .atp-overlay { position:absolute;inset:0;background:rgba(0,0,0,0.88);backdrop-filter:blur(6px); }
+      .atp-panel {
+        position:relative;background:linear-gradient(135deg,rgba(10,14,32,0.99),rgba(6,8,20,0.99));
+        border:3px solid #b8985f;border-radius:18px;padding:22px;width:min(860px,96vw);
+        max-height:92vh;overflow-y:auto;box-shadow:0 0 60px rgba(184,152,95,0.35);
+      }
+      .atp-header { display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;padding-bottom:12px;border-bottom:2px solid rgba(184,152,95,0.25); }
+      .atp-title { font-size:20px;font-weight:700;color:#d4af37;letter-spacing:1px; }
+      .atp-desc { font-size:12px;color:#9a8060;margin-top:3px; }
+      .atp-close { background:rgba(220,53,69,0.18);border:1.5px solid rgba(220,53,69,0.45);color:#ff6b6b;font-size:16px;width:30px;height:30px;border-radius:50%;cursor:pointer;font-weight:700;line-height:1;display:flex;align-items:center;justify-content:center; }
+      .atp-teams { display:flex;flex-direction:column;gap:12px; }
+      .atp-team-card {
+        background:rgba(18,22,42,0.7);border:2px solid rgba(139,115,85,0.3);border-radius:12px;
+        padding:14px 16px;cursor:pointer;transition:all 0.2s;position:relative;
+      }
+      .atp-team-card:hover { border-color:rgba(212,175,55,0.5);background:rgba(25,30,55,0.8); }
+      .atp-team-card.atp-selected { border-color:#d4af37;background:rgba(212,175,55,0.08);box-shadow:0 0 20px rgba(212,175,55,0.2); }
+      .atp-team-card.atp-active { border-color:rgba(107,207,127,0.5); }
+      .atp-team-card.empty { cursor:default;opacity:0.5; }
+      .atp-team-label { font-size:11px;font-weight:700;color:#b8985f;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px; }
+      .atp-empty-msg { font-size:13px;color:#555;text-align:center;padding:16px 0; }
+      .atp-active-badge { position:absolute;top:10px;right:12px;background:rgba(107,207,127,0.2);border:1px solid #6bcf7f;color:#6bcf7f;font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;text-transform:uppercase;letter-spacing:0.5px; }
+      .atp-members { display:flex;gap:10px;flex-wrap:wrap; }
+      .atp-member { display:flex;gap:10px;align-items:center;background:rgba(10,12,26,0.6);border-radius:8px;padding:8px 10px;flex:1;min-width:160px; }
+      .atp-portrait { width:50px;height:50px;border-radius:50%;background-size:cover;background-position:center top;border:2px solid #b8985f;flex-shrink:0; }
+      .atp-member-info { flex:1;min-width:0; }
+      .atp-member-name { font-size:12px;font-weight:700;color:#d4af37;white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
+      .atp-member-ver { font-size:10px;color:#9a8060;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
+      .atp-jutsu-row { display:flex;align-items:center;gap:6px;margin-top:5px; }
+      .atp-jutsu-icon { width:22px;height:22px;border-radius:4px;background-size:cover;background-position:center;border:1px solid rgba(212,175,55,0.4);flex-shrink:0; }
+      .atp-jutsu-name { font-size:10px;color:#b8a080;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1; }
+      .atp-chakra { font-size:10px;color:#60a5fa;font-weight:700;flex-shrink:0; }
+      .atp-footer { display:flex;gap:12px;margin-top:18px;padding-top:14px;border-top:1px solid rgba(184,152,95,0.2);align-items:center;justify-content:space-between; }
+      .atp-link-btn { font-size:12px;color:#b8985f;border:1px solid rgba(184,152,95,0.35);padding:8px 14px;border-radius:8px;text-decoration:none;font-family:"Cinzel",serif;transition:all 0.2s; }
+      .atp-link-btn:hover { border-color:#d4af37;color:#d4af37; }
+      .atp-confirm {
+        padding:12px 28px;font-family:"Cinzel",serif;font-size:13px;font-weight:700;
+        background:linear-gradient(135deg,#a7822c,#d4af37);border:2px solid rgba(212,175,55,0.7);
+        color:#0a0a0a;border-radius:8px;cursor:pointer;transition:all 0.2s;letter-spacing:0.5px;
+      }
+      .atp-confirm:hover:not(:disabled) { background:linear-gradient(135deg,#d4af37,#ffd700);box-shadow:0 0 20px rgba(212,175,55,0.4); }
+      .atp-confirm:disabled { opacity:0.35;cursor:not-allowed; }
+      @media(max-width:600px) { .atp-member { min-width:100%; } .atp-members { flex-direction:column; } }
+    `;
+    document.head.appendChild(s);
   }
 
   function _showArenaInfoModal(title, bodyHTML) {
@@ -737,7 +961,7 @@
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;padding-bottom:12px;border-bottom:2px solid rgba(184,152,95,0.3);">
           <span style="font-size:20px;font-weight:700;color:#d4af37;letter-spacing:1px">${title}</span>
           <button onclick="document.getElementById('arena-info-modal').remove()"
-                  style="background:rgba(220,53,69,0.2);border:2px solid rgba(220,53,69,0.5);color:#ff6b6b;font-size:18px;width:32px;height:32px;border-radius:50%;cursor:pointer">✕</button>
+                  style="background:rgba(220,53,69,0.2);border:2px solid rgba(220,53,69,0.5);color:#ff6b6b;font-size:16px;width:30px;height:30px;border-radius:50%;cursor:pointer;font-weight:700">X</button>
         </div>
         <div style="font-size:14px;">${bodyHTML}</div>
       </div>`;

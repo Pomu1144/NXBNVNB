@@ -228,7 +228,7 @@
   <script src="js/dashboard-mailbox.js?v=2"></script>
   <script src="js/panel-missions.js"></script>
   <script src="js/index-banner-carousel.js?v=1"></script>
-  <script src="js/achievements.js"></script>
+  <script src="js/achievements.js?v=2"></script>
   <script src="js/navigation.js?v=2"></script>
 
   <script>
@@ -260,8 +260,10 @@
 
       // Initialize Mailbox
       if (window.DashboardMailbox) {
-        window.DashboardMailbox.init();
+        try { window.DashboardMailbox.init(); } catch(e) { console.error('[village] Mailbox init failed:', e); }
         updateMailboxBadge();
+      } else {
+        console.error('[village] DashboardMailbox not loaded — check js/dashboard-mailbox.js');
       }
 
       // Initialize Stats
@@ -610,11 +612,13 @@
           alert(muted ? "🔇 SFX MUTED" : "🔊 SFX UNMUTED");
           showAudioSettings();
         } else if (choice === "7") {
-          if (window.ModalManager) { window.ModalManager.showConfirm("Reset all audio settings to defaults?", () => {
-            window.AudioManager.reset();
-            if (window.ModalManager) { window.ModalManager.showInfo("✅ Audio settings reset to defaults"); }
+          if (window.ModalManager) {
+            window.ModalManager.showConfirm("Reset all audio settings to defaults?", () => {
+              window.AudioManager.reset();
+              if (window.ModalManager) { window.ModalManager.showInfo("✅ Audio settings reset to defaults"); }
+            });
+            showAudioSettings();
           }
-          showAudioSettings();
         } else if (choice === "8") {
           showSettingsMenu();
         }
