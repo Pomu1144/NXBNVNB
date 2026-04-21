@@ -344,24 +344,26 @@
 
   /* ---------- STATUS tab ---------- */
 
-  // Sum stat bonuses from all equipped equipment-slot cards
+  // Sum stat bonuses from all equipped cards (jutsu + equipment slots)
   function getEquippedCardBonuses(uid) {
     const out = { hp: 0, atk: 0, def: 0, spd: 0, critRate: 0, critDmg: 0, evaRate: 0 };
     try {
       const inst = window.InventoryChar?.getByUid(uid);
       if (!inst?.equippedJutsu) return out;
-      for (let i = 1; i <= 5; i++) {
-        const cardId = inst.equippedJutsu[`equipment${i}`];
+      const slots = ['jutsu1', 'jutsu2', 'jutsu3', 'ultimate',
+                     'equipment1', 'equipment2', 'equipment3', 'equipment4', 'equipment5'];
+      for (const slotKey of slots) {
+        const cardId = inst.equippedJutsu[slotKey];
         if (!cardId || !window.getJutsuCardById) continue;
         const card = window.getJutsuCardById(cardId);
         if (!card?.stats) continue;
-        out.hp       += Number(card.stats.hp_bonus  ?? card.stats.hp)        || 0;
-        out.atk      += Number(card.stats.atk_bonus ?? card.stats.atk)       || 0;
-        out.def      += Number(card.stats.def_bonus ?? card.stats.def)       || 0;
-        out.spd      += Number(card.stats.spd_bonus ?? card.stats.spd)       || 0;
-        out.critRate += Number(card.stats.crit_rate_bonus ?? card.stats.cri) || 0;
-        out.critDmg  += Number(card.stats.crit_dmg_bonus  ?? card.stats.critDmg) || 0;
-        out.evaRate  += Number(card.stats.eva_rate_bonus  ?? card.stats.eva) || 0;
+        out.hp       += Number(card.stats.hp_bonus  ?? card.stats.hp)                   || 0;
+        out.atk      += Number(card.stats.atk_bonus ?? card.stats.atk)                  || 0;
+        out.def      += Number(card.stats.def_bonus ?? card.stats.def)                  || 0;
+        out.spd      += Number(card.stats.spd_bonus ?? card.stats.spd)                  || 0;
+        out.critRate += parseFloat(card.stats.crit_rate_bonus ?? card.stats.cri ?? 0)   || 0;
+        out.critDmg  += parseFloat(card.stats.crit_dmg_bonus  ?? card.stats.critDmg ?? 0) || 0;
+        out.evaRate  += parseFloat(card.stats.eva_rate_bonus  ?? card.stats.eva ?? 0)   || 0;
       }
     } catch (e) {
       console.error('[characters] getEquippedCardBonuses error:', e);

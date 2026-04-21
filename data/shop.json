@@ -3,50 +3,50 @@
     "ramen": [
       {
         "id": "ramen_1star",
-        "name": "Ichiraku Ramen",
+        "name": "Ichiraku Ramen [Reg]",
         "tier": "1★",
         "description": "Basic training ramen. Grants 100 EXP.",
-        "icon": "assets/icons/passives/hp_up.png",
+        "icon": "assets/ramen/heart_915/portrait_1S.png",
         "exp": 100,
         "cost": { "ryo": 500 },
         "stock": "unlimited"
       },
       {
         "id": "ramen_2star",
-        "name": "Special Miso Ramen",
+        "name": "Ichiraku Ramen [Large]",
         "tier": "2★",
         "description": "Quality training ramen. Grants 500 EXP.",
-        "icon": "assets/icons/passives/hp_up1.png",
+        "icon": "assets/ramen/heart_916/portrait_2S.png",
         "exp": 500,
         "cost": { "ryo": 2000 },
         "stock": "unlimited"
       },
       {
         "id": "ramen_3star",
-        "name": "Premium Tonkotsu Ramen",
+        "name": "Ichiraku Ramen [XL]",
         "tier": "3★",
         "description": "Premium training ramen. Grants 2,000 EXP.",
-        "icon": "assets/icons/passives/heal_up.png",
+        "icon": "assets/ramen/heart_917/portrait_3S.png",
         "exp": 2000,
         "cost": { "ryo": 8000 },
         "stock": "unlimited"
       },
       {
         "id": "ramen_4star",
-        "name": "Legendary Cup Ramen",
+        "name": "Special Ramen [Skill]",
         "tier": "4★",
         "description": "Legendary training ramen. Grants 10,000 EXP.",
-        "icon": "assets/icons/passives/heal_up1.png",
+        "icon": "assets/ramen/skill_920/portrait_3S.png",
         "exp": 10000,
         "cost": { "ryo": 30000 },
         "stock": "unlimited"
       },
       {
         "id": "ramen_5star",
-        "name": "Sage's Secret Ramen",
+        "name": "Sand Chunin Special",
         "tier": "5★",
-        "description": "Ultimate training ramen. Grants 50,000 EXP.",
-        "icon": "assets/icons/pearl_icon.png",
+        "description": "Ultra-rare training ramen. Grants 50,000 EXP.",
+        "icon": "assets/ramen/sand_127/portrait_2S.png",
         "exp": 50000,
         "cost": { "pearls": 5 },
         "stock": "unlimited"
