@@ -251,12 +251,20 @@
     const range = pickRange(char);
     const stars = starsFromTier(tier);
 
+    const unlockedAbilities = inst.unlockedAbilities || [];
+    const totalAbilities = (char.abilities || []).length;
+    const allAbilitiesUnlocked = totalAbilities > 0 && unlockedAbilities.length >= totalAbilities;
+    const teamUltimateBadge = allAbilitiesUnlocked
+      ? `<img class="ultimate-badge" src="assets/ui/${(inst.level || 1) >= 150 ? 'ultimate_max' : 'ultimate'}.png" alt="Ultimate" onerror="this.style.display='none';" />`
+      : '';
+
     slotEl.innerHTML = `
       <div class="slot-card">
         <div class="portrait">
           <img src="${img}" alt="${char.name}"
                onerror="this.src='assets/characters/_common/silhouette.png';" />
           <div class="lv-badge">Lv ${inst.level}</div>
+          ${teamUltimateBadge}
         </div>
 
         <div class="rail">

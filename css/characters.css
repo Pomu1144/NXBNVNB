@@ -350,7 +350,7 @@ body.page-characters::-webkit-scrollbar {
 .tab-panels {
   padding: 14px 20px 24px;
   min-height: 450px; /* Ensure consistent minimum height */
-  max-height: 450px; /* Lock maximum height */
+  max-height: 600px; /* Increased to fit two rows of equipment slots */
   overflow-y: auto;  /* Enable scrolling for overflow content */
   scrollbar-width: none; /* Firefox - hide scrollbar */
   -ms-overflow-style: none; /* IE and Edge - hide scrollbar */
@@ -520,7 +520,7 @@ body.page-characters::-webkit-scrollbar {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  padding: 8px 12px 12px;
+  padding: 8px 12px 32px; /* extra bottom padding so last row clears clip boundary */
   position: relative;
   z-index: 3;
 }

@@ -43,8 +43,14 @@ body {
 /* --- PAGE-SPECIFIC BACKGROUNDS --- */
 .page-missions #full-bg {
   position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   background-image: url("../assets/mission_bg.gif");
+  background-size: cover;
+  background-position: center;
   filter: brightness(0.75);
+  z-index: 0;
 }
 
 .page-summon #full-bg {

@@ -203,6 +203,15 @@
         navigateTo('shop.html');
       });
     }
+
+    // Arena
+    const btnArena = document.querySelector('.banner-button.arena');
+    if (btnArena) {
+      btnArena.addEventListener('click', () => {
+        console.log("[Navigation] Arena banner clicked");
+        navigateTo('arena.html');
+      });
+    }
   }
 
   // ---------- HUD Button Navigation (Bottom Bar) ----------
