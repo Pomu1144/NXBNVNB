@@ -1,4 +1,4 @@
-const CACHE = 'blazing-shell-v2';
+const CACHE = 'blazing-shell-v3';
 const BASE = new URL('./', self.location.href).pathname;
 const SHELL = [
   'index.html',
@@ -43,16 +43,13 @@ self.addEventListener('fetch', e => {
     return;
   }
 
-  // HTML shell — stale-while-revalidate
+  // HTML shell — network-first so updates are always visible immediately
   if (e.request.destination === 'document') {
     e.respondWith(
-      caches.match(e.request).then(cached => {
-        const fresh = fetch(e.request).then(r => {
-          caches.open(CACHE).then(c => c.put(e.request, r.clone()));
-          return r;
-        });
-        return cached || fresh;
-      })
+      fetch(e.request).then(r => {
+        caches.open(CACHE).then(c => c.put(e.request, r.clone()));
+        return r;
+      }).catch(() => caches.match(e.request))
     );
     return;
   }

@@ -490,11 +490,10 @@ body.page-characters::-webkit-scrollbar {
   object-fit: contain;
 }
 
-/* Equipment Grid - 2 rows of 5 slots */
+/* Equipment Grid - legacy (kept for tools tab) */
 .equipment-grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  grid-template-rows: repeat(2, 1fr);
   gap: 8px;
   padding: 0;
   max-width: 90%;
@@ -515,6 +514,89 @@ body.page-characters::-webkit-scrollbar {
   height: 100%;
   object-fit: contain;
 }
+
+/* Stat-tab equipment rows */
+.stat-equip-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 8px 12px 12px;
+  position: relative;
+  z-index: 3;
+}
+.stat-equip-row {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+/* Card stat tooltip */
+.card-slot-tooltip {
+  position: fixed;
+  z-index: 9999;
+  background: rgba(8,8,20,0.97);
+  border: 1px solid rgba(212,175,55,0.55);
+  border-radius: 10px;
+  padding: 10px 12px;
+  min-width: 168px;
+  max-width: 200px;
+  box-shadow: 0 6px 28px rgba(0,0,0,0.85);
+  pointer-events: auto;
+  display: none;
+}
+.cst-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.cst-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
+  object-fit: cover;
+  border: 1px solid rgba(212,175,55,0.4);
+  flex-shrink: 0;
+}
+.cst-name {
+  font-size: 0.72rem;
+  color: #d4af37;
+  font-weight: 600;
+  line-height: 1.2;
+}
+.cst-rarity {
+  font-size: 0.62rem;
+  color: rgba(212,175,55,0.6);
+  margin-top: 1px;
+}
+.cst-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3px 8px;
+  margin-bottom: 8px;
+}
+.cst-stat {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.68rem;
+  color: rgba(238,230,209,0.8);
+}
+.cst-label { color: rgba(212,175,55,0.7); }
+.cst-lvup-btn {
+  width: 100%;
+  padding: 5px 0;
+  border-radius: 6px;
+  background: linear-gradient(135deg, #a7822c, #d4af37);
+  border: none;
+  color: #0a0a0a;
+  font-size: 0.7rem;
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: 0.5px;
+  transition: opacity 0.15s;
+}
+.cst-lvup-btn:hover { opacity: 0.85; }
+.cst-lvup-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
 /* Lock Icon Styling */
 .lock-icon {
