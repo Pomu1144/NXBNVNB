@@ -138,6 +138,7 @@
       this.cacheDOM();
       this.setupEventListeners();
 
+      const isArenaBattle = localStorage.getItem("arena_battle_mode") === "1";
       const missionId = localStorage.getItem("currentMissionId") || "m_001";
       const preferredDifficulty = localStorage.getItem("currentDifficulty") || "C";
 
@@ -151,28 +152,68 @@
       this.enemiesData = enemies;
       this.charactersData = Array.isArray(characters) ? characters : (characters?.characters || []);
       this.jutsuCardsData = jutsuCards?.cards || [];
-      this.missionData = (Array.isArray(missions) ? missions : []).find(m => m.id === missionId);
 
-      if (!this.missionData) {
-        console.error(`[BattleCore] Mission ${missionId} not found!`);
-        return;
-      }
+      // ── Arena battle mode ──────────────────────────────────────────────
+      if (isArenaBattle) {
+        localStorage.removeItem("arena_battle_mode"); // consume flag
 
-      const diffs = Object.keys(this.missionData.difficulties || {});
-      this.difficulty = diffs.includes(preferredDifficulty) ? preferredDifficulty : (diffs[0] || "C");
+        const arenaMap = localStorage.getItem("arena_map") || "assets/maps/bg_020101_mori.png";
+        let arenaEnemies = [];
+        try {
+          arenaEnemies = JSON.parse(localStorage.getItem("arena_enemies") || "[]");
+        } catch(e) {}
 
-      // Set mission title
-      if (this.dom.missionTitle) {
-        this.dom.missionTitle.textContent = this.missionData.name;
-      }
+        // Build synthetic missionData so the rest of init works
+        this.missionData = {
+          id: "arena_battle",
+          name: "Arena Battle",
+          difficulties: {
+            C: [{
+              map: arenaMap,
+              enemies: arenaEnemies.map(e => ({
+                id: e.id,
+                name: e.name,
+                hp: e.hp || 5000,
+                atk: e.atk || 800,
+                spd: e.spd || 100,
+              }))
+            }]
+          }
+        };
+        this.difficulty = "C";
 
-      // Load background map
-      const firstStage = this.missionData?.difficulties?.[this.difficulty]?.[0];
-      if (firstStage?.map && this.dom.scene) {
-        this.dom.scene.style.backgroundImage = `url('${firstStage.map}')`;
-        this.dom.scene.style.backgroundSize = 'cover';
-        this.dom.scene.style.backgroundPosition = 'center';
-        console.log("[BattleCore] 🌄 Map loaded:", firstStage.map);
+        if (this.dom.missionTitle) this.dom.missionTitle.textContent = "Arena Battle";
+
+        if (this.dom.scene) {
+          this.dom.scene.style.backgroundImage = `url('${arenaMap}')`;
+          this.dom.scene.style.backgroundSize = 'cover';
+          this.dom.scene.style.backgroundPosition = 'center';
+          console.log("[BattleCore] 🏟️ Arena map loaded:", arenaMap);
+        }
+      } else {
+        // ── Normal mission mode ──────────────────────────────────────────
+        this.missionData = (Array.isArray(missions) ? missions : []).find(m => m.id === missionId);
+
+        if (!this.missionData) {
+          console.error(`[BattleCore] Mission ${missionId} not found!`);
+          return;
+        }
+
+        const diffs = Object.keys(this.missionData.difficulties || {});
+        this.difficulty = diffs.includes(preferredDifficulty) ? preferredDifficulty : (diffs[0] || "C");
+
+        if (this.dom.missionTitle) {
+          this.dom.missionTitle.textContent = this.missionData.name;
+        }
+
+        // Load background map
+        const firstStage = this.missionData?.difficulties?.[this.difficulty]?.[0];
+        if (firstStage?.map && this.dom.scene) {
+          this.dom.scene.style.backgroundImage = `url('${firstStage.map}')`;
+          this.dom.scene.style.backgroundSize = 'cover';
+          this.dom.scene.style.backgroundPosition = 'center';
+          console.log("[BattleCore] 🌄 Map loaded:", firstStage.map);
+        }
       }
 
       // Create overlay if drag module available

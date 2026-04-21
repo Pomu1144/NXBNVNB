@@ -20,11 +20,103 @@
 </head>
 <body class="page-summon">
   <div id="summon-bg"></div>
+
   <main class="summon-content">
-    <h1 class="page-title">SUMMON</h1>
+
+    <!-- Currency HUD -->
+    <div class="summon-currency-hud">
+      <div class="currency-chip">
+        <img src="assets/icons/currency/ninjapearl.png" alt="Ninja Pearls" class="currency-icon" onerror="this.style.display='none'">
+        <span id="currency-ninja-pearls">0</span>
+      </div>
+      <div class="currency-chip">
+        <img src="assets/icons/currency/ryo.png" alt="Ryo" class="currency-icon" onerror="this.style.display='none'">
+        <span id="currency-ryo">0</span>
+      </div>
+    </div>
+
+    <!-- Back button -->
+    <button class="summon-back-btn" id="btn-back-to-home">← Village</button>
+
+    <!-- Banner carousel -->
+    <div class="banner-carousel-wrap">
+      <button class="banner-arrow arrow-left" id="arrow-left">‹</button>
+
+      <div class="banner-main-carousel" id="main-carousel">
+        <!-- Banner art populated by JS -->
+        <div class="banner-placeholder">
+          <div class="banner-placeholder-shimmer"></div>
+        </div>
+      </div>
+
+      <button class="banner-arrow arrow-right" id="arrow-right">›</button>
+    </div>
+
+    <!-- Banner preview strip -->
+    <div class="banner-preview-scroll" id="banner-preview-scroll">
+      <!-- Preview thumbnails populated by JS -->
+    </div>
+
+    <!-- Banner info -->
+    <div class="banner-info-section">
+      <div class="banner-name" id="banner-name">Loading Banner...</div>
+      <div class="banner-description" id="banner-description">Summon powerful ninja!</div>
+      <div class="banner-timer" id="banner-timer"></div>
+    </div>
+
+    <!-- Step progress (hidden unless step-up banner) -->
+    <div class="step-progress hidden" id="step-progress">
+      <span class="step-label">Step</span>
+      <span id="step-current">1</span>
+      <span class="step-sep">/</span>
+      <span id="step-total">8</span>
+    </div>
+
+    <!-- Summon buttons -->
+    <div class="summon-buttons">
+      <button class="summon-btn summon-btn-single" id="btn-single">
+        <span class="summon-btn-label">Single Summon</span>
+        <span class="summon-btn-cost">
+          <img src="assets/icons/currency/ninjapearl.png" alt="" class="btn-cost-icon" onerror="this.style.display='none'">
+          ×<span id="single-cost">5</span>
+        </span>
+      </button>
+      <button class="summon-btn summon-btn-multi" id="btn-multi">
+        <span class="summon-btn-label">Multi Summon ×10</span>
+        <span class="summon-btn-cost">
+          <img src="assets/icons/currency/ninjapearl.png" alt="" class="btn-cost-icon" onerror="this.style.display='none'">
+          ×<span id="multi-cost">30</span>
+        </span>
+      </button>
+    </div>
+
+    <!-- Info action buttons -->
+    <div class="summon-info-buttons">
+      <button class="summon-info-btn" id="btn-rates">Rates</button>
+      <button class="summon-info-btn" id="btn-featured">Featured</button>
+      <button class="summon-info-btn" id="btn-contents">Contents</button>
+    </div>
+
+    <!-- Summon root (used by JS modules) -->
     <section id="summon-root"></section>
+
   </main>
 
+  <!-- ── Results Modal ─────────────────────────────────────────── -->
+  <div class="summon-modal" id="summon-modal" style="display:none;">
+    <div class="modal-overlay"></div>
+    <div class="modal-content">
+      <div class="result-display" id="result-display">
+        <!-- Stats injected by JS -->
+      </div>
+      <div class="result-grid" id="result-grid">
+        <!-- Result cards injected by JS -->
+      </div>
+      <button class="btn-continue" id="btn-continue">Continue</button>
+    </div>
+  </div>
+
+  <!-- ── Bottom nav ─────────────────────────────────────────────── -->
   <div class="bottom-bar">
     <div class="bottom-bar-content">
       <button class="hud-button" id="btn-village" aria-label="Village"><img src="assets/icons/village_btm_btn.png" alt="Village"></button>
@@ -39,9 +131,238 @@
     </div>
   </div>
 
+  <!-- Inline styles for new summon UI elements not covered by summon.css -->
+  <style>
+    .summon-currency-hud {
+      position: fixed;
+      top: 12px;
+      right: 12px;
+      display: flex;
+      gap: 8px;
+      z-index: 100;
+    }
+    .currency-chip {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(0,0,0,0.7);
+      border: 1px solid rgba(184,152,95,0.5);
+      border-radius: 20px;
+      padding: 5px 12px;
+      font-size: 14px;
+      font-weight: 700;
+      color: #d4af37;
+    }
+    .currency-icon { width: 18px; height: 18px; }
+    .summon-back-btn {
+      position: fixed;
+      top: 12px;
+      left: 12px;
+      z-index: 100;
+      background: rgba(0,0,0,0.6);
+      border: 1px solid rgba(184,152,95,0.4);
+      border-radius: 20px;
+      color: #d4af37;
+      padding: 6px 14px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .banner-carousel-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 60px;
+      padding: 0 8px;
+    }
+    .banner-main-carousel {
+      flex: 1;
+      max-width: 480px;
+      height: 220px;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 2px solid rgba(184,152,95,0.5);
+      background: rgba(20,20,35,0.8);
+      position: relative;
+    }
+    .banner-placeholder {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(26,31,58,0.9), rgba(15,20,35,0.9));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .banner-placeholder-shimmer {
+      width: 80%;
+      height: 40%;
+      background: linear-gradient(90deg, rgba(184,152,95,0.1), rgba(212,175,55,0.3), rgba(184,152,95,0.1));
+      border-radius: 8px;
+      animation: shimmer 2s infinite;
+    }
+    @keyframes shimmer {
+      0%,100% { opacity: 0.4; }
+      50% { opacity: 1; }
+    }
+    .banner-arrow {
+      background: rgba(0,0,0,0.6);
+      border: 2px solid rgba(184,152,95,0.5);
+      color: #d4af37;
+      font-size: 28px;
+      width: 40px;
+      height: 60px;
+      border-radius: 10px;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: all 0.2s;
+    }
+    .banner-arrow:hover { background: rgba(184,152,95,0.2); border-color: #d4af37; }
+    .banner-preview-scroll {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 10px 12px;
+      scrollbar-width: none;
+    }
+    .banner-preview-scroll::-webkit-scrollbar { display: none; }
+    .banner-info-section {
+      padding: 8px 16px;
+      text-align: center;
+    }
+    .banner-name {
+      font-size: 18px;
+      font-weight: 700;
+      color: #d4af37;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.8);
+    }
+    .banner-description {
+      font-size: 13px;
+      color: #b8a080;
+      margin-top: 4px;
+    }
+    .banner-timer {
+      font-size: 12px;
+      color: #ff6b6b;
+      margin-top: 4px;
+    }
+    .step-progress {
+      text-align: center;
+      font-size: 14px;
+      color: #d4af37;
+      margin: 4px 0;
+    }
+    .step-progress.hidden { display: none; }
+    .step-label { margin-right: 4px; }
+    .step-sep { margin: 0 2px; }
+    .summon-buttons {
+      display: flex;
+      gap: 10px;
+      padding: 8px 12px;
+    }
+    .summon-btn {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      padding: 12px 10px;
+      border-radius: 12px;
+      cursor: pointer;
+      border: 2px solid;
+      font-weight: 700;
+      transition: all 0.2s;
+    }
+    .summon-btn-label { font-size: 14px; }
+    .summon-btn-cost {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      font-size: 13px;
+    }
+    .btn-cost-icon { width: 14px; height: 14px; }
+    .summon-btn-single {
+      background: linear-gradient(135deg, #1a3a6a, #2a5aaa);
+      border-color: #4a8aee;
+      color: #aad4ff;
+    }
+    .summon-btn-single:hover:not(:disabled) {
+      background: linear-gradient(135deg, #2a4a8a, #3a6acc);
+      border-color: #6ab0ff;
+      transform: translateY(-2px);
+    }
+    .summon-btn-multi {
+      background: linear-gradient(135deg, #3d2a00, #7a5500);
+      border-color: #d4af37;
+      color: #ffd700;
+    }
+    .summon-btn-multi:hover:not(:disabled) {
+      background: linear-gradient(135deg, #5a4000, #9a7000);
+      border-color: #ffd700;
+      transform: translateY(-2px);
+    }
+    .summon-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .summon-info-buttons {
+      display: flex;
+      gap: 8px;
+      padding: 0 12px 8px;
+    }
+    .summon-info-btn {
+      flex: 1;
+      padding: 8px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(184,152,95,0.3);
+      border-radius: 8px;
+      color: #b8985f;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .summon-info-btn:hover { background: rgba(184,152,95,0.15); color: #d4af37; }
+    /* Results modal fix */
+    .summon-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+    }
+    .summon-modal .modal-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.9);
+    }
+    .summon-modal .modal-content {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 100%;
+      overflow-y: auto;
+      padding: 20px;
+    }
+    .btn-continue {
+      margin-top: auto;
+      padding: 14px 40px;
+      background: linear-gradient(135deg, #b8985f, #d4af37);
+      border: 2px solid #d4af37;
+      border-radius: 10px;
+      color: #1a1f3a;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+  </style>
+
   <script src="https://cdn.jsdelivr.net/npm/howler@2.2.4/dist/howler.min.js"></script>
   <script src="js/audio-manager.js"></script>
   <script src="js/resources.js"></script>
+  <script src="js/character_inv.js?v=2"></script>
+  <script src="js/summon/summon-data.js"></script>
+  <script src="js/summon/summon-engine.js"></script>
+  <script src="js/summon/summon-animation.js"></script>
+  <script src="js/summon/summon-carousel.js"></script>
+  <script src="js/summon/summon-ui.js"></script>
+  <script src="js/summon/summon-dev-panel.js"></script>
   <script src="js/summon.js"></script>
   <script src="js/navigation.js"></script>
 </body>

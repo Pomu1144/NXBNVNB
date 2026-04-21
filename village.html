@@ -228,6 +228,7 @@
   <script src="js/dashboard-mailbox.js?v=2"></script>
   <script src="js/panel-missions.js"></script>
   <script src="js/index-banner-carousel.js?v=1"></script>
+  <script src="js/achievements.js"></script>
   <script src="js/navigation.js?v=2"></script>
 
   <script>
@@ -453,7 +454,11 @@
               }
               break;
             case 'achievements':
-              if (window.ModalManager) { window.ModalManager.showInfo('🏆 Achievements\n\nAchievement system coming soon!'); }
+              if (window.Achievements) {
+                window.Achievements.openAchievementsModal();
+              } else {
+                if (window.ModalManager) { window.ModalManager.showInfo('🏆 Achievements\n\nAchievement system not loaded. Please reload.'); }
+              }
               break;
             case 'panel-missions':
               if (window.PanelMissions) {

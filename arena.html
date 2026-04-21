@@ -336,7 +336,7 @@
 
     <!-- Action buttons -->
     <div class="arena-actions">
-      <button class="arena-btn arena-btn-primary" id="btn-battle-arena" onclick="alert('Arena battles coming soon!')">
+      <button class="arena-btn arena-btn-primary" id="btn-battle-arena" onclick="openArenaBattle()">
         ⚔ Battle
       </button>
       <button class="arena-btn arena-btn-secondary" onclick="alert('Defense team setup coming soon!')">
@@ -480,6 +480,185 @@
 
   renderRankTable();
   renderPlayerRank();
+
+  // ── Arena Battle Maps ────────────────────────────────────────────────────
+  const ARENA_MAPS = [
+    'bg_020101_mori','bg_030101_kaido','bg_040101_heigen','bg_050101_iwaba',
+    'bg_060101_kouya','bg_070101_kawara','bg_080101_sabaibaru','bg_090101_oohashi',
+    'bg_100101_shinomori','bg_110101_yosen','bg_120101_honsen','bg_130101_tanzaku',
+    'bg_140101_syumatu','bg_150101_suna','bg_160101_akatuki','bg_170101_tenti',
+    'bg_180101_oroti','bg_190101_hinotera','bg_200101_kankin','bg_220101_konoha_houkai',
+    'bg_230101_utiha','bg_240101_tetu','bg_250101_samurai','bg_260101_unrai',
+    'bg_270101_kitaajito','bg_280101_doukutu','bg_290101_kaigan','bg_300101_sabaku',
+    'bg_310101_shinjyu','bg_330101_konohasato','bg_340101_kihinseki','bg_350101_kinoko',
+    'bg_360101_takenoko','bg_370101_senjyou','bg_400101_ame_soto','bg_420101_utiha2',
+    'bg_440101_shinjitu','bg_450101_kukan','bg_460101_yougan','bg_470101_hyouzan',
+    'bg_490101_tyojuryoku','bg_500101_fusyujyou','bg_510101_shinratensei',
+    'bg_520101_ninkaibuto','bg_530101_jigokudani','bg_540101_rpg','bg_580101_syuumatunotani',
+    'bg_590101_hondou','bg_600101_isidan'
+  ];
+
+  function randomMap() {
+    return 'assets/maps/' + ARENA_MAPS[Math.floor(Math.random() * ARENA_MAPS.length)] + '.png';
+  }
+
+  // ── Arena Battle Flow ────────────────────────────────────────────────────
+  async function openArenaBattle() {
+    // Determine current rank for difficulty scaling
+    const stars = getArenaStars();
+    const { rank } = getCurrentRankIndex(stars);
+
+    // Decide which ranks can be opponents (Academy Student through Chunin → lower tier enemies)
+    const lowRanks = ['Academy Student', 'Genin', 'Chunin'];
+    const isLowRank = lowRanks.includes(rank.name);
+
+    // Load characters and pick random opponents
+    let allChars = [];
+    try {
+      const r = await fetch('data/characters.json');
+      const data = await r.json();
+      allChars = Array.isArray(data) ? data : Object.values(data);
+    } catch (e) {
+      console.error('[Arena] Failed to load characters:', e);
+    }
+
+    if (allChars.length === 0) {
+      alert('Could not load enemy data.');
+      return;
+    }
+
+    // For lower ranks pick enemies filtered to lower rarities, else open pool
+    let pool = allChars;
+    if (isLowRank) {
+      const low = allChars.filter(c => {
+        const r = parseInt(c.rarity) || parseInt((c.starMinCode || '').charAt(0)) || 1;
+        return r <= 4;
+      });
+      if (low.length >= 4) pool = low;
+    }
+
+    const shuffle = arr => [...arr].sort(() => Math.random() - 0.5);
+    const enemyTeam = shuffle(pool).slice(0, 4).map(c => ({
+      id: c.id,
+      name: c.name,
+      rarity: c.rarity || c.starMinCode || '1',
+      icon: c.icon || '',
+      hp: (c.statsMax && c.statsMax.hp) || 5000,
+      atk: (c.statsMax && c.statsMax.atk) || 800,
+      spd: (c.statsMax && c.statsMax.spd) || 100,
+    }));
+
+    showTeamSelectorModal(enemyTeam);
+  }
+
+  function showTeamSelectorModal(enemyTeam) {
+    // Load player's team from localStorage
+    let playerTeam = [];
+    try {
+      const saved = localStorage.getItem('blazing_active_team') || localStorage.getItem('currentTeam');
+      if (saved) playerTeam = JSON.parse(saved);
+    } catch(e) {}
+
+    const mapPath = randomMap();
+
+    const enemyHTML = enemyTeam.map(e => `
+      <div class="arena-team-member">
+        <div class="arena-member-avatar" style="${e.icon ? `background-image:url('${e.icon}')` : 'background:#333'}"></div>
+        <div class="arena-member-name">${e.name}</div>
+      </div>`).join('');
+
+    const playerHTML = playerTeam.length > 0
+      ? playerTeam.slice(0, 4).map(uid => {
+          const inv = (() => { try { return JSON.parse(localStorage.getItem('blazing_character_inventory_v3') || '{}'); } catch(e) { return {}; } })();
+          const inst = inv[uid] || {};
+          return `<div class="arena-team-member">
+            <div class="arena-member-avatar" style="${inst.icon ? `background-image:url('${inst.icon}')` : 'background:#444'}"></div>
+            <div class="arena-member-name">${inst.name || uid}</div>
+          </div>`;
+        }).join('')
+      : '<div class="arena-no-team">No team set — default characters will be used</div>';
+
+    const modal = document.createElement('div');
+    modal.id = 'arena-team-modal';
+    modal.innerHTML = `
+      <div class="arena-modal-overlay" onclick="document.getElementById('arena-team-modal').remove()"></div>
+      <div class="arena-modal-panel">
+        <div class="arena-modal-header">
+          <span class="arena-modal-title">⚔ Arena Battle</span>
+          <button class="arena-modal-close" onclick="document.getElementById('arena-team-modal').remove()">✕</button>
+        </div>
+        <div class="arena-modal-body">
+          <div class="arena-teams-row">
+            <div class="arena-team-col">
+              <div class="arena-team-label">Your Team</div>
+              <div class="arena-team-grid">${playerHTML}</div>
+            </div>
+            <div class="arena-vs-badge">VS</div>
+            <div class="arena-team-col">
+              <div class="arena-team-label enemy-label">Enemy Team</div>
+              <div class="arena-team-grid">${enemyHTML}</div>
+            </div>
+          </div>
+          <div class="arena-map-preview" style="background-image:url('${mapPath}')">
+            <span class="arena-map-label">Battle Map</span>
+          </div>
+        </div>
+        <button class="arena-start-match-btn" onclick="startArenaBattle(${JSON.stringify(enemyTeam).replace(/"/g, '&quot;')}, '${mapPath}')">
+          Start Matching
+        </button>
+      </div>`;
+
+    // Inject styles
+    if (!document.getElementById('arena-battle-modal-styles')) {
+      const style = document.createElement('style');
+      style.id = 'arena-battle-modal-styles';
+      style.textContent = `
+        #arena-team-modal { position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center; }
+        .arena-modal-overlay { position:absolute;inset:0;background:rgba(0,0,0,0.85);backdrop-filter:blur(6px); }
+        .arena-modal-panel {
+          position:relative;background:linear-gradient(135deg,rgba(15,20,45,0.98),rgba(8,10,25,0.98));
+          border:3px solid #b8985f;border-radius:18px;padding:28px;width:min(700px,95vw);
+          max-height:90vh;overflow-y:auto;box-shadow:0 0 60px rgba(184,152,95,0.4);
+        }
+        .arena-modal-header { display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;padding-bottom:14px;border-bottom:2px solid rgba(184,152,95,0.3); }
+        .arena-modal-title { font-size:22px;font-weight:700;color:#d4af37;letter-spacing:2px; }
+        .arena-modal-close { background:rgba(220,53,69,0.2);border:2px solid rgba(220,53,69,0.5);color:#ff6b6b;font-size:20px;width:36px;height:36px;border-radius:50%;cursor:pointer; }
+        .arena-modal-body { display:flex;flex-direction:column;gap:18px; }
+        .arena-teams-row { display:flex;align-items:center;gap:12px;justify-content:space-between; }
+        .arena-team-col { flex:1;display:flex;flex-direction:column;gap:10px; }
+        .arena-team-label { font-size:13px;font-weight:700;color:#d4af37;text-align:center;letter-spacing:1px;text-transform:uppercase; }
+        .enemy-label { color:#ff6b6b; }
+        .arena-team-grid { display:grid;grid-template-columns:1fr 1fr;gap:8px; }
+        .arena-team-member { display:flex;flex-direction:column;align-items:center;gap:5px; }
+        .arena-member-avatar { width:60px;height:60px;border-radius:50%;background-size:cover;background-position:center;border:2px solid #b8985f; }
+        .arena-member-name { font-size:11px;color:#f0e6d1;text-align:center;max-width:70px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap; }
+        .arena-no-team { color:#b8985f;font-size:13px;text-align:center;padding:20px; }
+        .arena-vs-badge { font-size:28px;font-weight:900;color:#ff6b6b;text-shadow:0 0 20px rgba(255,107,107,0.8);flex-shrink:0; }
+        .arena-map-preview { height:80px;border-radius:10px;background-size:cover;background-position:center;border:2px solid #b8985f;display:flex;align-items:flex-end;padding:8px; }
+        .arena-map-label { font-size:11px;color:rgba(255,255,255,0.8);background:rgba(0,0,0,0.6);padding:3px 8px;border-radius:4px; }
+        .arena-start-match-btn {
+          margin-top:18px;width:100%;padding:16px;font-size:18px;font-weight:700;
+          background:linear-gradient(135deg,#8b1a1a,#cc2222,#8b1a1a);
+          border:3px solid #ff4444;color:#fff;border-radius:10px;cursor:pointer;
+          text-shadow:0 2px 4px rgba(0,0,0,0.8);letter-spacing:2px;
+          box-shadow:0 0 30px rgba(204,34,34,0.5);transition:all 0.3s;
+        }
+        .arena-start-match-btn:hover { background:linear-gradient(135deg,#aa2222,#ee3333,#aa2222);transform:translateY(-2px);box-shadow:0 0 40px rgba(238,51,51,0.7); }
+      `;
+      document.head.appendChild(style);
+    }
+
+    document.body.appendChild(modal);
+  }
+
+  function startArenaBattle(enemyTeam, mapPath) {
+    // Store arena battle data in localStorage
+    localStorage.setItem('arena_battle_mode', '1');
+    localStorage.setItem('arena_enemies', JSON.stringify(enemyTeam));
+    localStorage.setItem('arena_map', mapPath);
+    // Navigate to battle
+    window.location.href = 'battle.html';
+  }
   </script>
 
   <script src="js/navigation.js"></script>

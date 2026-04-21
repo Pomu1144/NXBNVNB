@@ -111,6 +111,20 @@
 
             <div class="settings-divider"></div>
 
+            <!-- Developer Tools Section -->
+            <div class="settings-section">
+              <h3 class="settings-section-title">🎁 Developer Tools</h3>
+
+              <div class="settings-option">
+                <button class="settings-button settings-button-special" id="setting-receive-random-chars">
+                  Receive 30 Random Characters
+                </button>
+                <p class="settings-help">Add 30 random characters to your inventory</p>
+              </div>
+            </div>
+
+            <div class="settings-divider"></div>
+
             <!-- Data Section -->
             <div class="settings-section">
               <h3 class="settings-section-title">💾 Data</h3>
@@ -237,6 +251,12 @@
         });
       }
 
+      // Receive 30 random characters button
+      const randCharsBtn = document.getElementById('setting-receive-random-chars');
+      if (randCharsBtn) {
+        randCharsBtn.addEventListener('click', () => this.receiveRandomCharacters());
+      }
+
       // View resources button
       const viewResourcesBtn = document.getElementById('setting-view-resources');
       if (viewResourcesBtn) {
@@ -248,6 +268,63 @@
             window.location.href = 'resources.html';
           }
         });
+      }
+    },
+
+    /**
+     * Receive 30 random characters from characters.json
+     */
+    async receiveRandomCharacters() {
+      const btn = document.getElementById('setting-receive-random-chars');
+      if (btn) {
+        btn.disabled = true;
+        btn.textContent = 'Adding characters...';
+      }
+
+      try {
+        if (typeof window.InventoryChar === 'undefined') {
+          alert('Character inventory not available. Please go to the main menu first.');
+          return;
+        }
+
+        let allChars = [];
+        try {
+          const res = await fetch('data/characters.json');
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          const data = await res.json();
+          allChars = Array.isArray(data) ? data : Object.values(data);
+        } catch (e) {
+          console.error('[Settings] Failed to load characters.json:', e);
+          alert('Failed to load character data.');
+          return;
+        }
+
+        if (allChars.length === 0) {
+          alert('No characters found in data.');
+          return;
+        }
+
+        // Pick 30 random characters (with replacement allowed)
+        const count = 30;
+        const picked = [];
+        for (let i = 0; i < count; i++) {
+          const idx = Math.floor(Math.random() * allChars.length);
+          picked.push(allChars[idx]);
+        }
+
+        // Add each to inventory
+        picked.forEach(char => {
+          const tierCode = char.starMinCode || '3S';
+          window.InventoryChar.addCopy(char.id, 1, tierCode);
+        });
+
+        const names = [...new Set(picked.map(c => c.name))].slice(0, 5).join(', ');
+        alert(`Added 30 random characters!\nIncludes: ${names}... and more.\nCheck your Characters page!`);
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.textContent = 'Receive 30 Random Characters';
+        }
       }
     },
 

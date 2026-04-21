@@ -419,3 +419,19 @@
     transparent 100%);
   margin: 24px 0;
 }
+
+/* Special dev tool button */
+.settings-button-special {
+  background: linear-gradient(135deg, #1a3a1a 0%, #2a5a2a 50%, #1a3a1a 100%);
+  border: 2px solid #4a9a4a;
+  color: #6bcf7f;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+  box-shadow: 0 4px 12px rgba(74, 154, 74, 0.3), inset 0 1px 0 rgba(107, 207, 127, 0.2);
+}
+.settings-button-special:hover {
+  background: linear-gradient(135deg, #2a5a2a 0%, #3a7a3a 50%, #2a5a2a 100%);
+  border-color: #6bcf7f;
+  color: #90e09a;
+  box-shadow: 0 6px 20px rgba(74, 154, 74, 0.5), inset 0 1px 0 rgba(107, 207, 127, 0.3);
+  transform: translateY(-2px);
+}

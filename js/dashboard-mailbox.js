@@ -160,7 +160,10 @@ class DashboardMailbox {
       // Resource rewards
       if (hasResourceRewards) {
         message.rewards.resources.forEach(res => {
-          rewardsHTML += `<li>${res.name}: ${res.quantity}</li>`;
+          const key = `res_${res.resourceId || res.name}`;
+          const claimed = message.claimed && message.claimed.includes(key);
+          const icon = this._resourceIcon(res.resourceId || res.name);
+          rewardsHTML += `<li class="${claimed ? 'reward-claimed' : ''}">${icon}${res.name}: ${res.quantity.toLocaleString()}${claimed ? ' (Claimed)' : ''}</li>`;
         });
       }
 
@@ -168,16 +171,19 @@ class DashboardMailbox {
       if (hasLegacyRewards) {
         for (const [item, amount] of Object.entries(message.rewards)) {
           if (item !== 'characters' && item !== 'resources') {
-            rewardsHTML += `<li>${item}: ${amount}</li>`;
+            const key = `legacy_${item}`;
+            const claimed = message.claimed && message.claimed.includes(key);
+            const icon = this._resourceIcon(item);
+            rewardsHTML += `<li class="${claimed ? 'reward-claimed' : ''}">${icon}${item}: ${amount}${claimed ? ' (Claimed)' : ''}</li>`;
           }
         }
       }
 
       rewardsHTML += '</ul>';
 
-      // Add claim button if there are unclaimed character rewards
-      if (hasCharacterRewards && !message.allClaimed) {
-        rewardsHTML += `<button class="btn-claim-rewards" onclick="window.DashboardMailbox.claimRewards(${index})">Claim Rewards</button>`;
+      // Claim button (shown whenever there are any unclaimed rewards)
+      if (!message.allClaimed) {
+        rewardsHTML += `<button class="btn-claim-rewards" onclick="window.DashboardMailbox.claimRewards(${index})">Claim All Rewards</button>`;
       }
 
       rewardsHTML += '</div>';
@@ -228,7 +234,7 @@ class DashboardMailbox {
 
   claimRewards(index) {
     const message = this.messages[index];
-    if (!message || !message.rewards || !message.rewards.characters) {
+    if (!message || !message.rewards) {
       this.showCustomAlert('No Rewards', 'No rewards to claim!', 'error');
       return;
     }
@@ -238,67 +244,98 @@ class DashboardMailbox {
       return;
     }
 
-    // Check if InventoryChar is available
-    if (typeof window.InventoryChar === 'undefined') {
-      this.showCustomAlert('System Error', 'Character inventory system not available. Please return to home page and try again.', 'error');
-      return;
-    }
+    if (!message.claimed) message.claimed = [];
 
-    // Add characters to inventory
-    const charactersClaimed = [];
-    const characterDetails = []; // Store character details for better display
+    const claimedLines = [];
 
-    message.rewards.characters.forEach(charReward => {
-      const alreadyClaimed = message.claimed && message.claimed.includes(`char_${charReward.characterId}`);
-      if (!alreadyClaimed) {
-        // Add multiple copies
+    // ── Claim resource rewards ──────────────────────────────
+    const resources = message.rewards.resources || [];
+    resources.forEach(res => {
+      const key = `res_${res.resourceId || res.name}`;
+      if (message.claimed.includes(key)) return;
+      if (window.Resources) {
+        const id = res.resourceId || this._resourceNameToId(res.name);
+        if (id) window.Resources.add(id, res.quantity);
+      }
+      message.claimed.push(key);
+      claimedLines.push(`${this._resourceIcon(res.resourceId || res.name)} ${res.name}: +${res.quantity.toLocaleString()}`);
+    });
+
+    // ── Claim character rewards ─────────────────────────────
+    const characters = message.rewards.characters || [];
+    characters.forEach(charReward => {
+      const key = `char_${charReward.characterId}`;
+      if (message.claimed.includes(key)) return;
+      if (window.InventoryChar) {
         for (let i = 0; i < charReward.quantity; i++) {
           window.InventoryChar.addCopy(charReward.characterId, 1, charReward.tierCode || '3S');
         }
-
-        // Get character data for proper display
-        const charData = window.CharacterInventory ? window.CharacterInventory.getCharacterById(charReward.characterId) : null;
-        if (charData) {
-          const starCount = charReward.tierCode ? parseInt(charReward.tierCode.charAt(0)) : 3;
-          const stars = '★'.repeat(starCount);
-          const displayName = `${charData.name} [${charData.version || 'Standard'}] ${stars}`;
-          characterDetails.push(displayName);
-        } else {
-          characterDetails.push(`${charReward.characterId} x${charReward.quantity}`);
-        }
-
-        charactersClaimed.push(`${charReward.characterId} x${charReward.quantity}`);
-
-        // Mark as claimed
-        if (!message.claimed) message.claimed = [];
-        message.claimed.push(`char_${charReward.characterId}`);
       }
+      message.claimed.push(key);
+      claimedLines.push(`Character: ${charReward.characterId} ×${charReward.quantity}`);
     });
 
-    if (charactersClaimed.length === 0) {
-      this.showCustomAlert('Already Claimed', 'All character rewards have already been claimed!', 'error');
+    // ── Legacy flat rewards (old format) ───────────────────
+    const legacyKeys = Object.keys(message.rewards).filter(k => k !== 'characters' && k !== 'resources');
+    legacyKeys.forEach(name => {
+      const key = `legacy_${name}`;
+      if (message.claimed.includes(key)) return;
+      const qty = message.rewards[name];
+      const id = this._resourceNameToId(name);
+      if (id && window.Resources) window.Resources.add(id, qty);
+      message.claimed.push(key);
+      claimedLines.push(`${this._resourceIcon(name)} ${name}: +${qty}`);
+    });
+
+    if (claimedLines.length === 0) {
+      this.showCustomAlert('Already Claimed', 'All rewards have already been claimed!', 'error');
       return;
     }
 
-    // Mark as all claimed if all rewards are claimed
-    const totalCharRewards = message.rewards.characters.length;
-    const claimedCharRewards = (message.claimed || []).filter(c => c.startsWith('char_')).length;
-    if (totalCharRewards === claimedCharRewards) {
+    // Mark fully claimed
+    const totalRewardKeys = [
+      ...resources.map(r => `res_${r.resourceId || r.name}`),
+      ...characters.map(c => `char_${c.characterId}`),
+      ...legacyKeys.map(k => `legacy_${k}`)
+    ];
+    if (totalRewardKeys.every(k => message.claimed.includes(k))) {
       message.allClaimed = true;
     }
 
-    // Save messages
     this.saveMessages();
 
-    // Show success message
-    const displayMessage = characterDetails.length > 0
-      ? characterDetails.map(d => `• ${d}`).join('<br>')
-      : charactersClaimed.map(c => `• ${c}`).join('<br>');
-    this.showCustomAlert('Rewards Claimed! 🎉', `You received:<br><br>${displayMessage}<br><br>Check your Characters page!`, 'success');
+    const hasChars = claimedLines.some(l => l.startsWith('Character:'));
+    const suffix = hasChars ? '<br><br>Check your Characters page!' : '';
+    this.showCustomAlert('Rewards Claimed!', `You received:<br><br>${claimedLines.map(l => `• ${l}`).join('<br>')}${suffix}`, 'success');
 
-    // Refresh the message view
     this.closeMessageView();
     setTimeout(() => this.viewMessage(index), 100);
+  }
+
+  /** Map a display name → Resources key */
+  _resourceNameToId(name) {
+    if (!name) return null;
+    const n = name.toLowerCase();
+    if (n.includes('pearl') || n.includes('ninja_pearl')) return 'ninja_pearls';
+    if (n.includes('ryo')) return 'ryo';
+    if (n.includes('shinobite')) return 'shinobites';
+    return null;
+  }
+
+  /** Return a small inline icon HTML for a resource */
+  _resourceIcon(nameOrId) {
+    if (!nameOrId) return '';
+    const n = String(nameOrId).toLowerCase();
+    if (n.includes('pearl') || n.includes('ninja_pearl')) {
+      return '<img src="assets/icons/currency/ninjapearl.png" style="width:18px;height:18px;vertical-align:middle;margin-right:4px;">';
+    }
+    if (n.includes('ryo')) {
+      return '<img src="assets/icons/currency/ryo.png" style="width:18px;height:18px;vertical-align:middle;margin-right:4px;">';
+    }
+    if (n.includes('shinobite')) {
+      return '<img src="assets/icons/currency/shinobite.png" style="width:18px;height:18px;vertical-align:middle;margin-right:4px;">';
+    }
+    return '';
   }
 
   closeMessageView() {
