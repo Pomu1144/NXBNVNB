@@ -155,6 +155,7 @@
 
       // ── Arena battle mode ──────────────────────────────────────────────
       if (isArenaBattle) {
+        this.isArena = true;                          // persist on core for result screen
         localStorage.removeItem("arena_battle_mode"); // consume flag
 
         const arenaMap = localStorage.getItem("arena_map") || "assets/maps/bg_020101_mori.png";
