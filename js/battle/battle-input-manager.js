@@ -394,18 +394,25 @@
     executeAttack(attacker, attackType, target) {
       console.log(`[InputManager] Executing ${attackType} attack: ${attacker.name} → ${target.name}`);
 
-      // Route to battle combat system
+      const core = this.core;
+      const doEndTurn = () => {
+        if (core?.turns) core.turns.endTurn(core);
+        else if (core?.endTurn) core.endTurn();
+      };
+
       if (window.BattleCombat) {
         switch (attackType) {
           case this.ATTACK_TYPES.NORMAL:
-            window.BattleCombat.performNormalAttack(attacker, target);
+            window.BattleCombat.performAttack(attacker, target, core, doEndTurn);
             break;
           case this.ATTACK_TYPES.ULTIMATE:
-            window.BattleCombat.performUltimate(attacker, target);
+            window.BattleCombat.performUltimate(attacker, [target], core, doEndTurn);
             break;
-          case this.ATTACK_TYPES.SECRET:
-            window.BattleCombat.performSecretTechnique(attacker, target);
+          case this.ATTACK_TYPES.SECRET: {
+            const success = window.BattleCombat.performSecret(attacker, core);
+            if (success) doEndTurn();
             break;
+          }
         }
       }
     },

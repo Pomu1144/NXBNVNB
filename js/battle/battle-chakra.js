@@ -100,12 +100,10 @@
     executeAttack(target, core) {
       const currentUnit = core.turns?.currentUnit || core.currentUnit;
       if (window.BattleCombat && currentUnit) {
-        window.BattleCombat.performAttack(currentUnit, target, core);
-      }
-      if (core.turns) {
-        core.turns.endTurn(core);
-      } else {
-        core.endTurn();
+        window.BattleCombat.performAttack(currentUnit, target, core, () => {
+          if (core.turns) core.turns.endTurn(core);
+          else core.endTurn();
+        });
       }
     },
 
@@ -115,14 +113,11 @@
     executeJutsu(target, core) {
       const currentUnit = core.turns?.currentUnit || core.currentUnit;
       if (window.BattleCombat && currentUnit) {
-        const success = window.BattleCombat.performJutsu(currentUnit, target, core);
-        if (success) {
-          if (core.turns) {
-            core.turns.endTurn(core);
-          } else {
-            core.endTurn();
-          }
-        } else {
+        const success = window.BattleCombat.performJutsu(currentUnit, target, core, () => {
+          if (core.turns) core.turns.endTurn(core);
+          else core.endTurn();
+        });
+        if (!success) {
           console.log("[Chakra] ❌ Jutsu failed (insufficient chakra)");
           this.resetChakraMode(currentUnit, core);
         }
@@ -137,14 +132,11 @@
       const targets = core.enemyTeam.filter(u => u.stats.hp > 0);
 
       if (window.BattleCombat && currentUnit) {
-        const success = window.BattleCombat.performUltimate(currentUnit, targets, core);
-        if (success) {
-          if (core.turns) {
-            core.turns.endTurn(core);
-          } else {
-            core.endTurn();
-          }
-        } else {
+        const success = window.BattleCombat.performUltimate(currentUnit, targets, core, () => {
+          if (core.turns) core.turns.endTurn(core);
+          else core.endTurn();
+        });
+        if (!success) {
           console.log("[Chakra] ❌ Ultimate failed (insufficient chakra)");
           this.resetChakraMode(currentUnit, core);
         }

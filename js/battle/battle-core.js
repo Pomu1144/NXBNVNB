@@ -902,11 +902,23 @@
     },
 
     checkBattleEnd() {
-      const playersAlive = this.activeTeam.filter(u => u.stats.hp > 0).length;
+      // Include bench units so a wipe of the front row doesn't count as defeat
+      const allPlayerUnits = [...(this.activeTeam || []), ...(this.benchTeam || [])];
+      const playersAlive = allPlayerUnits.filter(u => u.stats.hp > 0).length;
       const enemiesAlive = this.enemyTeam.filter(u => u.stats.hp > 0).length;
 
       console.log(`[BattleEnd] 🏥 Check: Players alive = ${playersAlive}, Enemies alive = ${enemiesAlive}`);
       this.enemyTeam.forEach(e => console.log(`[BattleEnd]   Enemy ${e.name}: HP = ${e.stats.hp}`));
+
+      // Auto-promote a bench survivor if the entire front row is down
+      const activeFrontAlive = (this.activeTeam || []).filter(u => u.stats.hp > 0).length;
+      if (activeFrontAlive === 0 && playersAlive > 0) {
+        const benchSurvivor = (this.benchTeam || []).find(u => u.stats.hp > 0);
+        if (benchSurvivor && this.teamHolder?.swapBenchToActive) {
+          console.log(`[BattleEnd] Auto-swapping bench unit ${benchSurvivor.name} to active`);
+          this.teamHolder.swapBenchToActive(benchSurvivor, this);
+        }
+      }
 
       if (playersAlive === 0) {
         setTimeout(() => {

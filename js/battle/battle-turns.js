@@ -125,9 +125,10 @@
           `<span class="pos-label">${unit.positionId}</span>` : '';
         const speedLabel = `<span class="speed-label">${unit.stats.speed}</span>`;
 
+        const portraitSrc = unit.portrait || unit.icon || 'assets/characters/common/silhouette.png';
         marker.innerHTML = `
           ${posLabel}
-          <img src="${unit.portrait}" alt="${unit.name}"
+          <img src="${portraitSrc}" alt="${unit.name}"
                onerror="this.src='assets/characters/common/silhouette.png';">
           ${speedLabel}
         `;
@@ -272,11 +273,17 @@
         setTimeout(() => {
           if (window.BattleCombat) {
             console.log(`[Turns] Calling performAITurn for ${unit.name}`);
-            window.BattleCombat.performAITurn(unit, core);
+            window.BattleCombat.performAITurn(unit, core, () => {
+              // onDone from the AI's attack — end the turn when combat resolves
+              if (this.currentUnit === unit) this.endTurn(core);
+            });
           } else {
             console.error("[Turns] BattleCombat not available!");
           }
-          setTimeout(() => this.endTurn(core), 1200);
+          // Safety timeout: end turn if combat callback never fires (guard, sealed, no targets, etc.)
+          setTimeout(() => {
+            if (this.currentUnit === unit) this.endTurn(core);
+          }, 1800);
         }, 500);
       }
     },

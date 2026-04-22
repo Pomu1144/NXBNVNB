@@ -300,30 +300,34 @@
 
           // Check for proximity combo attacks
           const proximityTargets = this.findProximityTargets(targets, core);
+          const doEndTurn = () => { if (core.turns) core.turns.endTurn(core); };
 
           if (effectiveAction === "jutsu" && window.BattleCombat) {
             if (this.DEBUG_DRAG) console.log(`[Drag] 🔵 Calling performMultiJutsu`);
-            window.BattleCombat.performMultiJutsu(this.draggingUnit, targets, core);
-            // Trigger proximity combo attacks after jutsu
             if (proximityTargets.length > 0) {
+              // endTurn fires after the combo completes
+              window.BattleCombat.performMultiJutsu(this.draggingUnit, targets, core);
               setTimeout(() => {
-                window.BattleCombat.performProximityCombo(this.draggingUnit, proximityTargets, core);
+                window.BattleCombat.performProximityCombo(this.draggingUnit, proximityTargets, core, doEndTurn);
               }, 600);
+            } else {
+              window.BattleCombat.performMultiJutsu(this.draggingUnit, targets, core, doEndTurn);
             }
           } else if (window.BattleCombat) {
             if (this.DEBUG_DRAG) console.log(`[Drag] ⚔️ Calling performMultiAttack with ${targets.length} targets`);
-            window.BattleCombat.performMultiAttack(this.draggingUnit, targets, core);
-            // Trigger proximity combo attacks
             if (proximityTargets.length > 0) {
+              // endTurn fires after the combo completes
+              window.BattleCombat.performMultiAttack(this.draggingUnit, targets, core);
               setTimeout(() => {
-                window.BattleCombat.performProximityCombo(this.draggingUnit, proximityTargets, core);
+                window.BattleCombat.performProximityCombo(this.draggingUnit, proximityTargets, core, doEndTurn);
               }, 400);
+            } else {
+              window.BattleCombat.performMultiAttack(this.draggingUnit, targets, core, doEndTurn);
             }
           } else {
             if (this.DEBUG_DRAG) console.log(`[Drag] ⚠️ BattleCombat not available!`);
+            doEndTurn();
           }
-
-          if (core.turns) core.turns.endTurn(core);
         } else {
           // No targets hit, just reposition
           if (core.units) {
@@ -335,9 +339,12 @@
         // Ultimate hits all enemies
         const targets = core.enemyTeam.filter(u => u.stats.hp > 0);
         if (window.BattleCombat) {
-          window.BattleCombat.performUltimate(this.draggingUnit, targets, core);
+          window.BattleCombat.performUltimate(this.draggingUnit, targets, core, () => {
+            if (core.turns) core.turns.endTurn(core);
+          });
+        } else {
+          if (core.turns) core.turns.endTurn(core);
         }
-        if (core.turns) core.turns.endTurn(core);
       } else {
         // Just repositioning (move action)
         if (core.units) {

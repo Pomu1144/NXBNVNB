@@ -305,7 +305,7 @@
      * Perform basic attack (single target)
      * Awards 1 chakra on hit
      */
-    performAttack(attacker, target, core) {
+    performAttack(attacker, target, core, onDone) {
       console.log(`[Combat] ${attacker.name} attacks ${target.name}`);
 
       // Calculate damage first
@@ -316,6 +316,7 @@
         const tl = window.gsap.timeline({
           onComplete: () => {
             core.checkBattleEnd();
+            onDone?.();
           }
         });
 
@@ -404,6 +405,7 @@
 
         setTimeout(() => {
           core.checkBattleEnd();
+          onDone?.();
         }, 400);
       }
     },
@@ -415,7 +417,7 @@
      * Costs chakra, has multiplier
      * @returns {boolean} Success status
      */
-    performJutsu(attacker, target, core) {
+    performJutsu(attacker, target, core, onDone) {
       const skills = this.getUnitSkills(attacker);
       const j = skills.jutsu;
 
@@ -494,6 +496,7 @@
         const tl = window.gsap.timeline({
           onComplete: () => {
             core.checkBattleEnd();
+            onDone?.();
           }
         });
 
@@ -600,7 +603,10 @@
 
         core.updateTeamHP();
 
-        setTimeout(() => core.checkBattleEnd(), 600);
+        setTimeout(() => {
+          core.checkBattleEnd();
+          onDone?.();
+        }, 600);
       }
 
       return true;
@@ -613,7 +619,7 @@
      * Costs more chakra, hits all enemies
      * @returns {boolean} Success status
      */
-    performUltimate(attacker, targets, core) {
+    performUltimate(attacker, targets, core, onDone) {
       const skills = this.getUnitSkills(attacker);
       const u = skills.ultimate;
 
@@ -679,6 +685,7 @@
         const tl = window.gsap.timeline({
           onComplete: () => {
             core.checkBattleEnd();
+            onDone?.();
           }
         });
 
@@ -813,7 +820,10 @@
 
         core.updateTeamHP();
 
-        setTimeout(() => core.checkBattleEnd(), targets.length * 200 + 700);
+        setTimeout(() => {
+          core.checkBattleEnd();
+          onDone?.();
+        }, targets.length * 200 + 700);
       }
 
       return true;
@@ -825,7 +835,7 @@
      * Perform multi-target basic attack
      * Used for AoE basic attacks
      */
-    performMultiAttack(attacker, targets, core) {
+    performMultiAttack(attacker, targets, core, onDone) {
       console.log(`[Combat] ${attacker.name} multi-attacks ${targets.length} enemies`);
 
       targets.forEach((target, i) => {
@@ -873,6 +883,7 @@
         // Delay battle end check to allow HP bar animation to complete
         setTimeout(() => {
           core.checkBattleEnd();
+          onDone?.();
         }, 400);
       }, targets.length * 150 + 300);
     },
@@ -881,7 +892,7 @@
      * Perform proximity combo attack
      * Hits nearby enemies with basic attacks as a combo
      */
-    performProximityCombo(attacker, targets, core) {
+    performProximityCombo(attacker, targets, core, onDone) {
       if (targets.length === 0) return;
 
       console.log(`[Combat] ${attacker.name} proximity combo on ${targets.length} targets`);
@@ -942,6 +953,7 @@
         // Delay battle end check to allow HP bar animation to complete
         setTimeout(() => {
           core.checkBattleEnd();
+          onDone?.();
         }, 400);
       }, targets.length * 120 + 200);
     },
@@ -951,7 +963,7 @@
      * Used for AoE jutsu skills
      * @returns {boolean} Success status
      */
-    performMultiJutsu(attacker, targets, core) {
+    performMultiJutsu(attacker, targets, core, onDone) {
       const skills = this.getUnitSkills(attacker);
       const j = skills.jutsu;
 
@@ -1022,6 +1034,7 @@
       setTimeout(() => {
         core.updateTeamHP();
         core.checkBattleEnd();
+        onDone?.();
       }, targets.length * 200 + 800);
 
       return true;
@@ -1220,7 +1233,7 @@
      * Perform AI turn action selection
      * AI chooses between attack, jutsu, ultimate, or guard
      */
-    performAITurn(unit, core) {
+    performAITurn(unit, core, onDone) {
       console.log(`[Combat] AI Turn for ${unit.name} (isPlayer: ${unit.isPlayer})`);
 
       const targets = (unit.isPlayer ? core.enemyTeam : core.activeTeam).filter(u => u.stats.hp > 0);
@@ -1229,6 +1242,7 @@
 
       if (targets.length === 0) {
         console.warn("[Combat] No valid targets for AI turn!");
+        onDone?.();
         return;
       }
 
@@ -1250,21 +1264,23 @@
                        unit.chakra >= Number(skills.jutsu.data.chakraCost ?? 4) &&
                        Math.random() > 0.5;
 
-      // Execute chosen action
+      // Execute chosen action — onDone fires when combat fully resolves
       if (preferUlt) {
         console.log("[Combat] AI using ultimate");
-        this.performUltimate(unit, targets, core);
+        this.performUltimate(unit, targets, core, onDone);
       } else if (preferJut) {
         console.log("[Combat] AI using jutsu");
-        this.performJutsu(unit, target, core);
+        const ok = this.performJutsu(unit, target, core, onDone);
+        if (!ok) this.performAttack(unit, target, core, onDone); // fallback
       } else if (unit.stats.hp < unit.stats.maxHP * 0.3 && Math.random() > 0.6) {
-        // Guard if low HP
+        // Guard if low HP — guard is synchronous, call onDone immediately
         console.log("[Combat] AI guarding");
         this.performGuard(unit, core);
+        onDone?.();
       } else {
         // Default to basic attack
         console.log("[Combat] AI attacking");
-        this.performAttack(unit, target, core);
+        this.performAttack(unit, target, core, onDone);
       }
     },
 
