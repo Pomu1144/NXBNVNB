@@ -72,34 +72,43 @@
       const enemyFormation = window.getRandomFormation ? window.getRandomFormation(70) : null;
 
       // Create enemy team
-      bm.enemyTeam = (waveData.enemies || []).map((enemyId, i) => {
-        // First try to find in enemiesData, then fallback to charactersData
-        let base = bm.enemiesData.find(e => e.id === enemyId);
+      bm.enemyTeam = (waveData.enemies || []).map((enemyData, i) => {
+        let base;
 
-        if (!base) {
-          // Try to find character data for this enemy
-          const charData = bm.charactersData.find(c => c.id === enemyId);
-          if (charData) {
-            base = {
-              id: charData.id,
-              name: charData.name,
-              portrait: charData.portrait || "assets/characters/common/silhouette.png",
-              stats: {
-                hp: charData.statsMax?.hp || 800,
-                atk: charData.statsMax?.atk || 80,
-                def: 30,
-                speed: charData.statsMax?.speed || 90,
-                chakra: 5
-              }
-            };
-          } else {
-            // Fallback to generic enemy
-            base = {
-              id: enemyId,
-              name: enemyId,
-              portrait: "assets/characters/common/silhouette.png",
-              stats: { hp: 800, atk: 80, def: 30, speed: 90, chakra: 5 }
-            };
+        // Support pre-built enemy objects (e.g. from arena mode) as well as string IDs
+        if (typeof enemyData === 'object' && enemyData !== null && enemyData.stats) {
+          base = enemyData;
+        } else {
+          const enemyId = typeof enemyData === 'object' ? enemyData.id : enemyData;
+
+          // First try to find in enemiesData, then fallback to charactersData
+          base = bm.enemiesData.find(e => e.id === enemyId);
+
+          if (!base) {
+            // Try to find character data for this enemy
+            const charData = bm.charactersData.find(c => c.id === enemyId);
+            if (charData) {
+              base = {
+                id: charData.id,
+                name: charData.name,
+                portrait: charData.portrait || "assets/characters/common/silhouette.png",
+                stats: {
+                  hp: charData.statsMax?.hp || 800,
+                  atk: charData.statsMax?.atk || 80,
+                  def: 30,
+                  speed: charData.statsMax?.speed || 90,
+                  chakra: 5
+                }
+              };
+            } else {
+              // Fallback to generic enemy
+              base = {
+                id: enemyId,
+                name: String(enemyId),
+                portrait: "assets/characters/common/silhouette.png",
+                stats: { hp: 800, atk: 80, def: 30, speed: 90, chakra: 5 }
+              };
+            }
           }
         }
 

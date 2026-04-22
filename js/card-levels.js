@@ -170,7 +170,7 @@
       "equipment1", "equipment2", "equipment3", "equipment4", "equipment5"
     ];
 
-    let totalHp = 0, totalAtk = 0, totalCri = 0, totalEva = 0;
+    let totalHp = 0, totalAtk = 0, totalCri = 0, totalCp = 0, totalEva = 0;
     const equippedRarities = [];
 
     slots.forEach(slot => {
@@ -188,13 +188,14 @@
 
       const rawHp  = st.hp  || 0;
       const rawAtk = st.atk || 0;
-      const rawCp  = st.cp  || 0;   // converted → eva addition (54  →  0.54%)
+      const rawCp  = st.cp  || 0;   // CP: contributes to crit damage (CP/10) and evasion (CP/100)
       const rawCri = _parsePercent(st.cri); // "45.00%" → 45.0
       const rawEva = _parsePercent(st.eva); // "1.10%"  →  1.1
 
       totalHp  += rawHp  * mult;
       totalAtk += rawAtk * mult;
       totalCri += rawCri * mult;
+      totalCp  += rawCp  * mult;
       totalEva += (rawEva + rawCp / 100) * mult;  // e.g. 1.10 + 0.54 = 1.64%
 
       equippedRarities.push(rarity);
@@ -206,11 +207,12 @@
       totalHp  *= 1.3;
       totalAtk *= 1.3;
       totalCri *= 1.3;
+      totalCp  *= 1.3;
       totalEva *= 1.3;
     }
 
-    // Critical Damage = 1.5× Critical Rate
-    const totalCritDmg = totalCri * 1.5;
+    // Critical Damage % = CRI value + (CP / 10)  — e.g. CRI=268, CP=103 → critDmg=278.3%
+    const totalCritDmg = totalCri + totalCp / 10;
 
     return {
       hp:      Math.round(totalHp),

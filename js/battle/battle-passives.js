@@ -24,8 +24,8 @@
 
     // ── HP / HEAL ─────────────────────────────────────────────────────────
     { match: 'health boost',                  stats: { hpFlat: 500 } },
-    { match: 'self-healing',                  turnStart: { healFlat: 150 } },
-    { match: 'health recovers',               turnStart: { healFlat: 80  } },
+    { match: 'self-healing',                  turnStart: { healFlat: -1  } },  // -1 = parse from ability name
+    { match: 'health recovers',               turnStart: { healFlat: -1  } },  // -1 = parse from ability name
 
     // ── SPEED ─────────────────────────────────────────────────────────────
     { match: 'speed boost',                   stats: { speedFlat: 30 } },
@@ -47,6 +47,7 @@
     { match: '0 chakra req',                  stats: { chakraCostReduction: 4 } },
     { match: 'chakra recovery when receiving', turnStart: { chakraRegen: 1 } },
     { match: 'chakra recovers',               turnStart: { chakraRegen: 1 } },
+    { match: 'chakra boost',                  battleStart: { chakraGrant: 4 } },
 
     // ── EVASION / COUNTER ─────────────────────────────────────────────────
     { match: 'substitution jutsu',            special: { evasionChance: 0.10 } },
@@ -107,10 +108,25 @@
       }
 
       if (ke.turnStart) {
+        // Parse numeric value from ability name if effect has a placeholder (healFlat: -1)
+        const effect = { ...ke.turnStart };
+        if (effect.healFlat === -1) {
+          // Extract number from ability name, e.g. "Self-Healing 500" → 500
+          const m = name.match(/(\d[\d,]*)/);
+          effect.healFlat = m ? parseInt(m[1].replace(/,/g, ''), 10) : 150;
+        }
         unit.passiveEffects.turnHooks.push({
           trigger: 'turnStart',
           ability: name,
-          effect: ke.turnStart
+          effect
+        });
+      }
+
+      if (ke.battleStart) {
+        unit.passiveEffects.turnHooks.push({
+          trigger: 'battleStart',
+          ability: name,
+          effect: ke.battleStart
         });
       }
 
@@ -207,6 +223,25 @@
               window.BattleBuffs.giveChakra?.(core, unit, unit.chakra - oldChakra);
             }
             console.log(`[Passives] ${unit.name} gained chakra from "${hook.ability}"`);
+          }
+        });
+    },
+
+    onBattleStart(core, unit) {
+      if (!unit.passiveEffects?.turnHooks) return;
+
+      unit.passiveEffects.turnHooks
+        .filter(h => h.trigger === 'battleStart')
+        .forEach(hook => {
+          const effect = hook.effect;
+
+          if (effect.chakraGrant) {
+            const oldChakra = unit.chakra || 0;
+            unit.chakra = Math.min(unit.maxChakra || 10, oldChakra + effect.chakraGrant);
+            if (window.BattleBuffs && unit.chakra > oldChakra) {
+              window.BattleBuffs.giveChakra?.(core, unit, unit.chakra - oldChakra);
+            }
+            console.log(`[Passives] ${unit.name} gained ${effect.chakraGrant} chakra at battle start from "${hook.ability}"`);
           }
         });
     },

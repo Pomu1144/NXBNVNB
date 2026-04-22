@@ -228,16 +228,23 @@
       // Random variance (90% - 110%)
       damage *= (0.9 + Math.random() * 0.2);
 
-      // Critical hit chance (15% base + card bonus + buff bonus + passive bonus)
-      const cardCritRate = (attacker.stats?.critRate || 0) / 100;
-      const critChance = 0.15 + cardCritRate + (attackerBuffs.critRatePercent / 100) + (attackerPassives.critRatePercent / 100);
-      const isCritical = Math.random() < critChance;
+      // Critical hit system:
+      //   totalCritRate (%) = 15 base + card CRI + buff + passive
+      //   ≥100% → always crit; overflow converts to bonus crit damage at 1:0.25
+      //   critMultiplier = totalCritDmg / 100  (e.g. 360% → 3.6×)
+      const cardCritRate = attacker.stats?.critRate || 0;  // raw % (e.g. 268.0)
+      const totalCritRate = 15 + cardCritRate + attackerBuffs.critRatePercent + attackerPassives.critRatePercent;
+      const overflowRate  = Math.max(0, totalCritRate - 100);
+      const bonusCritDmg  = overflowRate * 0.25;  // 1% overflow → +0.25% crit dmg
+
+      const isCritical = totalCritRate >= 100 || Math.random() < (totalCritRate / 100);
 
       if (isCritical) {
-        // Critical damage multiplier (1.5x base + card bonus + buff bonus + passive bonus)
-        const cardCritDmg = (attacker.stats?.critDmg || 0) / 100;
-        const critMultiplier = 1.5 + cardCritDmg + (attackerBuffs.critDmgPercent / 100) + (attackerPassives.critDmgPercent / 100);
+        const cardCritDmg   = attacker.stats?.critDmg || 0;  // raw % (e.g. 360.0)
+        const totalCritDmg  = cardCritDmg + bonusCritDmg + attackerBuffs.critDmgPercent + attackerPassives.critDmgPercent;
+        const critMultiplier = totalCritDmg > 0 ? (totalCritDmg / 100) : 1.5;  // fallback 1.5× if no crit dmg stat
         damage *= critMultiplier;
+        console.log(`[Combat] ⚡ CRIT! rate=${totalCritRate.toFixed(1)}% overflow=${overflowRate.toFixed(1)}% dmg=${totalCritDmg.toFixed(1)}% mult=${critMultiplier.toFixed(2)}×`);
       }
 
       // Apply barrier absorption
@@ -287,7 +294,7 @@
           defReduction: defReduction,
           guard: defender.isGuarding,
           critical: isCritical,
-          critMultiplier: isCritical ? (1.5 + (attackerBuffs.critDmgPercent / 100)).toFixed(2) : null
+          critMultiplier: isCritical ? (((attacker.stats?.critDmg || 0) + Math.max(0, 15 + (attacker.stats?.critRate || 0) + attackerBuffs.critRatePercent + attackerPassives.critRatePercent - 100) * 0.25 + attackerBuffs.critDmgPercent + attackerPassives.critDmgPercent) / 100 || 1.5).toFixed(2) : null
         }
       };
     },
@@ -472,10 +479,15 @@
       // Bug #2: Check if match exists and has captured group
       if (m && m[1]) mult = Number(m[1]) || 2.0;
 
-      console.log(`[Combat] ${attacker.name} uses ${j.meta.name} (${mult}x) on ${target.name}`);
+      // Hits: full damage divided across N hits (each hit = totalDmg / hits)
+      const hitCount = Math.max(1, Number(j.data.hits || 1));
 
-      // Calculate damage first
-      const {damage, isCritical, breakdown} = this.calculateDamage(attacker, target, mult);
+      console.log(`[Combat] ${attacker.name} uses ${j.meta.name} (${mult}x, ${hitCount} hit${hitCount > 1 ? 's' : ''}) on ${target.name}`);
+
+      // Calculate total damage first (full damage, then split by hits)
+      const {damage: totalDamage, isCritical, breakdown} = this.calculateDamage(attacker, target, mult);
+      const perHitDamage = Math.max(1, Math.floor(totalDamage / hitCount));
+      const damage = perHitDamage * hitCount;  // re-assembled total (avoids rounding loss)
 
       // Create GSAP timeline for smooth sequencing
       if (window.gsap) {
@@ -511,12 +523,21 @@
           }
         }, null, "-=0.4");
 
-        // Step 4: Apply damage and show damage numbers at 0.4s
+        // Step 4: Apply damage (split across hits) and show damage numbers at 0.4s
         tl.call(() => {
           target.stats.hp = Math.max(0, target.stats.hp - damage);
 
           if (window.BattleAnimations) {
-            window.BattleAnimations.showDamage(target, damage, isCritical, core.dom, false, breakdown);
+            // Show each hit separately with a small stagger, or show total if 1 hit
+            if (hitCount <= 1) {
+              window.BattleAnimations.showDamage(target, damage, isCritical, core.dom, false, breakdown);
+            } else {
+              for (let h = 0; h < hitCount; h++) {
+                setTimeout(() => {
+                  window.BattleAnimations.showDamage(target, perHitDamage, isCritical, core.dom, false, h === 0 ? breakdown : null);
+                }, h * 120);
+              }
+            }
           }
 
           // Apply description-based skill effects (immobilize, seal, heal, etc.)

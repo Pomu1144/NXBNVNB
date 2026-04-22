@@ -207,6 +207,19 @@ body.page-teams {
   box-shadow: 0 2px 8px rgba(0,0,0,0.4);
 }
 
+/* Ultimate Badge — overlaps bottom-right corner of portrait image */
+.slot-card .portrait .ultimate-badge {
+  position: absolute;
+  bottom: 28px;   /* above the lv-badge row */
+  right: 2px;
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  pointer-events: none;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.8));
+  z-index: 2;
+}
+
 /* Level Badge */
 .slot-card .portrait .lv-badge {
   width: 100px;

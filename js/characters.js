@@ -105,15 +105,29 @@
   function getPowerGradeElement(grade) {
     const gradeLower = grade.toLowerCase();
 
-    // Use video for LR and UR (if available), with PNG fallback
+    // LR and UR: try PNG first, fall back to animated CSS badge
     if (grade === 'LR' || grade === 'UR') {
-      return `<video class="power-grade-video" autoplay loop muted playsinline>
-          <source src="assets/icons/pow_${gradeLower}.mp4" type="video/mp4">
-        </video>`;
+      const glowColor = grade === 'LR' ? '#ff3c00' : '#a855f7';
+      const textColor = grade === 'LR' ? '#ff7c44' : '#d8b4fe';
+      return `<div class="power-grade-animated power-grade-${gradeLower}" style="
+        display:flex;align-items:center;justify-content:center;
+        width:80px;height:80px;border-radius:50%;
+        background:radial-gradient(circle at 40% 35%, ${glowColor}cc, ${glowColor}44 60%, transparent);
+        border:3px solid ${glowColor};
+        box-shadow:0 0 20px ${glowColor}cc,0 0 40px ${glowColor}66,inset 0 0 12px ${glowColor}44;
+        animation:powerGradePulse 1.4s ease-in-out infinite alternate;
+        font-family:'Cinzel',serif;font-size:26px;font-weight:900;
+        color:${textColor};text-shadow:0 0 12px ${glowColor},0 2px 4px #000;
+        letter-spacing:1px;position:relative;overflow:hidden;">
+        <span style="position:relative;z-index:1">${grade}</span>
+        <span style="position:absolute;inset:0;border-radius:50%;
+          background:conic-gradient(transparent 0deg,${glowColor}55 60deg,transparent 120deg);
+          animation:powerGradeRotate 2s linear infinite;opacity:0.6;"></span>
+      </div>`;
     }
 
     // Use PNG for other grades
-    return `<img class="power-grade-img" src="assets/icons/pow_${gradeLower}.png" alt="${grade}" onerror="this.innerHTML='${grade}'; this.style.display='flex'; this.style.alignItems='center'; this.style.justifyContent='center'; this.style.fontSize='48px'; this.style.fontWeight='900'; this.style.color='#ffd700';" />`;
+    return `<img class="power-grade-img" src="assets/icons/pow_${gradeLower}.png" alt="${grade}" onerror="this.outerHTML='<div style=\\'display:flex;align-items:center;justify-content:center;width:80px;height:80px;font-size:32px;font-weight:900;color:#ffd700;\\'>${grade}</div>';" />`;
   }
   window.getPowerGradeElement = getPowerGradeElement;
 

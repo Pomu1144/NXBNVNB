@@ -752,7 +752,7 @@
 
     const enemyHTML = enemyTeam.map(e => `
       <div class="arena-team-member">
-        <div class="arena-member-avatar" style="${e.icon ? `background-image:url('${e.icon}');background-size:cover;background-position:center top;` : 'background:#333'};border-color:${rarityColor(e.rarity || 3)}"></div>
+        <div class="arena-member-avatar" style="${e.icon ? `background-image:url('${e.icon}');` : 'background:#333'}"></div>
         <div class="arena-member-name">${e.name}${e.version ? `<br><span style="font-size:9px;opacity:0.7">${e.version}</span>` : ''}</div>
         <div class="arena-member-stats">
           <span title="HP">HP ${(e.hp/1000).toFixed(1)}k</span>
@@ -764,7 +764,7 @@
     const playerHTML = playerMembers.length > 0
       ? playerMembers.slice(0, 4).map(m => `
           <div class="arena-team-member">
-            <div class="arena-member-avatar" style="${m.portrait ? `background-image:url('${m.portrait}');background-size:cover;background-position:center top;` : 'background:#444'};border-color:${rarityColor(m.rarity || 3)}"></div>
+            <div class="arena-member-avatar" style="${m.portrait ? `background-image:url('${m.portrait}');` : 'background:#444'}"></div>
             <div class="arena-member-name">${m.name}${m.version ? `<br><span style="font-size:9px;opacity:0.7">${m.version}</span>` : ''}</div>
           </div>`).join('')
       : '<div class="arena-no-team">No team set — default characters will be used</div>';
@@ -824,7 +824,7 @@
         .enemy-label { color:#ff6b6b; }
         .arena-team-grid { display:grid;grid-template-columns:1fr 1fr;gap:8px; }
         .arena-team-member { display:flex;flex-direction:column;align-items:center;gap:5px; }
-        .arena-member-avatar { width:60px;height:60px;border-radius:50%;background-size:cover;background-position:center;border:2px solid #b8985f; }
+        .arena-member-avatar { width:60px;height:60px;border-radius:8px;background-size:cover;background-position:center top;background-color:#222; }
         .arena-member-name { font-size:11px;color:#f0e6d1;text-align:center;max-width:70px;overflow:hidden;text-overflow:ellipsis; }
         .arena-member-stats { display:flex;gap:4px;font-size:9px;color:#a0a0c0;flex-wrap:wrap;justify-content:center;margin-top:2px; }
         .arena-member-stats span { background:rgba(255,255,255,0.08);padding:1px 4px;border-radius:3px; }

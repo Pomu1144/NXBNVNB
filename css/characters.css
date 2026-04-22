@@ -456,6 +456,19 @@ body.page-characters::-webkit-scrollbar {
   width: auto;
   object-fit: contain;
 }
+.power-grade-animated {
+  height: 80px;
+  width: 80px;
+  flex-shrink: 0;
+}
+@keyframes powerGradePulse {
+  from { box-shadow: 0 0 20px currentColor, 0 0 40px currentColor, inset 0 0 12px rgba(255,255,255,0.1); }
+  to   { box-shadow: 0 0 32px currentColor, 0 0 60px currentColor, inset 0 0 20px rgba(255,255,255,0.2); }
+}
+@keyframes powerGradeRotate {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
 .power-value {
   font-family: "Cinzel", serif;
   font-size: 32px;

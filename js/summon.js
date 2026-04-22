@@ -22,6 +22,22 @@
   function buildBannerPool(banner) {
     let pool = [];
 
+    // 0. Random-100 banner: pick 100 unique characters at their pre-evolved (starMinCode) form
+    if (banner.type === 'random_100' || banner.useRandomPool) {
+      const preEvolved = allCharacters.filter(c => c.id && c.name);
+      const shuffled = [...preEvolved].sort(() => Math.random() - 0.5);
+      const selected = shuffled.slice(0, Math.min(100, shuffled.length));
+      pool.push(...selected);
+      // Still add featured units if any
+      if (banner.featured && banner.featured.length > 0) {
+        for (let id of banner.featured) {
+          const char = allCharacters.find(c => c.id === id);
+          if (char && !pool.find(p => p.id === id)) pool.push(char);
+        }
+      }
+      return [...new Map(pool.map(c => [c.id, c])).values()];
+    }
+
     // 1. Standard Pool
     if (banner.includeStandardPool && summonData.standardPool) {
       for (let id of summonData.standardPool) {

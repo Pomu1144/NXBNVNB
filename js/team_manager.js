@@ -286,6 +286,16 @@
       ? `<img class="ultimate-badge" src="assets/ui/${(inst.level || 1) >= 150 ? 'ultimate_max' : 'ultimate'}.png" alt="Ultimate" onerror="this.style.display='none';" />`
       : '';
 
+    // Card stat contributions (CRI, CRIT DMG, EVA)
+    const cardContrib = window.CardSystem?.getEquippedContributions
+      ? window.CardSystem.getEquippedContributions(inst.equippedJutsu)
+      : { cri: 0, critDmg: 0, eva: 0 };
+    const baseCri = safeNum(char.statsMax?.cri || char.statsBase?.cri, 0);
+    const baseEva = safeNum(char.statsMax?.eva || char.statsBase?.eva, 0);
+    const totalCri    = (baseCri + cardContrib.cri).toFixed(1);
+    const totalCritDmg = cardContrib.critDmg.toFixed(1);
+    const totalEva    = (baseEva + cardContrib.eva).toFixed(2);
+
     slotEl.innerHTML = `
       <div class="slot-card">
         <div class="portrait">
@@ -299,6 +309,10 @@
           <div class="stat"><span class="k">Health</span><span class="v">${safeNum(stats.hp,0).toLocaleString()}</span></div>
           <div class="stat"><span class="k">Strength</span><span class="v">${safeNum(stats.atk,0).toLocaleString()}</span></div>
           <div class="stat"><span class="k">Speed</span><span class="v">${safeNum(stats.speed,0)}</span></div>
+          <div class="sep"></div>
+          <div class="stat"><span class="k">CRI Rate</span><span class="v">${totalCri}%</span></div>
+          <div class="stat"><span class="k">CRIT DMG</span><span class="v">${totalCritDmg}%</span></div>
+          <div class="stat"><span class="k">Evasion</span><span class="v">${totalEva}%</span></div>
           <div class="sep"></div>
           <div class="stat"><span class="k">Cost</span><span class="v">${cost}</span></div>
           <div class="stat"><span class="k">Luck</span><span class="v">${luck}</span></div>

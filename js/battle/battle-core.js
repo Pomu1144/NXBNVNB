@@ -164,19 +164,30 @@
         } catch(e) {}
 
         // Build synthetic missionData so the rest of init works
+        // Enemies go in waves[0].enemies as full objects (not IDs) so portraits are preserved
         this.missionData = {
           id: "arena_battle",
           name: "Arena Battle",
           difficulties: {
             C: [{
               map: arenaMap,
-              enemies: arenaEnemies.map(e => ({
-                id: e.id,
-                name: e.name,
-                hp: e.hp || 5000,
-                atk: e.atk || 800,
-                spd: e.spd || 100,
-              }))
+              waves: [{
+                enemies: arenaEnemies.map(e => ({
+                  id: e.id,
+                  name: e.name,
+                  portrait: e.icon || e.portrait || "assets/characters/common/silhouette.png",
+                  stats: {
+                    hp:    e.hp  || 5000,
+                    atk:   e.atk || 800,
+                    def:   80,
+                    speed: e.spd || 100,
+                    chakra: 5,
+                    maxHP: e.hp  || 5000,
+                  },
+                  skills: e.skills || {},
+                  element: e.element || null,
+                }))
+              }]
             }]
           }
         };
@@ -463,6 +474,13 @@
 
       console.log("[BattleCore] ✅ Loaded:", this.activeTeam.length, "active,", this.benchTeam.length, "bench");
 
+      // Fire battleStart passive triggers (e.g. Chakra Boost)
+      if (window.BattlePassives) {
+        [...this.activeTeam, ...this.benchTeam].forEach(unit => {
+          window.BattlePassives.onBattleStart(this, unit);
+        });
+      }
+
       // Load Commander (off-field support)
       this.loadCommander(teamSlots);
 
@@ -732,8 +750,10 @@
         out.atk      += Number(card.stats.atk_bonus ?? card.stats.atk)       || 0;
         out.def      += Number(card.stats.def_bonus ?? card.stats.def)       || 0;
         out.spd      += Number(card.stats.spd_bonus ?? card.stats.spd)       || 0;
-        out.critRate += Number(card.stats.crit_rate_bonus ?? card.stats.cri) || 0;
-        out.critDmg  += Number(card.stats.crit_dmg_bonus  ?? card.stats.critDmg) || 0;
+        const cri = Number(card.stats.crit_rate_bonus ?? card.stats.cri) || 0;
+        const cp  = Number(card.stats.cp) || 0;
+        out.critRate += cri;
+        out.critDmg  += cri + cp / 10;  // critDmg% = CRI + CP/10
         out.evaRate  += Number(card.stats.eva_rate_bonus  ?? card.stats.eva) || 0;
       }
       return out;

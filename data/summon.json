@@ -39,6 +39,17 @@
 
   "pools": [
     {
+      "id": "blazing_all_stars",
+      "name": "All-Stars: 100 Random Characters",
+      "type": "random_100",
+      "useRandomPool": true,
+      "characters": [],
+      "featured": [],
+      "description": "100 randomly selected characters from across the entire roster — who will you summon?",
+      "image": "assets/summon/banners/all_stars.png",
+      "includeStandardPool": false
+    },
+    {
       "id": "bf_naruto_klm",
       "name": "Blazing Festival: Naruto (KLM)",
       "type": "blazing-festival",
