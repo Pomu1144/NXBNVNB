@@ -83,26 +83,34 @@
       const currentUnit = core.turns?.currentUnit || core.currentUnit;
       if (!core.queuedAction || !currentUnit) return;
 
-      console.log(`[Chakra] 🎯 ${currentUnit.name} targets ${targetUnit.name} with ${core.queuedAction}`);
+      // Consume the action immediately — prevents re-clicks during animation
+      const action = core.queuedAction;
+      core.queuedAction = null;
+      this.clearEnemyHighlights(core);
 
-      if (core.queuedAction === "attack") {
-        this.executeAttack(targetUnit, core);
-      } else if (core.queuedAction === "jutsu") {
-        this.executeJutsu(targetUnit, core);
-      } else if (core.queuedAction === "ultimate" || core.queuedAction === "secret") {
-        this.executeUltimate(core);
+      console.log(`[Chakra] 🎯 ${currentUnit.name} targets ${targetUnit.name} with ${action}`);
+
+      if (action === "attack") {
+        this.executeAttack(targetUnit, core, currentUnit);
+      } else if (action === "jutsu") {
+        this.executeJutsu(targetUnit, core, currentUnit);
+      } else if (action === "ultimate" || action === "secret") {
+        this.executeUltimate(core, currentUnit);
       }
     },
 
     /**
      * Execute basic attack
      */
-    executeAttack(target, core) {
-      const currentUnit = core.turns?.currentUnit || core.currentUnit;
+    executeAttack(target, core, actingUnit) {
+      const currentUnit = actingUnit || core.turns?.currentUnit || core.currentUnit;
       if (window.BattleCombat && currentUnit) {
         window.BattleCombat.performAttack(currentUnit, target, core, () => {
-          if (core.turns) core.turns.endTurn(core);
-          else core.endTurn();
+          // Unit-token guard: only end turn if this is still the same unit's turn
+          if (core.turns?.currentUnit === currentUnit) {
+            if (core.turns) core.turns.endTurn(core);
+            else core.endTurn();
+          }
         });
       }
     },
@@ -110,12 +118,14 @@
     /**
      * Execute jutsu attack
      */
-    executeJutsu(target, core) {
-      const currentUnit = core.turns?.currentUnit || core.currentUnit;
+    executeJutsu(target, core, actingUnit) {
+      const currentUnit = actingUnit || core.turns?.currentUnit || core.currentUnit;
       if (window.BattleCombat && currentUnit) {
         const success = window.BattleCombat.performJutsu(currentUnit, target, core, () => {
-          if (core.turns) core.turns.endTurn(core);
-          else core.endTurn();
+          if (core.turns?.currentUnit === currentUnit) {
+            if (core.turns) core.turns.endTurn(core);
+            else core.endTurn();
+          }
         });
         if (!success) {
           console.log("[Chakra] ❌ Jutsu failed (insufficient chakra)");
@@ -127,14 +137,16 @@
     /**
      * Execute ultimate (hits all enemies)
      */
-    executeUltimate(core) {
-      const currentUnit = core.turns?.currentUnit || core.currentUnit;
+    executeUltimate(core, actingUnit) {
+      const currentUnit = actingUnit || core.turns?.currentUnit || core.currentUnit;
       const targets = core.enemyTeam.filter(u => u.stats.hp > 0);
 
       if (window.BattleCombat && currentUnit) {
         const success = window.BattleCombat.performUltimate(currentUnit, targets, core, () => {
-          if (core.turns) core.turns.endTurn(core);
-          else core.endTurn();
+          if (core.turns?.currentUnit === currentUnit) {
+            if (core.turns) core.turns.endTurn(core);
+            else core.endTurn();
+          }
         });
         if (!success) {
           console.log("[Chakra] ❌ Ultimate failed (insufficient chakra)");

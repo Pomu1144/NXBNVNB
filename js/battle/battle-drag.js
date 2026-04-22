@@ -300,7 +300,10 @@
 
           // Check for proximity combo attacks
           const proximityTargets = this.findProximityTargets(targets, core);
-          const doEndTurn = () => { if (core.turns) core.turns.endTurn(core); };
+          const actingUnit = this.draggingUnit;
+          const doEndTurn = () => {
+            if (core.turns?.currentUnit === actingUnit) core.turns.endTurn(core);
+          };
 
           if (effectiveAction === "jutsu" && window.BattleCombat) {
             if (this.DEBUG_DRAG) console.log(`[Drag] 🔵 Calling performMultiJutsu`);
@@ -338,9 +341,10 @@
       } else if (effectiveAction === "ultimate") {
         // Ultimate hits all enemies
         const targets = core.enemyTeam.filter(u => u.stats.hp > 0);
+        const ultUnit = this.draggingUnit;
         if (window.BattleCombat) {
-          window.BattleCombat.performUltimate(this.draggingUnit, targets, core, () => {
-            if (core.turns) core.turns.endTurn(core);
+          window.BattleCombat.performUltimate(ultUnit, targets, core, () => {
+            if (core.turns?.currentUnit === ultUnit) core.turns.endTurn(core);
           });
         } else {
           if (core.turns) core.turns.endTurn(core);

@@ -472,15 +472,21 @@
       bm.dom.resultTitle.className = isVictory ? "result-title victory" : "result-title defeat";
 
       // Create professional stats HTML
+      const isArena = !!bm.isArena;
+      const subtitle = isArena
+        ? (isVictory ? "Arena Victory" : "Arena Defeat")
+        : (isVictory ? "Mission Accomplished" : "Mission Failed");
+      const returnUrl = isArena ? 'arena.html' : 'missions.html';
+
       bm.dom.resultStats.innerHTML = `
         <div class="result-subtitle">
-          ${isVictory ? "Mission Accomplished" : "Mission Failed"}
+          ${subtitle}
         </div>
 
         <div class="result-stats">
           <!-- Mission Info -->
           <div class="stat-row">
-            <span class="stat-label">Mission</span>
+            <span class="stat-label">${isArena ? "Mode" : "Mission"}</span>
             <span class="stat-value gold">${bm.missionData.name}</span>
           </div>
 
@@ -541,7 +547,12 @@
 
       if (btnContinue) {
         btnContinue.addEventListener('click', () => {
-          window.location.href = 'missions.html';
+          // Clean up any lingering arena state
+          if (isArena) {
+            localStorage.removeItem('arena_enemies');
+            localStorage.removeItem('arena_map');
+          }
+          window.location.href = returnUrl;
         });
       }
 
