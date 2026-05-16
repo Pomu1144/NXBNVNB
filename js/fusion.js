@@ -309,6 +309,18 @@
         });
       }
 
+      // Duplicate copies requirement (same unit recipes)
+      if (reqs.requiredCopies && slot1.charId === slot2.charId) {
+        const inv = window.InventoryChar?.allInstances?.() || [];
+        const copyCount = inv.filter(inst => inst.charId === slot1.charId).length;
+        const met = copyCount >= reqs.requiredCopies;
+        requirements.push({
+          label: `${slot1.charData?.name || 'Unit'} Copies`,
+          value: `${copyCount}/${reqs.requiredCopies}`,
+          met
+        });
+      }
+
       // Minimum level check
       if (reqs.minLevel) {
         const met = (slot1.level >= reqs.minLevel) && (slot2.level >= reqs.minLevel);
@@ -434,10 +446,16 @@
       const legacyBonus = this.calculateLegacyBonus(slot1, slot2, fusion);
       console.log("[Fusion] Legacy Bonus Steps:", legacyBonus);
 
-      // Fusion Bug A & B fix: Use correct method names
-      // Remove the two units from inventory
-      window.InventoryChar?.removeOneByUid(slot1.uid);
-      window.InventoryChar?.removeOneByUid(slot2.uid);
+      // Remove required units from inventory
+      if (fusion.requirements.requiredCopies && slot1.charId === slot2.charId) {
+        const needed = Math.max(1, fusion.requirements.requiredCopies);
+        const inv = window.InventoryChar?.allInstances?.() || [];
+        const matches = inv.filter(inst => inst.charId === slot1.charId).slice(0, needed);
+        matches.forEach(inst => window.InventoryChar?.removeOneByUid(inst.uid));
+      } else {
+        window.InventoryChar?.removeOneByUid(slot1.uid);
+        window.InventoryChar?.removeOneByUid(slot2.uid);
+      }
 
       // Add the fusion result
       const fusionLevel = fusion.result.level || 1;
@@ -634,11 +652,12 @@
         inst.tierCode === char1Data?.starMaxCode
       );
 
-      const unit2 = inventory.find(inst =>
-        inst.charId === fusion.requirements.unit2 &&
-        inst.tierCode === char2Data?.starMaxCode &&
-        inst.uid !== unit1?.uid  // Don't select the same unit twice
-      );
+      const unit2 = inventory.find(inst => {
+        if (inst.charId !== fusion.requirements.unit2) return false;
+        if (inst.tierCode !== char2Data?.starMaxCode) return false;
+        // same-unit recipes can reuse type, but not exact same instance
+        return inst.uid !== unit1?.uid;
+      });
 
       // Clear previous selection
       this.clearSelection();
