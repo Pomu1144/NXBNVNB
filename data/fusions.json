@@ -819,6 +819,124 @@
           "def": 130
         }
       }
+    },
+    {
+      "id": "acquisition_stone_upgrade",
+      "name": "Substitution Manifest",
+      "description": "Fuse 10 Acquisition Stone Shards into 1 full Acquisition Stone substitute copy.",
+      "requirements": {
+        "unit1": "acquisition_1029",
+        "unit2": "acquisition_1029",
+        "requiredCopies": 10,
+        "materials": {
+          "ryo": 50000
+        }
+      },
+      "result": {
+        "characterId": "acquisition_1016",
+        "tier": "6S",
+        "level": 1
+      }
+    },
+    {
+      "id": "minato_legacy_step1",
+      "name": "Flying Thunder Evolution",
+      "description": "Refine Minato's combat style from elite jonin to perfected Yellow Flash.",
+      "fusionPath": "minato_legacy",
+      "stepNumber": 1,
+      "requirements": {
+        "unit1": "minato_2100",
+        "unit2": "kakashi_704",
+        "minLevel": 50,
+        "materials": {
+          "ryo": 90000
+        }
+      },
+      "result": {
+        "characterId": "minato_2101",
+        "tier": "6S",
+        "level": 1,
+        "bonusStats": {
+          "hp": 420,
+          "atk": 210,
+          "def": 110
+        }
+      }
+    },
+    {
+      "id": "shikamaru_legacy_step1",
+      "name": "Shadow Tactician's Rise",
+      "description": "Shikamaru reaches peak strategic form through high-level mission command.",
+      "fusionPath": "shikamaru_legacy",
+      "stepNumber": 1,
+      "requirements": {
+        "unit1": "shikamaru_2105",
+        "unit2": "asuma_104",
+        "minLevel": 45,
+        "materials": {
+          "ryo": 85000
+        }
+      },
+      "result": {
+        "characterId": "shikamaru_2107",
+        "tier": "6S",
+        "level": 1,
+        "bonusStats": {
+          "hp": 380,
+          "atk": 195,
+          "def": 140
+        }
+      }
+    },
+    {
+      "id": "ashura_legacy_step1",
+      "name": "Will of the Sage",
+      "description": "Awaken Ashura's inherited chakra into his divine battle aspect.",
+      "fusionPath": "ashura_legacy",
+      "stepNumber": 1,
+      "requirements": {
+        "unit1": "ashura_2109",
+        "unit2": "indra_2111",
+        "minLevel": 55,
+        "materials": {
+          "ryo": 120000
+        }
+      },
+      "result": {
+        "characterId": "ashura_2110",
+        "tier": "6S",
+        "level": 1,
+        "bonusStats": {
+          "hp": 520,
+          "atk": 240,
+          "def": 160
+        }
+      }
+    },
+    {
+      "id": "darui_legacy_step1",
+      "name": "Storm Release Mastery",
+      "description": "Darui masters Black Lightning and advances to his peak storm state.",
+      "fusionPath": "darui_legacy",
+      "stepNumber": 1,
+      "requirements": {
+        "unit1": "darui_2128",
+        "unit2": "raikage_166",
+        "minLevel": 48,
+        "materials": {
+          "ryo": 92000
+        }
+      },
+      "result": {
+        "characterId": "darui_2130",
+        "tier": "6S",
+        "level": 1,
+        "bonusStats": {
+          "hp": 400,
+          "atk": 225,
+          "def": 120
+        }
+      }
     }
   ],
   "fusionRules": {

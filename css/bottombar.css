@@ -105,7 +105,11 @@
   z-index: 1;
   border-radius: 0 !important;
   filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.6));
+  display: block !important;
+  margin: 0 auto !important;
+  transform: translate3d(0, 0, 0) !important;
 }
+
 
 .hud-button::after {
   content: attr(aria-label);
@@ -163,6 +167,7 @@
     overflow-y: hidden;
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
+    touch-action: pan-x;
   }
 
   .hud-button {

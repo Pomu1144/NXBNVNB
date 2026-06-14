@@ -3,102 +3,124 @@
     "ramen": [
       {
         "id": "ramen_1star",
-        "name": "Ichiraku Ramen [Reg]",
-        "tier": "1★",
-        "description": "Basic training ramen. Grants 100 EXP.",
+        "name": "Training Ramen \u26051",
+        "tier": "1\u2605",
+        "description": "Standard training ramen for rookie growth. Grants 100 EXP.",
         "icon": "assets/ramen/heart_915/portrait_1S.png",
         "exp": 100,
-        "cost": { "ryo": 500 },
+        "cost": {
+          "ryo": 500
+        },
         "stock": "unlimited"
       },
       {
         "id": "ramen_2star",
-        "name": "Ichiraku Ramen [Large]",
-        "tier": "2★",
-        "description": "Quality training ramen. Grants 500 EXP.",
+        "name": "Training Ramen \u26052",
+        "tier": "2\u2605",
+        "description": "Standard training ramen used by genin squads. Grants 500 EXP.",
         "icon": "assets/ramen/heart_916/portrait_2S.png",
         "exp": 500,
-        "cost": { "ryo": 2000 },
+        "cost": {
+          "ryo": 2000
+        },
         "stock": "unlimited"
       },
       {
         "id": "ramen_3star",
-        "name": "Ichiraku Ramen [XL]",
-        "tier": "3★",
-        "description": "Premium training ramen. Grants 2,000 EXP.",
+        "name": "Training Ramen \u26053",
+        "tier": "3\u2605",
+        "description": "Standard training ramen favored by chunin mentors. Grants 2,000 EXP.",
         "icon": "assets/ramen/heart_917/portrait_3S.png",
         "exp": 2000,
-        "cost": { "ryo": 8000 },
+        "cost": {
+          "ryo": 8000
+        },
         "stock": "unlimited"
       },
       {
         "id": "ramen_4star",
-        "name": "Special Ramen [Skill]",
-        "tier": "4★",
-        "description": "Legendary training ramen. Grants 10,000 EXP.",
+        "name": "Training Ramen \u26054",
+        "tier": "4\u2605",
+        "description": "Standard elite training ramen for jonin drills. Grants 10,000 EXP.",
         "icon": "assets/ramen/skill_920/portrait_3S.png",
         "exp": 10000,
-        "cost": { "ryo": 30000 },
+        "cost": {
+          "ryo": 30000
+        },
         "stock": "unlimited"
       },
       {
         "id": "ramen_5star",
-        "name": "Sand Chunin Special",
-        "tier": "5★",
-        "description": "Ultra-rare training ramen. Grants 50,000 EXP.",
+        "name": "Training Ramen \u26055",
+        "tier": "5\u2605",
+        "description": "Standard legendary training ramen from premium batches. Grants 50,000 EXP.",
         "icon": "assets/ramen/sand_127/portrait_2S.png",
         "exp": 50000,
-        "cost": { "pearls": 5 },
+        "cost": {
+          "pearls": 5
+        },
         "stock": "unlimited"
       }
     ],
     "materials": [
       {
         "id": "scroll_1star",
-        "name": "1★ Awakening Scroll",
-        "description": "Used to awaken 1★ characters to the next tier.",
+        "name": "1\u2605 Awakening Scroll",
+        "description": "Used to awaken 1\u2605 characters to the next tier.",
         "icon": "assets/awakening-materials/awakening_scroll_900/portrait_1S.png",
-        "cost": { "ryo": 1000 },
+        "cost": {
+          "ryo": 1000
+        },
         "stock": "unlimited"
       },
       {
         "id": "scroll_2star",
-        "name": "2★ Awakening Scroll",
-        "description": "Used to awaken 2★ characters to the next tier.",
+        "name": "2\u2605 Awakening Scroll",
+        "description": "Used to awaken 2\u2605 characters to the next tier.",
         "icon": "assets/awakening-materials/awakening_scroll_901/portrait_2S.png",
-        "cost": { "ryo": 3000 },
+        "cost": {
+          "ryo": 3000
+        },
         "stock": "unlimited"
       },
       {
         "id": "scroll_3star",
-        "name": "3★ Awakening Scroll",
-        "description": "Used to awaken 3★ characters to the next tier.",
+        "name": "3\u2605 Awakening Scroll",
+        "description": "Used to awaken 3\u2605 characters to the next tier.",
         "icon": "assets/awakening-materials/awakening_scroll_902/portrait_3S.png",
-        "cost": { "ryo": 8000 },
+        "cost": {
+          "ryo": 8000
+        },
         "stock": "unlimited"
       },
       {
         "id": "scroll_4star",
-        "name": "4★ Awakening Scroll",
-        "description": "Used to awaken 4★ characters to the next tier.",
+        "name": "4\u2605 Awakening Scroll",
+        "description": "Used to awaken 4\u2605 characters to the next tier.",
         "icon": "assets/awakening-materials/awakening_scroll_903/portrait_1S.png",
-        "cost": { "ryo": 20000 },
+        "cost": {
+          "ryo": 20000
+        },
         "stock": "unlimited"
       },
       {
         "id": "scroll_5star",
-        "name": "5★ Awakening Scroll",
-        "description": "Used to awaken 5★ characters to the next tier.",
+        "name": "5\u2605 Awakening Scroll",
+        "description": "Used to awaken 5\u2605 characters to the next tier.",
         "icon": "assets/awakening-materials/awakening_scroll_1256/portrait_5S.png",
-        "cost": { "ryo": 50000 },
+        "cost": {
+          "ryo": 50000
+        },
         "stock": "unlimited"
       },
       {
         "id": "scroll_6star",
-        "name": "6★ Awakening Scroll",
-        "description": "Rare scroll for awakening to 6★.",
+        "name": "6\u2605 Awakening Scroll",
+        "description": "Rare scroll for awakening to 6\u2605.",
         "icon": "assets/awakening-materials/awakening_scroll_1257/portrait_6S.png",
-        "cost": { "pearls": 3 },
+        "cost": {
+          "pearls": 3
+        },
         "stock": "unlimited"
       }
     ],
@@ -108,8 +130,12 @@
         "name": "Ryo Pouch (Small)",
         "description": "Contains 10,000 Ryo.",
         "icon": "assets/icons/currency/ryo.png",
-        "value": { "ryo": 10000 },
-        "cost": { "pearls": 1 },
+        "value": {
+          "ryo": 10000
+        },
+        "cost": {
+          "pearls": 1
+        },
         "stock": "unlimited"
       },
       {
@@ -117,8 +143,12 @@
         "name": "Ryo Pouch (Large)",
         "description": "Contains 100,000 Ryo.",
         "icon": "assets/icons/currency/ryo.png",
-        "value": { "ryo": 100000 },
-        "cost": { "pearls": 8 },
+        "value": {
+          "ryo": 100000
+        },
+        "cost": {
+          "pearls": 8
+        },
         "stock": "unlimited"
       },
       {
@@ -126,8 +156,12 @@
         "name": "Shinobites Pack",
         "description": "Contains 50 Shinobites for summoning.",
         "icon": "assets/icons/currency/shinobite.png",
-        "value": { "shinobites": 50 },
-        "cost": { "pearls": 10 },
+        "value": {
+          "shinobites": 50
+        },
+        "cost": {
+          "pearls": 10
+        },
         "stock": "unlimited"
       },
       {
@@ -135,8 +169,12 @@
         "name": "Ninja Pearl Pack (x10)",
         "description": "10 Ninja Pearls for premium purchases.",
         "icon": "assets/icons/currency/ninjapearl.png",
-        "value": { "ninja_pearls": 10 },
-        "cost": { "shinobites": 500 },
+        "value": {
+          "ninja_pearls": 10
+        },
+        "cost": {
+          "shinobites": 500
+        },
         "stock": "unlimited"
       }
     ],
@@ -145,8 +183,20 @@
         "id": "acquisition_stone",
         "name": "Acquisition Stone",
         "description": "Exchange for specific characters in the character shop.",
-        "icon": "assets/icons/chestunopened.png",
-        "cost": { "granny_coin": 200 },
+        "icon": "assets/characters/acquisition_1016/portrait_6S.png",
+        "cost": {
+          "granny_coin": 200
+        },
+        "stock": "unlimited"
+      },
+      {
+        "id": "acquisition_stone_shard",
+        "name": "Acquisition Stone Shard",
+        "description": "Shard form of Acquisition Stone. Collect to fuse into a full substitute stone.",
+        "icon": "assets/characters/acquisition_1029/portrait_5S.png",
+        "cost": {
+          "granny_coin": 30
+        },
         "stock": "unlimited"
       },
       {
@@ -154,39 +204,49 @@
         "name": "Limit Break Crystal",
         "description": "Breaks level limits for max-tier characters.",
         "icon": "assets/icons/chestopened.png",
-        "cost": { "granny_coin": 150 },
+        "cost": {
+          "granny_coin": 150
+        },
         "stock": "unlimited"
       },
       {
         "id": "awakening_stone_6",
-        "name": "6★ Awakening Stone",
-        "description": "Special material for awakening 6★ characters.",
+        "name": "6\u2605 Awakening Stone",
+        "description": "Special material for awakening 6\u2605 characters.",
         "icon": "assets/awakening-materials/awakening_scroll_1257/portrait_6S.png",
-        "cost": { "granny_coin": 100 },
+        "cost": {
+          "granny_coin": 100
+        },
         "stock": "unlimited"
       },
       {
         "id": "awakening_stone_5",
-        "name": "5★ Awakening Stone",
-        "description": "Special material for awakening 5★ characters.",
+        "name": "5\u2605 Awakening Stone",
+        "description": "Special material for awakening 5\u2605 characters.",
         "icon": "assets/awakening-materials/awakening_scroll_1256/portrait_5S.png",
-        "cost": { "granny_coin": 75 },
+        "cost": {
+          "granny_coin": 75
+        },
         "stock": "unlimited"
       },
       {
         "id": "awakening_stone_4",
-        "name": "4★ Awakening Stone",
-        "description": "Special material for awakening 4★ characters.",
+        "name": "4\u2605 Awakening Stone",
+        "description": "Special material for awakening 4\u2605 characters.",
         "icon": "assets/awakening-materials/awakening_scroll_902/portrait_3S.png",
-        "cost": { "granny_coin": 50 },
+        "cost": {
+          "granny_coin": 50
+        },
         "stock": "unlimited"
       },
       {
         "id": "awakening_stone_3",
-        "name": "3★ Awakening Stone",
-        "description": "Common material for awakening 3★ characters.",
+        "name": "3\u2605 Awakening Stone",
+        "description": "Common material for awakening 3\u2605 characters.",
         "icon": "assets/awakening-materials/awakening_scroll_900/portrait_1S.png",
-        "cost": { "granny_coin": 30 },
+        "cost": {
+          "granny_coin": 30
+        },
         "stock": "unlimited"
       },
       {
@@ -194,23 +254,29 @@
         "name": "Character Stone",
         "description": "Character-specific awakening material.",
         "icon": "assets/icons/pearl_icon.png",
-        "cost": { "granny_coin": 80 },
+        "cost": {
+          "granny_coin": 80
+        },
         "stock": "unlimited"
       },
       {
         "id": "book_victor_6",
-        "name": "★6 Book of Victor",
-        "description": "Ultra-rare awakening material for ★6 characters.",
+        "name": "\u26056 Book of Victor",
+        "description": "Ultra-rare awakening material for \u26056 characters.",
         "icon": "assets/awakening-materials/awakening_scroll_1257/portrait_6S.png",
-        "cost": { "granny_coin": 250 },
+        "cost": {
+          "granny_coin": 250
+        },
         "stock": "unlimited"
       },
       {
         "id": "book_victor_5",
-        "name": "★5 Book of Victor",
-        "description": "Rare awakening material for ★5 characters.",
+        "name": "\u26055 Book of Victor",
+        "description": "Rare awakening material for \u26055 characters.",
         "icon": "assets/awakening-materials/awakening_scroll_1256/portrait_5S.png",
-        "cost": { "granny_coin": 180 },
+        "cost": {
+          "granny_coin": 180
+        },
         "stock": "unlimited"
       },
       {
@@ -218,7 +284,9 @@
         "name": "Awakening Charm",
         "description": "Legendary charm used for special awakenings.",
         "icon": "assets/icons/chestopened.png",
-        "cost": { "granny_coin": 300 },
+        "cost": {
+          "granny_coin": 300
+        },
         "stock": "unlimited"
       },
       {
@@ -226,7 +294,9 @@
         "name": "Dupe Crystal",
         "description": "Obtained from duplicate characters. Used for exchanges.",
         "icon": "assets/icons/chestunopened.png",
-        "cost": { "granny_coin": 120 },
+        "cost": {
+          "granny_coin": 120
+        },
         "stock": "unlimited"
       }
     ]
