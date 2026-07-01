@@ -5,6 +5,7 @@ class SummonDataLoader {
     this.banners = [];
     this.baseRates = {};
     this.characterPool = [];
+    this.standardPool = [];
     this.loaded = false;
   }
 
@@ -25,6 +26,7 @@ class SummonDataLoader {
       // Handle both "pools" and "banners" field names for compatibility
       this.banners = Array.isArray(summonData.pools) ? summonData.pools :
                      Array.isArray(summonData.banners) ? summonData.banners : [];
+      this.standardPool = Array.isArray(summonData.standardPool) ? summonData.standardPool : [];
       this.baseRates = summonData.baseRates || {
         '7star': 0.33,
         '6star': 3.0,

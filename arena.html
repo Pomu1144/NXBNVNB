@@ -161,6 +161,66 @@
       margin-top: 4px;
     }
 
+    /* ── Combat Record Strip ────────────────────────────────── */
+    .arena-record-strip {
+      display: flex;
+      width: 100%;
+      max-width: 480px;
+      margin: -10px 0 22px;
+      background: rgba(8,8,16,0.85);
+      border: 1px solid rgba(217,179,98,0.25);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .arena-record-cell {
+      flex: 1;
+      padding: 10px 6px;
+      text-align: center;
+      border-right: 1px solid rgba(217,179,98,0.12);
+    }
+
+    .arena-record-cell:last-child { border-right: none; }
+
+    .arena-record-value {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #d4af37;
+      line-height: 1.1;
+    }
+
+    .arena-record-value.loss-value { color: rgba(238,230,209,0.75); }
+    .arena-record-value.streak-hot { color: #ff9d45; text-shadow: 0 0 12px rgba(255,140,40,0.5); }
+
+    .arena-record-label {
+      font-size: 0.6rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: rgba(217,179,98,0.55);
+      margin-top: 3px;
+    }
+
+    /* ── Battle History ─────────────────────────────────────── */
+    .history-row-result {
+      font-weight: 700;
+      letter-spacing: 1px;
+      font-size: 0.72rem;
+    }
+    .history-row-result.win { color: #d4af37; }
+    .history-row-result.loss { color: rgba(238,230,209,0.45); }
+    .history-opponent-cell { color: #eee6d1; font-size: 0.78rem; }
+    .history-opponent-epithet { color: rgba(217,179,98,0.55); font-size: 0.68rem; display: block; margin-top: 1px; }
+    .history-stars-cell { font-size: 0.75rem; }
+    .history-stars-cell.gain { color: #ffd700; }
+    .history-stars-cell.drop { color: rgba(238,230,209,0.4); }
+    .history-empty {
+      text-align: center;
+      color: rgba(217,179,98,0.45);
+      font-size: 0.78rem;
+      padding: 22px 10px;
+      letter-spacing: 1px;
+    }
+
     /* ── Action Buttons ─────────────────────────────────────── */
     .arena-actions {
       display: flex;
@@ -336,6 +396,26 @@
       </div>
     </div>
 
+    <!-- Combat record -->
+    <div class="arena-record-strip" id="arena-record-strip">
+      <div class="arena-record-cell">
+        <div class="arena-record-value" id="record-wins">0</div>
+        <div class="arena-record-label">Victories</div>
+      </div>
+      <div class="arena-record-cell">
+        <div class="arena-record-value loss-value" id="record-losses">0</div>
+        <div class="arena-record-label">Defeats</div>
+      </div>
+      <div class="arena-record-cell">
+        <div class="arena-record-value" id="record-streak">0</div>
+        <div class="arena-record-label">Win Streak</div>
+      </div>
+      <div class="arena-record-cell">
+        <div class="arena-record-value" id="record-best">0</div>
+        <div class="arena-record-label">Best Streak</div>
+      </div>
+    </div>
+
     <!-- Action buttons -->
     <div class="arena-actions">
       <button class="arena-btn arena-btn-primary" id="btn-battle-arena" onclick="openArenaBattle()">
@@ -349,6 +429,9 @@
       </button>
       <button class="arena-btn arena-btn-secondary" onclick="toggleRanksTable()">
         Ranks
+      </button>
+      <button class="arena-btn arena-btn-secondary" onclick="toggleHistoryTable()">
+        Record
       </button>
     </div>
 
@@ -364,6 +447,21 @@
           </tr>
         </thead>
         <tbody id="rank-table-body"></tbody>
+      </table>
+    </div>
+
+    <!-- Collapsible battle history (hidden by default) -->
+    <div class="ranking-section" id="history-section" style="display:none;">
+      <div class="ranking-section-title">Recent Battles</div>
+      <table class="rank-table" id="history-table">
+        <thead>
+          <tr>
+            <th>Result</th>
+            <th>Opponent</th>
+            <th>Stars</th>
+          </tr>
+        </thead>
+        <tbody id="history-table-body"></tbody>
       </table>
     </div>
 
@@ -485,8 +583,85 @@
       `${rank.tier} — ${starsInTier} / ${rank.starsNeeded} Stars`;
   }
 
+  function getArenaRecord() {
+    try {
+      const saved = JSON.parse(localStorage.getItem('arena_record_v1') || 'null');
+      if (saved && typeof saved === 'object') {
+        return { wins: 0, losses: 0, streak: 0, bestStreak: 0, ...saved };
+      }
+    } catch(e) {}
+    return { wins: 0, losses: 0, streak: 0, bestStreak: 0 };
+  }
+
+  function renderRecordStrip() {
+    const rec = getArenaRecord();
+    document.getElementById('record-wins').textContent = rec.wins;
+    document.getElementById('record-losses').textContent = rec.losses;
+    const streakEl = document.getElementById('record-streak');
+    streakEl.textContent = rec.streak;
+    streakEl.classList.toggle('streak-hot', rec.streak >= 3);
+    document.getElementById('record-best').textContent = rec.bestStreak;
+  }
+
+  function renderHistoryTable() {
+    const tbody = document.getElementById('history-table-body');
+    if (!tbody) return;
+    let history = [];
+    try { history = JSON.parse(localStorage.getItem('arena_history_v1') || '[]'); } catch(e) {}
+    if (!Array.isArray(history) || history.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="3"><div class="history-empty">No battles fought yet — step into the arena.</div></td></tr>`;
+      return;
+    }
+    tbody.innerHTML = history.map(h => {
+      const win = h.result === 'win';
+      const starsTxt = h.stars > 0 ? `+${h.stars} ★` : (h.stars < 0 ? `${h.stars} ★` : '—');
+      return `<tr>
+        <td><span class="history-row-result ${win ? 'win' : 'loss'}">${win ? 'VICTORY' : 'DEFEAT'}</span></td>
+        <td class="history-opponent-cell">${h.opponent || 'Unknown Shinobi'}
+          ${h.epithet ? `<span class="history-opponent-epithet">${h.epithet}</span>` : ''}</td>
+        <td class="history-stars-cell ${h.stars > 0 ? 'gain' : 'drop'}">${starsTxt}${win && h.streak > 1 ? ` &nbsp;<span style="color:rgba(255,157,69,0.8);font-size:0.65rem">${h.streak} streak</span>` : ''}</td>
+      </tr>`;
+    }).join('');
+  }
+
+  function toggleHistoryTable() {
+    const section = document.getElementById('history-section');
+    if (!section) return;
+    const isHidden = section.style.display === 'none';
+    section.style.display = isHidden ? 'block' : 'none';
+    if (isHidden) {
+      renderHistoryTable();
+      document.getElementById('ranking-section').style.display = 'none';
+    }
+  }
+
+  // ── Rank-up celebration (fires when returning above last seen rank) ─────
+  function checkRankUpCelebration() {
+    const stars = getArenaStars();
+    const { idx, rank } = getCurrentRankIndex(stars);
+    const lastSeen = Number(localStorage.getItem('arena_last_rank_idx'));
+    localStorage.setItem('arena_last_rank_idx', String(idx));
+
+    if (!Number.isFinite(lastSeen) || idx <= lastSeen) return;
+
+    _showArenaInfoModal('Rank Ascension',
+      `<div style="text-align:center;padding:6px 0 10px">
+        <div style="font-size:11px;letter-spacing:3px;color:rgba(217,179,98,0.6);text-transform:uppercase;margin-bottom:14px">Your deeds echo through the villages</div>
+        <div style="width:84px;height:84px;margin:0 auto 16px;border-radius:50%;
+                    background:radial-gradient(circle at 40% 35%, #ffd700, #a7822c 70%);
+                    border:2px solid rgba(255,215,0,0.6);box-shadow:0 0 34px rgba(255,215,0,0.55);
+                    display:flex;align-items:center;justify-content:center;
+                    font-size:9px;color:#fff;text-align:center;line-height:1.25;padding:8px">${rank.name.replace(' ', '<br>')}</div>
+        <div style="font-size:22px;font-weight:700;color:#d4af37;letter-spacing:2px;text-shadow:0 0 24px rgba(212,175,55,0.6)">${rank.label}</div>
+        <div style="font-size:12px;color:rgba(217,179,98,0.65);margin-top:8px">${stars} Arena Stars — check the Rewards hall for new spoils.</div>
+      </div>`);
+  }
+
   renderRankTable();
   renderPlayerRank();
+  renderRecordStrip();
+  renderHistoryTable();
+  checkRankUpCelebration();
 
   // ── Arena Battle Maps ────────────────────────────────────────────────────
   const ARENA_MAPS = [
@@ -509,17 +684,31 @@
     return 'assets/maps/' + ARENA_MAPS[Math.floor(Math.random() * ARENA_MAPS.length)] + '.png';
   }
 
-  // ── Arena Battle Flow ────────────────────────────────────────────────────
-  async function openArenaBattle() {
-    // Determine current rank for difficulty scaling
-    const stars = getArenaStars();
-    const { rank } = getCurrentRankIndex(stars);
+  // ── Rival Shinobi Generation ─────────────────────────────────────────────
+  const RIVAL_NAMES = [
+    'Renga', 'Daichi', 'Suien', 'Arashi', 'Homura', 'Ibuki', 'Raiga',
+    'Shizuku', 'Kagari', 'Setsuna', 'Sanshiro', 'Amane', 'Kohaku',
+    'Yorito', 'Tsubaki', 'Hayase', 'Genzo', 'Mikazuki', 'Orin', 'Takumi'
+  ];
 
-    // Decide which ranks can be opponents (Academy Student through Chunin → lower tier enemies)
-    const lowRanks = ['Academy Student', 'Genin', 'Chunin'];
-    const isLowRank = lowRanks.includes(rank.name);
+  const RIVAL_EPITHETS = [
+    'of the Crimson Gale', 'the Silent Blade', 'of the Burning Sand',
+    'the Mist Phantom', 'of the Iron Cliff', 'the Storm Caller',
+    'of the White Serpent', 'the Ember Fox', 'of the Broken Seal',
+    'the Wandering Blade', 'of the Falling Leaves', 'the Thunder Fang',
+    'of the Moonlit Marsh', 'the Stone Fist', 'of the Whispering Pines'
+  ];
 
-    // Load characters and pick random opponents
+  const RIVAL_TIERS = [
+    { label: 'Even Match', color: 'rgba(217,179,98,0.75)', bonusStars: 0, statScale: 0 },
+    { label: 'Formidable', color: '#d4af37',               bonusStars: 1, statScale: 0.15 },
+    { label: 'Elite',      color: '#ff9d45',               bonusStars: 2, statScale: 0.3 }
+  ];
+
+  let _arenaCharPool = null;
+
+  async function loadArenaCharPool() {
+    if (_arenaCharPool) return _arenaCharPool;
     let allChars = [];
     try {
       const r = await fetch('data/characters.json');
@@ -528,44 +717,211 @@
     } catch (e) {
       console.error('[Arena] Failed to load characters:', e);
     }
+    // Playable units only — characters.json also holds props/items
+    // (Deadly Beads, chests, boosts...) which have powerRank 0
+    _arenaCharPool = allChars
+      .filter(c => (Number(c.powerRank) || 0) > 0)
+      .sort((a, b) => (a.powerRank || 0) - (b.powerRank || 0));
+    return _arenaCharPool;
+  }
 
-    if (allChars.length === 0) {
-      alert('Could not load enemy data.');
-      return;
-    }
+  function buildRivalUnit(c, statMult) {
+    const tierCode = c.starMaxCode || c.starMinCode || '3S';
+    const portrait = (c.artByTier && c.artByTier[tierCode]?.portrait)
+      || c.portrait || c.full || '';
+    return {
+      id: c.id,
+      name: c.name,
+      version: c.version || '',
+      rarity: c.rarity || parseInt((c.starMinCode || '3').charAt(0)) || 3,
+      icon: portrait,
+      hp:  Math.round(((c.statsMax && c.statsMax.hp)  || 5000) * statMult),
+      atk: Math.round(((c.statsMax && c.statsMax.atk) || 800)  * statMult),
+      spd: (c.statsMax && (c.statsMax.speed || c.statsMax.spd)) || 100,
+      skills: c.skills || {},
+      element: c.element || null,
+    };
+  }
 
-    // For lower ranks pick enemies filtered to lower rarities, else open pool
-    let pool = allChars;
-    if (isLowRank) {
-      const low = allChars.filter(c => {
-        const r = parseInt(c.rarity) || parseInt((c.starMinCode || '').charAt(0)) || 1;
-        return r <= 4;
-      });
-      if (low.length >= 4) pool = low;
-    }
+  function generateRivals(pool) {
+    const stars = getArenaStars();
+    const rankList = buildRankList();
+    const { idx } = getCurrentRankIndex(stars);
+    const progress = rankList.length > 1 ? idx / (rankList.length - 1) : 0;
 
     const shuffle = arr => [...arr].sort(() => Math.random() - 0.5);
-    const enemyTeam = shuffle(pool).slice(0, 4).map(c => {
-      // Resolve portrait: try artByTier first, fallback to top-level portrait
-      const tierCode = c.starMaxCode || c.starMinCode || '3S';
-      const portrait = (c.artByTier && c.artByTier[tierCode]?.portrait)
-        || c.portrait || c.full || '';
-      return {
-        id: c.id,
-        name: c.name,
-        version: c.version || '',
-        rarity: c.rarity || parseInt((c.starMinCode || '3').charAt(0)) || 3,
-        icon: portrait,
-        hp: (c.statsMax && c.statsMax.hp) || 5000,
-        atk: (c.statsMax && c.statsMax.atk) || 800,
-        spd: (c.statsMax && (c.statsMax.speed || c.statsMax.spd)) || 100,
-        skills: c.skills || {},
-        element: c.element || null,
-      };
-    });
+    const usedNames = new Set();
 
-    // Show offense team picker first, then VS modal
-    openArenaTeamPicker('offense', enemyTeam);
+    return RIVAL_TIERS.map((tier, d) => {
+      // Units drawn from a power band that climbs with player rank + rival tier
+      const center = Math.min(0.92, 0.12 + progress * 0.68 + d * 0.08);
+      const lo = Math.max(0, Math.floor(pool.length * (center - 0.14)));
+      const hi = Math.min(pool.length, Math.ceil(pool.length * (center + 0.14)));
+      const band = pool.slice(lo, Math.max(hi, lo + 8));
+
+      const statMult = 0.85 + progress * 0.55 + tier.statScale;
+      const units = shuffle(band).slice(0, 4).map(c => buildRivalUnit(c, statMult));
+
+      let name;
+      do { name = RIVAL_NAMES[Math.floor(Math.random() * RIVAL_NAMES.length)]; }
+      while (usedNames.has(name));
+      usedNames.add(name);
+
+      const epithet = RIVAL_EPITHETS[Math.floor(Math.random() * RIVAL_EPITHETS.length)];
+      const rivalRank = rankList[Math.min(idx + d, rankList.length - 1)];
+      const teamPower = units.reduce((s, u) => s + u.hp + u.atk * 5, 0);
+
+      return { name, epithet, tier, rankLabel: rivalRank.label, units, teamPower };
+    });
+  }
+
+  // ── Arena Battle Flow ────────────────────────────────────────────────────
+  async function openArenaBattle() {
+    const pool = await loadArenaCharPool();
+    if (!pool || pool.length === 0) {
+      _showArenaInfoModal('Arena Gates Closed',
+        '<p style="color:#b8a080;text-align:center;padding:14px 0">Could not load opponent data. Try again shortly.</p>');
+      return;
+    }
+    showOpponentSelect(generateRivals(pool));
+  }
+
+  function showOpponentSelect(rivals) {
+    document.getElementById('arena-opponent-select')?.remove();
+
+    const cardsHTML = rivals.map((r, i) => {
+      const portraits = r.units.map(u => `
+        <div class="aos-unit">
+          <img src="${u.icon || 'assets/characters/common/silhouette.png'}" alt=""
+               onerror="this.src='assets/characters/common/silhouette.png'">
+        </div>`).join('');
+      const bounty = 1 + r.tier.bonusStars;
+      return `
+      <div class="aos-card" onclick="chooseOpponent(${i})">
+        <div class="aos-emblem">
+          <div class="aos-emblem-inner">${r.name.charAt(0)}</div>
+        </div>
+        <div class="aos-info">
+          <div class="aos-name">${r.name} <span class="aos-epithet">${r.epithet}</span></div>
+          <div class="aos-rank">${r.rankLabel}</div>
+          <div class="aos-units">${portraits}</div>
+        </div>
+        <div class="aos-side">
+          <div class="aos-threat" style="color:${r.tier.color}">${r.tier.label}</div>
+          <div class="aos-bounty">${'★'.repeat(bounty)}<span class="aos-bounty-label">bounty</span></div>
+        </div>
+      </div>`;
+    }).join('');
+
+    const modal = document.createElement('div');
+    modal.id = 'arena-opponent-select';
+    modal._rivals = rivals;
+    modal.innerHTML = `
+      <div class="aos-overlay" onclick="document.getElementById('arena-opponent-select').remove()"></div>
+      <div class="aos-panel">
+        <div class="aos-header">
+          <div>
+            <div class="aos-title">Challengers Await</div>
+            <div class="aos-desc">Scouts have found three rivals near your rank. Choose your opponent.</div>
+          </div>
+          <button class="aos-close" onclick="document.getElementById('arena-opponent-select').remove()">X</button>
+        </div>
+        <div class="aos-cards">${cardsHTML}</div>
+        <div class="aos-footer">
+          <button class="aos-rescout" onclick="rescoutOpponents()">Scout Again</button>
+          <div class="aos-hint">Stronger rivals carry a larger star bounty</div>
+        </div>
+      </div>`;
+
+    _injectOpponentSelectStyles();
+    document.body.appendChild(modal);
+  }
+
+  async function rescoutOpponents() {
+    const pool = await loadArenaCharPool();
+    if (!pool || pool.length === 0) return;
+    showOpponentSelect(generateRivals(pool));
+  }
+
+  function chooseOpponent(index) {
+    const modal = document.getElementById('arena-opponent-select');
+    if (!modal || !modal._rivals) return;
+    const rival = modal._rivals[index];
+    if (!rival) return;
+    modal.remove();
+
+    // Battle result screen attributes the outcome to this rival
+    localStorage.setItem('arena_opponent', JSON.stringify({
+      name: rival.name,
+      epithet: rival.epithet,
+      bonusStars: rival.tier.bonusStars
+    }));
+
+    openArenaTeamPicker('offense', rival.units);
+  }
+
+  function _injectOpponentSelectStyles() {
+    if (document.getElementById('aos-styles')) return;
+    const s = document.createElement('style');
+    s.id = 'aos-styles';
+    s.textContent = `
+      #arena-opponent-select { position:fixed;inset:0;z-index:10000;display:flex;align-items:center;justify-content:center; }
+      .aos-overlay { position:absolute;inset:0;background:rgba(0,0,0,0.88);backdrop-filter:blur(6px); }
+      .aos-panel {
+        position:relative;background:linear-gradient(135deg,rgba(10,14,32,0.99),rgba(6,8,20,0.99));
+        border:3px solid #b8985f;border-radius:18px;padding:22px;width:min(640px,95vw);
+        max-height:92vh;overflow-y:auto;box-shadow:0 0 60px rgba(184,152,95,0.35);
+      }
+      .aos-header { display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:18px;padding-bottom:12px;border-bottom:2px solid rgba(184,152,95,0.25); }
+      .aos-title { font-size:20px;font-weight:700;color:#d4af37;letter-spacing:2px; }
+      .aos-desc { font-size:12px;color:#9a8060;margin-top:4px;letter-spacing:0.5px; }
+      .aos-close { background:rgba(220,53,69,0.18);border:1.5px solid rgba(220,53,69,0.45);color:#ff6b6b;font-size:16px;width:30px;height:30px;border-radius:50%;cursor:pointer;font-weight:700;line-height:1;display:flex;align-items:center;justify-content:center;flex-shrink:0; }
+      .aos-cards { display:flex;flex-direction:column;gap:12px; }
+      .aos-card {
+        display:flex;align-items:center;gap:14px;padding:14px 16px;cursor:pointer;
+        background:rgba(18,22,42,0.7);border:2px solid rgba(139,115,85,0.3);border-radius:12px;
+        transition:all 0.2s;
+      }
+      .aos-card:hover {
+        border-color:#d4af37;background:rgba(212,175,55,0.07);
+        box-shadow:0 0 24px rgba(212,175,55,0.25);transform:translateY(-2px);
+      }
+      .aos-emblem {
+        width:54px;height:54px;border-radius:50%;flex-shrink:0;
+        background:radial-gradient(circle at 40% 35%, rgba(212,175,55,0.5), rgba(90,70,25,0.7) 70%);
+        border:2px solid rgba(212,175,55,0.45);
+        display:flex;align-items:center;justify-content:center;
+        box-shadow:0 0 14px rgba(212,175,55,0.2);
+      }
+      .aos-emblem-inner { font-size:22px;font-weight:700;color:#f0e6d1;text-shadow:0 2px 6px rgba(0,0,0,0.8); }
+      .aos-info { flex:1;min-width:0; }
+      .aos-name { font-size:15px;font-weight:700;color:#d4af37;white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
+      .aos-epithet { font-size:11px;font-weight:400;color:rgba(217,179,98,0.65);letter-spacing:0.5px; }
+      .aos-rank { font-size:10px;color:rgba(238,230,209,0.5);letter-spacing:1.5px;text-transform:uppercase;margin-top:2px; }
+      .aos-units { display:flex;gap:6px;margin-top:8px; }
+      .aos-unit {
+        width:38px;height:38px;border-radius:6px;overflow:hidden;
+        background-color:#1a1f30;border:1.5px solid rgba(184,152,95,0.4);
+      }
+      .aos-unit img { width:100%;height:100%;object-fit:cover;object-position:center top;display:block; }
+      .aos-side { text-align:right;flex-shrink:0;display:flex;flex-direction:column;align-items:flex-end;gap:6px; }
+      .aos-threat { font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase; }
+      .aos-bounty { font-size:15px;color:#ffd700;text-shadow:0 0 10px rgba(255,215,0,0.5);display:flex;align-items:center;gap:5px; }
+      .aos-bounty-label { font-size:9px;color:rgba(217,179,98,0.5);letter-spacing:1.5px;text-transform:uppercase; }
+      .aos-footer { display:flex;justify-content:space-between;align-items:center;margin-top:16px;padding-top:14px;border-top:1px solid rgba(184,152,95,0.2); }
+      .aos-rescout {
+        font-family:"Cinzel",serif;font-size:12px;font-weight:600;letter-spacing:1px;
+        padding:9px 18px;border-radius:8px;cursor:pointer;transition:all 0.2s;
+        background:rgba(10,10,20,0.85);border:2px solid rgba(212,175,55,0.35);color:#d4af37;
+      }
+      .aos-rescout:hover { border-color:rgba(212,175,55,0.7);background:rgba(212,175,55,0.12); }
+      .aos-hint { font-size:10px;color:rgba(217,179,98,0.45);letter-spacing:1px; }
+      @media(max-width:520px) {
+        .aos-card { flex-wrap:wrap; }
+        .aos-side { flex-direction:row;width:100%;justify-content:space-between;align-items:center; }
+      }
+    `;
+    document.head.appendChild(s);
   }
 
   // ── Arena Team Picker ────────────────────────────────────────────────────
@@ -859,37 +1215,96 @@
     if (!section) return;
     const isHidden = section.style.display === 'none';
     section.style.display = isHidden ? 'block' : 'none';
+    if (isHidden) {
+      const history = document.getElementById('history-section');
+      if (history) history.style.display = 'none';
+    }
   }
 
   function openDefenseSetup() {
     openArenaTeamPicker('defense');
   }
 
+  // ── Season Rewards (claimable once per rank milestone) ──────────────────
+  const SEASON_REWARD_MILESTONES = [
+    { rank: 'Genin',          pearl: 10,  ryo: 5000,   shin: 2   },
+    { rank: 'Chunin',         pearl: 20,  ryo: 10000,  shin: 5   },
+    { rank: 'Jounin',         pearl: 50,  ryo: 25000,  shin: 10  },
+    { rank: 'ANBU Captain',   pearl: 100, ryo: 50000,  shin: 20  },
+    { rank: 'Kage',           pearl: 200, ryo: 100000, shin: 50  },
+    { rank: 'Shinobi Legend', pearl: 500, ryo: 250000, shin: 100 },
+  ];
+
+  function getClaimedSeasonRewards() {
+    try {
+      const c = JSON.parse(localStorage.getItem('arena_rewards_claimed_v1') || '[]');
+      return Array.isArray(c) ? c : [];
+    } catch(e) { return []; }
+  }
+
+  function milestoneReached(rankName) {
+    const list = buildRankList();
+    const playerIdx = getCurrentRankIndex(getArenaStars()).idx;
+    const milestoneIdx = list.findIndex(r => r.name === rankName);
+    return milestoneIdx >= 0 && playerIdx >= milestoneIdx;
+  }
+
+  function claimSeasonReward(rankName) {
+    const claimed = getClaimedSeasonRewards();
+    if (claimed.includes(rankName) || !milestoneReached(rankName)) return;
+
+    const reward = SEASON_REWARD_MILESTONES.find(m => m.rank === rankName);
+    if (!reward || !window.Resources) return;
+
+    window.Resources.add('ninja_pearls', reward.pearl);
+    window.Resources.add('ryo', reward.ryo);
+    window.Resources.add('shinobites', reward.shin);
+
+    claimed.push(rankName);
+    localStorage.setItem('arena_rewards_claimed_v1', JSON.stringify(claimed));
+
+    // Re-render the modal with the updated claim state
+    openSeasonRewards();
+  }
+
   function openSeasonRewards() {
     const stars = getArenaStars();
     const { rank } = getCurrentRankIndex(stars);
+    const claimed = getClaimedSeasonRewards();
     const pearlIcon = '<img src="assets/icons/currency/ninjapearl.png" style="width:14px;height:14px;vertical-align:middle;margin-right:3px;">';
     const ryoIcon   = '<img src="assets/icons/currency/ryo.png" style="width:14px;height:14px;vertical-align:middle;margin-right:3px;">';
     const shinIcon  = '<img src="assets/icons/currency/shinobite.png" style="width:14px;height:14px;vertical-align:middle;margin-right:3px;">';
+
     _showArenaInfoModal('Season Rewards',
-      `<p style="color:#b8a080;line-height:1.6;margin-bottom:14px">Earn Arena Stars by winning battles to climb the ranks and claim season rewards.</p>
+      `<p style="color:#b8a080;line-height:1.6;margin-bottom:14px">Earn Arena Stars by winning battles. Each rank you reach unlocks spoils — claim them here.</p>
        <div style="display:flex;flex-direction:column;gap:8px">
-         ${[
-           { rank: 'Genin',         pearl: 10,  ryo: 5000,   shin: 2   },
-           { rank: 'Chunin',        pearl: 20,  ryo: 10000,  shin: 5   },
-           { rank: 'Jounin',        pearl: 50,  ryo: 25000,  shin: 10  },
-           { rank: 'ANBU Captain',  pearl: 100, ryo: 50000,  shin: 20  },
-           { rank: 'Kage',          pearl: 200, ryo: 100000, shin: 50  },
-           { rank: 'Shinobi Legend',pearl: 500, ryo: 250000, shin: 100 },
-         ].map(r => `
-           <div style="display:flex;justify-content:space-between;align-items:center;padding:9px 12px;background:rgba(20,20,35,0.6);border-radius:8px;border:1px solid rgba(184,152,95,0.2)">
-             <span style="color:#d4af37;font-weight:600;font-size:13px">${r.rank}</span>
-             <span style="color:#e0e0e0;font-size:12px;display:flex;gap:10px;align-items:center">
+         ${SEASON_REWARD_MILESTONES.map(r => {
+           const isClaimed = claimed.includes(r.rank);
+           const reached = milestoneReached(r.rank);
+           let action;
+           if (isClaimed) {
+             action = '<span style="font-size:10px;font-weight:700;letter-spacing:1px;color:#6bcf7f;border:1px solid rgba(107,207,127,0.5);background:rgba(107,207,127,0.12);padding:4px 10px;border-radius:10px;text-transform:uppercase">Claimed</span>';
+           } else if (reached) {
+             action = `<button onclick="claimSeasonReward('${r.rank}')"
+               style="font-family:'Cinzel',serif;font-size:11px;font-weight:700;letter-spacing:1px;padding:6px 16px;border-radius:8px;cursor:pointer;
+                      background:linear-gradient(135deg,#a7822c,#d4af37);border:2px solid rgba(212,175,55,0.7);color:#0a0a0a;text-transform:uppercase">Claim</button>`;
+           } else {
+             action = '<span style="font-size:10px;letter-spacing:1.5px;color:rgba(238,230,209,0.3);text-transform:uppercase">Locked</span>';
+           }
+           return `
+           <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;
+                       background:${reached && !isClaimed ? 'rgba(212,175,55,0.08)' : 'rgba(20,20,35,0.6)'};
+                       border:1px solid ${reached && !isClaimed ? 'rgba(212,175,55,0.45)' : 'rgba(184,152,95,0.2)'};
+                       ${!reached ? 'opacity:0.55;' : ''}">
+             <span style="color:#d4af37;font-weight:600;font-size:13px;flex-shrink:0">${r.rank}</span>
+             <span style="color:#e0e0e0;font-size:12px;display:flex;gap:10px;align-items:center;flex:1;justify-content:flex-end">
                <span>${pearlIcon}${r.pearl}</span>
                <span>${ryoIcon}${r.ryo.toLocaleString()}</span>
                <span>${shinIcon}${r.shin}</span>
              </span>
-           </div>`).join('')}
+             ${action}
+           </div>`;
+         }).join('')}
        </div>
        <p style="color:#d4af37;margin-top:14px;font-size:12px">Current Rank: <strong>${rank.label}</strong> &mdash; ${stars} Stars</p>`
     );

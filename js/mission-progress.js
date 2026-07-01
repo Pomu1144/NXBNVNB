@@ -67,17 +67,47 @@
     return progress.objectives || [];
   }
 
+  // ---------- Default Rewards (missions without a config entry) ----------
+  const DIFFICULTY_MULTIPLIERS = { D: 0.5, C: 1, B: 1.5, A: 2.5, S: 4, SS: 6 };
+
+  function getDefaultRewards(difficulty) {
+    const mult = DIFFICULTY_MULTIPLIERS[difficulty] || 1;
+
+    const completion = {
+      ryo: Math.round(2000 * mult)
+    };
+
+    const firstTime = {
+      ninja_pearls: Math.max(1, Math.round(1 * mult)),
+      ryo: Math.round(5000 * mult)
+    };
+
+    // Higher difficulties add rarer first-clear materials
+    if (mult >= 6) {
+      firstTime.awakening_stone_6 = 1;
+      firstTime.limit_break_crystal = 1;
+    } else if (mult >= 4) {
+      firstTime.awakening_stone_5 = 1;
+      firstTime.dupe_crystal = 1;
+    } else if (mult >= 2.5) {
+      firstTime.awakening_stone_4 = 1;
+    } else if (mult >= 1.5) {
+      firstTime.awakening_stone_3 = 1;
+    } else {
+      firstTime.scroll_basic = 2;
+    }
+
+    return { completion, firstTime, objectives: [] };
+  }
+
   // ---------- Get Rewards for Mission ----------
   async function getRewards(missionId, difficulty) {
     const config = await loadRewardsConfig();
     const missionRewards = config[missionId];
 
     if (!missionRewards || !missionRewards[difficulty]) {
-      return {
-        completion: {},
-        firstTime: {},
-        objectives: []
-      };
+      // No hand-authored rewards: fall back to difficulty-scaled defaults
+      return getDefaultRewards(difficulty);
     }
 
     return {

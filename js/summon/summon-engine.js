@@ -63,8 +63,43 @@ class DoubleFibonacciSummonEngine {
       silverPulls: 0
     };
 
-    this.STORAGE_KEY = 'blazing_summon_state_v1';
+    this.STORAGE_KEY_BASE = 'blazing_summon_state_v1';
+    this.STORAGE_KEY = this.STORAGE_KEY_BASE;
     this.loadState();
+  }
+
+  /**
+   * Switch pity/step-up tracking to a specific banner.
+   * Each banner keeps its own persisted progression.
+   */
+  setActiveBanner(bannerId) {
+    const key = bannerId
+      ? `${this.STORAGE_KEY_BASE}:${bannerId}`
+      : this.STORAGE_KEY_BASE;
+    if (key === this.STORAGE_KEY) return;
+
+    this.STORAGE_KEY = key;
+    this.currentMultiStep = 0;
+    this.goldsThisMulti = 0;
+    this.totalMultisCompleted = 0;
+    this.stats = {
+      totalPulls: 0,
+      totalGolds: 0,
+      totalFeatured: 0,
+      bronzePulls: 0,
+      silverPulls: 0
+    };
+    this.loadState();
+  }
+
+  /**
+   * Back-compat shim: older callers passed pools to the engine; pools now
+   * live on CharacterSelector, so this only forwards them.
+   */
+  setPool(characterPool, featuredPool) {
+    if (window.CharacterSelector) {
+      window.CharacterSelector.updatePools(characterPool || [], featuredPool || []);
+    }
   }
 
   /**
@@ -267,13 +302,45 @@ class DoubleFibonacciSummonEngine {
 // Character Selection Engine
 class CharacterSelectionEngine {
   constructor(characterPool, featuredPool) {
-    this.characterPool = characterPool || [];
-    this.featuredPool = featuredPool || [];
+    this.updatePools(characterPool || [], featuredPool || []);
+  }
+
+  /**
+   * Playable units have a computed powerRank; props/items in characters.json
+   * (Deadly Beads, treasure chests, stat boosts...) have powerRank 0.
+   */
+  static isPlayable(c) {
+    return !!c && (Number(c.powerRank) || 0) > 0;
   }
 
   updatePools(characterPool, featuredPool) {
-    this.characterPool = characterPool;
-    this.featuredPool = featuredPool;
+    this.characterPool = (characterPool || []).filter(CharacterSelectionEngine.isPlayable);
+    this.featuredPool = (featuredPool || []).filter(CharacterSelectionEngine.isPlayable);
+    this.computeTierBuckets();
+  }
+
+  /**
+   * The rarity/star fields in characters.json are mostly uniform, so tiers
+   * are derived from powerRank percentiles matching the engine base rates:
+   * bronze = bottom 60%, silver = next 30%, gold = top 10%.
+   */
+  computeTierBuckets() {
+    const ranked = [...this.characterPool].sort((a, b) => (a.powerRank || 0) - (b.powerRank || 0));
+    const n = ranked.length;
+    this.buckets = { bronze: [], silver: [], gold: [] };
+
+    if (n === 0) return;
+
+    const silverStart = Math.floor(n * 0.60);
+    const goldStart = Math.floor(n * 0.90);
+    this.buckets.bronze = ranked.slice(0, silverStart);
+    this.buckets.silver = ranked.slice(silverStart, goldStart);
+    this.buckets.gold = ranked.slice(goldStart);
+
+    // Tiny pools: make sure every bucket has at least one unit
+    if (this.buckets.gold.length === 0) this.buckets.gold = [ranked[n - 1]];
+    if (this.buckets.silver.length === 0) this.buckets.silver = this.buckets.gold;
+    if (this.buckets.bronze.length === 0) this.buckets.bronze = this.buckets.silver;
   }
 
   /**
@@ -284,32 +351,31 @@ class CharacterSelectionEngine {
   selectCharacter(summonResult) {
     const { rarity, isFeatured } = summonResult;
 
-    // Filter pool by rarity
-    // Map summon rarities to character.json rarity values
-    const rarityMap = {
-      'bronze': 1,  // Common characters (1-4 star base)
-      'silver': 3,  // Uncommon characters (3-5 star base)
-      'gold': 6     // Rare characters (6 star base)
-    };
-
-    const targetRarity = rarityMap[rarity];
-    const pool = this.characterPool.filter(c => c.rarity === targetRarity);
-
-    if (pool.length === 0) {
-      console.warn(`No characters found for rarity ${rarity} (mapped to ${targetRarity})`);
+    if (this.characterPool.length === 0) {
+      console.warn('[CharacterSelector] Empty character pool');
       return null;
     }
 
-    // If gold and featured, use featured pool
+    // Featured golds come from the banner's featured pool
     if (rarity === 'gold' && isFeatured && this.featuredPool.length > 0) {
-      const featuredGolds = this.featuredPool.filter(c => c.rarity === 6);
-      if (featuredGolds.length > 0) {
-        return featuredGolds[Math.floor(Math.random() * featuredGolds.length)];
+      return this.featuredPool[Math.floor(Math.random() * this.featuredPool.length)];
+    }
+
+    // Fall back through lower tiers so a pull is never lost
+    const fallbackOrder = {
+      gold: ['gold', 'silver', 'bronze'],
+      silver: ['silver', 'bronze', 'gold'],
+      bronze: ['bronze', 'silver', 'gold']
+    };
+
+    for (const tier of (fallbackOrder[rarity] || ['bronze'])) {
+      const pool = this.buckets[tier];
+      if (pool && pool.length > 0) {
+        return pool[Math.floor(Math.random() * pool.length)];
       }
     }
 
-    // Otherwise use general pool
-    return pool[Math.floor(Math.random() * pool.length)];
+    return this.characterPool[Math.floor(Math.random() * this.characterPool.length)];
   }
 
   /**

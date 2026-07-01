@@ -24,7 +24,8 @@
 
     // 0. Random-100 banner: pick 100 unique characters at their pre-evolved (starMinCode) form
     if (banner.type === 'random_100' || banner.useRandomPool) {
-      const preEvolved = allCharacters.filter(c => c.id && c.name);
+      // Playable units only — characters.json also holds props/items (powerRank 0)
+      const preEvolved = allCharacters.filter(c => c.id && c.name && (Number(c.powerRank) || 0) > 0);
       const shuffled = [...preEvolved].sort(() => Math.random() - 0.5);
       const selected = shuffled.slice(0, Math.min(100, shuffled.length));
       pool.push(...selected);
@@ -139,10 +140,9 @@
     if (window.SummonUI)
       window.SummonUI.updateBannerInfo(banner);
 
-    // Reset summon engine session
+    // Switch pity/step-up tracking to this banner (state persists per banner)
     if (window.FibonacciSummonEngine) {
-      window.FibonacciSummonEngine.setPool(currentPool, featuredCharacters);
-      window.FibonacciSummonEngine.resetSession();
+      window.FibonacciSummonEngine.setActiveBanner(banner.id);
     }
 
     console.log(`📜 Loaded Banner: ${banner.name}`);

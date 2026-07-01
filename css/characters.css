@@ -267,7 +267,7 @@ body.page-characters::-webkit-scrollbar {
   position: absolute;
   top: 0;
   left: 53%;
-  transform: translateX(-50%) translateY(-2px);
+  transform: translateX(-50%) translateY(2px);
   text-align: left;
   z-index: 10;
   display: flex;
@@ -301,7 +301,7 @@ body.page-characters::-webkit-scrollbar {
 :-moz-full-screen .nameplate-stars,
 :-ms-fullscreen .nameplate-stars {
   top: 0;
-  transform: translateX(-50%) translateY(-2px);
+  transform: translateX(-50%) translateY(2px);
 }
 
 /* ---------- Tabs ---------- */
