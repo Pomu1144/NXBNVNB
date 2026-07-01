@@ -202,18 +202,14 @@
           if (effect.healFlat) {
             const heal = effect.healFlat;
             unit.stats.hp = Math.min(unit.stats.maxHP, unit.stats.hp + heal);
-            if (window.BattleAnimations) {
-              window.BattleAnimations.showDamageNumber(unit, heal, true, false);
-            }
+            window.BattleAnimations?.showDamageNumber?.(unit, heal, true, false);
             console.log(`[Passives] ${unit.name} healed ${heal} from "${hook.ability}"`);
           }
 
           if (effect.healPercent) {
             const heal = Math.floor((effect.healPercent / 100) * unit.stats.maxHP);
             unit.stats.hp = Math.min(unit.stats.maxHP, unit.stats.hp + heal);
-            if (window.BattleAnimations) {
-              window.BattleAnimations.showDamageNumber(unit, heal, true, false);
-            }
+            window.BattleAnimations?.showDamageNumber?.(unit, heal, true, false);
           }
 
           if (effect.chakraRegen) {

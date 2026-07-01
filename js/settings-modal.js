@@ -303,6 +303,9 @@
           if (!res.ok) throw new Error(`HTTP ${res.status}`);
           const data = await res.json();
           allChars = Array.isArray(data) ? data : Object.values(data);
+          // Playable units only — characters.json also holds props/items
+          // (Deadly Beads, chests, boosts...) which have powerRank 0
+          allChars = allChars.filter(c => (Number(c?.powerRank) || 0) > 0);
         } catch (e) {
           console.error('[Settings] Failed to load characters.json:', e);
           alert('Failed to load character data.');

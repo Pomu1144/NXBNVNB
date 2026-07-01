@@ -38,7 +38,7 @@
      */
     async awardStageChest(stageData, stageIndex, core) {
       // Get rewards for this stage
-      const rewards = stageData.rewards || this.getDefaultStageRewards(stageIndex);
+      const rewards = stageData.rewards || this.getDefaultStageRewards(stageIndex, core?.difficulty);
 
       if (!rewards || Object.keys(rewards).length === 0) {
         console.log("[BattleRewards] No rewards for this stage");
@@ -157,24 +157,41 @@
     },
 
     /**
-     * Get default rewards based on stage number
+     * Get default rewards based on stage number, scaled by mission difficulty
      */
-    getDefaultStageRewards(stageIndex) {
+    getDefaultStageRewards(stageIndex, difficulty = 'C') {
       const rewards = {};
 
+      const multipliers = { D: 0.5, C: 1, B: 1.5, A: 2.5, S: 4, SS: 6 };
+      const mult = multipliers[difficulty] || 1;
+
+      // Materials get rarer with difficulty (ids from resources.js)
+      const materialsByDifficulty = {
+        D:  ['scroll_basic', 'scroll_body', 'scroll_skill'],
+        C:  ['scroll_basic', 'awakening_stone_3', 'scroll_bravery', 'scroll_wisdom', 'scroll_heart'],
+        B:  ['scroll_advanced', 'awakening_stone_3', 'awakening_stone_4', 'crystal_body', 'crystal_skill'],
+        A:  ['awakening_stone_4', 'awakening_stone_5', 'crystal_heart', 'crystal_bravery', 'crystal_wisdom', 'character_stone'],
+        S:  ['awakening_stone_5', 'awakening_stone_6', 'limit_break_crystal', 'book_victor_5', 'dupe_crystal'],
+        SS: ['awakening_stone_6', 'limit_break_crystal', 'book_victor_5', 'book_victor_6', 'awakening_charm']
+      };
+      const ramenTierByDifficulty = { D: 1, C: 1, B: 2, A: 3, S: 4, SS: 5 };
+      const ramenElements = ['heart', 'skill', 'body', 'bravery', 'wisdom'];
+
       // Base ryo reward
-      rewards.ryo = (stageIndex + 1) * 500;
+      rewards.ryo = Math.round((stageIndex + 1) * 500 * mult);
 
       // Random material every 2 stages
       if ((stageIndex + 1) % 2 === 0) {
-        const materials = ['scroll_3star', 'scroll_4star', 'scroll_body', 'scroll_skill'];
+        const materials = materialsByDifficulty[difficulty] || materialsByDifficulty.C;
         const randomMat = materials[Math.floor(Math.random() * materials.length)];
         rewards[randomMat] = 1;
       }
 
-      // Chance for ramen
+      // Chance for ramen (tier scales with difficulty)
       if (Math.random() < 0.3) {
-        rewards['ramen_1star'] = Math.floor(Math.random() * 3) + 1;
+        const tier = ramenTierByDifficulty[difficulty] || 1;
+        const element = ramenElements[Math.floor(Math.random() * ramenElements.length)];
+        rewards[`ramen_${element}_${tier}star`] = Math.floor(Math.random() * 3) + 1;
       }
 
       return rewards;

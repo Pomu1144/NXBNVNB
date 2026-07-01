@@ -239,8 +239,8 @@
       else {
         console.log("[Missions] All stages and waves complete!");
 
-        // Award final stage chest
-        if (window.BattleRewards) {
+        // Award final stage chest (arena pays out via arena stars instead)
+        if (window.BattleRewards && !bm.isArena) {
           await window.BattleRewards.awardStageChest(currentStage, bm.currentStageIndex, bm);
         }
 
@@ -249,7 +249,7 @@
 
         setTimeout(async () => {
           // Show results screen with all collected chests
-          if (window.BattleRewards && window.BattleRewards.collectedChests.length > 0) {
+          if (!bm.isArena && window.BattleRewards && window.BattleRewards.collectedChests.length > 0) {
             await window.BattleRewards.showResultsScreen(bm);
           } else {
             this.declareVictory(bm);
@@ -300,6 +300,91 @@
       } catch (err) {
         console.error("[Missions] Failed to update daily missions:", err);
       }
+    },
+
+    /**
+     * Record an arena battle outcome: stars, win/loss record, streak,
+     * battle history and ryo payout. Runs once per battle.
+     * @param {Object} bm - BattleManager reference
+     * @param {boolean} isVictory - Whether the player won
+     * @returns {Object|null} outcome summary for the result screen
+     */
+    recordArenaResult(bm, isVictory) {
+      if (!bm.isArena || bm._arenaResultRecorded) return bm._arenaOutcome || null;
+      bm._arenaResultRecorded = true;
+
+      let opponent = null;
+      try { opponent = JSON.parse(localStorage.getItem("arena_opponent") || "null"); } catch (e) {}
+      localStorage.removeItem("arena_opponent");
+
+      let record = { wins: 0, losses: 0, streak: 0, bestStreak: 0 };
+      try {
+        const saved = JSON.parse(localStorage.getItem("arena_record_v1") || "null");
+        if (saved && typeof saved === "object") record = { ...record, ...saved };
+      } catch (e) {}
+
+      const starsBefore = Math.max(0, Number(localStorage.getItem("arena_stars")) || 0);
+      let starsGained = 0;
+      let ryoGained = 0;
+
+      if (isVictory) {
+        record.wins++;
+        record.streak++;
+        record.bestStreak = Math.max(record.bestStreak, record.streak);
+
+        // Base star + opponent bounty + streak bonus every 3rd consecutive win
+        starsGained = 1 + Math.max(0, Number(opponent?.bonusStars) || 0);
+        if (record.streak > 0 && record.streak % 3 === 0) starsGained++;
+
+        ryoGained = 3000 + starsBefore * 100;
+      } else {
+        record.losses++;
+        record.streak = 0;
+
+        // Demotion pressure only above Chunin (30+ stars); consolation ryo
+        if (starsBefore > 30) starsGained = -1;
+        ryoGained = 500;
+      }
+
+      const starsAfter = Math.max(0, starsBefore + starsGained);
+      localStorage.setItem("arena_stars", String(starsAfter));
+      localStorage.setItem("arena_record_v1", JSON.stringify(record));
+
+      // Battle history (latest first, capped at 10)
+      try {
+        let history = [];
+        try { history = JSON.parse(localStorage.getItem("arena_history_v1") || "[]"); } catch (e) {}
+        if (!Array.isArray(history)) history = [];
+        history.unshift({
+          result: isVictory ? "win" : "loss",
+          opponent: opponent?.name || "Unknown Shinobi",
+          epithet: opponent?.epithet || "",
+          stars: starsGained,
+          streak: record.streak,
+          date: new Date().toISOString()
+        });
+        localStorage.setItem("arena_history_v1", JSON.stringify(history.slice(0, 10)));
+      } catch (e) {
+        console.error("[Missions] Failed to save arena history:", e);
+      }
+
+      if (ryoGained > 0 && window.Resources) {
+        window.Resources.add("ryo", ryoGained);
+      }
+
+      if (isVictory && window.ExpRewards) {
+        try { window.ExpRewards.onBattleWin({}); } catch (e) {}
+      }
+
+      bm._arenaOutcome = {
+        starsGained,
+        starsAfter,
+        ryoGained,
+        streak: record.streak,
+        opponent: opponent?.name || null
+      };
+      console.log("[Missions] Arena result recorded:", bm._arenaOutcome);
+      return bm._arenaOutcome;
     },
 
     /**
@@ -459,6 +544,10 @@
         clearInterval(bm.speedGaugeInterval);
       }
 
+      if (bm.isArena) {
+        this.recordArenaResult(bm, true);
+      }
+
       // Calculate statistics
       const stats = this.calculateBattleStats(bm);
 
@@ -476,6 +565,10 @@
 
       if (bm.speedGaugeInterval) {
         clearInterval(bm.speedGaugeInterval);
+      }
+
+      if (bm.isArena) {
+        this.recordArenaResult(bm, false);
       }
 
       // Calculate statistics
@@ -525,6 +618,36 @@
         : (isVictory ? "Mission Accomplished" : "Mission Failed");
       const returnUrl = isArena ? 'arena.html' : 'missions.html';
 
+      // Arena outcome rows (stars, streak, ryo)
+      const arena = bm._arenaOutcome;
+      const arenaRowsHTML = (isArena && arena) ? `
+          <div class="stat-divider"></div>
+
+          <div class="stat-row">
+            <span class="stat-label">${arena.opponent ? `Opponent` : `Arena`}</span>
+            <span class="stat-value gold">${arena.opponent || 'Ranked Match'}</span>
+          </div>
+
+          <div class="stat-row">
+            <span class="stat-label">Arena Stars</span>
+            <span class="stat-value ${arena.starsGained >= 0 ? 'gold' : ''}">
+              ${arena.starsGained > 0 ? '+' : ''}${arena.starsGained} ★ &nbsp;(${arena.starsAfter} total)
+            </span>
+          </div>
+
+          ${arena.streak > 1 ? `
+          <div class="stat-row">
+            <span class="stat-label">Win Streak</span>
+            <span class="stat-value gold">${arena.streak}</span>
+          </div>` : ''}
+
+          ${arena.ryoGained > 0 ? `
+          <div class="stat-row">
+            <span class="stat-label">Ryo Earned</span>
+            <span class="stat-value">${arena.ryoGained.toLocaleString()}</span>
+          </div>` : ''}
+      ` : '';
+
       bm.dom.resultStats.innerHTML = `
         <div class="result-subtitle">
           ${subtitle}
@@ -554,6 +677,7 @@
             <span class="stat-label">Wave Completed</span>
             <span class="stat-value">${stats.wave}</span>
           </div>
+          ${arenaRowsHTML}
 
           <div class="stat-divider"></div>
 

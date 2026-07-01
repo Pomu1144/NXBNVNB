@@ -218,9 +218,13 @@
       const data = await res.json();
       const list = Array.isArray(data) ? data : (Array.isArray(data.characters) ? data.characters : []);
 
-      // Build set of valid character IDs
+      // Build set of valid character IDs — playable units only.
+      // characters.json also holds props/items (Deadly Beads, chests,
+      // stat boosts...) with powerRank 0; those don't belong in the roster.
       const validIds = new Set();
-      list.forEach(c => validIds.add(c.id));
+      list.forEach(c => {
+        if ((Number(c.powerRank) || 0) > 0) validIds.add(c.id);
+      });
 
       // Filter out characters with invalid IDs
       const before = _instances.length;
