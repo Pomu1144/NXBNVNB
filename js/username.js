@@ -5,15 +5,17 @@
 (function (global) {
   "use strict";
 
-  const STORAGE_KEY = "blazing_username_v1";
-  const DEFAULT_USERNAME = "Player";
+  // Canonical username key, shared with the login flow (login-overlay/session-gate)
+  const STORAGE_KEY = "blazing-login-username";
+  const LEGACY_STORAGE_KEY = "blazing_username_v1";
+  const DEFAULT_USERNAME = "Ninja";
 
   let _username = DEFAULT_USERNAME;
 
   // ---------- Persistence ----------
   function loadUsername() {
     try {
-      const stored = localStorage.getItem(STORAGE_KEY);
+      const stored = localStorage.getItem(STORAGE_KEY) || localStorage.getItem(LEGACY_STORAGE_KEY);
       if (stored && stored.trim()) {
         _username = stored.trim();
       } else {
@@ -28,6 +30,7 @@
   function saveUsername() {
     try {
       localStorage.setItem(STORAGE_KEY, _username);
+      localStorage.removeItem(LEGACY_STORAGE_KEY);
     } catch (err) {
       console.error("[Username] Failed to save:", err);
     }
@@ -74,6 +77,14 @@
     if (usernameElement) {
       usernameElement.textContent = _username;
     }
+    const hudElement = document.getElementById('username-display');
+    if (hudElement) {
+      hudElement.textContent = _username;
+    }
+    // Keep other listeners (village HUD, profile) in sync
+    window.dispatchEvent(new CustomEvent('usernameChanged', {
+      detail: { username: _username }
+    }));
   }
 
   // ---------- Make Username Holder Clickable ----------

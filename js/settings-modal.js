@@ -219,20 +219,30 @@
         });
       }
 
-      // Username input
+      // Username input (canonical key shared with the login flow)
       const usernameInput = document.getElementById('setting-username');
       if (usernameInput) {
         // Load saved username
-        const savedUsername = localStorage.getItem('player_username') || 'Shinobi';
+        const savedUsername = localStorage.getItem('blazing-login-username') || 'Ninja';
         usernameInput.value = savedUsername;
 
         usernameInput.addEventListener('change', (e) => {
-          const username = e.target.value.trim() || 'Shinobi';
-          localStorage.setItem('player_username', username);
+          const username = e.target.value.trim() || 'Ninja';
+
+          if (window.Username?.set) {
+            window.Username.set(username);
+          } else if (window.UserProfile?.setUsername) {
+            window.UserProfile.setUsername(username);
+          } else {
+            localStorage.setItem('blazing-login-username', username);
+            window.dispatchEvent(new CustomEvent('usernameChanged', { detail: { username } }));
+          }
 
           // Update username display if it exists
           const usernameEl = document.getElementById('player-username');
           if (usernameEl) usernameEl.textContent = username;
+          const hudEl = document.getElementById('username-display');
+          if (hudEl) hudEl.textContent = username;
 
           console.log('Username updated:', username);
         });

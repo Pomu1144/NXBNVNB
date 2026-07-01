@@ -94,10 +94,12 @@ class PanelMissions {
         break;
 
       case 'resource':
-        if (window.ResourceManager) {
+        if (window.Resources) {
           const resourceKey = reward.resourceName.toLowerCase().replace(/\s+/g, '_');
-          window.ResourceManager.addResource(resourceKey, reward.quantity);
+          window.Resources.add(resourceKey, reward.quantity);
           console.log(`Gave resource: ${reward.resourceName} x${reward.quantity}`);
+        } else {
+          console.error('[PanelMissions] Resources module not loaded; reward lost:', reward);
         }
         break;
 

@@ -186,9 +186,6 @@ class SummonUIController {
       return;
     }
 
-    // Deduct cost
-    window.Resources?.subtract('ninja_pearls', this.costs.single);
-
     // Perform summon
     const result = window.FibonacciSummonEngine?.performSingleSummon();
     if (!result) return;
@@ -197,8 +194,14 @@ class SummonUIController {
     const characterData = window.CharacterSelector?.selectCharacter(result);
     if (!characterData) return;
 
+    // Deduct cost only once the pull succeeded
+    window.Resources?.subtract('ninja_pearls', this.costs.single);
+
     // Add to inventory
     window.InventoryChar?.addCopy(characterData.id, 1);
+
+    // Daily mission progress
+    window.DailyMissions?.incrementDaily('daily_summon');
 
     // Show animation and results
     await window.SummonAnimator?.playSummonAnimation('single');
@@ -217,15 +220,16 @@ class SummonUIController {
       return;
     }
 
-    // Deduct cost
-    window.Resources?.subtract('ninja_pearls', this.costs.multi);
-
     // Perform multi summon
     const results = window.FibonacciSummonEngine?.performMultiSummon();
     if (!results) return;
 
     // Select characters
     const characters = window.CharacterSelector?.selectCharacters(results);
+    if (!characters || characters.length === 0) return;
+
+    // Deduct cost only once the pull succeeded
+    window.Resources?.subtract('ninja_pearls', this.costs.multi);
 
     // Add to inventory
     characters.forEach(({character}) => {
@@ -233,6 +237,9 @@ class SummonUIController {
         window.InventoryChar?.addCopy(character.id, 1);
       }
     });
+
+    // Daily mission progress
+    window.DailyMissions?.incrementDaily('daily_summon');
 
     // Show animation and results
     await window.SummonAnimator?.playSummonAnimation('multi');

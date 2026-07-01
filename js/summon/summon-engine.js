@@ -62,6 +62,42 @@ class DoubleFibonacciSummonEngine {
       bronzePulls: 0,
       silverPulls: 0
     };
+
+    this.STORAGE_KEY = 'blazing_summon_state_v1';
+    this.loadState();
+  }
+
+  /**
+   * Persist step-up/pity progression so it survives page reloads
+   */
+  saveState() {
+    try {
+      localStorage.setItem(this.STORAGE_KEY, JSON.stringify({
+        currentMultiStep: this.currentMultiStep,
+        goldsThisMulti: this.goldsThisMulti,
+        totalMultisCompleted: this.totalMultisCompleted,
+        stats: this.stats
+      }));
+    } catch (err) {
+      console.error('[SummonEngine] Failed to save state:', err);
+    }
+  }
+
+  loadState() {
+    try {
+      const raw = localStorage.getItem(this.STORAGE_KEY);
+      if (!raw) return;
+      const saved = JSON.parse(raw);
+      const maxStep = this.goldChanceSequence.length - 1;
+      this.currentMultiStep = Math.min(Math.max(0, Number(saved.currentMultiStep) || 0), maxStep);
+      this.goldsThisMulti = Math.max(0, Number(saved.goldsThisMulti) || 0);
+      this.totalMultisCompleted = Math.max(0, Number(saved.totalMultisCompleted) || 0);
+      if (saved.stats && typeof saved.stats === 'object') {
+        this.stats = { ...this.stats, ...saved.stats };
+      }
+    } catch (err) {
+      console.error('[SummonEngine] Failed to load state:', err);
+    }
   }
 
   /**
@@ -82,6 +118,7 @@ class DoubleFibonacciSummonEngine {
       this.currentMultiStep = this.goldChanceSequence.length - 1;
     }
     this.totalMultisCompleted++;
+    this.saveState();
   }
 
   /**
@@ -98,6 +135,7 @@ class DoubleFibonacciSummonEngine {
       bronzePulls: 0,
       silverPulls: 0
     };
+    this.saveState();
   }
 
   /**
@@ -140,6 +178,8 @@ class DoubleFibonacciSummonEngine {
         this.stats.totalFeatured++;
       }
 
+      this.saveState();
+
       return {
         rarity: 'gold',
         isFeatured: isFeatured,
@@ -163,6 +203,8 @@ class DoubleFibonacciSummonEngine {
       } else {
         this.stats.bronzePulls++;
       }
+
+      this.saveState();
 
       return {
         rarity: rarity,

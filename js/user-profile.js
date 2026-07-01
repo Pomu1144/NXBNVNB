@@ -6,6 +6,8 @@
   "use strict";
 
   const STORAGE_KEY = "blazing_user_profile_v1";
+  // Canonical username key, shared with the login flow and Username module
+  const USERNAME_KEY = "blazing-login-username";
 
   // Default profile structure
   const DEFAULT_PROFILE = {
@@ -34,19 +36,33 @@
      * Load profile from localStorage
      */
     load() {
+      let profile;
       try {
         const raw = localStorage.getItem(STORAGE_KEY);
         if (!raw) {
           console.log("📝 No profile found. Creating new profile...");
-          return { ...DEFAULT_PROFILE };
+          profile = { ...DEFAULT_PROFILE };
+        } else {
+          const parsed = JSON.parse(raw);
+          console.log("✅ Profile loaded:", parsed.username);
+          profile = { ...DEFAULT_PROFILE, ...parsed };
         }
-        const parsed = JSON.parse(raw);
-        console.log("✅ Profile loaded:", parsed.username);
-        return { ...DEFAULT_PROFILE, ...parsed };
       } catch (err) {
         console.error("❌ Error loading profile:", err);
-        return { ...DEFAULT_PROFILE };
+        profile = { ...DEFAULT_PROFILE };
       }
+
+      // The login flow's username is the source of truth
+      try {
+        const loginName = localStorage.getItem(USERNAME_KEY);
+        if (loginName && loginName.trim()) {
+          profile.username = loginName.trim();
+        }
+      } catch (err) {
+        // Ignore storage access issues; keep profile username
+      }
+
+      return profile;
     }
 
     /**
@@ -92,6 +108,11 @@
 
       this.profile.username = trimmed;
       this.save();
+      try {
+        localStorage.setItem(USERNAME_KEY, trimmed);
+      } catch (err) {
+        // Ignore storage access issues
+      }
       console.log(`✅ Username changed to: ${trimmed}`);
 
       // Dispatch event for UI updates

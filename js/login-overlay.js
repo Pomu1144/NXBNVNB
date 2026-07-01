@@ -4,7 +4,7 @@
   const PLAYER_ID_KEY = 'blazing-player-id';
   const ACCOUNT_STORE_KEY = 'blazing-account-store';
   const RESOURCES_STORAGE_KEY = 'blazing_resources_v1';
-  const INVENTORY_KEY = 'blazing_inventory_v1';
+  const INVENTORY_KEY = 'blazing_inventory_v2';
   const TEAM_KEY = 'blazing_teams_v1';
   const ACCOUNT_SOURCE_PATH = 'data/user-accounts.json';
 
