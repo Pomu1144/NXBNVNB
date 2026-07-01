@@ -244,6 +244,9 @@
           await window.BattleRewards.awardStageChest(currentStage, bm.currentStageIndex, bm);
         }
 
+        // Record completion, first-clear rewards, player EXP and dailies
+        await this.recordMissionComplete(bm);
+
         setTimeout(async () => {
           // Show results screen with all collected chests
           if (window.BattleRewards && window.BattleRewards.collectedChests.length > 0) {
@@ -252,6 +255,50 @@
             this.declareVictory(bm);
           }
         }, 1000);
+      }
+    },
+
+    /**
+     * Persist mission completion and grant progression rewards.
+     * Runs once per battle; arena fights don't count as missions.
+     * @param {Object} bm - BattleManager reference
+     */
+    async recordMissionComplete(bm) {
+      if (bm._missionCompletionRecorded || bm.isArena) return;
+      bm._missionCompletionRecorded = true;
+
+      const missionId = bm.missionData?.id || localStorage.getItem("currentMissionId");
+      const difficulty = bm.difficulty;
+
+      try {
+        if (window.MissionProgress && missionId && difficulty) {
+          const result = await window.MissionProgress.completeMission(missionId, difficulty);
+          console.log("[Missions] Completion recorded:", missionId, difficulty, result?.rewards);
+        }
+      } catch (err) {
+        console.error("[Missions] Failed to record completion:", err);
+      }
+
+      try {
+        if (window.ExpRewards) {
+          const stats = this.calculateBattleStats(bm);
+          const expByDifficulty = { C: "MISSION_EASY", B: "MISSION_NORMAL", A: "MISSION_HARD", S: "MISSION_EXTREME" };
+          window.ExpRewards.giveReward(expByDifficulty[difficulty] || "MISSION_NORMAL");
+          window.ExpRewards.onBattleWin({
+            unitsLost: stats.totalUnits - stats.survivingUnits,
+            damageTaken: stats.maxTeamHP - stats.teamHP
+          });
+        }
+      } catch (err) {
+        console.error("[Missions] Failed to award EXP:", err);
+      }
+
+      try {
+        if (window.DailyMissions) {
+          await window.DailyMissions.incrementDaily("daily_complete_mission");
+        }
+      } catch (err) {
+        console.error("[Missions] Failed to update daily missions:", err);
       }
     },
 

@@ -105,12 +105,11 @@
     }
 
     // Add objective rewards (only for newly completed objectives)
-    completedObjectives.forEach((objectiveIndex) => {
-      if (!progress.objectives[objectiveIndex]) {
-        const objReward = rewards.objectives[objectiveIndex]?.reward || {};
-        totalRewards = combineRewards(totalRewards, objReward);
-        progress.objectives[objectiveIndex] = true;
-      }
+    const newObjectives = completedObjectives.filter(i => !progress.objectives[i]);
+    newObjectives.forEach((objectiveIndex) => {
+      const objReward = rewards.objectives[objectiveIndex]?.reward || {};
+      totalRewards = combineRewards(totalRewards, objReward);
+      progress.objectives[objectiveIndex] = true;
     });
 
     // Save progress
@@ -127,7 +126,7 @@
       ok: true,
       rewards: totalRewards,
       isFirstClear,
-      newObjectives: completedObjectives.filter(i => !progress.objectives[i])
+      newObjectives
     };
   }
 

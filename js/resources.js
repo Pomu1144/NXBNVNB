@@ -126,6 +126,21 @@
 
   let _resources = {};
 
+  // Legacy/alias material ids used by older data files → canonical ids
+  const ID_ALIASES = {
+    "pearls": "ninja_pearls",
+    "ramen_1star": "ramen_heart_1star",
+    "ramen_2star": "ramen_heart_2star",
+    "ramen_3star": "ramen_heart_3star",
+    "scroll_3star": "awakening_stone_3",
+    "scroll_4star": "awakening_stone_4",
+    "scroll_5star": "awakening_stone_5"
+  };
+
+  function normalizeId(materialId) {
+    return ID_ALIASES[materialId] || materialId;
+  }
+
   // ---------- Persistence ----------
   function load() {
     try {
@@ -137,6 +152,23 @@
     }
     // Initialize default quantities if not present
     initializeDefaults();
+    migrateAliases();
+  }
+
+  // Credit any balances stored under legacy ids to their canonical id
+  function migrateAliases() {
+    let changed = false;
+    for (const [legacy, canonical] of Object.entries(ID_ALIASES)) {
+      if (legacy in _resources) {
+        const qty = Number(_resources[legacy]) || 0;
+        if (qty > 0) {
+          _resources[canonical] = (Number(_resources[canonical]) || 0) + qty;
+        }
+        delete _resources[legacy];
+        changed = true;
+      }
+    }
+    if (changed) save();
   }
 
   function save() {
@@ -202,7 +234,7 @@
 
   // ---------- Read ----------
   function get(materialId) {
-    return Number(_resources[materialId]) || 0;
+    return Number(_resources[normalizeId(materialId)]) || 0;
   }
 
   function getAll() {
@@ -224,6 +256,7 @@
 
   // ---------- Write ----------
   function add(materialId, amount = 1) {
+    materialId = normalizeId(materialId);
     const current = get(materialId);
     _resources[materialId] = Math.max(0, current + (Number(amount) || 0));
     save();
@@ -232,6 +265,7 @@
   }
 
   function subtract(materialId, amount = 1) {
+    materialId = normalizeId(materialId);
     const current = get(materialId);
     const newAmount = Math.max(0, current - (Number(amount) || 0));
     _resources[materialId] = newAmount;
@@ -254,6 +288,7 @@
   }
 
   function set(materialId, amount) {
+    materialId = normalizeId(materialId);
     _resources[materialId] = Math.max(0, Number(amount) || 0);
     save();
     notifyTopBar(materialId);

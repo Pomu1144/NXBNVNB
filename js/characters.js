@@ -1033,10 +1033,11 @@
 
           // Daily mission check
           if (window.DailyMissions) {
-            const result = window.DailyMissions.recordAction('level_up_character');
-            if (result?.completed) {
-              if (window.ModalManager) { window.ModalManager.showInfo(`Daily Mission Completed!\n${result.dailyName}`); };
-            }
+            window.DailyMissions.incrementDaily('daily_level_up').then((result) => {
+              if (result?.completed) {
+                if (window.ModalManager) { window.ModalManager.showInfo(`Daily Mission Completed!\n${result.dailyName}`); };
+              }
+            });
           }
 
           // Success message

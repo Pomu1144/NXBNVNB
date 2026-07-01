@@ -25,20 +25,29 @@
     onRankUp: null,
     onExpGain: null,
 
+    // Shared init promise so multiple callers don't re-run initialization
+    _initPromise: null,
+
     /**
      * Initialize the rank system
      */
-    async init() {
-      console.log("[NinjaRank] Initializing...");
+    init() {
+      if (this._initPromise) return this._initPromise;
 
-      // Load rank requirements from JSON
-      await this.loadRankRequirements();
+      this._initPromise = (async () => {
+        console.log("[NinjaRank] Initializing...");
 
-      // Load player data from localStorage
-      this.loadPlayerData();
+        // Load rank requirements from JSON
+        await this.loadRankRequirements();
 
-      console.log("[NinjaRank] Initialized ✅");
-      console.log(`[NinjaRank] Current Rank: ${this.currentRank} | EXP: ${this.currentExp}/${this.getExpForNextRank()}`);
+        // Load player data from localStorage
+        this.loadPlayerData();
+
+        console.log("[NinjaRank] Initialized ✅");
+        console.log(`[NinjaRank] Current Rank: ${this.currentRank} | EXP: ${this.currentExp}/${this.getExpForNextRank()}`);
+      })();
+
+      return this._initPromise;
     },
 
     /**
@@ -145,10 +154,10 @@
      * Validate and fix EXP if out of bounds
      */
     validateExp() {
-      const nextRankExp = this.getExpForNextRank();
-
       // If EXP exceeds next rank requirement, level up
-      while (this.currentExp >= nextRankExp && this.currentRank < this.maxRank) {
+      while (this.getExpForNextRank() > 0 &&
+             this.currentExp >= this.getExpForNextRank() &&
+             this.currentRank < this.maxRank) {
         this.currentRank++;
         this.savePlayerData();
 
@@ -171,8 +180,10 @@
 
       const ranksGained = [];
 
-      // Check for rank-ups
-      while (this.currentExp >= this.getExpForNextRank() && this.currentRank < this.maxRank) {
+      // Check for rank-ups (getExpForNextRank() is 0 until rank data loads)
+      while (this.getExpForNextRank() > 0 &&
+             this.currentExp >= this.getExpForNextRank() &&
+             this.currentRank < this.maxRank) {
         this.currentRank++;
         ranksGained.push(this.currentRank);
 
@@ -186,7 +197,9 @@
       // Cap EXP at max rank
       if (this.currentRank >= this.maxRank) {
         const maxExp = this.rankRequirements[this.maxRank.toString()];
-        this.currentExp = Math.max(this.currentExp, maxExp);
+        if (typeof maxExp === "number") {
+          this.currentExp = Math.min(this.currentExp, maxExp);
+        }
       }
 
       this.savePlayerData();
@@ -269,6 +282,9 @@
 
   // Export to global scope
   global.NinjaRank = NinjaRank;
+
+  // Auto-initialize so pages without a top bar (e.g. battle) can still award EXP
+  NinjaRank.init().catch((err) => console.error("[NinjaRank] Auto-init failed:", err));
 
   console.log("[NinjaRank] Module loaded ✅");
 

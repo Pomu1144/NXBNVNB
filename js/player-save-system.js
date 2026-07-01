@@ -159,16 +159,25 @@ class PlayerSaveSystem {
 
   getProfileData() {
     return {
-      username: localStorage.getItem('blazing_username') || 'Ninja',
-      userProfile: localStorage.getItem('blazing_user_profile')
+      username: localStorage.getItem('blazing-login-username') || 'Ninja',
+      userProfile: localStorage.getItem('blazing_user_profile_v1')
     };
   }
 
   getProgressData() {
     return {
-      ninjaRank: localStorage.getItem('ninjaRank'),
-      dailyMissions: localStorage.getItem('blazing_daily_missions'),
-      missionProgress: localStorage.getItem('blazing_mission_progress')
+      ninjaRank: localStorage.getItem('blazing_player_rank'),
+      ninjaExp: localStorage.getItem('blazing_player_exp'),
+      dailyMissions: localStorage.getItem('blazing_daily_progress_v1'),
+      missionProgress: localStorage.getItem('blazing_mission_progress_v1'),
+      panelMissions: localStorage.getItem('blazing_panel_mission_progress'),
+      achievements: localStorage.getItem('blazing_achievements_v1'),
+      teams: localStorage.getItem('blazing_teams_v1'),
+      teamNames: localStorage.getItem('blazing_team_names'),
+      cardLevels: localStorage.getItem('blazing_card_levels_v1'),
+      characterEquip: localStorage.getItem('blazing_character_equip_v1'),
+      equippedUltimates: localStorage.getItem('blazing_equipped_ultimates'),
+      summonState: localStorage.getItem('blazing_summon_state_v1')
     };
   }
 
@@ -212,21 +221,37 @@ class PlayerSaveSystem {
   }
 
   importProfileData(data, merge) {
-    if (!merge || !localStorage.getItem('blazing_username')) {
+    if (!merge || !localStorage.getItem('blazing-login-username')) {
       if (data.username) {
-        localStorage.setItem('blazing_username', data.username);
+        localStorage.setItem('blazing-login-username', data.username);
       }
       if (data.userProfile) {
-        localStorage.setItem('blazing_user_profile', data.userProfile);
+        localStorage.setItem('blazing_user_profile_v1', data.userProfile);
       }
     }
   }
 
   importProgressData(data, merge) {
     if (!merge) {
-      if (data.ninjaRank) localStorage.setItem('ninjaRank', data.ninjaRank);
-      if (data.dailyMissions) localStorage.setItem('blazing_daily_missions', data.dailyMissions);
-      if (data.missionProgress) localStorage.setItem('blazing_mission_progress', data.missionProgress);
+      const keyMap = {
+        ninjaRank: 'blazing_player_rank',
+        ninjaExp: 'blazing_player_exp',
+        dailyMissions: 'blazing_daily_progress_v1',
+        missionProgress: 'blazing_mission_progress_v1',
+        panelMissions: 'blazing_panel_mission_progress',
+        achievements: 'blazing_achievements_v1',
+        teams: 'blazing_teams_v1',
+        teamNames: 'blazing_team_names',
+        cardLevels: 'blazing_card_levels_v1',
+        characterEquip: 'blazing_character_equip_v1',
+        equippedUltimates: 'blazing_equipped_ultimates',
+        summonState: 'blazing_summon_state_v1'
+      };
+      Object.entries(keyMap).forEach(([field, storageKey]) => {
+        if (data[field] !== null && data[field] !== undefined) {
+          localStorage.setItem(storageKey, data[field]);
+        }
+      });
     }
   }
 
@@ -294,11 +319,20 @@ class PlayerSaveSystem {
     const keys = [
       'blazing_inventory_v2',
       'blazing_resources_v1',
-      'blazing_username',
-      'blazing_user_profile',
-      'ninjaRank',
-      'blazing_daily_missions',
-      'blazing_mission_progress',
+      'blazing-login-username',
+      'blazing_user_profile_v1',
+      'blazing_player_rank',
+      'blazing_player_exp',
+      'blazing_daily_progress_v1',
+      'blazing_mission_progress_v1',
+      'blazing_panel_mission_progress',
+      'blazing_achievements_v1',
+      'blazing_teams_v1',
+      'blazing_team_names',
+      'blazing_card_levels_v1',
+      'blazing_character_equip_v1',
+      'blazing_equipped_ultimates',
+      'blazing_summon_state_v1',
       'mailboxMessages',
       'blazing_redeemed_codes_v1',
       'blazing_audio_settings',
