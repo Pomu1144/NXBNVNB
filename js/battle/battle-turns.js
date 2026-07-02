@@ -62,8 +62,12 @@
         core.combatants.forEach(unit => {
           if (unit.stats.hp <= 0 || unit.isPaused) return;
 
-          // Increment gauge by speed stat (modified by speed multiplier)
-          const speedGain = unit.stats.speed * core.speedMultiplier;
+          // Compressed gauge gain. Raw stat speeds (90-200+) filled the
+          // 1200 gauge in a fraction of a second, so fast units fired
+          // turn after turn in a blur ("stuck attacking"). This paces a
+          // turn at roughly 2.5-4s and caps how much more often a fast
+          // unit acts (~1.5x) while keeping speed meaningful.
+          const speedGain = (10 + (unit.stats.speed || 90) / 12) * core.speedMultiplier;
           unit.speedGauge = Math.min(core.GAUGE_MAX, unit.speedGauge + speedGain);
         });
 

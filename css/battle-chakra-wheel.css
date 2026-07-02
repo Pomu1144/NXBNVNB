@@ -51,34 +51,44 @@
 }
 
 /* =========================================
-   CHAKRA CONTAINER (MIDDLE LAYER, z-index: 11)
+   CHAKRA CONTAINER (MIDDLE LAYER)
+
+   Sits BETWEEN the portrait (z:1) and the golden frame (z:10) and is
+   clipped to the wheel circle, so the glow reads as sitting inside
+   the ring instead of bleeding over the UI.
    ========================================= */
 .chakra-container {
     position: absolute;
     inset: 0;
-    z-index: 11;
+    z-index: 5;
+    border-radius: 50%;
+    overflow: hidden;
+    clip-path: circle(50% at 50% 50%);
     pointer-events: none;
 }
 
 /* Chakra segments - individual segments positioned at fixed angles.
-   Oversized so the arc (authored at a larger radius than the frame's
-   ring) aligns with the golden ring band. */
+   Sized so the arc rides the ring band; the frame overdraws the outer
+   edge and the container clip stops any overflow. */
 .chakra-segment {
   position: absolute;
-  width: 160%;
-  height: 160%;
-  top: -30%;
-  left: -30%;
+  width: 156%;
+  height: 156%;
+  top: -28%;
+  left: -28%;
   object-fit: contain;
   transform-origin: center center;
   opacity: 0; /* Hidden by default */
+  mix-blend-mode: screen;
   transition: opacity 0.3s ease-in-out;
 }
 
-/* Active segments are visible */
+/* Active segments are translucent so stacked arcs glow instead of
+   forming a solid slab over the portrait */
 .chakra-segment.active {
-  opacity: 1;
+  opacity: 0.75;
 }
+
 
 /* Jutsu range segments (blue-ish tint) */
 .chakra-segment.active.jutsu-range {
