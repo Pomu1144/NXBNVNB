@@ -241,21 +241,31 @@
       return;
     }
 
-    // Sort characters by star rating (highest to lowest)
-    const sortedInstances = instances.sort((a, b) => {
-      const charA = BYID[a.charId];
-      const charB = BYID[b.charId];
+    // Multi-level sort so the roster reads as an organized collection:
+    //   1. current tier stars (highest first)
+    //   2. the unit's MAX potential tier (so a strong unit sitting at a
+    //      low current tier still ranks above genuinely weak units)
+    //   3. power rank
+    //   4. name (groups dupes together)
+    //   5. level (highest first)
+    const sortKey = (inst) => {
+      const c = BYID[inst.charId];
+      const curTier = inst.tierCode || (c ? minTier(c) : "3S");
+      const curStars = starsFromTier(curTier);
+      const maxStars = c ? starsFromTier(maxTier(c)) : curStars;
+      const power = c ? (Number(c.powerRank) || 0) : 0;
+      const name = c ? (c.name || "") : "zzz";
+      const level = Number(inst.level) || 1;
+      return { curStars, maxStars, power, name, level };
+    };
 
-      // Get tier codes
-      const tierA = a.tierCode || (charA ? minTier(charA) : "3S");
-      const tierB = b.tierCode || (charB ? minTier(charB) : "3S");
-
-      // Get star counts from tier codes
-      const starsA = starsFromTier(tierA);
-      const starsB = starsFromTier(tierB);
-
-      // Sort by stars descending (highest first)
-      return starsB - starsA;
+    const sortedInstances = instances.slice().sort((a, b) => {
+      const ka = sortKey(a), kb = sortKey(b);
+      if (kb.curStars !== ka.curStars) return kb.curStars - ka.curStars;
+      if (kb.maxStars !== ka.maxStars) return kb.maxStars - ka.maxStars;
+      if (kb.power !== ka.power) return kb.power - ka.power;
+      if (ka.name !== kb.name) return ka.name.localeCompare(kb.name);
+      return kb.level - ka.level;
     });
 
     GRID.innerHTML = sortedInstances.map(inst => {
