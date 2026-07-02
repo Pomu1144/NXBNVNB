@@ -172,7 +172,7 @@
     const s = document.createElement('style');
     s.id = 'banner-art-styles';
     s.textContent = `
-      .banner-art { width:100%; height:100%; position:relative; overflow:hidden; }
+      .banner-art { width:100%; height:100%; position:relative; overflow:hidden; border-radius:16px; }
       /* Blurred cover backdrop fills the frame; the sharp banner sits on
          top uncropped (contain), so the full art is always visible */
       .banner-art-backdrop {
@@ -184,6 +184,7 @@
         position:relative; width:100%; height:100%;
         object-fit:contain; object-position:center;
         display:block; pointer-events:none;
+        border-radius:12px;
         filter: drop-shadow(0 6px 24px rgba(0,0,0,0.6));
       }
       .banner-art-fallback {
@@ -201,6 +202,9 @@
       .banner-art-fallback-sub {
         font-family:"Cinzel",serif; font-size:clamp(10px,1.4vw,13px);
         color:rgba(217,179,98,0.7); max-width:70%;
+      }
+      #banner-preview-scroll .preview-item {
+        border-radius:9px; overflow:hidden;
       }
       #banner-preview-scroll .preview-item img {
         width:100%; height:100%; object-fit:cover; display:block; border-radius:inherit;

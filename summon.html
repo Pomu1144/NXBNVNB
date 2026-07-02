@@ -245,20 +245,19 @@
       padding: 10px 10px;
       flex-shrink: 0;
       justify-content: center;
+      align-items: center; /* let each button keep its own height */
       /* Anchor the action cluster to the bottom of the screen */
       margin-top: auto;
     }
 
     .summon-btn {
-      flex: 0 1 400px;
-      min-height: 58px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       gap: 3px;
       padding: 10px 8px;
-      border-radius: 12px;
+      border-radius: 14px;
       cursor: pointer;
       font-family: 'Cinzel', serif;
       font-weight: 700;
@@ -268,6 +267,43 @@
       box-shadow: 0 4px 14px rgba(0,0,0,0.55);
     }
     .summon-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none !important; }
+
+    /* Hierarchy: Single is the modest option, Multi is the premium hero CTA */
+    .summon-btn-single {
+      flex: 0 1 320px;
+      min-height: 54px;
+      font-size: 13px;
+    }
+    .summon-btn-multi {
+      flex: 0 1 480px;
+      min-height: 74px;
+      font-size: 15px;
+      transform: scale(1.02);
+    }
+    .summon-btn-multi .summon-btn-label { font-size: clamp(13px, 1.8vw, 16px); }
+    /* Premium sheen + pulse to draw the eye to the value action */
+    .summon-btn-multi::after {
+      content: '';
+      position: absolute;
+      top: 0; left: -60%;
+      width: 40%; height: 100%;
+      background: linear-gradient(100deg, transparent, rgba(255,248,220,0.55), transparent);
+      transform: skewX(-18deg);
+      animation: multiSheen 3.4s ease-in-out infinite;
+      pointer-events: none;
+    }
+    @keyframes multiSheen {
+      0%, 62% { left: -60%; }
+      82%, 100% { left: 130%; }
+    }
+    .summon-btn-multi:not(:disabled) {
+      box-shadow: 0 6px 20px rgba(0,0,0,0.6), 0 0 24px rgba(212,175,55,0.4);
+      animation: multiPulse 2.6s ease-in-out infinite;
+    }
+    @keyframes multiPulse {
+      0%, 100% { box-shadow: 0 6px 20px rgba(0,0,0,0.6), 0 0 20px rgba(212,175,55,0.35); }
+      50% { box-shadow: 0 6px 22px rgba(0,0,0,0.6), 0 0 32px rgba(255,215,80,0.6); }
+    }
 
     /* Both summon buttons share the gold plate for one consistent design */
     .summon-btn-single {
@@ -285,13 +321,16 @@
       background: url('assets/ui/generated/button_gold.webp') center / 100% 100% no-repeat;
       border: none;
       color: #14100a;
-      text-shadow: 0 1px 0 rgba(255,235,170,0.5);
+      text-shadow: 0 1px 0 rgba(255,235,170,0.6);
+      filter: brightness(1.12) saturate(1.1);
     }
     .summon-btn-multi:hover:not(:disabled) {
-      filter: brightness(1.22);
-      box-shadow: 0 0 20px rgba(212,175,55,0.45);
-      transform: translateY(-2px);
+      filter: brightness(1.32) saturate(1.15);
+      transform: translateY(-2px) scale(1.03);
     }
+    /* Single reads as the secondary option: slightly dimmer plate */
+    .summon-btn-single { filter: brightness(0.9); }
+    .summon-btn-single:hover:not(:disabled) { filter: brightness(1.12); }
 
     .summon-btn-label {
       font-size: clamp(11px, 1.6vw, 14px);
