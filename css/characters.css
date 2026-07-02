@@ -858,38 +858,62 @@ body.page-characters::-webkit-scrollbar {
 .support-wrap {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  background: url('../assets/ui/slab_holder.png') center/cover no-repeat;
-  background-size: 200%;
-  padding: 20px;
+  gap: 10px;
+  background: linear-gradient(160deg, rgba(16, 20, 40, 0.92), rgba(8, 10, 22, 0.95));
+  border: 1px solid rgba(184, 152, 95, 0.3);
+  border-radius: 12px;
+  padding: 16px;
   min-height: 120px;
 }
 .support-box {
-  background:
-    linear-gradient(rgba(20, 14, 8, 0.25), rgba(20, 14, 8, 0.25)),
-    url("../assets/ui/generated/parchment_panel.webp") center / cover no-repeat;
-  border: 1px solid rgba(184, 152, 95, 0.45);
+  position: relative;
+  background: linear-gradient(135deg, rgba(32, 28, 48, 0.9), rgba(16, 14, 28, 0.92));
+  border: 1px solid rgba(184, 152, 95, 0.38);
+  border-left: 3px solid var(--gold);
   border-radius: 8px;
-  padding: 10px 14px;
-  box-shadow: inset 0 0 24px rgba(0, 0, 0, 0.35), 0 2px 8px rgba(0, 0, 0, 0.4);
+  padding: 12px 16px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
   color: #f0e6d1;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
 }
 .support-box strong {
   color: var(--gold);
   display: block;
-  margin-bottom: 3px;
+  margin-bottom: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+.support-box > div {
+  font-size: 13px;
+  line-height: 1.55;
+  color: #e8e3d1;
 }
 .support-box ul {
   list-style: none;
   padding: 0;
   margin: 0;
   font-size: 13px;
+  line-height: 1.55;
 }
 .support-box li {
-  padding-left: 8px;
-  text-indent: -8px;
-  margin-bottom: 2px;
+  padding-left: 12px;
+  position: relative;
+  margin-bottom: 4px;
+}
+.support-box li::before {
+  content: "◆";
+  position: absolute;
+  left: 0;
+  color: var(--gold);
+  font-size: 8px;
+  top: 4px;
+}
+.support-box em {
+  color: var(--gold);
+  font-style: normal;
+  font-weight: 600;
 }
 
 /* ---------- Utility ---------- */
@@ -1232,17 +1256,21 @@ body.page-characters::-webkit-scrollbar {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  background: url('../update/abilitiesslab.png') center/contain no-repeat;
-  padding: 20px;
+  background: linear-gradient(160deg, rgba(16, 20, 40, 0.92), rgba(8, 10, 22, 0.95));
+  border: 1px solid rgba(184, 152, 95, 0.3);
+  border-radius: 12px;
+  padding: 16px;
   min-height: 120px;
 }
 
 .ability-card {
-  background: rgba(0,0,0,0.35);
-  border: 1px solid rgba(255,215,120,0.1);
+  background: linear-gradient(135deg, rgba(32, 28, 48, 0.9), rgba(16, 14, 28, 0.92));
+  border: 1px solid rgba(184, 152, 95, 0.35);
+  border-left: 3px solid var(--gold);
   border-radius: 8px;
-  padding: 10px 12px;
+  padding: 12px 14px;
   position: relative;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
 }
 
 .ability-card.locked {
