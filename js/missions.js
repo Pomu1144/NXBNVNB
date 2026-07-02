@@ -23,12 +23,35 @@ document.addEventListener('DOMContentLoaded', () => {
       card.className = 'mission-card';
 
       // ---------------------------
-      // Banner
+      // Banner (styled fallback when the art file is missing —
+      // most legacy missions ship without banner images)
       // ---------------------------
+      const CATEGORY_THEMES = {
+        'Super Impact':              ['#4a0d0d', '#8b1a1a', '#ff6b45'],
+        'Impact Missions':           ['#3a2604', '#7a5410', '#ffd24a'],
+        'Shinobi Chronicles Part 1': ['#0d2a12', '#1e5a2a', '#7fdc8f'],
+        'Shinobi Chronicles Part 2': ['#0d1c3a', '#1e3f7a', '#7fb2ff'],
+        'Limited Time Event':        ['#2a0d3a', '#5a1e7a', '#d67fff'],
+        'Growth Missions':           ['#0d2a2a', '#1e5a5a', '#7fdcdc']
+      };
+
       const banner = document.createElement('img');
       banner.className = 'mission-banner';
       banner.src = mission.banner || 'assets/missions/banners/default_banner.png';
       banner.alt = mission.name || 'Mission Banner';
+      banner.onerror = () => {
+        const [dark, mid, glow] = CATEGORY_THEMES[mission.category] || ['#1a1a2a', '#2a2a4a', '#d4af37'];
+        const fallback = document.createElement('div');
+        fallback.className = 'mission-banner mission-banner-fallback';
+        fallback.style.background = `
+          repeating-linear-gradient(-55deg, transparent 0 14px, rgba(0,0,0,0.18) 14px 16px),
+          radial-gradient(circle at 85% 20%, ${mid}cc, transparent 60%),
+          linear-gradient(100deg, ${dark} 0%, ${mid} 55%, ${dark} 100%)`;
+        fallback.innerHTML = `
+          <span class="mbf-category" style="color:${glow}">${mission.category || ''}</span>
+          <span class="mbf-name">${mission.name || 'Mission'}</span>`;
+        banner.replaceWith(fallback);
+      };
       card.appendChild(banner);
 
       // ---------------------------
