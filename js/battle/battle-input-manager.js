@@ -53,10 +53,24 @@
     /* ===== STAGE 1: Click to Select Attack Type ===== */
 
     /**
+     * A unit may only arm an attack during its own turn.
+     * Without this check, clicking any unit at any time armed the state
+     * machine, and every subsequent drag executed another attack while
+     * ending whichever turn was actually in progress.
+     */
+    canArmAttack(unit) {
+      if (!unit || !unit.isPlayer || unit.stats?.hp <= 0) return false;
+      const turns = this.core?.turns || window.BattleTurns;
+      if (turns && turns.currentUnit !== unit) return false;
+      return true;
+    },
+
+    /**
      * Handle single click - select normal attack
      */
     handleSingleClick(unit) {
       if (this.currentState !== this.STATES.IDLE) return;
+      if (!this.canArmAttack(unit)) return;
 
       console.log(`[InputManager] Single click: Normal attack selected for ${unit.name}`);
       this.selectedAttackType = this.ATTACK_TYPES.NORMAL;
@@ -72,6 +86,7 @@
      */
     handleDoubleClick(unit) {
       if (this.currentState !== this.STATES.IDLE) return;
+      if (!this.canArmAttack(unit)) return;
 
       // Check if unit has ultimate and enough chakra
       const skills = window.BattleCombat?.getUnitSkills(unit);
@@ -105,6 +120,7 @@
      */
     handleTripleClick(unit) {
       if (this.currentState !== this.STATES.IDLE) return;
+      if (!this.canArmAttack(unit)) return;
 
       // Check if unit has secret and enough chakra
       const skills = window.BattleCombat?.getUnitSkills(unit);
@@ -392,12 +408,23 @@
      * Execute the selected attack
      */
     executeAttack(attacker, attackType, target) {
+      const core = this.core;
+
+      // The turn may have ended (or changed hands) since the attack was armed
+      if (core?.turns && core.turns.currentUnit !== attacker) {
+        console.warn(`[InputManager] Ignoring ${attackType} from ${attacker.name} — not their turn`);
+        return;
+      }
+
       console.log(`[InputManager] Executing ${attackType} attack: ${attacker.name} → ${target.name}`);
 
-      const core = this.core;
+      // Only ever end THIS unit's turn, and only once
       const doEndTurn = () => {
-        if (core?.turns) core.turns.endTurn(core);
-        else if (core?.endTurn) core.endTurn();
+        if (core?.turns) {
+          if (core.turns.currentUnit === attacker) core.turns.endTurn(core);
+        } else if (core?.endTurn) {
+          core.endTurn();
+        }
       };
 
       if (window.BattleCombat) {
@@ -414,6 +441,15 @@
             break;
           }
         }
+
+        // Watchdog: if the combat callback never fires (mirrors the AI
+        // turn's safety net), release the turn instead of soft-locking
+        setTimeout(() => {
+          if (core?.turns && core.turns.currentUnit === attacker) {
+            console.warn(`[InputManager] Watchdog releasing stuck turn for ${attacker.name}`);
+            core.turns.endTurn(core);
+          }
+        }, 6000);
       }
     },
 

@@ -244,13 +244,14 @@
     }
 
     .arena-btn-primary {
-      background: linear-gradient(135deg, #a7822c, #d4af37);
-      border: 2px solid rgba(212,175,55,0.7);
-      color: #0a0a0a;
+      background: url('assets/ui/generated/button_gold.webp') center / 100% 100% no-repeat;
+      border: none;
+      color: #14100a;
+      text-shadow: 0 1px 0 rgba(255,235,170,0.5);
     }
 
     .arena-btn-primary:hover {
-      background: linear-gradient(135deg, #d4af37, #ffd700);
+      filter: brightness(1.25);
       box-shadow: 0 0 24px rgba(212,175,55,0.6), 0 4px 14px rgba(0,0,0,0.6);
       transform: translateY(-2px);
     }
@@ -824,7 +825,7 @@
             <div class="aos-title">Challengers Await</div>
             <div class="aos-desc">Scouts have found three rivals near your rank. Choose your opponent.</div>
           </div>
-          <button class="aos-close" onclick="document.getElementById('arena-opponent-select').remove()">X</button>
+          <button class="aos-close" onclick="document.getElementById('arena-opponent-select').remove()">✕</button>
         </div>
         <div class="aos-cards">${cardsHTML}</div>
         <div class="aos-footer">
@@ -869,13 +870,16 @@
       .aos-overlay { position:absolute;inset:0;background:rgba(0,0,0,0.88);backdrop-filter:blur(6px); }
       .aos-panel {
         position:relative;background:linear-gradient(135deg,rgba(10,14,32,0.99),rgba(6,8,20,0.99));
-        border:3px solid #b8985f;border-radius:18px;padding:22px;width:min(640px,95vw);
+        border:26px solid transparent;
+        border-image:url('assets/ui/generated/panel_frame.webp') 115 fill round;
+        padding:14px;width:min(640px,95vw);
         max-height:92vh;overflow-y:auto;box-shadow:0 0 60px rgba(184,152,95,0.35);
       }
       .aos-header { display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:18px;padding-bottom:12px;border-bottom:2px solid rgba(184,152,95,0.25); }
       .aos-title { font-size:20px;font-weight:700;color:#d4af37;letter-spacing:2px; }
       .aos-desc { font-size:12px;color:#9a8060;margin-top:4px;letter-spacing:0.5px; }
-      .aos-close { background:rgba(220,53,69,0.18);border:1.5px solid rgba(220,53,69,0.45);color:#ff6b6b;font-size:16px;width:30px;height:30px;border-radius:50%;cursor:pointer;font-weight:700;line-height:1;display:flex;align-items:center;justify-content:center;flex-shrink:0; }
+      .aos-close { background:radial-gradient(circle at 35% 30%, rgba(212,175,55,0.22), rgba(10,10,20,0.9) 65%);border:1.5px solid rgba(212,175,55,0.55);color:#d4af37;font-size:14px;width:30px;height:30px;border-radius:50%;cursor:pointer;font-weight:700;line-height:1;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.2s ease;box-shadow:inset 0 1px 0 rgba(212,175,55,0.3), 0 2px 6px rgba(0,0,0,0.6); }
+      .aos-close:hover { border-color:#ffd700;color:#ffd700;box-shadow:0 0 14px rgba(212,175,55,0.5);transform:rotate(90deg); }
       .aos-cards { display:flex;flex-direction:column;gap:12px; }
       .aos-card {
         display:flex;align-items:center;gap:14px;padding:14px 16px;cursor:pointer;
@@ -1035,7 +1039,7 @@
             <div class="atp-title">${title}</div>
             <div class="atp-desc">${desc}</div>
           </div>
-          <button class="atp-close" onclick="document.getElementById('arena-team-picker').remove()">X</button>
+          <button class="atp-close" onclick="document.getElementById('arena-team-picker').remove()">✕</button>
         </div>
         <div class="atp-teams">
           ${[1,2,3,4,5,6,7,8].map(n => buildTeamCard(n)).join('')}
@@ -1132,7 +1136,7 @@
       <div class="arena-modal-panel">
         <div class="arena-modal-header">
           <span class="arena-modal-title">Arena Battle</span>
-          <button class="arena-modal-close" onclick="document.getElementById('arena-team-modal').remove()">X</button>
+          <button class="arena-modal-close" onclick="document.getElementById('arena-team-modal').remove()">✕</button>
         </div>
         <div class="arena-modal-body">
           <div class="arena-teams-row">
@@ -1167,12 +1171,15 @@
         .arena-modal-overlay { position:absolute;inset:0;background:rgba(0,0,0,0.85);backdrop-filter:blur(6px); }
         .arena-modal-panel {
           position:relative;background:linear-gradient(135deg,rgba(15,20,45,0.98),rgba(8,10,25,0.98));
-          border:3px solid #b8985f;border-radius:18px;padding:28px;width:min(700px,95vw);
+          border:26px solid transparent;
+          border-image:url('assets/ui/generated/panel_frame.webp') 115 fill round;
+          padding:18px;width:min(700px,95vw);
           max-height:90vh;overflow-y:auto;box-shadow:0 0 60px rgba(184,152,95,0.4);
         }
         .arena-modal-header { display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;padding-bottom:14px;border-bottom:2px solid rgba(184,152,95,0.3); }
         .arena-modal-title { font-size:22px;font-weight:700;color:#d4af37;letter-spacing:2px; }
-        .arena-modal-close { background:rgba(220,53,69,0.2);border:2px solid rgba(220,53,69,0.5);color:#ff6b6b;font-size:20px;width:36px;height:36px;border-radius:50%;cursor:pointer; }
+        .arena-modal-close { background:radial-gradient(circle at 35% 30%, rgba(212,175,55,0.22), rgba(10,10,20,0.9) 65%);border:1.5px solid rgba(212,175,55,0.55);color:#d4af37;font-size:16px;width:36px;height:36px;border-radius:50%;cursor:pointer;transition:all 0.2s ease;box-shadow:inset 0 1px 0 rgba(212,175,55,0.3), 0 2px 6px rgba(0,0,0,0.6); }
+        .arena-modal-close:hover { border-color:#ffd700;color:#ffd700;box-shadow:0 0 14px rgba(212,175,55,0.5);transform:rotate(90deg); }
         .arena-modal-body { display:flex;flex-direction:column;gap:18px; }
         .arena-teams-row { display:flex;align-items:center;gap:12px;justify-content:space-between; }
         .arena-team-col { flex:1;display:flex;flex-direction:column;gap:10px; }
@@ -1190,12 +1197,13 @@
         .arena-map-label { font-size:11px;color:rgba(255,255,255,0.8);background:rgba(0,0,0,0.6);padding:3px 8px;border-radius:4px; }
         .arena-start-match-btn {
           margin-top:18px;width:100%;padding:16px;font-size:18px;font-weight:700;
-          background:linear-gradient(135deg,#8b1a1a,#cc2222,#8b1a1a);
-          border:3px solid #ff4444;color:#fff;border-radius:10px;cursor:pointer;
-          text-shadow:0 2px 4px rgba(0,0,0,0.8);letter-spacing:2px;
-          box-shadow:0 0 30px rgba(204,34,34,0.5);transition:all 0.3s;
+          font-family:"Cinzel",serif;
+          background:url('assets/ui/generated/button_gold.webp') center / 100% 100% no-repeat;
+          border:none;color:#14100a;border-radius:10px;cursor:pointer;
+          text-shadow:0 1px 0 rgba(255,235,170,0.5);letter-spacing:3px;
+          box-shadow:0 0 30px rgba(212,175,55,0.4);transition:all 0.3s;
         }
-        .arena-start-match-btn:hover { background:linear-gradient(135deg,#aa2222,#ee3333,#aa2222);transform:translateY(-2px);box-shadow:0 0 40px rgba(238,51,51,0.7); }
+        .arena-start-match-btn:hover { filter:brightness(1.25);transform:translateY(-2px);box-shadow:0 0 40px rgba(212,175,55,0.6); }
       `;
       document.head.appendChild(style);
     }
@@ -1319,13 +1327,16 @@
       .atp-overlay { position:absolute;inset:0;background:rgba(0,0,0,0.88);backdrop-filter:blur(6px); }
       .atp-panel {
         position:relative;background:linear-gradient(135deg,rgba(10,14,32,0.99),rgba(6,8,20,0.99));
-        border:3px solid #b8985f;border-radius:18px;padding:22px;width:min(860px,96vw);
+        border:26px solid transparent;
+        border-image:url('assets/ui/generated/panel_frame.webp') 115 fill round;
+        padding:14px;width:min(860px,96vw);
         max-height:92vh;overflow-y:auto;box-shadow:0 0 60px rgba(184,152,95,0.35);
       }
       .atp-header { display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;padding-bottom:12px;border-bottom:2px solid rgba(184,152,95,0.25); }
       .atp-title { font-size:20px;font-weight:700;color:#d4af37;letter-spacing:1px; }
       .atp-desc { font-size:12px;color:#9a8060;margin-top:3px; }
-      .atp-close { background:rgba(220,53,69,0.18);border:1.5px solid rgba(220,53,69,0.45);color:#ff6b6b;font-size:16px;width:30px;height:30px;border-radius:50%;cursor:pointer;font-weight:700;line-height:1;display:flex;align-items:center;justify-content:center; }
+      .atp-close { background:radial-gradient(circle at 35% 30%, rgba(212,175,55,0.22), rgba(10,10,20,0.9) 65%);border:1.5px solid rgba(212,175,55,0.55);color:#d4af37;font-size:14px;width:30px;height:30px;border-radius:50%;cursor:pointer;font-weight:700;line-height:1;display:flex;align-items:center;justify-content:center;transition:all 0.2s ease;box-shadow:inset 0 1px 0 rgba(212,175,55,0.3), 0 2px 6px rgba(0,0,0,0.6); }
+      .atp-close:hover { border-color:#ffd700;color:#ffd700;box-shadow:0 0 14px rgba(212,175,55,0.5);transform:rotate(90deg); }
       .atp-teams { display:grid;grid-template-columns:1fr 1fr;gap:12px; }
       @media(max-width:700px) { .atp-teams { grid-template-columns:1fr; } }
       .atp-team-card {
@@ -1354,10 +1365,12 @@
       .atp-link-btn:hover { border-color:#d4af37;color:#d4af37; }
       .atp-confirm {
         padding:12px 28px;font-family:"Cinzel",serif;font-size:13px;font-weight:700;
-        background:linear-gradient(135deg,#a7822c,#d4af37);border:2px solid rgba(212,175,55,0.7);
-        color:#0a0a0a;border-radius:8px;cursor:pointer;transition:all 0.2s;letter-spacing:0.5px;
+        background:url('assets/ui/generated/button_gold.webp') center / 100% 100% no-repeat;
+        border:none;
+        color:#14100a;border-radius:8px;cursor:pointer;transition:all 0.2s;letter-spacing:0.5px;
+        text-shadow:0 1px 0 rgba(255,235,170,0.5);
       }
-      .atp-confirm:hover:not(:disabled) { background:linear-gradient(135deg,#d4af37,#ffd700);box-shadow:0 0 20px rgba(212,175,55,0.4); }
+      .atp-confirm:hover:not(:disabled) { filter:brightness(1.25);box-shadow:0 0 20px rgba(212,175,55,0.4); }
       .atp-confirm:disabled { opacity:0.35;cursor:not-allowed; }
       @media(max-width:600px) { .atp-member { min-width:100%; } .atp-members { flex-direction:column; } }
     `;
@@ -1373,12 +1386,14 @@
            onclick="document.getElementById('arena-info-modal').remove()"></div>
       <div style="position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:9999;
                   background:linear-gradient(135deg,rgba(15,20,45,0.98),rgba(8,10,25,0.98));
-                  border:3px solid #b8985f;border-radius:18px;padding:28px;width:min(540px,92vw);
+                  border:26px solid transparent;
+                  border-image:url('assets/ui/generated/panel_frame.webp') 115 fill round;
+                  padding:16px;width:min(540px,92vw);
                   max-height:88vh;overflow-y:auto;box-shadow:0 0 60px rgba(184,152,95,0.4);">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;padding-bottom:12px;border-bottom:2px solid rgba(184,152,95,0.3);">
           <span style="font-size:20px;font-weight:700;color:#d4af37;letter-spacing:1px">${title}</span>
           <button onclick="document.getElementById('arena-info-modal').remove()"
-                  style="background:rgba(220,53,69,0.2);border:2px solid rgba(220,53,69,0.5);color:#ff6b6b;font-size:16px;width:30px;height:30px;border-radius:50%;cursor:pointer;font-weight:700">X</button>
+                  style="background:radial-gradient(circle at 35% 30%, rgba(212,175,55,0.22), rgba(10,10,20,0.9) 65%);border:1.5px solid rgba(212,175,55,0.55);color:#d4af37;font-size:14px;width:30px;height:30px;border-radius:50%;cursor:pointer;font-weight:700">✕</button>
         </div>
         <div style="font-size:14px;">${bodyHTML}</div>
       </div>`;
