@@ -37,6 +37,54 @@
   },
   "pools": [
     {
+      "id": "feat_minato_dazzling",
+      "name": "Dazzling Bravery: Minato",
+      "type": "featured",
+      "characters": [],
+      "featured": [
+        "minato_741"
+      ],
+      "description": "The Yellow Flash strikes in an instant! Featured ★6 Minato Namikaze — Dazzling Bravery (Blazing Awakened).",
+      "image": "assets/banners/generated/banner_minato_dazzling.webp",
+      "includeStandardPool": true
+    },
+    {
+      "id": "feat_naruto_future",
+      "name": "The Future We Want: Naruto",
+      "type": "featured",
+      "characters": [],
+      "featured": [
+        "naruto_864"
+      ],
+      "description": "Carry hope forward! Featured ★6 Naruto Uzumaki — The Future We Want (Blazing Awakened).",
+      "image": "assets/banners/generated/banner_naruto_future.webp",
+      "includeStandardPool": true
+    },
+    {
+      "id": "feat_obito_darkness",
+      "name": "Into Total Darkness: Obito",
+      "type": "featured",
+      "characters": [],
+      "featured": [
+        "obito_671"
+      ],
+      "description": "Descend into the void. Featured ★6 Obito Uchiha — Into Total Darkness (Blazing Awakened).",
+      "image": "assets/banners/generated/banner_obito_darkness.webp",
+      "includeStandardPool": true
+    },
+    {
+      "id": "feat_obito_illusory",
+      "name": "The Illusory World: Obito",
+      "type": "featured",
+      "characters": [],
+      "featured": [
+        "obito_2081"
+      ],
+      "description": "A dream none can escape. Featured ★6 Obito Uchiha — The Illusory World.",
+      "image": "assets/banners/generated/banner_obito_illusory.webp",
+      "includeStandardPool": true
+    },
+    {
       "id": "feat_naruto_endowed",
       "name": "Endowed Power: Six Paths Naruto",
       "type": "featured",

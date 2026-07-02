@@ -136,6 +136,7 @@
     if (banner.image) {
       carousel.innerHTML = `
         <div class="banner-art">
+          <div class="banner-art-backdrop" style="background-image:url('${banner.image}')"></div>
           <img src="${banner.image}" alt="${banner.name || 'Banner'}"
                draggable="false"
                onerror="this.parentElement.outerHTML = ${JSON.stringify(fallback).replace(/"/g, '&quot;')};">
@@ -171,10 +172,19 @@
     const s = document.createElement('style');
     s.id = 'banner-art-styles';
     s.textContent = `
-      .banner-art { width:100%; height:100%; }
+      .banner-art { width:100%; height:100%; position:relative; overflow:hidden; }
+      /* Blurred cover backdrop fills the frame; the sharp banner sits on
+         top uncropped (contain), so the full art is always visible */
+      .banner-art-backdrop {
+        position:absolute; inset:-20px;
+        background-size:cover; background-position:center;
+        filter: blur(18px) brightness(0.55) saturate(1.1);
+      }
       .banner-art img {
-        width:100%; height:100%; object-fit:cover; object-position:center;
-        display:block; border-radius:inherit; pointer-events:none;
+        position:relative; width:100%; height:100%;
+        object-fit:contain; object-position:center;
+        display:block; pointer-events:none;
+        filter: drop-shadow(0 6px 24px rgba(0,0,0,0.6));
       }
       .banner-art-fallback {
         display:flex; flex-direction:column; align-items:center; justify-content:center;
