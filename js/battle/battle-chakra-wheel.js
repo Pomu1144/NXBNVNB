@@ -142,23 +142,19 @@
       const jutsuCost = Number(skills?.jutsu?.data?.chakraCost ?? 4);
       const ultimateCost = Number(skills?.ultimate?.data?.chakraCost ?? 8);
 
-      // Get chakra history for this unit
-      let history = this.chakraHistory.get(unit.id);
-      if (!history) {
-        history = new Set();
-        this.chakraHistory.set(unit.id, history);
-      }
-
-      // Add current chakra segments to history (proportional to costs)
-      // Calculate how many segments to show based on progress toward ultimate
+      // Rebuild the segment set from CURRENT chakra so the wheel drains
+      // when chakra is spent. (The old accumulate-only "history" made the
+      // wheel keep showing full after using a jutsu/ultimate.)
       const segmentsToShow = Math.min(
         this.MAX_CHAKRA_SEGMENTS,
         Math.floor((currentChakra / ultimateCost) * this.MAX_CHAKRA_SEGMENTS)
       );
 
+      const history = new Set();
       for (let i = 0; i < segmentsToShow; i++) {
         history.add(i);
       }
+      this.chakraHistory.set(unit.id, history);
 
       // Update segment visibility and styling based on thresholds
       const chakraSegments = wheel.querySelectorAll('.chakra-segment');

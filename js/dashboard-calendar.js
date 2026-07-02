@@ -245,20 +245,23 @@ class DashboardCalendar {
         }
 
         .calendar-close {
-          background: rgba(220, 53, 69, 0.2);
-          border: 2px solid rgba(220, 53, 69, 0.5);
-          color: #ff6b6b;
-          font-size: 24px;
+          background: radial-gradient(circle at 35% 30%, rgba(212,175,55,0.22), rgba(10,10,20,0.9) 65%);
+          border: 1.5px solid rgba(212,175,55,0.55);
+          color: #d4af37;
+          font-size: 18px;
           width: 40px;
           height: 40px;
           border-radius: 50%;
           cursor: pointer;
-          transition: all 0.3s ease;
+          transition: all 0.2s ease;
+          box-shadow: inset 0 1px 0 rgba(212,175,55,0.3), 0 2px 6px rgba(0,0,0,0.6);
         }
 
         .calendar-close:hover {
-          background: rgba(220, 53, 69, 0.4);
-          transform: scale(1.1);
+          border-color: #ffd700;
+          color: #ffd700;
+          box-shadow: 0 0 14px rgba(212,175,55,0.5);
+          transform: rotate(90deg);
         }
 
         .calendar-streak-display {

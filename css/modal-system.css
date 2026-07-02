@@ -1,4 +1,7 @@
-/* css/modal-system.css - Custom Modal System Styling */
+/* css/modal-system.css - Custom Modal System Styling
+   Themed to the game's gold/Cinzel design language. */
+
+@import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&display=swap");
 
 /* Overlay */
 .modal-overlay {
@@ -7,7 +10,8 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.75);
+  background: rgba(0, 0, 0, 0.82);
+  backdrop-filter: blur(6px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -20,86 +24,76 @@
   opacity: 1;
 }
 
-/* Modal Container */
+/* Modal Container — engraved gold frame (assets/ui/generated/panel_frame.webp) */
 .modal-container {
-  background: linear-gradient(135deg, #2a2a3e 0%, #1a1a2e 100%);
-  border: 2px solid #f39c12;
-  border-radius: 12px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  font-family: "Cinzel", serif;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(212, 175, 55, 0.08), transparent 55%),
+    linear-gradient(135deg, rgba(15, 20, 45, 0.99) 0%, rgba(8, 10, 25, 0.99) 100%);
+  border: 26px solid transparent;
+  border-image: url("../assets/ui/generated/panel_frame.webp") 115 fill round;
+  box-shadow:
+    0 0 50px rgba(184, 152, 95, 0.35),
+    0 18px 50px rgba(0, 0, 0, 0.7);
   min-width: 320px;
   max-width: 500px;
   width: 90%;
   max-height: 80vh;
   overflow: hidden;
-  transform: scale(0.7);
+  transform: scale(0.92) translateY(12px);
   opacity: 0;
-  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  transition: all 0.25s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .modal-container.modal-show {
-  transform: scale(1);
+  transform: scale(1) translateY(0);
   opacity: 1;
 }
 
 /* Modal Header */
 .modal-header {
-  padding: 20px 24px;
-  border-bottom: 2px solid rgba(243, 156, 18, 0.3);
-  background: linear-gradient(135deg, rgba(243, 156, 18, 0.2) 0%, transparent 100%);
+  position: relative;
+  padding: 18px 24px 14px;
+  text-align: center;
+}
+
+/* Ornamental rule under the header */
+.modal-header::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: 78%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #d4af37 20%, #f0d98c 50%, #d4af37 80%, transparent);
+  box-shadow: 0 0 8px rgba(212, 175, 55, 0.5);
 }
 
 .modal-title {
   margin: 0;
-  font-size: 22px;
-  font-weight: bold;
-  color: #f39c12;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-  text-align: center;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #d4af37;
+  text-shadow: 0 0 18px rgba(212, 175, 55, 0.45), 0 2px 4px rgba(0, 0, 0, 0.9);
 }
 
-/* Header Color Variants */
-.modal-header.modal-success {
-  border-bottom-color: rgba(46, 204, 113, 0.3);
-  background: linear-gradient(135deg, rgba(46, 204, 113, 0.2) 0%, transparent 100%);
-}
+/* Header accent variants — same gold plate, different underline glow */
+.modal-header.modal-success .modal-title { color: #cfe3a8; text-shadow: 0 0 18px rgba(140, 200, 90, 0.4), 0 2px 4px rgba(0,0,0,0.9); }
+.modal-header.modal-success::after { background: linear-gradient(90deg, transparent, #9dc06b 20%, #cfe3a8 50%, #9dc06b 80%, transparent); box-shadow: 0 0 8px rgba(140, 200, 90, 0.45); }
 
-.modal-header.modal-success .modal-title {
-  color: #2ecc71;
-}
-
-.modal-header.modal-error {
-  border-bottom-color: rgba(231, 76, 60, 0.3);
-  background: linear-gradient(135deg, rgba(231, 76, 60, 0.2) 0%, transparent 100%);
-}
-
-.modal-header.modal-error .modal-title {
-  color: #e74c3c;
-}
-
-.modal-header.modal-info {
-  border-bottom-color: rgba(52, 152, 219, 0.3);
-  background: linear-gradient(135deg, rgba(52, 152, 219, 0.2) 0%, transparent 100%);
-}
-
-.modal-header.modal-info .modal-title {
-  color: #3498db;
-}
-
-.modal-header.modal-confirm {
-  border-bottom-color: rgba(241, 196, 15, 0.3);
-  background: linear-gradient(135deg, rgba(241, 196, 15, 0.2) 0%, transparent 100%);
-}
-
-.modal-header.modal-confirm .modal-title {
-  color: #f1c40f;
-}
+.modal-header.modal-error .modal-title { color: #e8b4a0; text-shadow: 0 0 18px rgba(200, 90, 60, 0.45), 0 2px 4px rgba(0,0,0,0.9); }
+.modal-header.modal-error::after { background: linear-gradient(90deg, transparent, #c05a3c 20%, #e8b4a0 50%, #c05a3c 80%, transparent); box-shadow: 0 0 8px rgba(200, 90, 60, 0.5); }
 
 /* Modal Body */
 .modal-body {
-  padding: 24px;
-  color: #ecf0f1;
-  font-size: 16px;
-  line-height: 1.6;
+  padding: 22px 26px;
+  color: #eee6d1;
+  font-size: 15px;
+  line-height: 1.65;
+  letter-spacing: 0.4px;
   max-height: 60vh;
   overflow-y: auto;
 }
@@ -115,113 +109,148 @@
   width: 100%;
   padding: 12px 16px;
   margin-top: 16px;
-  background: rgba(255, 255, 255, 0.1);
-  border: 2px solid rgba(243, 156, 18, 0.3);
-  border-radius: 6px;
-  color: #ecf0f1;
-  font-size: 16px;
-  font-family: inherit;
-  transition: all 0.3s ease;
+  background: rgba(8, 10, 25, 0.8);
+  border: 1.5px solid rgba(184, 152, 95, 0.45);
+  border-radius: 8px;
+  color: #eee6d1;
+  font-size: 15px;
+  font-family: "Cinzel", serif;
+  letter-spacing: 0.5px;
+  transition: all 0.25s ease;
   box-sizing: border-box;
 }
 
 .modal-input:focus {
   outline: none;
-  border-color: #f39c12;
-  background: rgba(255, 255, 255, 0.15);
-  box-shadow: 0 0 0 3px rgba(243, 156, 18, 0.2);
+  border-color: #d4af37;
+  background: rgba(12, 16, 35, 0.9);
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.18), 0 0 14px rgba(212, 175, 55, 0.25);
 }
 
 /* Selection Body */
 .modal-selection-body {
-  padding: 12px;
+  padding: 12px 16px;
   max-height: 400px;
   overflow-y: auto;
 }
 
 .modal-selection-item {
-  padding: 16px;
+  padding: 14px 16px;
   margin-bottom: 8px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 2px solid rgba(243, 156, 18, 0.2);
-  border-radius: 8px;
+  background: rgba(18, 22, 42, 0.7);
+  border: 1.5px solid rgba(139, 115, 85, 0.35);
+  border-radius: 10px;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .modal-selection-item:hover {
-  background: rgba(243, 156, 18, 0.15);
-  border-color: #f39c12;
+  background: rgba(212, 175, 55, 0.08);
+  border-color: #d4af37;
+  box-shadow: 0 0 16px rgba(212, 175, 55, 0.2);
   transform: translateX(4px);
 }
 
 .modal-selection-name {
-  font-size: 16px;
-  font-weight: bold;
-  color: #f39c12;
+  font-size: 15px;
+  font-weight: 700;
+  color: #d4af37;
   margin-bottom: 4px;
+  letter-spacing: 0.6px;
 }
 
 .modal-selection-desc {
-  font-size: 14px;
-  color: #bdc3c7;
+  font-size: 13px;
+  color: #b8a080;
   line-height: 1.4;
 }
 
 /* Modal Footer */
 .modal-footer {
-  padding: 16px 24px;
-  border-top: 2px solid rgba(243, 156, 18, 0.3);
+  padding: 14px 24px 20px;
   display: flex;
   gap: 12px;
-  justify-content: flex-end;
-  background: rgba(0, 0, 0, 0.2);
+  justify-content: center;
 }
 
 /* Modal Buttons */
 .modal-btn {
-  padding: 12px 28px;
-  border: none;
-  border-radius: 6px;
-  font-size: 16px;
-  font-weight: bold;
+  font-family: "Cinzel", serif;
+  padding: 11px 30px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 700;
   cursor: pointer;
   transition: all 0.2s ease;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 1.5px;
 }
 
 .modal-btn-primary {
-  background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
-  color: white;
-  box-shadow: 0 4px 12px rgba(243, 156, 18, 0.4);
+  background: url("../assets/ui/generated/button_gold.webp") center / 100% 100% no-repeat;
+  border: none;
+  color: #14100a;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
+  text-shadow: 0 1px 0 rgba(255, 235, 170, 0.5);
 }
 
 .modal-btn-primary:hover {
-  background: linear-gradient(135deg, #e67e22 0%, #d35400 100%);
-  box-shadow: 0 6px 16px rgba(243, 156, 18, 0.6);
+  filter: brightness(1.25);
+  box-shadow: 0 0 24px rgba(212, 175, 55, 0.55), 0 4px 14px rgba(0, 0, 0, 0.5);
   transform: translateY(-2px);
 }
 
 .modal-btn-primary:active {
   transform: translateY(0);
-  box-shadow: 0 2px 8px rgba(243, 156, 18, 0.4);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
 }
 
 .modal-btn-secondary {
-  background: rgba(255, 255, 255, 0.1);
-  color: #ecf0f1;
-  border: 2px solid rgba(236, 240, 241, 0.3);
+  background: rgba(10, 10, 20, 0.85);
+  color: #d4af37;
+  border: 2px solid rgba(212, 175, 55, 0.35);
 }
 
 .modal-btn-secondary:hover {
-  background: rgba(255, 255, 255, 0.15);
-  border-color: rgba(236, 240, 241, 0.5);
+  background: rgba(212, 175, 55, 0.12);
+  border-color: rgba(212, 175, 55, 0.7);
   transform: translateY(-2px);
 }
 
 .modal-btn-secondary:active {
   transform: translateY(0);
+}
+
+/* =========================================================
+   Shared themed close button (replaces the red circle X)
+   Usage: class="game-close-btn" — an engraved gold ring
+   ========================================================= */
+.game-close-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(212, 175, 55, 0.55);
+  background:
+    radial-gradient(circle at 35% 30%, rgba(212, 175, 55, 0.22), rgba(10, 10, 20, 0.9) 65%);
+  color: #d4af37;
+  font-family: "Cinzel", serif;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  box-shadow: inset 0 1px 0 rgba(212, 175, 55, 0.3), 0 2px 6px rgba(0, 0, 0, 0.6);
+  transition: all 0.2s ease;
+}
+
+.game-close-btn:hover {
+  border-color: #ffd700;
+  color: #ffd700;
+  box-shadow: 0 0 14px rgba(212, 175, 55, 0.5), inset 0 1px 0 rgba(212, 175, 55, 0.4);
+  transform: rotate(90deg);
 }
 
 /* Scrollbar Styling */
@@ -238,13 +267,13 @@
 
 .modal-body::-webkit-scrollbar-thumb,
 .modal-selection-body::-webkit-scrollbar-thumb {
-  background: rgba(243, 156, 18, 0.5);
+  background: rgba(184, 152, 95, 0.5);
   border-radius: 4px;
 }
 
 .modal-body::-webkit-scrollbar-thumb:hover,
 .modal-selection-body::-webkit-scrollbar-thumb:hover {
-  background: rgba(243, 156, 18, 0.7);
+  background: rgba(212, 175, 55, 0.7);
 }
 
 /* Mobile Responsiveness */
@@ -256,15 +285,15 @@
   }
 
   .modal-header {
-    padding: 16px 20px;
+    padding: 14px 20px 12px;
   }
 
   .modal-title {
-    font-size: 18px;
+    font-size: 17px;
   }
 
   .modal-body {
-    padding: 20px;
+    padding: 18px;
     font-size: 14px;
   }
 

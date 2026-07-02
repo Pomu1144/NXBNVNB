@@ -252,7 +252,9 @@
       .ach-overlay { position:absolute;inset:0;background:rgba(0,0,0,0.85);backdrop-filter:blur(6px); }
       .ach-panel {
         position:relative;background:linear-gradient(135deg,rgba(15,20,45,0.98),rgba(8,10,25,0.98));
-        border:3px solid #b8985f;border-radius:18px;width:min(720px,95vw);
+        border:26px solid transparent;
+        border-image:url('assets/ui/generated/panel_frame.webp') 115 fill round;
+        width:min(720px,95vw);
         max-height:88vh;display:flex;flex-direction:column;
         box-shadow:0 0 60px rgba(184,152,95,0.4);overflow:hidden;
       }
@@ -262,7 +264,8 @@
       }
       .ach-header-title { font-size:22px;font-weight:700;color:#d4af37;letter-spacing:2px;flex:1; }
       .ach-header-count { font-size:14px;color:#b8985f; }
-      .ach-close-btn { background:rgba(220,53,69,0.2);border:2px solid rgba(220,53,69,0.5);color:#ff6b6b;font-size:18px;width:34px;height:34px;border-radius:50%;cursor:pointer;flex-shrink:0; }
+      .ach-close-btn { background:radial-gradient(circle at 35% 30%, rgba(212,175,55,0.22), rgba(10,10,20,0.9) 65%);border:1.5px solid rgba(212,175,55,0.55);color:#d4af37;font-size:15px;width:34px;height:34px;border-radius:50%;cursor:pointer;flex-shrink:0;transition:all 0.2s ease;box-shadow:inset 0 1px 0 rgba(212,175,55,0.3), 0 2px 6px rgba(0,0,0,0.6); }
+      .ach-close-btn:hover { border-color:#ffd700;color:#ffd700;box-shadow:0 0 14px rgba(212,175,55,0.5);transform:rotate(90deg); }
       .ach-progress-bar-wrap { height:6px;background:rgba(255,255,255,0.1);margin:0 24px 0; }
       .ach-progress-bar { height:100%;background:linear-gradient(90deg,#b8985f,#d4af37);border-radius:3px;transition:width 0.5s; }
       .ach-tabs { display:flex;gap:6px;padding:12px 24px;flex-wrap:wrap;border-bottom:2px solid rgba(184,152,95,0.2); }
