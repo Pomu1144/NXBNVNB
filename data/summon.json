@@ -37,6 +37,78 @@
   },
   "pools": [
     {
+      "id": "feat_hinata_ceaseless",
+      "name": "Beyond the Ceaseless: Hinata",
+      "type": "featured",
+      "characters": [],
+      "featured": [
+        "hinata_813"
+      ],
+      "description": "The Gentle Fist never wavers. Featured ★6 Hinata Hyuga — Beyond the Ceaseless (Blazing Awakened).",
+      "image": "assets/banners/generated/banner_hinata_ceaseless.webp",
+      "includeStandardPool": true
+    },
+    {
+      "id": "feat_hinata_redemptive",
+      "name": "Redemptive Words: Hinata",
+      "type": "featured",
+      "characters": [],
+      "featured": [
+        "hinata_2003"
+      ],
+      "description": "Words that reach the heart. Featured ★6 Hinata Hyuga — Redemptive Words.",
+      "image": "assets/banners/generated/banner_hinata_redemptive.webp",
+      "includeStandardPool": true
+    },
+    {
+      "id": "feat_itachi_burden",
+      "name": "Talent and Burden: Itachi",
+      "type": "featured",
+      "characters": [],
+      "featured": [
+        "itachi_2199"
+      ],
+      "description": "The weight of genius. Featured ★6 Itachi Uchiha — Talent and Burden (Blazing Awakened).",
+      "image": "assets/banners/generated/banner_itachi_burden.webp",
+      "includeStandardPool": true
+    },
+    {
+      "id": "feat_itachi_promised",
+      "name": "The Promised Day: Itachi",
+      "type": "featured",
+      "characters": [],
+      "featured": [
+        "itachi_2032"
+      ],
+      "description": "A vow kept to the end. Featured ★6 Itachi Uchiha — The Promised Day.",
+      "image": "assets/banners/generated/banner_itachi_promised.webp",
+      "includeStandardPool": true
+    },
+    {
+      "id": "feat_itachi_future",
+      "name": "Eyes Gazing Over the Future: Itachi",
+      "type": "featured",
+      "characters": [],
+      "featured": [
+        "itachi_575"
+      ],
+      "description": "Looking beyond the horizon. Featured ★6 Itachi Uchiha — Eyes Gazing Over the Future (Blazing Awakened).",
+      "image": "assets/banners/generated/banner_itachi_future.webp",
+      "includeStandardPool": true
+    },
+    {
+      "id": "feat_naruto_pervading",
+      "name": "Pervading Feelings: Naruto",
+      "type": "featured",
+      "characters": [],
+      "featured": [
+        "naruto_801"
+      ],
+      "description": "Feelings that reach everyone. Featured ★6 Naruto Uzumaki — Pervading Feelings.",
+      "image": "assets/banners/generated/banner_naruto_pervading.webp",
+      "includeStandardPool": true
+    },
+    {
       "id": "feat_minato_dazzling",
       "name": "Dazzling Bravery: Minato",
       "type": "featured",
