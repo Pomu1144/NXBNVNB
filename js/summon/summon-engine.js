@@ -16,37 +16,40 @@
 
 class DoubleFibonacciSummonEngine {
   constructor() {
-    // Gold Chance Fibonacci Sequence (Primary Tier)
-    // Determines probability of pulling ANY gold unit
+    // Gold Chance Sequence (Primary Tier) — per-pull chance of ANY gold unit.
+    // Realistic gacha soft-pity: starts ~3%, ramps gently to ~6% as the
+    // player racks up multis, then RESETS when a featured gold is pulled
+    // (see performSingleSummon). The old curve topped out at 35.5% and
+    // never reset, so after ~8 multis every pull flooded golds.
     this.goldChanceSequence = [
-      0.01,   // Multi #1: 1.0%
-      0.015,  // Multi #2: 1.5%
-      0.045,  // Multi #3: 4.5%
-      0.060,  // Multi #4: 6.0%
-      0.100,  // Multi #5: 10.0%
-      0.145,  // Multi #6: 14.5%
-      0.21,   // Multi #7: 21.0%
-      0.355   // Multi #8: 35.5%
+      0.030,  // Multi #1: 3.0%
+      0.032,  // Multi #2: 3.2%
+      0.035,  // Multi #3: 3.5%
+      0.040,  // Multi #4: 4.0%
+      0.045,  // Multi #5: 4.5%
+      0.050,  // Multi #6: 5.0%
+      0.055,  // Multi #7: 5.5%
+      0.060   // Multi #8: 6.0%
     ];
 
-    // Featured Chance Fibonacci Sequence (Secondary Tier)
-    // If pull is Gold, determines if it's Featured
+    // Featured Chance Sequence (Secondary Tier) — if a pull is gold, chance
+    // it's the FEATURED unit rather than a general gold. Capped well under
+    // 1.0 so goldsare not auto-featured; the last steps just improve odds.
     this.featuredChanceSequence = [
-      0.10,   // Gold #1: 10%
-      0.15,   // Gold #2: 15%
-      0.35,   // Gold #3: 35%
-      0.50,   // Gold #4: 50%
-      0.80,   // Gold #5: 80%
-      1.05,   // Gold #6: 105% (guaranteed featured)
-      1.70,   // Gold #7: 170%
-      2.75    // Gold #8: 275%
+      0.20,   // Gold #1: 20%
+      0.25,   // Gold #2: 25%
+      0.30,   // Gold #3: 30%
+      0.35,   // Gold #4: 35%
+      0.40,   // Gold #5: 40%
+      0.45,   // Gold #6: 45%
+      0.50,   // Gold #7: 50%
+      0.55    // Gold #8: 55%
     ];
 
     // Base rates for non-Gold units
     this.baseRates = {
-      bronze: 0.60,  // 60%
-      silver: 0.30,  // 30%
-      gold: 0.10     // 10% (modified by GCS)
+      bronze: 0.70,  // 70%
+      silver: 0.30   // 30%
     };
 
     // Session state tracking
@@ -211,6 +214,10 @@ class DoubleFibonacciSummonEngine {
 
       if (isFeatured) {
         this.stats.totalFeatured++;
+        // Landing the featured unit consumes the soft-pity: the step-up
+        // ramp resets so gold odds fall back to base instead of staying
+        // permanently inflated.
+        this.currentMultiStep = 0;
       }
 
       this.saveState();

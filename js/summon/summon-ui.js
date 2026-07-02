@@ -259,6 +259,19 @@ class SummonUIController {
     // Clear previous results
     this.elements.resultGrid.innerHTML = '';
 
+    // Order the reveal best-first so the grid reads cleanly:
+    // featured gold → gold → silver → bronze, then by character rarity.
+    const rarityRank = { gold: 3, silver: 2, bronze: 1 };
+    results = results.slice().sort((a, b) => {
+      const fa = a.summonData?.isFeatured ? 1 : 0;
+      const fb = b.summonData?.isFeatured ? 1 : 0;
+      if (fb !== fa) return fb - fa;
+      const ra = rarityRank[a.summonData?.rarity] || 0;
+      const rb = rarityRank[b.summonData?.rarity] || 0;
+      if (rb !== ra) return rb - ra;
+      return (b.character?.rarity || 0) - (a.character?.rarity || 0);
+    });
+
     // Calculate statistics
     const stats = this.calculateResultStats(results);
 
