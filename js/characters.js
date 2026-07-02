@@ -132,7 +132,7 @@
   window.getPowerGradeElement = getPowerGradeElement;
 
   /* ---------- Tier helpers ---------- */
-  const STAR_COUNT_BY_TIER = { "3S":3,"4S":4,"5S":5,"6S":6,"6SB":6,"7S":7,"7SL":7,"8S":8,"8SM":8,"9S":9,"9ST":9,"10SO":10 };
+  const STAR_COUNT_BY_TIER = { "1S":1,"2S":2,"3S":3,"4S":4,"5S":5,"6S":6,"6SB":6,"7S":7,"7SL":7,"8S":8,"8SM":8,"9S":9,"9ST":9,"10SO":10 };
   const TIER_CAP_FALLBACK  = { "3S":50,"4S":70,"5S":100,"6S":100,"6SB":100,"7S":120,"7SL":150,"8S":150,"8SM":150,"9S":150,"9ST":200,"10SO":250 };
 
   const starsFromTier = (code) => STAR_COUNT_BY_TIER[code] ?? 0;
