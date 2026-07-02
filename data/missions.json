@@ -1,5 +1,213 @@
 [
   {
+    "id": "si_nine_tails",
+    "category": "Super Impact",
+    "name": "Super Impact! Nine-Tails Rampage",
+    "banner": "assets/missions/banners/si_nine_tails.webp",
+    "sortOrder": 0.1,
+    "difficulties": {
+      "S": [
+        {
+          "stage": 1,
+          "map": "assets/maps/bg_220101_konoha_houkai.png",
+          "waves": [
+            {
+              "enemies": [
+                "pain_enemy"
+              ]
+            },
+            {
+              "enemies": [
+                "obito_enemy"
+              ]
+            }
+          ],
+          "rewards": {
+            "ryo": 12000,
+            "ninja_pearls": 1
+          }
+        }
+      ],
+      "SS": [
+        {
+          "stage": 1,
+          "map": "assets/maps/bg_220101_konoha_houkai.png",
+          "waves": [
+            {
+              "enemies": [
+                "pain_enemy",
+                "konan_enemy"
+              ]
+            }
+          ],
+          "rewards": {
+            "ryo": 20000,
+            "ninja_pearls": 0
+          }
+        },
+        {
+          "stage": 2,
+          "map": "assets/maps/bg_370101_senjyou.png",
+          "waves": [
+            {
+              "enemies": [
+                "obito_enemy"
+              ]
+            },
+            {
+              "enemies": [
+                "madara_enemy"
+              ]
+            }
+          ],
+          "rewards": {
+            "ryo": 40000,
+            "ninja_pearls": 1
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "si_uchiha_wrath",
+    "category": "Super Impact",
+    "name": "Super Impact! Wrath of the Uchiha",
+    "banner": "assets/missions/banners/si_uchiha_wrath.webp",
+    "sortOrder": 0.2,
+    "difficulties": {
+      "S": [
+        {
+          "stage": 1,
+          "map": "assets/maps/bg_230101_utiha.png",
+          "waves": [
+            {
+              "enemies": [
+                "itachi_enemy"
+              ]
+            },
+            {
+              "enemies": [
+                "obito_enemy"
+              ]
+            }
+          ],
+          "rewards": {
+            "ryo": 12000,
+            "ninja_pearls": 1
+          }
+        }
+      ],
+      "SS": [
+        {
+          "stage": 1,
+          "map": "assets/maps/bg_230101_utiha.png",
+          "waves": [
+            {
+              "enemies": [
+                "itachi_enemy",
+                "kisame_enemy"
+              ]
+            }
+          ],
+          "rewards": {
+            "ryo": 20000,
+            "ninja_pearls": 0
+          }
+        },
+        {
+          "stage": 2,
+          "map": "assets/maps/bg_420101_utiha2.png",
+          "waves": [
+            {
+              "enemies": [
+                "obito_enemy"
+              ]
+            },
+            {
+              "enemies": [
+                "madara_enemy"
+              ]
+            }
+          ],
+          "rewards": {
+            "ryo": 40000,
+            "ninja_pearls": 1
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "si_serpent_curse",
+    "category": "Super Impact",
+    "name": "Super Impact! The Serpent's Curse",
+    "banner": "assets/missions/banners/si_serpent_curse.webp",
+    "sortOrder": 0.3,
+    "difficulties": {
+      "S": [
+        {
+          "stage": 1,
+          "map": "assets/maps/bg_180101_oroti.png",
+          "waves": [
+            {
+              "enemies": [
+                "kabuto_enemy"
+              ]
+            },
+            {
+              "enemies": [
+                "orochimaru_enemy"
+              ]
+            }
+          ],
+          "rewards": {
+            "ryo": 12000,
+            "ninja_pearls": 1
+          }
+        }
+      ],
+      "SS": [
+        {
+          "stage": 1,
+          "map": "assets/maps/bg_180101_oroti.png",
+          "waves": [
+            {
+              "enemies": [
+                "kabuto_enemy",
+                "kabuto_enemy"
+              ]
+            }
+          ],
+          "rewards": {
+            "ryo": 20000,
+            "ninja_pearls": 0
+          }
+        },
+        {
+          "stage": 2,
+          "map": "assets/maps/bg_280101_doukutu.png",
+          "waves": [
+            {
+              "enemies": [
+                "orochimaru_enemy"
+              ]
+            },
+            {
+              "enemies": [
+                "orochimaru_enemy",
+                "kabuto_enemy"
+              ]
+            }
+          ],
+          "rewards": {
+            "ryo": 40000,
+            "ninja_pearls": 1
+          }
+        }
+      ]
+    }
+  },
+  {
     "id": "m_001",
     "category": "Shinobi Chronicles Part 1",
     "name": "Rookie Mission",
@@ -486,7 +694,7 @@
   {
     "id": "m_004",
     "category": "Shinobi Chronicles Part 1",
-    "name": "Hidden Leaf\u2019s Secret Ultimate Taijutsu",
+    "name": "Hidden Leaf’s Secret Ultimate Taijutsu",
     "banner": "assets/missions/banners/m_004.png",
     "sortOrder": 4,
     "difficulties": {
@@ -6421,7 +6629,7 @@
   {
     "id": "m_036",
     "category": "Impact Missions",
-    "name": "Blood Mist\u2019s Dark-Clad Giant",
+    "name": "Blood Mist’s Dark-Clad Giant",
     "banner": "assets/missions/banners/m_036.png",
     "sortOrder": 8,
     "difficulties": {

@@ -46,13 +46,18 @@
     }
 
     /* ── Page scaffold ────────────────────────────────────────── */
+    /* Constrained, centered column — full-bleed content stretched the
+       banner art into an extreme crop on wide screens */
     .summon-page {
       position: relative;
       z-index: 1;
       display: flex;
       flex-direction: column;
       height: 100vh;
-      padding-bottom: 80px; /* bottom nav */
+      padding-bottom: 84px; /* bottom nav */
+      width: 100%;
+      max-width: 1150px;
+      margin: 0 auto;
     }
 
     /* ── Top bar ──────────────────────────────────────────────── */
@@ -102,7 +107,7 @@
       position: relative;
       flex-shrink: 0;
       margin: 8px 10px 0;
-      height: clamp(180px, 38vh, 340px);
+      height: clamp(200px, 42vh, 420px);
       border-radius: 16px;
       overflow: hidden;
       border: 2px solid rgba(184,152,95,0.4);
@@ -236,19 +241,23 @@
     /* ── Summon buttons ───────────────────────────────────────── */
     .summon-buttons {
       display: flex;
-      gap: 10px;
-      padding: 8px 10px;
+      gap: 14px;
+      padding: 10px 10px;
       flex-shrink: 0;
+      justify-content: center;
+      /* Anchor the action cluster to the bottom of the screen */
+      margin-top: auto;
     }
 
     .summon-btn {
-      flex: 1;
+      flex: 0 1 400px;
+      min-height: 58px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 4px;
-      padding: 12px 8px;
+      gap: 3px;
+      padding: 10px 8px;
       border-radius: 12px;
       cursor: pointer;
       font-family: 'Cinzel', serif;
@@ -256,25 +265,22 @@
       transition: all 0.2s;
       position: relative;
       overflow: hidden;
-    }
-    .summon-btn::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(180deg, rgba(255,255,255,0.08) 0%, transparent 100%);
-      pointer-events: none;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.55);
     }
     .summon-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none !important; }
 
     .summon-btn-single {
-      background: linear-gradient(135deg, #0f2040, #1a3a70);
-      border: 2px solid #3a7acc;
-      color: #7ac4ff;
+      background:
+        radial-gradient(circle at 50% 0%, rgba(90,160,255,0.28), transparent 65%),
+        linear-gradient(180deg, #14284e, #0a1530);
+      border: 2px solid rgba(90,160,255,0.65);
+      color: #9fd2ff;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+      box-shadow: inset 0 1px 0 rgba(150,200,255,0.35), 0 4px 14px rgba(0,0,0,0.55);
     }
     .summon-btn-single:hover:not(:disabled) {
-      background: linear-gradient(135deg, #1a3060, #2a50a0);
-      border-color: #5aa0ff;
-      box-shadow: 0 0 20px rgba(90,160,255,0.35);
+      border-color: #7ab8ff;
+      box-shadow: inset 0 1px 0 rgba(150,200,255,0.45), 0 0 22px rgba(90,160,255,0.4);
       transform: translateY(-2px);
     }
     .summon-btn-multi {
@@ -306,29 +312,33 @@
     /* ── Info buttons ─────────────────────────────────────────── */
     .summon-info-buttons {
       display: flex;
-      gap: 8px;
-      padding: 0 10px 10px;
+      gap: 10px;
+      padding: 0 10px 12px;
       flex-shrink: 0;
+      justify-content: center;
     }
     .summon-info-btn {
-      flex: 1;
-      padding: 8px 6px;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(184,152,95,0.25);
+      flex: 0 1 260px;
+      padding: 10px 6px;
+      background:
+        radial-gradient(circle at 50% 0%, rgba(212,175,55,0.14), transparent 65%),
+        linear-gradient(180deg, rgba(28,26,36,0.95), rgba(12,12,20,0.95));
+      border: 1.5px solid rgba(212,175,55,0.4);
       border-radius: 8px;
-      color: #9a8060;
+      color: #d4af37;
       font-family: 'Cinzel', serif;
       font-size: 11px;
-      font-weight: 600;
+      font-weight: 700;
       cursor: pointer;
       transition: all 0.2s;
-      letter-spacing: 0.5px;
+      letter-spacing: 1.5px;
       text-transform: uppercase;
+      box-shadow: inset 0 1px 0 rgba(212,175,55,0.25), 0 3px 10px rgba(0,0,0,0.55);
     }
     .summon-info-btn:hover {
-      background: rgba(184,152,95,0.14);
-      border-color: rgba(212,175,55,0.5);
-      color: #d4af37;
+      border-color: rgba(212,175,55,0.8);
+      box-shadow: inset 0 1px 0 rgba(212,175,55,0.35), 0 0 16px rgba(212,175,55,0.35);
+      transform: translateY(-1px);
     }
 
     /* ── Results modal ────────────────────────────────────────── */
