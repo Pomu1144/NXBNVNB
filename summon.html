@@ -616,6 +616,141 @@
     .sim-char-card img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 5px; margin-bottom: 4px; }
     .sim-char-name { font-size: 9px; color: #e8e0d0; }
 
+    /* ── JJK-style gacha stage (banner rail | hero | draw panel) ── */
+    .gacha-stage {
+      display: grid;
+      grid-template-columns: 156px minmax(0,1fr) 320px;
+      gap: 16px;
+      align-items: stretch;
+      width: 100%;
+      max-width: 1180px;
+      margin: 6px auto 0;
+      height: min(62vh, 560px);
+    }
+    /* LEFT rail — vertical banner selector */
+    .banner-rail-col {
+      display: flex; flex-direction: column; min-height: 0;
+      background: linear-gradient(180deg, rgba(12,16,34,0.85), rgba(6,8,18,0.9));
+      border: 1px solid rgba(184,152,95,0.3);
+      border-radius: 14px; padding: 10px 8px; overflow: hidden;
+    }
+    .rail-heading {
+      font-family: 'Cinzel', serif; font-size: 12px; font-weight: 700;
+      letter-spacing: 2px; color: #d4af37; text-transform: uppercase;
+      text-align: center; padding-bottom: 8px; margin-bottom: 6px;
+      border-bottom: 1px solid rgba(184,152,95,0.25);
+    }
+    /* Override the old horizontal strip → vertical scroll list */
+    #banner-preview-scroll {
+      display: flex !important; flex-direction: column; gap: 8px;
+      overflow-y: auto; overflow-x: hidden; min-height: 0; flex: 1;
+      padding: 2px; scrollbar-width: thin;
+    }
+    #banner-preview-scroll .preview-item {
+      flex: 0 0 auto; width: 100%; aspect-ratio: 16/9;
+      border-radius: 8px; overflow: hidden; cursor: pointer;
+      border: 2px solid transparent; opacity: 0.62;
+      transition: all 0.18s ease;
+    }
+    #banner-preview-scroll .preview-item:hover { opacity: 0.9; }
+    #banner-preview-scroll .preview-item.active {
+      opacity: 1; border-color: #d4af37;
+      box-shadow: 0 0 12px rgba(212,175,55,0.5);
+    }
+    /* CENTER hero stage */
+    .featured-stage {
+      position: relative; display: flex; align-items: center; justify-content: center;
+      border-radius: 16px; overflow: hidden;
+      background:
+        linear-gradient(180deg, rgba(10,12,26,0.4), rgba(6,8,18,0.85)),
+        url('assets/ui/summon_hall_bg.webp') center/cover no-repeat;
+      border: 1px solid rgba(184,152,95,0.28);
+    }
+    .featured-glow {
+      position: absolute; width: 72%; aspect-ratio: 1; border-radius: 50%;
+      background: radial-gradient(circle, rgba(212,175,55,0.30), transparent 68%);
+      filter: blur(6px); animation: featPulse 3.4s ease-in-out infinite;
+    }
+    @keyframes featPulse { 0%,100%{transform:scale(1);opacity:0.75} 50%{transform:scale(1.08);opacity:1} }
+    #featured-art {
+      position: relative; height: 96%; max-width: 96%; object-fit: contain;
+      filter: drop-shadow(0 10px 30px rgba(0,0,0,0.7));
+      animation: featIn 0.4s ease;
+    }
+    @keyframes featIn { from{opacity:0;transform:translateY(10px) scale(0.98)} to{opacity:1;transform:none} }
+    .featured-caption {
+      position: absolute; left: 0; right: 0; bottom: 0; padding: 14px 18px;
+      display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap;
+      background: linear-gradient(0deg, rgba(4,5,12,0.92), transparent);
+    }
+    .featured-rank {
+      font-family: 'Cinzel', serif; font-weight: 700; font-size: 20px; color: #ffd24a;
+      text-shadow: 0 0 10px rgba(255,200,60,0.6), 0 2px 3px #000;
+    }
+    .featured-name {
+      font-family: 'Cinzel', serif; font-weight: 700; font-size: clamp(18px,2.4vw,28px);
+      color: #fff; text-shadow: 0 2px 6px #000; letter-spacing: 0.5px;
+    }
+    .featured-title {
+      font-family: 'Cinzel', serif; font-style: italic; font-size: 14px;
+      color: #d9b98a; text-shadow: 0 1px 3px #000;
+    }
+    /* RIGHT draw panel */
+    .draw-col {
+      display: flex; flex-direction: column; gap: 10px; min-height: 0;
+      background: linear-gradient(180deg, rgba(12,16,34,0.8), rgba(6,8,18,0.9));
+      border: 1px solid rgba(184,152,95,0.3);
+      border-radius: 14px; padding: 12px; overflow-y: auto;
+    }
+    .draw-col .featured-ribbon { width: 172px; margin: -2px auto 0; display: block; filter: drop-shadow(0 3px 8px rgba(0,0,0,0.6)); }
+    .draw-col .banner-info-section { text-align: center; }
+    .draw-col #banner-name { font-size: 17px; }
+    .draw-col #banner-description { font-size: 11px; line-height: 1.4; }
+    .draw-col .summon-buttons { display: flex; flex-direction: column; gap: 10px; margin-top: auto; }
+    /* Higgsfield-generated draw button plates, forced to a compact fixed height
+       (overrides the old plate's baked-in aspect ratio) */
+    .draw-col .summon-btn,
+    .draw-col .summon-btn-single,
+    .draw-col .summon-btn-multi {
+      aspect-ratio: auto !important;
+      width: 100% !important; align-self: stretch !important; box-sizing: border-box;
+      height: 66px !important; min-height: 0 !important; max-height: 66px !important;
+      padding: 0 !important; border: none !important;
+      background: center / 100% 100% no-repeat !important;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.45) !important;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px;
+      transition: transform 0.15s ease, filter 0.15s ease;
+    }
+    .draw-col .summon-btn-single { background-image: url('assets/ui/draw_single.webp') !important; }
+    .draw-col .summon-btn-multi  { background-image: url('assets/ui/draw_multi.webp') !important; }
+    .draw-col .summon-btn-single::after, .draw-col .summon-btn-multi::after { display: none !important; }
+    .draw-col .summon-btn:hover:not(:disabled) { transform: translateY(-1px); filter: brightness(1.12) drop-shadow(0 0 8px rgba(255,210,90,0.4)); }
+    .draw-col .summon-btn:disabled { filter: grayscale(0.4) brightness(0.7); }
+    /* Label is baked into the button art; keep only a small cost pill */
+    .draw-col .summon-btn { position: relative; }
+    .draw-col .summon-btn .summon-btn-label { display: none; }
+    .draw-col .summon-btn .summon-btn-cost {
+      position: absolute; bottom: 5px; left: 50%; transform: translateX(-50%);
+      display: flex; align-items: center; gap: 3px;
+      background: rgba(0,0,0,0.5); padding: 1px 9px; border-radius: 10px;
+      font-size: 11px; font-weight: 700; color: #ffe9b8;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.9);
+    }
+    .draw-col .summon-btn .btn-cost-icon { width: 12px; height: 12px; }
+    .draw-col .summon-info-buttons { display: flex; gap: 6px; }
+    .draw-col .summon-info-btn { flex: 1; padding: 7px 4px; font-size: 12px; }
+
+    @media (max-width: 900px) {
+      .gacha-stage {
+        grid-template-columns: 1fr; height: auto; gap: 10px;
+      }
+      .banner-rail-col { order: 3; }
+      #banner-preview-scroll { flex-direction: row !important; overflow-x: auto; }
+      #banner-preview-scroll .preview-item { width: 120px; }
+      .featured-stage { order: 1; height: 42vh; }
+      .draw-col { order: 2; }
+    }
+
     @media (max-width: 480px) {
       .result-grid { grid-template-columns: repeat(4, 1fr); gap: 6px; }
       .summon-btn-label { font-size: 11px; }
@@ -641,61 +776,76 @@
       </div>
     </div>
 
-    <!-- Banner carousel -->
-    <div class="banner-carousel-wrap">
+    <!-- Legacy carousel kept hidden so BannerCarousel/summon.js keep working -->
+    <div class="banner-carousel-wrap" style="display:none">
       <button class="banner-arrow arrow-left" id="arrow-left">‹</button>
-      <div id="main-carousel">
-        <div class="banner-placeholder">
-          <div class="banner-placeholder-shimmer"></div>
-        </div>
-      </div>
+      <div id="main-carousel"></div>
       <button class="banner-arrow arrow-right" id="arrow-right">›</button>
     </div>
 
-    <!-- Preview strip -->
-    <div id="banner-preview-scroll"></div>
+    <!-- JJK-style 3-column gacha stage -->
+    <div class="gacha-stage">
+      <!-- LEFT: banner selector rail (populated by summon.js buildPreviewStrip) -->
+      <aside class="banner-rail-col">
+        <div class="rail-heading">Banners</div>
+        <div id="banner-preview-scroll"></div>
+      </aside>
 
-    <!-- Banner info -->
-    <div class="banner-info-section">
-      <div id="banner-name">Loading Banner…</div>
-      <div id="banner-description">Summon powerful ninja!</div>
-      <div id="banner-timer"></div>
-    </div>
-
-    <!-- Step progress -->
-    <div class="step-progress hidden" id="step-progress">
-      <span class="step-label">Step</span>
-      <span id="step-current">1</span>
-      <span class="step-sep">/</span>
-      <span id="step-total">8</span>
-      <div class="step-bar">
-        <div class="step-bar-fill" id="step-bar-fill" style="width:12.5%"></div>
+      <!-- CENTER: featured character art, swaps with the selected banner -->
+      <div class="featured-stage" id="featured-stage">
+        <div class="featured-glow" id="featured-glow"></div>
+        <img id="featured-art" src="" alt="Featured unit" draggable="false"
+             onerror="this.style.visibility='hidden'">
+        <div class="featured-caption">
+          <span class="featured-rank" id="featured-rank">★6</span>
+          <span class="featured-name" id="featured-name">—</span>
+          <span class="featured-title" id="featured-title"></span>
+        </div>
       </div>
-    </div>
 
-    <!-- Summon buttons -->
-    <div class="summon-buttons">
-      <button class="summon-btn summon-btn-single" id="btn-single">
-        <span class="summon-btn-label">Single Summon</span>
-        <span class="summon-btn-cost">
-          <img src="assets/icons/currency/ninjapearl.png" alt="" class="btn-cost-icon" onerror="this.style.display='none'">
-          ×<span id="single-cost">5</span>
-        </span>
-      </button>
-      <button class="summon-btn summon-btn-multi" id="btn-multi">
-        <span class="summon-btn-label">Multi Summon ×10</span>
-        <span class="summon-btn-cost">
-          <img src="assets/icons/currency/ninjapearl.png" alt="" class="btn-cost-icon" onerror="this.style.display='none'">
-          ×<span id="multi-cost">30</span>
-        </span>
-      </button>
-    </div>
+      <!-- RIGHT: featured badge + draw panel -->
+      <aside class="draw-col">
+        <img class="featured-ribbon" src="assets/ui/featured_ribbon.webp" alt="Featured Gacha"
+             onerror="this.style.display='none'">
+        <div class="banner-info-section">
+          <div id="banner-name">Loading Banner…</div>
+          <div id="banner-description">Summon powerful ninja!</div>
+          <div id="banner-timer"></div>
+        </div>
 
-    <!-- Info buttons -->
-    <div class="summon-info-buttons">
-      <button class="summon-info-btn" id="btn-rates">Rates</button>
-      <button class="summon-info-btn" id="btn-featured">Featured</button>
-      <button class="summon-info-btn" id="btn-contents">Contents</button>
+        <div class="step-progress hidden" id="step-progress">
+          <span class="step-label">Step</span>
+          <span id="step-current">1</span>
+          <span class="step-sep">/</span>
+          <span id="step-total">8</span>
+          <div class="step-bar">
+            <div class="step-bar-fill" id="step-bar-fill" style="width:12.5%"></div>
+          </div>
+        </div>
+
+        <div class="summon-buttons">
+          <button class="summon-btn summon-btn-single" id="btn-single">
+            <span class="summon-btn-label">Single Summon</span>
+            <span class="summon-btn-cost">
+              <img src="assets/icons/currency/ninjapearl.png" alt="" class="btn-cost-icon" onerror="this.style.display='none'">
+              ×<span id="single-cost">5</span>
+            </span>
+          </button>
+          <button class="summon-btn summon-btn-multi" id="btn-multi">
+            <span class="summon-btn-label">Multi Summon ×10</span>
+            <span class="summon-btn-cost">
+              <img src="assets/icons/currency/ninjapearl.png" alt="" class="btn-cost-icon" onerror="this.style.display='none'">
+              ×<span id="multi-cost">30</span>
+            </span>
+          </button>
+        </div>
+
+        <div class="summon-info-buttons">
+          <button class="summon-info-btn" id="btn-rates">Rates</button>
+          <button class="summon-info-btn" id="btn-featured">Featured</button>
+          <button class="summon-info-btn" id="btn-contents">Contents</button>
+        </div>
+      </aside>
     </div>
 
     <!-- Summon root (used by JS modules) -->
@@ -761,6 +911,7 @@
   <script src="js/summon/summon-ui.js"></script>
   <script src="js/summon/summon-dev-panel.js"></script>
   <script src="js/summon.js"></script>
+  <script src="js/summon/summon-stage.js"></script>
   <script src="js/navigation.js"></script>
 
   <!-- Override info buttons to use the new inline modal instead of alert() -->
