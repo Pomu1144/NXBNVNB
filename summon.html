@@ -672,17 +672,72 @@
       filter: blur(6px); animation: featPulse 3.4s ease-in-out infinite;
     }
     @keyframes featPulse { 0%,100%{transform:scale(1);opacity:0.75} 50%{transform:scale(1.08);opacity:1} }
-    #featured-art {
-      position: relative; height: 96%; max-width: 96%; object-fit: contain;
-      filter: drop-shadow(0 10px 30px rgba(0,0,0,0.7));
-      animation: featIn 0.4s ease;
+    /* Two swappable views inside the stage */
+    .stage-view {
+      position: absolute; inset: 0; display: none;
+      align-items: center; justify-content: center;
+      animation: featIn 0.35s ease;
     }
-    @keyframes featIn { from{opacity:0;transform:translateY(10px) scale(0.98)} to{opacity:1;transform:none} }
+    .featured-stage[data-view="banner"] .stage-view-banner { display: flex; }
+    .featured-stage[data-view="char"]   .stage-view-char   { display: flex; gap: 18px; padding: 0 46px; }
+    #stage-banner-img {
+      max-width: 94%; max-height: 90%; object-fit: contain; border-radius: 10px;
+      filter: drop-shadow(0 10px 30px rgba(0,0,0,0.7));
+    }
+    #featured-art {
+      position: relative; height: 92%; max-width: 62%; object-fit: contain;
+      image-rendering: auto;
+      filter: drop-shadow(0 10px 30px rgba(0,0,0,0.7));
+    }
+    @keyframes featIn { from{opacity:0;transform:translateY(8px) scale(0.99)} to{opacity:1;transform:none} }
+    /* Character stat card (shown beside the art in the char view) */
+    .char-stats {
+      flex: 0 0 auto; width: min(230px, 34%); align-self: center;
+      background: linear-gradient(160deg, rgba(14,18,38,0.94), rgba(6,8,20,0.96));
+      border: 1px solid rgba(184,152,95,0.4); border-radius: 12px;
+      padding: 12px 14px; box-shadow: 0 6px 20px rgba(0,0,0,0.55);
+    }
+    .char-stats .cs-head {
+      font-family: 'Cinzel', serif; font-weight: 700; color: #ffd24a; font-size: 14px;
+      text-align: center; padding-bottom: 8px; margin-bottom: 8px;
+      border-bottom: 1px solid rgba(184,152,95,0.3); letter-spacing: 1px;
+    }
+    .char-stats .cs-row {
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 13px; padding: 4px 2px;
+    }
+    .char-stats .cs-row + .cs-row { border-top: 1px solid rgba(255,255,255,0.05); }
+    .char-stats .cs-label { color: #b8a888; letter-spacing: 0.4px; }
+    .char-stats .cs-val { color: #fff; font-weight: 700; }
+    .char-stats .cs-val.gold { color: #f4cf5e; }
+    /* Nav arrows */
+    .stage-arrow {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      width: 40px; height: 40px; border-radius: 50%;
+      background: radial-gradient(circle at 35% 30%, rgba(212,175,55,0.25), rgba(8,10,20,0.92) 68%);
+      border: 1.5px solid rgba(212,175,55,0.6); color: #f4cf5e;
+      font-size: 22px; line-height: 1; cursor: pointer; z-index: 4;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.18s ease; box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+    }
+    .stage-arrow:hover { border-color: #ffd700; color: #ffd700; box-shadow: 0 0 14px rgba(212,175,55,0.5); }
+    .stage-arrow.left { left: 12px; } .stage-arrow.right { right: 12px; }
+    .stage-dots {
+      position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%);
+      display: flex; gap: 7px; z-index: 4;
+    }
+    .stage-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: rgba(255,255,255,0.3); transition: all 0.2s ease;
+    }
+    .stage-dot.active { background: #f4cf5e; box-shadow: 0 0 6px rgba(244,207,94,0.7); }
     .featured-caption {
       position: absolute; left: 0; right: 0; bottom: 0; padding: 14px 18px;
-      display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap;
+      display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; z-index: 3;
       background: linear-gradient(0deg, rgba(4,5,12,0.92), transparent);
     }
+    /* Caption only on the character view (banner art already has its title baked in) */
+    .featured-stage[data-view="banner"] .featured-caption { display: none; }
     .featured-rank {
       font-family: 'Cinzel', serif; font-weight: 700; font-size: 20px; color: #ffd24a;
       text-shadow: 0 0 10px rgba(255,200,60,0.6), 0 2px 3px #000;
@@ -792,10 +847,30 @@
       </aside>
 
       <!-- CENTER: featured character art, swaps with the selected banner -->
-      <div class="featured-stage" id="featured-stage">
+      <div class="featured-stage" id="featured-stage" data-view="banner">
         <div class="featured-glow" id="featured-glow"></div>
-        <img id="featured-art" src="" alt="Featured unit" draggable="false"
-             onerror="this.style.visibility='hidden'">
+
+        <!-- View 1: banner art -->
+        <div class="stage-view stage-view-banner">
+          <img id="stage-banner-img" src="" alt="Banner" draggable="false"
+               onerror="this.style.visibility='hidden'">
+        </div>
+
+        <!-- View 2: character art + stats -->
+        <div class="stage-view stage-view-char">
+          <img id="featured-art" src="" alt="Featured unit" draggable="false"
+               onerror="this.style.visibility='hidden'">
+          <div class="char-stats" id="char-stats"></div>
+        </div>
+
+        <!-- nav arrows + dots -->
+        <button class="stage-arrow left" id="stage-prev" type="button" aria-label="Previous view">‹</button>
+        <button class="stage-arrow right" id="stage-next" type="button" aria-label="Next view">›</button>
+        <div class="stage-dots">
+          <span class="stage-dot active" data-view="banner"></span>
+          <span class="stage-dot" data-view="char"></span>
+        </div>
+
         <div class="featured-caption">
           <span class="featured-rank" id="featured-rank">★6</span>
           <span class="featured-name" id="featured-name">—</span>
