@@ -441,14 +441,15 @@
 }
 
 .btn-confirm {
-  background: linear-gradient(135deg, #8b7355, #a07f50);
-  border-color: #8b7355;
-  color: #f4efe3;
+  background: url("../assets/ui/generated/button_gold.webp") center / 100% 100% no-repeat;
+  border: none;
+  color: #14100a;
+  text-shadow: 0 1px 0 rgba(255, 235, 170, 0.5);
 }
 
 .btn-confirm:hover {
-  background: linear-gradient(135deg, #a07f50, #b8985f);
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+  filter: brightness(1.22);
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
   transform: translateY(-2px);
 }
 

@@ -78,11 +78,22 @@ body.page-characters::-webkit-scrollbar {
 /* ---------- Character Grid ---------- */
 .char-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  /* Cap card width at 200px — portrait art is 200×200, so stretching
+     wider resamples it and reads as blur */
+  grid-template-columns: repeat(auto-fill, minmax(150px, 200px));
+  justify-content: center;
   gap: 14px;
   padding: 20px;
   position: relative;
   z-index: 2;
+}
+
+/* Keep character art crisp when the browser resamples it */
+.char-slot img,
+.char-grid img,
+.nameplate-stars .star,
+.result-card-inner img {
+  image-rendering: -webkit-optimize-contrast;
 }
 
 .char-slot {
@@ -267,7 +278,7 @@ body.page-characters::-webkit-scrollbar {
   position: absolute;
   top: 0;
   left: 53%;
-  transform: translateX(-50%) translateY(2px);
+  transform: translateX(-50%) translateY(6px);
   text-align: left;
   z-index: 10;
   display: flex;
@@ -296,12 +307,14 @@ body.page-characters::-webkit-scrollbar {
 .nameplate-stars .star:nth-child(10) { z-index: 1; }
 
 /* Fix stars positioning in fullscreen mode */
+/* Fullscreen layout scales up, so the stars need a stronger downward
+   offset than the windowed view or they float above the nameplate */
 :fullscreen .nameplate-stars,
 :-webkit-full-screen .nameplate-stars,
 :-moz-full-screen .nameplate-stars,
 :-ms-fullscreen .nameplate-stars {
   top: 0;
-  transform: translateX(-50%) translateY(2px);
+  transform: translateX(-50%) translateY(14px);
 }
 
 /* ---------- Tabs ---------- */
@@ -696,46 +709,48 @@ body.page-characters::-webkit-scrollbar {
   gap: 6px;
   margin-bottom: 8px;
 }
+/* Growth actions — one consistent metallic gold plate for all four
+   buttons (Level Up / Latent Awaken / Awaken / Limit Break).
+   The old per-button PNGs were drawn on 500×500 square canvases, so
+   background-size:contain shrank them to unreadable slivers. */
 .btn-darkgold,
 .btn-dark,
 .btn-awaken,
-.btn-feeddupe {
+.btn-feeddupe,
+.btn-limitbreak {
   font-family: "Cinzel", serif;
   border-radius: 8px;
-  padding: 6px 14px;
+  padding: 10px 18px;
   font-size: 13px;
+  font-weight: 700;
   cursor: pointer;
   transition: all .2s ease;
-  letter-spacing: .2px;
-  text-shadow: 0 1px 2px #000;
-}
-.btn-darkgold {
-  background: var(--btn-gold);
-  border: 1px solid var(--gold-deep);
-  color: #111;
-  font-weight: 600;
-}
-.btn-darkgold:hover { filter: brightness(1.1); }
-.btn-dark {
-  background: #1d1d1f;
-  border: 1px solid rgba(255,255,255,0.1);
-  color: #ddd;
-}
-.btn-dark:hover { background: #222; }
-.btn-awaken {
-  background-color: transparent;
-  background-image: url('../assets/ui/unlocked_awakened_btn.png');
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
+  letter-spacing: .8px;
+  min-width: 132px;
+  min-height: 42px;
   border: none;
-  color: transparent;
-  min-width: 120px;
-  min-height: 40px;
+  background: url('../assets/ui/generated/button_gold.webp') center / 100% 100% no-repeat;
+  color: #14100a;
+  text-shadow: 0 1px 0 rgba(255, 235, 170, 0.5);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.55);
 }
-.btn-awaken:disabled {
-  background-image: url('../assets/ui/locked_awaken_btn.png');
+.btn-darkgold:hover:not(:disabled),
+.btn-dark:hover:not(:disabled),
+.btn-awaken:hover:not(:disabled) {
+  filter: brightness(1.22);
+  transform: translateY(-1px);
+  box-shadow: 0 0 18px rgba(212, 175, 55, 0.45), 0 3px 10px rgba(0, 0, 0, 0.55);
+}
+.btn-darkgold:disabled,
+.btn-dark:disabled,
+.btn-awaken:disabled,
+.btn-feeddupe:disabled,
+.btn-limitbreak:disabled {
+  filter: grayscale(0.85) brightness(0.55);
+  color: #3a3a3a;
   cursor: not-allowed;
+  transform: none;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.55);
 }
 .btn-evolve {
   background: linear-gradient(135deg, #6b2fb0 0%, #9b4fd8 50%, #6b2fb0 100%);
@@ -763,26 +778,10 @@ body.page-characters::-webkit-scrollbar {
   0%, 100% { box-shadow: 0 0 15px rgba(155, 79, 216, 0.4); }
   50% { box-shadow: 0 0 25px rgba(155, 79, 216, 0.7); }
 }
-.btn-feeddupe {
-  background-color: transparent;
-  background-image: url('../assets/ui/unlocked-ltnawaken.png');
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-  border: none;
-  color: transparent;
-  font-weight: 600;
-  min-width: 120px;
-  min-height: 40px;
-}
 .btn-feeddupe:hover:not(:disabled) {
-  transform: scale(1.05);
-  filter: brightness(1.1);
-}
-.btn-feeddupe:disabled {
-  background-image: url('../assets/ui/locked_ltnawaken_btn.png');
-  opacity: 1;
-  cursor: not-allowed;
+  filter: brightness(1.22);
+  transform: translateY(-1px);
+  box-shadow: 0 0 18px rgba(212, 175, 55, 0.45), 0 3px 10px rgba(0, 0, 0, 0.55);
 }
 .tip-line {
   text-align: center;
@@ -866,10 +865,15 @@ body.page-characters::-webkit-scrollbar {
   min-height: 120px;
 }
 .support-box {
-  background: rgba(0,0,0,0.3);
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 6px;
-  padding: 6px 10px;
+  background:
+    linear-gradient(rgba(20, 14, 8, 0.25), rgba(20, 14, 8, 0.25)),
+    url("../assets/ui/generated/parchment_panel.webp") center / cover no-repeat;
+  border: 1px solid rgba(184, 152, 95, 0.45);
+  border-radius: 8px;
+  padding: 10px 14px;
+  box-shadow: inset 0 0 24px rgba(0, 0, 0, 0.35), 0 2px 8px rgba(0, 0, 0, 0.4);
+  color: #f0e6d1;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
 }
 .support-box strong {
   color: var(--gold);
@@ -1034,31 +1038,10 @@ body.page-characters::-webkit-scrollbar {
 /* Art size maintained at 70vh for all screen sizes */
 
 /* ---------- Limit Break Styling ---------- */
-.btn-limitbreak {
-  padding: 10px 18px;
-  font-family: "Cinzel", serif;
-  font-size: 15px;
-  font-weight: 600;
-  color: transparent;
-  background-color: transparent;
-  background-image: url('../assets/ui/unlocked_limitbreak.png');
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-  border: none;
-  cursor: pointer;
-  transition: all .2s ease;
-  min-width: 120px;
-  min-height: 40px;
-}
 .btn-limitbreak:hover:not(:disabled) {
-  transform: scale(1.05);
-  filter: brightness(1.1);
-}
-.btn-limitbreak:disabled {
-  background-image: url('../assets/ui/locked_limitbreak.png');
-  opacity: 1;
-  cursor: not-allowed;
+  filter: brightness(1.22);
+  transform: translateY(-1px);
+  box-shadow: 0 0 18px rgba(212, 175, 55, 0.45), 0 3px 10px rgba(0, 0, 0, 0.55);
 }
 
 .limitbreak-info {
@@ -1085,10 +1068,13 @@ body.page-characters::-webkit-scrollbar {
 /* ---------- Materials Display ---------- */
 .materials-display {
   margin-top: 14px;
-  padding: 12px;
-  background: rgba(20, 20, 24, 0.6);
-  border: 1px solid rgba(255, 215, 120, 0.15);
+  padding: 12px 14px;
+  background:
+    linear-gradient(rgba(20, 14, 8, 0.25), rgba(20, 14, 8, 0.25)),
+    url("../assets/ui/generated/parchment_panel.webp") center / cover no-repeat;
+  border: 1px solid rgba(184, 152, 95, 0.45);
   border-radius: 8px;
+  box-shadow: inset 0 0 24px rgba(0, 0, 0, 0.35), 0 2px 8px rgba(0, 0, 0, 0.4);
 }
 
 .materials-title {
@@ -1147,8 +1133,9 @@ body.page-characters::-webkit-scrollbar {
 
 .no-requirements {
   font-size: 12px;
-  color: #888;
+  color: #d8c9a8;
   font-style: italic;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
 }
 /* ---------- Dupe Selector Modal ---------- */
 .dupe-modal {
