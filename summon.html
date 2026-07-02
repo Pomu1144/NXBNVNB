@@ -713,6 +713,7 @@
     .draw-col .summon-btn-single,
     .draw-col .summon-btn-multi {
       aspect-ratio: auto !important;
+      width: 100% !important; align-self: stretch !important; box-sizing: border-box;
       height: 66px !important; min-height: 0 !important; max-height: 66px !important;
       padding: 0 !important; border: none !important;
       background: center / 100% 100% no-repeat !important;
@@ -725,11 +726,17 @@
     .draw-col .summon-btn-single::after, .draw-col .summon-btn-multi::after { display: none !important; }
     .draw-col .summon-btn:hover:not(:disabled) { transform: translateY(-1px); filter: brightness(1.12) drop-shadow(0 0 8px rgba(255,210,90,0.4)); }
     .draw-col .summon-btn:disabled { filter: grayscale(0.4) brightness(0.7); }
-    .draw-col .summon-btn .summon-btn-label {
-      font-family: 'Cinzel', serif; font-size: 13px; font-weight: 700; color: #fff;
-      letter-spacing: 0.4px; text-shadow: 0 1px 3px rgba(0,0,0,0.9); white-space: nowrap;
+    /* Label is baked into the button art; keep only a small cost pill */
+    .draw-col .summon-btn { position: relative; }
+    .draw-col .summon-btn .summon-btn-label { display: none; }
+    .draw-col .summon-btn .summon-btn-cost {
+      position: absolute; bottom: 5px; left: 50%; transform: translateX(-50%);
+      display: flex; align-items: center; gap: 3px;
+      background: rgba(0,0,0,0.5); padding: 1px 9px; border-radius: 10px;
+      font-size: 11px; font-weight: 700; color: #ffe9b8;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.9);
     }
-    .draw-col .summon-btn .summon-btn-cost { font-size: 12px; color: #ffe9b8; text-shadow: 0 1px 2px rgba(0,0,0,0.9); }
+    .draw-col .summon-btn .btn-cost-icon { width: 12px; height: 12px; }
     .draw-col .summon-info-buttons { display: flex; gap: 6px; }
     .draw-col .summon-info-btn { flex: 1; padding: 7px 4px; font-size: 12px; }
 
