@@ -180,8 +180,12 @@
 .result-card-inner img {
   width: 100%;
   height: 200px;
-  object-fit: cover;
+  /* contain so the portrait is never cropped */
+  object-fit: contain;
+  object-position: center top;
+  background: radial-gradient(circle at 50% 30%, rgba(30, 34, 60, 0.65), rgba(8, 10, 20, 0.85));
   display: block;
+  image-rendering: -webkit-optimize-contrast;
 }
 
 .result-card-info {

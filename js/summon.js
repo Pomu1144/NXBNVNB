@@ -98,7 +98,15 @@
       if (window.SummonAnimator)
         window.SummonAnimator.init();
 
-      // Load first banner
+      // Build the banner preview strip, then load the first banner
+      _injectBannerArtStyles();
+      buildPreviewStrip();
+
+      // Wire up the carousel controller (arrows + swipe)
+      if (window.BannerCarousel) {
+        window.BannerCarousel.init('banner-preview-scroll', 'main-carousel');
+      }
+
       loadBanner(0);
 
       // Setup event listeners
@@ -113,6 +121,90 @@
   }
 
   // =======================================================
+  //  Banner artwork rendering
+  // =======================================================
+  function renderBannerArt(banner) {
+    const carousel = document.getElementById('main-carousel');
+    if (!carousel) return;
+
+    const fallback = `
+      <div class="banner-art banner-art-fallback">
+        <div class="banner-art-fallback-name">${banner.name || 'Summon Banner'}</div>
+        <div class="banner-art-fallback-sub">${banner.description || ''}</div>
+      </div>`;
+
+    if (banner.image) {
+      carousel.innerHTML = `
+        <div class="banner-art">
+          <img src="${banner.image}" alt="${banner.name || 'Banner'}"
+               draggable="false"
+               onerror="this.parentElement.outerHTML = ${JSON.stringify(fallback).replace(/"/g, '&quot;')};">
+        </div>`;
+    } else {
+      carousel.innerHTML = fallback;
+    }
+  }
+
+  function buildPreviewStrip() {
+    const strip = document.getElementById('banner-preview-scroll');
+    if (!strip) return;
+
+    const banners = summonData.getBanners();
+    strip.innerHTML = banners.map((b, i) => `
+      <div class="preview-item ${i === currentBannerIndex ? 'active' : ''}" data-index="${i}" title="${b.name || ''}">
+        ${b.image
+          ? `<img src="${b.image}" alt="" draggable="false" onerror="this.remove();">`
+          : `<span class="preview-item-label">${(b.name || '?').slice(0, 14)}</span>`}
+      </div>`).join('');
+
+    strip.querySelectorAll('.preview-item').forEach(item => {
+      item.addEventListener('click', () => {
+        const idx = parseInt(item.dataset.index, 10);
+        if (window.BannerCarousel) window.BannerCarousel.goTo(idx);
+        else loadBanner(idx);
+      });
+    });
+  }
+
+  function _injectBannerArtStyles() {
+    if (document.getElementById('banner-art-styles')) return;
+    const s = document.createElement('style');
+    s.id = 'banner-art-styles';
+    s.textContent = `
+      .banner-art { width:100%; height:100%; }
+      .banner-art img {
+        width:100%; height:100%; object-fit:cover; object-position:center;
+        display:block; border-radius:inherit; pointer-events:none;
+      }
+      .banner-art-fallback {
+        display:flex; flex-direction:column; align-items:center; justify-content:center;
+        gap:8px; padding:18px; text-align:center;
+        background:
+          radial-gradient(circle at 30% 20%, rgba(212,175,55,0.16), transparent 55%),
+          linear-gradient(135deg, rgba(20,24,52,0.95), rgba(8,10,24,0.95));
+      }
+      .banner-art-fallback-name {
+        font-family:"Cinzel",serif; font-size:clamp(16px,2.6vw,26px); font-weight:700;
+        color:#d4af37; letter-spacing:2px;
+        text-shadow:0 0 18px rgba(212,175,55,0.45), 0 2px 4px rgba(0,0,0,0.9);
+      }
+      .banner-art-fallback-sub {
+        font-family:"Cinzel",serif; font-size:clamp(10px,1.4vw,13px);
+        color:rgba(217,179,98,0.7); max-width:70%;
+      }
+      #banner-preview-scroll .preview-item img {
+        width:100%; height:100%; object-fit:cover; display:block; border-radius:inherit;
+      }
+      #banner-preview-scroll .preview-item-label {
+        font-family:"Cinzel",serif; font-size:9px; color:#b8985f;
+        display:flex; align-items:center; justify-content:center;
+        width:100%; height:100%; text-align:center; padding:2px; overflow:hidden;
+      }
+    `;
+    document.head.appendChild(s);
+  }
+
+  // =======================================================
   //  Load a specific banner
   // =======================================================
   function loadBanner(index) {
@@ -123,6 +215,10 @@
     }
 
     currentBannerIndex = index;
+
+    // Render banner artwork in the carousel
+    _injectBannerArtStyles();
+    renderBannerArt(banner);
 
     // Build the FULL summon pool for this banner
     currentPool = buildBannerPool(banner);

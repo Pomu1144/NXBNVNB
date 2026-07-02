@@ -29,15 +29,61 @@
     "konan_337",
     "kabuto_076"
   ],
-
   "baseRates": {
     "7star": 0.33,
     "6star": 3,
     "5star": 12,
     "4star": 84.67
   },
-
   "pools": [
+    {
+      "id": "feat_naruto_endowed",
+      "name": "Endowed Power: Six Paths Naruto",
+      "type": "featured",
+      "characters": [],
+      "featured": [
+        "naruto_2090"
+      ],
+      "description": "The power of the Sage of Six Paths descends! Featured ★7 Naruto Uzumaki — Endowed Power.",
+      "image": "assets/banners/generated/banner_naruto_endowed.webp",
+      "includeStandardPool": true
+    },
+    {
+      "id": "feat_kakashi_hope",
+      "name": "Entrusted With Hope: Kakashi",
+      "type": "featured",
+      "characters": [],
+      "featured": [
+        "kakashi_2091"
+      ],
+      "description": "The Copy Ninja carries the will of those before him. Featured Kakashi Hatake — Entrusted With Hope.",
+      "image": "assets/banners/generated/banner_kakashi_hope.webp",
+      "includeStandardPool": true
+    },
+    {
+      "id": "feat_naruto_fullout",
+      "name": "Full-Out Battle: Naruto",
+      "type": "featured",
+      "characters": [],
+      "featured": [
+        "naruto_2115"
+      ],
+      "description": "No holding back! Featured Naruto Uzumaki — Full-Out Battle.",
+      "image": "assets/banners/generated/banner_naruto_fullout.webp",
+      "includeStandardPool": true
+    },
+    {
+      "id": "feat_sasuke_solefriend",
+      "name": "Sole Friend: Sasuke",
+      "type": "featured",
+      "characters": [],
+      "featured": [
+        "sasuke_2117"
+      ],
+      "description": "Bonds forged in rivalry never break. Featured Sasuke Uchiha — Sole Friend.",
+      "image": "assets/banners/generated/banner_sasuke_solefriend.webp",
+      "includeStandardPool": true
+    },
     {
       "id": "blazing_all_stars",
       "name": "All-Stars: 100 Random Characters",
@@ -54,7 +100,9 @@
       "name": "Blazing Festival: Naruto (KLM)",
       "type": "blazing-festival",
       "characters": [],
-      "featured": ["naruto_klm_900"],
+      "featured": [
+        "naruto_klm_900"
+      ],
       "description": "Blazing Festival banner featuring Naruto Uzumaki in Kurama Link Mode!",
       "image": "assets/summon/banners/bf_naruto_klm.png",
       "includeStandardPool": true
@@ -64,7 +112,9 @@
       "name": "Blazing Festival: Sasuke (Rinne Sharingan)",
       "type": "blazing-festival",
       "characters": [],
-      "featured": ["sasuke_rinne_910"],
+      "featured": [
+        "sasuke_rinne_910"
+      ],
       "description": "Blazing Festival banner featuring Sasuke with the Rinne Sharingan!",
       "image": "assets/summon/banners/bf_sasuke_rinne.png",
       "includeStandardPool": true
@@ -74,7 +124,9 @@
       "name": "Blazing Festival: Hashirama",
       "type": "blazing-festival",
       "characters": [],
-      "featured": ["hashirama_920"],
+      "featured": [
+        "hashirama_920"
+      ],
       "description": "Blazing Festival banner featuring the First Hokage!",
       "image": "assets/summon/banners/bf_hashirama.png",
       "includeStandardPool": true
@@ -84,7 +136,9 @@
       "name": "Blazing Festival: Madara",
       "type": "blazing-festival",
       "characters": [],
-      "featured": ["madara_930"],
+      "featured": [
+        "madara_930"
+      ],
       "description": "Blazing Festival banner featuring Madara Uchiha!",
       "image": "assets/summon/banners/bf_madara.png",
       "includeStandardPool": true
@@ -94,7 +148,9 @@
       "name": "Blazing Festival: Six Paths Naruto",
       "type": "blazing-festival",
       "characters": [],
-      "featured": ["naruto_sosp_950"],
+      "featured": [
+        "naruto_sosp_950"
+      ],
       "description": "Blazing Festival banner featuring Naruto with Six Paths Sage Mode!",
       "image": "assets/summon/banners/bf_naruto_six_paths.png",
       "includeStandardPool": true
@@ -104,7 +160,9 @@
       "name": "Blazing Festival: Sasuke (Perfect Susanoo)",
       "type": "blazing-festival",
       "characters": [],
-      "featured": ["sasuke_susanoo_960"],
+      "featured": [
+        "sasuke_susanoo_960"
+      ],
       "description": "Blazing Festival banner featuring Sasuke's Perfect Susanoo!",
       "image": "assets/summon/banners/bf_sasuke_susanoo.png",
       "includeStandardPool": true
@@ -114,7 +172,9 @@
       "name": "Blazing Festival: Kaguya",
       "type": "blazing-festival",
       "characters": [],
-      "featured": ["kaguya_970"],
+      "featured": [
+        "kaguya_970"
+      ],
       "description": "Blazing Festival banner featuring Kaguya Otsutsuki!",
       "image": "assets/summon/banners/bf_kaguya.png",
       "includeStandardPool": true
@@ -124,7 +184,9 @@
       "name": "Blazing Festival: Obito (Ten Tails)",
       "type": "blazing-festival",
       "characters": [],
-      "featured": ["obito_tentails_980"],
+      "featured": [
+        "obito_tentails_980"
+      ],
       "description": "Blazing Festival banner featuring Ten-Tails Jinchuriki Obito!",
       "image": "assets/summon/banners/bf_obito.png",
       "includeStandardPool": true
@@ -134,20 +196,21 @@
       "name": "Blazing Festival: Might Guy (8th Gate)",
       "type": "blazing-festival",
       "characters": [],
-      "featured": ["guy_eightgate_990"],
+      "featured": [
+        "guy_eightgate_990"
+      ],
       "description": "Blazing Festival banner featuring Might Guy (Night Guy)!",
       "image": "assets/summon/banners/bf_guy.png",
       "includeStandardPool": true
     },
-
-
-
     {
       "id": "bb_naruto_sage",
       "name": "Blazing Bash: Naruto (Sage Mode)",
       "type": "blazing-bash",
       "characters": [],
-      "featured": ["naruto_sage_701"],
+      "featured": [
+        "naruto_sage_701"
+      ],
       "description": "Blazing Bash banner featuring Sage Mode Naruto!",
       "image": "assets/summon/banners/bb_naruto_sage.png",
       "includeStandardPool": true
@@ -157,7 +220,9 @@
       "name": "Blazing Bash: Sasuke (CM2)",
       "type": "blazing-bash",
       "characters": [],
-      "featured": ["sasuke_cm2_702"],
+      "featured": [
+        "sasuke_cm2_702"
+      ],
       "description": "Blazing Bash banner featuring Curse Mark Stage 2 Sasuke!",
       "image": "assets/summon/banners/bb_sasuke_cm2.png",
       "includeStandardPool": true
@@ -167,7 +232,9 @@
       "name": "Blazing Bash: Rock Lee (6th Gate)",
       "type": "blazing-bash",
       "characters": [],
-      "featured": ["lee_gate6_703"],
+      "featured": [
+        "lee_gate6_703"
+      ],
       "description": "Blazing Bash banner featuring Rock Lee using the Sixth Gate!",
       "image": "assets/summon/banners/bb_lee.png",
       "includeStandardPool": true
@@ -177,7 +244,9 @@
       "name": "Blazing Bash: Gaara (Shukaku Cloak)",
       "type": "blazing-bash",
       "characters": [],
-      "featured": ["gaara_shukaku_704"],
+      "featured": [
+        "gaara_shukaku_704"
+      ],
       "description": "Blazing Bash banner featuring Gaara in his Shukaku Cloak!",
       "image": "assets/summon/banners/bb_gaara.png",
       "includeStandardPool": true
@@ -187,7 +256,9 @@
       "name": "Blazing Bash: Neji",
       "type": "blazing-bash",
       "characters": [],
-      "featured": ["neji_705"],
+      "featured": [
+        "neji_705"
+      ],
       "description": "Blazing Bash banner featuring Neji Hyuga!",
       "image": "assets/summon/banners/bb_neji.png",
       "includeStandardPool": true
@@ -197,19 +268,21 @@
       "name": "Blazing Bash: Shikamaru",
       "type": "blazing-bash",
       "characters": [],
-      "featured": ["shikamaru_706"],
+      "featured": [
+        "shikamaru_706"
+      ],
       "description": "Blazing Bash banner featuring Shikamaru Nara!",
       "image": "assets/summon/banners/bb_shikamaru.png",
       "includeStandardPool": true
     },
-
-
     {
       "id": "anniv1_naruto",
       "name": "1st Anniversary: Naruto",
       "type": "anniversary",
       "characters": [],
-      "featured": ["naruto_anniv1_1000"],
+      "featured": [
+        "naruto_anniv1_1000"
+      ],
       "description": "Special 1st Anniversary Naruto!",
       "image": "assets/summon/banners/anniv1_naruto.png",
       "includeStandardPool": true
@@ -219,7 +292,9 @@
       "name": "1st Anniversary: Sasuke",
       "type": "anniversary",
       "characters": [],
-      "featured": ["sasuke_anniv1_1001"],
+      "featured": [
+        "sasuke_anniv1_1001"
+      ],
       "description": "Special 1st Anniversary Sasuke!",
       "image": "assets/summon/banners/anniv1_sasuke.png",
       "includeStandardPool": true
@@ -229,7 +304,9 @@
       "name": "2nd Anniversary: Naruto",
       "type": "anniversary",
       "characters": [],
-      "featured": ["naruto_anniv2_1002"],
+      "featured": [
+        "naruto_anniv2_1002"
+      ],
       "description": "2nd Anniversary Naruto (V5 Mode)!",
       "image": "assets/summon/banners/anniv2_naruto.png",
       "includeStandardPool": true
@@ -239,7 +316,9 @@
       "name": "2nd Anniversary: Sasuke",
       "type": "anniversary",
       "characters": [],
-      "featured": ["sasuke_anniv2_1003"],
+      "featured": [
+        "sasuke_anniv2_1003"
+      ],
       "description": "2nd Anniversary Sasuke (Complete Susanoo)!",
       "image": "assets/summon/banners/anniv2_sasuke.png",
       "includeStandardPool": true
@@ -249,13 +328,13 @@
       "name": "3rd Anniversary: Dual Unit",
       "type": "anniversary",
       "characters": [],
-      "featured": ["naruto_sasuke_dual_1004"],
+      "featured": [
+        "naruto_sasuke_dual_1004"
+      ],
       "description": "Epic 3rd Anniversary Naruto & Sasuke Dual Unit!",
       "image": "assets/summon/banners/anniv3_dual.png",
       "includeStandardPool": true
     },
-
-
     {
       "id": "birthday_naruto",
       "name": "Birthday: Naruto",
