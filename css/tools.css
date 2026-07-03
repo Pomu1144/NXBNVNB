@@ -756,7 +756,7 @@ body.page-tools {
   aspect-ratio: 896 / 1200;
   height: min(80vh, 1040px);
   max-width: 100%;
-  background: url("../assets/ui/generated/tools_backdrop.webp") center / 100% 100% no-repeat;
+  background: url("../assets/ui/generated/tools_frame.webp") center / 100% 100% no-repeat;
 }
 .tools-skin-stage .zone { position: absolute; box-sizing: border-box; }
 
@@ -786,10 +786,15 @@ body.page-tools {
 .tools-roster-name { font-size: 9.5px; color: #eaf1ff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .tools-roster-stars { font-size: 7px; color: #ffd24a; letter-spacing: .5px; }
 
-/* CENTER — stars, power badge, art */
-.zone-stars { left: 20%; top: 24%; width: 33%; height: 3%;
-  display: flex; align-items: center; justify-content: center; gap: 1px; }
-.zone-stars .tools-star { color: #ffd24a; font-size: 13px; text-shadow: 0 0 6px rgba(255,200,60,.6), 0 1px 2px #000; }
+/* CENTER — name+stars nameplate (top), power badge, art */
+.zone-nameplate { left: 20.5%; top: 23.4%; width: 32%; height: 4.8%;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; text-align: center; }
+.zone-nameplate .tools-np-line { display: flex; align-items: baseline; gap: 6px; max-width: 100%; }
+.zone-nameplate .character-name { color: #eaf2ff; font-size: 12px; font-weight: 700;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-shadow: 0 1px 2px #000; }
+.zone-nameplate .character-version { color: rgba(190,210,245,0.78); font-size: 9px; white-space: nowrap; }
+.zone-nameplate .tools-star-row { display: flex; gap: 1px; }
+.zone-nameplate .tools-star { color: #ffd24a; font-size: 10px; text-shadow: 0 0 5px rgba(255,200,60,.6), 0 1px 1px #000; }
 
 .zone-power { left: 22.5%; top: 27%; width: 28%; height: 3%;
   display: flex; align-items: center; justify-content: center; gap: 6px; }
@@ -820,12 +825,6 @@ body.page-tools {
 .zone-equip .equipment-slot { width: 100%; height: 100%; aspect-ratio: 1;
   background: transparent; border: 1px solid rgba(150,190,255,0.12); border-radius: 5px; cursor: pointer; }
 .zone-equip .equipment-slot:hover { border-color: rgba(150,190,255,0.5); box-shadow: 0 0 8px rgba(90,150,255,.3); }
-
-/* Name plate (lower panel) */
-.zone-name { left: 21%; top: 65%; width: 41%; height: 11%;
-  display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
-.zone-name .character-name { color: #dbe8ff; font-size: 15px; font-weight: 700; text-shadow: 0 2px 4px #000; }
-.zone-name .character-version { color: rgba(190,210,245,0.75); font-size: 11px; }
 
 @media (max-width: 900px) {
   .tools-skin-stage { height: auto; width: 100%; }
