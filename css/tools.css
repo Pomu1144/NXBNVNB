@@ -741,3 +741,92 @@ body.page-tools {
   .tools-roster-list { max-height: 220px; }
   .tools-center { min-height: 360px; }
 }
+
+/* =====================================================================
+   Tools page — use the mockup image as the literal frame (option 1)
+   Functional zones are absolutely positioned over its painted regions.
+   ===================================================================== */
+#tools-backdrop { display: none; }          /* the stage now IS the image */
+.page-tools .tools-content { padding: 14px 16px 0; }
+.page-tools .page-title { margin-bottom: 10px; font-size: 2.1rem; }
+
+.tools-skin-stage {
+  position: relative;
+  margin: 0 auto;
+  aspect-ratio: 896 / 1200;
+  height: min(80vh, 1040px);
+  max-width: 100%;
+  background: url("../assets/ui/generated/tools_backdrop.webp") center / 100% 100% no-repeat;
+}
+.tools-skin-stage .zone { position: absolute; box-sizing: border-box; }
+
+/* LEFT rail — roster */
+.zone-roster { left: 3.0%; top: 30%; width: 17.4%; height: 31.5%;
+  display: flex; flex-direction: column; gap: 5px; padding: 2px; }
+.zone-roster .tools-search-wrap {
+  display: flex; align-items: center; gap: 4px; width: 100%;
+  padding: 2px 6px; background: rgba(6,12,24,0.7);
+  border: 1px solid rgba(150,190,255,0.25); border-radius: 999px;
+}
+.zone-roster .tools-search-ico { color: #6b8bc0; font-size: 10px; }
+.zone-roster .tools-roster-search { flex: 1; min-width: 0; padding: 2px 0;
+  background: transparent; border: none; outline: none; color: #e6eeff; font-size: 10px; }
+.tools-roster-list { flex: 1; min-height: 0; overflow-y: auto;
+  display: flex; flex-direction: column; gap: 4px; padding-right: 2px; scrollbar-width: thin; }
+.tools-roster-empty { color: #8aa; text-align: center; font-size: 10px; padding: 12px 4px; }
+.tools-roster-item { display: flex; align-items: center; gap: 5px; width: 100%;
+  padding: 3px; background: rgba(10,20,40,0.55); border: 1px solid rgba(150,190,255,0.16);
+  border-radius: 7px; cursor: pointer; text-align: left; transition: all .15s ease; }
+.tools-roster-item:hover { border-color: rgba(150,190,255,0.5); }
+.tools-roster-item.active { border-color: #7fb2ff; background: rgba(50,100,190,0.4);
+  box-shadow: 0 0 8px rgba(90,150,255,0.4); }
+.tools-roster-item img { width: 30px; height: 30px; object-fit: cover; border-radius: 5px;
+  border: 1px solid rgba(150,190,255,0.3); flex-shrink: 0; background: #0a0f1c; }
+.tools-roster-meta { min-width: 0; }
+.tools-roster-name { font-size: 9.5px; color: #eaf1ff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tools-roster-stars { font-size: 7px; color: #ffd24a; letter-spacing: .5px; }
+
+/* CENTER — stars, power badge, art */
+.zone-stars { left: 20%; top: 24%; width: 33%; height: 3%;
+  display: flex; align-items: center; justify-content: center; gap: 1px; }
+.zone-stars .tools-star { color: #ffd24a; font-size: 13px; text-shadow: 0 0 6px rgba(255,200,60,.6), 0 1px 2px #000; }
+
+.zone-power { left: 22.5%; top: 27%; width: 28%; height: 3%;
+  display: flex; align-items: center; justify-content: center; gap: 6px; }
+.zone-power .tools-grade { font-family: "Cinzel", serif; font-weight: 800; font-size: 12px;
+  color: #ffd24a; text-shadow: 0 1px 2px #000; }
+.zone-power .tools-grade[data-grade="SS"], .zone-power .tools-grade[data-grade="S"] { color: #ff8a5a; }
+.zone-power .tools-power-txt { display: flex; align-items: baseline; gap: 4px; font-family: "Cinzel", serif; }
+.zone-power .tpl { font-size: 8px; letter-spacing: 1px; color: rgba(200,220,255,.75); }
+.zone-power .power-value { font-size: 13px; font-weight: 800; color: #cfe3ff; text-shadow: 0 0 8px rgba(120,180,255,.5); }
+
+.zone-art { left: 29%; top: 30%; width: 24.5%; height: 26%;
+  display: flex; align-items: center; justify-content: center; }
+.zone-art .tools-art { max-width: 100%; max-height: 100%; object-fit: contain;
+  filter: drop-shadow(0 6px 18px rgba(0,0,0,.7)); }
+.zone-art .tools-empty-hint { color: #6b7ea3; font-size: 10px; text-align: center; }
+
+/* Stats band */
+.zone-stats { left: 21.5%; top: 49%; width: 39%; height: 6.6%;
+  display: grid !important; grid-template-columns: repeat(3, 1fr); gap: 5px; }
+.zone-stats .stat-item { display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 1px; padding: 2px; background: rgba(8,16,32,0.5); border: 1px solid rgba(150,190,255,0.18); border-radius: 6px; }
+.zone-stats .stat-label { font-size: 7.5px; letter-spacing: .5px; color: rgba(180,205,245,.7); text-transform: uppercase; }
+.zone-stats .stat-value { font-size: 12px; font-weight: 700; color: #cfe3ff; }
+
+/* Equipment row (aligns to the 6 painted slots) */
+.zone-equip { left: 22%; top: 56.4%; width: 38%; height: 4.6%;
+  display: grid !important; grid-template-columns: repeat(6, 1fr); gap: 4px; padding: 0; background: none; border: none; }
+.zone-equip .equipment-slot { width: 100%; height: 100%; aspect-ratio: 1;
+  background: transparent; border: 1px solid rgba(150,190,255,0.12); border-radius: 5px; cursor: pointer; }
+.zone-equip .equipment-slot:hover { border-color: rgba(150,190,255,0.5); box-shadow: 0 0 8px rgba(90,150,255,.3); }
+
+/* Name plate (lower panel) */
+.zone-name { left: 21%; top: 65%; width: 41%; height: 11%;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+.zone-name .character-name { color: #dbe8ff; font-size: 15px; font-weight: 700; text-shadow: 0 2px 4px #000; }
+.zone-name .character-version { color: rgba(190,210,245,0.75); font-size: 11px; }
+
+@media (max-width: 900px) {
+  .tools-skin-stage { height: auto; width: 100%; }
+}

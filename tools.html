@@ -22,55 +22,50 @@
   <main class="tools-content">
     <h1 class="page-title">TOOLS</h1>
 
-    <div class="tools-stage">
-      <!-- LEFT: owned character roster -->
-      <aside class="tools-roster">
-        <div class="tools-roster-head">Characters</div>
+    <!-- The mockup image is the frame; functional zones sit over its regions -->
+    <div class="tools-skin-stage">
+      <!-- LEFT rail: owned character roster -->
+      <div class="zone zone-roster">
         <div class="tools-search-wrap">
           <span class="tools-search-ico">⚲</span>
           <input type="text" id="tools-search" class="tools-roster-search" placeholder="Search" />
         </div>
         <div class="tools-roster-list" id="tools-roster-list"></div>
-      </aside>
+      </div>
 
-      <!-- CENTER: stars on top · power+grade over art · stats under art -->
-      <section class="tools-center">
-        <div class="tools-star-row" id="tools-star-row"></div>
-        <div class="tools-art-wrap">
-          <div class="tools-framed">
-            <div class="tools-power-badge" id="tools-power-badge" style="display:none">
-              <span class="tools-grade" id="tools-grade">—</span>
-              <span class="tools-power-txt"><span class="tpl">POWER</span><span class="power-value" id="power-value">—</span></span>
-            </div>
-            <img id="character-full-image" class="tools-art" src="" alt="" style="display:none" />
-            <div class="tools-empty-hint" id="tools-empty-hint">Select a character</div>
-          </div>
-        </div>
+      <!-- CENTER: stars, power+grade, character art -->
+      <div class="zone zone-stars" id="tools-star-row"></div>
+      <div class="zone zone-power" id="tools-power-badge" style="display:none">
+        <span class="tools-grade" id="tools-grade">—</span>
+        <span class="tools-power-txt"><span class="tpl">POWER</span><span class="power-value" id="power-value">—</span></span>
+      </div>
+      <div class="zone zone-art">
+        <img id="character-full-image" class="tools-art" src="" alt="" style="display:none" />
+        <div class="tools-empty-hint" id="tools-empty-hint">Select a character</div>
+      </div>
 
-        <div class="stats-display" id="stats-display" style="display:none">
-          <div class="stat-item"><span class="stat-label">Health</span><span class="stat-value" id="stat-health">0</span></div>
-          <div class="stat-item"><span class="stat-label">Attack</span><span class="stat-value" id="stat-attack">0</span></div>
-          <div class="stat-item"><span class="stat-label">Speed</span><span class="stat-value" id="stat-speed">0</span></div>
-        </div>
+      <!-- Stats band -->
+      <div class="zone zone-stats stats-display" id="stats-display" style="display:none">
+        <div class="stat-item"><span class="stat-label">HP</span><span class="stat-value" id="stat-health">0</span></div>
+        <div class="stat-item"><span class="stat-label">ATK</span><span class="stat-value" id="stat-attack">0</span></div>
+        <div class="stat-item"><span class="stat-label">SPD</span><span class="stat-value" id="stat-speed">0</span></div>
+      </div>
 
-        <div class="tools-nameplate" id="selected-character-info" style="display:none">
-          <div class="character-name" id="character-name"></div>
-          <div class="character-version" id="character-version"></div>
-        </div>
-      </section>
+      <!-- Equipment row -->
+      <div class="zone zone-equip equipment-container" id="equipment-container" style="display:none">
+        <div class="equipment-slot" data-slot="1"></div>
+        <div class="equipment-slot" data-slot="2"></div>
+        <div class="equipment-slot" data-slot="3"></div>
+        <div class="equipment-slot" data-slot="4"></div>
+        <div class="equipment-slot" data-slot="5"></div>
+        <div class="equipment-slot" data-slot="6"></div>
+      </div>
 
-      <!-- RIGHT: equipment tools -->
-      <aside class="tools-panel">
-        <div class="tools-panel-head">Equipment</div>
-        <div class="equipment-container" id="equipment-container" style="display:none">
-          <div class="equipment-slot" data-slot="1"><div class="slot-empty"><div class="slot-label">Slot 1</div></div></div>
-          <div class="equipment-slot" data-slot="2"><div class="slot-empty"><div class="slot-label">Slot 2</div></div></div>
-          <div class="equipment-slot" data-slot="3"><div class="slot-empty"><div class="slot-label">Slot 3</div></div></div>
-          <div class="equipment-slot" data-slot="4"><div class="slot-empty"><div class="slot-label">Slot 4</div></div></div>
-          <div class="equipment-slot" data-slot="5"><div class="slot-empty"><div class="slot-label">Slot 5</div></div></div>
-          <div class="equipment-slot" data-slot="6"><div class="slot-empty"><div class="slot-label">Slot 6</div></div></div>
-        </div>
-      </aside>
+      <!-- Name plate (lower panel) -->
+      <div class="zone zone-name" id="selected-character-info" style="display:none">
+        <div class="character-name" id="character-name"></div>
+        <div class="character-version" id="character-version"></div>
+      </div>
     </div>
   </main>
 
