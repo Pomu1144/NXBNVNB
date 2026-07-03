@@ -124,6 +124,49 @@
   }
   const starCode = (char) => char?.starMaxCode || char?.starMinCode || `${char?.rarity || 1}S`;
 
+  /* ---------- Sorting / filtering ---------- */
+  let currentSort = "rarity";
+
+  // Derive an SS→D letter grade from a unit's power rank.
+  function gradeOf(char) {
+    const p = safeNum(char?.powerRank, 0);
+    if (p >= 10000) return "SS";
+    if (p >= 8000)  return "S";
+    if (p >= 6000)  return "A";
+    if (p >= 4000)  return "B";
+    if (p >= 2000)  return "C";
+    return "D";
+  }
+  const GRADE_ORDER = { SS: 6, S: 5, A: 4, B: 3, C: 2, D: 1 };
+
+  function sortKey(inst, char) {
+    const tier = inst.tierCode || minTier(char);
+    const stats = pickStats(char, DISPLAY_MODE);
+    switch (currentSort) {
+      case "power": return safeNum(char.powerRank, 0);
+      case "grade": return GRADE_ORDER[gradeOf(char)] * 1e7 + safeNum(char.powerRank, 0);
+      case "star":  return starsFromTier(tier) * 1e7 + safeNum(char.powerRank, 0);
+      case "level": return safeNum(inst.level, 0) * 1e7 + safeNum(char.powerRank, 0);
+      case "atk":   return safeNum(stats.atk, 0);
+      case "speed": return safeNum(stats.speed, 0);
+      case "rarity":
+      default:      return safeNum(char.rarity, 0) * 1e7 + safeNum(char.powerRank, 0);
+    }
+  }
+
+  function sortInstances(list) {
+    if (currentSort === "name") {
+      return list.slice().sort((a, b) => {
+        const ca = BYID[a.charId], cb = BYID[b.charId];
+        return safeStr(ca?.name).localeCompare(safeStr(cb?.name));
+      });
+    }
+    return list.slice().sort((a, b) => {
+      const ca = BYID[a.charId], cb = BYID[b.charId];
+      return sortKey(b, cb) - sortKey(a, ca); // descending (best first)
+    });
+  }
+
   /* =========================
    * Commander System Functions
    * ========================= */
@@ -481,18 +524,23 @@
       return true;
     });
 
-    charGrid.innerHTML = filtered.map(inst => {
+    const sorted = sortInstances(filtered);
+
+    charGrid.innerHTML = sorted.map(inst => {
       const char = BYID[inst.charId];
       const tier = inst.tierCode || minTier(char);
       const art = resolveTierArt(char, tier);
       const isAssigned = assignedUids.has(inst.uid);
+      const rarity = safeNum(char.rarity, starsFromTier(tier) || 1);
 
       return `
-        <div class="team-char-card ${isAssigned ? 'assigned' : ''}" 
+        <div class="team-char-card ${isAssigned ? 'assigned' : ''}"
              data-uid="${inst.uid}"
              data-char-id="${char.id}"
+             data-rarity="${rarity}"
              draggable="${!isAssigned}">
-          <img src="${art.portrait}" alt="${char.name}" 
+          <span class="team-char-grade">${gradeOf(char)}</span>
+          <img src="${art.portrait}" alt="${char.name}"
                onerror="this.src='assets/characters/_common/silhouette.png';" />
           <div class="team-char-card-info">
             <div class="team-char-card-name">${safeStr(char.name)}</div>
@@ -779,6 +827,32 @@
   btnSave?.addEventListener("click", saveTeam);
   btnClear?.addEventListener("click", clearTeam);
   charFilter?.addEventListener("input", filterCharacters);
+
+  /* ---------- Sort / filter menu ---------- */
+  const sortBtn = document.getElementById("btn-sort");
+  const sortMenu = document.getElementById("sort-menu");
+  function closeSortMenu() {
+    if (sortMenu) sortMenu.hidden = true;
+    sortBtn?.classList.remove("open");
+  }
+  sortBtn?.addEventListener("click", (e) => {
+    e.stopPropagation();
+    if (!sortMenu) return;
+    sortMenu.hidden = !sortMenu.hidden;
+    sortBtn.classList.toggle("open", !sortMenu.hidden);
+  });
+  sortMenu?.querySelectorAll(".sort-opt").forEach(opt => {
+    opt.addEventListener("click", () => {
+      currentSort = opt.dataset.sort || "rarity";
+      sortMenu.querySelectorAll(".sort-opt").forEach(o =>
+        o.classList.toggle("active", o === opt));
+      closeSortMenu();
+      renderCharacterGrid(charFilter?.value || "");
+    });
+  });
+  document.addEventListener("click", (e) => {
+    if (sortMenu && !sortMenu.hidden && !e.target.closest(".sort-wrap")) closeSortMenu();
+  });
 
   /* =========================
    * Init

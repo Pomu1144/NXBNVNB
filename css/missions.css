@@ -55,24 +55,54 @@ body {
 }
 
 .tab-btn {
-  font-size: 13px;
-  padding: 8px 16px;
-  border: 2px solid rgba(139, 115, 85, 0.5);
-  background: rgba(80, 72, 62, 0.4);
-  border-radius: 6px;
-  color: #e6d7c2;
+  position: relative;
+  font-family: 'Cinzel', 'Georgia', serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  padding: 13px 26px;
+  min-height: 46px;
+  border: none;
+  background: url("../assets/ui/generated/mission_tab_plate.webp") center / 100% 100% no-repeat;
+  color: #efe0c0;
   cursor: pointer;
   text-transform: uppercase;
-  transition: all 0.25s ease;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
+  filter: brightness(0.8) saturate(0.85);
+  transition: transform 0.2s ease, filter 0.2s ease;
 }
+.tab-btn .tab-label { position: relative; z-index: 2; }
 
-.tab-btn:hover,
-.tab-btn.active {
-  background: linear-gradient(135deg, #8b7355, #6b5d4f);
-  color: white;
-  border-color: #d9c3a2;
-  box-shadow: 0 0 12px rgba(255, 211, 150, 0.3);
+/* per-category accent glow (bottom bar + hover/active halo) */
+.tab-btn::after {
+  content: "";
+  position: absolute;
+  left: 24%; right: 24%; bottom: 8px;
+  height: 2px; border-radius: 2px;
+  background: var(--cat, #d9c3a2);
+  opacity: 0.55;
+  box-shadow: 0 0 8px var(--cat, #d9c3a2);
+  transition: opacity 0.2s ease;
 }
+.tab-btn[data-category="super-impact"]              { --cat: #ff6b45; }
+.tab-btn[data-category="impact-missions"]           { --cat: #ffd24a; }
+.tab-btn[data-category="shinobi-chronicles-part-1"] { --cat: #7fdc8f; }
+.tab-btn[data-category="shinobi-chronicles-part-2"] { --cat: #7fb2ff; }
+.tab-btn[data-category="limited-time-event"]        { --cat: #d67fff; }
+.tab-btn[data-category="growth-missions"]           { --cat: #7fdcdc; }
+
+.tab-btn:hover {
+  filter: brightness(1) saturate(1);
+  transform: translateY(-1px);
+  color: #fff;
+}
+.tab-btn.active {
+  filter: brightness(1.18) saturate(1.05);
+  color: #fff;
+  transform: translateY(-1px) scale(1.03);
+  box-shadow: 0 0 18px color-mix(in srgb, var(--cat, #ffd396) 55%, transparent);
+}
+.tab-btn.active::after { opacity: 1; height: 3px; }
 
 /* Mission list scroll */
 .mission-list-container {
@@ -96,17 +126,21 @@ body {
   gap: 10px;
 }
 
-/* Mission Banner — FIX */
+/* Mission Banner — show the FULL art (no cropping of Super Impact banners) */
 .mission-banner {
   width: 100%;
-  height: 140px;
-  object-fit: cover;
+  aspect-ratio: 2.6 / 1;   /* matches the composed Super Impact banner art */
+  height: auto;
+  object-fit: contain;      /* never crop the character/title art */
   object-position: center;
   border-radius: 8px;
   border: 1.5px solid rgba(212, 175, 55, 0.4);
-  background: rgba(20, 20, 20, 0.6) !important;
+  background:
+    radial-gradient(circle at 50% 40%, rgba(40,40,60,0.5), rgba(8,8,14,0.9)) ,
+    rgba(12, 12, 18, 0.85) !important;
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
 }
+.mission-banner-fallback { aspect-ratio: 2.6 / 1; height: auto; }
 
 /* Styled stand-in when the banner art file is missing */
 .mission-banner-fallback {

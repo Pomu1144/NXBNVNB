@@ -24,8 +24,15 @@ class SummonDataLoader {
       }
 
       // Handle both "pools" and "banners" field names for compatibility
-      this.banners = Array.isArray(summonData.pools) ? summonData.pools :
-                     Array.isArray(summonData.banners) ? summonData.banners : [];
+      const rawBanners = Array.isArray(summonData.pools) ? summonData.pools :
+                         Array.isArray(summonData.banners) ? summonData.banners : [];
+      // Hide banners flagged `hidden` (currently: those missing their art asset).
+      // The full list is preserved in data/hidden-banners.json for revisiting.
+      this.hiddenBanners = rawBanners.filter(b => b && b.hidden);
+      this.banners = rawBanners.filter(b => b && !b.hidden);
+      if (this.hiddenBanners.length) {
+        console.log(`ℹ️ ${this.hiddenBanners.length} banner(s) hidden (missing art) — see data/hidden-banners.json`);
+      }
       this.standardPool = Array.isArray(summonData.standardPool) ? summonData.standardPool : [];
       this.baseRates = summonData.baseRates || {
         '7star': 0.33,

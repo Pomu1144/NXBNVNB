@@ -1,12 +1,13 @@
 // js/summon/summon-stage.js — JJK-style gacha stage controller.
-// Center stage has two swappable views:
+// Center stage cycles through three swappable views:
 //   1) "banner" — the composed banner art
-//   2) "char"   — the featured unit's full art alongside its stat card
-// A right/left arrow toggles between them. Selecting a banner in the left rail
-// (summon.js buildPreviewStrip) updates both views via SummonUI.updateBannerInfo.
+//   2) "char6"  — the awakened 6★ form's art + maxed stats
+//   3) "char5"  — the pre-evolved 5★ form's art + stats (the unit you receive)
+// Left/right arrows and dots move between them. Selecting a banner in the left
+// rail (summon.js buildPreviewStrip) refreshes all views via updateBannerInfo.
 
 (function () {
-  const state = { charMap: null, pending: null };
+  const state = { charMap: null, pending: null, banner: null, views: ['banner'] };
 
   fetch('data/characters.json')
     .then(r => r.json())
@@ -28,14 +29,29 @@
     return banner && banner.image ? banner.image : '';
   }
 
-  function rankOf(ch) {
-    const r = ch && (ch.starMaxCode ? parseInt(ch.starMaxCode) : ch.rarity);
-    return '★' + (typeof r === 'number' && r >= 5 && r <= 7 ? r : 6);
+  function rankNum(code, fallback) {
+    const n = code ? parseInt(code, 10) : NaN;
+    return (Number.isFinite(n) && n >= 1 && n <= 10) ? n : fallback;
   }
 
-  function statsHtml(ch) {
+  // Resolve the base (lower-star) and evolved (higher-star) forms + tiers.
+  function formsFor(id) {
+    let base, evolved;
+    if (window.SummonEvolve) {
+      const f = window.SummonEvolve.forms(id);
+      base = f.base || (state.charMap && state.charMap[id]);
+      evolved = f.evolved || (state.charMap && state.charMap[id]);
+    } else {
+      base = evolved = state.charMap && state.charMap[id];
+    }
+    const minStar = rankNum(base && base.starMinCode, base && base.rarity ? base.rarity : 5);
+    const maxStar = rankNum(evolved && evolved.starMaxCode, evolved && evolved.rarity ? evolved.rarity : 6);
+    return { base, evolved, minStar, maxStar, twoTier: !!(base && evolved && maxStar > minStar) };
+  }
+
+  function statsHtml(ch, stats, rankNum) {
     if (!ch) return '';
-    const s = ch.statsMax || ch.statsBase || {};
+    const s = stats || ch.statsMax || ch.statsBase || {};
     const blank = v => v == null || String(v).trim() === '' || v === '—';
     const rows = [
       ['Power', num(ch.powerRank), true],
@@ -43,12 +59,38 @@
       ['ATK', num(s.atk)],
       ['Speed', num(s.speed)],
       ['Element', ch.element],
-      ['Affiliation', ch.affiliation],
+      ['Affiliation', Array.isArray(ch.affiliation) ? ch.affiliation[0] : ch.affiliation],
     ].filter(([, v]) => !blank(v));
-    return `<div class="cs-head">${rankOf(ch)} &nbsp;STATS</div>` +
+    return `<div class="cs-head">★${rankNum} &nbsp;STATS</div>` +
       rows.map(([l, v, g]) =>
         `<div class="cs-row"><span class="cs-label">${l}</span><span class="cs-val${g ? ' gold' : ''}">${v}</span></div>`
       ).join('');
+  }
+
+  // Fill the character slide for a given tier ('top' = evolved, 'base' = 5★).
+  function renderCharView(which) {
+    if (!state.banner) return;
+    const id = (state.banner.featured && state.banner.featured[0]) || null;
+    const art = $('featured-art'), stats = $('char-stats'), badge = $('stage-tier-badge');
+    if (!id) { if (stats) stats.innerHTML = ''; return; }
+
+    const f = formsFor(id);
+    const top = which !== 'base';
+    const ch = top ? f.evolved : f.base;
+    if (!ch) return;
+
+    const statObj = top ? (ch.statsMax || ch.statsBase) : (ch.statsBase || ch.statsMax);
+    const rk = top ? f.maxStar : f.minStar;
+
+    if (art) { const src = artFor(ch, state.banner); if (src) { art.style.visibility = 'visible'; art.src = src; } }
+    if (stats) stats.innerHTML = statsHtml(ch, statObj, rk);
+    if (badge) badge.textContent = `★${rk} FORM`;
+
+    // caption
+    const nm = $('featured-name'), ti = $('featured-title'), rke = $('featured-rank');
+    if (nm) nm.textContent = ch.name || (state.banner.name || '');
+    if (ti) ti.textContent = ch.version || '';
+    if (rke) rke.textContent = '★' + rk;
   }
 
   function updateStage(banner) {
@@ -56,25 +98,21 @@
     const stage = $('featured-stage');
     if (!stage) return;
     if (!state.charMap) { state.pending = banner; return; }
-
-    const id = (banner.featured && banner.featured[0]) || null;
-    const ch = id ? state.charMap[id] : null;
+    state.banner = banner;
 
     // View 1: banner art
     const bimg = $('stage-banner-img');
     if (bimg && banner.image) { bimg.style.visibility = 'visible'; bimg.src = banner.image; }
 
-    // View 2: character art + stats
-    const art = $('featured-art');
-    if (art) { const src = artFor(ch, banner); if (src) { art.style.visibility = 'visible'; art.src = src; } }
-    const stats = $('char-stats');
-    if (stats) stats.innerHTML = statsHtml(ch);
-
-    // caption
-    const nm = $('featured-name'), ti = $('featured-title'), rk = $('featured-rank');
-    if (nm) nm.textContent = ch ? ch.name : (banner.name || '');
-    if (ti) ti.textContent = ch ? (ch.version || '') : (banner.description || '');
-    if (rk) rk.textContent = rankOf(ch);
+    // Decide which character slides this banner supports.
+    const id = (banner.featured && banner.featured[0]) || null;
+    const f = id ? formsFor(id) : null;
+    state.views = ['banner'];
+    if (f && f.evolved) state.views.push('char6');
+    if (f && f.twoTier) state.views.push('char5');
+    // The 5★ dot only makes sense when the unit spans two tiers.
+    const dot5 = document.querySelector('.stage-dot[data-view="char5"]');
+    if (dot5) dot5.style.display = (f && f.twoTier) ? '' : 'none';
 
     // reset to banner view on banner change
     setView('banner');
@@ -91,20 +129,27 @@
   function setView(view) {
     const stage = $('featured-stage');
     if (!stage) return;
+    if (!state.views.includes(view)) view = 'banner';
     stage.setAttribute('data-view', view);
+    if (view === 'char6') renderCharView('top');
+    else if (view === 'char5') renderCharView('base');
     document.querySelectorAll('.stage-dot').forEach(d =>
       d.classList.toggle('active', d.dataset.view === view));
   }
 
-  function toggleView(dir) {
+  function step(dir) {
     const stage = $('featured-stage');
     const cur = stage ? stage.getAttribute('data-view') : 'banner';
-    setView(cur === 'banner' ? 'char' : 'banner');
+    const views = state.views.length ? state.views : ['banner'];
+    let i = views.indexOf(cur);
+    if (i < 0) i = 0;
+    i = (i + dir + views.length) % views.length;
+    setView(views[i]);
   }
 
   function wireNav() {
-    $('stage-next') && ($('stage-next').onclick = () => toggleView(1));
-    $('stage-prev') && ($('stage-prev').onclick = () => toggleView(-1));
+    $('stage-next') && ($('stage-next').onclick = () => step(1));
+    $('stage-prev') && ($('stage-prev').onclick = () => step(-1));
     document.querySelectorAll('.stage-dot').forEach(d =>
       d.addEventListener('click', () => setView(d.dataset.view)));
   }
@@ -126,9 +171,8 @@
     let n = 0;
     const t = setInterval(() => { if (installHook() || ++n > 40) clearInterval(t); }, 100);
   }
-  // wire nav again once DOM is fully ready (elements exist)
   if (document.readyState === 'loading')
     document.addEventListener('DOMContentLoaded', wireNav);
 
-  console.log('✅ Summon stage controller loaded');
+  console.log('✅ Summon stage controller loaded (3-view: banner / 6★ / 5★)');
 })();

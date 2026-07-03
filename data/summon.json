@@ -1,1239 +1,1272 @@
 {
-  "standardPool": [
-    "naruto_001",
-    "sasuke_046",
-    "sakura_052",
-    "kakashi_008",
-    "gaara_050",
-    "rock_148",
-    "neji_066",
-    "shikamaru_054",
-    "choji_058",
-    "ino_056",
-    "hinata_060",
-    "kiba_062",
-    "shino_064",
-    "tenten_068",
-    "temari_163",
-    "kankuro_165",
-    "jiraiya_072",
-    "tsunade_167",
-    "orochimaru_074",
-    "itachi_088",
-    "kisame_090",
-    "deidara_219",
-    "sasori_221",
-    "hidan_321",
-    "kakuzu_323",
-    "pain_352",
-    "konan_337",
-    "kabuto_076"
-  ],
-  "baseRates": {
-    "7star": 0.33,
-    "6star": 3,
-    "5star": 12,
-    "4star": 84.67
+ "standardPool": [
+  "naruto_001",
+  "sasuke_046",
+  "sakura_052",
+  "kakashi_008",
+  "gaara_050",
+  "rock_148",
+  "neji_066",
+  "shikamaru_054",
+  "choji_058",
+  "ino_056",
+  "hinata_060",
+  "kiba_062",
+  "shino_064",
+  "tenten_068",
+  "temari_163",
+  "kankuro_165",
+  "jiraiya_072",
+  "tsunade_167",
+  "orochimaru_074",
+  "itachi_088",
+  "kisame_090",
+  "deidara_219",
+  "sasori_221",
+  "hidan_321",
+  "kakuzu_323",
+  "pain_352",
+  "konan_337",
+  "kabuto_076"
+ ],
+ "baseRates": {
+  "7star": 0.33,
+  "6star": 3,
+  "5star": 12,
+  "4star": 84.67
+ },
+ "pools": [
+  {
+   "id": "feat_hinata_ceaseless",
+   "name": "Beyond the Ceaseless: Hinata",
+   "type": "featured",
+   "characters": [],
+   "featured": [
+    "hinata_813"
+   ],
+   "description": "The Gentle Fist never wavers. Featured ★6 Hinata Hyuga — Beyond the Ceaseless (Blazing Awakened).",
+   "image": "assets/banners/generated/banner_hinata_ceaseless.webp",
+   "includeStandardPool": true
   },
-  "pools": [
-    {
-      "id": "feat_hinata_ceaseless",
-      "name": "Beyond the Ceaseless: Hinata",
-      "type": "featured",
-      "characters": [],
-      "featured": [
-        "hinata_813"
-      ],
-      "description": "The Gentle Fist never wavers. Featured ★6 Hinata Hyuga — Beyond the Ceaseless (Blazing Awakened).",
-      "image": "assets/banners/generated/banner_hinata_ceaseless.webp",
-      "includeStandardPool": true
-    },
-    {
-      "id": "feat_hinata_redemptive",
-      "name": "Redemptive Words: Hinata",
-      "type": "featured",
-      "characters": [],
-      "featured": [
-        "hinata_2003"
-      ],
-      "description": "Words that reach the heart. Featured ★6 Hinata Hyuga — Redemptive Words.",
-      "image": "assets/banners/generated/banner_hinata_redemptive.webp",
-      "includeStandardPool": true
-    },
-    {
-      "id": "feat_itachi_burden",
-      "name": "Talent and Burden: Itachi",
-      "type": "featured",
-      "characters": [],
-      "featured": [
-        "itachi_2199"
-      ],
-      "description": "The weight of genius. Featured ★6 Itachi Uchiha — Talent and Burden (Blazing Awakened).",
-      "image": "assets/banners/generated/banner_itachi_burden.webp",
-      "includeStandardPool": true
-    },
-    {
-      "id": "feat_itachi_promised",
-      "name": "The Promised Day: Itachi",
-      "type": "featured",
-      "characters": [],
-      "featured": [
-        "itachi_2032"
-      ],
-      "description": "A vow kept to the end. Featured ★6 Itachi Uchiha — The Promised Day.",
-      "image": "assets/banners/generated/banner_itachi_promised.webp",
-      "includeStandardPool": true
-    },
-    {
-      "id": "feat_itachi_future",
-      "name": "Eyes Gazing Over the Future: Itachi",
-      "type": "featured",
-      "characters": [],
-      "featured": [
-        "itachi_575"
-      ],
-      "description": "Looking beyond the horizon. Featured ★6 Itachi Uchiha — Eyes Gazing Over the Future (Blazing Awakened).",
-      "image": "assets/banners/generated/banner_itachi_future.webp",
-      "includeStandardPool": true
-    },
-    {
-      "id": "feat_naruto_pervading",
-      "name": "Pervading Feelings: Naruto",
-      "type": "featured",
-      "characters": [],
-      "featured": [
-        "naruto_801"
-      ],
-      "description": "Feelings that reach everyone. Featured ★6 Naruto Uzumaki — Pervading Feelings.",
-      "image": "assets/banners/generated/banner_naruto_pervading.webp",
-      "includeStandardPool": true
-    },
-    {
-      "id": "feat_minato_dazzling",
-      "name": "Dazzling Bravery: Minato",
-      "type": "featured",
-      "characters": [],
-      "featured": [
-        "minato_741"
-      ],
-      "description": "The Yellow Flash strikes in an instant! Featured ★6 Minato Namikaze — Dazzling Bravery (Blazing Awakened).",
-      "image": "assets/banners/generated/banner_minato_dazzling.webp",
-      "includeStandardPool": true
-    },
-    {
-      "id": "feat_naruto_future",
-      "name": "The Future We Want: Naruto",
-      "type": "featured",
-      "characters": [],
-      "featured": [
-        "naruto_864"
-      ],
-      "description": "Carry hope forward! Featured ★6 Naruto Uzumaki — The Future We Want (Blazing Awakened).",
-      "image": "assets/banners/generated/banner_naruto_future.webp",
-      "includeStandardPool": true
-    },
-    {
-      "id": "feat_obito_darkness",
-      "name": "Into Total Darkness: Obito",
-      "type": "featured",
-      "characters": [],
-      "featured": [
-        "obito_671"
-      ],
-      "description": "Descend into the void. Featured ★6 Obito Uchiha — Into Total Darkness (Blazing Awakened).",
-      "image": "assets/banners/generated/banner_obito_darkness.webp",
-      "includeStandardPool": true
-    },
-    {
-      "id": "feat_obito_illusory",
-      "name": "The Illusory World: Obito",
-      "type": "featured",
-      "characters": [],
-      "featured": [
-        "obito_2081"
-      ],
-      "description": "A dream none can escape. Featured ★6 Obito Uchiha — The Illusory World.",
-      "image": "assets/banners/generated/banner_obito_illusory.webp",
-      "includeStandardPool": true
-    },
-    {
-      "id": "feat_naruto_endowed",
-      "name": "Endowed Power: Six Paths Naruto",
-      "type": "featured",
-      "characters": [],
-      "featured": [
-        "naruto_2090"
-      ],
-      "description": "The power of the Sage of Six Paths descends! Featured ★7 Naruto Uzumaki — Endowed Power.",
-      "image": "assets/banners/generated/banner_naruto_endowed.webp",
-      "includeStandardPool": true
-    },
-    {
-      "id": "feat_kakashi_hope",
-      "name": "Entrusted With Hope: Kakashi",
-      "type": "featured",
-      "characters": [],
-      "featured": [
-        "kakashi_2091"
-      ],
-      "description": "The Copy Ninja carries the will of those before him. Featured Kakashi Hatake — Entrusted With Hope.",
-      "image": "assets/banners/generated/banner_kakashi_hope.webp",
-      "includeStandardPool": true
-    },
-    {
-      "id": "feat_naruto_fullout",
-      "name": "Full-Out Battle: Naruto",
-      "type": "featured",
-      "characters": [],
-      "featured": [
-        "naruto_2115"
-      ],
-      "description": "No holding back! Featured Naruto Uzumaki — Full-Out Battle.",
-      "image": "assets/banners/generated/banner_naruto_fullout.webp",
-      "includeStandardPool": true
-    },
-    {
-      "id": "feat_sasuke_solefriend",
-      "name": "Sole Friend: Sasuke",
-      "type": "featured",
-      "characters": [],
-      "featured": [
-        "sasuke_2117"
-      ],
-      "description": "Bonds forged in rivalry never break. Featured Sasuke Uchiha — Sole Friend.",
-      "image": "assets/banners/generated/banner_sasuke_solefriend.webp",
-      "includeStandardPool": true
-    },
-    {
-      "id": "blazing_all_stars",
-      "name": "All-Stars: 100 Random Characters",
-      "type": "random_100",
-      "useRandomPool": true,
-      "characters": [],
-      "featured": [],
-      "description": "100 randomly selected characters from across the entire roster — who will you summon?",
-      "image": "assets/summon/banners/all_stars.png",
-      "includeStandardPool": false
-    },
-    {
-      "id": "bf_naruto_klm",
-      "name": "Blazing Festival: Naruto (KLM)",
-      "type": "blazing-festival",
-      "characters": [],
-      "featured": [
-        "naruto_klm_900"
-      ],
-      "description": "Blazing Festival banner featuring Naruto Uzumaki in Kurama Link Mode!",
-      "image": "assets/summon/banners/bf_naruto_klm.png",
-      "includeStandardPool": true
-    },
-    {
-      "id": "bf_sasuke_rinne",
-      "name": "Blazing Festival: Sasuke (Rinne Sharingan)",
-      "type": "blazing-festival",
-      "characters": [],
-      "featured": [
-        "sasuke_rinne_910"
-      ],
-      "description": "Blazing Festival banner featuring Sasuke with the Rinne Sharingan!",
-      "image": "assets/summon/banners/bf_sasuke_rinne.png",
-      "includeStandardPool": true
-    },
-    {
-      "id": "bf_hashirama",
-      "name": "Blazing Festival: Hashirama",
-      "type": "blazing-festival",
-      "characters": [],
-      "featured": [
-        "hashirama_920"
-      ],
-      "description": "Blazing Festival banner featuring the First Hokage!",
-      "image": "assets/summon/banners/bf_hashirama.png",
-      "includeStandardPool": true
-    },
-    {
-      "id": "bf_madara",
-      "name": "Blazing Festival: Madara",
-      "type": "blazing-festival",
-      "characters": [],
-      "featured": [
-        "madara_930"
-      ],
-      "description": "Blazing Festival banner featuring Madara Uchiha!",
-      "image": "assets/summon/banners/bf_madara.png",
-      "includeStandardPool": true
-    },
-    {
-      "id": "bf_naruto_six_paths",
-      "name": "Blazing Festival: Six Paths Naruto",
-      "type": "blazing-festival",
-      "characters": [],
-      "featured": [
-        "naruto_sosp_950"
-      ],
-      "description": "Blazing Festival banner featuring Naruto with Six Paths Sage Mode!",
-      "image": "assets/summon/banners/bf_naruto_six_paths.png",
-      "includeStandardPool": true
-    },
-    {
-      "id": "bf_sasuke_perfect_susanoo",
-      "name": "Blazing Festival: Sasuke (Perfect Susanoo)",
-      "type": "blazing-festival",
-      "characters": [],
-      "featured": [
-        "sasuke_susanoo_960"
-      ],
-      "description": "Blazing Festival banner featuring Sasuke's Perfect Susanoo!",
-      "image": "assets/summon/banners/bf_sasuke_susanoo.png",
-      "includeStandardPool": true
-    },
-    {
-      "id": "bf_kaguya",
-      "name": "Blazing Festival: Kaguya",
-      "type": "blazing-festival",
-      "characters": [],
-      "featured": [
-        "kaguya_970"
-      ],
-      "description": "Blazing Festival banner featuring Kaguya Otsutsuki!",
-      "image": "assets/summon/banners/bf_kaguya.png",
-      "includeStandardPool": true
-    },
-    {
-      "id": "bf_obito_ten_tails",
-      "name": "Blazing Festival: Obito (Ten Tails)",
-      "type": "blazing-festival",
-      "characters": [],
-      "featured": [
-        "obito_tentails_980"
-      ],
-      "description": "Blazing Festival banner featuring Ten-Tails Jinchuriki Obito!",
-      "image": "assets/summon/banners/bf_obito.png",
-      "includeStandardPool": true
-    },
-    {
-      "id": "bf_might_guy_8th_gate",
-      "name": "Blazing Festival: Might Guy (8th Gate)",
-      "type": "blazing-festival",
-      "characters": [],
-      "featured": [
-        "guy_eightgate_990"
-      ],
-      "description": "Blazing Festival banner featuring Might Guy (Night Guy)!",
-      "image": "assets/summon/banners/bf_guy.png",
-      "includeStandardPool": true
-    },
-    {
-      "id": "bb_naruto_sage",
-      "name": "Blazing Bash: Naruto (Sage Mode)",
-      "type": "blazing-bash",
-      "characters": [],
-      "featured": [
-        "naruto_sage_701"
-      ],
-      "description": "Blazing Bash banner featuring Sage Mode Naruto!",
-      "image": "assets/summon/banners/bb_naruto_sage.png",
-      "includeStandardPool": true
-    },
-    {
-      "id": "bb_sasuke_cm2",
-      "name": "Blazing Bash: Sasuke (CM2)",
-      "type": "blazing-bash",
-      "characters": [],
-      "featured": [
-        "sasuke_cm2_702"
-      ],
-      "description": "Blazing Bash banner featuring Curse Mark Stage 2 Sasuke!",
-      "image": "assets/summon/banners/bb_sasuke_cm2.png",
-      "includeStandardPool": true
-    },
-    {
-      "id": "bb_rock_lee_6th_gate",
-      "name": "Blazing Bash: Rock Lee (6th Gate)",
-      "type": "blazing-bash",
-      "characters": [],
-      "featured": [
-        "lee_gate6_703"
-      ],
-      "description": "Blazing Bash banner featuring Rock Lee using the Sixth Gate!",
-      "image": "assets/summon/banners/bb_lee.png",
-      "includeStandardPool": true
-    },
-    {
-      "id": "bb_gaara_shukaku",
-      "name": "Blazing Bash: Gaara (Shukaku Cloak)",
-      "type": "blazing-bash",
-      "characters": [],
-      "featured": [
-        "gaara_shukaku_704"
-      ],
-      "description": "Blazing Bash banner featuring Gaara in his Shukaku Cloak!",
-      "image": "assets/summon/banners/bb_gaara.png",
-      "includeStandardPool": true
-    },
-    {
-      "id": "bb_neji",
-      "name": "Blazing Bash: Neji",
-      "type": "blazing-bash",
-      "characters": [],
-      "featured": [
-        "neji_705"
-      ],
-      "description": "Blazing Bash banner featuring Neji Hyuga!",
-      "image": "assets/summon/banners/bb_neji.png",
-      "includeStandardPool": true
-    },
-    {
-      "id": "bb_shikamaru",
-      "name": "Blazing Bash: Shikamaru",
-      "type": "blazing-bash",
-      "characters": [],
-      "featured": [
-        "shikamaru_706"
-      ],
-      "description": "Blazing Bash banner featuring Shikamaru Nara!",
-      "image": "assets/summon/banners/bb_shikamaru.png",
-      "includeStandardPool": true
-    },
-    {
-      "id": "anniv1_naruto",
-      "name": "1st Anniversary: Naruto",
-      "type": "anniversary",
-      "characters": [],
-      "featured": [
-        "naruto_anniv1_1000"
-      ],
-      "description": "Special 1st Anniversary Naruto!",
-      "image": "assets/summon/banners/anniv1_naruto.png",
-      "includeStandardPool": true
-    },
-    {
-      "id": "anniv1_sasuke",
-      "name": "1st Anniversary: Sasuke",
-      "type": "anniversary",
-      "characters": [],
-      "featured": [
-        "sasuke_anniv1_1001"
-      ],
-      "description": "Special 1st Anniversary Sasuke!",
-      "image": "assets/summon/banners/anniv1_sasuke.png",
-      "includeStandardPool": true
-    },
-    {
-      "id": "anniv2_naruto",
-      "name": "2nd Anniversary: Naruto",
-      "type": "anniversary",
-      "characters": [],
-      "featured": [
-        "naruto_anniv2_1002"
-      ],
-      "description": "2nd Anniversary Naruto (V5 Mode)!",
-      "image": "assets/summon/banners/anniv2_naruto.png",
-      "includeStandardPool": true
-    },
-    {
-      "id": "anniv2_sasuke",
-      "name": "2nd Anniversary: Sasuke",
-      "type": "anniversary",
-      "characters": [],
-      "featured": [
-        "sasuke_anniv2_1003"
-      ],
-      "description": "2nd Anniversary Sasuke (Complete Susanoo)!",
-      "image": "assets/summon/banners/anniv2_sasuke.png",
-      "includeStandardPool": true
-    },
-    {
-      "id": "anniv3_dual",
-      "name": "3rd Anniversary: Dual Unit",
-      "type": "anniversary",
-      "characters": [],
-      "featured": [
-        "naruto_sasuke_dual_1004"
-      ],
-      "description": "Epic 3rd Anniversary Naruto & Sasuke Dual Unit!",
-      "image": "assets/summon/banners/anniv3_dual.png",
-      "includeStandardPool": true
-    },
-    {
-      "id": "birthday_naruto",
-      "name": "Birthday: Naruto",
-      "type": "birthday",
-      "characters": [],
-      "description": "All Naruto versions are available on this banner!",
-      "image": "assets/summon/banners/birthday_naruto.png",
-      "includes_all_versions": true,
-      "character_name": "Naruto Uzumaki",
-      "includeStandardPool": true
-    },
-    {
-      "id": "birthday_sasuke",
-      "name": "Birthday: Sasuke",
-      "type": "birthday",
-      "characters": [],
-      "description": "All Sasuke versions are available!",
-      "image": "assets/summon/banners/birthday_sasuke.png",
-      "includes_all_versions": true,
-      "character_name": "Sasuke Uchiha",
-      "includeStandardPool": true
-    },
-    {
-      "id": "birthday_sakura",
-      "name": "Birthday: Sakura",
-      "type": "birthday",
-      "characters": [],
-      "description": "All Sakura versions are available!",
-      "image": "assets/summon/banners/birthday_sakura.png",
-      "includes_all_versions": true,
-      "character_name": "Sakura Haruno",
-      "includeStandardPool": true
-    },
-    {
-      "id": "birthday_hinata",
-      "name": "Birthday: Hinata",
-      "type": "birthday",
-      "characters": [],
-      "description": "All Hinata versions are available!",
-      "image": "assets/summon/banners/birthday_hinata.png",
-      "includes_all_versions": true,
-      "character_name": "Hinata Hyuga",
-      "includeStandardPool": true
-    },
-    {
-      "id": "birthday_kakashi",
-      "name": "Birthday: Kakashi",
-      "type": "birthday",
-      "characters": [],
-      "description": "All Kakashi versions are available!",
-      "image": "assets/summon/banners/birthday_kakashi.png",
-      "includes_all_versions": true,
-      "character_name": "Kakashi Hatake",
-      "includeStandardPool": true
-    },
-    {
-      "id": "birthday_itachi",
-      "name": "Birthday: Itachi",
-      "type": "birthday",
-      "characters": [],
-      "description": "All Itachi versions are available!",
-      "image": "assets/summon/banners/birthday_itachi.png",
-      "includes_all_versions": true,
-      "character_name": "Itachi Uchiha",
-      "includeStandardPool": true
-    },
-    {
-      "id": "birthday_obito",
-      "name": "Birthday: Obito",
-      "type": "birthday",
-      "characters": [],
-      "description": "All Obito versions are available!",
-      "image": "assets/summon/banners/birthday_obito.png",
-      "includes_all_versions": true,
-      "character_name": "Obito Uchiha",
-      "includeStandardPool": true
-    },
-    {
-      "id": "birthday_shikamaru",
-      "name": "Birthday: Shikamaru",
-      "type": "birthday",
-      "characters": [],
-      "description": "All Shikamaru versions are available!",
-      "image": "assets/summon/banners/birthday_shikamaru.png",
-      "includes_all_versions": true,
-      "character_name": "Shikamaru Nara",
-      "includeStandardPool": true
-    },
-    {
-      "id": "birthday_gaara",
-      "name": "Birthday: Gaara",
-      "type": "birthday",
-      "characters": [],
-      "description": "All Gaara versions are available!",
-      "image": "assets/summon/banners/birthday_gaara.png",
-      "includes_all_versions": true,
-      "character_name": "Gaara",
-      "includeStandardPool": true
-    },
-    {
-      "id": "birthday_tsunade",
-      "name": "Birthday: Tsunade",
-      "type": "birthday",
-      "characters": [],
-      "description": "All Tsunade versions are available!",
-      "image": "assets/summon/banners/birthday_tsunade.png",
-      "includes_all_versions": true,
-      "character_name": "Tsunade",
-      "includeStandardPool": true
-    },
-    {
-      "id": "birthday_jiraiya",
-      "name": "Birthday: Jiraiya",
-      "type": "birthday",
-      "characters": [],
-      "description": "All Jiraiya versions are available!",
-      "image": "assets/summon/banners/birthday_jiraiya.png",
-      "includes_all_versions": true,
-      "character_name": "Jiraiya",
-      "includeStandardPool": true
-    },
-    {
-      "id": "birthday_minato",
-      "name": "Birthday: Minato",
-      "type": "birthday",
-      "characters": [],
-      "description": "All Minato versions are available!",
-      "image": "assets/summon/banners/birthday_minato.png",
-      "includes_all_versions": true,
-      "character_name": "Minato Namikaze",
-      "includeStandardPool": true
-    },
-    {
-      "id": "feat_ashura_2109",
-      "name": "The Power of Bonds: Ashura",
-      "type": "featured",
-      "characters": [],
-      "featured": [
-        "ashura_2109"
-      ],
-      "description": "Featured ★ Ashura — The Power of Bonds.",
-      "image": "assets/banners/generated/banner_ashura_2109.webp",
-      "includeStandardPool": true
-    },
-    {
-      "id": "feat_deidara_884",
-      "name": "Creation of Light: Deidara",
-      "type": "featured",
-      "characters": [],
-      "featured": [
-        "deidara_884"
-      ],
-      "description": "Featured ★ Deidara — Creation of Light.",
-      "image": "assets/banners/generated/banner_deidara_884.webp",
-      "includeStandardPool": true
-    },
-    {
-      "id": "feat_gaara_834",
-      "name": "Finally, Friendship: Gaara",
-      "type": "featured",
-      "characters": [],
-      "featured": [
-        "gaara_834"
-      ],
-      "description": "Featured ★ Gaara — Finally, Friendship.",
-      "image": "assets/banners/generated/banner_gaara_834.webp",
-      "includeStandardPool": true
-    },
-    {
-      "id": "feat_gaara_283",
-      "name": "Protector of the Sands: Gaara",
-      "type": "featured",
-      "characters": [],
-      "featured": [
-        "gaara_283"
-      ],
-      "description": "Featured ★ Gaara — Protector of the Sands.",
-      "image": "assets/banners/generated/banner_gaara_283.webp",
-      "includeStandardPool": true
-    },
-    {
-      "id": "feat_gaara_173",
-      "name": "The Sand's Final Weapon: Gaara",
-      "type": "featured",
-      "characters": [],
-      "featured": [
-        "gaara_173"
-      ],
-      "description": "Featured ★ Gaara — The Sand's Final Weapon.",
-      "image": "assets/banners/generated/banner_gaara_173.webp",
-      "includeStandardPool": true
-    },
-    {
-      "id": "feat_hashirama_745",
-      "name": "Amongst the Strongest: Hashirama Senju",
-      "type": "featured",
-      "characters": [],
-      "featured": [
-        "hashirama_745"
-      ],
-      "description": "Featured ★ Hashirama Senju — Amongst the Strongest.",
-      "image": "assets/banners/generated/banner_hashirama_745.webp",
-      "includeStandardPool": true
-    },
-    {
-      "id": "feat_hashirama_417",
-      "name": "Bravery Unrivalled: Hashirama Senju",
-      "type": "featured",
-      "characters": [],
-      "featured": [
-        "hashirama_417"
-      ],
-      "description": "Featured ★ Hashirama Senju — Bravery Unrivalled.",
-      "image": "assets/banners/generated/banner_hashirama_417.webp",
-      "includeStandardPool": true
-    },
-    {
-      "id": "feat_hashirama_2057",
-      "name": "Resolve to Protect: Hashirama Senju",
-      "type": "featured",
-      "characters": [],
-      "featured": [
-        "hashirama_2057"
-      ],
-      "description": "Featured ★ Hashirama Senju — Resolve to Protect.",
-      "image": "assets/banners/generated/banner_hashirama_2057.webp",
-      "includeStandardPool": true
-    },
-    {
-      "id": "feat_indra_787",
-      "name": "Unparalleled Genius: Indra",
-      "type": "featured",
-      "characters": [],
-      "featured": [
-        "indra_787"
-      ],
-      "description": "Featured ★ Indra — Unparalleled Genius.",
-      "image": "assets/banners/generated/banner_indra_787.webp",
-      "includeStandardPool": true
-    },
-    {
-      "id": "feat_itachi_210",
-      "name": "Beyond the Sharingan: Itachi Uchiha",
-      "type": "featured",
-      "characters": [],
-      "featured": [
-        "itachi_210"
-      ],
-      "description": "Featured ★ Itachi Uchiha — Beyond the Sharingan.",
-      "image": "assets/banners/generated/banner_itachi_210.webp",
-      "includeStandardPool": true
-    },
-    {
-      "id": "feat_itachi_699",
-      "name": "Brotherly Pledge: Itachi Uchiha",
-      "type": "featured",
-      "characters": [],
-      "featured": [
-        "itachi_699"
-      ],
-      "description": "Featured ★ Itachi Uchiha — Brotherly Pledge.",
-      "image": "assets/banners/generated/banner_itachi_699.webp",
-      "includeStandardPool": true
-    },
-    {
-      "id": "feat_jiraiya_610",
-      "name": "Moment of Choice: Jiraiya",
-      "type": "featured",
-      "characters": [],
-      "featured": [
-        "jiraiya_610"
-      ],
-      "description": "Featured ★ Jiraiya — Moment of Choice.",
-      "image": "assets/banners/generated/banner_jiraiya_610.webp",
-      "includeStandardPool": true
-    },
-    {
-      "id": "feat_kabuto_642",
-      "name": "Dragon Transformation: Kabuto Yakushi",
-      "type": "featured",
-      "characters": [],
-      "featured": [
-        "kabuto_642"
-      ],
-      "description": "Featured ★ Kabuto Yakushi — Dragon Transformation.",
-      "image": "assets/banners/generated/banner_kabuto_642.webp",
-      "includeStandardPool": true
-    },
-    {
-      "id": "feat_kaguya_593",
-      "name": "Divine Madness: Kaguya Otsutsuki",
-      "type": "featured",
-      "characters": [],
-      "featured": [
-        "kaguya_593"
-      ],
-      "description": "Featured ★ Kaguya Otsutsuki — Divine Madness.",
-      "image": "assets/banners/generated/banner_kaguya_593.webp",
-      "includeStandardPool": true
-    },
-    {
-      "id": "feat_kaguya_2042",
-      "name": "Forbidden Fruit: Kaguya Otsutsuki",
-      "type": "featured",
-      "characters": [],
-      "featured": [
-        "kaguya_2042"
-      ],
-      "description": "Featured ★ Kaguya Otsutsuki — Forbidden Fruit.",
-      "image": "assets/banners/generated/banner_kaguya_2042.webp",
-      "includeStandardPool": true
-    },
-    {
-      "id": "feat_kakashi_854",
-      "name": "Friend's Way of Life: Kakashi Hatake",
-      "type": "featured",
-      "characters": [],
-      "featured": [
-        "kakashi_854"
-      ],
-      "description": "Featured ★ Kakashi Hatake — Friend's Way of Life.",
-      "image": "assets/banners/generated/banner_kakashi_854.webp",
-      "includeStandardPool": true
-    },
-    {
-      "id": "feat_kakashi_734",
-      "name": "Iron Resolve: Kakashi Hatake",
-      "type": "featured",
-      "characters": [],
-      "featured": [
-        "kakashi_734"
-      ],
-      "description": "Featured ★ Kakashi Hatake — Iron Resolve.",
-      "image": "assets/banners/generated/banner_kakashi_734.webp",
-      "includeStandardPool": true
-    },
-    {
-      "id": "feat_killer_354",
-      "name": "Completed Jinchuriki: Killer Bee",
-      "type": "featured",
-      "characters": [],
-      "featured": [
-        "killer_354"
-      ],
-      "description": "Featured ★ Killer Bee — Completed Jinchuriki.",
-      "image": "assets/banners/generated/banner_killer_354.webp",
-      "includeStandardPool": true
-    },
-    {
-      "id": "feat_madara_589",
-      "name": "Endless Moonlight: Madara Uchiha",
-      "type": "featured",
-      "characters": [],
-      "featured": [
-        "madara_589"
-      ],
-      "description": "Featured ★ Madara Uchiha — Endless Moonlight.",
-      "image": "assets/banners/generated/banner_madara_589.webp",
-      "includeStandardPool": true
-    },
-    {
-      "id": "feat_madara_747",
-      "name": "Phantasy's Beckoning Light: Madara Uchiha",
-      "type": "featured",
-      "characters": [],
-      "featured": [
-        "madara_747"
-      ],
-      "description": "Featured ★ Madara Uchiha — Phantasy's Beckoning Light.",
-      "image": "assets/banners/generated/banner_madara_747.webp",
-      "includeStandardPool": true
-    },
-    {
-      "id": "feat_madara_680",
-      "name": "Power of Life or Death: Madara Uchiha",
-      "type": "featured",
-      "characters": [],
-      "featured": [
-        "madara_680"
-      ],
-      "description": "Featured ★ Madara Uchiha — Power of Life or Death.",
-      "image": "assets/banners/generated/banner_madara_680.webp",
-      "includeStandardPool": true
-    },
-    {
-      "id": "feat_madara_333",
-      "name": "The Vilest Name: Madara Uchiha",
-      "type": "featured",
-      "characters": [],
-      "featured": [
-        "madara_333"
-      ],
-      "description": "Featured ★ Madara Uchiha — The Vilest Name.",
-      "image": "assets/banners/generated/banner_madara_333.webp",
-      "includeStandardPool": true
-    },
-    {
-      "id": "feat_might_486",
-      "name": "Deep Crimson Youth: Might Guy",
-      "type": "featured",
-      "characters": [],
-      "featured": [
-        "might_486"
-      ],
-      "description": "Featured ★ Might Guy — Deep Crimson Youth.",
-      "image": "assets/banners/generated/banner_might_486.webp",
-      "includeStandardPool": true
-    },
-    {
-      "id": "feat_minato_2100",
-      "name": "Raikosekka: Minato Namikaze",
-      "type": "featured",
-      "characters": [],
-      "featured": [
-        "minato_2100"
-      ],
-      "description": "Featured ★ Minato Namikaze — Raikosekka.",
-      "image": "assets/banners/generated/banner_minato_2100.webp",
-      "includeStandardPool": true
-    },
-    {
-      "id": "feat_minato_229",
-      "name": "Rapid Lightning: Minato Namikaze",
-      "type": "featured",
-      "characters": [],
-      "featured": [
-        "minato_229"
-      ],
-      "description": "Featured ★ Minato Namikaze — Rapid Lightning.",
-      "image": "assets/banners/generated/banner_minato_229.webp",
-      "includeStandardPool": true
-    },
-    {
-      "id": "feat_minato_627",
-      "name": "Swift Flash: Minato Namikaze",
-      "type": "featured",
-      "characters": [],
-      "featured": [
-        "minato_627"
-      ],
-      "description": "Featured ★ Minato Namikaze — Swift Flash.",
-      "image": "assets/banners/generated/banner_minato_627.webp",
-      "includeStandardPool": true
-    },
-    {
-      "id": "feat_minato_760",
-      "name": "Unfading Courage: Minato Namikaze",
-      "type": "featured",
-      "characters": [],
-      "featured": [
-        "minato_760"
-      ],
-      "description": "Featured ★ Minato Namikaze — Unfading Courage.",
-      "image": "assets/banners/generated/banner_minato_760.webp",
-      "includeStandardPool": true
-    },
-    {
-      "id": "feat_nagato_534",
-      "name": "Reunion with Hope: Nagato",
-      "type": "featured",
-      "characters": [],
-      "featured": [
-        "nagato_534"
-      ],
-      "description": "Featured ★ Nagato — Reunion with Hope.",
-      "image": "assets/banners/generated/banner_nagato_534.webp",
-      "includeStandardPool": true
-    },
-    {
-      "id": "feat_naruto_660",
-      "name": "As a Friend: Naruto Uzumaki",
-      "type": "featured",
-      "characters": [],
-      "featured": [
-        "naruto_660"
-      ],
-      "description": "Featured ★ Naruto Uzumaki — As a Friend.",
-      "image": "assets/banners/generated/banner_naruto_660.webp",
-      "includeStandardPool": true
-    },
-    {
-      "id": "feat_naruto_259",
-      "name": "Nine Tails' Shroud: Naruto Uzumaki",
-      "type": "featured",
-      "characters": [],
-      "featured": [
-        "naruto_259"
-      ],
-      "description": "Featured ★ Naruto Uzumaki — Nine Tails' Shroud.",
-      "image": "assets/banners/generated/banner_naruto_259.webp",
-      "includeStandardPool": true
-    },
-    {
-      "id": "feat_naruto_551",
-      "name": "Proof of Ties That Bind: Naruto Uzumaki",
-      "type": "featured",
-      "characters": [],
-      "featured": [
-        "naruto_551"
-      ],
-      "description": "Featured ★ Naruto Uzumaki — Proof of Ties That Bind.",
-      "image": "assets/banners/generated/banner_naruto_551.webp",
-      "includeStandardPool": true
-    },
-    {
-      "id": "feat_naruto_2137",
-      "name": "Roaring Tears: Naruto Uzumaki",
-      "type": "featured",
-      "characters": [],
-      "featured": [
-        "naruto_2137"
-      ],
-      "description": "Featured ★ Naruto Uzumaki — Roaring Tears.",
-      "image": "assets/banners/generated/banner_naruto_2137.webp",
-      "includeStandardPool": true
-    },
-    {
-      "id": "feat_naruto_427",
-      "name": "Seal of Light: Naruto Uzumaki",
-      "type": "featured",
-      "characters": [],
-      "featured": [
-        "naruto_427"
-      ],
-      "description": "Featured ★ Naruto Uzumaki — Seal of Light.",
-      "image": "assets/banners/generated/banner_naruto_427.webp",
-      "includeStandardPool": true
-    },
-    {
-      "id": "feat_obito_394",
-      "name": "Despair of Loneliness: Obito Uchiha",
-      "type": "featured",
-      "characters": [],
-      "featured": [
-        "obito_394"
-      ],
-      "description": "Featured ★ Obito Uchiha — Despair of Loneliness.",
-      "image": "assets/banners/generated/banner_obito_394.webp",
-      "includeStandardPool": true
-    },
-    {
-      "id": "feat_obito_468",
-      "name": "Drawn to Life: Obito Uchiha",
-      "type": "featured",
-      "characters": [],
-      "featured": [
-        "obito_468"
-      ],
-      "description": "Featured ★ Obito Uchiha — Drawn to Life.",
-      "image": "assets/banners/generated/banner_obito_468.webp",
-      "includeStandardPool": true
-    },
-    {
-      "id": "feat_obito_856",
-      "name": "The Final Destination: Obito Uchiha",
-      "type": "featured",
-      "characters": [],
-      "featured": [
-        "obito_856"
-      ],
-      "description": "Featured ★ Obito Uchiha — The Final Destination.",
-      "image": "assets/banners/generated/banner_obito_856.webp",
-      "includeStandardPool": true
-    },
-    {
-      "id": "feat_pain_451",
-      "name": "Signal Flare of Revolution: Pain (Tendo)",
-      "type": "featured",
-      "characters": [],
-      "featured": [
-        "pain_451"
-      ],
-      "description": "Featured ★ Pain (Tendo) — Signal Flare of Revolution.",
-      "image": "assets/banners/generated/banner_pain_451.webp",
-      "includeStandardPool": true
-    },
-    {
-      "id": "feat_pain_817",
-      "name": "Visage of Justice: Pain (Tendo)",
-      "type": "featured",
-      "characters": [],
-      "featured": [
-        "pain_817"
-      ],
-      "description": "Featured ★ Pain (Tendo) — Visage of Justice.",
-      "image": "assets/banners/generated/banner_pain_817.webp",
-      "includeStandardPool": true
-    },
-    {
-      "id": "feat_rock_148",
-      "name": "The Eight Gates: Rock Lee",
-      "type": "featured",
-      "characters": [],
-      "featured": [
-        "rock_148"
-      ],
-      "description": "Featured ★ Rock Lee — The Eight Gates.",
-      "image": "assets/banners/generated/banner_rock_148.webp",
-      "includeStandardPool": true
-    },
-    {
-      "id": "feat_sakura_2069",
-      "name": "Back to Back: Sakura Haruno",
-      "type": "featured",
-      "characters": [],
-      "featured": [
-        "sakura_2069"
-      ],
-      "description": "Featured ★ Sakura Haruno — Back to Back.",
-      "image": "assets/banners/generated/banner_sakura_2069.webp",
-      "includeStandardPool": true
-    },
-    {
-      "id": "feat_sakura_510",
-      "name": "Sheer Diligence: Sakura Haruno",
-      "type": "featured",
-      "characters": [],
-      "featured": [
-        "sakura_510"
-      ],
-      "description": "Featured ★ Sakura Haruno — Sheer Diligence.",
-      "image": "assets/banners/generated/banner_sakura_510.webp",
-      "includeStandardPool": true
-    },
-    {
-      "id": "feat_sasori_882",
-      "name": "Eternal Creation: Sasori",
-      "type": "featured",
-      "characters": [],
-      "featured": [
-        "sasori_882"
-      ],
-      "description": "Featured ★ Sasori — Eternal Creation.",
-      "image": "assets/banners/generated/banner_sasori_882.webp",
-      "includeStandardPool": true
-    },
-    {
-      "id": "feat_sasuke_2029",
-      "name": "Battling with your eyes: Sasuke Uchiha",
-      "type": "featured",
-      "characters": [],
-      "featured": [
-        "sasuke_2029"
-      ],
-      "description": "Featured ★ Sasuke Uchiha — Battling with your eyes.",
-      "image": "assets/banners/generated/banner_sasuke_2029.webp",
-      "includeStandardPool": true
-    },
-    {
-      "id": "feat_sasuke_802",
-      "name": "Judging the Conventional: Sasuke Uchiha",
-      "type": "featured",
-      "characters": [],
-      "featured": [
-        "sasuke_802"
-      ],
-      "description": "Featured ★ Sasuke Uchiha — Judging the Conventional.",
-      "image": "assets/banners/generated/banner_sasuke_802.webp",
-      "includeStandardPool": true
-    },
-    {
-      "id": "feat_sasuke_568",
-      "name": "Long Road to Atonement: Sasuke Uchiha",
-      "type": "featured",
-      "characters": [],
-      "featured": [
-        "sasuke_568"
-      ],
-      "description": "Featured ★ Sasuke Uchiha — Long Road to Atonement.",
-      "image": "assets/banners/generated/banner_sasuke_568.webp",
-      "includeStandardPool": true
-    },
-    {
-      "id": "feat_sasuke_2131",
-      "name": "Rain of Extinction: Sasuke Uchiha",
-      "type": "featured",
-      "characters": [],
-      "featured": [
-        "sasuke_2131"
-      ],
-      "description": "Featured ★ Sasuke Uchiha — Rain of Extinction.",
-      "image": "assets/banners/generated/banner_sasuke_2131.webp",
-      "includeStandardPool": true
-    },
-    {
-      "id": "feat_sasuke_429",
-      "name": "Seal of Shadow: Sasuke Uchiha",
-      "type": "featured",
-      "characters": [],
-      "featured": [
-        "sasuke_429"
-      ],
-      "description": "Featured ★ Sasuke Uchiha — Seal of Shadow.",
-      "image": "assets/banners/generated/banner_sasuke_429.webp",
-      "includeStandardPool": true
-    },
-    {
-      "id": "feat_sasuke_662",
-      "name": "To Eternal Loneliness: Sasuke Uchiha",
-      "type": "featured",
-      "characters": [],
-      "featured": [
-        "sasuke_662"
-      ],
-      "description": "Featured ★ Sasuke Uchiha — To Eternal Loneliness.",
-      "image": "assets/banners/generated/banner_sasuke_662.webp",
-      "includeStandardPool": true
-    },
-    {
-      "id": "feat_shikamaru_846",
-      "name": "Surpassing the Master: Shikamaru Nara",
-      "type": "featured",
-      "characters": [],
-      "featured": [
-        "shikamaru_846"
-      ],
-      "description": "Featured ★ Shikamaru Nara — Surpassing the Master.",
-      "image": "assets/banners/generated/banner_shikamaru_846.webp",
-      "includeStandardPool": true
-    },
-    {
-      "id": "feat_shisui_714",
-      "name": "Eyes Inviting Illusion: Shisui Uchiha",
-      "type": "featured",
-      "characters": [],
-      "featured": [
-        "shisui_714"
-      ],
-      "description": "Featured ★ Shisui Uchiha — Eyes Inviting Illusion.",
-      "image": "assets/banners/generated/banner_shisui_714.webp",
-      "includeStandardPool": true
-    },
-    {
-      "id": "feat_tsunade_2014",
-      "name": "Protector of the Great Tree: Tsunade",
-      "type": "featured",
-      "characters": [],
-      "featured": [
-        "tsunade_2014"
-      ],
-      "description": "Featured ★ Tsunade — Protector of the Great Tree.",
-      "image": "assets/banners/generated/banner_tsunade_2014.webp",
-      "includeStandardPool": true
-    },
-    {
-      "id": "feat_tsunade_375",
-      "name": "The Will of Blooming Flames: Tsunade",
-      "type": "featured",
-      "characters": [],
-      "featured": [
-        "tsunade_375"
-      ],
-      "description": "Featured ★ Tsunade — The Will of Blooming Flames.",
-      "image": "assets/banners/generated/banner_tsunade_375.webp",
-      "includeStandardPool": true
-    },
-    {
-      "id": "feat_utakata_310",
-      "name": "Fleeting Tranquility: Utakata",
-      "type": "featured",
-      "characters": [],
-      "featured": [
-        "utakata_310"
-      ],
-      "description": "Featured ★ Utakata — Fleeting Tranquility.",
-      "image": "assets/banners/generated/banner_utakata_310.webp",
-      "includeStandardPool": true
-    },
-    {
-      "id": "feat_zabuza_142",
-      "name": "Silent Madness: Zabuza Momochi",
-      "type": "featured",
-      "characters": [],
-      "featured": [
-        "zabuza_142"
-      ],
-      "description": "Featured ★ Zabuza Momochi — Silent Madness.",
-      "image": "assets/banners/generated/banner_zabuza_142.webp",
-      "includeStandardPool": true
-    }
-  ]
+  {
+   "id": "feat_hinata_redemptive",
+   "name": "Redemptive Words: Hinata",
+   "type": "featured",
+   "characters": [],
+   "featured": [
+    "hinata_2003"
+   ],
+   "description": "Words that reach the heart. Featured ★6 Hinata Hyuga — Redemptive Words.",
+   "image": "assets/banners/generated/banner_hinata_redemptive.webp",
+   "includeStandardPool": true
+  },
+  {
+   "id": "feat_itachi_burden",
+   "name": "Talent and Burden: Itachi",
+   "type": "featured",
+   "characters": [],
+   "featured": [
+    "itachi_2199"
+   ],
+   "description": "The weight of genius. Featured ★6 Itachi Uchiha — Talent and Burden (Blazing Awakened).",
+   "image": "assets/banners/generated/banner_itachi_burden.webp",
+   "includeStandardPool": true
+  },
+  {
+   "id": "feat_itachi_promised",
+   "name": "The Promised Day: Itachi",
+   "type": "featured",
+   "characters": [],
+   "featured": [
+    "itachi_2032"
+   ],
+   "description": "A vow kept to the end. Featured ★6 Itachi Uchiha — The Promised Day.",
+   "image": "assets/banners/generated/banner_itachi_promised.webp",
+   "includeStandardPool": true
+  },
+  {
+   "id": "feat_itachi_future",
+   "name": "Eyes Gazing Over the Future: Itachi",
+   "type": "featured",
+   "characters": [],
+   "featured": [
+    "itachi_575"
+   ],
+   "description": "Looking beyond the horizon. Featured ★6 Itachi Uchiha — Eyes Gazing Over the Future (Blazing Awakened).",
+   "image": "assets/banners/generated/banner_itachi_future.webp",
+   "includeStandardPool": true
+  },
+  {
+   "id": "feat_naruto_pervading",
+   "name": "Pervading Feelings: Naruto",
+   "type": "featured",
+   "characters": [],
+   "featured": [
+    "naruto_801"
+   ],
+   "description": "Feelings that reach everyone. Featured ★6 Naruto Uzumaki — Pervading Feelings.",
+   "image": "assets/banners/generated/banner_naruto_pervading.webp",
+   "includeStandardPool": true
+  },
+  {
+   "id": "feat_minato_dazzling",
+   "name": "Dazzling Bravery: Minato",
+   "type": "featured",
+   "characters": [],
+   "featured": [
+    "minato_741"
+   ],
+   "description": "The Yellow Flash strikes in an instant! Featured ★6 Minato Namikaze — Dazzling Bravery (Blazing Awakened).",
+   "image": "assets/banners/generated/banner_minato_dazzling.webp",
+   "includeStandardPool": true
+  },
+  {
+   "id": "feat_naruto_future",
+   "name": "The Future We Want: Naruto",
+   "type": "featured",
+   "characters": [],
+   "featured": [
+    "naruto_864"
+   ],
+   "description": "Carry hope forward! Featured ★6 Naruto Uzumaki — The Future We Want (Blazing Awakened).",
+   "image": "assets/banners/generated/banner_naruto_future.webp",
+   "includeStandardPool": true
+  },
+  {
+   "id": "feat_obito_darkness",
+   "name": "Into Total Darkness: Obito",
+   "type": "featured",
+   "characters": [],
+   "featured": [
+    "obito_671"
+   ],
+   "description": "Descend into the void. Featured ★6 Obito Uchiha — Into Total Darkness (Blazing Awakened).",
+   "image": "assets/banners/generated/banner_obito_darkness.webp",
+   "includeStandardPool": true
+  },
+  {
+   "id": "feat_obito_illusory",
+   "name": "The Illusory World: Obito",
+   "type": "featured",
+   "characters": [],
+   "featured": [
+    "obito_2081"
+   ],
+   "description": "A dream none can escape. Featured ★6 Obito Uchiha — The Illusory World.",
+   "image": "assets/banners/generated/banner_obito_illusory.webp",
+   "includeStandardPool": true
+  },
+  {
+   "id": "feat_naruto_endowed",
+   "name": "Endowed Power: Six Paths Naruto",
+   "type": "featured",
+   "characters": [],
+   "featured": [
+    "naruto_2090"
+   ],
+   "description": "The power of the Sage of Six Paths descends! Featured ★7 Naruto Uzumaki — Endowed Power.",
+   "image": "assets/banners/generated/banner_naruto_endowed.webp",
+   "includeStandardPool": true
+  },
+  {
+   "id": "feat_kakashi_hope",
+   "name": "Entrusted With Hope: Kakashi",
+   "type": "featured",
+   "characters": [],
+   "featured": [
+    "kakashi_2091"
+   ],
+   "description": "The Copy Ninja carries the will of those before him. Featured Kakashi Hatake — Entrusted With Hope.",
+   "image": "assets/banners/generated/banner_kakashi_hope.webp",
+   "includeStandardPool": true
+  },
+  {
+   "id": "feat_naruto_fullout",
+   "name": "Full-Out Battle: Naruto",
+   "type": "featured",
+   "characters": [],
+   "featured": [
+    "naruto_2115"
+   ],
+   "description": "No holding back! Featured Naruto Uzumaki — Full-Out Battle.",
+   "image": "assets/banners/generated/banner_naruto_fullout.webp",
+   "includeStandardPool": true
+  },
+  {
+   "id": "feat_sasuke_solefriend",
+   "name": "Sole Friend: Sasuke",
+   "type": "featured",
+   "characters": [],
+   "featured": [
+    "sasuke_2117"
+   ],
+   "description": "Bonds forged in rivalry never break. Featured Sasuke Uchiha — Sole Friend.",
+   "image": "assets/banners/generated/banner_sasuke_solefriend.webp",
+   "includeStandardPool": true
+  },
+  {
+   "id": "blazing_all_stars",
+   "name": "All-Stars: 100 Random Characters",
+   "type": "random_100",
+   "useRandomPool": true,
+   "characters": [],
+   "featured": [],
+   "description": "100 randomly selected characters from across the entire roster — who will you summon?",
+   "image": "assets/summon/banners/all_stars.png",
+   "includeStandardPool": false,
+   "hidden": true
+  },
+  {
+   "id": "bf_naruto_klm",
+   "name": "Blazing Festival: Naruto (KLM)",
+   "type": "blazing-festival",
+   "characters": [],
+   "featured": [
+    "naruto_klm_900"
+   ],
+   "description": "Blazing Festival banner featuring Naruto Uzumaki in Kurama Link Mode!",
+   "image": "assets/summon/banners/bf_naruto_klm.png",
+   "includeStandardPool": true,
+   "hidden": true
+  },
+  {
+   "id": "bf_sasuke_rinne",
+   "name": "Blazing Festival: Sasuke (Rinne Sharingan)",
+   "type": "blazing-festival",
+   "characters": [],
+   "featured": [
+    "sasuke_rinne_910"
+   ],
+   "description": "Blazing Festival banner featuring Sasuke with the Rinne Sharingan!",
+   "image": "assets/summon/banners/bf_sasuke_rinne.png",
+   "includeStandardPool": true,
+   "hidden": true
+  },
+  {
+   "id": "bf_hashirama",
+   "name": "Blazing Festival: Hashirama",
+   "type": "blazing-festival",
+   "characters": [],
+   "featured": [
+    "hashirama_920"
+   ],
+   "description": "Blazing Festival banner featuring the First Hokage!",
+   "image": "assets/summon/banners/bf_hashirama.png",
+   "includeStandardPool": true,
+   "hidden": true
+  },
+  {
+   "id": "bf_madara",
+   "name": "Blazing Festival: Madara",
+   "type": "blazing-festival",
+   "characters": [],
+   "featured": [
+    "madara_930"
+   ],
+   "description": "Blazing Festival banner featuring Madara Uchiha!",
+   "image": "assets/summon/banners/bf_madara.png",
+   "includeStandardPool": true,
+   "hidden": true
+  },
+  {
+   "id": "bf_naruto_six_paths",
+   "name": "Blazing Festival: Six Paths Naruto",
+   "type": "blazing-festival",
+   "characters": [],
+   "featured": [
+    "naruto_sosp_950"
+   ],
+   "description": "Blazing Festival banner featuring Naruto with Six Paths Sage Mode!",
+   "image": "assets/summon/banners/bf_naruto_six_paths.png",
+   "includeStandardPool": true,
+   "hidden": true
+  },
+  {
+   "id": "bf_sasuke_perfect_susanoo",
+   "name": "Blazing Festival: Sasuke (Perfect Susanoo)",
+   "type": "blazing-festival",
+   "characters": [],
+   "featured": [
+    "sasuke_susanoo_960"
+   ],
+   "description": "Blazing Festival banner featuring Sasuke's Perfect Susanoo!",
+   "image": "assets/summon/banners/bf_sasuke_susanoo.png",
+   "includeStandardPool": true,
+   "hidden": true
+  },
+  {
+   "id": "bf_kaguya",
+   "name": "Blazing Festival: Kaguya",
+   "type": "blazing-festival",
+   "characters": [],
+   "featured": [
+    "kaguya_970"
+   ],
+   "description": "Blazing Festival banner featuring Kaguya Otsutsuki!",
+   "image": "assets/summon/banners/bf_kaguya.png",
+   "includeStandardPool": true,
+   "hidden": true
+  },
+  {
+   "id": "bf_obito_ten_tails",
+   "name": "Blazing Festival: Obito (Ten Tails)",
+   "type": "blazing-festival",
+   "characters": [],
+   "featured": [
+    "obito_tentails_980"
+   ],
+   "description": "Blazing Festival banner featuring Ten-Tails Jinchuriki Obito!",
+   "image": "assets/summon/banners/bf_obito.png",
+   "includeStandardPool": true,
+   "hidden": true
+  },
+  {
+   "id": "bf_might_guy_8th_gate",
+   "name": "Blazing Festival: Might Guy (8th Gate)",
+   "type": "blazing-festival",
+   "characters": [],
+   "featured": [
+    "guy_eightgate_990"
+   ],
+   "description": "Blazing Festival banner featuring Might Guy (Night Guy)!",
+   "image": "assets/summon/banners/bf_guy.png",
+   "includeStandardPool": true,
+   "hidden": true
+  },
+  {
+   "id": "bb_naruto_sage",
+   "name": "Blazing Bash: Naruto (Sage Mode)",
+   "type": "blazing-bash",
+   "characters": [],
+   "featured": [
+    "naruto_sage_701"
+   ],
+   "description": "Blazing Bash banner featuring Sage Mode Naruto!",
+   "image": "assets/summon/banners/bb_naruto_sage.png",
+   "includeStandardPool": true,
+   "hidden": true
+  },
+  {
+   "id": "bb_sasuke_cm2",
+   "name": "Blazing Bash: Sasuke (CM2)",
+   "type": "blazing-bash",
+   "characters": [],
+   "featured": [
+    "sasuke_cm2_702"
+   ],
+   "description": "Blazing Bash banner featuring Curse Mark Stage 2 Sasuke!",
+   "image": "assets/summon/banners/bb_sasuke_cm2.png",
+   "includeStandardPool": true,
+   "hidden": true
+  },
+  {
+   "id": "bb_rock_lee_6th_gate",
+   "name": "Blazing Bash: Rock Lee (6th Gate)",
+   "type": "blazing-bash",
+   "characters": [],
+   "featured": [
+    "lee_gate6_703"
+   ],
+   "description": "Blazing Bash banner featuring Rock Lee using the Sixth Gate!",
+   "image": "assets/summon/banners/bb_lee.png",
+   "includeStandardPool": true,
+   "hidden": true
+  },
+  {
+   "id": "bb_gaara_shukaku",
+   "name": "Blazing Bash: Gaara (Shukaku Cloak)",
+   "type": "blazing-bash",
+   "characters": [],
+   "featured": [
+    "gaara_shukaku_704"
+   ],
+   "description": "Blazing Bash banner featuring Gaara in his Shukaku Cloak!",
+   "image": "assets/summon/banners/bb_gaara.png",
+   "includeStandardPool": true,
+   "hidden": true
+  },
+  {
+   "id": "bb_neji",
+   "name": "Blazing Bash: Neji",
+   "type": "blazing-bash",
+   "characters": [],
+   "featured": [
+    "neji_705"
+   ],
+   "description": "Blazing Bash banner featuring Neji Hyuga!",
+   "image": "assets/summon/banners/bb_neji.png",
+   "includeStandardPool": true,
+   "hidden": true
+  },
+  {
+   "id": "bb_shikamaru",
+   "name": "Blazing Bash: Shikamaru",
+   "type": "blazing-bash",
+   "characters": [],
+   "featured": [
+    "shikamaru_706"
+   ],
+   "description": "Blazing Bash banner featuring Shikamaru Nara!",
+   "image": "assets/summon/banners/bb_shikamaru.png",
+   "includeStandardPool": true,
+   "hidden": true
+  },
+  {
+   "id": "anniv1_naruto",
+   "name": "1st Anniversary: Naruto",
+   "type": "anniversary",
+   "characters": [],
+   "featured": [
+    "naruto_anniv1_1000"
+   ],
+   "description": "Special 1st Anniversary Naruto!",
+   "image": "assets/summon/banners/anniv1_naruto.png",
+   "includeStandardPool": true,
+   "hidden": true
+  },
+  {
+   "id": "anniv1_sasuke",
+   "name": "1st Anniversary: Sasuke",
+   "type": "anniversary",
+   "characters": [],
+   "featured": [
+    "sasuke_anniv1_1001"
+   ],
+   "description": "Special 1st Anniversary Sasuke!",
+   "image": "assets/summon/banners/anniv1_sasuke.png",
+   "includeStandardPool": true,
+   "hidden": true
+  },
+  {
+   "id": "anniv2_naruto",
+   "name": "2nd Anniversary: Naruto",
+   "type": "anniversary",
+   "characters": [],
+   "featured": [
+    "naruto_anniv2_1002"
+   ],
+   "description": "2nd Anniversary Naruto (V5 Mode)!",
+   "image": "assets/summon/banners/anniv2_naruto.png",
+   "includeStandardPool": true,
+   "hidden": true
+  },
+  {
+   "id": "anniv2_sasuke",
+   "name": "2nd Anniversary: Sasuke",
+   "type": "anniversary",
+   "characters": [],
+   "featured": [
+    "sasuke_anniv2_1003"
+   ],
+   "description": "2nd Anniversary Sasuke (Complete Susanoo)!",
+   "image": "assets/summon/banners/anniv2_sasuke.png",
+   "includeStandardPool": true,
+   "hidden": true
+  },
+  {
+   "id": "anniv3_dual",
+   "name": "3rd Anniversary: Dual Unit",
+   "type": "anniversary",
+   "characters": [],
+   "featured": [
+    "naruto_sasuke_dual_1004"
+   ],
+   "description": "Epic 3rd Anniversary Naruto & Sasuke Dual Unit!",
+   "image": "assets/summon/banners/anniv3_dual.png",
+   "includeStandardPool": true,
+   "hidden": true
+  },
+  {
+   "id": "birthday_naruto",
+   "name": "Birthday: Naruto",
+   "type": "birthday",
+   "characters": [],
+   "description": "All Naruto versions are available on this banner!",
+   "image": "assets/summon/banners/birthday_naruto.png",
+   "includes_all_versions": true,
+   "character_name": "Naruto Uzumaki",
+   "includeStandardPool": true,
+   "hidden": true
+  },
+  {
+   "id": "birthday_sasuke",
+   "name": "Birthday: Sasuke",
+   "type": "birthday",
+   "characters": [],
+   "description": "All Sasuke versions are available!",
+   "image": "assets/summon/banners/birthday_sasuke.png",
+   "includes_all_versions": true,
+   "character_name": "Sasuke Uchiha",
+   "includeStandardPool": true,
+   "hidden": true
+  },
+  {
+   "id": "birthday_sakura",
+   "name": "Birthday: Sakura",
+   "type": "birthday",
+   "characters": [],
+   "description": "All Sakura versions are available!",
+   "image": "assets/summon/banners/birthday_sakura.png",
+   "includes_all_versions": true,
+   "character_name": "Sakura Haruno",
+   "includeStandardPool": true,
+   "hidden": true
+  },
+  {
+   "id": "birthday_hinata",
+   "name": "Birthday: Hinata",
+   "type": "birthday",
+   "characters": [],
+   "description": "All Hinata versions are available!",
+   "image": "assets/summon/banners/birthday_hinata.png",
+   "includes_all_versions": true,
+   "character_name": "Hinata Hyuga",
+   "includeStandardPool": true,
+   "hidden": true
+  },
+  {
+   "id": "birthday_kakashi",
+   "name": "Birthday: Kakashi",
+   "type": "birthday",
+   "characters": [],
+   "description": "All Kakashi versions are available!",
+   "image": "assets/summon/banners/birthday_kakashi.png",
+   "includes_all_versions": true,
+   "character_name": "Kakashi Hatake",
+   "includeStandardPool": true,
+   "hidden": true
+  },
+  {
+   "id": "birthday_itachi",
+   "name": "Birthday: Itachi",
+   "type": "birthday",
+   "characters": [],
+   "description": "All Itachi versions are available!",
+   "image": "assets/summon/banners/birthday_itachi.png",
+   "includes_all_versions": true,
+   "character_name": "Itachi Uchiha",
+   "includeStandardPool": true,
+   "hidden": true
+  },
+  {
+   "id": "birthday_obito",
+   "name": "Birthday: Obito",
+   "type": "birthday",
+   "characters": [],
+   "description": "All Obito versions are available!",
+   "image": "assets/summon/banners/birthday_obito.png",
+   "includes_all_versions": true,
+   "character_name": "Obito Uchiha",
+   "includeStandardPool": true,
+   "hidden": true
+  },
+  {
+   "id": "birthday_shikamaru",
+   "name": "Birthday: Shikamaru",
+   "type": "birthday",
+   "characters": [],
+   "description": "All Shikamaru versions are available!",
+   "image": "assets/summon/banners/birthday_shikamaru.png",
+   "includes_all_versions": true,
+   "character_name": "Shikamaru Nara",
+   "includeStandardPool": true,
+   "hidden": true
+  },
+  {
+   "id": "birthday_gaara",
+   "name": "Birthday: Gaara",
+   "type": "birthday",
+   "characters": [],
+   "description": "All Gaara versions are available!",
+   "image": "assets/summon/banners/birthday_gaara.png",
+   "includes_all_versions": true,
+   "character_name": "Gaara",
+   "includeStandardPool": true,
+   "hidden": true
+  },
+  {
+   "id": "birthday_tsunade",
+   "name": "Birthday: Tsunade",
+   "type": "birthday",
+   "characters": [],
+   "description": "All Tsunade versions are available!",
+   "image": "assets/summon/banners/birthday_tsunade.png",
+   "includes_all_versions": true,
+   "character_name": "Tsunade",
+   "includeStandardPool": true,
+   "hidden": true
+  },
+  {
+   "id": "birthday_jiraiya",
+   "name": "Birthday: Jiraiya",
+   "type": "birthday",
+   "characters": [],
+   "description": "All Jiraiya versions are available!",
+   "image": "assets/summon/banners/birthday_jiraiya.png",
+   "includes_all_versions": true,
+   "character_name": "Jiraiya",
+   "includeStandardPool": true,
+   "hidden": true
+  },
+  {
+   "id": "birthday_minato",
+   "name": "Birthday: Minato",
+   "type": "birthday",
+   "characters": [],
+   "description": "All Minato versions are available!",
+   "image": "assets/summon/banners/birthday_minato.png",
+   "includes_all_versions": true,
+   "character_name": "Minato Namikaze",
+   "includeStandardPool": true,
+   "hidden": true
+  },
+  {
+   "id": "feat_ashura_2109",
+   "name": "The Power of Bonds: Ashura",
+   "type": "featured",
+   "characters": [],
+   "featured": [
+    "ashura_2109"
+   ],
+   "description": "Featured ★ Ashura — The Power of Bonds.",
+   "image": "assets/banners/generated/banner_ashura_2109.webp",
+   "includeStandardPool": true
+  },
+  {
+   "id": "feat_deidara_884",
+   "name": "Creation of Light: Deidara",
+   "type": "featured",
+   "characters": [],
+   "featured": [
+    "deidara_884"
+   ],
+   "description": "Featured ★ Deidara — Creation of Light.",
+   "image": "assets/banners/generated/banner_deidara_884.webp",
+   "includeStandardPool": true
+  },
+  {
+   "id": "feat_gaara_834",
+   "name": "Finally, Friendship: Gaara",
+   "type": "featured",
+   "characters": [],
+   "featured": [
+    "gaara_834"
+   ],
+   "description": "Featured ★ Gaara — Finally, Friendship.",
+   "image": "assets/banners/generated/banner_gaara_834.webp",
+   "includeStandardPool": true
+  },
+  {
+   "id": "feat_gaara_283",
+   "name": "Protector of the Sands: Gaara",
+   "type": "featured",
+   "characters": [],
+   "featured": [
+    "gaara_283"
+   ],
+   "description": "Featured ★ Gaara — Protector of the Sands.",
+   "image": "assets/banners/generated/banner_gaara_283.webp",
+   "includeStandardPool": true
+  },
+  {
+   "id": "feat_gaara_173",
+   "name": "The Sand's Final Weapon: Gaara",
+   "type": "featured",
+   "characters": [],
+   "featured": [
+    "gaara_173"
+   ],
+   "description": "Featured ★ Gaara — The Sand's Final Weapon.",
+   "image": "assets/banners/generated/banner_gaara_173.webp",
+   "includeStandardPool": true
+  },
+  {
+   "id": "feat_hashirama_745",
+   "name": "Amongst the Strongest: Hashirama Senju",
+   "type": "featured",
+   "characters": [],
+   "featured": [
+    "hashirama_745"
+   ],
+   "description": "Featured ★ Hashirama Senju — Amongst the Strongest.",
+   "image": "assets/banners/generated/banner_hashirama_745.webp",
+   "includeStandardPool": true
+  },
+  {
+   "id": "feat_hashirama_417",
+   "name": "Bravery Unrivalled: Hashirama Senju",
+   "type": "featured",
+   "characters": [],
+   "featured": [
+    "hashirama_417"
+   ],
+   "description": "Featured ★ Hashirama Senju — Bravery Unrivalled.",
+   "image": "assets/banners/generated/banner_hashirama_417.webp",
+   "includeStandardPool": true
+  },
+  {
+   "id": "feat_hashirama_2057",
+   "name": "Resolve to Protect: Hashirama Senju",
+   "type": "featured",
+   "characters": [],
+   "featured": [
+    "hashirama_2057"
+   ],
+   "description": "Featured ★ Hashirama Senju — Resolve to Protect.",
+   "image": "assets/banners/generated/banner_hashirama_2057.webp",
+   "includeStandardPool": true
+  },
+  {
+   "id": "feat_indra_787",
+   "name": "Unparalleled Genius: Indra",
+   "type": "featured",
+   "characters": [],
+   "featured": [
+    "indra_787"
+   ],
+   "description": "Featured ★ Indra — Unparalleled Genius.",
+   "image": "assets/banners/generated/banner_indra_787.webp",
+   "includeStandardPool": true
+  },
+  {
+   "id": "feat_itachi_210",
+   "name": "Beyond the Sharingan: Itachi Uchiha",
+   "type": "featured",
+   "characters": [],
+   "featured": [
+    "itachi_210"
+   ],
+   "description": "Featured ★ Itachi Uchiha — Beyond the Sharingan.",
+   "image": "assets/banners/generated/banner_itachi_210.webp",
+   "includeStandardPool": true
+  },
+  {
+   "id": "feat_itachi_699",
+   "name": "Brotherly Pledge: Itachi Uchiha",
+   "type": "featured",
+   "characters": [],
+   "featured": [
+    "itachi_699"
+   ],
+   "description": "Featured ★ Itachi Uchiha — Brotherly Pledge.",
+   "image": "assets/banners/generated/banner_itachi_699.webp",
+   "includeStandardPool": true
+  },
+  {
+   "id": "feat_jiraiya_610",
+   "name": "Moment of Choice: Jiraiya",
+   "type": "featured",
+   "characters": [],
+   "featured": [
+    "jiraiya_610"
+   ],
+   "description": "Featured ★ Jiraiya — Moment of Choice.",
+   "image": "assets/banners/generated/banner_jiraiya_610.webp",
+   "includeStandardPool": true
+  },
+  {
+   "id": "feat_kabuto_642",
+   "name": "Dragon Transformation: Kabuto Yakushi",
+   "type": "featured",
+   "characters": [],
+   "featured": [
+    "kabuto_642"
+   ],
+   "description": "Featured ★ Kabuto Yakushi — Dragon Transformation.",
+   "image": "assets/banners/generated/banner_kabuto_642.webp",
+   "includeStandardPool": true
+  },
+  {
+   "id": "feat_kaguya_593",
+   "name": "Divine Madness: Kaguya Otsutsuki",
+   "type": "featured",
+   "characters": [],
+   "featured": [
+    "kaguya_593"
+   ],
+   "description": "Featured ★ Kaguya Otsutsuki — Divine Madness.",
+   "image": "assets/banners/generated/banner_kaguya_593.webp",
+   "includeStandardPool": true
+  },
+  {
+   "id": "feat_kaguya_2042",
+   "name": "Forbidden Fruit: Kaguya Otsutsuki",
+   "type": "featured",
+   "characters": [],
+   "featured": [
+    "kaguya_2042"
+   ],
+   "description": "Featured ★ Kaguya Otsutsuki — Forbidden Fruit.",
+   "image": "assets/banners/generated/banner_kaguya_2042.webp",
+   "includeStandardPool": true
+  },
+  {
+   "id": "feat_kakashi_854",
+   "name": "Friend's Way of Life: Kakashi Hatake",
+   "type": "featured",
+   "characters": [],
+   "featured": [
+    "kakashi_854"
+   ],
+   "description": "Featured ★ Kakashi Hatake — Friend's Way of Life.",
+   "image": "assets/banners/generated/banner_kakashi_854.webp",
+   "includeStandardPool": true
+  },
+  {
+   "id": "feat_kakashi_734",
+   "name": "Iron Resolve: Kakashi Hatake",
+   "type": "featured",
+   "characters": [],
+   "featured": [
+    "kakashi_734"
+   ],
+   "description": "Featured ★ Kakashi Hatake — Iron Resolve.",
+   "image": "assets/banners/generated/banner_kakashi_734.webp",
+   "includeStandardPool": true
+  },
+  {
+   "id": "feat_killer_354",
+   "name": "Completed Jinchuriki: Killer Bee",
+   "type": "featured",
+   "characters": [],
+   "featured": [
+    "killer_354"
+   ],
+   "description": "Featured ★ Killer Bee — Completed Jinchuriki.",
+   "image": "assets/banners/generated/banner_killer_354.webp",
+   "includeStandardPool": true
+  },
+  {
+   "id": "feat_madara_589",
+   "name": "Endless Moonlight: Madara Uchiha",
+   "type": "featured",
+   "characters": [],
+   "featured": [
+    "madara_589"
+   ],
+   "description": "Featured ★ Madara Uchiha — Endless Moonlight.",
+   "image": "assets/banners/generated/banner_madara_589.webp",
+   "includeStandardPool": true
+  },
+  {
+   "id": "feat_madara_747",
+   "name": "Phantasy's Beckoning Light: Madara Uchiha",
+   "type": "featured",
+   "characters": [],
+   "featured": [
+    "madara_747"
+   ],
+   "description": "Featured ★ Madara Uchiha — Phantasy's Beckoning Light.",
+   "image": "assets/banners/generated/banner_madara_747.webp",
+   "includeStandardPool": true
+  },
+  {
+   "id": "feat_madara_680",
+   "name": "Power of Life or Death: Madara Uchiha",
+   "type": "featured",
+   "characters": [],
+   "featured": [
+    "madara_680"
+   ],
+   "description": "Featured ★ Madara Uchiha — Power of Life or Death.",
+   "image": "assets/banners/generated/banner_madara_680.webp",
+   "includeStandardPool": true
+  },
+  {
+   "id": "feat_madara_333",
+   "name": "The Vilest Name: Madara Uchiha",
+   "type": "featured",
+   "characters": [],
+   "featured": [
+    "madara_333"
+   ],
+   "description": "Featured ★ Madara Uchiha — The Vilest Name.",
+   "image": "assets/banners/generated/banner_madara_333.webp",
+   "includeStandardPool": true
+  },
+  {
+   "id": "feat_might_486",
+   "name": "Deep Crimson Youth: Might Guy",
+   "type": "featured",
+   "characters": [],
+   "featured": [
+    "might_486"
+   ],
+   "description": "Featured ★ Might Guy — Deep Crimson Youth.",
+   "image": "assets/banners/generated/banner_might_486.webp",
+   "includeStandardPool": true
+  },
+  {
+   "id": "feat_minato_2100",
+   "name": "Raikosekka: Minato Namikaze",
+   "type": "featured",
+   "characters": [],
+   "featured": [
+    "minato_2100"
+   ],
+   "description": "Featured ★ Minato Namikaze — Raikosekka.",
+   "image": "assets/banners/generated/banner_minato_2100.webp",
+   "includeStandardPool": true
+  },
+  {
+   "id": "feat_minato_229",
+   "name": "Rapid Lightning: Minato Namikaze",
+   "type": "featured",
+   "characters": [],
+   "featured": [
+    "minato_229"
+   ],
+   "description": "Featured ★ Minato Namikaze — Rapid Lightning.",
+   "image": "assets/banners/generated/banner_minato_229.webp",
+   "includeStandardPool": true
+  },
+  {
+   "id": "feat_minato_627",
+   "name": "Swift Flash: Minato Namikaze",
+   "type": "featured",
+   "characters": [],
+   "featured": [
+    "minato_627"
+   ],
+   "description": "Featured ★ Minato Namikaze — Swift Flash.",
+   "image": "assets/banners/generated/banner_minato_627.webp",
+   "includeStandardPool": true
+  },
+  {
+   "id": "feat_minato_760",
+   "name": "Unfading Courage: Minato Namikaze",
+   "type": "featured",
+   "characters": [],
+   "featured": [
+    "minato_760"
+   ],
+   "description": "Featured ★ Minato Namikaze — Unfading Courage.",
+   "image": "assets/banners/generated/banner_minato_760.webp",
+   "includeStandardPool": true
+  },
+  {
+   "id": "feat_nagato_534",
+   "name": "Reunion with Hope: Nagato",
+   "type": "featured",
+   "characters": [],
+   "featured": [
+    "nagato_534"
+   ],
+   "description": "Featured ★ Nagato — Reunion with Hope.",
+   "image": "assets/banners/generated/banner_nagato_534.webp",
+   "includeStandardPool": true
+  },
+  {
+   "id": "feat_naruto_660",
+   "name": "As a Friend: Naruto Uzumaki",
+   "type": "featured",
+   "characters": [],
+   "featured": [
+    "naruto_660"
+   ],
+   "description": "Featured ★ Naruto Uzumaki — As a Friend.",
+   "image": "assets/banners/generated/banner_naruto_660.webp",
+   "includeStandardPool": true
+  },
+  {
+   "id": "feat_naruto_259",
+   "name": "Nine Tails' Shroud: Naruto Uzumaki",
+   "type": "featured",
+   "characters": [],
+   "featured": [
+    "naruto_259"
+   ],
+   "description": "Featured ★ Naruto Uzumaki — Nine Tails' Shroud.",
+   "image": "assets/banners/generated/banner_naruto_259.webp",
+   "includeStandardPool": true
+  },
+  {
+   "id": "feat_naruto_551",
+   "name": "Proof of Ties That Bind: Naruto Uzumaki",
+   "type": "featured",
+   "characters": [],
+   "featured": [
+    "naruto_551"
+   ],
+   "description": "Featured ★ Naruto Uzumaki — Proof of Ties That Bind.",
+   "image": "assets/banners/generated/banner_naruto_551.webp",
+   "includeStandardPool": true
+  },
+  {
+   "id": "feat_naruto_2137",
+   "name": "Roaring Tears: Naruto Uzumaki",
+   "type": "featured",
+   "characters": [],
+   "featured": [
+    "naruto_2137"
+   ],
+   "description": "Featured ★ Naruto Uzumaki — Roaring Tears.",
+   "image": "assets/banners/generated/banner_naruto_2137.webp",
+   "includeStandardPool": true
+  },
+  {
+   "id": "feat_naruto_427",
+   "name": "Seal of Light: Naruto Uzumaki",
+   "type": "featured",
+   "characters": [],
+   "featured": [
+    "naruto_427"
+   ],
+   "description": "Featured ★ Naruto Uzumaki — Seal of Light.",
+   "image": "assets/banners/generated/banner_naruto_427.webp",
+   "includeStandardPool": true
+  },
+  {
+   "id": "feat_obito_394",
+   "name": "Despair of Loneliness: Obito Uchiha",
+   "type": "featured",
+   "characters": [],
+   "featured": [
+    "obito_394"
+   ],
+   "description": "Featured ★ Obito Uchiha — Despair of Loneliness.",
+   "image": "assets/banners/generated/banner_obito_394.webp",
+   "includeStandardPool": true
+  },
+  {
+   "id": "feat_obito_468",
+   "name": "Drawn to Life: Obito Uchiha",
+   "type": "featured",
+   "characters": [],
+   "featured": [
+    "obito_468"
+   ],
+   "description": "Featured ★ Obito Uchiha — Drawn to Life.",
+   "image": "assets/banners/generated/banner_obito_468.webp",
+   "includeStandardPool": true
+  },
+  {
+   "id": "feat_obito_856",
+   "name": "The Final Destination: Obito Uchiha",
+   "type": "featured",
+   "characters": [],
+   "featured": [
+    "obito_856"
+   ],
+   "description": "Featured ★ Obito Uchiha — The Final Destination.",
+   "image": "assets/banners/generated/banner_obito_856.webp",
+   "includeStandardPool": true
+  },
+  {
+   "id": "feat_pain_451",
+   "name": "Signal Flare of Revolution: Pain (Tendo)",
+   "type": "featured",
+   "characters": [],
+   "featured": [
+    "pain_451"
+   ],
+   "description": "Featured ★ Pain (Tendo) — Signal Flare of Revolution.",
+   "image": "assets/banners/generated/banner_pain_451.webp",
+   "includeStandardPool": true
+  },
+  {
+   "id": "feat_pain_817",
+   "name": "Visage of Justice: Pain (Tendo)",
+   "type": "featured",
+   "characters": [],
+   "featured": [
+    "pain_817"
+   ],
+   "description": "Featured ★ Pain (Tendo) — Visage of Justice.",
+   "image": "assets/banners/generated/banner_pain_817.webp",
+   "includeStandardPool": true
+  },
+  {
+   "id": "feat_rock_148",
+   "name": "The Eight Gates: Rock Lee",
+   "type": "featured",
+   "characters": [],
+   "featured": [
+    "rock_148"
+   ],
+   "description": "Featured ★ Rock Lee — The Eight Gates.",
+   "image": "assets/banners/generated/banner_rock_148.webp",
+   "includeStandardPool": true
+  },
+  {
+   "id": "feat_sakura_2069",
+   "name": "Back to Back: Sakura Haruno",
+   "type": "featured",
+   "characters": [],
+   "featured": [
+    "sakura_2069"
+   ],
+   "description": "Featured ★ Sakura Haruno — Back to Back.",
+   "image": "assets/banners/generated/banner_sakura_2069.webp",
+   "includeStandardPool": true
+  },
+  {
+   "id": "feat_sakura_510",
+   "name": "Sheer Diligence: Sakura Haruno",
+   "type": "featured",
+   "characters": [],
+   "featured": [
+    "sakura_510"
+   ],
+   "description": "Featured ★ Sakura Haruno — Sheer Diligence.",
+   "image": "assets/banners/generated/banner_sakura_510.webp",
+   "includeStandardPool": true
+  },
+  {
+   "id": "feat_sasori_882",
+   "name": "Eternal Creation: Sasori",
+   "type": "featured",
+   "characters": [],
+   "featured": [
+    "sasori_882"
+   ],
+   "description": "Featured ★ Sasori — Eternal Creation.",
+   "image": "assets/banners/generated/banner_sasori_882.webp",
+   "includeStandardPool": true
+  },
+  {
+   "id": "feat_sasuke_2029",
+   "name": "Battling with your eyes: Sasuke Uchiha",
+   "type": "featured",
+   "characters": [],
+   "featured": [
+    "sasuke_2029"
+   ],
+   "description": "Featured ★ Sasuke Uchiha — Battling with your eyes.",
+   "image": "assets/banners/generated/banner_sasuke_2029.webp",
+   "includeStandardPool": true
+  },
+  {
+   "id": "feat_sasuke_802",
+   "name": "Judging the Conventional: Sasuke Uchiha",
+   "type": "featured",
+   "characters": [],
+   "featured": [
+    "sasuke_802"
+   ],
+   "description": "Featured ★ Sasuke Uchiha — Judging the Conventional.",
+   "image": "assets/banners/generated/banner_sasuke_802.webp",
+   "includeStandardPool": true
+  },
+  {
+   "id": "feat_sasuke_568",
+   "name": "Long Road to Atonement: Sasuke Uchiha",
+   "type": "featured",
+   "characters": [],
+   "featured": [
+    "sasuke_568"
+   ],
+   "description": "Featured ★ Sasuke Uchiha — Long Road to Atonement.",
+   "image": "assets/banners/generated/banner_sasuke_568.webp",
+   "includeStandardPool": true
+  },
+  {
+   "id": "feat_sasuke_2131",
+   "name": "Rain of Extinction: Sasuke Uchiha",
+   "type": "featured",
+   "characters": [],
+   "featured": [
+    "sasuke_2131"
+   ],
+   "description": "Featured ★ Sasuke Uchiha — Rain of Extinction.",
+   "image": "assets/banners/generated/banner_sasuke_2131.webp",
+   "includeStandardPool": true
+  },
+  {
+   "id": "feat_sasuke_429",
+   "name": "Seal of Shadow: Sasuke Uchiha",
+   "type": "featured",
+   "characters": [],
+   "featured": [
+    "sasuke_429"
+   ],
+   "description": "Featured ★ Sasuke Uchiha — Seal of Shadow.",
+   "image": "assets/banners/generated/banner_sasuke_429.webp",
+   "includeStandardPool": true
+  },
+  {
+   "id": "feat_sasuke_662",
+   "name": "To Eternal Loneliness: Sasuke Uchiha",
+   "type": "featured",
+   "characters": [],
+   "featured": [
+    "sasuke_662"
+   ],
+   "description": "Featured ★ Sasuke Uchiha — To Eternal Loneliness.",
+   "image": "assets/banners/generated/banner_sasuke_662.webp",
+   "includeStandardPool": true
+  },
+  {
+   "id": "feat_shikamaru_846",
+   "name": "Surpassing the Master: Shikamaru Nara",
+   "type": "featured",
+   "characters": [],
+   "featured": [
+    "shikamaru_846"
+   ],
+   "description": "Featured ★ Shikamaru Nara — Surpassing the Master.",
+   "image": "assets/banners/generated/banner_shikamaru_846.webp",
+   "includeStandardPool": true
+  },
+  {
+   "id": "feat_shisui_714",
+   "name": "Eyes Inviting Illusion: Shisui Uchiha",
+   "type": "featured",
+   "characters": [],
+   "featured": [
+    "shisui_714"
+   ],
+   "description": "Featured ★ Shisui Uchiha — Eyes Inviting Illusion.",
+   "image": "assets/banners/generated/banner_shisui_714.webp",
+   "includeStandardPool": true
+  },
+  {
+   "id": "feat_tsunade_2014",
+   "name": "Protector of the Great Tree: Tsunade",
+   "type": "featured",
+   "characters": [],
+   "featured": [
+    "tsunade_2014"
+   ],
+   "description": "Featured ★ Tsunade — Protector of the Great Tree.",
+   "image": "assets/banners/generated/banner_tsunade_2014.webp",
+   "includeStandardPool": true
+  },
+  {
+   "id": "feat_tsunade_375",
+   "name": "The Will of Blooming Flames: Tsunade",
+   "type": "featured",
+   "characters": [],
+   "featured": [
+    "tsunade_375"
+   ],
+   "description": "Featured ★ Tsunade — The Will of Blooming Flames.",
+   "image": "assets/banners/generated/banner_tsunade_375.webp",
+   "includeStandardPool": true
+  },
+  {
+   "id": "feat_utakata_310",
+   "name": "Fleeting Tranquility: Utakata",
+   "type": "featured",
+   "characters": [],
+   "featured": [
+    "utakata_310"
+   ],
+   "description": "Featured ★ Utakata — Fleeting Tranquility.",
+   "image": "assets/banners/generated/banner_utakata_310.webp",
+   "includeStandardPool": true
+  },
+  {
+   "id": "feat_zabuza_142",
+   "name": "Silent Madness: Zabuza Momochi",
+   "type": "featured",
+   "characters": [],
+   "featured": [
+    "zabuza_142"
+   ],
+   "description": "Featured ★ Zabuza Momochi — Silent Madness.",
+   "image": "assets/banners/generated/banner_zabuza_142.webp",
+   "includeStandardPool": true
+  }
+ ]
 }

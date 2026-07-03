@@ -169,7 +169,9 @@ document.addEventListener('DOMContentLoaded', () => {
       categoryNames.forEach(name => {
         const tab = document.createElement('button');
         tab.className = 'tab-btn';
-        tab.textContent = name;
+        // slug used by CSS to tint each category (see .tab-btn[data-category])
+        tab.dataset.category = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+        tab.innerHTML = `<span class="tab-label">${name}</span>`;
         tab.addEventListener('click', () => renderMissionsForCategory(name));
         tabsContainer.appendChild(tab);
       });

@@ -178,6 +178,21 @@ class SummonUIController {
     setTimeout(() => t.remove(), 2500);
   }
 
+  // Award the pre-evolved BASE form of a unit (e.g. 5★) instead of its maxed
+  // awakened form, so the player evolves it themselves. No-op when the unit has
+  // no awakening chain. Returns the (possibly swapped) character object.
+  _baseForm(character) {
+    if (!character || !window.SummonEvolve) return character;
+    try {
+      const baseId = window.SummonEvolve.baseIdOf(character.id);
+      if (baseId && baseId !== character.id) {
+        const base = window.SummonEvolve.byId()[baseId];
+        if (base) return base;
+      }
+    } catch (e) {}
+    return character;
+  }
+
   async handleSingleSummon() {
     const pearls = window.Resources?.get('ninja_pearls') || 0;
 
@@ -190,8 +205,8 @@ class SummonUIController {
     const result = window.FibonacciSummonEngine?.performSingleSummon();
     if (!result) return;
 
-    // Select character
-    const characterData = window.CharacterSelector?.selectCharacter(result);
+    // Select character (award the pre-evolved base form)
+    const characterData = this._baseForm(window.CharacterSelector?.selectCharacter(result));
     if (!characterData) return;
 
     // Deduct cost only once the pull succeeded
@@ -224,8 +239,11 @@ class SummonUIController {
     const results = window.FibonacciSummonEngine?.performMultiSummon();
     if (!results) return;
 
-    // Select characters
-    const characters = window.CharacterSelector?.selectCharacters(results);
+    // Select characters (award the pre-evolved base form of each)
+    const characters = (window.CharacterSelector?.selectCharacters(results) || [])
+      .map(entry => entry && entry.character
+        ? { ...entry, character: this._baseForm(entry.character) }
+        : entry);
     if (!characters || characters.length === 0) return;
 
     // Deduct cost only once the pull succeeded
