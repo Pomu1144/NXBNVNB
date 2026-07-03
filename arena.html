@@ -14,7 +14,12 @@
   <script src="js/pwa-register.js"></script>
   <link rel="stylesheet" href="css/bottombar.css" />
   <style>
-    @import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&display=swap");
+    @import url("https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap");
+
+    :root {
+      --font-display: "Oswald", "Inter", sans-serif;
+      --font-body: "Inter", system-ui, sans-serif;
+    }
 
     *, *::before, *::after { box-sizing: border-box; }
     body::-webkit-scrollbar, *::-webkit-scrollbar { display: none; }
@@ -25,8 +30,17 @@
       width: 100%; height: 100%;
       background: #080810;
       color: #eee6d1;
-      font-family: "Cinzel", serif;
+      font-family: var(--font-body);
       overflow-x: hidden;
+    }
+
+    /* Shared star icon — uses the game's star asset instead of glyphs */
+    .star-ico {
+      width: 1em; height: 1em;
+      display: inline-block;
+      vertical-align: -0.14em;
+      object-fit: contain;
+      filter: drop-shadow(0 1px 1px rgba(0,0,0,0.5));
     }
 
     /* ── Background ─────────────────────────────────────────── */
@@ -63,21 +77,24 @@
     }
 
     h1.arena-title {
-      font-size: clamp(26px, 5vw, 52px);
-      color: #d4af37;
-      letter-spacing: clamp(3px, 0.6vw, 8px);
-      text-shadow:
-        0 4px 20px rgba(212,175,55,0.9),
-        0 0 60px rgba(255,120,0,0.45),
-        0 2px 4px rgba(0,0,0,0.9);
-      margin: 0 0 6px;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: clamp(30px, 5.5vw, 56px);
+      color: #e8c76a;
+      letter-spacing: clamp(4px, 0.8vw, 10px);
+      text-transform: uppercase;
+      text-shadow: 0 2px 6px rgba(0,0,0,0.85);
+      margin: 0 0 4px;
       text-align: center;
     }
 
     .arena-subtitle {
-      font-size: clamp(10px, 1.5vw, 14px);
-      color: rgba(255,220,150,0.7);
-      letter-spacing: 2px;
+      font-family: var(--font-display);
+      font-weight: 400;
+      font-size: clamp(10px, 1.5vw, 13px);
+      color: rgba(255,220,150,0.55);
+      letter-spacing: 3px;
+      text-transform: uppercase;
       margin: 0 0 28px;
       text-align: center;
     }
@@ -85,7 +102,7 @@
     /* ── Player Rank Card ───────────────────────────────────── */
     .player-rank-card {
       background: rgba(10,10,20,0.88);
-      border: 2px solid rgba(212,175,55,0.5);
+      border: 1px solid rgba(212,175,55,0.35);
       border-radius: 14px;
       padding: 18px 26px;
       width: 100%;
@@ -93,51 +110,58 @@
       margin-bottom: 22px;
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 18px;
       box-shadow: 0 8px 32px rgba(0,0,0,0.7);
     }
 
+    /* Rank badge = arena emblem medallion + a compact tier chip.
+       (Previously crammed stacked stars + wrapped rank name into a
+       64px circle, which overflowed and overlapped the card text.) */
     .rank-badge {
-      width: 64px;
-      height: 64px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 40% 35%, #ffd700, #a7822c 70%);
+      position: relative;
+      width: 74px;
+      height: 74px;
+      flex-shrink: 0;
+      background: url('assets/ui/arena_rank_emblem.png') center / contain no-repeat;
+      filter: drop-shadow(0 2px 6px rgba(0,0,0,0.55));
+    }
+
+    .rank-badge-tier {
+      position: absolute;
+      bottom: -3px;
+      right: -3px;
+      min-width: 24px;
+      height: 22px;
+      padding: 0 6px;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
-      flex-shrink: 0;
-      border: 2px solid rgba(255,215,0,0.6);
-      box-shadow: 0 0 16px rgba(255,215,0,0.4);
-    }
-
-    .rank-badge-stars {
-      font-size: 9px;
-      color: #fff;
-      letter-spacing: -1px;
+      background: linear-gradient(180deg, #1b1b28, #0b0b14);
+      border: 1.5px solid rgba(212,175,55,0.7);
+      border-radius: 11px;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 11px;
+      letter-spacing: 0.5px;
+      color: #e8c76a;
       line-height: 1;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.6);
     }
 
-    .rank-badge-label {
-      font-size: 7px;
-      color: rgba(255,255,255,0.85);
-      text-align: center;
-      line-height: 1.2;
-      margin-top: 2px;
-    }
-
-    .rank-info { flex: 1; }
+    .rank-info { flex: 1; min-width: 0; }
 
     .rank-name {
-      font-size: 1.1rem;
-      color: #d4af37;
-      font-weight: 700;
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: #e8c76a;
+      letter-spacing: 0.5px;
     }
 
     .rank-tier-label {
       font-size: 0.75rem;
       color: rgba(217,179,98,0.6);
-      margin-top: 2px;
+      margin-top: 3px;
     }
 
     .rank-stars-bar {
@@ -183,16 +207,18 @@
     .arena-record-cell:last-child { border-right: none; }
 
     .arena-record-value {
-      font-size: 1.05rem;
-      font-weight: 700;
-      color: #d4af37;
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 600;
+      color: #e8c76a;
       line-height: 1.1;
     }
 
     .arena-record-value.loss-value { color: rgba(238,230,209,0.75); }
-    .arena-record-value.streak-hot { color: #ff9d45; text-shadow: 0 0 12px rgba(255,140,40,0.5); }
+    .arena-record-value.streak-hot { color: #ff9d45; }
 
     .arena-record-label {
+      font-family: var(--font-display);
       font-size: 0.6rem;
       letter-spacing: 1.5px;
       text-transform: uppercase;
@@ -231,7 +257,7 @@
     }
 
     .arena-btn {
-      font-family: "Cinzel", serif;
+      font-family: var(--font-display);
       font-size: clamp(11px, 1.3vw, 13px);
       font-weight: 700;
       letter-spacing: 1.5px;
@@ -292,9 +318,11 @@
     }
 
     .ranking-section-title {
-      font-size: 0.85rem;
-      color: rgba(217,179,98,0.6);
-      letter-spacing: 2px;
+      font-family: var(--font-display);
+      font-weight: 500;
+      font-size: 0.9rem;
+      color: rgba(217,179,98,0.7);
+      letter-spacing: 3px;
       text-transform: uppercase;
       margin-bottom: 12px;
       text-align: center;
@@ -310,10 +338,13 @@
     }
 
     .rank-table thead th {
+      font-family: var(--font-display);
+      font-weight: 500;
       padding: 10px 14px;
       text-align: left;
-      font-size: 0.7rem;
+      font-size: 0.72rem;
       letter-spacing: 1.5px;
+      text-transform: uppercase;
       color: rgba(217,179,98,0.6);
       border-bottom: 1px solid rgba(217,179,98,0.15);
       background: rgba(217,179,98,0.05);
@@ -365,7 +396,7 @@
       border: 2px solid rgba(212,175,55,0.5);
       border-radius: 8px;
       color: #d4af37;
-      font-family: "Cinzel", serif;
+      font-family: var(--font-display);
       font-size: 0.8rem;
       cursor: pointer;
       text-decoration: none;
@@ -395,8 +426,7 @@
     <!-- Player's current rank -->
     <div class="player-rank-card" id="player-rank-card">
       <div class="rank-badge" id="rank-badge">
-        <div class="rank-badge-stars" id="rank-badge-stars">☆☆</div>
-        <div class="rank-badge-label" id="rank-badge-label">Academy<br>Student</div>
+        <div class="rank-badge-tier" id="rank-badge-tier">T2</div>
       </div>
       <div class="rank-info">
         <div class="rank-name" id="rank-name-display">Academy Student</div>
@@ -515,6 +545,12 @@
 
   <script src="js/resources.js"></script>
   <script>
+  // ── Star icon helper — renders the game's star asset in place of glyphs ──
+  const STAR_ASSET = 'assets/ui/star_icon.png';
+  function starIco(px = 12) {
+    return `<img src="${STAR_ASSET}" class="star-ico" style="width:${px}px;height:${px}px" alt="star" onerror="this.style.display='none'">`;
+  }
+
   // ── Arena Rank Definitions ──────────────────────────────────────────────
   const ARENA_RANKS = [
     { name: 'Academy Student', tiers: 2, starsPerTier: 2 },
@@ -541,7 +577,7 @@
           tier: r.tiers > 1 ? `T${t}` : 'T1',
           starsNeeded: r.starsPerTier,
           label: r.tiers > 1 ? `${r.name} T${t}` : r.name,
-          totalStarsLabel: r.tiers > 1 ? `${r.starsPerTier} ★ per tier` : `${r.starsPerTier} ★`
+          totalStarsLabel: r.tiers > 1 ? `${r.starsPerTier} per tier` : `${r.starsPerTier}`
         });
       }
     });
@@ -569,12 +605,11 @@
     const { idx } = getCurrentRankIndex(stars);
     const list = buildRankList();
 
-    const starImg = '<img src="assets/ui/NormalStar.png" class="rank-star-icon" alt="*" onerror="this.style.display=\'none\'">';
     tbody.innerHTML = list.map((r, i) => `
       <tr class="${i === idx ? 'current-rank' : ''}">
         <td class="rank-name-cell">${r.label}</td>
         <td class="rank-tier-cell">${r.tier}</td>
-        <td class="rank-stars-cell"><span class="rank-stars-imgs">${starImg} <span class="rank-star-text">${r.totalStarsLabel}</span></span></td>
+        <td class="rank-stars-cell"><span class="rank-stars-imgs"><span class="rank-star-text">${r.totalStarsLabel}</span> ${starIco(13)}</span></td>
       </tr>`).join('');
   }
 
@@ -582,11 +617,8 @@
     const stars = getArenaStars();
     const { idx, starsInTier, rank } = getCurrentRankIndex(stars);
 
-    document.getElementById('rank-name-display').textContent = rank.label;
-    document.getElementById('rank-tier-display').textContent = `${rank.tier} — ${starsInTier} / ${rank.starsNeeded} ★`;
-    document.getElementById('rank-badge-label').textContent = rank.name.replace(' ', '\n');
-    const starHtml = '<img src="assets/ui/NormalStar.png" style="width:10px;height:10px;" onerror="this.style.display=\'none\'">';
-    document.getElementById('rank-badge-stars').innerHTML = starHtml.repeat(Math.min(starsInTier, rank.starsNeeded)) || starHtml;
+    document.getElementById('rank-name-display').textContent = rank.name;
+    document.getElementById('rank-badge-tier').textContent = rank.tier;
     document.getElementById('rank-stars-text').textContent = `${stars} Arena Stars total`;
 
     const pct = Math.min(100, Math.round((starsInTier / rank.starsNeeded) * 100));
@@ -626,7 +658,7 @@
     }
     tbody.innerHTML = history.map(h => {
       const win = h.result === 'win';
-      const starsTxt = h.stars > 0 ? `+${h.stars} ★` : (h.stars < 0 ? `${h.stars} ★` : '—');
+      const starsTxt = h.stars > 0 ? `+${h.stars} ${starIco(11)}` : (h.stars < 0 ? `${h.stars} ${starIco(11)}` : '—');
       return `<tr>
         <td><span class="history-row-result ${win ? 'win' : 'loss'}">${win ? 'VICTORY' : 'DEFEAT'}</span></td>
         <td class="history-opponent-cell">${h.opponent || 'Unknown Shinobi'}
@@ -658,13 +690,10 @@
 
     _showArenaInfoModal('Rank Ascension',
       `<div style="text-align:center;padding:6px 0 10px">
-        <div style="font-size:11px;letter-spacing:3px;color:rgba(217,179,98,0.6);text-transform:uppercase;margin-bottom:14px">Your deeds echo through the villages</div>
-        <div style="width:84px;height:84px;margin:0 auto 16px;border-radius:50%;
-                    background:radial-gradient(circle at 40% 35%, #ffd700, #a7822c 70%);
-                    border:2px solid rgba(255,215,0,0.6);box-shadow:0 0 34px rgba(255,215,0,0.55);
-                    display:flex;align-items:center;justify-content:center;
-                    font-size:9px;color:#fff;text-align:center;line-height:1.25;padding:8px">${rank.name.replace(' ', '<br>')}</div>
-        <div style="font-size:22px;font-weight:700;color:#d4af37;letter-spacing:2px;text-shadow:0 0 24px rgba(212,175,55,0.6)">${rank.label}</div>
+        <div style="font-family:var(--font-display);font-size:11px;letter-spacing:3px;color:rgba(217,179,98,0.6);text-transform:uppercase;margin-bottom:14px">Your deeds echo through the villages</div>
+        <img src="assets/ui/arena_rank_emblem.png" alt=""
+             style="width:96px;height:96px;margin:0 auto 16px;display:block;object-fit:contain;filter:drop-shadow(0 3px 8px rgba(0,0,0,0.6))">
+        <div style="font-family:var(--font-display);font-size:24px;font-weight:700;color:#e8c76a;letter-spacing:2px">${rank.label}</div>
         <div style="font-size:12px;color:rgba(217,179,98,0.65);margin-top:8px">${stars} Arena Stars — check the Rewards hall for new spoils.</div>
       </div>`);
   }
@@ -821,7 +850,7 @@
         <div class="aos-side">
           <div class="aos-threat" style="color:${r.tier.color}">${r.tier.label}</div>
           <div class="aos-power">PWR ${Math.round(r.teamPower / 1000)}k</div>
-          <div class="aos-bounty">${'★'.repeat(bounty)}<span class="aos-bounty-label">bounty</span></div>
+          <div class="aos-bounty">${starIco(15).repeat(bounty)}<span class="aos-bounty-label">bounty</span></div>
         </div>
       </div>`;
     }).join('');
@@ -885,10 +914,10 @@
         border:26px solid transparent;
         border-image:url('assets/ui/generated/panel_frame.webp') 115 fill round;
         padding:14px;width:min(640px,95vw);
-        max-height:92vh;overflow-y:auto;box-shadow:0 0 60px rgba(184,152,95,0.35);
+        max-height:92vh;overflow-y:auto;box-shadow:0 24px 60px rgba(0,0,0,0.7);
       }
       .aos-header { display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:18px;padding-bottom:12px;border-bottom:2px solid rgba(184,152,95,0.25); }
-      .aos-title { font-size:20px;font-weight:700;color:#d4af37;letter-spacing:2px; }
+      .aos-title { font-family:var(--font-display);font-size:20px;font-weight:600;color:#e8c76a;letter-spacing:1.5px; }
       .aos-desc { font-size:12px;color:#9a8060;margin-top:4px;letter-spacing:0.5px; }
       .aos-close { background:radial-gradient(circle at 35% 30%, rgba(212,175,55,0.22), rgba(10,10,20,0.9) 65%);border:1.5px solid rgba(212,175,55,0.55);color:#d4af37;font-size:14px;width:30px;height:30px;border-radius:50%;cursor:pointer;font-weight:700;line-height:1;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.2s ease;box-shadow:inset 0 1px 0 rgba(212,175,55,0.3), 0 2px 6px rgba(0,0,0,0.6); }
       .aos-close:hover { border-color:#ffd700;color:#ffd700;box-shadow:0 0 14px rgba(212,175,55,0.5);transform:rotate(90deg); }
@@ -927,7 +956,7 @@
       .aos-bounty-label { font-size:9px;color:rgba(217,179,98,0.5);letter-spacing:1.5px;text-transform:uppercase; }
       .aos-footer { display:flex;justify-content:space-between;align-items:center;margin-top:16px;padding-top:14px;border-top:1px solid rgba(184,152,95,0.2); }
       .aos-rescout {
-        font-family:"Cinzel",serif;font-size:12px;font-weight:600;letter-spacing:1px;
+        font-family:var(--font-display);font-size:12px;font-weight:600;letter-spacing:1px;
         padding:9px 18px;border-radius:8px;cursor:pointer;transition:all 0.2s;
         background:rgba(10,10,20,0.85);border:2px solid rgba(212,175,55,0.35);color:#d4af37;
       }
@@ -1187,10 +1216,10 @@
           border:26px solid transparent;
           border-image:url('assets/ui/generated/panel_frame.webp') 115 fill round;
           padding:18px;width:min(700px,95vw);
-          max-height:90vh;overflow-y:auto;box-shadow:0 0 60px rgba(184,152,95,0.4);
+          max-height:90vh;overflow-y:auto;box-shadow:0 24px 60px rgba(0,0,0,0.7);
         }
         .arena-modal-header { display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;padding-bottom:14px;border-bottom:2px solid rgba(184,152,95,0.3); }
-        .arena-modal-title { font-size:22px;font-weight:700;color:#d4af37;letter-spacing:2px; }
+        .arena-modal-title { font-family:var(--font-display);font-size:22px;font-weight:600;color:#e8c76a;letter-spacing:1.5px; }
         .arena-modal-close { background:radial-gradient(circle at 35% 30%, rgba(212,175,55,0.22), rgba(10,10,20,0.9) 65%);border:1.5px solid rgba(212,175,55,0.55);color:#d4af37;font-size:16px;width:36px;height:36px;border-radius:50%;cursor:pointer;transition:all 0.2s ease;box-shadow:inset 0 1px 0 rgba(212,175,55,0.3), 0 2px 6px rgba(0,0,0,0.6); }
         .arena-modal-close:hover { border-color:#ffd700;color:#ffd700;box-shadow:0 0 14px rgba(212,175,55,0.5);transform:rotate(90deg); }
         .arena-modal-body { display:flex;flex-direction:column;gap:18px; }
@@ -1210,7 +1239,7 @@
         .arena-map-label { font-size:11px;color:rgba(255,255,255,0.8);background:rgba(0,0,0,0.6);padding:3px 8px;border-radius:4px; }
         .arena-start-match-btn {
           margin-top:18px;width:100%;padding:16px;font-size:18px;font-weight:700;
-          font-family:"Cinzel",serif;
+          font-family:var(--font-display);
           background:url('assets/ui/generated/button_gold.webp') center / 100% 100% no-repeat;
           border:none;color:#14100a;border-radius:10px;cursor:pointer;
           text-shadow:0 1px 0 rgba(255,235,170,0.5);letter-spacing:3px;
@@ -1307,22 +1336,26 @@
              action = '<span style="font-size:10px;font-weight:700;letter-spacing:1px;color:#6bcf7f;border:1px solid rgba(107,207,127,0.5);background:rgba(107,207,127,0.12);padding:4px 10px;border-radius:10px;text-transform:uppercase">Claimed</span>';
            } else if (reached) {
              action = `<button onclick="claimSeasonReward('${r.rank}')"
-               style="font-family:'Cinzel',serif;font-size:11px;font-weight:700;letter-spacing:1px;padding:6px 16px;border-radius:8px;cursor:pointer;
-                      background:linear-gradient(135deg,#a7822c,#d4af37);border:2px solid rgba(212,175,55,0.7);color:#0a0a0a;text-transform:uppercase">Claim</button>`;
+               style="font-family:var(--font-display);font-size:11px;font-weight:700;letter-spacing:1px;padding:6px 16px;border-radius:8px;cursor:pointer;
+                      background:linear-gradient(135deg,#a7822c,#d4af37);border:1px solid rgba(212,175,55,0.7);color:#14100a;text-transform:uppercase">Claim</button>`;
            } else {
              action = '<span style="font-size:10px;letter-spacing:1.5px;color:rgba(238,230,209,0.3);text-transform:uppercase">Locked</span>';
            }
+           const claimable = reached && !isClaimed;
            return `
-           <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;
-                       background:${reached && !isClaimed ? 'rgba(212,175,55,0.08)' : 'rgba(20,20,35,0.6)'};
-                       border:1px solid ${reached && !isClaimed ? 'rgba(212,175,55,0.45)' : 'rgba(184,152,95,0.2)'};
-                       ${!reached ? 'opacity:0.55;' : ''}">
-             <span style="color:#d4af37;font-weight:600;font-size:13px;flex-shrink:0">${r.rank}</span>
-             <span style="color:#e0e0e0;font-size:12px;display:flex;gap:10px;align-items:center;flex:1;justify-content:flex-end">
-               <span>${pearlIcon}${r.pearl}</span>
-               <span>${ryoIcon}${r.ryo.toLocaleString()}</span>
-               <span>${shinIcon}${r.shin}</span>
-             </span>
+           <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 12px;border-radius:8px;
+                       background:rgba(20,20,35,0.6);
+                       border:1px solid rgba(184,152,95,0.2);
+                       ${claimable ? 'border-left:3px solid #d4af37;' : ''}
+                       ${!reached ? 'opacity:0.5;' : ''}">
+             <div style="min-width:0;flex:1">
+               <div style="font-family:var(--font-display);color:#e8c76a;font-weight:600;font-size:13px;letter-spacing:0.5px">${r.rank}</div>
+               <div style="color:#cfc7b5;font-size:11px;display:flex;gap:12px;align-items:center;margin-top:4px;white-space:nowrap">
+                 <span>${pearlIcon}${r.pearl}</span>
+                 <span>${ryoIcon}${r.ryo.toLocaleString()}</span>
+                 <span>${shinIcon}${r.shin}</span>
+               </div>
+             </div>
              ${action}
            </div>`;
          }).join('')}
@@ -1343,10 +1376,10 @@
         border:26px solid transparent;
         border-image:url('assets/ui/generated/panel_frame.webp') 115 fill round;
         padding:14px;width:min(860px,96vw);
-        max-height:92vh;overflow-y:auto;box-shadow:0 0 60px rgba(184,152,95,0.35);
+        max-height:92vh;overflow-y:auto;box-shadow:0 24px 60px rgba(0,0,0,0.7);
       }
       .atp-header { display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;padding-bottom:12px;border-bottom:2px solid rgba(184,152,95,0.25); }
-      .atp-title { font-size:20px;font-weight:700;color:#d4af37;letter-spacing:1px; }
+      .atp-title { font-family:var(--font-display);font-size:20px;font-weight:600;color:#e8c76a;letter-spacing:1px; }
       .atp-desc { font-size:12px;color:#9a8060;margin-top:3px; }
       .atp-close { background:radial-gradient(circle at 35% 30%, rgba(212,175,55,0.22), rgba(10,10,20,0.9) 65%);border:1.5px solid rgba(212,175,55,0.55);color:#d4af37;font-size:14px;width:30px;height:30px;border-radius:50%;cursor:pointer;font-weight:700;line-height:1;display:flex;align-items:center;justify-content:center;transition:all 0.2s ease;box-shadow:inset 0 1px 0 rgba(212,175,55,0.3), 0 2px 6px rgba(0,0,0,0.6); }
       .atp-close:hover { border-color:#ffd700;color:#ffd700;box-shadow:0 0 14px rgba(212,175,55,0.5);transform:rotate(90deg); }
@@ -1360,7 +1393,7 @@
       .atp-team-card.atp-selected { border-color:#d4af37;background:rgba(212,175,55,0.08);box-shadow:0 0 20px rgba(212,175,55,0.2); }
       .atp-team-card.atp-active { border-color:rgba(107,207,127,0.5); }
       .atp-team-card.empty { cursor:default;opacity:0.5; }
-      .atp-team-label { font-size:11px;font-weight:700;color:#b8985f;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px; }
+      .atp-team-label { font-family:var(--font-display);font-size:11px;font-weight:600;color:#b8985f;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px; }
       .atp-empty-msg { font-size:13px;color:#555;text-align:center;padding:16px 0; }
       .atp-active-badge { position:absolute;top:10px;right:12px;background:rgba(107,207,127,0.2);border:1px solid #6bcf7f;color:#6bcf7f;font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;text-transform:uppercase;letter-spacing:0.5px; }
       .atp-members { display:flex;gap:10px;flex-wrap:wrap; }
@@ -1374,10 +1407,10 @@
       .atp-jutsu-name { font-size:10px;color:#b8a080;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1; }
       .atp-chakra { font-size:10px;color:#60a5fa;font-weight:700;flex-shrink:0; }
       .atp-footer { display:flex;gap:12px;margin-top:18px;padding-top:14px;border-top:1px solid rgba(184,152,95,0.2);align-items:center;justify-content:space-between; }
-      .atp-link-btn { font-size:12px;color:#b8985f;border:1px solid rgba(184,152,95,0.35);padding:8px 14px;border-radius:8px;text-decoration:none;font-family:"Cinzel",serif;transition:all 0.2s; }
+      .atp-link-btn { font-size:12px;color:#b8985f;border:1px solid rgba(184,152,95,0.35);padding:8px 14px;border-radius:8px;text-decoration:none;font-family:var(--font-display);transition:all 0.2s; }
       .atp-link-btn:hover { border-color:#d4af37;color:#d4af37; }
       .atp-confirm {
-        padding:12px 28px;font-family:"Cinzel",serif;font-size:13px;font-weight:700;
+        padding:12px 28px;font-family:var(--font-display);font-size:13px;font-weight:700;
         background:url('assets/ui/generated/button_gold.webp') center / 100% 100% no-repeat;
         border:none;
         color:#14100a;border-radius:8px;cursor:pointer;transition:all 0.2s;letter-spacing:0.5px;
@@ -1402,9 +1435,9 @@
                   border:26px solid transparent;
                   border-image:url('assets/ui/generated/panel_frame.webp') 115 fill round;
                   padding:16px;width:min(540px,92vw);
-                  max-height:88vh;overflow-y:auto;box-shadow:0 0 60px rgba(184,152,95,0.4);">
+                  max-height:88vh;overflow-y:auto;box-shadow:0 24px 60px rgba(0,0,0,0.7);">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;padding-bottom:12px;border-bottom:2px solid rgba(184,152,95,0.3);">
-          <span style="font-size:20px;font-weight:700;color:#d4af37;letter-spacing:1px">${title}</span>
+          <span style="font-family:var(--font-display);font-size:20px;font-weight:600;color:#e8c76a;letter-spacing:1px">${title}</span>
           <button onclick="document.getElementById('arena-info-modal').remove()"
                   style="background:radial-gradient(circle at 35% 30%, rgba(212,175,55,0.22), rgba(10,10,20,0.9) 65%);border:1.5px solid rgba(212,175,55,0.55);color:#d4af37;font-size:14px;width:30px;height:30px;border-radius:50%;cursor:pointer;font-weight:700">✕</button>
         </div>
