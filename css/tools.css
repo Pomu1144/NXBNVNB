@@ -753,15 +753,16 @@ body.page-tools {
 .tools-skin-stage {
   position: relative;
   margin: 0 auto;
-  aspect-ratio: 896 / 1200;
-  height: min(80vh, 1040px);
-  max-width: 100%;
+  aspect-ratio: 876 / 742;
+  width: min(1040px, 97%);
+  max-height: 80vh;
   background: url("../assets/ui/generated/tools_frame.webp") center / 100% 100% no-repeat;
+  container-type: inline-size;   /* zone text scales with the stage (cqw) */
 }
 .tools-skin-stage .zone { position: absolute; box-sizing: border-box; }
 
 /* LEFT rail — roster */
-.zone-roster { left: 3.0%; top: 30%; width: 17.4%; height: 31.5%;
+.zone-roster { left: 0.8%; top: 18%; width: 17.8%; height: 51%;
   display: flex; flex-direction: column; gap: 5px; padding: 2px; }
 .zone-roster .tools-search-wrap {
   display: flex; align-items: center; gap: 4px; width: 100%;
@@ -770,7 +771,7 @@ body.page-tools {
 }
 .zone-roster .tools-search-ico { color: #6b8bc0; font-size: 10px; }
 .zone-roster .tools-roster-search { flex: 1; min-width: 0; padding: 2px 0;
-  background: transparent; border: none; outline: none; color: #e6eeff; font-size: 10px; }
+  background: transparent; border: none; outline: none; color: #e6eeff; font-size: 1.15cqw; }
 .tools-roster-list { flex: 1; min-height: 0; overflow-y: auto;
   display: flex; flex-direction: column; gap: 4px; padding-right: 2px; scrollbar-width: thin; }
 .tools-roster-empty { color: #8aa; text-align: center; font-size: 10px; padding: 12px 4px; }
@@ -780,47 +781,47 @@ body.page-tools {
 .tools-roster-item:hover { border-color: rgba(150,190,255,0.5); }
 .tools-roster-item.active { border-color: #7fb2ff; background: rgba(50,100,190,0.4);
   box-shadow: 0 0 8px rgba(90,150,255,0.4); }
-.tools-roster-item img { width: 30px; height: 30px; object-fit: cover; border-radius: 5px;
+.tools-roster-item img { width: 3.8cqw; height: 3.8cqw; object-fit: cover; border-radius: 5px;
   border: 1px solid rgba(150,190,255,0.3); flex-shrink: 0; background: #0a0f1c; }
 .tools-roster-meta { min-width: 0; }
-.tools-roster-name { font-size: 9.5px; color: #eaf1ff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.tools-roster-stars { font-size: 7px; color: #ffd24a; letter-spacing: .5px; }
+.tools-roster-name { font-size: 1.3cqw; color: #eaf1ff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tools-roster-stars { font-size: 0.95cqw; color: #ffd24a; letter-spacing: .5px; }
 
 /* CENTER — name+stars nameplate (top), power badge, art */
-.zone-nameplate { left: 20.5%; top: 23.4%; width: 32%; height: 4.8%;
+.zone-nameplate { left: 18.7%; top: 7.3%; width: 32.7%; height: 7.8%;
   display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; text-align: center; }
 .zone-nameplate .tools-np-line { display: flex; align-items: baseline; gap: 6px; max-width: 100%; }
-.zone-nameplate .character-name { color: #eaf2ff; font-size: 12px; font-weight: 700;
+.zone-nameplate .character-name { color: #eaf2ff; font-size: 1.6cqw; font-weight: 700;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-shadow: 0 1px 2px #000; }
-.zone-nameplate .character-version { color: rgba(190,210,245,0.78); font-size: 9px; white-space: nowrap; }
+.zone-nameplate .character-version { color: rgba(190,210,245,0.78); font-size: 1.1cqw; white-space: nowrap; }
 .zone-nameplate .tools-star-row { display: flex; gap: 1px; }
-.zone-nameplate .tools-star { color: #ffd24a; font-size: 10px; text-shadow: 0 0 5px rgba(255,200,60,.6), 0 1px 1px #000; }
+.zone-nameplate .tools-star { color: #ffd24a; font-size: 1.35cqw; text-shadow: 0 0 5px rgba(255,200,60,.6), 0 1px 1px #000; }
 
-.zone-power { left: 22.5%; top: 27%; width: 28%; height: 3%;
+.zone-power { left: 20.7%; top: 13%; width: 28.6%; height: 4.9%;
   display: flex; align-items: center; justify-content: center; gap: 6px; }
-.zone-power .tools-grade { font-family: "Cinzel", serif; font-weight: 800; font-size: 12px;
+.zone-power .tools-grade { font-family: "Cinzel", serif; font-weight: 800; font-size: 1.65cqw;
   color: #ffd24a; text-shadow: 0 1px 2px #000; }
 .zone-power .tools-grade[data-grade="SS"], .zone-power .tools-grade[data-grade="S"] { color: #ff8a5a; }
 .zone-power .tools-power-txt { display: flex; align-items: baseline; gap: 4px; font-family: "Cinzel", serif; }
-.zone-power .tpl { font-size: 8px; letter-spacing: 1px; color: rgba(200,220,255,.75); }
-.zone-power .power-value { font-size: 13px; font-weight: 800; color: #cfe3ff; text-shadow: 0 0 8px rgba(120,180,255,.5); }
+.zone-power .tpl { font-size: 1.0cqw; letter-spacing: 1px; color: rgba(200,220,255,.75); }
+.zone-power .power-value { font-size: 1.75cqw; font-weight: 800; color: #cfe3ff; text-shadow: 0 0 8px rgba(120,180,255,.5); }
 
-.zone-art { left: 29%; top: 30%; width: 24.5%; height: 26%;
+.zone-art { left: 27.4%; top: 18.5%; width: 25%; height: 27%;
   display: flex; align-items: center; justify-content: center; }
 .zone-art .tools-art { max-width: 100%; max-height: 100%; object-fit: contain;
   filter: drop-shadow(0 6px 18px rgba(0,0,0,.7)); }
 .zone-art .tools-empty-hint { color: #6b7ea3; font-size: 10px; text-align: center; }
 
 /* Stats band */
-.zone-stats { left: 21.5%; top: 49%; width: 39%; height: 6.6%;
+.zone-stats { left: 19.7%; top: 48.6%; width: 39.9%; height: 10.7%;
   display: grid !important; grid-template-columns: repeat(3, 1fr); gap: 5px; }
 .zone-stats .stat-item { display: flex; flex-direction: column; align-items: center; justify-content: center;
   gap: 1px; padding: 2px; background: rgba(8,16,32,0.5); border: 1px solid rgba(150,190,255,0.18); border-radius: 6px; }
-.zone-stats .stat-label { font-size: 7.5px; letter-spacing: .5px; color: rgba(180,205,245,.7); text-transform: uppercase; }
-.zone-stats .stat-value { font-size: 12px; font-weight: 700; color: #cfe3ff; }
+.zone-stats .stat-label { font-size: 1.0cqw; letter-spacing: .5px; color: rgba(180,205,245,.7); text-transform: uppercase; }
+.zone-stats .stat-value { font-size: 1.7cqw; font-weight: 700; color: #cfe3ff; }
 
 /* Equipment row (aligns to the 6 painted slots) */
-.zone-equip { left: 22%; top: 56.4%; width: 38%; height: 4.6%;
+.zone-equip { left: 20.2%; top: 60.6%; width: 38.9%; height: 7.4%;
   display: grid !important; grid-template-columns: repeat(6, 1fr); gap: 4px; padding: 0; background: none; border: none; }
 .zone-equip .equipment-slot { width: 100%; height: 100%; aspect-ratio: 1;
   background: transparent; border: 1px solid rgba(150,190,255,0.12); border-radius: 5px; cursor: pointer; }
