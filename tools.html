@@ -18,9 +18,54 @@
 </head>
 <body class="page-tools">
   <div id="tools-bg"></div>
+  <div id="tools-backdrop"></div>
   <main class="tools-content">
     <h1 class="page-title">TOOLS</h1>
-    <section id="tools-root"></section>
+
+    <div class="tools-stage">
+      <!-- LEFT: owned character roster -->
+      <aside class="tools-roster">
+        <div class="tools-roster-head">Characters</div>
+        <input type="text" id="tools-search" class="tools-roster-search" placeholder="Search…" />
+        <div class="tools-roster-list" id="tools-roster-list"></div>
+      </aside>
+
+      <!-- CENTER: selected character (stars on top, art in the middle) -->
+      <section class="tools-center">
+        <div class="tools-star-row" id="tools-star-row"></div>
+        <div class="tools-art-wrap">
+          <img id="character-full-image" class="tools-art" src="" alt="" style="display:none" />
+          <div class="tools-empty-hint" id="tools-empty-hint">Select a character</div>
+        </div>
+        <div class="tools-nameplate" id="selected-character-info" style="display:none">
+          <div class="character-name" id="character-name"></div>
+          <div class="character-version" id="character-version"></div>
+        </div>
+      </section>
+
+      <!-- RIGHT: power, equipment tools, stats -->
+      <aside class="tools-panel">
+        <div class="power-display">
+          <div class="power-label">Power</div>
+          <div class="power-value" id="power-value">—</div>
+        </div>
+
+        <div class="equipment-container" id="equipment-container" style="display:none">
+          <div class="equipment-slot" data-slot="1"><div class="slot-empty"><div class="slot-label">Slot 1</div></div></div>
+          <div class="equipment-slot" data-slot="2"><div class="slot-empty"><div class="slot-label">Slot 2</div></div></div>
+          <div class="equipment-slot" data-slot="3"><div class="slot-empty"><div class="slot-label">Slot 3</div></div></div>
+          <div class="equipment-slot" data-slot="4"><div class="slot-empty"><div class="slot-label">Slot 4</div></div></div>
+          <div class="equipment-slot" data-slot="5"><div class="slot-empty"><div class="slot-label">Slot 5</div></div></div>
+          <div class="equipment-slot" data-slot="6"><div class="slot-empty"><div class="slot-label">Slot 6</div></div></div>
+        </div>
+
+        <div class="stats-display" id="stats-display" style="display:none">
+          <div class="stat-item"><span class="stat-label">Health</span><span class="stat-value" id="stat-health">0</span></div>
+          <div class="stat-item"><span class="stat-label">Attack</span><span class="stat-value" id="stat-attack">0</span></div>
+          <div class="stat-item"><span class="stat-label">Speed</span><span class="stat-value" id="stat-speed">0</span></div>
+        </div>
+      </aside>
+    </div>
   </main>
 
   <div class="bottom-bar">
@@ -40,6 +85,8 @@
   <script src="https://cdn.jsdelivr.net/npm/howler@2.2.4/dist/howler.min.js"></script>
   <script src="js/audio-manager.js"></script>
   <script src="js/resources.js"></script>
+  <script src="js/character_inv.js?v=2"></script>
+  <script src="js/progression.js"></script>
   <script src="js/tools.js"></script>
   <script src="js/navigation.js"></script>
 </body>

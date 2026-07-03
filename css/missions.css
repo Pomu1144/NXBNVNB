@@ -60,15 +60,19 @@ body {
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 1px;
-  padding: 13px 26px;
+  padding: 13px 30px;
   min-height: 46px;
   border: none;
-  background: url("../assets/ui/generated/mission_tab_plate.webp") center / 100% 100% no-repeat;
+  /* Clip the plate's rectangular bounding box to a pill so the dark image
+     corners are removed and the glow follows the plate shape */
+  border-radius: 999px;
+  overflow: hidden;
+  background: url("../assets/ui/generated/mission_tab_plate.webp") center / 100% 100% no-repeat, transparent;
   color: #efe0c0;
   cursor: pointer;
   text-transform: uppercase;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
-  filter: brightness(0.8) saturate(0.85);
+  filter: brightness(0.85) saturate(0.9);
   transition: transform 0.2s ease, filter 0.2s ease;
 }
 .tab-btn .tab-label { position: relative; z-index: 2; }

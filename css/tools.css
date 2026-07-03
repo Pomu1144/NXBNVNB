@@ -400,3 +400,243 @@ body.page-tools {
     grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
   }
 }
+
+/* =====================================================================
+   Tools page — blue ornate stage (roster | character | equipment)
+   ===================================================================== */
+body.page-tools {
+  background: radial-gradient(circle at 50% 12%, #16233f 0%, #0c1220 55%, #070a12 100%);
+}
+#tools-backdrop {
+  position: fixed;
+  inset: 0;
+  background: url("../assets/ui/generated/tools_backdrop.webp") center / cover no-repeat;
+  opacity: 0.10;
+  filter: blur(2px) saturate(1.1);
+  pointer-events: none;
+  z-index: 0;
+}
+.page-tools .page-title {
+  color: #cfe0ff;
+  text-shadow: 0 0 28px rgba(120, 170, 255, 0.45), 0 4px 8px rgba(0, 0, 0, 0.8);
+}
+
+.tools-stage {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 264px minmax(0, 1fr) 340px;
+  gap: 20px;
+  align-items: stretch;
+  max-width: 1280px;
+  margin: 0 auto;
+  height: min(72vh, 720px);
+}
+
+/* Shared blue ornate panel look */
+.tools-roster, .tools-center, .tools-panel {
+  background: linear-gradient(180deg, rgba(20, 32, 58, 0.92), rgba(10, 16, 30, 0.95));
+  border: 1.5px solid rgba(120, 160, 230, 0.35);
+  border-radius: 16px;
+  box-shadow: 0 10px 34px rgba(0, 0, 0, 0.55), inset 0 0 40px rgba(30, 60, 120, 0.15);
+}
+
+/* LEFT — roster */
+.tools-roster {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  padding: 12px 10px;
+}
+.tools-roster-head {
+  font-family: "Cinzel", serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-align: center;
+  color: #9dc0ff;
+  padding-bottom: 10px;
+  margin-bottom: 8px;
+  border-bottom: 1px solid rgba(120, 160, 230, 0.25);
+}
+.tools-roster-search {
+  width: 100%;
+  padding: 8px 12px;
+  margin-bottom: 10px;
+  background: rgba(8, 14, 28, 0.85);
+  border: 1px solid rgba(120, 160, 230, 0.3);
+  border-radius: 8px;
+  color: #e6eeff;
+  font-family: "Cinzel", serif;
+  font-size: 13px;
+}
+.tools-roster-search::placeholder { color: #6b7ea3; }
+.tools-roster-list {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  padding-right: 4px;
+  scrollbar-width: thin;
+}
+.tools-roster-empty {
+  color: #7f90b5;
+  text-align: center;
+  font-size: 13px;
+  padding: 24px 8px;
+  line-height: 1.5;
+}
+.tools-roster-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 6px 8px;
+  background: rgba(12, 20, 38, 0.7);
+  border: 1px solid rgba(120, 160, 230, 0.18);
+  border-radius: 10px;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.15s ease;
+}
+.tools-roster-item:hover {
+  border-color: rgba(150, 190, 255, 0.5);
+  transform: translateX(2px);
+}
+.tools-roster-item.active {
+  border-color: #7fb2ff;
+  background: linear-gradient(90deg, rgba(60, 110, 200, 0.35), rgba(20, 34, 62, 0.6));
+  box-shadow: 0 0 14px rgba(90, 150, 255, 0.35);
+}
+.tools-roster-item img {
+  width: 46px;
+  height: 46px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid rgba(150, 190, 255, 0.35);
+  flex-shrink: 0;
+  background: #0a0f1c;
+}
+.tools-roster-meta { min-width: 0; }
+.tools-roster-name {
+  font-size: 12.5px;
+  color: #eaf1ff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.tools-roster-stars { font-size: 10px; color: #ffd24a; letter-spacing: 1px; }
+
+/* CENTER — selected character */
+.tools-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px 18px 20px;
+  min-height: 0;
+}
+.tools-star-row {
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  margin-bottom: 6px;
+}
+.tools-star-row .tools-star {
+  color: #ffd24a;
+  font-size: 22px;
+  text-shadow: 0 0 10px rgba(255, 200, 60, 0.6), 0 2px 3px #000;
+}
+.tools-art-wrap {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.tools-art {
+  max-height: 100%;
+  max-width: 92%;
+  object-fit: contain;
+  filter: drop-shadow(0 12px 34px rgba(0, 0, 0, 0.7));
+}
+.tools-empty-hint {
+  color: #6b7ea3;
+  font-family: "Cinzel", serif;
+  letter-spacing: 1px;
+}
+.tools-nameplate { text-align: center; margin-top: 10px; }
+.page-tools .character-name { color: #cfe0ff; }
+.page-tools .character-version { color: rgba(180, 200, 240, 0.7); }
+
+/* RIGHT — power / equipment / stats */
+.tools-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 18px 16px;
+  overflow-y: auto;
+  min-height: 0;
+}
+.page-tools .power-display {
+  background: rgba(8, 14, 28, 0.85);
+  border-color: #7fb2ff;
+  box-shadow: 0 0 26px rgba(90, 150, 255, 0.3);
+}
+.page-tools .power-label { color: rgba(190, 210, 245, 0.85); }
+.page-tools .power-value { color: #bcd6ff; text-shadow: 0 0 20px rgba(120, 180, 255, 0.6); font-size: 2.1rem; }
+
+.page-tools .equipment-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  padding: 14px;
+  margin: 0;
+  background: rgba(10, 16, 30, 0.6);
+  border: 1px solid rgba(120, 160, 230, 0.2);
+  border-radius: 12px;
+}
+.page-tools .equipment-slot {
+  height: auto;
+  aspect-ratio: 1;
+  background: rgba(8, 14, 28, 0.85);
+  border: 1.5px solid rgba(120, 160, 230, 0.28);
+  border-radius: 10px;
+}
+.page-tools .equipment-slot:hover {
+  border-color: rgba(150, 190, 255, 0.55);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5), 0 0 16px rgba(90, 150, 255, 0.25);
+}
+.page-tools .slot-label { color: rgba(150, 180, 235, 0.6); font-size: 0.75rem; }
+
+.page-tools .stats-display {
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  padding: 14px;
+  margin: 0;
+  background: rgba(10, 16, 30, 0.6);
+  border-color: rgba(120, 160, 230, 0.2);
+}
+.page-tools .stat-item {
+  background: rgba(8, 14, 28, 0.85);
+  border-color: rgba(120, 160, 230, 0.22);
+}
+.page-tools .stat-label { color: rgba(180, 200, 240, 0.7); }
+.page-tools .stat-value { color: #bcd6ff; font-size: 1.3rem; }
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .tools-stage {
+    grid-template-columns: 1fr;
+    grid-auto-rows: min-content;
+    height: auto;
+  }
+  .tools-roster-list { max-height: 220px; }
+  .tools-center { min-height: 360px; }
+}
