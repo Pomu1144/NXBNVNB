@@ -43,116 +43,88 @@
     // Setup event listeners
     setupEventListeners();
 
+    // Render the owned-character roster into the left rail
+    renderRoster();
+
     console.log('[Tools] Tools system initialized');
   });
 
+  // Map a tier code to a star count (mirrors team_manager / characters).
+  const STAR_BY_TIER = { "1S":1,"2S":2,"3S":3,"4S":4,"5S":5,"6S":6,"6SB":6,"7S":7,"7SL":7,"8S":8,"8SM":8,"9S":9,"9ST":9,"10SO":10 };
+  function starCountFor(inst, baseChar) {
+    const tier = (inst && inst.tierCode) || (baseChar && (baseChar.starMaxCode || baseChar.starMinCode)) || `${(baseChar && baseChar.rarity) || 5}S`;
+    return STAR_BY_TIER[tier] || (baseChar && baseChar.rarity) || 5;
+  }
+
   function setupEventListeners() {
-    // Character selection button
-    const btnSelectCharacter = document.getElementById('btn-select-character');
-    if (btnSelectCharacter) {
-      btnSelectCharacter.addEventListener('click', openCharacterSelector);
-    }
-
-    // Modal cancel button
-    const modalCancel = document.getElementById('modal-cancel');
-    if (modalCancel) {
-      modalCancel.addEventListener('click', closeCharacterSelector);
-    }
-
-    // Close modal on background click
-    const modal = document.getElementById('character-selector-modal');
-    if (modal) {
-      modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
-          closeCharacterSelector();
-        }
-      });
-    }
-
-    // Search input
-    const searchInput = document.getElementById('character-search');
-    if (searchInput) {
-      searchInput.addEventListener('input', filterCharacters);
-    }
+    // Roster search (left rail)
+    const searchInput = document.getElementById('tools-search');
+    if (searchInput) searchInput.addEventListener('input', filterCharacters);
   }
 
-  function openCharacterSelector() {
-    console.log('[Tools] Opening character selector...');
+  // Render the owned-character roster into the left rail.
+  function renderRoster() {
+    const list = document.getElementById('tools-roster-list');
+    if (!list) return;
 
-    const modal = document.getElementById('character-selector-modal');
-    const grid = document.getElementById('characters-grid');
-
-    if (!modal || !grid) {
-      console.error('[Tools] Modal or grid not found');
-      return;
-    }
-
-    // Load characters from inventory
     if (typeof window.InventoryChar === 'undefined') {
-      console.error('[Tools] InventoryChar not loaded');
-      alert('Character system not loaded. Please reload the page.');
+      list.innerHTML = '<div class="tools-roster-empty">Inventory not loaded.</div>';
       return;
     }
 
-    const characters = window.InventoryChar.allInstances();
-    console.log(`[Tools] Loaded ${characters.length} characters`);
+    const characters = window.InventoryChar.allInstances() || [];
+    if (characters.length === 0) {
+      list.innerHTML = '<div class="tools-roster-empty">No characters owned yet.<br>Summon some first!</div>';
+      return;
+    }
 
-    // Clear grid
-    grid.innerHTML = '';
-
-    // Populate grid
-    characters.forEach(char => {
-      const card = createCharacterCard(char);
-      grid.appendChild(card);
+    // Highest rarity first so strong units are easy to find.
+    const sorted = characters.slice().sort((a, b) => {
+      const ca = getBase(a.charId), cb = getBase(b.charId);
+      return (starCountFor(b, cb)) - (starCountFor(a, ca));
     });
 
-    // Show modal
-    modal.classList.add('open');
-    modal.setAttribute('aria-hidden', 'false');
-  }
-
-  function closeCharacterSelector() {
-    const modal = document.getElementById('character-selector-modal');
-    if (modal) {
-      modal.classList.remove('open');
-      modal.setAttribute('aria-hidden', 'true');
-    }
-  }
-
-  function createCharacterCard(inst) {
-    const card = document.createElement('div');
-    card.className = 'character-card';
-
-    // Get base character data
-    const baseChar = window.CharacterInventory ? window.CharacterInventory.getCharacterById(inst.charId) : null;
-
-    const img = document.createElement('img');
-    if (baseChar) {
-      img.src = baseChar.card || baseChar.portrait || baseChar.icon || 'assets/placeholder.png';
-      img.alt = baseChar.name;
-    } else {
-      img.src = 'assets/placeholder.png';
-      img.alt = 'Unknown';
-    }
-    img.onerror = () => { img.src = 'assets/placeholder.png'; };
-
-    const info = document.createElement('div');
-    info.className = 'character-card-info';
-
-    const name = document.createElement('div');
-    name.className = 'character-card-name';
-    name.textContent = baseChar ? (baseChar.name || 'Unknown') : 'Unknown';
-
-    info.appendChild(name);
-    card.appendChild(img);
-    card.appendChild(info);
-
-    card.addEventListener('click', () => {
-      selectCharacter(inst, baseChar);
-      closeCharacterSelector();
+    list.innerHTML = '';
+    sorted.forEach(inst => {
+      const baseChar = getBase(inst.charId);
+      if (!baseChar) return;
+      const item = document.createElement('button');
+      item.className = 'tools-roster-item';
+      item.dataset.uid = inst.uid;
+      item.dataset.name = (baseChar.name || '').toLowerCase();
+      const portrait = baseChar.portrait || baseChar.card || baseChar.icon || 'assets/placeholder.png';
+      item.innerHTML = `
+        <img src="${portrait}" alt="${baseChar.name || ''}" onerror="this.src='assets/placeholder.png'">
+        <div class="tools-roster-meta">
+          <div class="tools-roster-name">${baseChar.name || 'Unknown'}</div>
+          <div class="tools-roster-stars">${'★'.repeat(Math.min(10, starCountFor(inst, baseChar)))}</div>
+        </div>`;
+      item.addEventListener('click', () => {
+        list.querySelectorAll('.tools-roster-item').forEach(i => i.classList.remove('active'));
+        item.classList.add('active');
+        selectCharacter(inst, baseChar);
+      });
+      list.appendChild(item);
     });
 
-    return card;
+    // Auto-select the first (strongest) unit.
+    const first = list.querySelector('.tools-roster-item');
+    if (first) first.click();
+  }
+
+  function getBase(charId) {
+    return window.CharacterInventory ? window.CharacterInventory.getCharacterById(charId) : null;
+  }
+
+  // SS→D letter grade from a unit's power rank (matches team/character screens).
+  function gradeOf(baseChar) {
+    const p = Number(baseChar && baseChar.powerRank) || 0;
+    if (p >= 10000) return 'SS';
+    if (p >= 8000)  return 'S';
+    if (p >= 6000)  return 'A';
+    if (p >= 4000)  return 'B';
+    if (p >= 2000)  return 'C';
+    return 'D';
   }
 
   function selectCharacter(inst, baseChar) {
@@ -168,13 +140,32 @@
     // Update UI
     updateCharacterDisplay();
 
+    // Stars on top of the center stage
+    const starRow = document.getElementById('tools-star-row');
+    if (starRow) {
+      const n = Math.min(10, starCountFor(inst, baseChar));
+      starRow.innerHTML = new Array(n).fill('<span class="tools-star">★</span>').join('');
+    }
+
+    // Power + letter grade badge on top of the art
+    const badge = document.getElementById('tools-power-badge');
+    const gradeEl = document.getElementById('tools-grade');
+    if (gradeEl) {
+      const g = gradeOf(baseChar);
+      gradeEl.textContent = g;
+      gradeEl.dataset.grade = g;
+    }
+    if (badge) badge.style.display = 'flex';
+
     // Show equipment container and stats
     const equipmentContainer = document.getElementById('equipment-container');
     const statsDisplay = document.getElementById('stats-display');
     const selectedInfo = document.getElementById('selected-character-info');
+    const emptyHint = document.getElementById('tools-empty-hint');
 
     if (equipmentContainer) equipmentContainer.style.display = 'grid';
     if (statsDisplay) statsDisplay.style.display = 'grid';
+    if (emptyHint) emptyHint.style.display = 'none';
     if (selectedInfo) {
       selectedInfo.style.display = 'block';
       const nameEl = document.getElementById('character-name');
@@ -193,9 +184,11 @@
     const { baseChar } = selectedCharacter;
     const characterImg = document.getElementById('character-full-image');
     if (characterImg) {
-      // Use full character PNG
-      characterImg.src = baseChar.full || baseChar.card || baseChar.portrait || baseChar.icon || 'assets/placeholder.png';
+      // Use full character PNG (some full arts ship as .gif — prefer the PNG)
+      const full = (baseChar.full || baseChar.card || baseChar.portrait || baseChar.icon || 'assets/placeholder.png').replace(/\.gif$/i, '.png');
+      characterImg.src = full;
       characterImg.alt = baseChar.name;
+      characterImg.style.display = 'block';
       characterImg.onerror = () => {
         characterImg.src = baseChar.card || baseChar.portrait || baseChar.icon || 'assets/placeholder.png';
       };
@@ -300,17 +293,10 @@
   }
 
   function filterCharacters() {
-    const searchInput = document.getElementById('character-search');
-    const searchTerm = searchInput.value.toLowerCase();
-    const cards = document.querySelectorAll('.character-card');
-
-    cards.forEach(card => {
-      const name = card.querySelector('.character-card-name').textContent.toLowerCase();
-      if (name.includes(searchTerm)) {
-        card.style.display = 'block';
-      } else {
-        card.style.display = 'none';
-      }
+    const searchInput = document.getElementById('tools-search');
+    const term = (searchInput ? searchInput.value : '').toLowerCase();
+    document.querySelectorAll('.tools-roster-item').forEach(item => {
+      item.style.display = (!term || (item.dataset.name || '').includes(term)) ? '' : 'none';
     });
   }
 
