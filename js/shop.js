@@ -194,26 +194,30 @@
         }
       }
 
-      // Build tier display if exists
-      const tierHTML = item.tier ? `<div class="item-tier">${item.tier}</div>` : '';
+      // Build tier badge if the item declares one or its name encodes a star tier
+      let tier = item.tier;
+      if (!tier) {
+        const m = String(item.name).match(/(\d)\s*★|★\s*(\d)/);
+        if (m) tier = `${m[1] || m[2]}★`;
+      }
+      const tierHTML = tier ? `<span class="item-tier">${tier}</span>` : '';
 
       // Build exp display if exists
       const expInfo = item.exp ? ` (+${item.exp.toLocaleString()} EXP)` : '';
 
       card.innerHTML = `
-        <div class="item-header">
-          <div class="item-icon">
-            <img src="${item.icon}" alt="${item.name}" onerror="this.src='assets/characters/common/silhouette.png'">
+        <div class="si-inner">
+          <div class="item-name">${tierHTML}<span class="item-name-text">${item.name}</span></div>
+          <div class="si-body">
+            <div class="item-icon">
+              <img src="${item.icon}" alt="${item.name}" onerror="this.src='assets/characters/common/silhouette.png'">
+            </div>
+            <div class="item-description">${item.description}${expInfo}</div>
           </div>
-          <div class="item-info">
-            <div class="item-name">${item.name}</div>
-            ${tierHTML}
+          <div class="item-footer">
+            ${costHTML}
+            <button class="btn-buy">Buy</button>
           </div>
-        </div>
-        <div class="item-description">${item.description}${expInfo}</div>
-        <div class="item-footer">
-          ${costHTML}
-          <button class="btn-buy">Buy</button>
         </div>
       `;
 
