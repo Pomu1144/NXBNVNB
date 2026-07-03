@@ -1,0 +1,277 @@
+{
+  "note": "Banners hidden from the summon selector because their banner art asset is missing. Regenerate art (assets path in image) then remove the hidden flag in data/summon.json to re-enable.",
+  "count": 33,
+  "banners": [
+    {
+      "id": "blazing_all_stars",
+      "name": "All-Stars: 100 Random Characters",
+      "image": "assets/summon/banners/all_stars.png",
+      "featured": [],
+      "reason": "missing banner art"
+    },
+    {
+      "id": "bf_naruto_klm",
+      "name": "Blazing Festival: Naruto (KLM)",
+      "image": "assets/summon/banners/bf_naruto_klm.png",
+      "featured": [
+        "naruto_klm_900"
+      ],
+      "reason": "missing banner art"
+    },
+    {
+      "id": "bf_sasuke_rinne",
+      "name": "Blazing Festival: Sasuke (Rinne Sharingan)",
+      "image": "assets/summon/banners/bf_sasuke_rinne.png",
+      "featured": [
+        "sasuke_rinne_910"
+      ],
+      "reason": "missing banner art"
+    },
+    {
+      "id": "bf_hashirama",
+      "name": "Blazing Festival: Hashirama",
+      "image": "assets/summon/banners/bf_hashirama.png",
+      "featured": [
+        "hashirama_920"
+      ],
+      "reason": "missing banner art"
+    },
+    {
+      "id": "bf_madara",
+      "name": "Blazing Festival: Madara",
+      "image": "assets/summon/banners/bf_madara.png",
+      "featured": [
+        "madara_930"
+      ],
+      "reason": "missing banner art"
+    },
+    {
+      "id": "bf_naruto_six_paths",
+      "name": "Blazing Festival: Six Paths Naruto",
+      "image": "assets/summon/banners/bf_naruto_six_paths.png",
+      "featured": [
+        "naruto_sosp_950"
+      ],
+      "reason": "missing banner art"
+    },
+    {
+      "id": "bf_sasuke_perfect_susanoo",
+      "name": "Blazing Festival: Sasuke (Perfect Susanoo)",
+      "image": "assets/summon/banners/bf_sasuke_susanoo.png",
+      "featured": [
+        "sasuke_susanoo_960"
+      ],
+      "reason": "missing banner art"
+    },
+    {
+      "id": "bf_kaguya",
+      "name": "Blazing Festival: Kaguya",
+      "image": "assets/summon/banners/bf_kaguya.png",
+      "featured": [
+        "kaguya_970"
+      ],
+      "reason": "missing banner art"
+    },
+    {
+      "id": "bf_obito_ten_tails",
+      "name": "Blazing Festival: Obito (Ten Tails)",
+      "image": "assets/summon/banners/bf_obito.png",
+      "featured": [
+        "obito_tentails_980"
+      ],
+      "reason": "missing banner art"
+    },
+    {
+      "id": "bf_might_guy_8th_gate",
+      "name": "Blazing Festival: Might Guy (8th Gate)",
+      "image": "assets/summon/banners/bf_guy.png",
+      "featured": [
+        "guy_eightgate_990"
+      ],
+      "reason": "missing banner art"
+    },
+    {
+      "id": "bb_naruto_sage",
+      "name": "Blazing Bash: Naruto (Sage Mode)",
+      "image": "assets/summon/banners/bb_naruto_sage.png",
+      "featured": [
+        "naruto_sage_701"
+      ],
+      "reason": "missing banner art"
+    },
+    {
+      "id": "bb_sasuke_cm2",
+      "name": "Blazing Bash: Sasuke (CM2)",
+      "image": "assets/summon/banners/bb_sasuke_cm2.png",
+      "featured": [
+        "sasuke_cm2_702"
+      ],
+      "reason": "missing banner art"
+    },
+    {
+      "id": "bb_rock_lee_6th_gate",
+      "name": "Blazing Bash: Rock Lee (6th Gate)",
+      "image": "assets/summon/banners/bb_lee.png",
+      "featured": [
+        "lee_gate6_703"
+      ],
+      "reason": "missing banner art"
+    },
+    {
+      "id": "bb_gaara_shukaku",
+      "name": "Blazing Bash: Gaara (Shukaku Cloak)",
+      "image": "assets/summon/banners/bb_gaara.png",
+      "featured": [
+        "gaara_shukaku_704"
+      ],
+      "reason": "missing banner art"
+    },
+    {
+      "id": "bb_neji",
+      "name": "Blazing Bash: Neji",
+      "image": "assets/summon/banners/bb_neji.png",
+      "featured": [
+        "neji_705"
+      ],
+      "reason": "missing banner art"
+    },
+    {
+      "id": "bb_shikamaru",
+      "name": "Blazing Bash: Shikamaru",
+      "image": "assets/summon/banners/bb_shikamaru.png",
+      "featured": [
+        "shikamaru_706"
+      ],
+      "reason": "missing banner art"
+    },
+    {
+      "id": "anniv1_naruto",
+      "name": "1st Anniversary: Naruto",
+      "image": "assets/summon/banners/anniv1_naruto.png",
+      "featured": [
+        "naruto_anniv1_1000"
+      ],
+      "reason": "missing banner art"
+    },
+    {
+      "id": "anniv1_sasuke",
+      "name": "1st Anniversary: Sasuke",
+      "image": "assets/summon/banners/anniv1_sasuke.png",
+      "featured": [
+        "sasuke_anniv1_1001"
+      ],
+      "reason": "missing banner art"
+    },
+    {
+      "id": "anniv2_naruto",
+      "name": "2nd Anniversary: Naruto",
+      "image": "assets/summon/banners/anniv2_naruto.png",
+      "featured": [
+        "naruto_anniv2_1002"
+      ],
+      "reason": "missing banner art"
+    },
+    {
+      "id": "anniv2_sasuke",
+      "name": "2nd Anniversary: Sasuke",
+      "image": "assets/summon/banners/anniv2_sasuke.png",
+      "featured": [
+        "sasuke_anniv2_1003"
+      ],
+      "reason": "missing banner art"
+    },
+    {
+      "id": "anniv3_dual",
+      "name": "3rd Anniversary: Dual Unit",
+      "image": "assets/summon/banners/anniv3_dual.png",
+      "featured": [
+        "naruto_sasuke_dual_1004"
+      ],
+      "reason": "missing banner art"
+    },
+    {
+      "id": "birthday_naruto",
+      "name": "Birthday: Naruto",
+      "image": "assets/summon/banners/birthday_naruto.png",
+      "featured": [],
+      "reason": "missing banner art"
+    },
+    {
+      "id": "birthday_sasuke",
+      "name": "Birthday: Sasuke",
+      "image": "assets/summon/banners/birthday_sasuke.png",
+      "featured": [],
+      "reason": "missing banner art"
+    },
+    {
+      "id": "birthday_sakura",
+      "name": "Birthday: Sakura",
+      "image": "assets/summon/banners/birthday_sakura.png",
+      "featured": [],
+      "reason": "missing banner art"
+    },
+    {
+      "id": "birthday_hinata",
+      "name": "Birthday: Hinata",
+      "image": "assets/summon/banners/birthday_hinata.png",
+      "featured": [],
+      "reason": "missing banner art"
+    },
+    {
+      "id": "birthday_kakashi",
+      "name": "Birthday: Kakashi",
+      "image": "assets/summon/banners/birthday_kakashi.png",
+      "featured": [],
+      "reason": "missing banner art"
+    },
+    {
+      "id": "birthday_itachi",
+      "name": "Birthday: Itachi",
+      "image": "assets/summon/banners/birthday_itachi.png",
+      "featured": [],
+      "reason": "missing banner art"
+    },
+    {
+      "id": "birthday_obito",
+      "name": "Birthday: Obito",
+      "image": "assets/summon/banners/birthday_obito.png",
+      "featured": [],
+      "reason": "missing banner art"
+    },
+    {
+      "id": "birthday_shikamaru",
+      "name": "Birthday: Shikamaru",
+      "image": "assets/summon/banners/birthday_shikamaru.png",
+      "featured": [],
+      "reason": "missing banner art"
+    },
+    {
+      "id": "birthday_gaara",
+      "name": "Birthday: Gaara",
+      "image": "assets/summon/banners/birthday_gaara.png",
+      "featured": [],
+      "reason": "missing banner art"
+    },
+    {
+      "id": "birthday_tsunade",
+      "name": "Birthday: Tsunade",
+      "image": "assets/summon/banners/birthday_tsunade.png",
+      "featured": [],
+      "reason": "missing banner art"
+    },
+    {
+      "id": "birthday_jiraiya",
+      "name": "Birthday: Jiraiya",
+      "image": "assets/summon/banners/birthday_jiraiya.png",
+      "featured": [],
+      "reason": "missing banner art"
+    },
+    {
+      "id": "birthday_minato",
+      "name": "Birthday: Minato",
+      "image": "assets/summon/banners/birthday_minato.png",
+      "featured": [],
+      "reason": "missing banner art"
+    }
+  ]
+}

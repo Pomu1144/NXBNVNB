@@ -549,24 +549,34 @@
     }
     .sim-panel {
       position: relative;
-      background: linear-gradient(135deg,rgba(12,16,38,0.99),rgba(6,8,20,0.99));
+      background:
+        linear-gradient(180deg, rgba(6,9,20,0.60), rgba(5,7,16,0.72)),
+        url('assets/ui/generated/rates_scroll.webp') center / cover no-repeat;
       border: 2px solid #b8985f;
       border-radius: 16px;
-      padding: 24px;
+      padding: 30px 30px 26px;
       width: min(560px, 94vw);
       max-height: 86vh;
       overflow-y: auto;
-      box-shadow: 0 0 50px rgba(184,152,95,0.35);
+      box-shadow: 0 0 50px rgba(184,152,95,0.4), inset 0 0 60px rgba(0,0,0,0.55);
     }
     .sim-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 16px;
+      margin-bottom: 18px;
       padding-bottom: 12px;
-      border-bottom: 1px solid rgba(184,152,95,0.25);
+      border-bottom: 1px solid rgba(184,152,95,0.35);
     }
-    .sim-title { font-size: 18px; font-weight: 700; color: #d4af37; letter-spacing: 1px; }
+    .sim-title {
+      font-family: 'Cinzel', serif;
+      font-size: 20px; font-weight: 700; color: #f4cf5e; letter-spacing: 2px;
+      text-transform: uppercase;
+      text-shadow: 0 0 14px rgba(244,207,94,0.5), 0 2px 3px rgba(0,0,0,0.9);
+    }
+    .sim-title::before {
+      content: "❖"; color: #b8985f; margin-right: 9px; font-size: 15px; opacity: 0.9;
+    }
     .sim-close {
       background: radial-gradient(circle at 35% 30%, rgba(212,175,55,0.22), rgba(10,10,20,0.9) 65%);
       border: 1.5px solid rgba(212,175,55,0.55);
@@ -588,18 +598,35 @@
       box-shadow: 0 0 14px rgba(212,175,55,0.5);
       transform: rotate(90deg);
     }
-    .sim-body { font-size: 13px; color: #b8a080; line-height: 1.7; }
+    .sim-body { font-size: 13px; color: #cdbf9c; line-height: 1.7; }
     .sim-rate-row {
       display: flex;
       justify-content: space-between;
-      padding: 8px 12px;
-      background: rgba(20,20,35,0.5);
-      border-radius: 7px;
-      margin-bottom: 6px;
-      border: 1px solid rgba(184,152,95,0.15);
+      align-items: center;
+      padding: 11px 15px;
+      background: linear-gradient(180deg, rgba(24,22,16,0.82), rgba(10,10,16,0.86));
+      border-radius: 8px;
+      margin-bottom: 7px;
+      border: 1px solid rgba(184,152,95,0.28);
+      box-shadow: inset 0 1px 0 rgba(255,220,150,0.08), 0 2px 6px rgba(0,0,0,0.4);
     }
-    .sim-rate-label { color: #d4af37; font-weight: 600; }
-    .sim-rate-value { color: #6bcf7f; font-weight: 700; }
+    .sim-rate-label {
+      font-family: 'Cinzel', serif; color: #e6cf8f; font-weight: 600; letter-spacing: 0.5px;
+    }
+    .sim-rate-value {
+      font-family: 'Cinzel', serif; color: #7be08f; font-weight: 800; font-size: 15px;
+      text-shadow: 0 0 8px rgba(107,207,127,0.35);
+    }
+    .sim-section-label {
+      margin-top: 16px; margin-bottom: 9px;
+      color: #f4cf5e; font-weight: 700; font-size: 11px;
+      text-transform: uppercase; letter-spacing: 2px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .sim-section-label::before, .sim-section-label::after {
+      content: ""; flex: 1; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(184,152,95,0.5), transparent);
+    }
     .sim-char-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
@@ -679,7 +706,20 @@
       animation: featIn 0.35s ease;
     }
     .featured-stage[data-view="banner"] .stage-view-banner { display: flex; }
-    .featured-stage[data-view="char"]   .stage-view-char   { display: flex; gap: 18px; padding: 0 46px; }
+    .featured-stage[data-view="char6"] .stage-view-char,
+    .featured-stage[data-view="char5"] .stage-view-char { display: flex; gap: 18px; padding: 0 46px; }
+    /* Star-tier ribbon shown on the character slides */
+    .stage-tier-badge {
+      position: absolute; top: 12px; left: 50%; transform: translateX(-50%);
+      z-index: 5; padding: 4px 16px; border-radius: 20px;
+      font-family: 'Cinzel', serif; font-weight: 700; font-size: 13px; letter-spacing: 1px;
+      background: linear-gradient(180deg, rgba(20,16,8,0.95), rgba(8,6,4,0.95));
+      border: 1px solid rgba(244,207,94,0.6); color: #f4cf5e;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.6); display: none;
+    }
+    .featured-stage[data-view="char6"] .stage-tier-badge,
+    .featured-stage[data-view="char5"] .stage-tier-badge { display: block; }
+    .featured-stage[data-view="char5"] .stage-tier-badge { border-color: rgba(180,190,255,0.6); color: #cdd6ff; }
     #stage-banner-img {
       max-width: 94%; max-height: 90%; object-fit: contain; border-radius: 10px;
       filter: drop-shadow(0 10px 30px rgba(0,0,0,0.7));
@@ -736,7 +776,7 @@
       display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; z-index: 3;
       background: linear-gradient(0deg, rgba(4,5,12,0.92), transparent);
     }
-    /* Caption only on the character view (banner art already has its title baked in) */
+    /* Caption only on the character views (banner art already has its title baked in) */
     .featured-stage[data-view="banner"] .featured-caption { display: none; }
     .featured-rank {
       font-family: 'Cinzel', serif; font-weight: 700; font-size: 20px; color: #ffd24a;
@@ -856,7 +896,8 @@
                onerror="this.style.visibility='hidden'">
         </div>
 
-        <!-- View 2: character art + stats -->
+        <!-- View 2/3: character art + stats (6★ evolved, then 5★ base) -->
+        <div class="stage-tier-badge" id="stage-tier-badge">★6 FORM</div>
         <div class="stage-view stage-view-char">
           <img id="featured-art" src="" alt="Featured unit" draggable="false"
                onerror="this.style.visibility='hidden'">
@@ -868,7 +909,8 @@
         <button class="stage-arrow right" id="stage-next" type="button" aria-label="Next view">›</button>
         <div class="stage-dots">
           <span class="stage-dot active" data-view="banner"></span>
-          <span class="stage-dot" data-view="char"></span>
+          <span class="stage-dot" data-view="char6"></span>
+          <span class="stage-dot" data-view="char5"></span>
         </div>
 
         <div class="featured-caption">
@@ -980,6 +1022,7 @@
   <script src="js/daily-missions.js"></script>
   <script src="js/character_inv.js?v=2"></script>
   <script src="js/summon/summon-data.js"></script>
+  <script src="js/summon/summon-evolve.js"></script>
   <script src="js/summon/summon-engine.js"></script>
   <script src="js/summon/summon-animation.js"></script>
   <script src="js/summon/summon-carousel.js"></script>
@@ -1011,11 +1054,11 @@
         const feat  = rates?.featuredChance ?? '—';
         const tg    = rates?.totalGolds ?? '0';
         const fg    = rates?.featuredGolds ?? '0';
-        showSummonInfoModal('📊 Summon Rates', `
+        showSummonInfoModal('Summon Rates', `
           <div class="sim-rate-row"><span class="sim-rate-label">Multi Step</span><span class="sim-rate-value">${step}</span></div>
           <div class="sim-rate-row"><span class="sim-rate-label">Gold Chance</span><span class="sim-rate-value">${gold}</span></div>
           <div class="sim-rate-row"><span class="sim-rate-label">Featured Chance</span><span class="sim-rate-value">${feat}</span></div>
-          <div style="margin-top:14px;color:#d4af37;font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Session</div>
+          <div class="sim-section-label">Session</div>
           <div class="sim-rate-row"><span class="sim-rate-label">Total Golds</span><span class="sim-rate-value">${tg}</span></div>
           <div class="sim-rate-row"><span class="sim-rate-label">Featured Golds</span><span class="sim-rate-value">${fg}</span></div>
         `);
@@ -1024,7 +1067,7 @@
       document.getElementById('btn-featured')?.addEventListener('click', () => {
         const featured = window.SummonSystem?.getFeaturedUnits?.() || [];
         if (featured.length === 0) {
-          showSummonInfoModal('⭐ Featured Units',
+          showSummonInfoModal('Featured Units',
             '<p style="color:#b8a080;text-align:center;padding:20px">No featured units in this banner.</p>');
           return;
         }
@@ -1037,7 +1080,7 @@
             <div style="font-size:10px;color:#d4af37;margin-top:2px">${stars}</div>
           </div>`;
         }).join('');
-        showSummonInfoModal('⭐ Featured Units',
+        showSummonInfoModal('Featured Units',
           `<p style="color:#b8a080;margin-bottom:12px;font-size:12px">${featured.length} featured unit${featured.length > 1 ? 's' : ''} in this banner.</p>
            <div class="sim-char-grid">${cards}</div>`);
       }, { capture: true });
@@ -1046,7 +1089,7 @@
         const rates = window.FibonacciSummonEngine?.getRatesDisplay?.();
         const pool  = window.SummonSystem?.getCurrentPool?.() || [];
         const feat  = window.SummonSystem?.getFeaturedUnits?.() || [];
-        showSummonInfoModal('📦 Banner Contents', `
+        showSummonInfoModal('Banner Contents', `
           <div class="sim-rate-row"><span class="sim-rate-label">Total Characters</span><span class="sim-rate-value">${pool.length}</span></div>
           <div class="sim-rate-row"><span class="sim-rate-label">Featured Units</span><span class="sim-rate-value">${feat.length}</span></div>
           <div class="sim-rate-row"><span class="sim-rate-label">Gold Chance</span><span class="sim-rate-value">${rates?.goldChance ?? '—'}</span></div>

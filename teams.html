@@ -164,7 +164,23 @@
     <section class="char-selection">
       <div class="selection-header">
         <h2>Select Character</h2>
-        <input type="text" id="char-filter" placeholder="Search by name..." />
+        <div class="selection-tools">
+          <input type="text" id="char-filter" placeholder="Search by name..." />
+          <div class="sort-wrap">
+            <button class="sort-btn" id="btn-sort" type="button" aria-label="Sort & filter" title="Sort & filter"></button>
+            <div class="sort-menu" id="sort-menu" hidden>
+              <div class="sort-menu-title">Sort by</div>
+              <button class="sort-opt active" data-sort="rarity">Rarity</button>
+              <button class="sort-opt" data-sort="power">Power</button>
+              <button class="sort-opt" data-sort="grade">Rank (SS→D)</button>
+              <button class="sort-opt" data-sort="star">Star</button>
+              <button class="sort-opt" data-sort="level">Level</button>
+              <button class="sort-opt" data-sort="atk">Attack</button>
+              <button class="sort-opt" data-sort="speed">Speed</button>
+              <button class="sort-opt" data-sort="name">Name</button>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="char-grid" id="team-char-grid"></div>
     </section>
