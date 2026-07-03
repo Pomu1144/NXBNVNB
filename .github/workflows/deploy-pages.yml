@@ -1,0 +1,76 @@
+name: Deploy to GitHub Pages
+
+# Takes over Pages deployment from the built-in "pages build and deployment".
+# The site is a large static build (~6.5k files); the Pages `syncing_files`
+# step fails intermittently with "Deployment failed, try again later.". The
+# deploy step below retries that transient failure automatically so a bad
+# sync self-heals instead of needing a manual re-push.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Let an in-flight deploy finish rather than cancelling it (cancelling a
+# live Pages sync is itself a common cause of failed deployments).
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # Serve the raw files as-is; skip Jekyll processing entirely.
+      - name: Disable Jekyll
+        run: touch .nojekyll
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload site artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.final.outputs.page_url || steps.a1.outputs.page_url || steps.a2.outputs.page_url }}
+    steps:
+      # Attempt 1
+      - name: Deploy (attempt 1)
+        id: a1
+        continue-on-error: true
+        uses: actions/deploy-pages@v4
+
+      - name: Back off before attempt 2
+        if: steps.a1.outcome == 'failure'
+        run: sleep 30
+
+      # Attempt 2
+      - name: Deploy (attempt 2)
+        id: a2
+        if: steps.a1.outcome == 'failure'
+        continue-on-error: true
+        uses: actions/deploy-pages@v4
+
+      - name: Back off before attempt 3
+        if: steps.a1.outcome == 'failure' && steps.a2.outcome == 'failure'
+        run: sleep 60
+
+      # Attempt 3 (final — this one is allowed to fail the job)
+      - name: Deploy (attempt 3)
+        id: final
+        if: steps.a1.outcome == 'failure' && steps.a2.outcome == 'failure'
+        uses: actions/deploy-pages@v4
