@@ -116,6 +116,17 @@
     return window.CharacterInventory ? window.CharacterInventory.getCharacterById(charId) : null;
   }
 
+  // SS→D letter grade from a unit's power rank (matches team/character screens).
+  function gradeOf(baseChar) {
+    const p = Number(baseChar && baseChar.powerRank) || 0;
+    if (p >= 10000) return 'SS';
+    if (p >= 8000)  return 'S';
+    if (p >= 6000)  return 'A';
+    if (p >= 4000)  return 'B';
+    if (p >= 2000)  return 'C';
+    return 'D';
+  }
+
   function selectCharacter(inst, baseChar) {
     if (!baseChar) {
       console.error('[Tools] Base character data not found');
@@ -135,6 +146,16 @@
       const n = Math.min(10, starCountFor(inst, baseChar));
       starRow.innerHTML = new Array(n).fill('<span class="tools-star">★</span>').join('');
     }
+
+    // Power + letter grade badge on top of the art
+    const badge = document.getElementById('tools-power-badge');
+    const gradeEl = document.getElementById('tools-grade');
+    if (gradeEl) {
+      const g = gradeOf(baseChar);
+      gradeEl.textContent = g;
+      gradeEl.dataset.grade = g;
+    }
+    if (badge) badge.style.display = 'flex';
 
     // Show equipment container and stats
     const equipmentContainer = document.getElementById('equipment-container');

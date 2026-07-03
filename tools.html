@@ -26,30 +26,42 @@
       <!-- LEFT: owned character roster -->
       <aside class="tools-roster">
         <div class="tools-roster-head">Characters</div>
-        <input type="text" id="tools-search" class="tools-roster-search" placeholder="Search…" />
+        <div class="tools-search-wrap">
+          <span class="tools-search-ico">⚲</span>
+          <input type="text" id="tools-search" class="tools-roster-search" placeholder="Search" />
+        </div>
         <div class="tools-roster-list" id="tools-roster-list"></div>
       </aside>
 
-      <!-- CENTER: selected character (stars on top, art in the middle) -->
+      <!-- CENTER: stars on top · power+grade over art · stats under art -->
       <section class="tools-center">
         <div class="tools-star-row" id="tools-star-row"></div>
         <div class="tools-art-wrap">
-          <img id="character-full-image" class="tools-art" src="" alt="" style="display:none" />
-          <div class="tools-empty-hint" id="tools-empty-hint">Select a character</div>
+          <div class="tools-framed">
+            <div class="tools-power-badge" id="tools-power-badge" style="display:none">
+              <span class="tools-grade" id="tools-grade">—</span>
+              <span class="tools-power-txt"><span class="tpl">POWER</span><span class="power-value" id="power-value">—</span></span>
+            </div>
+            <img id="character-full-image" class="tools-art" src="" alt="" style="display:none" />
+            <div class="tools-empty-hint" id="tools-empty-hint">Select a character</div>
+          </div>
         </div>
+
+        <div class="stats-display" id="stats-display" style="display:none">
+          <div class="stat-item"><span class="stat-label">Health</span><span class="stat-value" id="stat-health">0</span></div>
+          <div class="stat-item"><span class="stat-label">Attack</span><span class="stat-value" id="stat-attack">0</span></div>
+          <div class="stat-item"><span class="stat-label">Speed</span><span class="stat-value" id="stat-speed">0</span></div>
+        </div>
+
         <div class="tools-nameplate" id="selected-character-info" style="display:none">
           <div class="character-name" id="character-name"></div>
           <div class="character-version" id="character-version"></div>
         </div>
       </section>
 
-      <!-- RIGHT: power, equipment tools, stats -->
+      <!-- RIGHT: equipment tools -->
       <aside class="tools-panel">
-        <div class="power-display">
-          <div class="power-label">Power</div>
-          <div class="power-value" id="power-value">—</div>
-        </div>
-
+        <div class="tools-panel-head">Equipment</div>
         <div class="equipment-container" id="equipment-container" style="display:none">
           <div class="equipment-slot" data-slot="1"><div class="slot-empty"><div class="slot-label">Slot 1</div></div></div>
           <div class="equipment-slot" data-slot="2"><div class="slot-empty"><div class="slot-label">Slot 2</div></div></div>
@@ -57,12 +69,6 @@
           <div class="equipment-slot" data-slot="4"><div class="slot-empty"><div class="slot-label">Slot 4</div></div></div>
           <div class="equipment-slot" data-slot="5"><div class="slot-empty"><div class="slot-label">Slot 5</div></div></div>
           <div class="equipment-slot" data-slot="6"><div class="slot-empty"><div class="slot-label">Slot 6</div></div></div>
-        </div>
-
-        <div class="stats-display" id="stats-display" style="display:none">
-          <div class="stat-item"><span class="stat-label">Health</span><span class="stat-value" id="stat-health">0</span></div>
-          <div class="stat-item"><span class="stat-label">Attack</span><span class="stat-value" id="stat-attack">0</span></div>
-          <div class="stat-item"><span class="stat-label">Speed</span><span class="stat-value" id="stat-speed">0</span></div>
         </div>
       </aside>
     </div>

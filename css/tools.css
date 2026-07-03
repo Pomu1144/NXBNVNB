@@ -460,16 +460,29 @@ body.page-tools {
   margin-bottom: 8px;
   border-bottom: 1px solid rgba(120, 160, 230, 0.25);
 }
-.tools-roster-search {
-  width: 100%;
-  padding: 8px 12px;
-  margin-bottom: 10px;
+/* Compact search (icon + slim field) */
+.tools-search-wrap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0 auto 10px;
+  width: 86%;
+  padding: 3px 10px;
   background: rgba(8, 14, 28, 0.85);
   border: 1px solid rgba(120, 160, 230, 0.3);
-  border-radius: 8px;
+  border-radius: 999px;
+}
+.tools-search-ico { color: #6b8bc0; font-size: 12px; line-height: 1; }
+.tools-roster-search {
+  flex: 1;
+  min-width: 0;
+  padding: 4px 0;
+  background: transparent;
+  border: none;
+  outline: none;
   color: #e6eeff;
   font-family: "Cinzel", serif;
-  font-size: 13px;
+  font-size: 12px;
 }
 .tools-roster-search::placeholder { color: #6b7ea3; }
 .tools-roster-list {
@@ -560,37 +573,125 @@ body.page-tools {
   justify-content: center;
   position: relative;
 }
-.tools-art {
+/* Fixed-aspect framed window (ornate Higgsfield frame overlays the edges) */
+.tools-framed {
+  position: relative;
+  height: 100%;
   max-height: 100%;
-  max-width: 92%;
+  aspect-ratio: 896 / 1200;
+  max-width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.tools-framed::after {
+  content: "";
+  position: absolute;
+  inset: -2%;
+  background: url("../assets/ui/generated/tools_art_frame.webp") center / 100% 100% no-repeat;
+  pointer-events: none;
+  z-index: 3;
+  filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.6));
+}
+.tools-art {
+  max-height: 82%;
+  max-width: 78%;
   object-fit: contain;
-  filter: drop-shadow(0 12px 34px rgba(0, 0, 0, 0.7));
+  filter: drop-shadow(0 12px 30px rgba(0, 0, 0, 0.7));
+  z-index: 2;
 }
 .tools-empty-hint {
   color: #6b7ea3;
   font-family: "Cinzel", serif;
   letter-spacing: 1px;
+  z-index: 2;
 }
-.tools-nameplate { text-align: center; margin-top: 10px; }
-.page-tools .character-name { color: #cfe0ff; }
+/* Power + grade emblem on TOP of the art */
+.tools-power-badge {
+  position: absolute;
+  top: 0.5%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 5;
+  width: 82%;
+  aspect-ratio: 1324 / 719;   /* keep emblem proportions — no distortion */
+  background: url("../assets/ui/generated/tools_power_emblem.webp") center / 100% 100% no-repeat;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.7));
+}
+/* grade letter sits inside the gold medallion on the left */
+.tools-grade {
+  position: absolute;
+  left: 6%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-family: "Cinzel", serif;
+  font-weight: 800;
+  font-size: clamp(0.9rem, 2.2vw, 1.5rem);
+  color: #2a1e06;
+  text-shadow: 0 1px 0 rgba(255, 240, 190, 0.6);
+}
+.tools-grade[data-grade="SS"], .tools-grade[data-grade="S"] { color: #7a1010; }
+/* power label + number over the dark center plate */
+.tools-power-txt {
+  position: absolute;
+  left: 16%;
+  right: 6%;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 7px;
+  font-family: "Cinzel", serif;
+}
+.tools-power-txt .tpl {
+  font-size: clamp(0.5rem, 1vw, 0.68rem);
+  letter-spacing: 1.5px;
+  color: rgba(255, 220, 150, 0.85);
+}
+.tools-power-txt .power-value {
+  font-size: clamp(1rem, 2.4vw, 1.5rem);
+  font-weight: 800;
+  color: #ffe9a8;
+  text-shadow: 0 0 12px rgba(255, 200, 90, 0.5);
+}
+.tools-nameplate { text-align: center; margin-top: 8px; }
+.page-tools .character-name { color: #cfe0ff; font-size: 1.3rem; }
 .page-tools .character-version { color: rgba(180, 200, 240, 0.7); }
 
-/* RIGHT — power / equipment / stats */
+/* Stats row BELOW the character image */
+.tools-center .stats-display {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-top: 10px;
+  padding: 12px;
+  background: rgba(10, 16, 30, 0.6);
+  border: 1px solid rgba(120, 160, 230, 0.22);
+  border-radius: 12px;
+}
+
+/* RIGHT — equipment tools */
 .tools-panel {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  padding: 18px 16px;
+  gap: 14px;
+  padding: 16px;
   overflow-y: auto;
   min-height: 0;
 }
-.page-tools .power-display {
-  background: rgba(8, 14, 28, 0.85);
-  border-color: #7fb2ff;
-  box-shadow: 0 0 26px rgba(90, 150, 255, 0.3);
+.tools-panel-head {
+  font-family: "Cinzel", serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-align: center;
+  color: #9dc0ff;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(120, 160, 230, 0.25);
 }
-.page-tools .power-label { color: rgba(190, 210, 245, 0.85); }
-.page-tools .power-value { color: #bcd6ff; text-shadow: 0 0 20px rgba(120, 180, 255, 0.6); font-size: 2.1rem; }
 
 .page-tools .equipment-container {
   display: grid;
