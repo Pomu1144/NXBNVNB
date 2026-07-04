@@ -1,0 +1,123 @@
+/* css/jutsu-summon.css — Jutsu Cards summon tab + panel + results */
+
+.summon-tabs {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin: 6px auto 10px;
+  max-width: 420px;
+}
+.summon-tab {
+  flex: 1;
+  padding: 9px 12px;
+  border-radius: 10px 10px 0 0;
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  border-bottom: none;
+  background: rgba(20, 22, 30, 0.75);
+  color: #cbb98a;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+}
+.summon-tab.active {
+  background: linear-gradient(180deg, rgba(60, 50, 28, 0.95), rgba(35, 30, 20, 0.95));
+  color: #ffe6a8;
+  border-color: rgba(255, 215, 120, 0.7);
+}
+
+/* ---- Jutsu panel ---- */
+.jutsu-summon-panel {
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  padding: 18px;
+  max-width: 640px;
+  margin: 0 auto;
+}
+.jutsu-banner {
+  width: 100%;
+  border-radius: 14px;
+  padding: 26px 20px;
+  text-align: center;
+  color: #f3ecd8;
+  background:
+    radial-gradient(120% 140% at 50% 0%, rgba(40, 70, 140, 0.55), rgba(12, 16, 30, 0.9)),
+    linear-gradient(180deg, rgba(30, 40, 70, 0.8), rgba(14, 18, 32, 0.9));
+  border: 1px solid rgba(120, 160, 255, 0.35);
+  box-shadow: inset 0 0 40px rgba(60, 110, 220, 0.2);
+}
+.jutsu-banner-title { font-size: 24px; font-weight: 800; color: #cfe0ff; text-shadow: 0 2px 8px rgba(0,0,0,.6); }
+.jutsu-banner-sub { font-size: 13px; opacity: 0.85; margin-top: 6px; }
+.jutsu-collection { margin-top: 12px; font-size: 13px; color: #a9c4ff; }
+
+.jutsu-draw-row { display: flex; gap: 14px; width: 100%; justify-content: center; }
+.jutsu-draw-btn {
+  min-width: 150px;
+  padding: 14px 18px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 215, 120, 0.55);
+  background: linear-gradient(180deg, rgba(70, 58, 30, 0.95), rgba(44, 36, 20, 0.95));
+  color: #ffe9b8;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+.jutsu-draw-btn.multi { border-color: rgba(140, 180, 255, 0.7); background: linear-gradient(180deg, rgba(40, 60, 110, 0.95), rgba(24, 34, 62, 0.95)); color: #dbe8ff; }
+.jutsu-draw-btn:hover { filter: brightness(1.12); transform: translateY(-1px); }
+.jutsu-draw-label { font-size: 15px; }
+.jutsu-draw-cost { display: inline-flex; align-items: center; gap: 5px; font-size: 13px; opacity: 0.95; }
+.jutsu-draw-cost img { width: 15px; height: 15px; object-fit: contain; }
+.jutsu-balance { font-size: 13px; color: #cbd6ee; }
+.jutsu-balance b { color: #ffe6a8; }
+
+/* ---- Results modal ---- */
+.jutsu-result-modal {
+  position: fixed; inset: 0; z-index: 6000;
+  display: none; align-items: center; justify-content: center;
+  background: rgba(6, 8, 14, 0.8);
+}
+.jutsu-result-modal.open { display: flex; }
+.jutsu-result-box {
+  width: min(92vw, 720px); max-height: 86vh; overflow: auto;
+  background: rgba(18, 22, 34, 0.98);
+  border: 1px solid rgba(120, 160, 255, 0.4);
+  border-radius: 16px; padding: 18px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
+}
+.jutsu-result-title { text-align: center; font-size: 20px; font-weight: 800; color: #cfe0ff; margin-bottom: 14px; }
+.jutsu-result-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+@media (max-width: 560px) { .jutsu-result-grid { grid-template-columns: repeat(3, 1fr); } }
+.jutsu-result-card {
+  position: relative; border-radius: 10px; overflow: hidden;
+  border: 2px solid rgba(150, 150, 160, 0.5);
+  background: rgba(0, 0, 0, 0.35); text-align: center;
+}
+.jutsu-result-card img { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; }
+.jutsu-result-card.r6 { border-color: #d4af37; }
+.jutsu-result-card.r7 { border-color: #ff7be0; box-shadow: 0 0 14px rgba(255,123,224,.5); }
+.jutsu-result-card.r5 { border-color: #7fb0ff; }
+.jutsu-result-rarity { color: #ffd873; font-size: 12px; padding: 2px 0; }
+.jutsu-result-name { font-size: 10px; color: #dfe6f5; padding: 0 4px 6px; line-height: 1.2; }
+.jutsu-new-badge {
+  position: absolute; top: 4px; left: 4px; z-index: 2;
+  background: #ff4d6d; color: #fff; font-size: 9px; font-weight: 800;
+  padding: 2px 5px; border-radius: 4px;
+}
+.jutsu-result-close {
+  display: block; margin: 16px auto 4px; padding: 10px 28px;
+  border-radius: 10px; border: 1px solid rgba(255, 215, 120, 0.6);
+  background: linear-gradient(180deg, rgba(70,58,30,.95), rgba(44,36,20,.95));
+  color: #ffe9b8; font-weight: 700; cursor: pointer;
+}
+
+.jutsu-toast {
+  position: fixed; left: 50%; bottom: 40px; transform: translateX(-50%) translateY(12px);
+  z-index: 6500; background: rgba(20, 30, 52, 0.96);
+  border: 1px solid rgba(120, 170, 255, 0.5); color: #dfeaff;
+  padding: 10px 16px; border-radius: 10px; font-size: 14px;
+  opacity: 0; transition: opacity .25s ease, transform .25s ease; pointer-events: none;
+}
+.jutsu-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }

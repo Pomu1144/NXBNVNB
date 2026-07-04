@@ -131,6 +131,17 @@ body.chardev-maxmode-on .char-slot::after {
 .char-slot.is-maxed .char-card-level,
 .char-slot.is-maxed .ultimate-badge { z-index: 5; }
 
+/* A unit that is BOTH 7-star and fully maxed keeps both glows (purple + blue)
+   and both video overlays (lightning + wind) stack via screen blend. */
+.char-slot.is-7star.is-maxed {
+  border-color: rgba(150, 175, 255, 0.75);
+  box-shadow:
+    0 6px 18px rgba(0, 0, 0, .45),
+    0 0 16px rgba(220, 90, 200, .5),
+    0 0 24px rgba(60, 120, 255, .5),
+    inset 0 0 0 1px rgba(185, 205, 255, .3);
+}
+
 @keyframes maxedPulse {
   0%, 100% { box-shadow: 0 6px 18px rgba(0,0,0,.45), 0 0 12px rgba(60,120,255,.4), 0 0 20px rgba(30,80,200,.2), inset 0 0 0 1px rgba(150,190,255,.2); }
   50%      { box-shadow: 0 6px 20px rgba(0,0,0,.5), 0 0 26px rgba(80,150,255,.8), 0 0 36px rgba(40,100,230,.4), inset 0 0 0 1px rgba(180,210,255,.45); }
