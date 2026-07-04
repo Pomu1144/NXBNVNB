@@ -13,6 +13,11 @@
   <link rel="apple-touch-icon" href="assets/icons/achievement_icon.png" />
   <script src="js/pwa-register.js"></script>
   <script src="js/session-gate.js"></script>
+  <!-- Warm the cache for the heaviest shared data while idle on the hub, so
+       the first jump to Characters / Teams is instant. Low priority; the
+       service worker serves them from cache on subsequent visits. -->
+  <link rel="prefetch" href="data/characters.json" as="fetch" crossorigin="anonymous" />
+  <link rel="prefetch" href="data/cards.json" as="fetch" crossorigin="anonymous" />
   <!-- 16:9 Game Canvas Architecture -->
   <link rel="stylesheet" href="css/game-canvas.css" />
   <!-- Game UI Styles -->

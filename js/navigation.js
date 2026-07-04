@@ -436,8 +436,21 @@
       const summonsData = await response.json();
 
       // summon.json stores banners under `pools` (older builds used `banners`)
-      const banners = summonsData.pools || summonsData.banners || [];
+      const allBanners = summonsData.pools || summonsData.banners || [];
+      if (!allBanners.length) return;
+
+      // Skip "blank" banners whose art is missing — they'd only show a plain
+      // gradient placeholder. They stay in the data (pocketed for later); we
+      // just don't display them until their banner image exists.
+      const banners = (await Promise.all(allBanners.map(b => new Promise(resolve => {
+        if (!b || !b.image) return resolve(null);
+        const probe = new Image();
+        probe.onload = () => resolve(b);
+        probe.onerror = () => resolve(null);
+        probe.src = b.image;
+      })))).filter(Boolean);
       if (!banners.length) return;
+      console.log(`[Summon] Showing ${banners.length}/${allBanners.length} banners (skipped ${allBanners.length - banners.length} without art)`);
 
       // Clear carousel and create structure
       carousel.innerHTML = '';
