@@ -48298,8 +48298,8 @@
   "version": "Power of Determination",
   "element": null,
   "rarity": 6,
-  "starMinCode": "6S",
-  "starMaxCode": "6S",
+  "starMinCode": "6SB",
+  "starMaxCode": "6SB",
   "lbEligible": false,
   "portrait": "assets/characters/naruto_455/portrait_6S.png",
   "full": "assets/characters/naruto_455/full_6S.png",
@@ -48307,6 +48307,10 @@
   "secretAnimation": null,
   "artByTier": {
    "6S": {
+    "portrait": "assets/characters/naruto_455/portrait_6S.png",
+    "full": "assets/characters/naruto_455/full_6S.png"
+   },
+   "6SB": {
     "portrait": "assets/characters/naruto_455/portrait_6S.png",
     "full": "assets/characters/naruto_455/full_6S.png"
    }
@@ -48630,8 +48634,8 @@
   "version": "Parting Wings",
   "element": null,
   "rarity": 6,
-  "starMinCode": "6S",
-  "starMaxCode": "6S",
+  "starMinCode": "6SB",
+  "starMaxCode": "6SB",
   "lbEligible": false,
   "portrait": "assets/characters/sasuke_458/portrait_6S.png",
   "full": "assets/characters/sasuke_458/full_6S.png",
@@ -48639,6 +48643,10 @@
   "secretAnimation": null,
   "artByTier": {
    "6S": {
+    "portrait": "assets/characters/sasuke_458/portrait_6S.png",
+    "full": "assets/characters/sasuke_458/full_6S.png"
+   },
+   "6SB": {
     "portrait": "assets/characters/sasuke_458/portrait_6S.png",
     "full": "assets/characters/sasuke_458/full_6S.png"
    }
@@ -50486,8 +50494,8 @@
   "version": "A Genius of Hard Work",
   "element": null,
   "rarity": 6,
-  "starMinCode": "6S",
-  "starMaxCode": "6S",
+  "starMinCode": "6SB",
+  "starMaxCode": "6SB",
   "lbEligible": false,
   "portrait": "assets/characters/rock_475/portrait_6S.png",
   "full": "assets/characters/rock_475/full_6S.png",
@@ -50495,6 +50503,10 @@
   "secretAnimation": null,
   "artByTier": {
    "6S": {
+    "portrait": "assets/characters/rock_475/portrait_6S.png",
+    "full": "assets/characters/rock_475/full_6S.png"
+   },
+   "6SB": {
     "portrait": "assets/characters/rock_475/portrait_6S.png",
     "full": "assets/characters/rock_475/full_6S.png"
    }
@@ -50820,8 +50832,8 @@
   "version": "Solid Sandstorm",
   "element": null,
   "rarity": 6,
-  "starMinCode": "6S",
-  "starMaxCode": "6S",
+  "starMinCode": "6SB",
+  "starMaxCode": "6SB",
   "lbEligible": false,
   "portrait": "assets/characters/gaara_478/portrait_6S.png",
   "full": "assets/characters/gaara_478/full_6S.png",
@@ -50829,6 +50841,10 @@
   "secretAnimation": null,
   "artByTier": {
    "6S": {
+    "portrait": "assets/characters/gaara_478/portrait_6S.png",
+    "full": "assets/characters/gaara_478/full_6S.png"
+   },
+   "6SB": {
     "portrait": "assets/characters/gaara_478/portrait_6S.png",
     "full": "assets/characters/gaara_478/full_6S.png"
    }
@@ -52690,8 +52706,8 @@
   "version": "Burden of Fate",
   "element": null,
   "rarity": 6,
-  "starMinCode": "6S",
-  "starMaxCode": "6S",
+  "starMinCode": "6SB",
+  "starMaxCode": "6SB",
   "lbEligible": false,
   "portrait": "assets/characters/neji_495/portrait_6S.png",
   "full": "assets/characters/neji_495/full_6S.png",
@@ -52699,6 +52715,10 @@
   "secretAnimation": null,
   "artByTier": {
    "6S": {
+    "portrait": "assets/characters/neji_495/portrait_6S.png",
+    "full": "assets/characters/neji_495/full_6S.png"
+   },
+   "6SB": {
     "portrait": "assets/characters/neji_495/portrait_6S.png",
     "full": "assets/characters/neji_495/full_6S.png"
    }
@@ -53022,8 +53042,8 @@
   "version": "Unwavering Courage",
   "element": null,
   "rarity": 6,
-  "starMinCode": "6S",
-  "starMaxCode": "6S",
+  "starMinCode": "6SB",
+  "starMaxCode": "6SB",
   "lbEligible": false,
   "portrait": "assets/characters/hinata_498/portrait_6S.png",
   "full": "assets/characters/hinata_498/full_6S.png",
@@ -53031,6 +53051,10 @@
   "secretAnimation": null,
   "artByTier": {
    "6S": {
+    "portrait": "assets/characters/hinata_498/portrait_6S.png",
+    "full": "assets/characters/hinata_498/full_6S.png"
+   },
+   "6SB": {
     "portrait": "assets/characters/hinata_498/portrait_6S.png",
     "full": "assets/characters/hinata_498/full_6S.png"
    }
@@ -55672,8 +55696,8 @@
   "version": "Long-Held Dream",
   "element": null,
   "rarity": 6,
-  "starMinCode": "6S",
-  "starMaxCode": "6S",
+  "starMinCode": "6SB",
+  "starMaxCode": "6SB",
   "lbEligible": false,
   "portrait": "assets/characters/hashirama_522/portrait_6S.png",
   "full": "assets/characters/hashirama_522/full_6S.png",
@@ -55681,6 +55705,10 @@
   "secretAnimation": null,
   "artByTier": {
    "6S": {
+    "portrait": "assets/characters/hashirama_522/portrait_6S.png",
+    "full": "assets/characters/hashirama_522/full_6S.png"
+   },
+   "6SB": {
     "portrait": "assets/characters/hashirama_522/portrait_6S.png",
     "full": "assets/characters/hashirama_522/full_6S.png"
    }
@@ -56010,8 +56038,8 @@
   "version": "Path of Dreams",
   "element": null,
   "rarity": 6,
-  "starMinCode": "6S",
-  "starMaxCode": "6S",
+  "starMinCode": "6SB",
+  "starMaxCode": "7S",
   "lbEligible": false,
   "portrait": "assets/characters/madara_525/portrait_6S.png",
   "full": "assets/characters/madara_525/full_6S.png",
@@ -56019,6 +56047,10 @@
   "secretAnimation": null,
   "artByTier": {
    "6S": {
+    "portrait": "assets/characters/madara_525/portrait_6S.png",
+    "full": "assets/characters/madara_525/full_6S.png"
+   },
+   "6SB": {
     "portrait": "assets/characters/madara_525/portrait_6S.png",
     "full": "assets/characters/madara_525/full_6S.png"
    }
@@ -57557,8 +57589,8 @@
   "version": "Chilling Edge",
   "element": null,
   "rarity": 6,
-  "starMinCode": "6S",
-  "starMaxCode": "6S",
+  "starMinCode": "6SB",
+  "starMaxCode": "6SB",
   "lbEligible": false,
   "portrait": "assets/characters/haku_539/portrait_6S.png",
   "full": "assets/characters/haku_539/full_6S.png",
@@ -57566,6 +57598,10 @@
   "secretAnimation": null,
   "artByTier": {
    "6S": {
+    "portrait": "assets/characters/haku_539/portrait_6S.png",
+    "full": "assets/characters/haku_539/full_6S.png"
+   },
+   "6SB": {
     "portrait": "assets/characters/haku_539/portrait_6S.png",
     "full": "assets/characters/haku_539/full_6S.png"
    }
@@ -57889,8 +57925,8 @@
   "version": "Demonic Presence",
   "element": null,
   "rarity": 6,
-  "starMinCode": "6S",
-  "starMaxCode": "6S",
+  "starMinCode": "6SB",
+  "starMaxCode": "6SB",
   "lbEligible": false,
   "portrait": "assets/characters/zabuza_542/portrait_6S.png",
   "full": "assets/characters/zabuza_542/full_6S.png",
@@ -57898,6 +57934,10 @@
   "secretAnimation": null,
   "artByTier": {
    "6S": {
+    "portrait": "assets/characters/zabuza_542/portrait_6S.png",
+    "full": "assets/characters/zabuza_542/full_6S.png"
+   },
+   "6SB": {
     "portrait": "assets/characters/zabuza_542/portrait_6S.png",
     "full": "assets/characters/zabuza_542/full_6S.png"
    }
@@ -59648,8 +59688,8 @@
   "version": "Unwavering Feelings",
   "element": null,
   "rarity": 6,
-  "starMinCode": "6S",
-  "starMaxCode": "6S",
+  "starMinCode": "6SB",
+  "starMaxCode": "6SB",
   "lbEligible": false,
   "portrait": "assets/characters/sakura_558/portrait_6S.png",
   "full": "assets/characters/sakura_558/full_6S.png",
@@ -59657,6 +59697,10 @@
   "secretAnimation": null,
   "artByTier": {
    "6S": {
+    "portrait": "assets/characters/sakura_558/portrait_6S.png",
+    "full": "assets/characters/sakura_558/full_6S.png"
+   },
+   "6SB": {
     "portrait": "assets/characters/sakura_558/portrait_6S.png",
     "full": "assets/characters/sakura_558/full_6S.png"
    }
@@ -59982,8 +60026,8 @@
   "version": "Promise Upheld",
   "element": null,
   "rarity": 6,
-  "starMinCode": "6S",
-  "starMaxCode": "6S",
+  "starMinCode": "6SB",
+  "starMaxCode": "6SB",
   "lbEligible": false,
   "portrait": "assets/characters/ino_561/portrait_6S.png",
   "full": "assets/characters/ino_561/full_6S.png",
@@ -59991,6 +60035,10 @@
   "secretAnimation": null,
   "artByTier": {
    "6S": {
+    "portrait": "assets/characters/ino_561/portrait_6S.png",
+    "full": "assets/characters/ino_561/full_6S.png"
+   },
+   "6SB": {
     "portrait": "assets/characters/ino_561/portrait_6S.png",
     "full": "assets/characters/ino_561/full_6S.png"
    }
@@ -61406,7 +61454,7 @@
   "element": null,
   "rarity": 6,
   "starMinCode": "6S",
-  "starMaxCode": "6S",
+  "starMaxCode": "6SB",
   "lbEligible": false,
   "portrait": "assets/characters/itachi_574/portrait_6S.png",
   "full": "assets/characters/itachi_574/full_6S.png",
@@ -61414,6 +61462,10 @@
   "secretAnimation": null,
   "artByTier": {
    "6S": {
+    "portrait": "assets/characters/itachi_574/portrait_6S.png",
+    "full": "assets/characters/itachi_574/full_6S.png"
+   },
+   "6SB": {
     "portrait": "assets/characters/itachi_574/portrait_6S.png",
     "full": "assets/characters/itachi_574/full_6S.png"
    }
@@ -61515,7 +61567,7 @@
   "version": "Eyes Gazing Over the Future",
   "element": null,
   "rarity": 6,
-  "starMinCode": "6S",
+  "starMinCode": "6SB",
   "starMaxCode": "6SB",
   "lbEligible": false,
   "portrait": "assets/characters/itachi_575/portrait_6S.png",
@@ -61853,8 +61905,8 @@
   "version": "Guiding Light",
   "element": null,
   "rarity": 6,
-  "starMinCode": "6S",
-  "starMaxCode": "6S",
+  "starMinCode": "6SB",
+  "starMaxCode": "6SB",
   "lbEligible": false,
   "portrait": "assets/characters/shisui_578/portrait_6S.png",
   "full": "assets/characters/shisui_578/full_6S.png",
@@ -61862,6 +61914,10 @@
   "secretAnimation": null,
   "artByTier": {
    "6S": {
+    "portrait": "assets/characters/shisui_578/portrait_6S.png",
+    "full": "assets/characters/shisui_578/full_6S.png"
+   },
+   "6SB": {
     "portrait": "assets/characters/shisui_578/portrait_6S.png",
     "full": "assets/characters/shisui_578/full_6S.png"
    }
@@ -64289,8 +64345,8 @@
   "version": "Winds of Chaos",
   "element": null,
   "rarity": 6,
-  "starMinCode": "6S",
-  "starMaxCode": "6S",
+  "starMinCode": "6SB",
+  "starMaxCode": "6SB",
   "lbEligible": false,
   "portrait": "assets/characters/orochimaru_600/portrait_6S.png",
   "full": "assets/characters/orochimaru_600/full_6S.png",
@@ -64298,6 +64354,10 @@
   "secretAnimation": null,
   "artByTier": {
    "6S": {
+    "portrait": "assets/characters/orochimaru_600/portrait_6S.png",
+    "full": "assets/characters/orochimaru_600/full_6S.png"
+   },
+   "6SB": {
     "portrait": "assets/characters/orochimaru_600/portrait_6S.png",
     "full": "assets/characters/orochimaru_600/full_6S.png"
    }
@@ -64623,8 +64683,8 @@
   "version": "Dance of Death",
   "element": null,
   "rarity": 6,
-  "starMinCode": "6S",
-  "starMaxCode": "6S",
+  "starMinCode": "6SB",
+  "starMaxCode": "6SB",
   "lbEligible": false,
   "portrait": "assets/characters/kimimaro_603/portrait_6S.png",
   "full": "assets/characters/kimimaro_603/full_6S.png",
@@ -64632,6 +64692,10 @@
   "secretAnimation": null,
   "artByTier": {
    "6S": {
+    "portrait": "assets/characters/kimimaro_603/portrait_6S.png",
+    "full": "assets/characters/kimimaro_603/full_6S.png"
+   },
+   "6SB": {
     "portrait": "assets/characters/kimimaro_603/portrait_6S.png",
     "full": "assets/characters/kimimaro_603/full_6S.png"
    }
@@ -66159,8 +66223,8 @@
   "version": "Crucial Decision",
   "element": null,
   "rarity": 6,
-  "starMinCode": "6S",
-  "starMaxCode": "6S",
+  "starMinCode": "6SB",
+  "starMaxCode": "6SB",
   "lbEligible": false,
   "portrait": "assets/characters/shikamaru_617/portrait_6S.png",
   "full": "assets/characters/shikamaru_617/full_6S.png",
@@ -66168,6 +66232,10 @@
   "secretAnimation": null,
   "artByTier": {
    "6S": {
+    "portrait": "assets/characters/shikamaru_617/portrait_6S.png",
+    "full": "assets/characters/shikamaru_617/full_6S.png"
+   },
+   "6SB": {
     "portrait": "assets/characters/shikamaru_617/portrait_6S.png",
     "full": "assets/characters/shikamaru_617/full_6S.png"
    }
@@ -66491,8 +66559,8 @@
   "version": "Fluttering Butterfly",
   "element": null,
   "rarity": 6,
-  "starMinCode": "6S",
-  "starMaxCode": "6S",
+  "starMinCode": "6SB",
+  "starMaxCode": "6SB",
   "lbEligible": false,
   "portrait": "assets/characters/choji_620/portrait_6S.png",
   "full": "assets/characters/choji_620/full_6S.png",
@@ -66500,6 +66568,10 @@
   "secretAnimation": null,
   "artByTier": {
    "6S": {
+    "portrait": "assets/characters/choji_620/portrait_6S.png",
+    "full": "assets/characters/choji_620/full_6S.png"
+   },
+   "6SB": {
     "portrait": "assets/characters/choji_620/portrait_6S.png",
     "full": "assets/characters/choji_620/full_6S.png"
    }
@@ -68256,8 +68328,8 @@
   "version": "Hidden Heart",
   "element": null,
   "rarity": 6,
-  "starMinCode": "6S",
-  "starMaxCode": "6S",
+  "starMinCode": "6SB",
+  "starMaxCode": "6SB",
   "lbEligible": false,
   "portrait": "assets/characters/jiraiya_636/portrait_6S.png",
   "full": "assets/characters/jiraiya_636/full_6S.png",
@@ -68265,6 +68337,10 @@
   "secretAnimation": null,
   "artByTier": {
    "6S": {
+    "portrait": "assets/characters/jiraiya_636/portrait_6S.png",
+    "full": "assets/characters/jiraiya_636/full_6S.png"
+   },
+   "6SB": {
     "portrait": "assets/characters/jiraiya_636/portrait_6S.png",
     "full": "assets/characters/jiraiya_636/full_6S.png"
    }
@@ -68590,8 +68666,8 @@
   "version": "Daring Courage",
   "element": null,
   "rarity": 6,
-  "starMinCode": "6S",
-  "starMaxCode": "6S",
+  "starMinCode": "6SB",
+  "starMaxCode": "6SB",
   "lbEligible": false,
   "portrait": "assets/characters/tsunade_639/portrait_6S.png",
   "full": "assets/characters/tsunade_639/full_6S.png",
@@ -68599,6 +68675,10 @@
   "secretAnimation": null,
   "artByTier": {
    "6S": {
+    "portrait": "assets/characters/tsunade_639/portrait_6S.png",
+    "full": "assets/characters/tsunade_639/full_6S.png"
+   },
+   "6SB": {
     "portrait": "assets/characters/tsunade_639/portrait_6S.png",
     "full": "assets/characters/tsunade_639/full_6S.png"
    }
@@ -70130,8 +70210,8 @@
   "version": "The Ultimate Puppet",
   "element": null,
   "rarity": 6,
-  "starMinCode": "6S",
-  "starMaxCode": "6S",
+  "starMinCode": "6SB",
+  "starMaxCode": "6SB",
   "lbEligible": false,
   "portrait": "assets/characters/sasori_653/portrait_6S.png",
   "full": "assets/characters/sasori_653/full_6S.png",
@@ -70139,6 +70219,10 @@
   "secretAnimation": null,
   "artByTier": {
    "6S": {
+    "portrait": "assets/characters/sasori_653/portrait_6S.png",
+    "full": "assets/characters/sasori_653/full_6S.png"
+   },
+   "6SB": {
     "portrait": "assets/characters/sasori_653/portrait_6S.png",
     "full": "assets/characters/sasori_653/full_6S.png"
    }
@@ -70464,8 +70548,8 @@
   "version": "Pursued Aesthetic",
   "element": null,
   "rarity": 6,
-  "starMinCode": "6S",
-  "starMaxCode": "6S",
+  "starMinCode": "6SB",
+  "starMaxCode": "6SB",
   "lbEligible": false,
   "portrait": "assets/characters/deidara_656/portrait_6S.png",
   "full": "assets/characters/deidara_656/full_6S.png",
@@ -70473,6 +70557,10 @@
   "secretAnimation": null,
   "artByTier": {
    "6S": {
+    "portrait": "assets/characters/deidara_656/portrait_6S.png",
+    "full": "assets/characters/deidara_656/full_6S.png"
+   },
+   "6SB": {
     "portrait": "assets/characters/deidara_656/portrait_6S.png",
     "full": "assets/characters/deidara_656/full_6S.png"
    }
@@ -72036,7 +72124,7 @@
   "element": null,
   "rarity": 6,
   "starMinCode": "6S",
-  "starMaxCode": "6S",
+  "starMaxCode": "6SB",
   "lbEligible": false,
   "portrait": "assets/characters/obito_670/portrait_6S.png",
   "full": "assets/characters/obito_670/full_6S.png",
@@ -72044,6 +72132,10 @@
   "secretAnimation": null,
   "artByTier": {
    "6S": {
+    "portrait": "assets/characters/obito_670/portrait_6S.png",
+    "full": "assets/characters/obito_670/full_6S.png"
+   },
+   "6SB": {
     "portrait": "assets/characters/obito_670/portrait_6S.png",
     "full": "assets/characters/obito_670/full_6S.png"
    }
@@ -72145,7 +72237,7 @@
   "version": "Into Total Darkness",
   "element": null,
   "rarity": 6,
-  "starMinCode": "6S",
+  "starMinCode": "6SB",
   "starMaxCode": "6SB",
   "lbEligible": false,
   "portrait": "assets/characters/obito_671/portrait_6S.png",
@@ -72483,8 +72575,8 @@
   "version": "The Bitterness of Fate",
   "element": null,
   "rarity": 6,
-  "starMinCode": "6S",
-  "starMaxCode": "6S",
+  "starMinCode": "6SB",
+  "starMaxCode": "6SB",
   "lbEligible": false,
   "portrait": "assets/characters/kakashi_674/portrait_6S.png",
   "full": "assets/characters/kakashi_674/full_6S.png",
@@ -72492,6 +72584,10 @@
   "secretAnimation": null,
   "artByTier": {
    "6S": {
+    "portrait": "assets/characters/kakashi_674/portrait_6S.png",
+    "full": "assets/characters/kakashi_674/full_6S.png"
+   },
+   "6SB": {
     "portrait": "assets/characters/kakashi_674/portrait_6S.png",
     "full": "assets/characters/kakashi_674/full_6S.png"
    }
@@ -73920,8 +74016,8 @@
   "version": "Endless Cycle of Battle",
   "element": null,
   "rarity": 6,
-  "starMinCode": "6S",
-  "starMaxCode": "6S",
+  "starMinCode": "6SB",
+  "starMaxCode": "6SB",
   "lbEligible": false,
   "portrait": "assets/characters/pain_687/portrait_6S.png",
   "full": "assets/characters/pain_687/full_6S.png",
@@ -73929,6 +74025,10 @@
   "secretAnimation": null,
   "artByTier": {
    "6S": {
+    "portrait": "assets/characters/pain_687/portrait_6S.png",
+    "full": "assets/characters/pain_687/full_6S.png"
+   },
+   "6SB": {
     "portrait": "assets/characters/pain_687/portrait_6S.png",
     "full": "assets/characters/pain_687/full_6S.png"
    }
@@ -74254,8 +74354,8 @@
   "version": "Sign of Destruction",
   "element": null,
   "rarity": 6,
-  "starMinCode": "6S",
-  "starMaxCode": "6S",
+  "starMinCode": "6SB",
+  "starMaxCode": "6SB",
   "lbEligible": false,
   "portrait": "assets/characters/konan_690/portrait_6S.png",
   "full": "assets/characters/konan_690/full_6S.png",
@@ -74263,6 +74363,10 @@
   "secretAnimation": null,
   "artByTier": {
    "6S": {
+    "portrait": "assets/characters/konan_690/portrait_6S.png",
+    "full": "assets/characters/konan_690/full_6S.png"
+   },
+   "6SB": {
     "portrait": "assets/characters/konan_690/portrait_6S.png",
     "full": "assets/characters/konan_690/full_6S.png"
    }
@@ -76030,8 +76134,8 @@
   "version": "Unshakeable Calm",
   "element": null,
   "rarity": 6,
-  "starMinCode": "6S",
-  "starMaxCode": "6S",
+  "starMinCode": "6SB",
+  "starMaxCode": "6SB",
   "lbEligible": false,
   "portrait": "assets/characters/kakashi_706/portrait_6S.png",
   "full": "assets/characters/kakashi_706/full_6S.png",
@@ -76039,6 +76143,10 @@
   "secretAnimation": null,
   "artByTier": {
    "6S": {
+    "portrait": "assets/characters/kakashi_706/portrait_6S.png",
+    "full": "assets/characters/kakashi_706/full_6S.png"
+   },
+   "6SB": {
     "portrait": "assets/characters/kakashi_706/portrait_6S.png",
     "full": "assets/characters/kakashi_706/full_6S.png"
    }
@@ -76364,8 +76472,8 @@
   "version": "Passionate Fist",
   "element": null,
   "rarity": 6,
-  "starMinCode": "6S",
-  "starMaxCode": "6S",
+  "starMinCode": "6SB",
+  "starMaxCode": "6SB",
   "lbEligible": false,
   "portrait": "assets/characters/might_709/portrait_6S.png",
   "full": "assets/characters/might_709/full_6S.png",
@@ -76373,6 +76481,10 @@
   "secretAnimation": null,
   "artByTier": {
    "6S": {
+    "portrait": "assets/characters/might_709/portrait_6S.png",
+    "full": "assets/characters/might_709/full_6S.png"
+   },
+   "6SB": {
     "portrait": "assets/characters/might_709/portrait_6S.png",
     "full": "assets/characters/might_709/full_6S.png"
    }
@@ -78247,8 +78359,8 @@
   "version": "Eyes Which Weave Truth and Lies",
   "element": null,
   "rarity": 6,
-  "starMinCode": "6S",
-  "starMaxCode": "6S",
+  "starMinCode": "6SB",
+  "starMaxCode": "6SB",
   "lbEligible": false,
   "portrait": "assets/characters/itachi_726/portrait_6S.png",
   "full": "assets/characters/itachi_726/full_6S.png",
@@ -78256,6 +78368,10 @@
   "secretAnimation": null,
   "artByTier": {
    "6S": {
+    "portrait": "assets/characters/itachi_726/portrait_6S.png",
+    "full": "assets/characters/itachi_726/full_6S.png"
+   },
+   "6SB": {
     "portrait": "assets/characters/itachi_726/portrait_6S.png",
     "full": "assets/characters/itachi_726/full_6S.png"
    }
@@ -79804,7 +79920,7 @@
   "element": null,
   "rarity": 6,
   "starMinCode": "6S",
-  "starMaxCode": "6S",
+  "starMaxCode": "6SB",
   "lbEligible": false,
   "portrait": "assets/characters/minato_740/portrait_6S.png",
   "full": "assets/characters/minato_740/full_6S.png",
@@ -79812,6 +79928,10 @@
   "secretAnimation": null,
   "artByTier": {
    "6S": {
+    "portrait": "assets/characters/minato_740/portrait_6S.png",
+    "full": "assets/characters/minato_740/full_6S.png"
+   },
+   "6SB": {
     "portrait": "assets/characters/minato_740/portrait_6S.png",
     "full": "assets/characters/minato_740/full_6S.png"
    }
@@ -79913,7 +80033,7 @@
   "version": "Dazzling Bravery",
   "element": null,
   "rarity": 6,
-  "starMinCode": "6S",
+  "starMinCode": "6SB",
   "starMaxCode": "6SB",
   "lbEligible": false,
   "portrait": "assets/characters/minato_741/portrait_6S.png",
@@ -83026,8 +83146,8 @@
   "version": "State of Carnage",
   "element": null,
   "rarity": 6,
-  "starMinCode": "6S",
-  "starMaxCode": "6S",
+  "starMinCode": "6SB",
+  "starMaxCode": "6SB",
   "lbEligible": false,
   "portrait": "assets/characters/obito_769/portrait_6S.png",
   "full": "assets/characters/obito_769/full_6S.png",
@@ -83035,6 +83155,10 @@
   "secretAnimation": null,
   "artByTier": {
    "6S": {
+    "portrait": "assets/characters/obito_769/portrait_6S.png",
+    "full": "assets/characters/obito_769/full_6S.png"
+   },
+   "6SB": {
     "portrait": "assets/characters/obito_769/portrait_6S.png",
     "full": "assets/characters/obito_769/full_6S.png"
    }
@@ -83360,8 +83484,8 @@
   "version": "Solitary Devastation",
   "element": null,
   "rarity": 6,
-  "starMinCode": "6S",
-  "starMaxCode": "6S",
+  "starMinCode": "6SB",
+  "starMaxCode": "6SB",
   "lbEligible": false,
   "portrait": "assets/characters/madara_772/portrait_6S.png",
   "full": "assets/characters/madara_772/full_6S.png",
@@ -83369,6 +83493,10 @@
   "secretAnimation": null,
   "artByTier": {
    "6S": {
+    "portrait": "assets/characters/madara_772/portrait_6S.png",
+    "full": "assets/characters/madara_772/full_6S.png"
+   },
+   "6SB": {
     "portrait": "assets/characters/madara_772/portrait_6S.png",
     "full": "assets/characters/madara_772/full_6S.png"
    }
@@ -84454,8 +84582,8 @@
   "version": "Taboo-Breaking Frustration",
   "element": null,
   "rarity": 6,
-  "starMinCode": "6S",
-  "starMaxCode": "6S",
+  "starMinCode": "6SB",
+  "starMaxCode": "6SB",
   "lbEligible": false,
   "portrait": "assets/characters/naruto_782/portrait_6S.png",
   "full": "assets/characters/naruto_782/full_6S.png",
@@ -84463,6 +84591,10 @@
   "secretAnimation": null,
   "artByTier": {
    "6S": {
+    "portrait": "assets/characters/naruto_782/portrait_6S.png",
+    "full": "assets/characters/naruto_782/full_6S.png"
+   },
+   "6SB": {
     "portrait": "assets/characters/naruto_782/portrait_6S.png",
     "full": "assets/characters/naruto_782/full_6S.png"
    }
@@ -85790,8 +85922,8 @@
   "version": "Stunning Spring Breeze",
   "element": null,
   "rarity": 6,
-  "starMinCode": "6S",
-  "starMaxCode": "6S",
+  "starMinCode": "6SB",
+  "starMaxCode": "6SB",
   "lbEligible": false,
   "portrait": "assets/characters/sakura_794/portrait_6S.png",
   "full": "assets/characters/sakura_794/full_6S.png",
@@ -85799,6 +85931,10 @@
   "secretAnimation": null,
   "artByTier": {
    "6S": {
+    "portrait": "assets/characters/sakura_794/portrait_6S.png",
+    "full": "assets/characters/sakura_794/full_6S.png"
+   },
+   "6SB": {
     "portrait": "assets/characters/sakura_794/portrait_6S.png",
     "full": "assets/characters/sakura_794/full_6S.png"
    }
@@ -87797,7 +87933,7 @@
   "element": null,
   "rarity": 6,
   "starMinCode": "6S",
-  "starMaxCode": "6S",
+  "starMaxCode": "6SB",
   "lbEligible": false,
   "portrait": "assets/characters/hinata_812/portrait_6S.png",
   "full": "assets/characters/hinata_812/full_6S.png",
@@ -87805,6 +87941,10 @@
   "secretAnimation": null,
   "artByTier": {
    "6S": {
+    "portrait": "assets/characters/hinata_812/portrait_6S.png",
+    "full": "assets/characters/hinata_812/full_6S.png"
+   },
+   "6SB": {
     "portrait": "assets/characters/hinata_812/portrait_6S.png",
     "full": "assets/characters/hinata_812/full_6S.png"
    }
@@ -87906,7 +88046,7 @@
   "version": "Beyond the Ceaseless",
   "element": null,
   "rarity": 6,
-  "starMinCode": "6S",
+  "starMinCode": "6SB",
   "starMaxCode": "6SB",
   "lbEligible": false,
   "portrait": "assets/characters/hinata_813/portrait_6S.png",
@@ -89576,8 +89716,8 @@
   "version": "Body and Blade as One",
   "element": null,
   "rarity": 6,
-  "starMinCode": "6S",
-  "starMaxCode": "6S",
+  "starMinCode": "6SB",
+  "starMaxCode": "6SB",
   "lbEligible": false,
   "portrait": "assets/characters/kisame_828/portrait_6S.png",
   "full": "assets/characters/kisame_828/full_6S.png",
@@ -89585,6 +89725,10 @@
   "secretAnimation": null,
   "artByTier": {
    "6S": {
+    "portrait": "assets/characters/kisame_828/portrait_6S.png",
+    "full": "assets/characters/kisame_828/full_6S.png"
+   },
+   "6SB": {
     "portrait": "assets/characters/kisame_828/portrait_6S.png",
     "full": "assets/characters/kisame_828/full_6S.png"
    }
@@ -91232,8 +91376,8 @@
   "version": "Successor",
   "element": null,
   "rarity": 6,
-  "starMinCode": "6S",
-  "starMaxCode": "6S",
+  "starMinCode": "6SB",
+  "starMaxCode": "6SB",
   "lbEligible": false,
   "portrait": "assets/characters/ashura_843/portrait_6S.png",
   "full": "assets/characters/ashura_843/full_6S.png",
@@ -91241,6 +91385,10 @@
   "secretAnimation": null,
   "artByTier": {
    "6S": {
+    "portrait": "assets/characters/ashura_843/portrait_6S.png",
+    "full": "assets/characters/ashura_843/full_6S.png"
+   },
+   "6SB": {
     "portrait": "assets/characters/ashura_843/portrait_6S.png",
     "full": "assets/characters/ashura_843/full_6S.png"
    }
@@ -93481,7 +93629,7 @@
   "element": null,
   "rarity": 6,
   "starMinCode": "6S",
-  "starMaxCode": "6S",
+  "starMaxCode": "6SB",
   "lbEligible": false,
   "portrait": "assets/characters/naruto_863/portrait_6S.png",
   "full": "assets/characters/naruto_863/full_6S.png",
@@ -93489,6 +93637,10 @@
   "secretAnimation": null,
   "artByTier": {
    "6S": {
+    "portrait": "assets/characters/naruto_863/portrait_6S.png",
+    "full": "assets/characters/naruto_863/full_6S.png"
+   },
+   "6SB": {
     "portrait": "assets/characters/naruto_863/portrait_6S.png",
     "full": "assets/characters/naruto_863/full_6S.png"
    }
@@ -93594,7 +93746,7 @@
   "version": "The Future We Want",
   "element": null,
   "rarity": 6,
-  "starMinCode": "6S",
+  "starMinCode": "6SB",
   "starMaxCode": "6SB",
   "lbEligible": false,
   "portrait": "assets/characters/naruto_864/portrait_6S.png",
@@ -93944,8 +94096,8 @@
   "version": "Buried Past",
   "element": null,
   "rarity": 6,
-  "starMinCode": "6S",
-  "starMaxCode": "6S",
+  "starMinCode": "6SB",
+  "starMaxCode": "6SB",
   "lbEligible": false,
   "portrait": "assets/characters/sasuke_867/portrait_6S.png",
   "full": "assets/characters/sasuke_867/full_6S.png",
@@ -93953,6 +94105,10 @@
   "secretAnimation": null,
   "artByTier": {
    "6S": {
+    "portrait": "assets/characters/sasuke_867/portrait_6S.png",
+    "full": "assets/characters/sasuke_867/full_6S.png"
+   },
+   "6SB": {
     "portrait": "assets/characters/sasuke_867/portrait_6S.png",
     "full": "assets/characters/sasuke_867/full_6S.png"
    }
@@ -95158,8 +95314,8 @@
   "version": "Rumbling Strong Arm",
   "element": null,
   "rarity": 6,
-  "starMinCode": "6S",
-  "starMaxCode": "6S",
+  "starMinCode": "6SB",
+  "starMaxCode": "6SB",
   "lbEligible": false,
   "portrait": "assets/characters/killer_878/portrait_6S.png",
   "full": "assets/characters/killer_878/full_6S.png",
@@ -95167,6 +95323,10 @@
   "secretAnimation": null,
   "artByTier": {
    "6S": {
+    "portrait": "assets/characters/killer_878/portrait_6S.png",
+    "full": "assets/characters/killer_878/full_6S.png"
+   },
+   "6SB": {
     "portrait": "assets/characters/killer_878/portrait_6S.png",
     "full": "assets/characters/killer_878/full_6S.png"
    }
@@ -97052,8 +97212,8 @@
   "version": "Proof of Self",
   "element": null,
   "rarity": 6,
-  "starMinCode": "6S",
-  "starMaxCode": "6S",
+  "starMinCode": "6SB",
+  "starMaxCode": "6SB",
   "lbEligible": false,
   "portrait": "assets/characters/kabuto_895/portrait_6S.png",
   "full": "assets/characters/kabuto_895/full_6S.png",
@@ -97061,6 +97221,10 @@
   "secretAnimation": null,
   "artByTier": {
    "6S": {
+    "portrait": "assets/characters/kabuto_895/portrait_6S.png",
+    "full": "assets/characters/kabuto_895/full_6S.png"
+   },
+   "6SB": {
     "portrait": "assets/characters/kabuto_895/portrait_6S.png",
     "full": "assets/characters/kabuto_895/full_6S.png"
    }
@@ -102836,8 +103000,8 @@
   "version": "Inherited Will of Fire",
   "element": null,
   "rarity": 6,
-  "starMinCode": "6S",
-  "starMaxCode": "6S",
+  "starMinCode": "6SB",
+  "starMaxCode": "6SB",
   "lbEligible": false,
   "portrait": "assets/characters/tobirama_2008/portrait_6S.png",
   "full": "assets/characters/tobirama_2008/full_6S.png",
@@ -102845,6 +103009,10 @@
   "secretAnimation": null,
   "artByTier": {
    "6S": {
+    "portrait": "assets/characters/tobirama_2008/portrait_6S.png",
+    "full": "assets/characters/tobirama_2008/full_6S.png"
+   },
+   "6SB": {
     "portrait": "assets/characters/tobirama_2008/portrait_6S.png",
     "full": "assets/characters/tobirama_2008/full_6S.png"
    }
@@ -104282,8 +104450,8 @@
   "version": "Plot for Rebirth",
   "element": null,
   "rarity": 6,
-  "starMinCode": "6S",
-  "starMaxCode": "6S",
+  "starMinCode": "6SB",
+  "starMaxCode": "6SB",
   "lbEligible": false,
   "portrait": "assets/characters/kaguya_2021/portrait_6S.png",
   "full": "assets/characters/kaguya_2021/full_6S.png",
@@ -104291,6 +104459,10 @@
   "secretAnimation": null,
   "artByTier": {
    "6S": {
+    "portrait": "assets/characters/kaguya_2021/portrait_6S.png",
+    "full": "assets/characters/kaguya_2021/full_6S.png"
+   },
+   "6SB": {
     "portrait": "assets/characters/kaguya_2021/portrait_6S.png",
     "full": "assets/characters/kaguya_2021/full_6S.png"
    }
@@ -106176,8 +106348,8 @@
   "version": "True Peace",
   "element": null,
   "rarity": 6,
-  "starMinCode": "6S",
-  "starMaxCode": "6S",
+  "starMinCode": "6SB",
+  "starMaxCode": "6SB",
   "lbEligible": false,
   "portrait": "assets/characters/naruto_2038/portrait_6S.png",
   "full": "assets/characters/naruto_2038/full_6S.png",
@@ -106185,6 +106357,10 @@
   "secretAnimation": null,
   "artByTier": {
    "6S": {
+    "portrait": "assets/characters/naruto_2038/portrait_6S.png",
+    "full": "assets/characters/naruto_2038/full_6S.png"
+   },
+   "6SB": {
     "portrait": "assets/characters/naruto_2038/portrait_6S.png",
     "full": "assets/characters/naruto_2038/full_6S.png"
    }
@@ -107842,8 +108018,8 @@
   "version": "A Bolt from the Dark",
   "element": null,
   "rarity": 6,
-  "starMinCode": "6S",
-  "starMaxCode": "6S",
+  "starMinCode": "6SB",
+  "starMaxCode": "6SB",
   "lbEligible": false,
   "portrait": "assets/characters/kakashi_2053/portrait_6S.png",
   "full": "assets/characters/kakashi_2053/full_6S.png",
@@ -107851,6 +108027,10 @@
   "secretAnimation": null,
   "artByTier": {
    "6S": {
+    "portrait": "assets/characters/kakashi_2053/portrait_6S.png",
+    "full": "assets/characters/kakashi_2053/full_6S.png"
+   },
+   "6SB": {
     "portrait": "assets/characters/kakashi_2053/portrait_6S.png",
     "full": "assets/characters/kakashi_2053/full_6S.png"
    }
@@ -109068,8 +109248,8 @@
   "version": "The Price of Pride",
   "element": null,
   "rarity": 6,
-  "starMinCode": "6S",
-  "starMaxCode": "6S",
+  "starMinCode": "6SB",
+  "starMaxCode": "6SB",
   "lbEligible": false,
   "portrait": "assets/characters/shisui_2064/portrait_6S.png",
   "full": "assets/characters/shisui_2064/full_6S.png",
@@ -109077,6 +109257,10 @@
   "secretAnimation": null,
   "artByTier": {
    "6S": {
+    "portrait": "assets/characters/shisui_2064/portrait_6S.png",
+    "full": "assets/characters/shisui_2064/full_6S.png"
+   },
+   "6SB": {
     "portrait": "assets/characters/shisui_2064/portrait_6S.png",
     "full": "assets/characters/shisui_2064/full_6S.png"
    }
@@ -110404,8 +110588,8 @@
   "version": "As the Older Student",
   "element": null,
   "rarity": 6,
-  "starMinCode": "6S",
-  "starMaxCode": "6S",
+  "starMinCode": "6SB",
+  "starMaxCode": "6SB",
   "lbEligible": false,
   "portrait": "assets/characters/nagato_2076/portrait_6S.png",
   "full": "assets/characters/nagato_2076/full_6S.png",
@@ -110413,6 +110597,10 @@
   "secretAnimation": null,
   "artByTier": {
    "6S": {
+    "portrait": "assets/characters/nagato_2076/portrait_6S.png",
+    "full": "assets/characters/nagato_2076/full_6S.png"
+   },
+   "6SB": {
     "portrait": "assets/characters/nagato_2076/portrait_6S.png",
     "full": "assets/characters/nagato_2076/full_6S.png"
    }
@@ -111182,8 +111370,8 @@
   "version": "Cataclysm-Eaters",
   "element": null,
   "rarity": 6,
-  "starMinCode": "6S",
-  "starMaxCode": "6S",
+  "starMinCode": "6SB",
+  "starMaxCode": "6SB",
   "lbEligible": false,
   "portrait": "assets/characters/kinkaku_ginkaku_2083/portrait_6S.png",
   "full": "assets/characters/kinkaku_ginkaku_2083/full_6S.png",
@@ -111191,6 +111379,10 @@
   "secretAnimation": null,
   "artByTier": {
    "6S": {
+    "portrait": "assets/characters/kinkaku_ginkaku_2083/portrait_6S.png",
+    "full": "assets/characters/kinkaku_ginkaku_2083/full_6S.png"
+   },
+   "6SB": {
     "portrait": "assets/characters/kinkaku_ginkaku_2083/portrait_6S.png",
     "full": "assets/characters/kinkaku_ginkaku_2083/full_6S.png"
    }
@@ -111625,8 +111817,8 @@
   "version": "Godlike Power",
   "element": null,
   "rarity": 6,
-  "starMinCode": "6S",
-  "starMaxCode": "6S",
+  "starMinCode": "6SB",
+  "starMaxCode": "6SB",
   "lbEligible": false,
   "portrait": "assets/characters/pain_2087/portrait_6S.png",
   "full": "assets/characters/pain_2087/full_6S.png",
@@ -111634,6 +111826,10 @@
   "secretAnimation": null,
   "artByTier": {
    "6S": {
+    "portrait": "assets/characters/pain_2087/portrait_6S.png",
+    "full": "assets/characters/pain_2087/full_6S.png"
+   },
+   "6SB": {
     "portrait": "assets/characters/pain_2087/portrait_6S.png",
     "full": "assets/characters/pain_2087/full_6S.png"
    }
@@ -112634,8 +112830,8 @@
   "version": "Talent and Burden",
   "element": null,
   "rarity": 6,
-  "starMinCode": "6S",
-  "starMaxCode": "6S",
+  "starMinCode": "6SB",
+  "starMaxCode": "6SB",
   "lbEligible": false,
   "portrait": "assets/characters/itachi_2096/portrait_6S.png",
   "full": "assets/characters/itachi_2096/full_6S.png",
@@ -112643,6 +112839,10 @@
   "secretAnimation": null,
   "artByTier": {
    "6S": {
+    "portrait": "assets/characters/itachi_2096/portrait_6S.png",
+    "full": "assets/characters/itachi_2096/full_6S.png"
+   },
+   "6SB": {
     "portrait": "assets/characters/itachi_2096/portrait_6S.png",
     "full": "assets/characters/itachi_2096/full_6S.png"
    }
@@ -113864,8 +114064,8 @@
   "version": "View to Victory",
   "element": null,
   "rarity": 6,
-  "starMinCode": "6S",
-  "starMaxCode": "6S",
+  "starMinCode": "6SB",
+  "starMaxCode": "6SB",
   "lbEligible": false,
   "portrait": "assets/characters/shikamaru_2107/portrait_6S.png",
   "full": "assets/characters/shikamaru_2107/full_6S.png",
@@ -113873,6 +114073,10 @@
   "secretAnimation": null,
   "artByTier": {
    "6S": {
+    "portrait": "assets/characters/shikamaru_2107/portrait_6S.png",
+    "full": "assets/characters/shikamaru_2107/full_6S.png"
+   },
+   "6SB": {
     "portrait": "assets/characters/shikamaru_2107/portrait_6S.png",
     "full": "assets/characters/shikamaru_2107/full_6S.png"
    }
@@ -115554,8 +115758,8 @@
   "version": "Power of Rinne",
   "element": null,
   "rarity": 6,
-  "starMinCode": "6S",
-  "starMaxCode": "6S",
+  "starMinCode": "6SB",
+  "starMaxCode": "6SB",
   "lbEligible": false,
   "portrait": "assets/characters/madara_2122/portrait_6S.png",
   "full": "assets/characters/madara_2122/full_6S.png",
@@ -115563,6 +115767,10 @@
   "secretAnimation": null,
   "artByTier": {
    "6S": {
+    "portrait": "assets/characters/madara_2122/portrait_6S.png",
+    "full": "assets/characters/madara_2122/full_6S.png"
+   },
+   "6SB": {
     "portrait": "assets/characters/madara_2122/portrait_6S.png",
     "full": "assets/characters/madara_2122/full_6S.png"
    }
@@ -116434,8 +116642,8 @@
   "version": "From the Heart",
   "element": null,
   "rarity": 6,
-  "starMinCode": "6S",
-  "starMaxCode": "6S",
+  "starMinCode": "6SB",
+  "starMaxCode": "6SB",
   "lbEligible": false,
   "portrait": "assets/characters/darui_2130/portrait_6S.png",
   "full": "assets/characters/darui_2130/full_6S.png",
@@ -116443,6 +116651,10 @@
   "secretAnimation": null,
   "artByTier": {
    "6S": {
+    "portrait": "assets/characters/darui_2130/portrait_6S.png",
+    "full": "assets/characters/darui_2130/full_6S.png"
+   },
+   "6SB": {
     "portrait": "assets/characters/darui_2130/portrait_6S.png",
     "full": "assets/characters/darui_2130/full_6S.png"
    }
@@ -117106,8 +117318,8 @@
   "version": "Precious Feelings",
   "element": null,
   "rarity": 6,
-  "starMinCode": "6S",
-  "starMaxCode": "6S",
+  "starMinCode": "6SB",
+  "starMaxCode": "6SB",
   "lbEligible": false,
   "portrait": "assets/characters/naruto_2136/portrait_6S.png",
   "full": "assets/characters/naruto_2136/full_6S.png",
@@ -117115,6 +117327,10 @@
   "secretAnimation": null,
   "artByTier": {
    "6S": {
+    "portrait": "assets/characters/naruto_2136/portrait_6S.png",
+    "full": "assets/characters/naruto_2136/full_6S.png"
+   },
+   "6SB": {
     "portrait": "assets/characters/naruto_2136/portrait_6S.png",
     "full": "assets/characters/naruto_2136/full_6S.png"
    }
@@ -117909,8 +118125,8 @@
   "version": "Desired Future",
   "element": null,
   "rarity": 6,
-  "starMinCode": "6S",
-  "starMaxCode": "6S",
+  "starMinCode": "6SB",
+  "starMaxCode": "6SB",
   "lbEligible": false,
   "portrait": "assets/characters/sasuke_2141/portrait_6S.png",
   "full": "assets/characters/sasuke_2141/full_6S.png",
@@ -117918,6 +118134,10 @@
   "secretAnimation": null,
   "artByTier": {
    "6S": {
+    "portrait": "assets/characters/sasuke_2141/portrait_6S.png",
+    "full": "assets/characters/sasuke_2141/full_6S.png"
+   },
+   "6SB": {
     "portrait": "assets/characters/sasuke_2141/portrait_6S.png",
     "full": "assets/characters/sasuke_2141/full_6S.png"
    }
