@@ -1,4 +1,4 @@
-const CACHE = 'blazing-shell-v4';
+const CACHE = 'blazing-shell-v5';
 const BASE = new URL('./', self.location.href).pathname;
 const SHELL = [
   'index.html',
@@ -60,14 +60,23 @@ self.addEventListener('fetch', e => {
   // multi-MB gifs). The browser's own HTTP cache still handles repeat loads.
   if (rel.startsWith('assets/') || rel.startsWith('animations/')) return;
 
-  // Data JSON (characters.json, cards.json, …) — the app fetches these with a
-  // per-load `?v=timestamp` cache-buster + `no-store`, which defeats all
-  // caching and re-downloads megabytes every visit. Normalize the key to the
-  // path (dropping the query) and serve stale-while-revalidate, so a repeat
-  // open is instant while a background fetch keeps the data fresh.
+  // Data JSON (characters.json 2.5MB, cards.json 1.5MB, …) — CACHE-FIRST.
+  // These are large and change only on deploy, so we must NOT re-download them
+  // in the background on every navigation: after the tab has been idle the
+  // connection is cold, and kicking multi-MB background fetches on each click
+  // makes navigation crawl. Serve straight from cache; fresh data ships when
+  // the CACHE version is bumped (which clears the old cache on activate).
   if (rel.startsWith('data/')) {
     const key = new Request(url.origin + url.pathname);
-    e.respondWith(staleWhileRevalidate(e.request, key));
+    e.respondWith(
+      caches.open(CACHE).then(async cache => {
+        const cached = await cache.match(key);
+        if (cached) return cached;
+        const res = await fetch(e.request);
+        if (res && res.ok) cache.put(key, res.clone());
+        return res;
+      })
+    );
     return;
   }
 
