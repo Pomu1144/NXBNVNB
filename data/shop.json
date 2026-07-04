@@ -203,7 +203,7 @@
         "id": "limit_break_crystal",
         "name": "Limit Break Crystal",
         "description": "Breaks level limits for max-tier characters.",
-        "icon": "assets/icons/chestopened.png",
+        "icon": "assets/items/limitbreakcrystal_portrait.webp",
         "cost": {
           "granny_coin": 150
         },
