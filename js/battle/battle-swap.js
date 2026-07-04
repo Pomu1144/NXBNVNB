@@ -46,6 +46,12 @@
 
       this.isSwapping = true;
 
+      // If the outgoing unit is the one currently taking its turn, remember it
+      // so we can hand the turn off cleanly after the swap — otherwise the
+      // turn stays locked on a now-benched unit and the speed bar jams.
+      const turns = core.turns;
+      const wasActingUnit = !!(turns && turns.currentUnit === activeUnit);
+
       const activeIdx = core.activeTeam.indexOf(activeUnit);
       const benchIdx = core.benchTeam.indexOf(benchUnit);
 
@@ -70,12 +76,26 @@
       benchUnit.pos = savedPos;
       activeUnit.pos = { x: 0, y: 0 };
 
-      // Reset speed gauge for incoming unit
+      // Reset speed gauge for BOTH units: the incoming unit starts fresh, and
+      // the outgoing unit must not keep a stale/full gauge or it would jump the
+      // speed bar the next time it is swapped back in.
       benchUnit.speedGauge = 0;
+      activeUnit.speedGauge = 0;
+      activeUnit.isPaused = false;
 
       // Swap in arrays
       core.activeTeam[activeIdx] = benchUnit;
       core.benchTeam[benchIdx] = activeUnit;
+
+      // If we just benched the acting unit, release the turn lock so the tick
+      // loop can promote the next ready combatant instead of waiting on a unit
+      // that is no longer on the field.
+      if (wasActingUnit && turns) {
+        turns.currentUnit = null;
+        turns.turnLocked = false;
+        core.queuedAction = null;
+        if (typeof turns.hideActionPanel === "function") turns.hideActionPanel(core);
+      }
 
       // Update combatants list
       core.updateCombatants();

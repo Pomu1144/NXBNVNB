@@ -6,6 +6,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let allMissions = [];
 
+  // A mission may gate itself behind another mission's rank clear via a
+  // `requires: { mission, rank }` field. Read the shared progress store
+  // directly (mission-progress.js isn't loaded on this page).
+  function isRequirementMet(mission) {
+    const req = mission && mission.requires;
+    if (!req || !req.mission) return true;
+    try {
+      const prog = JSON.parse(localStorage.getItem('blazing_mission_progress_v1') || '{}');
+      const rank = req.rank || 'SS';
+      return prog?.[req.mission]?.[rank]?.firstClear === true;
+    } catch { return true; }
+  }
+  function missionNameById(id) {
+    const m = allMissions.find(x => x.id === id);
+    return m ? (m.name || id) : id;
+  }
+
   /**
    * Render all missions for a selected category
    */
@@ -21,6 +38,10 @@ document.addEventListener('DOMContentLoaded', () => {
     missionsToRender.forEach(mission => {
       const card = document.createElement('div');
       card.className = 'mission-card';
+
+      // Locked if a prerequisite mission/rank hasn't been cleared yet
+      const isLocked = !isRequirementMet(mission);
+      if (isLocked) card.classList.add('mission-locked');
 
       // ---------------------------
       // Banner (styled fallback when the art file is missing —
@@ -115,9 +136,11 @@ document.addEventListener('DOMContentLoaded', () => {
       // ---------------------------
       const startButton = document.createElement('button');
       startButton.className = 'start-btn';
-      startButton.textContent = 'Start Mission';
+      startButton.textContent = isLocked ? 'Locked' : 'Start Mission';
+      if (isLocked) startButton.disabled = true;
 
       startButton.addEventListener('click', () => {
+        if (isLocked) return;
         localStorage.setItem('currentMissionId', String(mission.id));
         localStorage.setItem('currentDifficulty', selectedDifficulty);
         localStorage.setItem('currentMissionName', mission.name || '');
@@ -133,6 +156,14 @@ document.addEventListener('DOMContentLoaded', () => {
       });
 
       controls.appendChild(startButton);
+
+      // Requirement note for locked missions
+      if (isLocked && mission.requires) {
+        const lockNote = document.createElement('div');
+        lockNote.className = 'mission-lock-note';
+        lockNote.textContent = `🔒 Clear ${mission.requires.rank || 'SS'} Rank of “${missionNameById(mission.requires.mission)}” to unlock`;
+        controls.appendChild(lockNote);
+      }
 
       // Attach to card
       card.appendChild(controls);

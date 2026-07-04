@@ -404,7 +404,10 @@
       transition.style.flexDirection = 'column';
       transition.style.alignItems = 'center';
       transition.style.justifyContent = 'center';
-      transition.style.backgroundColor = 'rgba(10, 15, 30, 0.95)';
+      transition.style.background =
+        "linear-gradient(rgba(6,8,16,0.58), rgba(6,8,16,0.72)), " +
+        "url('assets/ui/generated/wave_clear_bg.webp') center center / cover no-repeat, " +
+        "rgba(10, 15, 30, 0.95)";
       transition.style.zIndex = '999';
       transition.style.animation = 'fadeInOut 2s ease-in-out';
       transition.style.backdropFilter = 'blur(8px)';
@@ -467,7 +470,10 @@
       transition.style.flexDirection = 'column';
       transition.style.alignItems = 'center';
       transition.style.justifyContent = 'center';
-      transition.style.backgroundColor = 'rgba(10, 15, 30, 0.95)';
+      transition.style.background =
+        "linear-gradient(rgba(6,8,16,0.55), rgba(6,8,16,0.70)), " +
+        "url('assets/ui/generated/wave_clear_bg.webp') center center / cover no-repeat, " +
+        "rgba(10, 15, 30, 0.95)";
       transition.style.zIndex = '999';
       transition.style.animation = 'fadeInOut 2.5s ease-in-out';
       transition.style.backdropFilter = 'blur(10px)';

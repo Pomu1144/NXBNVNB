@@ -1,5 +1,5 @@
 /* ---------- Base Layout ---------- */
-@import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&display=swap");
+@import url("fonts.css");
 
 * {
   box-sizing: border-box;
@@ -854,6 +854,39 @@ body.page-characters::-webkit-scrollbar {
 .skill-card.ultimate {
   background: rgba(120, 100, 50, 0.25);
   border: 1px solid rgba(255,215,120,0.25);
+}
+.skill-card.secret {
+  background: rgba(120, 40, 40, 0.22);
+  border: 1px solid rgba(255,120,120,0.28);
+}
+.skill-card.latent {
+  background: linear-gradient(180deg, rgba(90,40,120,0.30), rgba(60,30,90,0.22));
+  border: 1px solid rgba(200,140,255,0.40);
+  box-shadow: 0 0 12px rgba(160,90,230,0.20), inset 0 0 0 1px rgba(255,215,120,0.10);
+}
+.skill-card.latent .skill-type {
+  color: #d9b3ff;
+}
+
+/* Tools tab — placeholder until the Ninja Tools system ships */
+.tools-coming-soon .tools-power-display,
+.tools-coming-soon .tools-equipment-container {
+  opacity: 0.35;
+  filter: grayscale(0.7);
+  pointer-events: none;
+}
+.tools-soon-badge {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 4px 14px;
+  border: 1px solid rgba(217,179,98,0.5);
+  border-radius: 999px;
+  background: rgba(217,179,98,0.12);
+  color: var(--gold);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
 }
 .skill-card.locked {
   opacity: 0.6;

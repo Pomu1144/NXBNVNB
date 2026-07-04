@@ -218,9 +218,9 @@
 
   /* ---------- Load characters.json ---------- */
   async function loadBase() {
-    // Add cache-busting timestamp to force fresh load
-    const cacheBuster = `?v=${Date.now()}`;
-    const res = await fetch(`data/characters.json${cacheBuster}`, { cache: "no-store" });
+    // Let the browser/service-worker cache this 2.5MB file (revalidated via
+    // ETag). A per-load cache-buster forced a full re-download every visit.
+    const res = await fetch('data/characters.json');
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const json = await res.json();
     BASE = Array.isArray(json) ? json : (Array.isArray(json.characters) ? json.characters : []);
@@ -1625,7 +1625,7 @@
   function renderSkillsTab(c, inst, tier) {
     SKILLS_WRAP.innerHTML = "";
     const minT = minTier(c);
-    const { jutsu=null, ultimate=null, secret=null } = c.skills || {};
+    const { jutsu=null, ultimate=null, secret=null, latent=null } = c.skills || {};
     const cards = [];
 
     // Get character level for unlock checks
@@ -1704,6 +1704,35 @@
               <span>Range: <strong>${safeStr(e.range,"-")}</strong></span>
             </div>
             <div class="skill-desc">${safeStr(e.description,"")}</div>
+          </div>
+        `);
+      }
+    }
+
+    /* === Latent Skill support — only appears at its unlock tier (e.g. 7S) === */
+    if (latent) {
+      // Exact-tier match only (no fallback) so latent skills stay locked until
+      // the unit reaches the required star tier.
+      const e = latent.byTier?.[tier];
+      if (e) {
+        const multiplier = extractMultiplier(e);
+        cards.push(`
+          <div class="skill-card latent">
+            <div class="skill-header"><span class="skill-type">Latent</span><span class="skill-name">${safeStr(latent.name,"Latent Skill")}</span></div>
+            <div class="skill-meta">
+              <span>Chakra: <strong>${safeNum(e.chakraCost,"-")}</strong></span>
+              <span>Range: <strong>${safeStr(e.range,"-")}</strong></span>
+              <span>Mult: <strong>${multiplier}</strong></span>
+            </div>
+            <div class="skill-desc">${safeStr(e.description,"")}</div>
+          </div>
+        `);
+      } else if (latent.unlockTier) {
+        cards.push(`
+          <div class="skill-card latent locked">
+            <div class="lock-overlay"><img src="assets/icons/locked.png" alt="Locked" onerror="this.style.display='none';" /></div>
+            <div class="skill-header"><span class="skill-type">Latent</span><span class="skill-name">${safeStr(latent.name,"Latent Skill")} <span style="color:#d8b86a">(Unlocks at ${safeStr(latent.unlockTier,"7S")})</span></span></div>
+            <div class="skill-desc">A latent skill awakened at a higher star tier.</div>
           </div>
         `);
       }

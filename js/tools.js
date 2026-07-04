@@ -11,8 +11,7 @@
   // Load characters.json data
   async function loadCharactersData() {
     try {
-      const cacheBuster = `?v=${Date.now()}`;
-      const res = await fetch(`data/characters.json${cacheBuster}`, { cache: "no-store" });
+      const res = await fetch('data/characters.json');
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const json = await res.json();
       charactersData = Array.isArray(json) ? json : (Array.isArray(json.characters) ? json.characters : []);

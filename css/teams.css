@@ -1,5 +1,5 @@
 /* teams.css - Team Setup Styling (Blazing aesthetic, merged + dynamic slot height fix) */
-@import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&display=swap");
+@import url("fonts.css");
 
 :root {
   --gold: #d9b362;
@@ -216,6 +216,32 @@ body.page-teams {
   border-radius: 8px;
   border: 2px solid rgba(255,215,120,0.3);
   box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+}
+
+/* ---------- 7-Star Lightning Effect (formation slot portraits) ---------- */
+.slot-card.is-7star .portrait { overflow: visible; }
+.slot-card.is-7star .portrait img {
+  border-color: rgba(230,120,220,0.6);
+  box-shadow: 0 0 12px rgba(220,90,200,0.45), 0 2px 8px rgba(0,0,0,0.4);
+}
+.slot-card.is-7star .seven-star-fx {
+  position: absolute;
+  top: 2px;                 /* portrait padding-top (10px) minus 8px overscan */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 126px;             /* 110px image + overscan halo */
+  height: 126px;
+  object-fit: cover;
+  border-radius: 10px;
+  pointer-events: none;
+  mix-blend-mode: screen;   /* black bg drops out, only the bolts show */
+  z-index: 1;
+  opacity: 1;
+}
+.slot-card.is-7star .lv-badge,
+.slot-card.is-7star .ultimate-badge { z-index: 3; }
+@media (prefers-reduced-motion: reduce) {
+  .slot-card.is-7star .seven-star-fx { display: none; }
 }
 
 /* Ultimate Badge — overlaps bottom-right corner of portrait image */

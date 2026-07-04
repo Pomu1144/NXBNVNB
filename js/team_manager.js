@@ -127,9 +127,8 @@
   /* ---------- Sorting / filtering ---------- */
   let currentSort = "rarity";
 
-  // A unit's TRUE power = its effective power at its current level + tier
-  // (not the static card powerRank). Falls back to powerRank if progression
-  // isn't available.
+  // A unit's CURRENT power = effective power at its current level + tier.
+  // Used for the "Power" sort so it reflects actual investment.
   function effectivePower(char, inst) {
     const tier = inst?.tierCode || minTier(char);
     try {
@@ -143,9 +142,26 @@
     return safeNum(char?.powerRank, 0);
   }
 
-  // Map an effective-power value onto an SS→D letter grade. Thresholds are
-  // calibrated to the computed-power scale so the grade reflects a unit's
-  // real strength (a Lv1 6S and a maxed 7S of the same card grade differently).
+  // A unit's POWER CEILING at its current star tier — the effective power it
+  // would have at that tier's max level. The letter grade is based on this,
+  // NOT the current level, so a freshly-pulled 7S still grades as the top-tier
+  // unit it is, while a 6S vs 7S of the same card still grade differently.
+  function tierCeilingPower(char, inst) {
+    const tier = inst?.tierCode || minTier(char);
+    try {
+      if (window.Progression && window.Progression.computeEffectiveStatsLoreTier) {
+        const caps = window.Progression.TIER_CAPS || {};
+        const cap = caps[tier] || 100;
+        const comp = window.Progression.computeEffectiveStatsLoreTier(
+          char, cap, tier, { normalize: true }
+        );
+        if (comp && Number.isFinite(comp.power)) return comp.power;
+      }
+    } catch (e) { /* fall through */ }
+    return safeNum(char?.powerRank, 0);
+  }
+
+  // Map a power-ceiling value onto an SS→D letter grade.
   function gradeFromPower(p) {
     if (p >= 18000) return "SS";
     if (p >= 13000) return "S";
@@ -155,9 +171,9 @@
     return "D";
   }
 
-  // Derive an SS→D letter grade from a unit's TRUE (level+tier) power.
+  // Letter grade = the unit's tier power ceiling (level-independent).
   function gradeOf(char, inst) {
-    return gradeFromPower(effectivePower(char, inst));
+    return gradeFromPower(tierCeilingPower(char, inst));
   }
   const GRADE_ORDER = { SS: 6, S: 5, A: 4, B: 3, C: 2, D: 1 };
 
@@ -265,7 +281,7 @@
    * ========================= */
   async function loadCharacters() {
     try {
-      const res = await fetch("data/characters.json", { cache: "no-store" });
+      const res = await fetch("data/characters.json");
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const json = await res.json();
       BASE = Array.isArray(json) ? json : (Array.isArray(json.characters) ? json.characters : []);
@@ -351,6 +367,12 @@
       ? `<img class="ultimate-badge" src="assets/ui/${(inst.level || 1) >= 150 ? 'ultimate_max' : 'ultimate'}.png" alt="Ultimate" onerror="this.style.display='none';" />`
       : '';
 
+    const is7Star = (starsFromTier(tier) || 0) >= 7;
+    const lightningFX = is7Star
+      ? `<video class="seven-star-fx" src="assets/effects/sevenstar_lightning.mp4"
+                autoplay loop muted playsinline preload="auto" aria-hidden="true"></video>`
+      : '';
+
     // Card stat contributions (CRI, CRIT DMG, EVA)
     const cardContrib = window.CardSystem?.getEquippedContributions
       ? window.CardSystem.getEquippedContributions(inst.equippedJutsu)
@@ -362,10 +384,11 @@
     const totalEva    = (baseEva + cardContrib.eva).toFixed(2);
 
     slotEl.innerHTML = `
-      <div class="slot-card">
+      <div class="slot-card${is7Star ? ' is-7star' : ''}">
         <div class="portrait">
           <img src="${img}" alt="${char.name}"
                onerror="this.src='assets/characters/_common/silhouette.png';" />
+          ${lightningFX}
           <div class="lv-badge">Lv ${inst.level}</div>
           ${teamUltimateBadge}
         </div>
