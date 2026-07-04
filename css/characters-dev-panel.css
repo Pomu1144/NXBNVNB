@@ -131,6 +131,13 @@ body.chardev-maxmode-on .char-slot::after {
 .char-slot.is-maxed .char-card-level,
 .char-slot.is-maxed .ultimate-badge { z-index: 5; }
 
+/* PERF: off-screen aura cards keep only the cheap static glow — the pulsing
+   box-shadow animation runs only while the card is on-screen (.fx-live),
+   injected by seven-star-fx.js. Otherwise hundreds of cards would animate
+   (repaint) every frame. */
+.char-slot.is-7star:not(.fx-live),
+.char-slot.is-maxed:not(.fx-live) { animation: none !important; }
+
 /* A unit that is BOTH 7-star and fully maxed keeps both glows (purple + blue)
    and both video overlays (lightning + wind) stack via screen blend. */
 .char-slot.is-7star.is-maxed {

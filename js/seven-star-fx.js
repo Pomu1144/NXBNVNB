@@ -1,93 +1,114 @@
 // seven-star-fx.js
 // ---------------------------------------------------------------------------
-// Manages the card FX overlays: the 7-star lightning (video.seven-star-fx) and
-// the fully-maxed dark-blue wind (video.maxed-fx).
+// Card aura FX manager: 7-star lightning + fully-maxed dark-blue wind.
 //
-// PERFORMANCE: a roster with many 7-star / limit-broken units would otherwise
-// autoplay dozens of looping, screen-blended videos at once and lag hard. So
-// the videos have NO `autoplay`; instead an IntersectionObserver plays only the
-// ones currently on-screen and pauses the rest. Scrolling a big collection now
-// only ever decodes the handful of visible cards.
+// PERFORMANCE: a roster with hundreds of 7-star / limit-broken units must NOT
+// keep hundreds of <video> + mix-blend-mode layers (and pulsing box-shadow
+// animations) alive — that destroys scroll performance even when the videos
+// are paused. So the grid only renders a cheap static glow (via .is-7star /
+// .is-maxed) and tags each card with data-fx. This manager uses an
+// IntersectionObserver to INJECT the actual <video> overlay(s) and enable the
+// pulse animation (.fx-live) ONLY while a card is on-screen, and REMOVES them
+// when it scrolls away. At any moment only the handful of visible cards carry
+// video/blend/animation cost.
 // ---------------------------------------------------------------------------
 (function () {
   "use strict";
 
-  const SEL = "video.seven-star-fx, video.maxed-fx";
-  const visible = new Set();
+  const CARD_SEL = ".char-slot[data-fx]";
+  const SPEC = {
+    "7star": { cls: "seven-star-fx", src: "assets/effects/sevenstar_lightning.mp4" },
+    "maxed": { cls: "maxed-fx",      src: "assets/effects/maxed_wind.mp4" },
+  };
   let io = null;
 
-  // Track intended playback with a data flag rather than the native `paused`
-  // property: play() is async (and may be pending), so relying on `paused`
-  // alone can leave an off-screen video running. The flag makes pause/play
-  // deterministic.
-  function playVid(v) {
-    v.muted = true; // required for programmatic play
-    if (v.dataset.fxPlaying === "1") return;
-    v.dataset.fxPlaying = "1";
-    const p = v.play();
-    if (p && typeof p.catch === "function") p.catch(() => {});
+  function activate(card) {
+    if (card.dataset.fxLive === "1") return;
+    card.dataset.fxLive = "1";
+    card.classList.add("fx-live");
+    (card.dataset.fx || "").split(" ").filter(Boolean).forEach((kind) => {
+      const spec = SPEC[kind];
+      if (!spec || card.querySelector("video." + spec.cls)) return;
+      const v = document.createElement("video");
+      v.className = spec.cls;
+      v.src = spec.src;
+      v.loop = true; v.muted = true; v.playsInline = true;
+      v.setAttribute("playsinline", ""); v.setAttribute("aria-hidden", "true");
+      card.appendChild(v);
+      const p = v.play();
+      if (p && typeof p.catch === "function") p.catch(() => {});
+    });
   }
-  function pauseVid(v) {
-    if (v.dataset.fxPlaying !== "1") return;
-    v.dataset.fxPlaying = "";
-    try { v.pause(); } catch (e) {}
+
+  function deactivate(card) {
+    if (card.dataset.fxLive !== "1") return;
+    card.dataset.fxLive = "";
+    card.classList.remove("fx-live");
+    card.querySelectorAll("video.seven-star-fx, video.maxed-fx").forEach((v) => {
+      try { v.pause(); v.removeAttribute("src"); v.load(); } catch (e) {}
+      v.remove();
+    });
+  }
+
+  function inViewport(el) {
+    const b = el.getBoundingClientRect();
+    const h = window.innerHeight || document.documentElement.clientHeight;
+    return b.width > 0 && b.bottom > -200 && b.top < h + 200;
   }
 
   function ensureObserver() {
     if (io || !("IntersectionObserver" in window)) return;
     io = new IntersectionObserver((entries) => {
       for (const e of entries) {
-        if (e.isIntersecting) { visible.add(e.target); playVid(e.target); }
-        else { visible.delete(e.target); pauseVid(e.target); }
+        if (e.isIntersecting) activate(e.target);
+        else deactivate(e.target);
       }
-    }, { rootMargin: "150px" });
+    }, { rootMargin: "200px" });
   }
 
-  function inViewport(v) {
-    const b = v.getBoundingClientRect();
-    const h = window.innerHeight || document.documentElement.clientHeight;
-    return b.width > 0 && b.bottom > -150 && b.top < h + 150;
-  }
-
-  // Deterministic pass after (re)render: play the videos actually on-screen,
-  // pause the rest. IntersectionObserver's first callback can race with layout
-  // right after an innerHTML swap and leave off-screen videos playing, so we
-  // reconcile explicitly on the next frame. IO then maintains state on scroll.
+  // Deterministic pass after a (re)render — IO's first callback can race with
+  // layout right after an innerHTML swap. Debounced to one rAF so repeated
+  // scan() calls don't thrash layout with getBoundingClientRect.
+  let reconcilePending = false;
   function reconcile() {
-    document.querySelectorAll(SEL).forEach((v) => {
-      if (inViewport(v)) { visible.add(v); playVid(v); }
-      else { visible.delete(v); pauseVid(v); }
+    reconcilePending = false;
+    document.querySelectorAll(CARD_SEL).forEach((card) => {
+      if (inViewport(card)) activate(card); else deactivate(card);
     });
   }
-
-  // Observe any FX videos not yet observed (idempotent — safe to call on every
-  // grid re-render).
-  function scan() {
-    if (!("IntersectionObserver" in window)) {
-      requestAnimationFrame(reconcile); // fallback: rect-based play/pause
-      return;
-    }
-    ensureObserver();
-    document.querySelectorAll(SEL).forEach((v) => {
-      if (!v.dataset.fxObserved) { v.dataset.fxObserved = "1"; io.observe(v); }
-    });
+  function scheduleReconcile() {
+    if (reconcilePending) return;
+    reconcilePending = true;
     requestAnimationFrame(reconcile);
   }
 
-  // Re-kick only the on-screen videos (they pause when the tab is backgrounded
-  // or the page is restored from bfcache).
-  function replayVisible() { visible.forEach(playVid); }
+  function scan() {
+    if (!("IntersectionObserver" in window)) { scheduleReconcile(); return; }
+    ensureObserver();
+    document.querySelectorAll(CARD_SEL).forEach((card) => {
+      if (!card.dataset.fxObserved) { card.dataset.fxObserved = "1"; io.observe(card); }
+    });
+    scheduleReconcile();
+  }
 
-  window.addEventListener("pageshow", replayVisible);
-  window.addEventListener("focus", replayVisible);
-  document.addEventListener("visibilitychange", () => { if (!document.hidden) replayVisible(); });
+  // Re-kick the currently-live videos after bfcache restore / tab refocus.
+  function replayLive() {
+    document.querySelectorAll(".char-slot.fx-live video").forEach((v) => {
+      v.muted = true; const p = v.play(); if (p && typeof p.catch === "function") p.catch(() => {});
+    });
+  }
+  window.addEventListener("pageshow", replayLive);
+  window.addEventListener("focus", replayLive);
+  document.addEventListener("visibilitychange", () => { if (!document.hidden) replayLive(); });
 
   function wire() {
     scan();
     if (!("MutationObserver" in window)) return;
+    // childList only (no subtree): catches grid rebuilds (cards are direct
+    // children) but NOT our own video injections deeper in each card, avoiding
+    // a mutation -> scan -> inject -> mutation feedback loop.
     document.querySelectorAll(".char-grid").forEach((grid) => {
-      const mo = new MutationObserver(() => scan());
-      mo.observe(grid, { childList: true, subtree: true });
+      new MutationObserver(() => scan()).observe(grid, { childList: true });
     });
   }
 
