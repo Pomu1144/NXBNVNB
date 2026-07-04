@@ -2498,7 +2498,8 @@
     const eligibleCards = window.CardSystem
       ? window.CardSystem.filterCardsForCharacter(jutsuCardsData, characterId)
       : jutsuCardsData.filter(card => {
-          if (!card.eligibleCharacters || card.eligibleCharacters.length === 0) return true;
+          // Empty eligibility => unassigned/stat-only, not equippable by anyone.
+          if (!card.eligibleCharacters || card.eligibleCharacters.length === 0) return false;
           const charFirst = characterId.split('_')[0].toLowerCase();
           return card.eligibleCharacters.some(eid => eid.split('_')[0].toLowerCase() === charFirst);
         });
@@ -2511,16 +2512,23 @@
     // Render jutsu cards (only eligible ones)
     CARD_GRID.innerHTML = eligibleCards.map(card => {
       const iconSrc = resolvePath(card.icon);
-      const fullSrc = resolvePath(card.fullArt || card.icon);
+      // Only treat as having distinct full art when fullArt exists and differs
+      // from the icon; otherwise the card would render the icon twice
+      // (big image + corner badge both = the icon).
+      const hasFullArt = !!card.fullArt && card.fullArt !== card.icon;
+      const mainSrc = hasFullArt ? resolvePath(card.fullArt) : iconSrc;
       const jutsuName = card.jutsuName || card.name;
       const curLv = getCardLv(card.id);
       const maxLv = window.CardSystem ? window.CardSystem.getCardMaxLevel(card) : 70;
+      // If full art 404s at runtime, fall back to the icon AND hide the badge
+      // so we still never show the icon twice.
+      const onErr = "this.onerror=null;this.src='" + iconSrc + "';var w=this.parentNode.querySelector('.card-inv-icon-wrap');if(w)w.style.display='none';";
       return `
         <div class="card-inventory-item" data-card-id="${card.id}">
-          <img src="${fullSrc}" alt="${card.name}" onerror="this.src='${iconSrc}';">
-          <div class="card-inv-icon-wrap">
+          <img src="${mainSrc}" alt="${card.name}"${hasFullArt ? ` onerror="${onErr}"` : ''}>
+          ${hasFullArt ? `<div class="card-inv-icon-wrap">
             <img class="card-inv-jutsu-icon" src="${iconSrc}" alt="${jutsuName}" onerror="this.style.display='none';">
-          </div>
+          </div>` : ``}
           <div class="card-inv-label">
             <div class="card-inv-jutsu-name">${jutsuName}</div>
             <div class="card-inv-level">Lv ${curLv} / ${maxLv}</div>
