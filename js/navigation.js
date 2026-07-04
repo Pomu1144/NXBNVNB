@@ -435,6 +435,10 @@
       }
       const summonsData = await response.json();
 
+      // summon.json stores banners under `pools` (older builds used `banners`)
+      const banners = summonsData.pools || summonsData.banners || [];
+      if (!banners.length) return;
+
       // Clear carousel and create structure
       carousel.innerHTML = '';
 
@@ -443,7 +447,7 @@
       track.className = 'summon-carousel-track';
 
       // Create banner cards
-      summonsData.banners.forEach((banner, index) => {
+      banners.forEach((banner, index) => {
         const card = document.createElement('div');
         card.className = 'summon-banner-card';
         card.dataset.bannerId = banner.id;
@@ -503,7 +507,7 @@
       // Create navigation dots
       const dotsContainer = document.createElement('div');
       dotsContainer.className = 'summon-carousel-dots';
-      summonsData.banners.forEach((_, index) => {
+      banners.forEach((_, index) => {
         const dot = document.createElement('div');
         dot.className = `summon-carousel-dot ${index === 0 ? 'active' : ''}`;
         dot.dataset.index = index;
@@ -512,7 +516,7 @@
       carousel.appendChild(dotsContainer);
 
       // Initialize carousel functionality
-      initCarouselControls(carousel, track, summonsData.banners.length);
+      initCarouselControls(carousel, track, banners.length);
 
       console.log(`[Navigation] Loaded ${summonsData.banners.length} summon banners`);
     } catch (err) {
@@ -527,7 +531,10 @@
 
     function goToSlide(index) {
       currentIndex = (index + totalBanners) % totalBanners;
-      const offset = -currentIndex * 380; // 380px per banner
+      // Measure the real card width so the slide stays correct at any size
+      const cardW = track.children[0]?.getBoundingClientRect().width
+        || carousel.getBoundingClientRect().width || 480;
+      const offset = -currentIndex * cardW;
       track.style.transform = `translateX(${offset}px)`;
 
       // Update dots

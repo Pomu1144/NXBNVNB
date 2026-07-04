@@ -96,16 +96,11 @@
     }
   }
 
-  // Auto-initialize on DOMContentLoaded
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => {
-      window.IndexBannerCarousel = new IndexBannerCarousel();
-      window.IndexBannerCarousel.init();
-    });
-  } else {
-    window.IndexBannerCarousel = new IndexBannerCarousel();
-    window.IndexBannerCarousel.init();
-  }
+  // NOTE: auto-init disabled. The summon banner carousel is rendered by
+  // navigation.js (initSummonBanners), whose cards match the ui-layout.css
+  // styles. Auto-initializing here produced a second, unstyled render that
+  // cleared/clobbered it. The class stays exported for manual/legacy use.
+  window.IndexBannerCarousel = IndexBannerCarousel;
 
-  console.log('[IndexBannerCarousel] Module loaded');
+  console.log('[IndexBannerCarousel] Module loaded (auto-init disabled)');
 })();

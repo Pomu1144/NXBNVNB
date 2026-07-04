@@ -357,11 +357,10 @@
 .summon-banner-carousel {
   position: fixed;
   left: 20px;
-  top: 20%;
-  transform: translateY(-50%);
+  top: 92px;               /* sit clear below the top bar */
   z-index: 50;
-  width: 380px;
-  height: 180px;
+  width: 480px;            /* larger showcase */
+  height: 268px;           /* 480 / 1.79 — matches banner art so nothing is cropped */
   overflow: hidden;
   border-radius: 12px;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.8);
@@ -376,9 +375,9 @@
 
 /* Individual summon banner card - VISUAL ONLY (non-clickable) */
 .summon-banner-card {
-  min-width: 380px;
-  width: 380px;
-  height: 180px;
+  min-width: 480px;
+  width: 480px;
+  height: 268px;
   background-image: linear-gradient(135deg, rgba(80, 40, 120, 0.9), rgba(120, 60, 180, 0.95)); /* Default fallback */
   background-size: cover;
   background-position: center;
@@ -480,12 +479,14 @@
   }
 
   .summon-banner-carousel {
-    width: 320px;
+    width: 400px;
+    height: 224px;
   }
 
   .summon-banner-card {
-    width: 320px;
-    height: 150px;
+    min-width: 400px;
+    width: 400px;
+    height: 224px;
   }
 }
 
