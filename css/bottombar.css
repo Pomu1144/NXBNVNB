@@ -101,7 +101,15 @@
   aspect-ratio: 1 !important;
   object-fit: contain !important;
   object-position: center !important;
-  position: relative;
+  /* Neutralize stale absolute-positioning from background.css (.hud-button img
+     top/left/transform) that otherwise leaks in on pages where background.css
+     loads before bottombar.css (Fusion/Shop/Characters), shoving the icon out
+     of the button. Flexbox on .hud-button handles centering. */
+  position: relative !important;
+  top: auto !important;
+  left: auto !important;
+  right: auto !important;
+  bottom: auto !important;
   z-index: 1;
   border-radius: 0 !important;
   filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.6));
