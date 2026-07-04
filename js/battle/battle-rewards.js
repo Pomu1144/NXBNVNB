@@ -85,12 +85,17 @@
         width: 80px;
         height: 80px;
         background: ${this.getChestBackground('closed')};
+        ${usingSprite ? `
+        /* Real chest sprite: no boxy outline, just a soft drop-shadow */
+        filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.55));
+        ` : `
         border: 4px solid #FFD700;
         border-radius: 8px;
         box-shadow:
           0 10px 30px rgba(0, 0, 0, 0.5),
           0 0 20px rgba(255, 215, 0, 0.6),
           inset 0 -5px 15px rgba(0, 0, 0, 0.3);
+        `}
         z-index: 1000;
         cursor: pointer;
         animation: chestAppear 0.5s ease-out, chestFloat 2s ease-in-out infinite;
@@ -218,7 +223,10 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background: rgba(0, 0, 0, 0.95);
+        background:
+          linear-gradient(rgba(6,5,10,0.55), rgba(6,5,10,0.78)),
+          url('assets/ui/generated/results_bg.webp') center center / cover no-repeat,
+          #0a0a0f;
         z-index: 10000;
         display: flex;
         flex-direction: column;
@@ -327,14 +335,19 @@
 
       // Chest icon (will flash)
       const chestIcon = document.createElement('div');
+      const chestIconSprite = this.isChestSpriteAvailable('closed');
       chestIcon.style.cssText = `
         width: 60px;
         height: 60px;
         margin: 0 auto 1rem;
         background: ${this.getChestBackground('closed')};
+        ${chestIconSprite ? `
+        filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.5));
+        ` : `
         border: 3px solid #FFD700;
         border-radius: 6px;
         box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
+        `}
       `;
       chestCard.appendChild(chestIcon);
 
@@ -347,11 +360,20 @@
 
       for (const [item, amount] of Object.entries(chest.rewards)) {
         const rewardItem = document.createElement('div');
-        rewardItem.textContent = `${this.formatRewardName(item)}: ${amount}`;
+        let color = '#FFF';
+        if (item === 'characters') {
+          const list = Array.isArray(amount) ? amount.filter(c => c && c.characterId) : [];
+          if (!list.length) continue;
+          const tiers = list.map(c => c.tierCode || '').filter(Boolean).join(', ');
+          rewardItem.textContent = `★ New Unit${list.length > 1 ? 's' : ''} Unlocked!${tiers ? ` (${tiers})` : ''}`;
+          color = '#ffd76a';
+        } else {
+          rewardItem.textContent = `${this.formatRewardName(item)}: ${amount}`;
+        }
         rewardItem.style.cssText = `
           font-family: 'Cinzel', serif;
           font-size: 0.8rem;
-          color: #FFF;
+          color: ${color};
           margin: 0.3rem 0;
         `;
         rewardsList.appendChild(rewardItem);
@@ -449,12 +471,45 @@
      * Apply rewards to player inventory
      */
     applyRewardsToInventory(rewards) {
-      if (!window.Resources) return;
+      if (!rewards) return;
 
       for (const [item, amount] of Object.entries(rewards)) {
-        window.Resources.add(item, amount);
-        console.log(`[BattleRewards] Added ${amount}x ${item} to inventory`);
+        // Character unlocks (e.g. Super Impact SS-rank banner units) are an
+        // array of { characterId, tierCode, quantity } and are granted to the
+        // character inventory, not the resource pool.
+        if (item === 'characters') {
+          this.grantCharacterRewards(amount);
+          continue;
+        }
+        if (window.Resources) {
+          window.Resources.add(item, amount);
+          console.log(`[BattleRewards] Added ${amount}x ${item} to inventory`);
+        }
       }
+    },
+
+    /**
+     * Grant character unlocks. One-time per (mission + rank + character) so
+     * re-clearing an SS stage does not let the player farm duplicate copies.
+     */
+    grantCharacterRewards(list) {
+      if (!Array.isArray(list) || !window.InventoryChar) return;
+      const missionId = localStorage.getItem('currentMissionId') || '';
+      const rank = localStorage.getItem('currentDifficulty') || '';
+      list.forEach(ch => {
+        if (!ch || !ch.characterId) return;
+        const onceKey = `si_unlocked_${missionId}_${rank}_${ch.characterId}`;
+        if (ch.repeatable !== true && localStorage.getItem(onceKey)) {
+          console.log(`[BattleRewards] ${ch.characterId} already unlocked — skipping`);
+          return;
+        }
+        const qty = ch.quantity || 1;
+        for (let i = 0; i < qty; i++) {
+          window.InventoryChar.addCopy(ch.characterId, 1, ch.tierCode || '6S');
+        }
+        localStorage.setItem(onceKey, '1');
+        console.log(`[BattleRewards] Unlocked ${qty}x ${ch.characterId} @ ${ch.tierCode || '6S'}`);
+      });
     },
 
     /**

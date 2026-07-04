@@ -115332,8 +115332,31 @@
       "shape": "Circle",
       "range": "Long",
       "position": "Right",
-      "description": "6x attack toward all enemies in range, 85% chance of slip damage for 10 turn(s) and/or immobilization for 2 turn(s) each.",
+      "description": "4.5x attack toward all enemies in range, 85% chance of slip damage for 10 turn(s), and/or immobilization for 1 second(s) each.",
       "nwusDescription": "4.5x attack toward all enemies in range, 85% chance of slip damage for 10 turn(s), and/or immobilization for 1 second(s) each."
+     }
+    }
+   },
+   "secret": {
+    "name": "Chidori",
+    "type": "Secret",
+    "byTier": {
+     "7S": {
+      "chakraCost": 6,
+      "range": "Short",
+      "description": "Changes the element of 1 enemy(s) in range to Wisdom for 1 turn(s) with 11x attack toward them, knocks them back and removes attack boost."
+     }
+    }
+   },
+   "latent": {
+    "name": "Indra's Arrow",
+    "type": "Latent",
+    "unlockTier": "7S",
+    "byTier": {
+     "7S": {
+      "chakraCost": 6,
+      "range": "On-Screen",
+      "description": "25.5x attack toward all enemies on-screen. The enemy receives increased damage from their non-effective elemental affinities by 30% for 6 turn(s). Plus, when your health is 30% or below, gives you an attack boost of 100% for 1 turn(s) before performing the above attack."
      }
     }
    }

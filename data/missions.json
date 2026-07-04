@@ -62,10 +62,21 @@
      ],
      "rewards": {
       "ryo": 40000,
-      "ninja_pearls": 1
+      "ninja_pearls": 1,
+      "characters": [
+       {
+        "characterId": "naruto_820",
+        "tierCode": "6S",
+        "quantity": 1
+       }
+      ]
      }
     }
    ]
+  },
+  "requires": {
+   "mission": "si_raging_fourth_tail",
+   "rank": "SS"
   }
  },
  {
@@ -13026,6 +13037,310 @@
      "rewards": {
       "ryo": 40000,
       "ninja_pearls": 1
+     }
+    }
+   ]
+  }
+ },
+ {
+  "id": "si_raging_fourth_tail",
+  "category": "Super Impact",
+  "name": "Super Impact! The Raging Fourth Tail",
+  "banner": "assets/characters/naruto_281/full_5S.png",
+  "sortOrder": 0.05,
+  "difficulties": {
+   "S": [
+    {
+     "stage": 1,
+     "map": "assets/maps/bg_220101_konoha_houkai.png",
+     "waves": [
+      {
+       "enemies": [
+        "orochimaru_enemy"
+       ]
+      },
+      {
+       "enemies": [
+        "kabuto_enemy"
+       ]
+      }
+     ],
+     "rewards": {
+      "ryo": 15000,
+      "ninja_pearls": 1
+     }
+    }
+   ],
+   "SS": [
+    {
+     "stage": 1,
+     "map": "assets/maps/bg_220101_konoha_houkai.png",
+     "waves": [
+      {
+       "enemies": [
+        "kabuto_enemy",
+        "orochimaru_enemy"
+       ]
+      }
+     ],
+     "rewards": {
+      "ryo": 25000,
+      "ninja_pearls": 1
+     }
+    },
+    {
+     "stage": 2,
+     "map": "assets/maps/bg_370101_senjyou.png",
+     "waves": [
+      {
+       "enemies": [
+        "kisame_enemy"
+       ]
+      },
+      {
+       "enemies": [
+        "itachi_enemy"
+       ]
+      }
+     ],
+     "rewards": {
+      "ryo": 50000,
+      "ninja_pearls": 2,
+      "characters": [
+       {
+        "characterId": "naruto_281",
+        "tierCode": "5S",
+        "quantity": 1
+       }
+      ]
+     }
+    }
+   ]
+  }
+ },
+ {
+  "id": "si_eight_gates",
+  "category": "Super Impact",
+  "name": "Super Impact! Eight Gates Unleashed",
+  "banner": "assets/characters/rock_149/full_6S.png",
+  "sortOrder": 0.2,
+  "difficulties": {
+   "S": [
+    {
+     "stage": 1,
+     "map": "assets/maps/bg_220101_konoha_houkai.png",
+     "waves": [
+      {
+       "enemies": [
+        "kisame_enemy"
+       ]
+      },
+      {
+       "enemies": [
+        "kakuzu_enemy"
+       ]
+      }
+     ],
+     "rewards": {
+      "ryo": 15000,
+      "ninja_pearls": 1
+     }
+    }
+   ],
+   "SS": [
+    {
+     "stage": 1,
+     "map": "assets/maps/bg_220101_konoha_houkai.png",
+     "waves": [
+      {
+       "enemies": [
+        "hidan_enemy",
+        "kakuzu_enemy"
+       ]
+      }
+     ],
+     "rewards": {
+      "ryo": 25000,
+      "ninja_pearls": 1
+     }
+    },
+    {
+     "stage": 2,
+     "map": "assets/maps/bg_370101_senjyou.png",
+     "waves": [
+      {
+       "enemies": [
+        "kisame_enemy"
+       ]
+      },
+      {
+       "enemies": [
+        "madara_enemy"
+       ]
+      }
+     ],
+     "rewards": {
+      "ryo": 50000,
+      "ninja_pearls": 2,
+      "characters": [
+       {
+        "characterId": "rock_149",
+        "tierCode": "6S",
+        "quantity": 1
+       }
+      ]
+     }
+    }
+   ]
+  }
+ },
+ {
+  "id": "si_slug_princess",
+  "category": "Super Impact",
+  "name": "Super Impact! The Slug Princess",
+  "banner": "assets/characters/tsunade_168/full_6S.png",
+  "sortOrder": 0.3,
+  "difficulties": {
+   "S": [
+    {
+     "stage": 1,
+     "map": "assets/maps/bg_220101_konoha_houkai.png",
+     "waves": [
+      {
+       "enemies": [
+        "kabuto_enemy"
+       ]
+      },
+      {
+       "enemies": [
+        "orochimaru_enemy"
+       ]
+      }
+     ],
+     "rewards": {
+      "ryo": 15000,
+      "ninja_pearls": 1
+     }
+    }
+   ],
+   "SS": [
+    {
+     "stage": 1,
+     "map": "assets/maps/bg_220101_konoha_houkai.png",
+     "waves": [
+      {
+       "enemies": [
+        "orochimaru_enemy",
+        "kabuto_enemy"
+       ]
+      }
+     ],
+     "rewards": {
+      "ryo": 25000,
+      "ninja_pearls": 1
+     }
+    },
+    {
+     "stage": 2,
+     "map": "assets/maps/bg_370101_senjyou.png",
+     "waves": [
+      {
+       "enemies": [
+        "pain_enemy"
+       ]
+      },
+      {
+       "enemies": [
+        "madara_enemy"
+       ]
+      }
+     ],
+     "rewards": {
+      "ryo": 50000,
+      "ninja_pearls": 2,
+      "characters": [
+       {
+        "characterId": "tsunade_168",
+        "tierCode": "6S",
+        "quantity": 1
+       }
+      ]
+     }
+    }
+   ]
+  }
+ },
+ {
+  "id": "si_sand_final_weapon",
+  "category": "Super Impact",
+  "name": "Super Impact! The Sand's Final Weapon",
+  "banner": "assets/characters/gaara_174/full_6S.png",
+  "sortOrder": 0.4,
+  "difficulties": {
+   "S": [
+    {
+     "stage": 1,
+     "map": "assets/maps/bg_220101_konoha_houkai.png",
+     "waves": [
+      {
+       "enemies": [
+        "deidara_enemy"
+       ]
+      },
+      {
+       "enemies": [
+        "sasori_enemy"
+       ]
+      }
+     ],
+     "rewards": {
+      "ryo": 15000,
+      "ninja_pearls": 1
+     }
+    }
+   ],
+   "SS": [
+    {
+     "stage": 1,
+     "map": "assets/maps/bg_220101_konoha_houkai.png",
+     "waves": [
+      {
+       "enemies": [
+        "sasori_enemy",
+        "deidara_enemy"
+       ]
+      }
+     ],
+     "rewards": {
+      "ryo": 25000,
+      "ninja_pearls": 1
+     }
+    },
+    {
+     "stage": 2,
+     "map": "assets/maps/bg_370101_senjyou.png",
+     "waves": [
+      {
+       "enemies": [
+        "obito_enemy"
+       ]
+      },
+      {
+       "enemies": [
+        "madara_enemy"
+       ]
+      }
+     ],
+     "rewards": {
+      "ryo": 50000,
+      "ninja_pearls": 2,
+      "characters": [
+       {
+        "characterId": "gaara_174",
+        "tierCode": "6S",
+        "quantity": 1
+       }
+      ]
      }
     }
    ]
