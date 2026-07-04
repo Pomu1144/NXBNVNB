@@ -147,6 +147,15 @@
       starRow.innerHTML = new Array(n).fill('<span class="tools-star">★</span>').join('');
     }
 
+    // 8★+ awakening rank frame overlay (covers the old baked-in frame)
+    if (window.RankFrame) {
+      window.RankFrame.apply(
+        document.getElementById('tools-rank-card'),
+        document.getElementById('tools-rank-frame'),
+        inst.tierCode
+      );
+    }
+
     // Power + letter grade badge on top of the art
     const badge = document.getElementById('tools-power-badge');
     const gradeEl = document.getElementById('tools-grade');
