@@ -554,6 +554,41 @@ body.page-teams {
 .team-char-card[data-rarity="3"] { --rarity-color: #6bcf7f; }
 .team-char-card[data-rarity="2"], .team-char-card[data-rarity="1"] { --rarity-color: #9aa0aa; }
 
+/* ---------- 7-Star Lightning Effect (team roster cards) ---------- */
+.team-char-card.is-7star {
+  overflow: visible;                 /* let the arcs bleed around the card */
+  border-color: rgba(140, 200, 255, 0.55);
+  box-shadow:
+    0 0 14px rgba(120, 160, 255, .45),
+    inset 0 0 0 1px rgba(180, 210, 255, .25);
+  animation: teamSevenStarPulse 2.2s ease-in-out infinite;
+}
+.team-char-card.is-7star .seven-star-fx {
+  position: absolute;
+  top: -8px;
+  left: -8px;
+  width: calc(100% + 16px);
+  height: 148px;                     /* image band (140px) + top overscan */
+  object-fit: cover;
+  border-radius: 12px;
+  pointer-events: none;
+  mix-blend-mode: screen;            /* black bg drops out, only bolts show */
+  z-index: 1;
+  opacity: 1;
+}
+/* Keep badges & footer text crisp above the lightning */
+.team-char-card.is-7star .team-char-grade { z-index: 4; }
+.team-char-card.is-7star .team-char-card-info { position: relative; z-index: 3; }
+
+@keyframes teamSevenStarPulse {
+  0%, 100% { box-shadow: 0 0 12px rgba(120,160,255,.35), inset 0 0 0 1px rgba(180,210,255,.2); }
+  50%      { box-shadow: 0 0 22px rgba(150,200,255,.7), inset 0 0 0 1px rgba(200,230,255,.4); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .team-char-card.is-7star { animation: none; }
+  .team-char-card.is-7star .seven-star-fx { display: none; }
+}
+
 /* SS–D grade badge (top-right) */
 .team-char-grade {
   position: absolute;
