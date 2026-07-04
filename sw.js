@@ -1,4 +1,4 @@
-const CACHE = 'blazing-shell-v3';
+const CACHE = 'blazing-shell-v4';
 const BASE = new URL('./', self.location.href).pathname;
 const SHELL = [
   'index.html',
@@ -31,37 +31,55 @@ self.addEventListener('activate', e => {
   );
 });
 
+// Serve `cached` immediately (if present) and refresh the cache from the
+// network in the background. Repeat visits become app-instant instead of
+// waiting on a full re-download.
+function staleWhileRevalidate(request, cacheKey) {
+  return caches.open(CACHE).then(async cache => {
+    const key = cacheKey || request;
+    const cached = await cache.match(key);
+    const network = fetch(request).then(res => {
+      if (res && res.ok) cache.put(key, res.clone());
+      return res;
+    }).catch(() => cached);
+    // If we have a cached copy, return it now and let the network update run
+    // in the background; otherwise wait for the network.
+    return cached || network;
+  });
+}
+
 self.addEventListener('fetch', e => {
   const url = new URL(e.request.url);
 
   // Skip non-GET and cross-origin requests
   if (e.request.method !== 'GET' || url.origin !== location.origin) return;
 
-  // Large binary assets — network only, no cache bloat
   const rel = url.pathname.slice(BASE.length);
-  if (rel.startsWith('assets/') || rel.startsWith('data/') || rel.startsWith('animations/')) {
+
+  // Large binary media — network only (don't bloat CacheStorage with videos /
+  // multi-MB gifs). The browser's own HTTP cache still handles repeat loads.
+  if (rel.startsWith('assets/') || rel.startsWith('animations/')) return;
+
+  // Data JSON (characters.json, cards.json, …) — the app fetches these with a
+  // per-load `?v=timestamp` cache-buster + `no-store`, which defeats all
+  // caching and re-downloads megabytes every visit. Normalize the key to the
+  // path (dropping the query) and serve stale-while-revalidate, so a repeat
+  // open is instant while a background fetch keeps the data fresh.
+  if (rel.startsWith('data/')) {
+    const key = new Request(url.origin + url.pathname);
+    e.respondWith(staleWhileRevalidate(e.request, key));
     return;
   }
 
-  // HTML shell — network-first so updates are always visible immediately
+  // HTML documents — stale-while-revalidate so a new tab opens instantly from
+  // cache, then updates in the background (was network-first, which always
+  // blocked on the network round-trip).
   if (e.request.destination === 'document') {
-    e.respondWith(
-      fetch(e.request).then(r => {
-        caches.open(CACHE).then(c => c.put(e.request, r.clone()));
-        return r;
-      }).catch(() => caches.match(e.request))
-    );
+    e.respondWith(staleWhileRevalidate(e.request));
     return;
   }
 
-  // CSS/JS — cache first, fall back to network
-  e.respondWith(
-    caches.match(e.request).then(cached => {
-      if (cached) return cached;
-      return fetch(e.request).then(r => {
-        caches.open(CACHE).then(c => c.put(e.request, r.clone()));
-        return r;
-      });
-    })
-  );
+  // CSS / JS — cache-first with background refresh. The `?v=` version tags on
+  // these are meaningful, so match on the exact URL (do not strip the query).
+  e.respondWith(staleWhileRevalidate(e.request));
 });

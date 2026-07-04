@@ -218,9 +218,9 @@
 
   /* ---------- Load characters.json ---------- */
   async function loadBase() {
-    // Add cache-busting timestamp to force fresh load
-    const cacheBuster = `?v=${Date.now()}`;
-    const res = await fetch(`data/characters.json${cacheBuster}`, { cache: "no-store" });
+    // Let the browser/service-worker cache this 2.5MB file (revalidated via
+    // ETag). A per-load cache-buster forced a full re-download every visit.
+    const res = await fetch('data/characters.json');
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const json = await res.json();
     BASE = Array.isArray(json) ? json : (Array.isArray(json.characters) ? json.characters : []);

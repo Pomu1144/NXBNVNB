@@ -1,5 +1,5 @@
 /* teams.css - Team Setup Styling (Blazing aesthetic, merged + dynamic slot height fix) */
-@import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&display=swap");
+@import url("fonts.css");
 
 :root {
   --gold: #d9b362;

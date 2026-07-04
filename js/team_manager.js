@@ -281,7 +281,7 @@
    * ========================= */
   async function loadCharacters() {
     try {
-      const res = await fetch("data/characters.json", { cache: "no-store" });
+      const res = await fetch("data/characters.json");
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const json = await res.json();
       BASE = Array.isArray(json) ? json : (Array.isArray(json.characters) ? json.characters : []);
