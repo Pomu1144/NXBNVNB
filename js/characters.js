@@ -159,12 +159,6 @@
   /* ---------- Stars HTML ---------- */
   const renderStars = (n) => new Array(Math.max(0, Math.min(10, n))).fill(0).map(() => "<img src='assets/ui/NormalStar.png' class='star' alt='star'>").join("");
   window.renderStars = renderStars;
-
-  /* Distinct badge for the Blazing Awakened (6SB) tier */
-  const blazingBadge = (tier) => tier === "6SB"
-    ? " <span class='blazing-awakened-badge' style=\"display:inline-block;font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#ffb057;border:1px solid rgba(255,140,40,0.65);border-radius:5px;padding:1px 7px;vertical-align:middle;background:linear-gradient(180deg,rgba(255,140,40,0.22),rgba(255,60,0,0.14));text-shadow:0 1px 2px rgba(0,0,0,0.6);\">Blazing Awakened</span>"
-    : "";
-  window.blazingBadge = blazingBadge;
   window.starsFromTier = starsFromTier;
 
   /* ---------- Level badge (grid cards) ---------- */
@@ -325,9 +319,7 @@
 
     NP_NAME.textContent    = safeStr(c.name, "Unknown");
     NP_VERSION.textContent = safeStr(c.version, "");
-    // Blazing Awakened (6SB) shares the 6-star count but is a distinct 3rd
-    // awakening tier — flag it so it doesn't read as a plain 6★.
-    NP_STARS.innerHTML     = renderStars(starsFromTier(tier)) + blazingBadge(tier);
+    NP_STARS.innerHTML     = renderStars(starsFromTier(tier));
 
     MODAL_IMG.src = safeStr(art.full, art.portrait);
     MODAL_IMG.alt = `${c.name} full artwork`;
