@@ -142,15 +142,15 @@ body.page-characters::-webkit-scrollbar {
    blend, so only the electric-blue arcs frame the character. */
 .seven-star-fx {
   position: absolute;
-  inset: -4px;                 /* slight overscan so bolts reach the corners */
-  width: calc(100% + 8px);
-  height: calc(100% + 8px);
+  inset: -9px;                 /* overscan so the bolts arc around the unit */
+  width: calc(100% + 18px);
+  height: calc(100% + 18px);
   object-fit: cover;
-  border-radius: 12px;
+  border-radius: 14px;
   pointer-events: none;
   mix-blend-mode: screen;
   z-index: 3;
-  opacity: 0.95;
+  opacity: 1;
 }
 
 /* Keep the level & ultimate badges crisp above the lightning */
