@@ -18,8 +18,7 @@
   // Optional dramatic energy aura rendered BEHIND a unit's card (original
   // abstract art — not baked onto the character). Keyed by character id.
   const AURAS = {
-    naruto_427: 'assets/ui/frames/aura_light.webp',
-    naruto_428: 'assets/ui/frames/aura_light.webp',
+    // (gold aura dropped per request; assets remain in assets/ui/frames/ for reuse)
   };
   function auraFor(charId) { return AURAS[charId] || null; }
 
