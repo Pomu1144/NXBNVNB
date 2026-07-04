@@ -808,8 +808,26 @@ body.page-tools {
 
 .zone-art { left: 27.4%; top: 18.5%; width: 25%; height: 27%;
   display: flex; align-items: center; justify-content: center; }
-.rank-card { position: relative; height: 100%; aspect-ratio: 1 / 1; max-width: 100%;
+.rank-card { position: relative; z-index: 1; height: 100%; aspect-ratio: 1 / 1; max-width: 100%;
   display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 8px; }
+/* Dramatic energy aura rendered behind + around the card (original abstract art) */
+.rank-card-aura {
+  position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+  width: 158%; aspect-ratio: 1 / 1; z-index: 0;
+  background-size: cover; background-position: center;
+  border-radius: 12px;
+  filter: blur(2px) saturate(1.15) brightness(1.05);
+  -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 42%, transparent 72%);
+  mask-image: radial-gradient(circle at 50% 50%, #000 42%, transparent 72%);
+  animation: auraPulse 4.5s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes auraPulse { 0%,100%{opacity:.75;transform:translate(-50%,-50%) scale(1)} 50%{opacity:1;transform:translate(-50%,-50%) scale(1.04)} }
+/* Vignette + rim glow on the card for a rougher, dramatic 7★ read */
+.rank-card.has-aura::after {
+  content: ""; position: absolute; inset: 0; z-index: 4; pointer-events: none; border-radius: 8px;
+  box-shadow: inset 0 0 34px rgba(0,0,0,0.72), inset 0 0 10px rgba(255,210,120,0.35);
+}
 .zone-art .tools-art { max-width: 100%; max-height: 100%; object-fit: contain;
   filter: drop-shadow(0 6px 18px rgba(0,0,0,.7)); }
 /* When an 8★+ frame is shown, zoom into the character (upper body) so it fills

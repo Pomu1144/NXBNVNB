@@ -15,6 +15,14 @@
   // Tier codes that count as an 8★+ awakened rank.
   const STAR_BY_TIER = { '8S': 8, '8SM': 8, '9S': 9, '9ST': 9, '10SO': 10 };
 
+  // Optional dramatic energy aura rendered BEHIND a unit's card (original
+  // abstract art — not baked onto the character). Keyed by character id.
+  const AURAS = {
+    naruto_427: 'assets/ui/frames/aura_light.webp',
+    naruto_428: 'assets/ui/frames/aura_light.webp',
+  };
+  function auraFor(charId) { return AURAS[charId] || null; }
+
   function starOf(tierCode) { return STAR_BY_TIER[tierCode] || 0; }
 
   // Frame URL for a tier code, or null for anything below 8★.
@@ -40,5 +48,14 @@
     return false;
   }
 
-  window.RankFrame = { url, starOf, apply, FRAMES };
+  // Toggle a unit's dramatic aura layer (element behind the card).
+  function applyAura(auraEl, charId) {
+    if (!auraEl) return false;
+    const src = auraFor(charId);
+    if (src) { auraEl.style.backgroundImage = `url('${src}')`; auraEl.style.display = ''; return true; }
+    auraEl.style.display = 'none';
+    return false;
+  }
+
+  window.RankFrame = { url, starOf, apply, auraFor, applyAura, FRAMES };
 })();

@@ -149,11 +149,11 @@
 
     // 8★+ awakening rank frame overlay (covers the old baked-in frame)
     if (window.RankFrame) {
-      window.RankFrame.apply(
-        document.getElementById('tools-rank-card'),
-        document.getElementById('tools-rank-frame'),
-        inst.tierCode
-      );
+      const card = document.getElementById('tools-rank-card');
+      window.RankFrame.apply(card, document.getElementById('tools-rank-frame'), inst.tierCode);
+      // Dramatic energy aura behind the card for units that have one
+      const hasAura = window.RankFrame.applyAura(document.getElementById('tools-rank-aura'), inst.charId);
+      if (card) card.classList.toggle('has-aura', hasAura);
     }
 
     // Power + letter grade badge on top of the art
