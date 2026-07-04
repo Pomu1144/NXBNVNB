@@ -282,10 +282,16 @@
       }
       const tier = inst.tierCode || minTier(c);
       const art  = resolveTierArt(c, tier);
+      const is7Star = (starsFromTier(tier) || 0) >= 7;
+      const lightningFX = is7Star
+        ? `<video class="seven-star-fx" src="assets/effects/sevenstar_lightning.mp4"
+                  autoplay loop muted playsinline preload="auto" aria-hidden="true"></video>`
+        : "";
       return `
-        <button class="char-slot" type="button" data-uid="${inst.uid}">
+        <button class="char-slot${is7Star ? " is-7star" : ""}" type="button" data-uid="${inst.uid}">
           <img class="char-portrait-img" src="${safeStr(art.portrait, c.portrait)}" alt="${c.name} portrait"
                onerror="this.onerror=null;this.src='assets/characters/_common/silhouette.png';" />
+          ${lightningFX}
           <div class="char-card-level">${levelBadgeHTML(c, inst)}</div>
           ${ultimateBadgeHTML(c, inst)}
         </button>

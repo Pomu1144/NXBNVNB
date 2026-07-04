@@ -123,6 +123,52 @@ body.page-characters::-webkit-scrollbar {
   pointer-events: none;
 }
 
+/* ---------- 7-Star Lightning Effect (portrait mode) ---------- */
+/* Allow the crackling glow to bleed slightly past the card edge */
+.char-slot.is-7star {
+  overflow: visible;
+  border-color: rgba(120, 200, 255, 0.55);
+  box-shadow:
+    0 6px 18px rgba(0, 0, 0, .4),
+    0 0 14px rgba(80, 170, 255, .45),
+    inset 0 0 0 1px rgba(150, 215, 255, .25);
+  animation: sevenStarPulse 2.2s ease-in-out infinite;
+}
+.char-slot.is-7star:hover {
+  border-color: rgba(160, 220, 255, 0.8);
+}
+
+/* The generated lightning clip: black background disappears via `screen`
+   blend, so only the electric-blue arcs frame the character. */
+.seven-star-fx {
+  position: absolute;
+  inset: -9px;                 /* overscan so the bolts arc around the unit */
+  width: calc(100% + 18px);
+  height: calc(100% + 18px);
+  object-fit: cover;
+  border-radius: 14px;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  z-index: 3;
+  opacity: 1;
+}
+
+/* Keep the level & ultimate badges crisp above the lightning */
+.char-slot.is-7star .char-card-level,
+.char-slot.is-7star .ultimate-badge {
+  z-index: 5;
+}
+
+@keyframes sevenStarPulse {
+  0%, 100% { box-shadow: 0 6px 18px rgba(0,0,0,.4), 0 0 12px rgba(80,170,255,.35), inset 0 0 0 1px rgba(150,215,255,.2); }
+  50%      { box-shadow: 0 6px 20px rgba(0,0,0,.45), 0 0 22px rgba(120,200,255,.7), inset 0 0 0 1px rgba(180,230,255,.4); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .char-slot.is-7star { animation: none; }
+  .seven-star-fx { display: none; }
+}
+
 /* ---------- Level Bar (Using levelholder.png) ---------- */
 .char-card-level {
   position: absolute;

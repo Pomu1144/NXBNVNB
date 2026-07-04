@@ -118418,5 +118418,511 @@
    "maxLevel": null,
    "hitCount": 0
   }
+ },
+ {
+  "id": "obito_2201",
+  "name": "Obito Uchiha",
+  "version": "Shattered Illusion",
+  "element": "Skill",
+  "rarity": 7,
+  "starMinCode": "6S",
+  "starMaxCode": "7S",
+  "lbEligible": true,
+  "portrait": "assets/characters/obito_2201/portrait_7S.png",
+  "full": "assets/characters/obito_2201/full_7S.png",
+  "ultimateAnimation": null,
+  "secretAnimation": null,
+  "artByTier": {
+   "6S": {
+    "portrait": "assets/characters/obito_2201/portrait_7S.png",
+    "full": "assets/characters/obito_2201/full_7S.png"
+   },
+   "7S": {
+    "portrait": "assets/characters/obito_2201/portrait_7S.png",
+    "full": "assets/characters/obito_2201/full_7S.png"
+   }
+  },
+  "statsBase": {
+   "hp": 27000,
+   "atk": 2550,
+   "speed": 190
+  },
+  "statsMax": {
+   "hp": 54000,
+   "atk": 5100,
+   "speed": 380
+  },
+  "growthCurve": {
+   "hp": 1,
+   "atk": 1,
+   "def": 1,
+   "speed": 1,
+   "chakra": 1
+  },
+  "powerRank": 16000,
+  "powerWeights": {
+   "hp": 0.3,
+   "atk": 0.4,
+   "def": 0.1,
+   "speed": 0.15,
+   "chakra": 0.05
+  },
+  "range": "Short",
+  "luck": {
+   "base": 0,
+   "max": 0
+  },
+  "cost": {
+   "base": 0,
+   "max": 0
+  },
+  "affiliation": [
+   "Hidden Leaf",
+   "Uchiha Clan",
+   "Akatsuki"
+  ],
+  "passiveIcons": {},
+  "skills": {
+   "fieldSkill": {
+    "name": "Field Skill",
+    "type": "Field",
+    "description": "Boosts Skill attacks by 15-750."
+   },
+   "buddySkill": {
+    "name": "Buddy Skill",
+    "type": "Buddy",
+    "description": "Reduces the chance of receiving Attribute Down by 50% (Not Field Skills)."
+   },
+   "jutsu": {
+    "name": "Kamui: Dimensional Rift",
+    "type": "Jutsu",
+    "byTier": {
+     "6S": {
+      "chakraCost": 4,
+      "hits": 6,
+      "shape": "Circle",
+      "range": "Vast",
+      "position": "Center",
+      "description": "Phases through all enemies in range, ignoring Substitution and Barrier with 3.5x attack toward them.",
+      "nwusDescription": "Phases through all enemies in range, ignoring Substitution, Barrier and Perfect Dodge, warping them for 3 turn(s) with 4x attack toward them. 50% chance of immobilization for 1 second(s)."
+     },
+     "7S": {
+      "chakraCost": 4,
+      "hits": 6,
+      "shape": "Circle",
+      "range": "Vast",
+      "position": "Center",
+      "description": "Phases through all enemies in range, ignoring Substitution and Barrier with 3.5x attack toward them.",
+      "nwusDescription": "Phases through all enemies in range, ignoring Substitution, Barrier and Perfect Dodge, warping them for 3 turn(s) with 4x attack toward them. 50% chance of immobilization for 1 second(s)."
+     }
+    }
+   }
+  },
+  "abilities": [
+   {
+    "name": "0 Chakra Required for Ninjutsu",
+    "description": "35% chance to reduce chakra consumed by Ninjutsu to 0."
+   },
+   {
+    "name": "Speed Boost",
+    "description": "Boosts speed by 40."
+   },
+   {
+    "name": "Phase Dodge",
+    "description": "40% chance to phase through and dodge a physical attack (not slip damage)."
+   },
+   {
+    "name": "Reduce Damage",
+    "description": "Reduces damage taken by 30%."
+   },
+   {
+    "name": "Speed Boost When Health Drops",
+    "description": "Boosts speed by 1.5x when health reaches 50% or less."
+   }
+  ],
+  "metadata": {
+   "cardNumber": 2201,
+   "maxLevel": null,
+   "hitCount": 0
+  }
+ },
+ {
+  "id": "sakura_2202",
+  "name": "Sakura Haruno",
+  "version": "Strength of a Hundred",
+  "element": "Wisdom",
+  "rarity": 7,
+  "starMinCode": "6S",
+  "starMaxCode": "7S",
+  "lbEligible": true,
+  "portrait": "assets/characters/sakura_2202/portrait_7S.png",
+  "full": "assets/characters/sakura_2202/full_7S.png",
+  "ultimateAnimation": null,
+  "secretAnimation": null,
+  "artByTier": {
+   "6S": {
+    "portrait": "assets/characters/sakura_2202/portrait_7S.png",
+    "full": "assets/characters/sakura_2202/full_7S.png"
+   },
+   "7S": {
+    "portrait": "assets/characters/sakura_2202/portrait_7S.png",
+    "full": "assets/characters/sakura_2202/full_7S.png"
+   }
+  },
+  "statsBase": {
+   "hp": 28000,
+   "atk": 2350,
+   "speed": 170
+  },
+  "statsMax": {
+   "hp": 56000,
+   "atk": 4700,
+   "speed": 340
+  },
+  "growthCurve": {
+   "hp": 1,
+   "atk": 1,
+   "def": 1,
+   "speed": 1,
+   "chakra": 1
+  },
+  "powerRank": 16000,
+  "powerWeights": {
+   "hp": 0.3,
+   "atk": 0.4,
+   "def": 0.1,
+   "speed": 0.15,
+   "chakra": 0.05
+  },
+  "range": "Short",
+  "luck": {
+   "base": 0,
+   "max": 0
+  },
+  "cost": {
+   "base": 0,
+   "max": 0
+  },
+  "affiliation": [
+   "Hidden Leaf",
+   "Team 7"
+  ],
+  "passiveIcons": {},
+  "skills": {
+   "fieldSkill": {
+    "name": "Field Skill",
+    "type": "Field",
+    "description": "Boosts Wisdom attacks by 15-750."
+   },
+   "buddySkill": {
+    "name": "Buddy Skill",
+    "type": "Buddy",
+    "description": "Restores 5% HP to all allies at the start of your turn (Not Field Skills)."
+   },
+   "jutsu": {
+    "name": "Cherry Blossom Impact",
+    "type": "Jutsu",
+    "byTier": {
+     "6S": {
+      "chakraCost": 4,
+      "hits": 6,
+      "shape": "Circle",
+      "range": "Vast",
+      "position": "Center",
+      "description": "Strikes all enemies in range with a chakra-enhanced blow, ignoring Substitution with 3.5x attack toward them.",
+      "nwusDescription": "Strikes all enemies in range, ignoring Substitution and Barrier with 4x attack toward them and restores 20% HP to all allies. 50% chance of immobilization for 1 second(s)."
+     },
+     "7S": {
+      "chakraCost": 4,
+      "hits": 6,
+      "shape": "Circle",
+      "range": "Vast",
+      "position": "Center",
+      "description": "Strikes all enemies in range with a chakra-enhanced blow, ignoring Substitution with 3.5x attack toward them.",
+      "nwusDescription": "Strikes all enemies in range, ignoring Substitution and Barrier with 4x attack toward them and restores 20% HP to all allies. 50% chance of immobilization for 1 second(s)."
+     }
+    }
+   }
+  },
+  "abilities": [
+   {
+    "name": "Byakugo Regeneration",
+    "description": "Restores 8% HP at the start of your turn."
+   },
+   {
+    "name": "Speed Boost",
+    "description": "Boosts speed by 40."
+   },
+   {
+    "name": "0 Chakra Required for Ninjutsu",
+    "description": "35% chance to reduce chakra consumed by Ninjutsu to 0."
+   },
+   {
+    "name": "Reduce Damage/Substitution Jutsu",
+    "description": "Reduces damage taken by 30% and gives a 30% chance to dodge a physical attack (not slip damage)."
+   },
+   {
+    "name": "Attack Boost When Health Drops",
+    "description": "Boosts attack by 1.5x when health reaches 50% or less."
+   }
+  ],
+  "metadata": {
+   "cardNumber": 2202,
+   "maxLevel": null,
+   "hitCount": 0
+  }
+ },
+ {
+  "id": "itachi_2203",
+  "name": "Itachi Uchiha",
+  "version": "Crimson Susano'o",
+  "element": "Heart",
+  "rarity": 7,
+  "starMinCode": "6S",
+  "starMaxCode": "7S",
+  "lbEligible": true,
+  "portrait": "assets/characters/itachi_2203/portrait_7S.png",
+  "full": "assets/characters/itachi_2203/full_7S.png",
+  "ultimateAnimation": null,
+  "secretAnimation": null,
+  "artByTier": {
+   "6S": {
+    "portrait": "assets/characters/itachi_2203/portrait_7S.png",
+    "full": "assets/characters/itachi_2203/full_7S.png"
+   },
+   "7S": {
+    "portrait": "assets/characters/itachi_2203/portrait_7S.png",
+    "full": "assets/characters/itachi_2203/full_7S.png"
+   }
+  },
+  "statsBase": {
+   "hp": 26000,
+   "atk": 2600,
+   "speed": 180
+  },
+  "statsMax": {
+   "hp": 52000,
+   "atk": 5200,
+   "speed": 360
+  },
+  "growthCurve": {
+   "hp": 1,
+   "atk": 1,
+   "def": 1,
+   "speed": 1,
+   "chakra": 1
+  },
+  "powerRank": 16000,
+  "powerWeights": {
+   "hp": 0.3,
+   "atk": 0.4,
+   "def": 0.1,
+   "speed": 0.15,
+   "chakra": 0.05
+  },
+  "range": "Short",
+  "luck": {
+   "base": 0,
+   "max": 0
+  },
+  "cost": {
+   "base": 0,
+   "max": 0
+  },
+  "affiliation": [
+   "Hidden Leaf",
+   "Uchiha Clan",
+   "Akatsuki"
+  ],
+  "passiveIcons": {},
+  "skills": {
+   "fieldSkill": {
+    "name": "Field Skill",
+    "type": "Field",
+    "description": "Boosts Heart attacks by 15-750."
+   },
+   "buddySkill": {
+    "name": "Buddy Skill",
+    "type": "Buddy",
+    "description": "Reduces the chance of receiving immobilization by 50% (Not Field Skills)."
+   },
+   "jutsu": {
+    "name": "Susano'o: Yata Mirror",
+    "type": "Jutsu",
+    "byTier": {
+     "6S": {
+      "chakraCost": 4,
+      "hits": 6,
+      "shape": "Circle",
+      "range": "Vast",
+      "position": "Center",
+      "description": "Guards with the Yata Mirror then strikes all enemies in range, removing Barrier and ignoring Substitution with 3.5x attack toward them.",
+      "nwusDescription": "Guards with the Yata Mirror then strikes all enemies in range, removing Perfect Dodge and Barrier and ignoring Substitution, sealing their Ninjutsu for 3 turn(s) with 4x attack toward them. 50% chance of immobilization for 1 second(s)."
+     },
+     "7S": {
+      "chakraCost": 4,
+      "hits": 6,
+      "shape": "Circle",
+      "range": "Vast",
+      "position": "Center",
+      "description": "Guards with the Yata Mirror then strikes all enemies in range, removing Barrier and ignoring Substitution with 3.5x attack toward them.",
+      "nwusDescription": "Guards with the Yata Mirror then strikes all enemies in range, removing Perfect Dodge and Barrier and ignoring Substitution, sealing their Ninjutsu for 3 turn(s) with 4x attack toward them. 50% chance of immobilization for 1 second(s)."
+     }
+    }
+   }
+  },
+  "abilities": [
+   {
+    "name": "0 Chakra Required for Ninjutsu",
+    "description": "35% chance to reduce chakra consumed by Ninjutsu to 0."
+   },
+   {
+    "name": "Speed Boost",
+    "description": "Boosts speed by 40."
+   },
+   {
+    "name": "0 Chakra Required for Ninjutsu",
+    "description": "Another 35% chance to reduce chakra consumed by Ninjutsu to 0."
+   },
+   {
+    "name": "Reduce Damage/Substitution Jutsu",
+    "description": "Reduces damage taken by 30% and gives a 30% chance to dodge a physical attack (not slip damage)."
+   },
+   {
+    "name": "Speed Boost When Health Drops",
+    "description": "Boosts speed by 1.5x when health reaches 50% or less."
+   }
+  ],
+  "metadata": {
+   "cardNumber": 2203,
+   "maxLevel": null,
+   "hitCount": 0
+  }
+ },
+ {
+  "id": "minato_2204",
+  "name": "Minato Namikaze",
+  "version": "Flying Thunder God",
+  "element": "Body",
+  "rarity": 7,
+  "starMinCode": "6S",
+  "starMaxCode": "7S",
+  "lbEligible": true,
+  "portrait": "assets/characters/minato_2204/portrait_7S.png",
+  "full": "assets/characters/minato_2204/full_7S.png",
+  "ultimateAnimation": null,
+  "secretAnimation": null,
+  "artByTier": {
+   "6S": {
+    "portrait": "assets/characters/minato_2204/portrait_7S.png",
+    "full": "assets/characters/minato_2204/full_7S.png"
+   },
+   "7S": {
+    "portrait": "assets/characters/minato_2204/portrait_7S.png",
+    "full": "assets/characters/minato_2204/full_7S.png"
+   }
+  },
+  "statsBase": {
+   "hp": 25500,
+   "atk": 2650,
+   "speed": 185
+  },
+  "statsMax": {
+   "hp": 51000,
+   "atk": 5300,
+   "speed": 370
+  },
+  "growthCurve": {
+   "hp": 1,
+   "atk": 1,
+   "def": 1,
+   "speed": 1,
+   "chakra": 1
+  },
+  "powerRank": 16000,
+  "powerWeights": {
+   "hp": 0.3,
+   "atk": 0.4,
+   "def": 0.1,
+   "speed": 0.15,
+   "chakra": 0.05
+  },
+  "range": "Short",
+  "luck": {
+   "base": 0,
+   "max": 0
+  },
+  "cost": {
+   "base": 0,
+   "max": 0
+  },
+  "affiliation": [
+   "Hidden Leaf",
+   "Fourth Hokage"
+  ],
+  "passiveIcons": {},
+  "skills": {
+   "fieldSkill": {
+    "name": "Field Skill",
+    "type": "Field",
+    "description": "Boosts Body attacks by 15-750."
+   },
+   "buddySkill": {
+    "name": "Buddy Skill",
+    "type": "Buddy",
+    "description": "Boosts the speed of all allies by 40 (Not Field Skills)."
+   },
+   "jutsu": {
+    "name": "Rasengan: Flying Raijin",
+    "type": "Jutsu",
+    "byTier": {
+     "6S": {
+      "chakraCost": 4,
+      "hits": 6,
+      "shape": "Circle",
+      "range": "Vast",
+      "position": "Center",
+      "description": "Warps behind all enemies in range in an instant, ignoring Substitution with 3.5x attack toward them.",
+      "nwusDescription": "Warps behind all enemies in range in an instant, ignoring Substitution and Perfect Dodge with 4x attack toward them and boosts own speed by 2x for 3 turn(s). 50% chance of immobilization for 1 second(s)."
+     },
+     "7S": {
+      "chakraCost": 4,
+      "hits": 6,
+      "shape": "Circle",
+      "range": "Vast",
+      "position": "Center",
+      "description": "Warps behind all enemies in range in an instant, ignoring Substitution with 3.5x attack toward them.",
+      "nwusDescription": "Warps behind all enemies in range in an instant, ignoring Substitution and Perfect Dodge with 4x attack toward them and boosts own speed by 2x for 3 turn(s). 50% chance of immobilization for 1 second(s)."
+     }
+    }
+   }
+  },
+  "abilities": [
+   {
+    "name": "0 Chakra Required for Ninjutsu",
+    "description": "35% chance to reduce chakra consumed by Ninjutsu to 0."
+   },
+   {
+    "name": "Speed Boost",
+    "description": "Boosts speed by 60."
+   },
+   {
+    "name": "Flying Raijin Evasion",
+    "description": "45% chance to dodge a physical attack (not slip damage)."
+   },
+   {
+    "name": "Reduce Damage",
+    "description": "Reduces damage taken by 30%."
+   },
+   {
+    "name": "Speed Boost When Health Drops",
+    "description": "Boosts speed by 1.5x when health reaches 50% or less."
+   }
+  ],
+  "metadata": {
+   "cardNumber": 2204,
+   "maxLevel": null,
+   "hitCount": 0
+  }
  }
 ]
