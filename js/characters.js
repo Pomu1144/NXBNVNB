@@ -308,15 +308,22 @@
       const art  = resolveTierArt(c, tier);
       const is7Star = (starsFromTier(tier) || 0) >= 7;
       const maxed = isFullyMaxed(inst, c);
-      // Fully-maxed aura takes precedence over the 7-star lightning.
-      const fx = maxed
-        ? `<video class="maxed-fx" src="assets/effects/maxed_wind.mp4"
-                  autoplay loop muted playsinline preload="auto" aria-hidden="true"></video>`
-        : (is7Star
-          ? `<video class="seven-star-fx" src="assets/effects/sevenstar_lightning.mp4"
-                  autoplay loop muted playsinline preload="auto" aria-hidden="true"></video>`
-          : "");
-      const fxClass = maxed ? " is-maxed" : (is7Star ? " is-7star" : "");
+      // 7-star and fully-maxed auras STACK — a maxed 7-star keeps its lightning
+      // and also gains the dark-blue wind.
+      // No autoplay / preload: seven-star-fx.js plays these ONLY while the card
+      // is on-screen and pauses the rest, so a roster full of maxed units does
+      // not decode dozens of blended videos at once.
+      let fx = "", fxClass = "";
+      if (is7Star) {
+        fxClass += " is-7star";
+        fx += `<video class="seven-star-fx" src="assets/effects/sevenstar_lightning.mp4"
+                  loop muted playsinline preload="none" aria-hidden="true"></video>`;
+      }
+      if (maxed) {
+        fxClass += " is-maxed";
+        fx += `<video class="maxed-fx" src="assets/effects/maxed_wind.mp4"
+                  loop muted playsinline preload="none" aria-hidden="true"></video>`;
+      }
       return `
         <button class="char-slot${fxClass}" type="button" data-uid="${inst.uid}">
           <img class="char-portrait-img" src="${safeStr(art.portrait, c.portrait)}" alt="${c.name} portrait"
