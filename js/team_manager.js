@@ -127,15 +127,37 @@
   /* ---------- Sorting / filtering ---------- */
   let currentSort = "rarity";
 
-  // Derive an SS→D letter grade from a unit's power rank.
-  function gradeOf(char) {
-    const p = safeNum(char?.powerRank, 0);
-    if (p >= 10000) return "SS";
-    if (p >= 8000)  return "S";
-    if (p >= 6000)  return "A";
-    if (p >= 4000)  return "B";
-    if (p >= 2000)  return "C";
+  // A unit's TRUE power = its effective power at its current level + tier
+  // (not the static card powerRank). Falls back to powerRank if progression
+  // isn't available.
+  function effectivePower(char, inst) {
+    const tier = inst?.tierCode || minTier(char);
+    try {
+      if (window.Progression && window.Progression.computeEffectiveStatsLoreTier) {
+        const comp = window.Progression.computeEffectiveStatsLoreTier(
+          char, safeNum(inst?.level, 1), tier, { normalize: true }
+        );
+        if (comp && Number.isFinite(comp.power)) return comp.power;
+      }
+    } catch (e) { /* fall through */ }
+    return safeNum(char?.powerRank, 0);
+  }
+
+  // Map an effective-power value onto an SS→D letter grade. Thresholds are
+  // calibrated to the computed-power scale so the grade reflects a unit's
+  // real strength (a Lv1 6S and a maxed 7S of the same card grade differently).
+  function gradeFromPower(p) {
+    if (p >= 18000) return "SS";
+    if (p >= 13000) return "S";
+    if (p >= 9000)  return "A";
+    if (p >= 5500)  return "B";
+    if (p >= 2500)  return "C";
     return "D";
+  }
+
+  // Derive an SS→D letter grade from a unit's TRUE (level+tier) power.
+  function gradeOf(char, inst) {
+    return gradeFromPower(effectivePower(char, inst));
   }
   const GRADE_ORDER = { SS: 6, S: 5, A: 4, B: 3, C: 2, D: 1 };
 
@@ -143,8 +165,8 @@
     const tier = inst.tierCode || minTier(char);
     const stats = pickStats(char, DISPLAY_MODE);
     switch (currentSort) {
-      case "power": return safeNum(char.powerRank, 0);
-      case "grade": return GRADE_ORDER[gradeOf(char)] * 1e7 + safeNum(char.powerRank, 0);
+      case "power": return effectivePower(char, inst);
+      case "grade": return GRADE_ORDER[gradeOf(char, inst)] * 1e7 + effectivePower(char, inst);
       case "star":  return starsFromTier(tier) * 1e7 + safeNum(char.powerRank, 0);
       case "level": return safeNum(inst.level, 0) * 1e7 + safeNum(char.powerRank, 0);
       case "atk":   return safeNum(stats.atk, 0);
@@ -532,14 +554,20 @@
       const art = resolveTierArt(char, tier);
       const isAssigned = assignedUids.has(inst.uid);
       const rarity = safeNum(char.rarity, starsFromTier(tier) || 1);
+      const is7Star = (starsFromTier(tier) || 0) >= 7;
+      const lightningFX = is7Star
+        ? `<video class="seven-star-fx" src="assets/effects/sevenstar_lightning.mp4"
+                  autoplay loop muted playsinline preload="auto" aria-hidden="true"></video>`
+        : "";
 
       return `
-        <div class="team-char-card ${isAssigned ? 'assigned' : ''}"
+        <div class="team-char-card ${isAssigned ? 'assigned' : ''}${is7Star ? ' is-7star' : ''}"
              data-uid="${inst.uid}"
              data-char-id="${char.id}"
              data-rarity="${rarity}"
              draggable="${!isAssigned}">
-          <span class="team-char-grade">${gradeOf(char)}</span>
+          <span class="team-char-grade">${gradeOf(char, inst)}</span>
+          ${lightningFX}
           <img src="${art.portrait}" alt="${char.name}"
                onerror="this.src='assets/characters/_common/silhouette.png';" />
           <div class="team-char-card-info">
