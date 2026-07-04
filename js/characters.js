@@ -2525,7 +2525,7 @@
     }
 
     // Filter cards based on eligibility (first-name match)
-    const eligibleCards = window.CardSystem
+    let eligibleCards = window.CardSystem
       ? window.CardSystem.filterCardsForCharacter(jutsuCardsData, characterId)
       : jutsuCardsData.filter(card => {
           // Empty eligibility => unassigned/stat-only, not equippable by anyone.
@@ -2533,6 +2533,11 @@
           const charFirst = characterId.split('_')[0].toLowerCase();
           return card.eligibleCharacters.some(eid => eid.split('_')[0].toLowerCase() === charFirst);
         });
+
+    // Gate by gacha ownership: players only equip jutsu cards they have pulled.
+    if (window.JutsuInventory) {
+      eligibleCards = eligibleCards.filter(card => window.JutsuInventory.has(card.id));
+    }
 
     console.log(`[Jutsu Equipment] Showing ${eligibleCards.length} eligible cards for ${characterId}`);
 
