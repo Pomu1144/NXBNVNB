@@ -274,22 +274,27 @@ body.page-characters::-webkit-scrollbar {
 }
 
 /* ---------- Stars (overlapping nameplate) ---------- */
+/* Stars are anchored to the nameplate itself (their positioned parent) and
+   sit straddling its top edge, so they never drift or overlap the name as
+   the modal scales with the browser. Size + overlap scale together. */
 .nameplate-stars {
   position: absolute;
-  top: 0;
-  left: 53%;
-  transform: translateX(-50%) translateY(6px);
+  bottom: 100%;
+  left: 14px;
+  transform: translateY(50%);
   text-align: left;
   z-index: 10;
   display: flex;
-  justify-content: center;
+  align-items: center;
+  pointer-events: none;
 }
 .nameplate-stars .star {
-  width: 150px;
-  height: 150px;
+  width: clamp(36px, 6vw, 54px);
+  height: clamp(36px, 6vw, 54px);
   display: inline-block;
   filter: drop-shadow(0 2px 3px rgba(0,0,0,.8));
-  margin-left: -130px;
+  margin-left: -0.42em;
+  font-size: clamp(36px, 6vw, 54px); /* drives the em-based overlap above */
   position: relative;
 }
 .nameplate-stars .star:first-child {
@@ -306,16 +311,8 @@ body.page-characters::-webkit-scrollbar {
 .nameplate-stars .star:nth-child(9) { z-index: 2; }
 .nameplate-stars .star:nth-child(10) { z-index: 1; }
 
-/* Fix stars positioning in fullscreen mode */
-/* Fullscreen layout scales up, so the stars need a stronger downward
-   offset than the windowed view or they float above the nameplate */
-:fullscreen .nameplate-stars,
-:-webkit-full-screen .nameplate-stars,
-:-moz-full-screen .nameplate-stars,
-:-ms-fullscreen .nameplate-stars {
-  top: 0;
-  transform: translateX(-50%) translateY(14px);
-}
+/* (Stars now anchor to the nameplate's top edge with size-relative units,
+   so no per-mode offset hack is needed for fullscreen.) */
 
 /* ---------- Tabs ---------- */
 .char-tabs {
