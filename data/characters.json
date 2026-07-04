@@ -56002,6 +56002,20 @@
       "nwusDescription": "2.5x attack toward all enemies in range, with a 80% chance of slip damage for 4 turn(s) and knocks them back."
      }
     }
+   },
+   "secret": {
+    "name": "Perfect Form Susano'o",
+    "type": "Secret",
+    "byTier": {
+     "6S": {
+      "range": "Vast",
+      "description": "7.5x attack toward all enemies in range, 60% chance of jutsu sealing for 3 turn(s) and/or immobilization for 1 turn(s) each. This is separate from Ninjutsu."
+     },
+     "6SB": {
+      "range": "Vast",
+      "description": "7.5x attack toward all enemies in range, 60% chance of jutsu sealing for 3 turn(s) and/or immobilization for 1 turn(s) each. This is separate from Ninjutsu."
+     }
+    }
    }
   },
   "abilities": [
@@ -56114,6 +56128,20 @@
       "position": "Right",
       "description": "2.4x attack toward all enemies in range and knocks them back.",
       "nwusDescription": "3.6x attack toward all enemies in range and knocks them back. Nullifies damage you receive from Ninjutsu or Secret Techniques for 3 turn(s)."
+     }
+    }
+   },
+   "secret": {
+    "name": "Perfect Form Susano'o",
+    "type": "Secret",
+    "byTier": {
+     "6SB": {
+      "range": "Vast",
+      "description": "7.5x attack toward all enemies in range, 60% chance of jutsu sealing for 3 turn(s) and/or immobilization for 1 turn(s) each. This is separate from Ninjutsu."
+     },
+     "7S": {
+      "range": "Vast",
+      "description": "7.5x attack toward all enemies in range, 60% chance of jutsu sealing for 3 turn(s) and/or immobilization for 1 turn(s) each. This is separate from Ninjutsu."
      }
     }
    }
@@ -79997,6 +80025,20 @@
       "nwusDescription": "4.5x attack towards 1 enemy(s) in range (6x attack if their health recovery is sealed) and knocks them back."
      }
     }
+   },
+   "secret": {
+    "name": "Yellow Flash of the Leaf",
+    "type": "Secret",
+    "byTier": {
+     "6S": {
+      "range": "Long",
+      "description": "20x attack toward 1 enemy(s) in range, reduces their Chakra Gauge by 2, and rolls back targeted enemies' Speed Gauge."
+     },
+     "6SB": {
+      "range": "Long",
+      "description": "20x attack toward 1 enemy(s) in range, reduces their Chakra Gauge by 2, and rolls back targeted enemies' Speed Gauge."
+     }
+    }
    }
   },
   "abilities": [
@@ -80109,6 +80151,16 @@
       "position": "Center",
       "description": "5.5x attack toward 1 enemy(s) in range, 50% chance of reducing their attack for 4 turn(s).",
       "nwusDescription": "7x attack toward 1 enemy(s) in range, 80% chance of attack weakened for 3 turn(s). 70% chance of switch sealing for 3 turn(s), and 60% chance of chakra recovery sealing for 2 turn(s)."
+     }
+    }
+   },
+   "secret": {
+    "name": "Yellow Flash of the Leaf",
+    "type": "Secret",
+    "byTier": {
+     "6SB": {
+      "range": "Long",
+      "description": "20x attack toward 1 enemy(s) in range, reduces their Chakra Gauge by 2, and rolls back targeted enemies' Speed Gauge."
      }
     }
    }
@@ -113122,6 +113174,16 @@
       "position": "Right",
       "description": "3.5x attack toward all enemies in range and knocks them back.",
       "nwusDescription": "4.8x attack toward all enemies in range and knocks them back. Nullifies damage you receive from Ninjutsu or Secret Techniques for 4 turn(s)."
+     }
+    }
+   },
+   "secret": {
+    "name": "Perfect Form Susano'o",
+    "type": "Secret",
+    "byTier": {
+     "7S": {
+      "range": "Vast",
+      "description": "7.5x attack toward all enemies in range, 60% chance of jutsu sealing for 3 turn(s) and/or immobilization for 1 turn(s) each. This is separate from Ninjutsu."
      }
     }
    }

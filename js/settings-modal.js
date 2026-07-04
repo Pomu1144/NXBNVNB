@@ -121,6 +121,13 @@
                 </button>
                 <p class="settings-help">Add 30 random characters to your inventory</p>
               </div>
+
+              <div class="settings-option">
+                <button class="settings-button settings-button-special" id="setting-grant-blazing-bases">
+                  Grant All Blazing Awakened 5★ Bases
+                </button>
+                <p class="settings-help">Adds the 5★ base of every Blazing Awakened (6SB) unit so you can test the full 5S → 6S → 6SB path</p>
+              </div>
             </div>
 
             <div class="settings-divider"></div>
@@ -267,6 +274,12 @@
         randCharsBtn.addEventListener('click', () => this.receiveRandomCharacters());
       }
 
+      // Grant all Blazing Awakened 5★ bases button
+      const blazingBtn = document.getElementById('setting-grant-blazing-bases');
+      if (blazingBtn) {
+        blazingBtn.addEventListener('click', () => this.grantBlazingBases());
+      }
+
       // View resources button
       const viewResourcesBtn = document.getElementById('setting-view-resources');
       if (viewResourcesBtn) {
@@ -338,6 +351,66 @@
           btn.disabled = false;
           btn.textContent = 'Receive 30 Random Characters';
         }
+      }
+    },
+
+    /**
+     * Grant the 5★ base of every Blazing Awakened (6SB) unit, so the full
+     * 5S → 6S → 6SB awakening path can be tested from a fresh copy.
+     */
+    async grantBlazingBases() {
+      const btn = document.getElementById('setting-grant-blazing-bases');
+      if (btn) { btn.disabled = true; btn.textContent = 'Granting…'; }
+      try {
+        if (typeof window.InventoryChar === 'undefined') {
+          alert('Character inventory not available. Please go to the main menu first.');
+          return;
+        }
+
+        let chars = [], transforms = [];
+        try {
+          [chars, transforms] = await Promise.all([
+            fetch('data/characters.json').then(r => r.json()),
+            fetch('data/awakening-transforms.json').then(r => r.json()).catch(() => [])
+          ]);
+          chars = Array.isArray(chars) ? chars : Object.values(chars);
+        } catch (e) {
+          console.error('[Settings] Failed to load data:', e);
+          alert('Failed to load character data.');
+          return;
+        }
+
+        const byId = {};
+        chars.forEach(c => { byId[c.id] = c; });
+        // reverse transform map (evolved -> base) to walk any form back to its root
+        const rev = {};
+        (transforms || []).forEach(t => { if (t && t.fromId && t.toId) rev[t.toId] = t.fromId; });
+        const baseOf = (id) => {
+          const seen = new Set();
+          let cur = id;
+          while (rev[cur] && !seen.has(cur)) { seen.add(cur); cur = rev[cur]; }
+          return cur;
+        };
+
+        // Any record that participates in a Blazing chain (has a 6SB tier)
+        const isBlazing = (c) =>
+          c.starMaxCode === '6SB' || c.starMinCode === '6SB' ||
+          !!(c.artByTier && c.artByTier['6SB']);
+
+        const baseIds = new Set();
+        chars.forEach(c => { if (isBlazing(c)) baseIds.add(baseOf(c.id)); });
+
+        let granted = 0;
+        baseIds.forEach(id => {
+          const c = byId[id];
+          if (!c) return;
+          window.InventoryChar.addCopy(id, 1, c.starMinCode || '5S');
+          granted++;
+        });
+
+        alert(`Granted ${granted} Blazing Awakened base unit${granted === 1 ? '' : 's'}.\nCheck your Characters page — level to max, then Awaken to walk 5S → 6S → 6SB.`);
+      } finally {
+        if (btn) { btn.disabled = false; btn.textContent = 'Grant All Blazing Awakened 5★ Bases'; }
       }
     },
 

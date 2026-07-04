@@ -671,8 +671,9 @@
     #banner-preview-scroll {
       display: flex !important; flex-direction: column; gap: 8px;
       overflow-y: auto; overflow-x: hidden; min-height: 0; flex: 1;
-      padding: 2px; scrollbar-width: thin;
+      padding: 2px; scrollbar-width: none; -ms-overflow-style: none;
     }
+    #banner-preview-scroll::-webkit-scrollbar { display: none; width: 0; height: 0; }
     #banner-preview-scroll .preview-item {
       flex: 0 0 auto; width: 100%; aspect-ratio: 16/9;
       border-radius: 8px; overflow: hidden; cursor: pointer;
