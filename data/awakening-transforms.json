@@ -1843,5 +1843,280 @@
     "fromId": "zetsu_381",
     "toId": "zetsu_382",
     "tier": "6S"
+  },
+  {
+    "fromId": "ashura_841",
+    "toId": "ashura_842",
+    "tier": "6S"
+  },
+  {
+    "fromId": "choji_618",
+    "toId": "choji_619",
+    "tier": "6S"
+  },
+  {
+    "fromId": "darui_2128",
+    "toId": "darui_2129",
+    "tier": "6S"
+  },
+  {
+    "fromId": "deidara_654",
+    "toId": "deidara_655",
+    "tier": "6S"
+  },
+  {
+    "fromId": "gaara_476",
+    "toId": "gaara_477",
+    "tier": "6S"
+  },
+  {
+    "fromId": "haku_537",
+    "toId": "haku_538",
+    "tier": "6S"
+  },
+  {
+    "fromId": "hashirama_520",
+    "toId": "hashirama_521",
+    "tier": "6S"
+  },
+  {
+    "fromId": "hinata_811",
+    "toId": "hinata_813",
+    "tier": "6S"
+  },
+  {
+    "fromId": "hinata_496",
+    "toId": "hinata_497",
+    "tier": "6S"
+  },
+  {
+    "fromId": "ino_559",
+    "toId": "ino_560",
+    "tier": "6S"
+  },
+  {
+    "fromId": "itachi_573",
+    "toId": "itachi_575",
+    "tier": "6S"
+  },
+  {
+    "fromId": "itachi_724",
+    "toId": "itachi_725",
+    "tier": "6S"
+  },
+  {
+    "fromId": "itachi_2094",
+    "toId": "itachi_2095",
+    "tier": "6S"
+  },
+  {
+    "fromId": "jiraiya_634",
+    "toId": "jiraiya_635",
+    "tier": "6S"
+  },
+  {
+    "fromId": "kabuto_893",
+    "toId": "kabuto_894",
+    "tier": "6S"
+  },
+  {
+    "fromId": "kaguya_2019",
+    "toId": "kaguya_2020",
+    "tier": "6S"
+  },
+  {
+    "fromId": "kakashi_2051",
+    "toId": "kakashi_2052",
+    "tier": "6S"
+  },
+  {
+    "fromId": "kakashi_672",
+    "toId": "kakashi_673",
+    "tier": "6S"
+  },
+  {
+    "fromId": "kakashi_704",
+    "toId": "kakashi_705",
+    "tier": "6S"
+  },
+  {
+    "fromId": "killer_876",
+    "toId": "killer_877",
+    "tier": "6S"
+  },
+  {
+    "fromId": "kimimaro_601",
+    "toId": "kimimaro_602",
+    "tier": "6S"
+  },
+  {
+    "fromId": "kisame_826",
+    "toId": "kisame_827",
+    "tier": "6S"
+  },
+  {
+    "fromId": "konan_688",
+    "toId": "konan_689",
+    "tier": "6S"
+  },
+  {
+    "fromId": "madara_523",
+    "toId": "madara_524",
+    "tier": "6S"
+  },
+  {
+    "fromId": "madara_2120",
+    "toId": "madara_2121",
+    "tier": "6S"
+  },
+  {
+    "fromId": "madara_770",
+    "toId": "madara_771",
+    "tier": "6S"
+  },
+  {
+    "fromId": "might_707",
+    "toId": "might_708",
+    "tier": "6S"
+  },
+  {
+    "fromId": "minato_739",
+    "toId": "minato_741",
+    "tier": "6S"
+  },
+  {
+    "fromId": "nagato_2074",
+    "toId": "nagato_2075",
+    "tier": "6S"
+  },
+  {
+    "fromId": "naruto_453",
+    "toId": "naruto_454",
+    "tier": "6S"
+  },
+  {
+    "fromId": "naruto_2134",
+    "toId": "naruto_2135",
+    "tier": "6S"
+  },
+  {
+    "fromId": "naruto_780",
+    "toId": "naruto_781",
+    "tier": "6S"
+  },
+  {
+    "fromId": "naruto_862",
+    "toId": "naruto_864",
+    "tier": "6S"
+  },
+  {
+    "fromId": "naruto_2036",
+    "toId": "naruto_2037",
+    "tier": "6S"
+  },
+  {
+    "fromId": "neji_493",
+    "toId": "neji_494",
+    "tier": "6S"
+  },
+  {
+    "fromId": "obito_669",
+    "toId": "obito_671",
+    "tier": "6S"
+  },
+  {
+    "fromId": "obito_767",
+    "toId": "obito_768",
+    "tier": "6S"
+  },
+  {
+    "fromId": "orochimaru_598",
+    "toId": "orochimaru_599",
+    "tier": "6S"
+  },
+  {
+    "fromId": "pain_685",
+    "toId": "pain_686",
+    "tier": "6S"
+  },
+  {
+    "fromId": "pain_2085",
+    "toId": "pain_2086",
+    "tier": "6S"
+  },
+  {
+    "fromId": "rock_473",
+    "toId": "rock_474",
+    "tier": "6S"
+  },
+  {
+    "fromId": "sakura_792",
+    "toId": "sakura_793",
+    "tier": "6S"
+  },
+  {
+    "fromId": "sakura_556",
+    "toId": "sakura_557",
+    "tier": "6S"
+  },
+  {
+    "fromId": "sasori_651",
+    "toId": "sasori_652",
+    "tier": "6S"
+  },
+  {
+    "fromId": "sasuke_865",
+    "toId": "sasuke_866",
+    "tier": "6S"
+  },
+  {
+    "fromId": "sasuke_2139",
+    "toId": "sasuke_2140",
+    "tier": "6S"
+  },
+  {
+    "fromId": "sasuke_456",
+    "toId": "sasuke_457",
+    "tier": "6S"
+  },
+  {
+    "fromId": "sasuke_721",
+    "toId": "sasuke_723",
+    "tier": "6S"
+  },
+  {
+    "fromId": "shikamaru_615",
+    "toId": "shikamaru_616",
+    "tier": "6S"
+  },
+  {
+    "fromId": "shikamaru_2105",
+    "toId": "shikamaru_2106",
+    "tier": "6S"
+  },
+  {
+    "fromId": "shisui_576",
+    "toId": "shisui_577",
+    "tier": "6S"
+  },
+  {
+    "fromId": "shisui_2062",
+    "toId": "shisui_2063",
+    "tier": "6S"
+  },
+  {
+    "fromId": "tobirama_2006",
+    "toId": "tobirama_2007",
+    "tier": "6S"
+  },
+  {
+    "fromId": "tsunade_637",
+    "toId": "tsunade_638",
+    "tier": "6S"
+  },
+  {
+    "fromId": "zabuza_540",
+    "toId": "zabuza_541",
+    "tier": "6S"
   }
 ]
