@@ -308,27 +308,20 @@
       const art  = resolveTierArt(c, tier);
       const is7Star = (starsFromTier(tier) || 0) >= 7;
       const maxed = isFullyMaxed(inst, c);
-      // 7-star and fully-maxed auras STACK — a maxed 7-star keeps its lightning
-      // and also gains the dark-blue wind.
-      // No autoplay / preload: seven-star-fx.js plays these ONLY while the card
-      // is on-screen and pauses the rest, so a roster full of maxed units does
-      // not decode dozens of blended videos at once.
-      let fx = "", fxClass = "";
-      if (is7Star) {
-        fxClass += " is-7star";
-        fx += `<video class="seven-star-fx" src="assets/effects/sevenstar_lightning.mp4"
-                  loop muted playsinline preload="none" aria-hidden="true"></video>`;
-      }
-      if (maxed) {
-        fxClass += " is-maxed";
-        fx += `<video class="maxed-fx" src="assets/effects/maxed_wind.mp4"
-                  loop muted playsinline preload="none" aria-hidden="true"></video>`;
-      }
+      // 7-star and fully-maxed auras STACK (a maxed 7-star keeps its lightning
+      // and gains the wind). We render only a cheap static glow class here and
+      // tag the card via data-fx. seven-star-fx.js injects the actual <video>
+      // overlay (and the pulsing animation) ONLY while the card is on-screen and
+      // removes it when it scrolls away — otherwise hundreds of maxed units
+      // would keep hundreds of blended <video> layers alive and tank scrolling.
+      let fxClass = "", fxData = [];
+      if (is7Star) { fxClass += " is-7star"; fxData.push("7star"); }
+      if (maxed)   { fxClass += " is-maxed"; fxData.push("maxed"); }
+      const fxAttr = fxData.length ? ` data-fx="${fxData.join(" ")}"` : "";
       return `
-        <button class="char-slot${fxClass}" type="button" data-uid="${inst.uid}">
+        <button class="char-slot${fxClass}"${fxAttr} type="button" data-uid="${inst.uid}">
           <img class="char-portrait-img" src="${safeStr(art.portrait, c.portrait)}" alt="${c.name} portrait"
                onerror="this.onerror=null;this.src='assets/characters/_common/silhouette.png';" />
-          ${fx}
           <div class="char-card-level">${levelBadgeHTML(c, inst)}</div>
           ${ultimateBadgeHTML(c, inst)}
         </button>
