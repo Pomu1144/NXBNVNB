@@ -127,26 +127,29 @@ body.page-characters::-webkit-scrollbar {
 /* Allow the crackling glow to bleed slightly past the card edge */
 .char-slot.is-7star {
   overflow: visible;
-  border-color: rgba(120, 200, 255, 0.55);
+  border-color: rgba(230, 120, 220, 0.55);
   box-shadow:
     0 6px 18px rgba(0, 0, 0, .4),
-    0 0 14px rgba(80, 170, 255, .45),
-    inset 0 0 0 1px rgba(150, 215, 255, .25);
+    0 0 16px rgba(220, 90, 200, .5),
+    0 0 26px rgba(255, 180, 80, .25),
+    inset 0 0 0 1px rgba(255, 170, 220, .22);
   animation: sevenStarPulse 2.2s ease-in-out infinite;
 }
 .char-slot.is-7star:hover {
-  border-color: rgba(160, 220, 255, 0.8);
+  border-color: rgba(255, 150, 230, 0.85);
 }
 
 /* The generated lightning clip: black background disappears via `screen`
-   blend, so only the electric-blue arcs frame the character. */
+   blend, so only the red/purple/pink/gold electric border frames the unit.
+   The clip is a rectangular border, so a larger overscan seats it in the
+   dark halo just outside the portrait's own frame where it reads clearly. */
 .seven-star-fx {
   position: absolute;
-  inset: -9px;                 /* overscan so the bolts arc around the unit */
-  width: calc(100% + 18px);
-  height: calc(100% + 18px);
+  inset: -13px;
+  width: calc(100% + 26px);
+  height: calc(100% + 26px);
   object-fit: cover;
-  border-radius: 14px;
+  border-radius: 16px;
   pointer-events: none;
   mix-blend-mode: screen;
   z-index: 3;
@@ -160,8 +163,8 @@ body.page-characters::-webkit-scrollbar {
 }
 
 @keyframes sevenStarPulse {
-  0%, 100% { box-shadow: 0 6px 18px rgba(0,0,0,.4), 0 0 12px rgba(80,170,255,.35), inset 0 0 0 1px rgba(150,215,255,.2); }
-  50%      { box-shadow: 0 6px 20px rgba(0,0,0,.45), 0 0 22px rgba(120,200,255,.7), inset 0 0 0 1px rgba(180,230,255,.4); }
+  0%, 100% { box-shadow: 0 6px 18px rgba(0,0,0,.4), 0 0 12px rgba(220,90,200,.4), 0 0 20px rgba(255,180,80,.18), inset 0 0 0 1px rgba(255,170,220,.18); }
+  50%      { box-shadow: 0 6px 20px rgba(0,0,0,.45), 0 0 26px rgba(255,120,220,.75), 0 0 34px rgba(255,190,90,.35), inset 0 0 0 1px rgba(255,200,235,.4); }
 }
 
 @media (prefers-reduced-motion: reduce) {

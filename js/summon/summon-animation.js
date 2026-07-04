@@ -46,7 +46,7 @@ class SummonAnimationController {
       // Show the overlay full-screen.
       overlay.classList.remove('hidden');
 
-      // Reset and play.
+      // Reset and play the FULL clip — finishes on 'ended' or when skipped.
       try { video.currentTime = 0; } catch (e) {}
       video.onended = finish;
       video.onerror = finish;
@@ -59,9 +59,23 @@ class SummonAnimationController {
         });
       }
 
-      // Hard fallback in case 'ended' never fires (bad encode, tab throttling).
+      // Safety fallback tied to the clip's ACTUAL length (not a fixed cap),
+      // so a mis-fired 'ended' event can't trap the user — while still letting
+      // the whole animation play through. The Skip button ends it any time.
+      const armFallback = () => {
+        const secs = (Number.isFinite(video.duration) && video.duration > 0)
+          ? video.duration : 120;
+        clearTimeout(this._timer);
+        this._timer = setTimeout(finish, (secs + 2) * 1000);
+      };
       clearTimeout(this._timer);
-      this._timer = setTimeout(finish, 9000);
+      if (Number.isFinite(video.duration) && video.duration > 0) {
+        armFallback();
+      } else {
+        video.onloadedmetadata = armFallback;
+        // Ultimate backstop if metadata never loads at all.
+        this._timer = setTimeout(finish, 120000);
+      }
     });
   }
 
