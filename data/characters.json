@@ -118430,7 +118430,7 @@
   "lbEligible": true,
   "portrait": "assets/characters/obito_2201/portrait_7S.png",
   "full": "assets/characters/obito_2201/full_7S.png",
-  "ultimateAnimation": null,
+  "ultimateAnimation": "assets/effects/ultimates/obito_2201.mp4",
   "secretAnimation": null,
   "artByTier": {
    "6S": {
@@ -118557,7 +118557,7 @@
   "lbEligible": true,
   "portrait": "assets/characters/sakura_2202/portrait_7S.png",
   "full": "assets/characters/sakura_2202/full_7S.png",
-  "ultimateAnimation": null,
+  "ultimateAnimation": "assets/effects/ultimates/sakura_2202.mp4",
   "secretAnimation": null,
   "artByTier": {
    "6S": {
@@ -118683,7 +118683,7 @@
   "lbEligible": true,
   "portrait": "assets/characters/itachi_2203/portrait_7S.png",
   "full": "assets/characters/itachi_2203/full_7S.png",
-  "ultimateAnimation": null,
+  "ultimateAnimation": "assets/effects/ultimates/itachi_2203.mp4",
   "secretAnimation": null,
   "artByTier": {
    "6S": {
@@ -118810,7 +118810,7 @@
   "lbEligible": true,
   "portrait": "assets/characters/minato_2204/portrait_7S.png",
   "full": "assets/characters/minato_2204/full_7S.png",
-  "ultimateAnimation": null,
+  "ultimateAnimation": "assets/effects/ultimates/minato_2204.mp4",
   "secretAnimation": null,
   "artByTier": {
    "6S": {
