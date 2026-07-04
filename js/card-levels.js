@@ -241,7 +241,10 @@
 
   function filterCardsForCharacter(cards, characterId) {
     return cards.filter(card => {
-      if (!card.eligibleCharacters || card.eligibleCharacters.length === 0) return true;
+      // Cards with no eligible characters are stat-only / unassigned — they are
+      // NOT equippable as any character's jutsu (previously shown to everyone,
+      // which let e.g. Sasuke access Pain's jutsus).
+      if (!card.eligibleCharacters || card.eligibleCharacters.length === 0) return false;
       return card.eligibleCharacters.some(eid => characterMatchesEligible(characterId, eid));
     });
   }
