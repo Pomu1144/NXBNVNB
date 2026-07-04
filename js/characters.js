@@ -135,6 +135,30 @@
   const STAR_COUNT_BY_TIER = { "1S":1,"2S":2,"3S":3,"4S":4,"5S":5,"6S":6,"6SB":6,"7S":7,"7SL":7,"8S":8,"8SM":8,"9S":9,"9ST":9,"10SO":10 };
   const TIER_CAP_FALLBACK  = { "3S":50,"4S":70,"5S":100,"6S":100,"6SB":100,"7S":120,"7SL":150,"8S":150,"8SM":150,"9S":150,"9ST":200,"10SO":250 };
 
+  // A character instance is "fully maxed" when it is at the top tier (fully
+  // awakened, no further evolution), limit-broken to the max, at the extended
+  // level cap (150), and has every dupe ability unlocked. Such units get the
+  // dark-blue wind aura (same mechanism as the 7-star lightning effect).
+  function isFullyMaxed(inst, c) {
+    if (!inst || !c || !window.Progression) return false;
+    const P = window.Progression;
+    const bounds = P.getTierBounds(c) || {};
+    const maxCode = bounds.maxCode;
+    if (!maxCode || inst.tierCode !== maxCode) return false;           // top tier / fully awakened
+    if (window.SummonEvolve) {                                          // no further evolution
+      try { const evo = window.SummonEvolve.evolvedIdOf(inst.charId); if (evo && evo !== inst.charId) return false; } catch (e) {}
+    }
+    let maxLB = window.LimitBreak ? (window.LimitBreak.getMaxLimitBreakLevel(maxCode) || 0) : 0;
+    if (maxLB <= 0) return false;                                      // only limit-breakable (endgame) tiers earn the aura
+    const cap = window.LimitBreak.getExtendedLevelCap(maxCode, maxLB);
+    if ((Number(inst.limitBreakLevel) || 0) < maxLB) return false;      // limit broken to max
+    if ((Number(inst.level) || 1) < cap) return false;                 // level 150
+    const nAb = Array.isArray(c.abilities) ? c.abilities.length : 0;
+    if (nAb > 0 && (Number(inst.dupeUnlocks) || 0) < nAb) return false; // fully duped
+    return true;
+  }
+  window.isFullyMaxed = isFullyMaxed;
+
   const starsFromTier = (code) => STAR_COUNT_BY_TIER[code] ?? 0;
   const tierCap = (c, tier) => {
     if (hasProg && window.Progression.computeEffectiveStatsLoreTier) {
@@ -283,15 +307,21 @@
       const tier = inst.tierCode || minTier(c);
       const art  = resolveTierArt(c, tier);
       const is7Star = (starsFromTier(tier) || 0) >= 7;
-      const lightningFX = is7Star
-        ? `<video class="seven-star-fx" src="assets/effects/sevenstar_lightning.mp4"
+      const maxed = isFullyMaxed(inst, c);
+      // Fully-maxed aura takes precedence over the 7-star lightning.
+      const fx = maxed
+        ? `<video class="maxed-fx" src="assets/effects/maxed_wind.mp4"
                   autoplay loop muted playsinline preload="auto" aria-hidden="true"></video>`
-        : "";
+        : (is7Star
+          ? `<video class="seven-star-fx" src="assets/effects/sevenstar_lightning.mp4"
+                  autoplay loop muted playsinline preload="auto" aria-hidden="true"></video>`
+          : "");
+      const fxClass = maxed ? " is-maxed" : (is7Star ? " is-7star" : "");
       return `
-        <button class="char-slot${is7Star ? " is-7star" : ""}" type="button" data-uid="${inst.uid}">
+        <button class="char-slot${fxClass}" type="button" data-uid="${inst.uid}">
           <img class="char-portrait-img" src="${safeStr(art.portrait, c.portrait)}" alt="${c.name} portrait"
                onerror="this.onerror=null;this.src='assets/characters/_common/silhouette.png';" />
-          ${lightningFX}
+          ${fx}
           <div class="char-card-level">${levelBadgeHTML(c, inst)}</div>
           ${ultimateBadgeHTML(c, inst)}
         </button>

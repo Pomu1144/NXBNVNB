@@ -14,7 +14,7 @@
   "use strict";
 
   function playAll() {
-    const vids = document.querySelectorAll("video.seven-star-fx");
+    const vids = document.querySelectorAll("video.seven-star-fx, video.maxed-fx");
     vids.forEach((v) => {
       // muted + playsinline are required for autoplay to be allowed
       v.muted = true;

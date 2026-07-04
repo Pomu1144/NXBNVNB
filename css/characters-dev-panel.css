@@ -1,0 +1,142 @@
+/* css/characters-dev-panel.css
+   Developer panel for the character list + the "fully maxed" aura effect. */
+
+/* ---------- Floating dev button + panel ---------- */
+.chardev-fab {
+  position: fixed;
+  right: 16px;
+  bottom: 96px;
+  z-index: 4000;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 2px solid rgba(120, 170, 255, 0.6);
+  background: rgba(20, 26, 40, 0.9);
+  color: #cfe0ff;
+  font-size: 20px;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
+}
+.chardev-fab:hover { border-color: #7fb0ff; }
+
+.chardev-panel {
+  position: fixed;
+  right: 16px;
+  bottom: 150px;
+  z-index: 4001;
+  width: 260px;
+  background: rgba(16, 20, 30, 0.97);
+  border: 1px solid rgba(120, 170, 255, 0.4);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+  color: #e6eefc;
+  font-family: system-ui, sans-serif;
+  transform: translateY(12px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+.chardev-panel.open { opacity: 1; transform: translateY(0); pointer-events: auto; }
+
+.chardev-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  border-bottom: 1px solid rgba(120, 170, 255, 0.25);
+}
+.chardev-title { font-weight: 700; font-size: 14px; color: #bcd4ff; }
+.chardev-close {
+  background: none; border: none; color: #9fb4d8; font-size: 20px; cursor: pointer; line-height: 1;
+}
+.chardev-body { padding: 12px; display: flex; flex-direction: column; gap: 10px; }
+.chardev-row { display: flex; gap: 8px; align-items: flex-start; font-size: 13px; cursor: pointer; }
+.chardev-row small { color: #8ea3c6; display: block; }
+.chardev-btn {
+  width: 100%;
+  padding: 9px 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(120, 170, 255, 0.5);
+  background: linear-gradient(180deg, rgba(46, 78, 140, 0.9), rgba(28, 44, 82, 0.9));
+  color: #eaf1ff;
+  font-weight: 600;
+  cursor: pointer;
+}
+.chardev-btn:hover { border-color: #8fb6ff; }
+.chardev-note { font-size: 11px; color: #7f93b6; line-height: 1.35; }
+
+/* Max-Out mode: hint that clicking a card maxes it */
+body.chardev-maxmode-on .char-slot { cursor: crosshair; }
+body.chardev-maxmode-on .char-slot::after {
+  content: "MAX";
+  position: absolute;
+  top: 6px; left: 6px;
+  z-index: 6;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  padding: 2px 5px;
+  border-radius: 4px;
+  color: #0b1220;
+  background: #7fb0ff;
+  pointer-events: none;
+}
+
+.chardev-toast {
+  position: fixed;
+  left: 50%;
+  bottom: 40px;
+  transform: translateX(-50%) translateY(12px);
+  z-index: 5000;
+  background: rgba(20, 30, 52, 0.96);
+  border: 1px solid rgba(120, 170, 255, 0.5);
+  color: #dfeaff;
+  padding: 10px 16px;
+  border-radius: 10px;
+  font-size: 14px;
+  opacity: 0;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  pointer-events: none;
+}
+.chardev-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* ---------- "Fully Maxed" aura (mirrors .is-7star, dark-blue wind) ---------- */
+.char-slot.is-maxed {
+  overflow: visible;
+  border-color: rgba(90, 150, 255, 0.6);
+  box-shadow:
+    0 6px 18px rgba(0, 0, 0, .45),
+    0 0 16px rgba(60, 120, 255, .55),
+    0 0 28px rgba(30, 80, 200, .3),
+    inset 0 0 0 1px rgba(150, 190, 255, .25);
+  animation: maxedPulse 2.4s ease-in-out infinite;
+}
+.char-slot.is-maxed:hover { border-color: rgba(140, 190, 255, 0.9); }
+
+/* The generated dark-blue wind clip: black background drops out via `screen`,
+   leaving only the flowing wind framing the unit — same mechanism as the
+   7-star lightning effect. */
+.maxed-fx {
+  position: absolute;
+  inset: -13px;
+  width: calc(100% + 26px);
+  height: calc(100% + 26px);
+  object-fit: cover;
+  border-radius: 16px;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  z-index: 3;
+  opacity: 1;
+}
+.char-slot.is-maxed .char-card-level,
+.char-slot.is-maxed .ultimate-badge { z-index: 5; }
+
+@keyframes maxedPulse {
+  0%, 100% { box-shadow: 0 6px 18px rgba(0,0,0,.45), 0 0 12px rgba(60,120,255,.4), 0 0 20px rgba(30,80,200,.2), inset 0 0 0 1px rgba(150,190,255,.2); }
+  50%      { box-shadow: 0 6px 20px rgba(0,0,0,.5), 0 0 26px rgba(80,150,255,.8), 0 0 36px rgba(40,100,230,.4), inset 0 0 0 1px rgba(180,210,255,.45); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .char-slot.is-maxed { animation: none; }
+  .maxed-fx { display: none; }
+}
