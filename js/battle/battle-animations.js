@@ -53,6 +53,11 @@
         window.BattleParticles.createImpactFlash(unit, damageType, dom.scene);
       }
 
+      // Flinch the target's sprite on real damage
+      if (!isHeal) {
+        window.BattleSpriteFX?.playHit(unit, dom);
+      }
+
       // Main damage number with enhanced styling
       const damageEl = document.createElement("div");
       damageEl.className = `damage-number damage-${damageType}`;

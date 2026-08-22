@@ -27,13 +27,55 @@
     throttleDelay: 16, // ~60fps update rate
     DEBUG_DRAG: false, // Debug logging flag (disable for performance)
 
+    draggingUnitEl: null, // The actual battlefield element being followed during a drag
+
+    /* ===== Shared lookups ===== */
+
+    /**
+     * Find a unit's real battlefield element.
+     * Scoped to dom.grid (not dom.scene) because the turn-order speed gauge
+     * also stamps data-unit-id on its own marker elements inside dom.scene -
+     * querying the scene directly can match that marker instead of the sprite.
+     */
+    _getUnitEl(unit, core) {
+      return core.dom.grid?.querySelector(`[data-unit-id="${unit.id}"]`) || null;
+    },
+
+    /**
+     * Convert a client point into a percentage position within dom.grid -
+     * the same coordinate space battle-unit left/top percentages use.
+     */
+    _clientToGridPercent(clientX, clientY, core) {
+      const gridRect = core.dom.grid.getBoundingClientRect();
+      const xPercent = ((clientX - gridRect.left) / gridRect.width) * 100;
+      const yPercent = ((clientY - gridRect.top) / gridRect.height) * 100;
+      return {
+        x: Math.max(0, Math.min(100, xPercent)),
+        y: Math.max(0, Math.min(100, yPercent))
+      };
+    },
+
+    /**
+     * Animate a unit back to its pre-drag position (used after a jutsu/attack/
+     * ultimate drag-cast resolves, so casting a technique doesn't permanently
+     * relocate the caster).
+     */
+    _returnUnitHome(unit, homePos, core) {
+      if (!homePos) return;
+      const el = this._getUnitEl(unit, core);
+      unit.pos = { ...homePos };
+      if (el) el.style.transition = "left 0.3s ease-out, top 0.3s ease-out";
+      if (core.units) core.units.updateUnitPosition(unit, core);
+      if (el) setTimeout(() => { el.style.transition = ""; }, 320);
+    },
+
     /* ===== Targeting Markers ===== */
 
     /**
      * Create a targeting marker on a unit
      */
     createTargetMarker(unit, core) {
-      const unitEl = core.dom.scene?.querySelector(`[data-unit-id="${unit.id}"]`);
+      const unitEl = this._getUnitEl(unit, core);
       if (!unitEl) return null;
 
       // Remove existing marker if present
@@ -179,6 +221,7 @@
       if (core.turns && core.turns.currentUnit !== unit) return;
 
       this.draggingUnit = unit;
+      this.draggingUnitEl = e.currentTarget;
       this.dragStartPos = { ...unit.pos };
       this.isDragging = true;
 
@@ -195,7 +238,12 @@
 
       e.dataTransfer.effectAllowed = "move";
       e.dataTransfer.setData("text/plain", unit.id);
-      e.currentTarget.style.opacity = "0.7";
+
+      // Suppress the browser's own drag-ghost image - the real unit element
+      // is moved directly (see handleSceneDragOver) so it visibly carries the
+      // character across the field instead of leaving a static faded icon behind.
+      e.dataTransfer.setDragImage(BattleDrag._dragGhostImg, 0, 0);
+      e.currentTarget.classList.add("battle-unit-dragging");
 
       if (this.DEBUG_DRAG) console.log(`[Drag] Dragging ${unit.name}, action: ${this.dragAction}`);
     },
@@ -224,6 +272,15 @@
       const rect = core.dom.scene.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
+
+      // Carry the character's own sprite along with the cursor so casting a
+      // jutsu/ultimate/attack visibly moves them, instead of leaving a static
+      // faded icon in the home slot while nothing (or a lone reticle) moves.
+      if (this.draggingUnitEl && core.dom.grid) {
+        const gridPos = this._clientToGridPercent(e.clientX, e.clientY, core);
+        this.draggingUnitEl.style.left = `${gridPos.x}%`;
+        this.draggingUnitEl.style.top = `${gridPos.y}%`;
+      }
 
       // Determine effective action (auto-detect if dragging over enemy)
       let effectiveAction = this.dragAction;
@@ -254,19 +311,19 @@
       const dropX = e.clientX - rect.left;
       const dropY = e.clientY - rect.top;
 
-      const dropXPercent = (dropX / rect.width) * 100;
-      const dropYPercent = (dropY / rect.height) * 100;
+      // Position percentages are relative to dom.grid (what battle-unit left/top
+      // actually use), not dom.scene - the grid is offset/smaller than the scene,
+      // so a scene-relative percent here would put the unit somewhere other than
+      // where it was just visually dragged to.
+      const dropGridPos = this._clientToGridPercent(e.clientX, e.clientY, core);
 
       if (this.DEBUG_DRAG) {
-        console.log(`[Drag] 🎯 Drop at (${dropXPercent.toFixed(1)}%, ${dropYPercent.toFixed(1)}%), action: ${this.dragAction}`);
+        console.log(`[Drag] 🎯 Drop at (${dropGridPos.x.toFixed(1)}%, ${dropGridPos.y.toFixed(1)}%), action: ${this.dragAction}`);
         console.log(`[Drag] 🔍 DEBUGGING ENABLED - If you don't see more debug messages below, you're loading cached code!`);
       }
 
       // Update position
-      this.draggingUnit.pos = {
-        x: Math.max(0, Math.min(100, dropXPercent)),
-        y: Math.max(0, Math.min(100, dropYPercent))
-      };
+      this.draggingUnit.pos = { ...dropGridPos };
 
       // If no action was queued, check if we're dropping on enemies
       let effectiveAction = this.dragAction;
@@ -301,7 +358,9 @@
           // Check for proximity combo attacks
           const proximityTargets = this.findProximityTargets(targets, core);
           const actingUnit = this.draggingUnit;
+          const homePos = { ...this.dragStartPos };
           const doEndTurn = () => {
+            this._returnUnitHome(actingUnit, homePos, core);
             if (core.turns?.currentUnit === actingUnit) core.turns.endTurn(core);
           };
 
@@ -342,11 +401,14 @@
         // Ultimate hits all enemies
         const targets = core.enemyTeam.filter(u => u.stats.hp > 0);
         const ultUnit = this.draggingUnit;
+        const ultHomePos = { ...this.dragStartPos };
         if (window.BattleCombat) {
           window.BattleCombat.performUltimate(ultUnit, targets, core, () => {
+            this._returnUnitHome(ultUnit, ultHomePos, core);
             if (core.turns?.currentUnit === ultUnit) core.turns.endTurn(core);
           });
         } else {
+          this._returnUnitHome(ultUnit, ultHomePos, core);
           if (core.turns) core.turns.endTurn(core);
         }
       } else {
@@ -364,8 +426,20 @@
      * Handle drag end
      */
     handleDragEnd(e, core) {
+      // If the drag was released without a valid drop (e.g. outside the scene),
+      // handleSceneDrop never ran, so unit.pos was never touched - snap the
+      // visual back to that still-correct model position rather than leaving
+      // it stranded wherever the cursor last was.
+      if (this.draggingUnit && core.units) {
+        core.units.updateUnitPosition(this.draggingUnit, core);
+      }
+      if (this.draggingUnitEl) {
+        this.draggingUnitEl.classList.remove("battle-unit-dragging");
+      }
+
       this.isDragging = false;
       this.draggingUnit = null;
+      this.draggingUnitEl = null;
       this.dragAction = null;
       this.dragStartPos = null;
 
@@ -491,7 +565,7 @@
           continue;
         }
 
-        const unitEl = core.dom.scene?.querySelector(`[data-unit-id="${unit.id}"]`);
+        const unitEl = this._getUnitEl(unit, core);
         if (!unitEl) {
           if (this.DEBUG_DRAG) console.log(`[Drag]   - ${unit.name}: NO ELEMENT, skipping`);
           continue;
@@ -608,7 +682,7 @@
 
       // For each main target, find nearby enemies
       mainTargets.forEach(mainTarget => {
-        const mainEl = core.dom.scene?.querySelector(`[data-unit-id="${mainTarget.id}"]`);
+        const mainEl = this._getUnitEl(mainTarget, core);
         if (!mainEl) return;
 
         const mainRect = mainEl.getBoundingClientRect();
@@ -623,7 +697,7 @@
           // Skip if already in proximity list
           if (proximityTargets.includes(enemy)) return;
 
-          const enemyEl = core.dom.scene?.querySelector(`[data-unit-id="${enemy.id}"]`);
+          const enemyEl = this._getUnitEl(enemy, core);
           if (!enemyEl) return;
 
           const enemyRect = enemyEl.getBoundingClientRect();
@@ -650,7 +724,7 @@
       for (const unit of targets) {
         if (unit.stats.hp <= 0 || unit.isBench) continue;
 
-        const unitEl = core.dom.scene?.querySelector(`[data-unit-id="${unit.id}"]`);
+        const unitEl = this._getUnitEl(unit, core);
         if (!unitEl) continue;
 
         const rect = unitEl.getBoundingClientRect();
@@ -670,6 +744,11 @@
   // Export to window
   window.BattleDrag = BattleDrag;
 
+  // 1x1 transparent GIF used to suppress the browser's default drag-ghost
+  // image, so only the real unit element (moved in handleSceneDragOver) is visible.
+  BattleDrag._dragGhostImg = new Image();
+  BattleDrag._dragGhostImg.src = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBTAA7";
+
   // Add CSS for target markers
   const style = document.createElement('style');
   style.textContent = `
@@ -686,6 +765,17 @@
 
     .target-marker {
       animation: targetPulse 1s ease-in-out infinite;
+    }
+
+    /* Unit actively being dragged to aim an attack/jutsu/ultimate */
+    .battle-unit-dragging {
+      z-index: 90;
+      cursor: grabbing;
+    }
+
+    .battle-unit-dragging .unit-sprite {
+      box-shadow: 0 0 18px 4px rgba(255, 215, 0, 0.85);
+      transform: scale(1.12);
     }
   `;
   document.head.appendChild(style);
