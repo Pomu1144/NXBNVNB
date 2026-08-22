@@ -325,6 +325,7 @@
           if (window.BattleNarrator) {
             window.BattleNarrator.narrateAttack(attacker, target, core);
           }
+          window.BattleSpriteFX?.playAttack(attacker, core.dom);
 
           console.log(`[Combat] 🎯 BEFORE DAMAGE: ${target.name} HP = ${target.stats.hp}`);
           target.stats.hp = Math.max(0, target.stats.hp - damage);
@@ -372,6 +373,7 @@
         if (window.BattleNarrator) {
           window.BattleNarrator.narrateAttack(attacker, target, core);
         }
+        window.BattleSpriteFX?.playAttack(attacker, core.dom);
 
         target.stats.hp = Math.max(0, target.stats.hp - damage);
 
@@ -509,6 +511,7 @@
           if (window.BattleNarrator) {
             window.BattleNarrator.narrateJutsu(attacker, target, core);
           }
+          window.BattleSpriteFX?.playAttack(attacker, core.dom);
         });
 
         // Step 2: Wait 0.7s for attack name to breathe
@@ -568,6 +571,7 @@
         if (window.BattleNarrator) {
           window.BattleNarrator.narrateJutsu(attacker, target, core);
         }
+        window.BattleSpriteFX?.playAttack(attacker, core.dom);
 
         setTimeout(() => {
           const animGif = j.data.animationGif || attacker._ref?.base?.jutsuAnimation;
@@ -698,6 +702,7 @@
           if (window.BattleNarrator) {
             window.BattleNarrator.narrateUltimate(attacker, targets, core);
           }
+          window.BattleSpriteFX?.playAttack(attacker, core.dom);
         });
 
         // Step 2: Wait 0.7s then play animation
@@ -770,6 +775,7 @@
         if (window.BattleNarrator) {
           window.BattleNarrator.narrateUltimate(attacker, targets, core);
         }
+        window.BattleSpriteFX?.playAttack(attacker, core.dom);
 
         setTimeout(() => {
           const animGif = u.data.animationGif || attacker._ref?.base?.ultimateAnimation;

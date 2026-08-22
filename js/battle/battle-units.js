@@ -169,7 +169,7 @@
 
       unitEl.innerHTML = `
         ${positionLabel}
-        <div class="unit-sprite">
+        <div class="unit-sprite sprite-idle">
           <img src="${unit.portrait}" alt="${unit.name}"
                onerror="this.src='assets/characters/common/silhouette.png';">
         </div>
@@ -252,6 +252,7 @@
       // Update visual state for dead units - make them disappear
       if (unit.stats.hp <= 0) {
         console.log(`[BattleUnits] 💀 Unit ${unit.name} is dead, removing from battlefield`);
+        window.BattleSpriteFX?.playKO(unit, core.dom);
         unitEl.style.transition = 'opacity 0.5s ease-out, transform 0.5s ease-out';
         unitEl.style.opacity = "0";
         unitEl.style.transform = "scale(0.8)";
