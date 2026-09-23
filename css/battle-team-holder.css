@@ -1,212 +1,588 @@
 /* ===================================================
-   TEAM HOLDER - Character Portrait Display with Chakra Wheels
+   TEAM HOLDER — row of unit cards (assets/ui/battle/unit_card.webp)
+   js/battle/battle-team-holder.js
+
+   Card art 360×515. Measured regions (percent of the card box):
+     portrait window  TL(24.7,4.5) TR(92.5,11.1) BR(81.7,79.6) BL(14.2,77.7)
+     bottom strip     x 8.9 → 82.2,  y 83.7 → 94.2
+   Layers (bottom → top): portrait (clipped to the window) → card art →
+   slot number / name / HP / chakra bar / tags. Gauges are always drawn
+   ABOVE the art, never behind it. The slot's backup is a 1/3-size mini
+   card (.uc-mini, same art) tucked over the bottom-right corner.
    =================================================== */
 
-/* === Team Holder Container === */
+.page-battle {
+  --ch: min(1vh, 0.5625vw);
+  --uc-h: clamp(110px, calc(var(--ch) * 25), 220px);
+  --uc-w: calc(var(--uc-h) * 0.699);
+}
+
+/* === Holder === */
 #team-holder {
   position: absolute;
-  bottom: 0;
+  bottom: calc(var(--ch) * 0.8);
   left: 50%;
   transform: translateX(-50%);
   display: flex;
   justify-content: center;
   align-items: flex-end;
-  gap: 40px; /* Increased gap to prevent chakra wheel overlap */
-  padding: 20px 40px; /* Increased padding for larger units */
-  background: linear-gradient(180deg, rgba(10, 10, 15, 0.5), rgba(10, 10, 15, 0.95));
-  border-top: 2px solid rgba(139, 115, 85, 0.6);
-  border-radius: 12px 12px 0 0;
+  gap: calc(var(--uc-w) * 0.1);
+  padding: calc(var(--uc-h) * 0.1) calc(var(--uc-w) * 0.3) 0;
+  width: max-content;
+  min-width: 0;
+  background: none;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
   z-index: 100;
-  box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.7);
-  width: auto; /* Let flexbox calculate width based on content */
-  min-width: fit-content; /* Ensure it fits all units */
+  pointer-events: none; /* only the cards take input */
+}
+/* soft ink pool behind the cards so they read on any map */
+#team-holder::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(var(--ch) * -0.8);
+  height: 70%;
+  background: radial-gradient(ellipse 60% 100% at 50% 100%, rgba(4, 14, 16, 0.85), rgba(4, 14, 16, 0) 100%);
+  pointer-events: none;
+  z-index: -1;
+}
+/* backups hang off each card's right corner: widen the gaps for them */
+#team-holder.has-bench {
+  gap: calc(var(--uc-w) * 0.26);
+  padding-right: calc(var(--uc-w) * 0.45);
 }
 
-/* === Single Unit Card (contains both active + bench portraits) === */
-.unit-card {
+/* === Card === */
+#team-holder .unit-card {
   position: relative;
+  flex: 0 0 auto;
+  width: var(--uc-w);
+  height: var(--uc-h);
+  display: block;
+  pointer-events: auto;
+  transition: transform 0.25s cubic-bezier(0.3, 1.4, 0.5, 1), filter 0.3s ease, opacity 0.4s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+#team-holder .unit-card:hover { transform: translateY(-3%); }
+
+#team-holder .uc-body {
+  position: absolute;
+  inset: 0;
+}
+
+/* Portrait + click/drop target: covers the whole card */
+#team-holder .active-portrait-container {
+  position: absolute;
+  inset: 0;
+  width: auto;
+  height: auto;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  overflow: visible;
+  cursor: pointer;
+  z-index: 1;
+  transition: none;
+}
+#team-holder .active-portrait-container > .unit-ring {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  clip-path: polygon(23.8% 3.6%, 93.5% 10.2%, 82.6% 80.4%, 13.3% 78.6%);
+  background: #0b1a1c;
+  transform: none;
+}
+#team-holder .active-portrait-container > .unit-ring:hover { transform: none; }
+#team-holder .active-portrait-container .portrait {
+  position: absolute;
+  left: 12%;
+  top: 3%;
+  width: 83%;
+  height: 78%;
+  max-width: none;
+  object-fit: cover;
+  object-position: center 18%;
+  border-radius: 0;
+  clip-path: none;
+  z-index: 1;
+}
+/* bottom of the window darkens under the name / HP */
+#team-holder .active-portrait-container > .unit-ring::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: linear-gradient(180deg, rgba(4, 14, 16, 0) 48%, rgba(4, 14, 16, 0.55) 62%, rgba(4, 14, 16, 0.94) 79%);
+  pointer-events: none;
+}
+
+/* Card art */
+#team-holder .uc-art {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  z-index: 2;
+  pointer-events: none;
+  user-select: none;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.75));
+  transition: filter 0.3s ease;
+}
+
+/* === Name + HP (inside the window, above art) === */
+#team-holder .unit-info {
+  position: absolute;
+  left: 17%;
+  right: 19.5%;
+  top: 61.5%;
+  z-index: 3;
+  min-width: 0;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 6px;
-  transition: transform 0.2s ease;
+  align-items: stretch;
+  gap: calc(var(--uc-h) * 0.012);
+  pointer-events: none;
+  text-align: left;
+  transform: skewX(-5.5deg); /* follow the window's slant */
 }
-
-.unit-card:hover {
-  transform: translateY(-6px);
-}
-
-/* === Active Portrait Container (Large) === */
-.active-portrait-container {
-  position: relative;
-  width: 140px;
-  height: 140px;
-  border-radius: 50%;
-  background: transparent; /* Let chakraholder frame show */
-  border: none; /* Chakraholder frame provides the border */
-  box-shadow: none; /* Chakraholder frame provides the shadow */
-  transition: all 0.2s ease;
-  overflow: visible; /* Allow chakraholder to show fully */
-}
-
-.active-portrait-container:hover {
-  /* Hover effect handled by unit-ring in battle-chakra-wheel.css */
-}
-
-.active-portrait-container.drag-over {
-  box-shadow: 0 0 20px rgba(212, 175, 55, 0.9);
-  transform: scale(1.05);
-}
-
-/* Portrait styling is handled by .portrait class in battle-chakra-wheel.css */
-
-/* === Bench Portrait Container (Small, staggered nested below active) === */
-.bench-portrait-container {
-    position: absolute;
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    background: transparent;
-    border: none;
-    box-shadow: none;
-    overflow: visible;
-    left: 0;
-    bottom: -1px;
-    z-index: 10;
-    cursor: grab;
-}
-
-.bench-portrait-container:active {
-    cursor: grabbing;
-}
-
-/* Portrait styling is handled by .portrait class in battle-chakra-wheel.css */
-
-/* === Unit Info (Name, HP) === */
-.unit-info {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 3px;
-  font-family: "Cinzel", serif;
-  font-size: 11px;
-  color: #f0e6d1;
-  text-align: center;
-  min-width: 100px;
-}
-
-.unit-name {
-  font-weight: 600;
-  color: #b8985f;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
+#team-holder .unit-name {
+  font-family: "Kaisei Tokumin", "Cinzel", serif;
+  font-weight: 700;
+  font-size: clamp(8px, calc(var(--uc-w) * 0.074), 12px);
+  line-height: 1.15;
+  letter-spacing: 0;
+  color: #f1d98a;
+  text-shadow: 0 1px 2px #000, 0 0 4px rgba(0, 0, 0, 0.9);
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
-
-.unit-hp-bar {
-  width: 80px;
-  height: 5px;
-  background: rgba(0, 0, 0, 0.7);
-  border: 1px solid rgba(139, 115, 85, 0.5);
-  border-radius: 3px;
+#team-holder .unit-info .unit-hp-bar {
+  position: relative;
+  left: auto;
+  bottom: auto;
+  transform: none;
+  width: 100%;
+  height: clamp(4px, calc(var(--uc-h) * 0.03), 7px);
+  background: linear-gradient(180deg, #061012, #10272a);
+  border: 1px solid rgba(217, 184, 101, 0.85);
+  border-radius: 1px;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.7);
   overflow: hidden;
 }
-
-.unit-hp-fill {
+#team-holder .unit-hp-fill {
+  position: absolute;
+  left: 0;
+  top: 0;
   height: 100%;
-  background: linear-gradient(90deg, #d4af37, #ff8c00); /* Gold to Orange */
-  transition: width 0.3s ease;
+  background: linear-gradient(180deg, #8ef0a6, #2fb866 55%, #1f8a4b);
+  border-radius: 0;
+  transition: width 0.45s ease-out, background 0.3s ease;
+}
+#team-holder .unit-card.hp-low .unit-info .unit-hp-fill {
+  background: linear-gradient(180deg, #ff9a7a, #e0452e 55%, #a82718);
 }
 
-/* === Acting Unit Indicator === */
-.unit-card.is-acting .active-portrait-container {
-  border-color: #d4af37;
-  box-shadow: 0 0 24px rgba(212, 175, 55, 0.9);
-  animation: actingPulse 1.2s ease-in-out infinite;
+/* === Chakra strip (card's dark bottom band) === */
+#team-holder .uc-strip {
+  position: absolute;
+  left: 10.5%;
+  right: 16%;
+  top: 84.6%;
+  height: 8.8%;
+  z-index: 3;
+  pointer-events: none;
+}
+/* the mini card covers the strip's right end */
+#team-holder .unit-card.has-backup .uc-strip { right: 25%; }
+#team-holder .unit-card.has-backup .unit-info { right: 23%; }
+
+/* === Slot number (matches the field unit badges) === */
+#team-holder .uc-pos {
+  position: absolute;
+  left: 13%;
+  top: 1.5%;
+  z-index: 5;
+  width: 15%;
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #f7dc7a, #c9962c);
+  border: 1px solid #fff0b8;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.8), 0 2px 3px rgba(0, 0, 0, 0.7);
+  color: #1a1204;
+  font: 800 clamp(7px, calc(var(--uc-w) * 0.085), 13px)/1 "Cinzel", serif;
+  pointer-events: none;
 }
 
-@keyframes actingPulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.06); }
+/* === Ready tags === */
+#team-holder .uc-ready {
+  position: absolute;
+  top: 13%;
+  right: 10%;
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+  pointer-events: none;
+}
+#team-holder .uc-tag {
+  display: none;
+  font-family: "Kaisei Tokumin", "Cinzel", serif;
+  font-weight: 800;
+  font-size: clamp(6.5px, calc(var(--uc-w) * 0.066), 10px);
+  line-height: 1;
+  letter-spacing: 0.08em;
+  padding: 0.25em 0.5em 0.2em;
+  border-radius: 2px;
+  transform: skewX(-8deg);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+}
+#team-holder .tag-jutsu {
+  color: #d9ffff;
+  background: linear-gradient(180deg, rgba(20, 110, 118, 0.95), rgba(8, 52, 58, 0.95));
+  border: 1px solid rgba(74, 230, 230, 0.9);
+  text-shadow: 0 0 4px rgba(74, 230, 230, 0.9);
+}
+#team-holder .tag-ult {
+  color: #fff1d6;
+  background: linear-gradient(180deg, rgba(170, 40, 24, 0.96), rgba(90, 14, 10, 0.96));
+  border: 1px solid #f1c070;
+  text-shadow: 0 0 4px rgba(255, 120, 60, 0.9);
+}
+#team-holder .unit-card.jutsu-ready .tag-jutsu,
+#team-holder .unit-card.ult-ready .tag-ult {
+  display: block;
+  animation: ucTagIn 0.35s cubic-bezier(0.3, 1.6, 0.5, 1);
+}
+@keyframes ucTagIn {
+  from { opacity: 0; transform: skewX(-8deg) translateX(30%) scale(0.7); }
+  to   { opacity: 1; transform: skewX(-8deg); }
 }
 
-/* === Dead Unit === */
-.unit-card.is-dead {
-  opacity: 0.35;
-  filter: grayscale(100%);
+/* card glow by readiness */
+#team-holder .unit-card.jutsu-ready .uc-art {
+  filter: drop-shadow(0 0 4px rgba(74, 230, 230, 0.55)) drop-shadow(0 4px 6px rgba(0, 0, 0, 0.75));
+}
+#team-holder .unit-card.ult-ready .uc-art {
+  animation: ucUltGlow 1.4s ease-in-out infinite;
+}
+@keyframes ucUltGlow {
+  0%, 100% { filter: drop-shadow(0 0 4px rgba(255, 96, 64, 0.55)) drop-shadow(0 4px 6px rgba(0, 0, 0, 0.75)); }
+  50%      { filter: drop-shadow(0 0 10px rgba(255, 110, 60, 0.95)) drop-shadow(0 4px 6px rgba(0, 0, 0, 0.75)); }
 }
 
-.unit-card.is-dead .active-portrait-container,
-.unit-card.is-dead .bench-portrait-container {
-  border-color: rgba(100, 100, 100, 0.4);
+/* === Acting unit === */
+#team-holder .unit-card.is-acting {
+  transform: translateY(-7%);
+  z-index: 2;
+}
+#team-holder .unit-card.is-acting .uc-art {
+  animation: none;
+  filter: drop-shadow(0 0 3px #f1d98a) drop-shadow(0 0 12px rgba(241, 217, 138, 0.85)) drop-shadow(0 4px 6px rgba(0, 0, 0, 0.75));
+}
+/* gold chevron above the acting card */
+#team-holder .unit-card.is-acting::before {
+  content: "";
+  position: absolute;
+  left: 56%;
+  top: -3%;
+  width: 14%;
+  aspect-ratio: 1.3;
+  transform: translate(-50%, -100%);
+  background: linear-gradient(180deg, #fff1b8, #d9a93a);
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  filter: drop-shadow(0 0 4px rgba(241, 217, 138, 0.9));
+  animation: ucChevron 0.9s ease-in-out infinite;
+  z-index: 7;
+  pointer-events: none;
+}
+@keyframes ucChevron {
+  0%, 100% { transform: translate(-50%, -100%); }
+  50%      { transform: translate(-50%, -70%); }
 }
 
-/* === Unit Switch Animation === */
-/* Bench portraits are clickable to swap with active */
-.bench-portrait-container {
+/* === Drop target / switching === */
+#team-holder .unit-card.drag-over .uc-art {
+  filter: drop-shadow(0 0 10px rgba(74, 230, 230, 0.95)) drop-shadow(0 4px 6px rgba(0, 0, 0, 0.75));
+}
+#team-holder .active-portrait-container.drag-over { transform: none; box-shadow: none; }
+
+/* === Dead === */
+/* (on the body only: a downed unit's backup stays bright and tappable) */
+#team-holder .unit-card.is-dead > .uc-body {
+  filter: grayscale(1) brightness(0.6);
+  opacity: 0.6;
+}
+#team-holder .unit-card.is-dead:hover { transform: none; }
+
+/* === Backup mini card (bottom-right corner, ~1/3 size) ===
+   Same card art as the main card, so it reads as "the card behind this
+   one". Tap / click / drag onto the card to swap (battle-team-holder.js). */
+#team-holder .uc-mini {
+  --m-w: calc(var(--uc-w) * 0.38);
+  position: absolute;
+  left: 79%;
+  top: 59%;
+  width: var(--m-w);
+  height: calc(var(--m-w) * 1.4306);
+  z-index: 6;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  overflow: visible;
   cursor: pointer;
-  transition: transform 0.2s ease, border-color 0.2s ease;
+  pointer-events: auto;
+  transform-origin: 30% 30%;
+  transform: rotate(4deg);
+  transition: transform 0.2s cubic-bezier(0.3, 1.5, 0.5, 1), filter 0.25s ease, opacity 0.25s ease;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: none;
+  outline: none;
+}
+/* bigger invisible hit area for fingers */
+#team-holder .uc-mini::before {
+  content: "";
+  position: absolute;
+  inset: -14% -14% -8% -18%;
+}
+#team-holder .uc-mini:hover,
+#team-holder .uc-mini:focus-visible { transform: rotate(0deg) scale(1.12); }
+#team-holder .uc-mini:active { cursor: grabbing; }
+#team-holder .uc-mini > .unit-ring {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  clip-path: polygon(23.8% 3.6%, 93.5% 10.2%, 82.6% 80.4%, 13.3% 78.6%);
+  background: #0b1a1c;
+  border-radius: 0;
+  box-shadow: none;
+  overflow: visible;
+  transform: none;
+}
+#team-holder .uc-mini .portrait {
+  position: absolute;
+  left: 12%;
+  top: 3%;
+  width: 83%;
+  height: 78%;
+  max-width: none;
+  object-fit: cover;
+  object-position: center 18%;
+  border-radius: 0;
+  clip-path: none;
+  filter: saturate(0.85) brightness(0.92);
+}
+#team-holder .uc-mini .uc-art {
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.9));
+}
+/* pairing tag: swap arrows + the slot number it backs up */
+#team-holder .ucm-tag {
+  position: absolute;
+  right: -30%;
+  top: -4%;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  gap: 1px;
+  padding: 1px 4px 1px 2px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #f1d98a, #b98a2e);
+  border: 1px solid #fff0b8;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.8), 0 1px 3px rgba(0, 0, 0, 0.8);
+  color: #1a1204;
+  font: 800 clamp(7px, calc(var(--uc-w) * 0.075), 11px)/1 "Cinzel", serif;
+  pointer-events: none;
+  transform: rotate(-4deg);
+}
+#team-holder .ucm-tag svg { width: 1.05em; height: 1.05em; display: block; }
+/* mini HP (in the window) + chakra (in the strip) */
+#team-holder .ucm-bars {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+#team-holder .uc-mini .unit-hp-bar.bench-hp {
+  position: absolute;
+  left: 17%;
+  right: 20%;
+  top: 70.5%;
+  width: auto;
+  height: 6%;
+  transform: skewX(-5.5deg);
+  background: #061012;
+  border: 1px solid rgba(217, 184, 101, 0.85);
+  border-radius: 1px;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.7);
+  overflow: hidden;
+}
+#team-holder .uc-mini .chakra-gauge.mini {
+  position: absolute;
+  left: 11.5%;
+  right: 19%;
+  top: 85.5%;
+  width: auto;
+  height: 6.5%;
 }
 
-.bench-portrait-container:hover {
-  transform: scale(1.1);
-  border-color: rgba(212, 175, 55, 0.8);
+/* swappable now (its partner is acting, or down): chakra-cyan pulse */
+#team-holder .uc-mini.can-swap .uc-art {
+  animation: ucMiniReady 1.1s ease-in-out infinite;
+}
+@keyframes ucMiniReady {
+  0%, 100% { filter: drop-shadow(0 0 2px rgba(74, 230, 230, 0.7)) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.9)); }
+  50%      { filter: drop-shadow(0 0 7px rgba(74, 230, 230, 1)) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.9)); }
+}
+#team-holder .uc-mini.can-swap .ucm-tag {
+  background: linear-gradient(180deg, #bffcff, #2fb9c0);
+  border-color: #e8ffff;
+  animation: ucMiniTag 1.1s ease-in-out infinite;
+}
+@keyframes ucMiniTag { 50% { transform: rotate(-4deg) scale(1.15); } }
+#team-holder .unit-card:not(.is-acting):not(.is-dead) .uc-mini:not(:hover) { filter: brightness(0.82); }
+#team-holder .uc-mini.is-dead { filter: grayscale(1) brightness(0.55) !important; }
+#team-holder .uc-mini.is-dragging {
+  z-index: 20;
+  transition: none;
+  transform: scale(1.2);
+  filter: brightness(1.15) drop-shadow(0 0 8px rgba(74, 230, 230, 0.9));
+  opacity: 0.92;
+}
+/* refused swap (not this unit's turn / backup down) */
+#team-holder .uc-mini.deny { animation: ucMiniDeny 0.4s ease; }
+@keyframes ucMiniDeny {
+  0%, 100% { transform: rotate(4deg) translateX(0); }
+  20% { transform: rotate(4deg) translateX(-14%); }
+  40% { transform: rotate(4deg) translateX(12%); }
+  60% { transform: rotate(4deg) translateX(-8%); }
+  80% { transform: rotate(4deg) translateX(5%); }
 }
 
-/* Switch animation states */
-.active-portrait-container.switching {
-  animation: activeSpin 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-  filter: brightness(1.3) drop-shadow(0 0 10px rgba(100, 180, 255, 0.8));
-  z-index: 100;
+/* the card lifts a touch when it is a drop target for its backup */
+#team-holder .unit-card.drag-over { transform: translateY(-4%) scale(1.03); }
+
+/* === Swap animation ===
+   While .is-swapping the real card body + mini are hidden and two
+   full-size ghosts (.uc-ghost, fixed on body) are scaled between the
+   slot and the corner: backup grows in, active shrinks out. */
+#team-holder .unit-card.is-swapping > .uc-body,
+#team-holder .unit-card.is-swapping > .uc-mini { visibility: hidden; }
+#team-holder .unit-card.is-swapping::before { display: none; }
+.uc-ghost {
+  position: fixed;
+  z-index: 1000;
+  pointer-events: none;
+  transform-origin: 0 0;
+  will-change: transform;
+}
+.uc-ghost--in { z-index: 1001; }
+.uc-ghost .ucg-win {
+  position: absolute;
+  inset: 0;
+  clip-path: polygon(23.8% 3.6%, 93.5% 10.2%, 82.6% 80.4%, 13.3% 78.6%);
+  background: #0b1a1c;
+}
+.uc-ghost .ucg-win::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(180deg, rgba(4, 14, 16, 0) 48%, rgba(4, 14, 16, 0.55) 62%, rgba(4, 14, 16, 0.94) 79%);
+}
+.uc-ghost .ucg-win img {
+  position: absolute;
+  left: 12%;
+  top: 3%;
+  width: 83%;
+  height: 78%;
+  object-fit: cover;
+  object-position: center 18%;
+}
+.uc-ghost .ucg-art {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.75));
+}
+#team-holder .unit-card.swap-settle > .uc-body { animation: ucSettle 0.35s ease-out; }
+#team-holder .unit-card.swap-settle > .uc-mini { animation: ucMiniSettle 0.35s ease-out; }
+@keyframes ucSettle {
+  0%   { filter: brightness(1.5) drop-shadow(0 0 10px rgba(74, 230, 230, 0.9)); }
+  100% { filter: none; }
+}
+@keyframes ucMiniSettle {
+  0%   { transform: rotate(4deg) scale(1.15); }
+  100% { transform: rotate(4deg) scale(1); }
 }
 
-.bench-portrait-container.switching {
-  animation: benchSwap 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-  filter: brightness(1.3) drop-shadow(0 0 10px rgba(255, 215, 0, 0.8));
-  z-index: 101;
+/* === Field units swapping (battle-units grid) ===
+   Uses the individual `scale` property: .battle-unit's transform is
+   !important (centering). */
+.battle-unit.swap-out {
+  animation: fieldSwapOut 0.3s ease-in forwards;
+  pointer-events: none;
+}
+.battle-unit.swap-in { animation: fieldSwapIn 0.45s cubic-bezier(0.3, 1.5, 0.5, 1); }
+@keyframes fieldSwapOut {
+  0%   { opacity: 1; scale: 1; filter: none; }
+  100% { opacity: 0; scale: 0.6; filter: brightness(2.2) drop-shadow(0 0 10px rgba(74, 230, 230, 1)); }
+}
+@keyframes fieldSwapIn {
+  0%   { opacity: 0; scale: 0.5; filter: brightness(2.2) drop-shadow(0 0 12px rgba(74, 230, 230, 1)); }
+  60%  { opacity: 1; }
+  100% { opacity: 1; scale: 1; filter: none; }
 }
 
-/* Active portrait spins in place */
-@keyframes activeSpin {
-  0% { transform: rotate(0deg) scale(1); }
-  50% { transform: rotate(180deg) scale(1.15); }
-  100% { transform: rotate(360deg) scale(1); }
-}
-
-/* Bench portrait moves in curved arc */
-@keyframes benchSwap {
-  0% {
-    transform: translate(0, 0) scale(1);
-    opacity: 1;
-  }
-  50% {
-    transform: translate(30px, -40px) scale(1.3);
-    opacity: 0.7;
-  }
-  100% {
-    transform: translate(0, 0) scale(1);
-    opacity: 1;
-  }
-}
-
-/* Sparkle trail effect */
+/* Sparkle trail effect (appended to body during a swap) */
 .chakra-sparkle {
   position: absolute;
   width: 8px;
   height: 8px;
-  background: radial-gradient(circle, rgba(100, 180, 255, 1) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(100, 230, 230, 1) 0%, transparent 70%);
   border-radius: 50%;
   pointer-events: none;
   z-index: 100;
   animation: sparkleTrail 0.6s ease-out forwards;
 }
-
 @keyframes sparkleTrail {
-  0% {
-    opacity: 1;
-    transform: scale(1);
-  }
-  100% {
-    opacity: 0;
-    transform: scale(0.3) translateY(20px);
-  }
+  0%   { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(0.3) translateY(20px); }
+}
+
+/* === Mobile (landscape phones) === */
+html.is-mobile .page-battle,
+html.is-mobile.page-battle {
+  --uc-h: clamp(92px, calc(var(--ch) * 30), 128px);
+}
+html.is-mobile #team-holder {
+  bottom: 2px;
+  gap: calc(var(--uc-w) * 0.12);
+}
+html.is-mobile #team-holder.has-bench {
+  gap: calc(var(--uc-w) * 0.3);
+  padding-right: calc(var(--uc-w) * 0.5);
+}
+/* a bit more than 1/3 on phones so the mini card stays tappable */
+html.is-mobile #team-holder .uc-mini { --m-w: calc(var(--uc-w) * 0.42); left: 77%; top: 56%; }
+html.is-mobile #team-holder .ucm-tag { font-size: 7px; padding: 0 3px 0 1px; }
+html.is-mobile #team-holder .unit-name { font-size: clamp(7px, calc(var(--uc-w) * 0.095), 10px); }
+html.is-mobile #team-holder .uc-tag { font-size: 6.5px; }
+
+@media (prefers-reduced-motion: reduce) {
+  #team-holder .unit-card,
+  #team-holder .unit-card::before,
+  #team-holder .uc-art { animation: none !important; transition: none; }
 }

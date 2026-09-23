@@ -92,52 +92,68 @@
     },
 
     /**
-     * Update speed gauge visual display
-     * Shows all units' progress with position labels
+     * Update speed gauge visual display.
+     * Markers are created once per unit and moved (CSS transition on
+     * `left`), so they glide instead of being rebuilt every tick.
+     * Classes: .player/.enemy, .acting (current turn), .next (next to act),
+     * .paused.
      */
     updateSpeedGaugeDisplay(core) {
-      if (!core.dom.speedGaugeTrack) return;
-
-      // Bug #5 fix: Validate combatants array exists
+      const track = core.dom.speedGaugeTrack;
+      if (!track) return;
       if (!Array.isArray(core.combatants)) return;
 
-      core.dom.speedGaugeTrack.innerHTML = "";
+      let lane = track.querySelector(':scope > .speed-lane');
+      if (!lane) {
+        track.innerHTML = '';
+        track.classList.add('speed-track-skin');
+        lane = document.createElement('div');
+        lane.className = 'speed-lane';
+        track.appendChild(lane);
+      }
 
-      // Sort by gauge progress (highest first)
-      const sorted = [...core.combatants]
-        .filter(u => u.stats.hp > 0)
-        .sort((a, b) => b.speedGauge - a.speedGauge);
+      const alive = core.combatants.filter(u => u && u.stats && u.stats.hp > 0);
+      const sorted = [...alive].sort((a, b) => b.speedGauge - a.speedGauge);
+      const next = sorted.find(u => u !== this.currentUnit) || null;
+      const keep = new Set();
 
-      sorted.forEach(unit => {
-        const marker = document.createElement("div");
-        marker.className = `speed-marker ${unit.isPlayer ? 'player' : 'enemy'}`;
-        marker.dataset.unitId = unit.id;
-
-        // Add visual states
-        if (unit.isPaused) {
-          marker.classList.add('paused');
+      sorted.forEach((unit, rank) => {
+        const key = String(unit.id);
+        keep.add(key);
+        let marker = lane.querySelector(`:scope > .speed-marker[data-unit-id="${key.replace(/["\\]/g, '\\$&')}"]`);
+        if (!marker) {
+          marker = document.createElement('div');
+          marker.dataset.unitId = key;
+          const portraitSrc = unit.portrait || unit.icon || 'assets/characters/common/silhouette.png';
+          const pos = unit.isPlayer && unit.positionId != null
+            ? `<span class="pos-label">${String(unit.positionId).replace(/[<>&"]/g, '')}</span>` : '';
+          marker.innerHTML = `
+            <span class="sm-portrait"><img src="${portraitSrc}" alt="${String(unit.name || '').replace(/"/g, '&quot;')}" draggable="false"
+                 onerror="this.onerror=null;this.src='assets/characters/common/silhouette.png';"></span>
+            <span class="sm-frame" aria-hidden="true"></span>
+            ${pos}`;
+          marker.style.left = '0%';
+          lane.appendChild(marker);
         }
-        if (unit === this.currentUnit) {
-          marker.classList.add('acting');
-        }
 
-        const progress = (unit.speedGauge / core.GAUGE_MAX) * 100;
-        marker.style.left = `${Math.min(98, progress)}%`;
+        const progress = Math.max(0, Math.min(100, (unit.speedGauge / core.GAUGE_MAX) * 100));
+        const prev = parseFloat(marker.dataset.progress);
+        // Big drops (turn just ended → back to 0) get a slower slide home
+        marker.classList.toggle('sm-return', Number.isFinite(prev) && prev - progress > 25);
+        marker.dataset.progress = progress.toFixed(1);
+        marker.style.left = `${progress}%`;
+        marker.style.zIndex = String(100 - rank + (unit === this.currentUnit ? 200 : unit === next ? 100 : 0));
 
-        // Show position ID and speed for players
-        const posLabel = unit.isPlayer ?
-          `<span class="pos-label">${unit.positionId}</span>` : '';
-        const speedLabel = `<span class="speed-label">${unit.stats.speed}</span>`;
+        marker.className = `speed-marker ${unit.isPlayer ? 'player' : 'enemy'}`
+          + `${unit.isPaused ? ' paused' : ''}`
+          + `${unit === this.currentUnit ? ' acting' : ''}`
+          + `${unit === next ? ' next' : ''}`
+          + `${marker.classList.contains('sm-return') ? ' sm-return' : ''}`;
+        marker.title = `${unit.name} · SPD ${unit.stats.speed}`;
+      });
 
-        const portraitSrc = unit.portrait || unit.icon || 'assets/characters/common/silhouette.png';
-        marker.innerHTML = `
-          ${posLabel}
-          <img src="${portraitSrc}" alt="${unit.name}"
-               onerror="this.src='assets/characters/common/silhouette.png';">
-          ${speedLabel}
-        `;
-
-        core.dom.speedGaugeTrack.appendChild(marker);
+      lane.querySelectorAll(':scope > .speed-marker').forEach(m => {
+        if (!keep.has(m.dataset.unitId)) m.remove();
       });
     },
 
@@ -232,6 +248,11 @@
       // Pause all other units
       this.pauseAllOtherUnits(core);
 
+      // Show the acting marker / card right away (the tick loop stops
+      // redrawing while the turn is locked)
+      this.updateSpeedGaugeDisplay(core);
+      core.teamHolder?.highlightActingUnit?.(unit);
+
       // Apply turn start effects (buffs, regen, etc.)
       if (window.BattleBuffs) {
         window.BattleBuffs.onTurnStart(core, unit);
@@ -285,9 +306,13 @@
             console.error("[Turns] BattleCombat not available!");
           }
           // Safety timeout: end turn if combat callback never fires (guard, sealed, no targets, etc.)
-          setTimeout(() => {
-            if (this.currentUnit === unit) this.endTurn(core);
-          }, 1800);
+          // Long spritesheet skills flag the unit busy; wait for them instead.
+          const safety = () => {
+            if (this.currentUnit !== unit) return;
+            if (unit._actionBusy) { setTimeout(safety, 500); return; }
+            this.endTurn(core);
+          };
+          setTimeout(safety, 1800);
         }, 500);
       }
     },
@@ -344,6 +369,9 @@
 
       // Resume all units
       this.resumeAllUnits(core);
+
+      this.updateSpeedGaugeDisplay(core);
+      core.teamHolder?.highlightActingUnit?.(null);
     },
 
     /* ===== Action Panel ===== */

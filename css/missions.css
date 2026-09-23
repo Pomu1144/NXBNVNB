@@ -438,9 +438,8 @@ body.page-missions .start-btn:hover { transform: none; filter: brightness(1.12);
 body.page-missions .start-btn:active { transform: translateY(1px) scale(0.98); box-shadow: none; }
 body.page-missions .mission-lock-note { font-family: var(--jjk-font); color: var(--jjk-gold-hi); }
 
-/* Mobile (compact landscape) */
+/* Mobile (compact landscape): layout lives in css/mobile.css "Missions" */
 html.is-mobile.is-landscape.is-compact body.page-missions .mission-page-container {
-  top: calc(var(--jjk-header-h) + var(--safe-t, 0px)) !important;
   border-width: 1px !important;
 }
 html.is-mobile.is-landscape.is-compact body.page-missions .mission-tabs .tab-btn {

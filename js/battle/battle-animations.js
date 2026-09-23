@@ -221,6 +221,120 @@
     },
 
     /**
+     * One hit of a multi-hit combo: a compact damage number scattered around
+     * the target (so 18 numbers don't stack on one spot), a white hit flash
+     * and a small shake on the target's sprite.
+     * @param {number} hitIndex - 0-based hit number within the combo
+     * @param {number} hitCount - total hits in the combo
+     */
+    showComboHit(unit, amount, isCritical, dom, hitIndex = 0, hitCount = 1) {
+      const unitEl = dom.scene?.querySelector(`.battle-unit[data-unit-id="${unit.id}"]`);
+      if (!unitEl || !dom.damageLayer) return;
+      const body = unitEl.querySelector('.unit-sprite') || unitEl;
+      const r = body.getBoundingClientRect();
+      const sr = dom.scene.getBoundingClientRect();
+      const small = window.innerWidth < 900 || window.innerHeight < 500;
+
+      // Scatter: random x across the body, rows stepping up as the combo goes on.
+      const spreadX = Math.min(small ? 70 : 110, Math.max(40, r.width * 1.1));
+      const x = r.left - sr.left + r.width / 2 + (Math.random() - 0.5) * spreadX;
+      // Anchor on the body (not above it) so the numbers stay on the field,
+      // clear of the turn-order bar when the target stands near the top.
+      const row = hitIndex % 4;
+      const y = r.top - sr.top + r.height * 0.85 - row * (small ? 8 : 12) + (Math.random() - 0.5) * 8;
+      const last = hitIndex === hitCount - 1;
+
+      const el = document.createElement('div');
+      el.className = `damage-number damage-combo${isCritical ? ' damage-crit' : ''}${last ? ' damage-combo--last' : ''}`;
+      el.textContent = `${amount}`;
+      Object.assign(el.style, {
+        position: 'absolute', left: `${x}px`, top: `${y}px`,
+        transform: 'translate(-50%, -100%)', pointerEvents: 'none', zIndex: String(510 + hitIndex),
+        fontFamily: "'Cinzel', serif", fontWeight: '900', letterSpacing: '1px', whiteSpace: 'nowrap',
+        fontSize: `${(small ? 1.05 : 1.7) * (isCritical ? 1.2 : 1) * (last ? 1.25 : 1)}rem`,
+        color: isCritical ? '#ffd84a' : '#ffffff',
+        textShadow: isCritical
+          ? '0 2px 0 #7a3a00, 0 0 8px rgba(255,170,0,0.9), 2px 2px 3px rgba(0,0,0,0.9)'
+          : '0 2px 0 #7a0000, 0 0 6px rgba(255,60,40,0.8), 2px 2px 3px rgba(0,0,0,0.9)',
+        opacity: '0'
+      });
+      dom.damageLayer.appendChild(el);
+      const rise = small ? 26 : 40;
+      const a = el.animate([
+        { opacity: 0, transform: 'translate(-50%, -100%) scale(0.4)' },
+        { opacity: 1, transform: 'translate(-50%, -110%) scale(1.25)', offset: 0.1 },
+        { opacity: 1, transform: `translate(-50%, calc(-100% - ${rise * 0.4}px)) scale(1)`, offset: 0.4 },
+        { opacity: 0, transform: `translate(-50%, calc(-100% - ${rise}px)) scale(0.9)` }
+      ], { duration: hitCount > 10 ? 720 : 900, easing: 'ease-out', fill: 'forwards' });
+      a.onfinish = () => el.remove();
+      setTimeout(() => el.remove(), 1500);
+
+      if (isCritical && hitIndex === 0) {
+        const crit = document.createElement('div');
+        crit.textContent = 'CRITICAL!';
+        Object.assign(crit.style, {
+          position: 'absolute', left: `${r.left - sr.left + r.width / 2}px`, top: `${r.top - sr.top - (small ? 18 : 30)}px`,
+          transform: 'translate(-50%, -100%)', pointerEvents: 'none', zIndex: '540',
+          fontFamily: "'Cinzel', serif", fontWeight: 'bold', fontSize: small ? '0.8rem' : '1.2rem',
+          color: '#ffcc00', textShadow: '2px 2px 4px rgba(0,0,0,0.8), 0 0 12px rgba(255,204,0,0.7)'
+        });
+        dom.damageLayer.appendChild(crit);
+        crit.animate([{ opacity: 0 }, { opacity: 1, offset: 0.15 }, { opacity: 1, offset: 0.75 }, { opacity: 0 }],
+          { duration: 1100, fill: 'forwards' }).onfinish = () => crit.remove();
+      }
+
+      // Hit flash + shake on the body (individual `translate` so it composes with existing transforms).
+      const dir = Math.random() < 0.5 ? -1 : 1;
+      body.animate([
+        { filter: 'brightness(2.6) saturate(0.3)', translate: '0 0' },
+        { filter: 'brightness(1.6)', translate: `${dir * 5}px 0`, offset: 0.35 },
+        { filter: 'none', translate: `${-dir * 3}px 0`, offset: 0.7 },
+        { filter: 'none', translate: '0 0' }
+      ], { duration: 170, easing: 'ease-out' });
+
+      if (hitIndex % 2 === 0 && window.BattleParticles?.createImpactFlash) {
+        try { window.BattleParticles.createImpactFlash(unit, isCritical ? 'crit' : 'normal', dom.scene); } catch (e) { /* cosmetic */ }
+      }
+      if (window.AudioManager) window.AudioManager.playSFX(isCritical && hitIndex === 0 ? 'critical' : 'hit');
+    },
+
+    /**
+     * "N HITS" combo counter above a unit; pass the previous element back in
+     * to update it in place. Returns the element.
+     */
+    showComboCounter(unit, count, dom, existing = null) {
+      if (!dom.damageLayer) return existing;
+      let el = existing && existing.isConnected ? existing : null;
+      if (!el) {
+        const unitEl = dom.scene?.querySelector(`.battle-unit[data-unit-id="${unit.id}"]`);
+        if (!unitEl) return existing;
+        const body = unitEl.querySelector('.unit-sprite') || unitEl;
+        const r = body.getBoundingClientRect();
+        const sr = dom.scene.getBoundingClientRect();
+        const small = window.innerWidth < 900 || window.innerHeight < 500;
+        el = document.createElement('div');
+        el.className = 'combo-counter';
+        Object.assign(el.style, {
+          // Right of the scatter area used by showComboHit's numbers.
+          position: 'absolute', left: `${r.left - sr.left + r.width / 2 + Math.min(small ? 35 : 55, Math.max(20, r.width * 0.55)) + (small ? 26 : 40)}px`,
+          top: `${r.top - sr.top + r.height * 0.1}px`,
+          pointerEvents: 'none', zIndex: '560', fontFamily: "'Cinzel', serif", fontWeight: '900', fontStyle: 'italic',
+          fontSize: small ? '0.9rem' : '1.35rem', color: '#ffe066', whiteSpace: 'nowrap',
+          textShadow: '0 2px 0 #8a2b00, 0 0 8px rgba(255,120,0,0.8), 2px 2px 3px rgba(0,0,0,0.9)'
+        });
+        dom.damageLayer.appendChild(el);
+      }
+      el.innerHTML = `<span style="font-size:1.35em">${count}</span> HIT${count === 1 ? '' : 'S'}`;
+      el.animate([{ transform: 'scale(1.35)' }, { transform: 'scale(1)' }], { duration: 140, easing: 'ease-out' });
+      clearTimeout(el._fade);
+      el.style.opacity = '1';
+      el._fade = setTimeout(() => {
+        el.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 300, fill: 'forwards' }).onfinish = () => el.remove();
+      }, 1100);
+      return el;
+    },
+
+    /**
      * Play skill animation (jutsu, ultimate, or secret)
      * SUPPORTS: GIF, MP4, WEBM, and other video formats
      * @param {Object} unit - The unit casting the skill

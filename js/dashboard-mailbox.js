@@ -113,6 +113,7 @@ class DashboardMailbox {
     if (n.includes('pearl')) return 'assets/icons/currency/ninjapearl.png';
     if (n.includes('ryo')) return 'assets/icons/currency/ryo.png';
     if (n.includes('shinobite')) return 'assets/icons/currency/shinobite.png';
+    if (window.RewardFormat) return window.RewardFormat.icon(nameOrId);
     return 'assets/icons/chestunopened.png';
   }
 
@@ -144,7 +145,7 @@ class DashboardMailbox {
       const key = `res_${res.resourceId || res.name}`;
       out.push({
         key, kind: 'resource',
-        name: res.name || res.resourceId,
+        name: res.name || (window.RewardFormat ? window.RewardFormat.name(res.resourceId) : res.resourceId),
         qty: res.quantity,
         icon: this._resourceIconUrl(res.resourceId || res.name),
         claimed: claimed.includes(key)
@@ -167,7 +168,8 @@ class DashboardMailbox {
       const key = `legacy_${name}`;
       out.push({
         key, kind: 'resource',
-        name, qty: r[name],
+        name: window.RewardFormat ? window.RewardFormat.name(name) : name,
+        qty: r[name],
         icon: this._resourceIconUrl(name),
         claimed: claimed.includes(key)
       });
@@ -401,7 +403,7 @@ class DashboardMailbox {
         <div class="rr-tile-glow"></div>
         <div class="rr-socket">
           ${this._imgTag(it, 'rr-icon')}
-          <span class="rr-qty">&times;${this._fmtQty(it.qty)}</span>
+          <span class="rr-qty${this._fmtQty(it.qty).length > 5 ? ' is-long' : ''}">&times;${this._fmtQty(it.qty)}</span>
         </div>
         <div class="rr-name">${this._esc(it.name)}</div>
       </div>`).join('');

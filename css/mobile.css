@@ -216,56 +216,163 @@ html.is-mobile #rotate-device-overlay .rdo-text {
 
 /* --------------------------------------------------------------------------
    3. Landscape: bottom dock (css/bottombar.css reads these tokens)
-   -------------------------------------------------------------------------- */
-/* Mirrors the village dock compact rules below (.bottom-icon-bar) */
+   --------------------------------------------------------------------------
+   Phones get a dock with hierarchy instead of nine identical plates:
+     Village | Shinobi Fusion Teams Tools | SUMMON | Missions Items Shop
+   - slim, icon-first plates with small labels for the regular tabs
+   - Summon is the primary tab: taller plate raised above the band, bigger
+     icon, gold label + glow (it keeps the gold plate when it's the page)
+   - thin gold rules + a little air separate the groups
+   Same art (tab.webp / tab_active.webp, Kaisei Tokumin). */
 html.is-mobile.is-landscape.is-compact {
   --dock-h: calc(var(--m-dock-h) - 6px);
-  --dock-plate-h: 46px;
-  --dock-icon: 26px;
-  --dock-label: 8px;
+  --dock-plate-h: 40px;
+  --dock-icon: 22px;
+  --dock-label: 7.5px;
   --dock-safe-b: calc(var(--safe-b) * 0.45);
+  --dock-tab-w: clamp(56px, 8.6vw, 80px);   /* regular plate width      */
+  --dock-grp: clamp(10px, 1.9vw, 18px);     /* gap between tab groups   */
+}
+/* let the raised Summon plate break out of the band */
+html.is-mobile.is-landscape.is-compact body .bottom-bar {
+  overflow: visible !important;
 }
 html.is-mobile.is-landscape.is-compact body .bottom-bar .bottom-bar-content {
   padding-left: max(8px, var(--safe-x)) !important;
   padding-right: max(8px, var(--safe-x)) !important;
-  gap: clamp(2px, 1.2vw, 14px) !important;
+  gap: 0 !important;
   justify-content: center !important;
-  overflow: hidden !important;
+  align-items: center !important;
+  overflow: visible !important;
 }
 html.is-mobile.is-landscape.is-compact body .bottom-bar .hud-button {
-  flex: 1 1 0 !important;
-  max-width: 96px !important;
+  flex: 0 0 auto !important;
+  width: var(--dock-tab-w) !important;
+  max-width: none !important;
   flex-direction: column !important;
   gap: 2px !important;
-  padding: 0 calc(var(--plate-h) * 0.3) !important;
-  margin: 0 -2px !important;
+  padding: 0 !important;
+  margin: 0 -1px !important;
 }
 html.is-mobile.is-landscape.is-compact body .bottom-bar .hud-button::after {
-  letter-spacing: 0 !important;
+  letter-spacing: 0.01em !important;
+  color: rgba(236, 230, 214, 0.78);
+}
+/* group separators: thin gold rule centred in the gap before a group */
+html.is-mobile.is-landscape.is-compact body .bottom-bar #btn-characters,
+html.is-mobile.is-landscape.is-compact body .bottom-bar #btn-summon,
+html.is-mobile.is-landscape.is-compact body .bottom-bar #btn-missions {
+  margin-left: var(--dock-grp) !important;
+}
+html.is-mobile.is-landscape.is-compact body .bottom-bar #btn-characters::before,
+html.is-mobile.is-landscape.is-compact body .bottom-bar #btn-summon::before,
+html.is-mobile.is-landscape.is-compact body .bottom-bar #btn-missions::before {
+  content: "" !important;
+  display: block !important;
+  position: absolute !important;
+  top: 50%;
+  left: calc(var(--dock-grp) / -2 - 1px);
+  width: 1px;
+  height: 28px;
+  margin-top: -14px;
+  background: linear-gradient(180deg, transparent, rgba(230, 200, 120, 0.85) 30%, rgba(230, 200, 120, 0.85) 70%, transparent);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.35);
+  pointer-events: none;
+}
+/* Summon: the raised primary tab */
+html.is-mobile.is-landscape.is-compact body .bottom-bar #btn-summon {
+  --plate-h: 52px;
+  width: calc(var(--dock-tab-w) * 1.32) !important;
+  translate: 0 -7px;
+  gap: 2px !important;
+  filter: drop-shadow(0 0 5px rgba(241, 217, 138, 0.45)) drop-shadow(0 3px 4px rgba(0, 0, 0, 0.85));
+  z-index: 2;
+}
+/* its separator sits on the band, not on the raised plate */
+html.is-mobile.is-landscape.is-compact body .bottom-bar #btn-summon::before {
+  margin-top: -7px;
+}
+html.is-mobile.is-landscape.is-compact body .bottom-bar #btn-summon img {
+  width: 30px !important;
+  height: 30px !important;
+}
+html.is-mobile.is-landscape.is-compact body .bottom-bar #btn-summon::after {
+  font-size: 9.5px !important;
+  font-weight: 800;
+  color: var(--jjk-gold-hi, #f1d98a);
+}
+html.is-mobile.is-landscape.is-compact body .bottom-bar #btn-summon.active::after {
+  color: #2a220c;
+}
+/* current page stays full-contrast */
+html.is-mobile.is-landscape.is-compact body .bottom-bar .hud-button.active::after {
+  color: #2a220c;
 }
 
-/* Village's own dock (.bottom-icon-bar) */
+/* Village's own dock (.bottom-icon-bar): same slim icon-first plates,
+   grouped  Notice Presents Achievements | Panel Chat |
+            Inventory Teams Resources Tools | (Settings, icon-only) */
 html.is-mobile.is-landscape.is-compact .bottom-icon-bar {
   height: calc(var(--m-dock-h) - 6px) !important;
   min-height: 0 !important;
   max-height: none !important;
   padding: 0 max(8px, var(--safe-x)) calc(var(--safe-b) * 0.45) !important;
-  gap: clamp(2px, 1.2vw, 14px) !important;
+  gap: 0 !important;
   justify-content: center !important;
   overflow: hidden !important;
 }
-html.is-mobile.is-landscape.is-compact .bottom-icon {
+html.is-mobile.is-landscape.is-compact .bottom-icon-bar .bottom-icon {
+  --plate-h: 40px !important;
+  flex: 0 0 auto !important;
+  width: clamp(56px, 8.2vw, 76px) !important;
+  max-width: none !important;
+  flex-direction: column !important;
   gap: 2px !important;
+  padding: 0 !important;
+  margin: 0 -1px !important;
 }
 html.is-mobile.is-landscape.is-compact .bottom-icon-image {
-  width: 26px !important;
-  height: 26px !important;
+  width: 22px !important;
+  height: 22px !important;
   min-width: 0 !important;
   min-height: 0 !important;
 }
 html.is-mobile.is-landscape.is-compact .bottom-icon-label {
-  font-size: 8px !important;
+  font-size: 7.5px !important;
   letter-spacing: 0 !important;
+  color: rgba(236, 230, 214, 0.78);
+}
+html.is-mobile.is-landscape.is-compact .bottom-icon-bar .bottom-icon[data-action="panel-missions"],
+html.is-mobile.is-landscape.is-compact .bottom-icon-bar .bottom-icon[data-action="inventory"],
+html.is-mobile.is-landscape.is-compact .bottom-icon-bar .bottom-icon[data-action="settings"] {
+  margin-left: clamp(10px, 1.9vw, 18px) !important;
+}
+html.is-mobile.is-landscape.is-compact .bottom-icon-bar .bottom-icon[data-action="panel-missions"]::before,
+html.is-mobile.is-landscape.is-compact .bottom-icon-bar .bottom-icon[data-action="inventory"]::before,
+html.is-mobile.is-landscape.is-compact .bottom-icon-bar .bottom-icon[data-action="settings"]::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: calc(clamp(10px, 1.9vw, 18px) / -2 - 1px);
+  width: 1px;
+  height: 28px;
+  margin-top: -14px;
+  background: linear-gradient(180deg, transparent, rgba(230, 200, 120, 0.85) 30%, rgba(230, 200, 120, 0.85) 70%, transparent);
+  pointer-events: none;
+}
+html.is-mobile.is-landscape.is-compact .bottom-icon-bar .bottom-icon[data-action="achievements"] {
+  width: clamp(70px, 10.2vw, 92px) !important;
+}
+/* Settings: compact icon-only end cap */
+html.is-mobile.is-landscape.is-compact .bottom-icon-bar .bottom-icon[data-action="settings"] {
+  width: 46px !important;
+}
+html.is-mobile.is-landscape.is-compact .bottom-icon-bar .bottom-icon[data-action="settings"] .bottom-icon-label {
+  display: none;
+}
+html.is-mobile.is-landscape.is-compact .bottom-icon-bar .bottom-icon[data-action="settings"] .bottom-icon-image {
+  width: 24px !important;
+  height: 24px !important;
 }
 
 /* --------------------------------------------------------------------------
@@ -475,54 +582,145 @@ html.is-mobile.is-landscape.is-compact .page-teams #prebattle-footer {
   padding-right: max(12px, var(--safe-r)) !important;
 }
 
-/* ---------- Missions ---------- */
+/* ---------- Missions ----------
+   Phones: the header shrinks, the six category tabs become ONE swipeable row
+   of small plates that sits in the header line (right of the title), and the
+   panel spans the full width between header and dock. Cards turn horizontal
+   (banner left, ranks + Start right) so two full missions fit on a 375px-tall
+   screen. Scrolling stays owned by js/missions.js (list = only scroller). */
+html.is-mobile.is-landscape.is-compact body.page-missions {
+  --m-hdr-w: 170px;   /* back button + title plate */
+}
+html.is-mobile.is-landscape.is-compact body.page-missions .jjk-page-header .jjk-icon-btn {
+  width: 32px;
+  height: 32px;
+}
+html.is-mobile.is-landscape.is-compact body.page-missions .jjk-page-header .jjk-title-plate {
+  min-width: 128px;
+  min-height: 28px;
+  padding: 2px 32px 2px 12px;
+  font-size: 15px;
+}
 html.is-mobile.is-landscape.is-compact .page-missions .mission-page-container {
-  top: calc(6px + var(--safe-t)) !important;
-  bottom: calc(var(--m-dock-h) + 6px) !important;
+  top: calc(42px + var(--safe-t)) !important;
+  bottom: calc(var(--dock-h) + var(--dock-safe-b) + 10px) !important;
+  left: max(8px, var(--safe-l)) !important;
   right: max(8px, var(--safe-r)) !important;
   transform: none !important;
-  width: min(64%, 620px) !important;
+  width: auto !important;
+  max-width: none !important;
   max-height: none !important;
-  padding: 8px 10px !important;
-  border-width: 2px !important;
+  padding: 5px !important;
+  border-width: 1px !important;
   display: flex !important;
   flex-direction: column !important;
 }
 html.is-mobile.is-landscape.is-compact .page-missions .page-title {
-  font-size: 17px !important;
-  margin-bottom: 4px !important;
-  flex: none;
+  display: none !important;
 }
+/* tab row lifted into the header line */
 html.is-mobile.is-landscape.is-compact .page-missions .mission-tabs {
+  position: absolute !important;
+  top: -38px;
+  left: calc(var(--m-hdr-w) + 8px - max(8px, var(--safe-l)));
+  right: 0;
+  height: 34px;
   flex: none;
   flex-wrap: nowrap !important;
   justify-content: flex-start !important;
+  align-items: center !important;
   overflow-x: auto;
-  gap: 6px !important;
-  margin-bottom: 6px !important;
-  padding: 3px 2px !important;
+  overflow-y: hidden;
+  gap: 0 !important;
+  margin: 0 !important;
+  padding: 0 4px !important;
   scrollbar-width: none;
+  -webkit-mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - 22px), transparent);
+  mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - 22px), transparent);
 }
-html.is-mobile.is-landscape.is-compact .page-missions .tab-btn {
+html.is-mobile.is-landscape.is-compact .page-missions .mission-tabs::-webkit-scrollbar {
+  display: none;
+}
+html.is-mobile.is-landscape.is-compact body.page-missions .mission-tabs .tab-btn {
   flex: none;
-  font-size: 9px !important;
-  padding: 6px 14px !important;
-  min-height: 28px !important;
+  min-width: 0 !important;
+  height: 28px !important;
+  min-height: 0 !important;
+  padding: 0 16px !important;
+  margin: 0 -2px !important;
+  font-size: 10.5px !important;
   white-space: nowrap;
 }
-html.is-mobile.is-landscape.is-compact .page-missions .tab-btn::after {
-  bottom: 4px !important;
+html.is-mobile.is-landscape.is-compact body.page-missions .mission-tabs .tab-btn::after {
+  bottom: 3px !important;
+  width: 14px;
+  margin-left: -7px;
 }
 html.is-mobile.is-landscape.is-compact .page-missions .mission-list-container {
   height: auto !important;
   flex: 1 1 auto;
   min-height: 0;
-  padding: 6px !important;
+  padding: 5px !important;
 }
+/* horizontal card: banner | ranks + start */
 html.is-mobile.is-landscape.is-compact .page-missions .mission-card {
-  margin-bottom: 10px !important;
-  padding: 8px !important;
-  gap: 6px !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 36%) minmax(0, 1fr);
+  align-items: center;
+  column-gap: 12px;
+  margin-bottom: 6px !important;
+  padding: 5px !important;
+}
+html.is-mobile.is-landscape.is-compact .page-missions .mission-card .mission-banner {
+  width: 100%;
+  height: auto;
+  box-shadow: none;
+}
+html.is-mobile.is-landscape.is-compact .page-missions .mission-banner-fallback {
+  padding: 6px 10px;
+}
+html.is-mobile.is-landscape.is-compact .page-missions .mission-banner-fallback .mbf-name {
+  font-size: 14px;
+}
+html.is-mobile.is-landscape.is-compact .page-missions .mission-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
+  min-width: 0;
+}
+html.is-mobile.is-landscape.is-compact .page-missions .difficulty-icons-container {
+  flex: 1 1 auto;
+  gap: 4px;
+  margin: 0;
+  flex-wrap: wrap;
+}
+html.is-mobile.is-landscape.is-compact .page-missions .difficulty-icon-btn {
+  padding: 2px;
+}
+html.is-mobile.is-landscape.is-compact .page-missions .difficulty-icon-btn img {
+  width: 34px;
+  height: 34px;
+}
+html.is-mobile.is-landscape.is-compact body.page-missions .difficulty-icon-btn.difficulty-fallback {
+  min-width: 34px;
+  height: 34px;
+  padding: 0 6px;
+  font-size: 15px;
+}
+html.is-mobile.is-landscape.is-compact body.page-missions .start-btn {
+  margin-left: auto;
+  min-width: 124px;
+  height: 34px;
+  padding: 0 18px;
+  font-size: 13px;
+}
+html.is-mobile.is-landscape.is-compact .page-missions .mission-lock-note {
+  flex: 1 1 100%;
+  width: 100%;
+  margin: 0;
+  font-size: 10px;
+  text-align: left;
 }
 
 /* ---------- Inventory ---------- */
@@ -699,4 +897,70 @@ html.is-mobile.is-landscape.is-compact .page-characters .equip-divider img {
   aspect-ratio: 700 / 55;
   object-fit: cover !important;
   object-position: 50% 32.6% !important;
+}
+
+/* ==========================================================================
+   6. Village: featured banner + right-side menu banners on phones
+   --------------------------------------------------------------------------
+   css/ui-layout.css hides .right-banner-panel and the featured summon banner
+   below 768px wide / 420px tall; on phones that left no way to reach
+   Missions / Shinobi / Summon / Fusion / Shop / Arena from the village.
+   Bring both back, sized to the band between the top bar (44px) and the
+   dock: featured banner compact on the left, menu grid on the right.
+   ========================================================================== */
+html.is-mobile.is-landscape.is-compact .summon-banner-frame {
+  display: block !important;
+  --sb-w: clamp(220px, 34vw, 300px);
+  --sb-h: calc(var(--sb-w) / 1.79);
+  top: 58px;
+  left: calc(12px + var(--safe-l));
+  padding: 3px;
+}
+html.is-mobile.is-landscape.is-compact .summon-banner-carousel {
+  display: block !important;
+}
+html.is-mobile.is-landscape.is-compact .summon-banner-frame::before {
+  inset: -5px;
+  --bk: 14px;
+}
+html.is-mobile.is-landscape.is-compact .summon-banner-frame::after {
+  inset: 2px;
+}
+/* no hover on touch: keep the carousel arrows faintly visible */
+html.is-mobile.is-landscape.is-compact .summon-carousel-arrow {
+  opacity: 0.55;
+  width: 20px;
+  height: 34px;
+}
+
+html.is-mobile.is-landscape.is-compact .right-banner-panel {
+  /* one grid row scales with the band height (~49px on a 375px-tall phone) */
+  --rb-row: clamp(38px, calc((var(--app-vh, 100vh) - 44px - var(--m-dock-h)) / 5.6), 52px);
+  --rb-gap: 5px;
+  display: grid !important;
+  top: calc(44px + (var(--app-vh, 100vh) - 44px - var(--m-dock-h) - (var(--rb-row) * 4 + var(--rb-gap) * 3 + 8px)) / 2);
+  right: calc(8px + var(--safe-r));
+  transform: none;
+  width: calc(var(--rb-row) * 6 + var(--rb-gap) + 8px);
+  max-width: none;
+  max-height: none;
+  grid-template-columns: 1fr 1fr;
+  grid-auto-rows: var(--rb-row);
+  gap: var(--rb-gap);
+  padding: 4px;
+  overflow: visible;
+}
+html.is-mobile.is-landscape.is-compact .right-banner-panel .banner-button {
+  min-height: 0;
+  max-height: none;
+  height: 100%;
+  aspect-ratio: auto;
+}
+/* touch feedback instead of the desktop hover slide */
+html.is-mobile.is-landscape.is-compact .right-banner-panel .banner-button:hover {
+  transform: none;
+}
+html.is-mobile.is-landscape.is-compact .right-banner-panel .banner-button:active {
+  transform: scale(0.97);
+  filter: brightness(1.12);
 }

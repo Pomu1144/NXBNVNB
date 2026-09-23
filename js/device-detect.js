@@ -67,10 +67,29 @@
     if (doc.classList) doc.classList.toggle(name, !!on);
   }
 
+  // Late detection: a touch-only device can start reporting coarse/no-hover
+  // after load (e.g. Chrome DevTools device mode switched on without a reload,
+  // which otherwise shows the desktop layout on an "iPhone"). Desktops and
+  // laptops keep a fine primary pointer, so they never match this.
+  function lateDetect(w, h) {
+    if (isMobile || override) return;
+    if (!(mq('(pointer: coarse)') && mq('(hover: none)'))) return;
+    if (Math.min(w, h) > 1024) return;
+    isMobile = true;
+    setClass('is-mobile', true);
+    setClass('is-desktop', false);
+    setClass('is-ios', isIOS);
+    setClass('is-android', /Android/i.test(ua));
+    if (window.BlazingDevice) window.BlazingDevice.isMobile = true;
+    if (document.readyState !== 'loading') injectOverlay();
+    else document.addEventListener('DOMContentLoaded', injectOverlay);
+  }
+
   function update() {
     var w = window.innerWidth, h = window.innerHeight;
     doc.style.setProperty('--app-vh', h + 'px');
     doc.style.setProperty('--app-vw', w + 'px');
+    lateDetect(w, h);
     if (!isMobile) return;
     var landscape = w >= h;
     setClass('is-landscape', landscape);

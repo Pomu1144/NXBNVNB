@@ -179,91 +179,182 @@ html, body.page-battle {
   50% { opacity: 0.6; }
 }
 
-/* === SPEED GAUGE TRACK === */
+/* === SPEED / TURN BAR ===========================================
+   Skin: assets/ui/battle/speed_track.webp (1800×136) drawn with
+   border-image so the ornate left cap and the arrowhead right cap keep
+   their proportions while the channel stretches. Markers glide along
+   .speed-lane (inset past the caps); ring centre sits on the rail and
+   the pointer dips below it.
+   ================================================================ */
+.page-battle {
+  /* 1% of the 16:9 canvas height */
+  --ch: min(1vh, 0.5625vw);
+  --spd-h: clamp(28px, calc(var(--ch) * 6), 52px);
+  --spd-m: calc(var(--spd-h) * 1.02);
+}
+
 #speed-gauge-track {
   position: absolute;
-  top: 30px;
-  left: 10%; /* Increased from 5% to reduce width */
-  width: 80%; /* Reduced from 90% to fit properly in 16:9 canvas */
-  height: 50px;
-  background: linear-gradient(90deg,
-    rgba(217, 179, 98, 0.3) 0%,
-    rgba(217, 179, 98, 0.5) 50%,
-    rgba(217, 179, 98, 0.3) 100%);
-  border: 2px solid rgba(217, 179, 98, 0.6);
-  border-radius: 25px;
-  z-index: 45;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5), inset 0 2px 4px rgba(0, 0, 0, 0.3);
-}
-
-/* Speed Marker - Absolutely positioned on the track */
-.speed-marker {
-  position: absolute !important;
-  bottom: 5px;
-  width: 40px !important;
-  height: 40px !important;
-  min-width: 40px !important;
-  min-height: 40px !important;
-  max-width: 40px !important;
-  max-height: 40px !important;
-  border-radius: 50%;
-  border: 2px solid rgba(217, 179, 98, 0.6);
-  overflow: hidden;
-  transition: transform 0.2s ease;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+  top: calc(var(--ch) * 5.4);
+  left: 50%;
   transform: translateX(-50%);
-}
-
-.speed-marker img {
-  width: 100% !important;
-  height: 100% !important;
-  max-width: 100% !important;
-  max-height: 100% !important;
-  object-fit: cover !important;
-  display: block !important;
-}
-
-.speed-marker.player {
-  border-color: #58b7ff;
-  box-shadow: 0 0 10px rgba(88, 183, 255, 0.6);
-}
-
-.speed-marker.enemy {
-  border-color: #ff4d4d;
-  box-shadow: 0 0 10px rgba(255, 77, 77, 0.6);
-}
-
-.speed-marker.acting {
-  width: 48px !important;
-  height: 48px !important;
-  min-width: 48px !important;
-  min-height: 48px !important;
-  max-width: 48px !important;
-  max-height: 48px !important;
-  border-width: 3px;
-  border-color: #ffd700;
-  box-shadow: 0 0 16px rgba(255, 215, 0, 0.9);
-  z-index: 10;
-}
-
-.speed-marker.paused {
-  opacity: 0.5;
-  filter: grayscale(70%);
-}
-
-.speed-marker .speed-label,
-.speed-marker .pos-label {
-  position: absolute;
-  bottom: -2px;
-  right: -2px;
-  background: rgba(0, 0, 0, 0.9);
-  color: #ffd700;
-  font-size: 7px;
-  padding: 1px 3px;
-  border-radius: 3px;
-  border: 1px solid #ffd700;
-  font-weight: bold;
+  width: min(88%, 1180px);
+  height: var(--spd-h);
+  box-sizing: border-box;
+  z-index: 45;
+  overflow: visible;
+  background: none;
+  border: 0 solid transparent;
+  border-radius: 0;
+  box-shadow: none;
+  border-image-source: url("../assets/ui/battle/speed_track.webp");
+  /* top right bottom left: arrowhead cap = 84px of source, ornate left cap = 118px */
+  border-image-slice: 0 84 0 118 fill;
+  border-image-width: 0 calc(var(--spd-h) * 0.618) 0 calc(var(--spd-h) * 0.868);
+  border-image-repeat: stretch;
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.65));
   pointer-events: none;
+}
+
+#speed-gauge-track .speed-lane {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(var(--spd-h) * 0.95);
+  right: calc(var(--spd-h) * 0.72);
+  pointer-events: none;
+}
+
+#speed-gauge-track .speed-marker {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: var(--spd-m);
+  height: auto;
+  aspect-ratio: 128 / 149;
+  min-width: 0;
+  min-height: 0;
+  max-width: none;
+  max-height: none;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  overflow: visible;
+  background: none;
+  box-shadow: none;
+  transform: translate(-50%, -43%);
+  transition: left 0.14s linear, width 0.25s ease, filter 0.25s ease, opacity 0.25s ease;
+  will-change: left;
+  pointer-events: auto;
+}
+#speed-gauge-track .speed-marker.enemy { aspect-ratio: 128 / 167; }
+#speed-gauge-track .speed-marker.sm-return {
+  transition: left 0.55s cubic-bezier(0.2, 0.8, 0.2, 1), width 0.25s ease, filter 0.25s ease, opacity 0.25s ease;
+}
+
+#speed-gauge-track .speed-marker .sm-frame {
+  position: absolute;
+  inset: 0;
+  background: url("../assets/ui/battle/marker_ally.webp") center / 100% 100% no-repeat;
+  pointer-events: none;
+}
+#speed-gauge-track .speed-marker.enemy .sm-frame {
+  background-image: url("../assets/ui/battle/marker_enemy.webp");
+}
+
+/* portrait sits in the ring hole (measured from the art) */
+#speed-gauge-track .speed-marker .sm-portrait {
+  position: absolute;
+  left: 8.6%;
+  top: 7.4%;
+  width: 82.8%;
+  height: 71.1%;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #0c1a1c;
+}
+#speed-gauge-track .speed-marker.enemy .sm-portrait {
+  left: 11%;
+  top: 13.2%;
+  width: 77.3%;
+  height: 59.3%;
+}
+#speed-gauge-track .speed-marker .sm-portrait img {
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  object-fit: cover;
+  object-position: center 20%;
+  display: block;
+}
+
+/* player position badge */
+#speed-gauge-track .speed-marker .pos-label {
+  position: absolute;
+  top: -6%;
+  left: -8%;
+  bottom: auto;
+  right: auto;
+  min-width: 36%;
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid #f1d98a;
+  background: radial-gradient(circle at 35% 30%, #2b4a4c, #0b1718 75%);
+  color: #f1d98a;
+  font: 700 clamp(7px, calc(var(--spd-m) * 0.22), 11px)/1 "Kaisei Tokumin", serif;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+  pointer-events: none;
+}
+#speed-gauge-track .speed-marker .speed-label { display: none; }
+
+/* waiting while someone else acts: slightly dimmed, still readable */
+#speed-gauge-track .speed-marker.paused:not(.acting) {
+  opacity: 0.78;
+  filter: saturate(0.6) brightness(0.85);
+}
+
+/* next to act: enlarged + pulsing glow */
+#speed-gauge-track .speed-marker.next {
+  width: calc(var(--spd-m) * 1.2);
+  opacity: 1;
+  animation: smNextGlowAlly 1.3s ease-in-out infinite;
+}
+#speed-gauge-track .speed-marker.enemy.next { animation-name: smNextGlowEnemy; }
+@keyframes smNextGlowAlly {
+  0%, 100% { filter: drop-shadow(0 0 3px rgba(74, 230, 230, 0.55)) drop-shadow(0 2px 3px rgba(0, 0, 0, 0.8)); }
+  50%      { filter: drop-shadow(0 0 10px rgba(74, 230, 230, 0.95)) drop-shadow(0 2px 3px rgba(0, 0, 0, 0.8)); }
+}
+@keyframes smNextGlowEnemy {
+  0%, 100% { filter: drop-shadow(0 0 3px rgba(255, 70, 60, 0.55)) drop-shadow(0 2px 3px rgba(0, 0, 0, 0.8)); }
+  50%      { filter: drop-shadow(0 0 10px rgba(255, 70, 60, 0.95)) drop-shadow(0 2px 3px rgba(0, 0, 0, 0.8)); }
+}
+
+/* acting now: biggest, gold glow, gentle bob */
+#speed-gauge-track .speed-marker.acting {
+  width: calc(var(--spd-m) * 1.36);
+  opacity: 1;
+  filter: drop-shadow(0 0 8px rgba(241, 217, 138, 0.95)) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.85));
+  animation: smActingBob 0.9s ease-in-out infinite;
+}
+@keyframes smActingBob {
+  0%, 100% { transform: translate(-50%, -43%); }
+  50%      { transform: translate(-50%, -50%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #speed-gauge-track .speed-marker { transition: none; }
+  #speed-gauge-track .speed-marker.next,
+  #speed-gauge-track .speed-marker.acting { animation: none; }
+}
+
+html.is-mobile #speed-gauge-track {
+  --spd-h: clamp(24px, calc(var(--ch) * 7.4), 34px);
+  top: calc(var(--ch) * 5.6);
+  width: 90%;
 }
 
 /* === Narration Banner === */
@@ -663,3 +754,59 @@ html, body.page-battle {
     opacity: 1;
   }
 }
+
+/* === Action panel on phones ===
+   The desktop panel (220px column, vertically centred on the left) sat on
+   top of the player's formation and swallowed drags. On phones it becomes
+   a compact 2-column button pad tucked into the bottom-left corner, beside
+   the team holder, below where formations place units. Unit name / HP /
+   chakra are already on the holder cards, so the text block is dropped;
+   equipped jutsu cards stay (as a small row) when there are any. */
+html.is-mobile #action-panel {
+  left: max(4px, env(safe-area-inset-left));
+  right: auto;
+  top: auto;
+  bottom: 4px;
+  transform: none;
+  width: 172px;
+  max-width: 172px;
+  padding: 4px;
+  border-radius: 8px;
+  border: 1px solid rgba(217, 179, 98, 0.35);
+  background: rgba(6, 12, 16, 0.72);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.55);
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+html.is-mobile #action-panel.hidden { display: none; }
+html.is-mobile #action-panel #action-portrait,
+html.is-mobile #action-panel .action-meta,
+html.is-mobile #action-panel .equipped-ultimate-progress { display: none; }
+html.is-mobile #action-panel .equipped-jutsu-icons {
+  display: none;
+  margin: 0;
+  gap: 3px;
+  flex-wrap: nowrap;
+}
+html.is-mobile #action-panel .equipped-jutsu-icons:has(.battle-jutsu-icon:not(.empty)) { display: flex; }
+html.is-mobile #action-panel .battle-jutsu-icon { width: 26px; height: 26px; border-width: 1px; border-radius: 5px; }
+html.is-mobile #action-panel .battle-jutsu-icon.empty { display: none; }
+html.is-mobile #action-panel .action-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3px;
+  margin: 0;
+}
+html.is-mobile #action-panel .action-buttons button,
+html.is-mobile #action-panel .equipped-ultimate-btn {
+  min-height: 24px;
+  padding: 3px 2px;
+  font-size: 8.5px;
+  line-height: 1.05;
+  letter-spacing: 0.02em;
+  border-width: 1px;
+  border-radius: 5px;
+  white-space: normal;
+}
+html.is-mobile #action-panel .action-buttons button:hover { transform: none; }

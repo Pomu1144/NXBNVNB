@@ -157,7 +157,10 @@
       unitEl.style.position = 'absolute';
       unitEl.style.left = `${unit.pos.x}%`;
       unitEl.style.top = `${unit.pos.y}%`;
-      unitEl.draggable = unit.isPlayer;
+      // Units with an animated sprite are dragged with pointer events (the
+      // sprite itself follows the finger/cursor); others use HTML5 DnD.
+      const animated = !!(unit.charId && window.SpritePlayer?.has(unit.charId));
+      unitEl.draggable = unit.isPlayer && !animated;
 
       const hpPercent = (unit.stats.hp / unit.stats.maxHP) * 100;
       const chakraPercent = (unit.chakra / unit.maxChakra) * 100;
@@ -166,11 +169,13 @@
       const chakraClass = core.chakra ?
         core.chakra.getChakraClass(unit) : 'neutral';
 
+      // Player HP / chakra live on the team holder cards, so player units
+      // on the field only get the sprite (+ position badge); enemies keep
+      // their bars. Every reader of .unit-hp-fill / .chakra-fill null-checks.
+
       // Show position ID for player units
       const positionLabel = unit.isPlayer ?
         `<div class="unit-position-label">${unit.positionId}</div>` : '';
-
-      const animated = !!(unit.charId && window.SpritePlayer?.has(unit.charId));
 
       unitEl.innerHTML = `
         ${positionLabel}
@@ -178,12 +183,13 @@
           ${animated ? '' : `<img src="${unit.portrait}" alt="${unit.name}"
                onerror="this.src='assets/characters/common/silhouette.png';">`}
         </div>
+        ${unit.isPlayer ? '' : `
         <div class="unit-hp-bar">
           <div class="unit-hp-fill" style="width:${hpPercent}%"></div>
         </div>
         <div class="unit-chakra-bar">
           <div class="chakra-fill ${chakraClass}" style="width:${chakraPercent}%"></div>
-        </div>
+        </div>`}
       `;
 
       core.dom.grid.appendChild(unitEl);
@@ -196,6 +202,10 @@
         unitEl.addEventListener("dragend", (e) => core.drag.handleDragEnd(e, core));
         unitEl.addEventListener("dragover", (e) => core.drag.handleDragOver(e));
         unitEl.addEventListener("drop", (e) => core.drag.handleDrop(e, unit, core));
+        if (animated && core.drag.handleSpritePointerDown) {
+          unitEl.classList.add('battle-unit--sprite-drag');
+          unitEl.addEventListener("pointerdown", (e) => core.drag.handleSpritePointerDown(e, unit, core, unitEl));
+        }
       }
 
       // Add click handler
@@ -212,7 +222,7 @@
     updateUnitDisplay(unit, core) {
       console.log(`[BattleUnits] Updating display for ${unit.name}, HP: ${unit.stats.hp}/${unit.stats.maxHP}`);
 
-      const unitEl = core.dom.scene?.querySelector(`[data-unit-id="${unit.id}"]`);
+      const unitEl = core.dom.scene?.querySelector(`.battle-unit[data-unit-id="${unit.id}"]`);
       if (!unitEl) {
         console.warn(`[BattleUnits] Could not find unit element for ${unit.id}`);
         return;
@@ -271,12 +281,17 @@
           }
         }, 500);
 
-        // Also remove from team holder if player unit
+        // Also remove from team holder if player unit (unless the card still
+        // carries a living backup, which can be swapped in)
         if (unit.isPlayer && core.dom.teamHolder) {
           const teamCard = core.dom.teamHolder.querySelector(`[data-unit-id="${unit.id}"]`);
           if (teamCard) {
             const unitCard = teamCard.closest('.unit-card');
-            if (unitCard) {
+            const liveBackup = unitCard?.querySelector('.uc-mini:not(.is-dead)');
+            if (liveBackup) {
+              unitCard.classList.add('is-dead');
+              window.BattleTeamHolder?.highlightActingUnit?.(core.turns?.currentUnit || null);
+            } else if (unitCard) {
               unitCard.style.transition = 'opacity 0.5s ease-out';
               unitCard.style.opacity = "0";
               setTimeout(() => {
@@ -312,19 +327,48 @@
     /** Mount an idle-looping sprite in the unit's sprite slot. */
     attachSprite(unit, unitEl) {
       const slot = unitEl.querySelector('.unit-sprite');
+      // On-field sprite height comes from CSS (--sprite-h: 88px desktop,
+      // smaller on phones) so it scales with the layout.
+      const cssH = parseFloat(getComputedStyle(unitEl).getPropertyValue('--sprite-h'));
       const player = window.SpritePlayer.create(slot, window.SpritePlayer.pathFor(unit.charId), {
-        height: 120,
+        height: Number.isFinite(cssH) && cssH > 0 ? Math.round(cssH) : 88,
         flip: !unit.isPlayer, // art faces right; enemies face left
       });
       unit._sprite = player;
+      // Warm the run sheet so the first drag/move switches without a gap.
+      window.SpritePlayer.preload(window.SpritePlayer.pathFor(unit.charId), 'run').catch(() => {});
       player.play('idle').catch(err => {
         // Sheet missing: fall back to the static portrait.
         console.warn('[BattleUnits] sprite load failed, using portrait', err);
         player.destroy();
         unit._sprite = null;
+        // Back to the portrait: use the regular HTML5 drag path again.
+        unitEl.draggable = unit.isPlayer;
+        unitEl.classList.remove('battle-unit--sprite-drag');
         slot.classList.remove('unit-sprite--anim');
         slot.innerHTML = `<img src="${unit.portrait}" alt="${unit.name}">`;
       });
+    },
+
+    /** Face the sprite left/right (art faces right), with an optional lean. */
+    setSpriteFacing(unit, facingLeft, leanDeg = 0) {
+      if (!unit._sprite) return;
+      const parts = [];
+      if (facingLeft) parts.push('scaleX(-1)');
+      if (leanDeg) parts.push(`rotate(${leanDeg}deg)`);
+      unit._sprite.el.style.transform = parts.join(' ');
+    },
+
+    /** Stand still: idle loop, default facing (players right, enemies left). */
+    settleSprite(unit) {
+      if (!unit._sprite) return;
+      this.setSpriteFacing(unit, !unit.isPlayer);
+      unit._sprite.setState('idle');
+    },
+
+    /** Cancel any in-flight runTo() for this unit. */
+    stopRun(unit) {
+      unit._runToken = (unit._runToken || 0) + 1;
     },
 
     /** Run from the element's current position to unit.pos, then idle. */
@@ -333,16 +377,21 @@
       const fromY = parseFloat(unitEl.style.top) || unit.pos.y;
       const toX = unit.pos.x, toY = unit.pos.y;
       const dist = Math.hypot(toX - fromX, toY - fromY);
-      if (dist < 0.5) return;
+      const token = (unit._runToken = (unit._runToken || 0) + 1);
+      if (dist < 0.5) {
+        // Already there (e.g. the sprite was dragged to this spot): just settle.
+        unitEl.style.left = `${toX}%`;
+        unitEl.style.top = `${toY}%`;
+        this.settleSprite(unit);
+        return;
+      }
 
       // Face the direction of travel.
-      const facingLeft = toX < fromX;
-      unit._sprite.el.style.transform = facingLeft ? 'scaleX(-1)' : '';
+      this.setSpriteFacing(unit, toX < fromX);
 
       const duration = Math.min(900, 250 + dist * 12); // ms, scales with distance
       const start = performance.now();
-      const token = (unit._runToken = (unit._runToken || 0) + 1);
-      unit._sprite.play('run');
+      unit._sprite.setState('run');
 
       const step = now => {
         if (unit._runToken !== token) return; // superseded by a newer move
@@ -353,8 +402,7 @@
         if (t < 1) {
           requestAnimationFrame(step);
         } else {
-          unit._sprite.el.style.transform = unit.isPlayer ? '' : 'scaleX(-1)';
-          unit._sprite.play('idle');
+          this.settleSprite(unit);
         }
       };
       requestAnimationFrame(step);

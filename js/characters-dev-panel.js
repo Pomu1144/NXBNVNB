@@ -153,14 +153,16 @@
     });
   }
 
-  // Add a copy of the animated-sprite test unit (Minato Namikaze, minato_2101).
+  // Add a maxed copy of the animated-sprite test unit (Minato Namikaze, minato_2101).
   function addSpriteMinato() {
     const IC = global.InventoryChar;
     if (!IC) { toast("Inventory not ready"); return null; }
     const inst = IC.addCopy("minato_2101", 1, "6S");
+    // Max it so the jutsu (Lv 20) and ultimate (Lv 50) are unlocked in battle.
+    maxOutInstance(inst.uid);
     refreshGrid();
-    toast("Added Minato Namikaze (animated sprite) ✓");
-    return inst;
+    toast("Added Minato Namikaze (animated sprite, maxed) ✓");
+    return IC.getByUid(inst.uid) || inst;
   }
 
   async function init() {

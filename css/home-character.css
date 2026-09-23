@@ -1,0 +1,201 @@
+/* Village home character (js/character-vignette.js).
+   A large 2.5D character standing between the featured banner and the
+   menu panel, with a ground shadow, soft rim glow, breathing idle and a
+   small pointer parallax. */
+
+.character-vignette-container.home-char-stage {
+  --hc-rx: 0deg;
+  --hc-ry: 0deg;
+  --hc-shift: 0px;
+  position: fixed;
+  left: 0; right: 0;
+  top: 11vh;                       /* below the top bar */
+  bottom: 84px;                    /* above the bottom icon bar */
+  height: auto;
+  z-index: 3;                      /* above background + vignette, below HUD panels (50) */
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  overflow: visible;
+  pointer-events: none;
+  perspective: 1400px;
+}
+
+.home-char {
+  position: relative;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  /* sit a little right of centre, clear of the featured banner */
+  margin-left: 4vw;
+  animation: homeCharIn 0.7s cubic-bezier(.2,.8,.2,1) both;
+}
+.home-char.is-leaving {
+  position: absolute;
+  animation: homeCharOut 0.4s ease-in forwards;
+}
+
+.home-char-body {
+  position: relative;
+  height: 100%;
+  pointer-events: auto;
+  cursor: pointer;
+  transform-origin: 50% 100%;
+  transform: translateX(var(--hc-shift)) rotateX(var(--hc-rx)) rotateY(var(--hc-ry));
+  transition: transform 0.25s ease-out;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.home-char-img {
+  display: block;
+  height: 100%;
+  width: auto;
+  user-select: none;
+  -webkit-user-drag: none;
+  transform-origin: 50% 100%;
+  /* breathing: a tiny vertical lift anchored at the feet */
+  animation: homeCharBreathe 4.6s ease-in-out infinite;
+  filter:
+    drop-shadow(0 0 1px rgba(255, 255, 255, 0.35))
+    drop-shadow(0 10px 18px rgba(0, 0, 0, 0.45));
+}
+
+/* soft cool rim light behind the character */
+.home-char-glow {
+  position: absolute;
+  left: 50%; bottom: 8%;
+  width: 70%; height: 80%;
+  transform: translateX(-50%);
+  background: radial-gradient(ellipse at 50% 55%, rgba(170, 215, 255, 0.28), rgba(120, 170, 220, 0.08) 45%, transparent 70%);
+  filter: blur(8px);
+  pointer-events: none;
+}
+
+.home-char-shadow {
+  position: absolute;
+  left: 50%; bottom: -1.2%;
+  width: 62%; height: 5.5%;
+  transform: translateX(-50%);
+  background: radial-gradient(ellipse, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.25) 45%, transparent 72%);
+  pointer-events: none;
+}
+
+.home-char.is-poked .home-char-img {
+  animation: homeCharPoke 0.45s cubic-bezier(.3,1.6,.5,1), homeCharBreathe 4.6s ease-in-out 0.45s infinite;
+}
+
+/* "Change character" plate at the character's feet */
+.home-char-switch {
+  position: absolute;
+  left: 50%; bottom: 1.5%;
+  transform: translateX(-50%);
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 5px 18px 5px 14px;
+  border: 1px solid rgba(201, 162, 78, 0.6);
+  background: linear-gradient(180deg, rgba(14, 38, 45, 0.92), rgba(6, 17, 21, 0.95));
+  clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
+  color: var(--jjk-text, #ece6d6);
+  font-family: var(--jjk-font, 'Kaisei Tokumin', serif);
+  font-weight: 700; font-size: 13px;
+  white-space: nowrap;
+  cursor: pointer;
+  pointer-events: auto;
+  opacity: 0.88;
+  transition: opacity 0.15s, filter 0.15s;
+}
+.home-char-switch:hover { opacity: 1; filter: brightness(1.15); }
+.home-char-switch-icon { color: var(--jjk-gold, #c9a24e); font-size: 15px; line-height: 1; }
+
+@keyframes homeCharIn {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes homeCharOut {
+  to { opacity: 0; transform: translateY(16px); }
+}
+@keyframes homeCharBreathe {
+  0%, 100% { transform: scale(1, 1); }
+  50%      { transform: scale(1.004, 1.012); }
+}
+@keyframes homeCharPoke {
+  0%   { transform: scale(1, 1); }
+  40%  { transform: scale(1.02, 0.975) translateY(1%); }
+  100% { transform: scale(1, 1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-char-img, .home-char { animation: none !important; }
+  .home-char-body { transition: none; }
+}
+
+/* ── Picker ──────────────────────────────────────────────────── */
+.home-char-picker {
+  position: fixed; inset: 0; z-index: 9000;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(3, 8, 10, 0.72);
+  opacity: 0; transition: opacity 0.2s;
+}
+.home-char-picker.is-open { opacity: 1; }
+.home-char-picker-panel {
+  width: min(640px, 92vw);
+  max-height: 86vh;
+  display: flex; flex-direction: column;
+  padding: 18px 20px 22px;
+}
+.home-char-picker-head {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 14px;
+}
+.home-char-picker-head .jjk-title-plate { margin: 0; font-size: 20px; }
+.home-char-picker-close { width: 42px; height: 42px; font-size: 18px; }
+.home-char-picker-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 12px;
+  overflow-y: auto;
+}
+.home-char-option {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
+  padding: 8px 6px;
+  border: 1px solid rgba(201, 162, 78, 0.35);
+  background: radial-gradient(ellipse at 50% 30%, rgba(45, 107, 115, 0.35), rgba(6, 17, 21, 0.95) 70%);
+  cursor: pointer;
+  overflow: hidden;
+  font-family: var(--jjk-font, 'Kaisei Tokumin', serif);
+}
+.home-char-option img {
+  position: absolute; left: 50%; bottom: 26px;
+  height: 84%; width: auto;
+  transform: translateX(-50%);
+}
+.home-char-option-name {
+  position: relative; z-index: 1;
+  font-size: 12px; font-weight: 700; color: var(--jjk-text, #ece6d6);
+  text-shadow: 0 1px 2px #000;
+}
+.home-char-option-tag {
+  position: absolute; top: 6px; right: 6px; z-index: 1;
+  padding: 1px 6px; font-size: 10px; font-weight: 700;
+  color: #1c1606; background: var(--jjk-khaki, #b9ad72);
+}
+.home-char-option.is-selected {
+  border-color: var(--jjk-gold-hi, #f1d98a);
+  box-shadow: 0 0 0 1px var(--jjk-gold, #c9a24e), 0 0 16px rgba(241, 217, 138, 0.35);
+}
+.home-char-option.is-soon {
+  cursor: default; justify-content: center;
+  border-style: dashed; opacity: 0.55;
+}
+
+/* ── Mobile landscape ────────────────────────────────────────── */
+html.is-mobile.is-landscape.is-compact .character-vignette-container.home-char-stage {
+  top: 13vh;
+  bottom: 58px;
+}
+html.is-mobile.is-landscape.is-compact .home-char { margin-left: 2vw; }
+html.is-mobile.is-landscape.is-compact .home-char-switch {
+  font-size: 10px; padding: 3px 12px 3px 10px; gap: 5px;
+}

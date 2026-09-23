@@ -239,83 +239,100 @@
   display: block !important;
 }
 
-/* HP Bar Container - BELOW sprite */
-.unit-hp-bar {
+/* Field unit gauges (markup from battle-units.js: .unit-hp-bar > .unit-hp-fill,
+   .unit-chakra-bar > .chakra-fill). Same ink-teal + antique-gold language as
+   the holder cards; chakra bar is segmented into 10 like the pip gauge.
+   Scoped to .battle-unit so the holder cards keep their own bars. */
+.battle-unit .unit-hp-bar {
   position: absolute;
-  bottom: -10px;
+  bottom: -11px;
   left: 50%;
   transform: translateX(-50%);
-  width: clamp(44px, 90%, 64px);
-  height: 6px;
-  background: rgba(0, 0, 0, 0.8);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 3px;
+  width: clamp(48px, 92%, 68px);
+  height: 7px;
+  background: linear-gradient(180deg, #061012, #10272a);
+  border: 1px solid rgba(217, 184, 101, 0.9);
+  border-radius: 1px;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.75), 0 2px 3px rgba(0, 0, 0, 0.6);
   overflow: hidden;
   z-index: 1;
 }
 
-/* HP Bar Fill - WITH ANIMATION */
-.unit-hp-fill {
+.battle-unit .unit-hp-fill {
   position: absolute;
   left: 0;
   top: 0;
   height: 100%;
-  background: linear-gradient(90deg, #e74c3c, #ff6b6b);
-  transition: width 0.5s ease-out; /* SMOOTH ANIMATION */
-  border-radius: 2px;
+  background: linear-gradient(180deg, #8ef0a6, #2fb866 55%, #1f8a4b);
+  transition: width 0.5s ease-out;
+  border-radius: 0;
 }
 
-/* HP Bar Color States - Player vs Enemy */
 .battle-unit.player .unit-hp-fill {
-  background: linear-gradient(90deg, #d4af37, #ff8c00); /* Ally - Gold to Orange */
+  background: linear-gradient(180deg, #8ef0a6, #2fb866 55%, #1f8a4b); /* ally - jade */
 }
 
 .battle-unit.enemy .unit-hp-fill {
-  background: linear-gradient(90deg, #dc143c, #8b0000); /* Enemy - Red gradient */
+  background: linear-gradient(180deg, #ff9a7a, #e0452e 55%, #a82718); /* enemy - crimson */
 }
+.battle-unit.enemy .unit-hp-bar { border-color: rgba(214, 120, 90, 0.9); }
 
-/* Chakra Bar - BELOW HP bar */
-.unit-chakra-bar {
+.battle-unit .unit-chakra-bar {
   position: absolute;
   bottom: -18px;
   left: 50%;
   transform: translateX(-50%);
-  width: 64px;
-  height: 4px;
-  background: rgba(0, 0, 0, 0.8);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 2px;
+  width: clamp(48px, 92%, 68px);
+  height: 5px;
+  background: #061315;
+  border: 1px solid rgba(217, 184, 101, 0.7);
+  border-radius: 1px;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.75);
   overflow: hidden;
   z-index: 1;
 }
+/* 10 segment ticks over the fill */
+.battle-unit .unit-chakra-bar::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(90deg, transparent 0 calc(10% - 1px), rgba(0, 0, 0, 0.85) calc(10% - 1px) 10%);
+  pointer-events: none;
+}
 
-/* Chakra Bar Fill - WITH ANIMATION */
-.chakra-fill {
+.battle-unit .chakra-fill {
   position: absolute;
   left: 0;
   top: 0;
   height: 100%;
-  transition: width 0.3s ease-out, background 0.3s ease; /* SMOOTH ANIMATION */
-  border-radius: 1px;
+  transition: width 0.35s ease-out, background 0.3s ease;
+  border-radius: 0;
 }
 
-/* Chakra Bar Color States */
-.chakra-fill.neutral {
-  background: linear-gradient(90deg, #555, #888);
+/* Chakra colour states (class set by battle-chakra.js getChakraClass) */
+.battle-unit .chakra-fill,
+.battle-unit .chakra-fill.neutral {
+  background: linear-gradient(180deg, #b8ffff, #36d6e0 50%, #138a9a);
+  box-shadow: 0 0 4px rgba(74, 230, 230, 0.6);
 }
 
-.chakra-fill.blue {
-  background: linear-gradient(90deg, #00BFFF, #1E90FF);
+.battle-unit .chakra-fill.blue {
+  background: linear-gradient(180deg, #d4ffff, #4ae6e6 50%, #1aa7c0);
+  box-shadow: 0 0 6px rgba(74, 230, 230, 0.9);
 }
 
-.chakra-fill.red {
-  background: linear-gradient(90deg, #FF4D4D, #FF1744);
+.battle-unit .chakra-fill.red {
+  background: linear-gradient(180deg, #ffd0b0, #ff6040 50%, #b3261a);
+  box-shadow: 0 0 6px rgba(255, 96, 64, 0.9);
 }
 
-.chakra-fill.secret {
+.battle-unit .chakra-fill.secret {
   background: linear-gradient(90deg, #C000FF, #FFD700);
   box-shadow: 0 0 8px rgba(192, 0, 255, 0.6);
 }
+
+/* enemies have no player-facing chakra: keep it but quieter */
+.battle-unit.enemy .unit-chakra-bar { opacity: 0.55; }
 
 /* ========================================
    4. ADDITIONAL POLISH
@@ -457,8 +474,8 @@
     height: 60px;
   }
 
-  .unit-hp-bar,
-  .unit-chakra-bar {
+  .battle-unit .unit-hp-bar,
+  .battle-unit .unit-chakra-bar {
     width: 54px;
   }
 
@@ -469,10 +486,24 @@
 }
 
 /* Animated spritesheet units: full-body sprite standing on the unit's
-   position instead of a square portrait tile. */
+   position instead of a square portrait tile.
+   --sprite-h   rendered sprite height (read by BattleUnits.attachSprite)
+   --sprite-box the slot the feet are anchored to: the sprite is pushed
+                down inside it, so shrinking --sprite-h scales the
+                character about its feet (the ground line stays at
+                centre + --sprite-box / 2). */
+.battle-unit {
+  --sprite-h: 88px;
+  --sprite-box: 120px;
+}
+html.is-mobile .battle-unit {
+  --sprite-h: 66px;
+  --sprite-box: 92px;
+}
 .battle-unit .unit-sprite.unit-sprite--anim {
   width: auto !important;
-  height: 120px !important;
+  height: var(--sprite-h) !important;
+  margin-top: calc(var(--sprite-box) - var(--sprite-h));
   min-width: 0 !important;
   max-width: none !important;
   min-height: 0 !important;
@@ -494,3 +525,27 @@
   background: radial-gradient(ellipse, rgba(0,0,0,0.55), transparent 70%);
 }
 .unit-sprite--anim .sprite-player { filter: drop-shadow(0 2px 3px rgba(0,0,0,0.6)); }
+
+/* Sprite units are dragged with pointer events (battle-drag.js): the
+   character follows the pointer, so no touch scrolling / text selection. */
+.battle-unit.battle-unit--sprite-drag {
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  /* left/top are driven per-frame by the drag and runTo(); the generic
+     .battle-unit "transition: all" (battle-entrance.js) would make the
+     character trail behind the pointer. */
+  transition-property: opacity, transform, filter;
+}
+.unit-sprite--anim .sprite-player { transform-origin: 50% 100%; }
+.battle-unit.is-sprite-dragging {
+  z-index: 60 !important;
+  cursor: grabbing;
+}
+.battle-unit.is-sprite-dragging .sprite-player {
+  transition: transform 90ms ease-out; /* smooth turn-around and lean */
+}
+.battle-unit.is-sprite-dragging .unit-hp-bar,
+.battle-unit.is-sprite-dragging .unit-chakra-bar,
+.battle-unit.is-sprite-dragging .unit-position-label { opacity: 0.5; }

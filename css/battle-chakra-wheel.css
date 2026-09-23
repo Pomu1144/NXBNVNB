@@ -1,156 +1,207 @@
 /* ===================================================
-   CHAKRA HOLDER SYSTEM - Image-Based Circular Gauge
-   Using original structure with chakra-container
+   CHAKRA BAR — segmented bar in each holder card's bottom strip and on
+   the bench mini cards (js/battle/battle-chakra-wheel.js).
+
+   Markup:
+     .chakra-gauge.cbar[data-gauge-for][.mini][.jutsu-ready][.ult-ready]
+                       [.is-max][.is-empty][.cb-gain|.cb-spend]
+       .cb-track
+         .cb-ghost   trail: leads on gain, lags behind on spend
+         .cb-fill    cyan chakra (fire-orange once the ultimate is affordable)
+         .cb-segs    10 segment separators
+         .cb-tick.tick-jutsu / .tick-ult   cost markers
+       .cg-count > b + small   "6/10"
    =================================================== */
 
-/* === Unit Ring Container (active) === */
-.unit-ring {
+.chakra-gauge.cbar {
+  --cb-cyan: 74, 230, 230;
+  --cb-ult: 255, 110, 60;
+  --cb-gold: 217, 184, 101;
   position: relative;
-  width: 100px;
-  height: 100px;
-  cursor: pointer;
-  object-fit: fill;
-  transition: transform 0.2s ease;
-  display: inline-block;
+  display: flex;
+  align-items: center;
+  gap: 4%;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  font-family: "Kaisei Tokumin", "Cinzel", serif;
 }
 
-.unit-ring:hover {
-  transform: scale(1.05);
+.chakra-gauge.cbar .cb-track {
+  position: relative;
+  flex: 1 1 auto;
+  min-width: 0;
+  height: 62%;
+  border-radius: 2px;
+  background: linear-gradient(180deg, #030b0c, #0b2023 60%, #061315);
+  border: 1px solid rgba(var(--cb-gold), 0.75);
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.85),
+    inset 0 1px 2px rgba(0, 0, 0, 0.9),
+    0 0 4px rgba(var(--cb-gold), 0.18);
+  overflow: visible; /* cost ticks poke out above / below */
 }
 
-/* Bench units (60×60 - smaller version for clarity) */
-.bench-portrait-container .unit-ring {
-  width: 60px;
-  height: 60px;
-}
-
-/* =========================================
-   PORTRAIT  (BOTTOM LAYER, z-index: 1)
-
-   All layers are concentric with the .unit-ring box and sized in
-   percentages so active (100px) and bench (60px) holders share the
-   same geometry.
-
-   Sprite measurements (500×500 canvases, alpha bounding analysis):
-   - chakraholder_icon.png ring band: radius 65–99 → outer Ø ≈ 79% of canvas
-   - chakra.png arc band: radius ~90–155
-   Rendering the frame at 252% maps its ring outer radius to the
-   holder edge (50%); the portrait (72%) fills the ring hole (r≈33%);
-   the chakra arc at 160% lands on the ring band.
-   ========================================= */
-.portrait {
-    position: absolute;
-    top: 14%;
-    left: 14%;
-    width: 72%;
-    height: 72%;
-    object-fit: cover;
-    border-radius: 50%;
-    clip-path: circle(50%);
-    z-index: 1;
-}
-
-/* =========================================
-   CHAKRA CONTAINER (MIDDLE LAYER)
-
-   Sits BETWEEN the portrait (z:1) and the golden frame (z:10) and is
-   clipped to the wheel circle, so the glow reads as sitting inside
-   the ring instead of bleeding over the UI.
-   ========================================= */
-.chakra-container {
-    position: absolute;
-    inset: 0;
-    z-index: 5;
-    border-radius: 50%;
-    overflow: hidden;
-    clip-path: circle(50% at 50% 50%);
-    pointer-events: none;
-}
-
-/* Chakra segments - individual segments positioned at fixed angles.
-   Sized so the arc rides the ring band; the frame overdraws the outer
-   edge and the container clip stops any overflow. */
-.chakra-segment {
+.chakra-gauge.cbar .cb-fill,
+.chakra-gauge.cbar .cb-ghost {
   position: absolute;
-  width: 156%;
-  height: 156%;
-  top: -28%;
-  left: -28%;
-  object-fit: contain;
-  transform-origin: center center;
-  opacity: 0; /* Hidden by default */
-  mix-blend-mode: screen;
-  transition: opacity 0.3s ease-in-out;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 0;
+}
+.chakra-gauge.cbar .cb-fill {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.55) 0 18%, rgba(255, 255, 255, 0) 45%),
+    linear-gradient(90deg, #0f8f9a, #2fd6dc 70%, #9bfaff);
+  box-shadow: 0 0 6px rgba(var(--cb-cyan), 0.85), inset 0 0 3px rgba(var(--cb-cyan), 0.9);
+  transition: width 0.45s cubic-bezier(0.25, 0.9, 0.3, 1), filter 0.3s ease;
+  z-index: 2;
+}
+/* leading edge highlight */
+.chakra-gauge.cbar .cb-fill::after {
+  content: "";
+  position: absolute;
+  right: -1px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: #e8ffff;
+  box-shadow: 0 0 5px 1px rgba(var(--cb-cyan), 1);
+  opacity: 0.9;
+}
+.chakra-gauge.cbar.is-empty .cb-fill::after { opacity: 0; }
+
+.chakra-gauge.cbar .cb-ghost {
+  background: linear-gradient(180deg, #fff6d8, #f1d98a 60%, #b98a2e);
+  opacity: 0;
+  z-index: 1;
+  transition: width 0.45s ease, opacity 0.3s ease;
+}
+/* gain: ghost jumps to the new level at once, fill sweeps up to it */
+.chakra-gauge.cbar.cb-gain .cb-ghost {
+  transition: none;
+  background: rgba(200, 255, 255, 0.55);
+  opacity: 1;
+  animation: cbGhostOut 0.6s ease-out forwards;
+}
+/* spend: fill snaps down, the gold ghost drains after it */
+.chakra-gauge.cbar.cb-spend .cb-fill { transition-duration: 0.12s; }
+.chakra-gauge.cbar.cb-spend .cb-ghost {
+  opacity: 1;
+  transition: width 0.55s cubic-bezier(0.5, 0, 0.6, 1) 0.18s, opacity 0s;
+}
+@keyframes cbGhostOut { 0%, 55% { opacity: 1; } 100% { opacity: 0; } }
+.chakra-gauge.cbar.cb-gain .cb-fill { animation: cbFlash 0.6s ease-out; }
+@keyframes cbFlash {
+  0%   { filter: brightness(1); }
+  30%  { filter: brightness(1.8) saturate(1.3); }
+  100% { filter: brightness(1); }
 }
 
-/* Active segments are translucent so stacked arcs glow instead of
-   forming a solid slab over the portrait */
-.chakra-segment.active {
-  opacity: 0.75;
+/* segment separators */
+.chakra-gauge.cbar .cb-segs {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  background: repeating-linear-gradient(90deg,
+    transparent 0 calc(100% / var(--segs, 10) - 1px),
+    rgba(2, 8, 9, 0.95) calc(100% / var(--segs, 10) - 1px) calc(100% / var(--segs, 10)));
+  pointer-events: none;
 }
 
+/* cost ticks: a notch that pokes out above and below the track */
+.chakra-gauge.cbar .cb-tick {
+  position: absolute;
+  top: -1px;
+  bottom: -1px;
+  width: 2px;
+  margin-left: -1px;
+  z-index: 4;
+  border-radius: 1px;
+}
+.chakra-gauge.cbar .tick-jutsu {
+  background: #bffcff;
+  box-shadow: 0 0 3px rgba(var(--cb-cyan), 1);
+}
+.chakra-gauge.cbar .tick-ult {
+  background: #ffd0a8;
+  box-shadow: 0 0 3px rgba(var(--cb-ult), 1);
+}
+.chakra-gauge.cbar .cb-fill,
+.chakra-gauge.cbar .cb-ghost,
+.chakra-gauge.cbar .cb-segs { border-radius: 1px; }
+.chakra-gauge.cbar .cb-tick { top: -3px; bottom: -3px; }
+.chakra-gauge.cbar.mini .cb-tick { top: -1px; bottom: -1px; width: 1px; margin-left: 0; }
 
-/* Jutsu range segments (blue-ish tint) */
-.chakra-segment.active.jutsu-range {
-  filter: brightness(1.1) hue-rotate(-10deg);
+/* jutsu affordable: bar breathes */
+.chakra-gauge.cbar.jutsu-ready .cb-fill {
+  animation: cbBreathe 1.8s ease-in-out infinite;
+}
+@keyframes cbBreathe {
+  0%, 100% { filter: brightness(1); }
+  50%      { filter: brightness(1.3); }
+}
+.chakra-gauge.cbar.jutsu-ready .tick-jutsu { background: #fff; }
+
+/* ultimate affordable: fire chakra */
+.chakra-gauge.cbar.ult-ready .cb-fill {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.55) 0 18%, rgba(255, 255, 255, 0) 45%),
+    linear-gradient(90deg, #0f8f9a, #2fd6dc 45%, #ffb36b 75%, #ff6a3c);
+  box-shadow: 0 0 7px rgba(var(--cb-ult), 0.9), inset 0 0 3px rgba(255, 200, 150, 0.9);
+  animation: cbBreatheUlt 1.2s ease-in-out infinite;
+}
+@keyframes cbBreatheUlt {
+  0%, 100% { filter: brightness(1.02); }
+  50%      { filter: brightness(1.35); }
+}
+.chakra-gauge.cbar.ult-ready .tick-ult { background: #fff; }
+.chakra-gauge.cbar.is-max .cb-track {
+  border-color: #ffd28a;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.85), 0 0 6px rgba(255, 170, 90, 0.8);
 }
 
-/* Ultimate range segments (stronger, more intense) */
-.chakra-segment.active.ultimate-range {
-  filter: brightness(1.3) saturate(1.4);
+/* value text: "6/10" */
+.chakra-gauge.cbar .cg-count {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: baseline;
+  line-height: 1;
+  color: #bff6f6;
+  white-space: nowrap;
 }
-
-/* =========================================
-   CHAKRA HOLDER FRAME (TOP LAYER, z-index: 10)
-   ========================================= */
-.chakra-frame {
-    position: absolute;
-    top: -76%;
-    left: -76%;
-    width: 252% !important;
-    height: 252% !important;
-    pointer-events: none;
-    z-index: 10;
+.chakra-gauge.cbar .cg-count b {
+  font-size: clamp(8px, calc(var(--uc-w, 140px) * 0.085), 13px);
+  font-weight: 700;
+  text-shadow: 0 0 5px rgba(var(--cb-cyan), 0.85), 0 1px 1px #000;
 }
-
-/* =========================================
-   OPTIONAL STATES
-   ========================================= */
-.unit-ring.ultimate-ready .chakra-frame {
-  filter: drop-shadow(0 0 8px rgba(255, 50, 50, 0.9))
-          drop-shadow(0 0 16px rgba(255, 50, 50, 0.6));
-  animation: ultimateReadyPulse 1s ease-in-out infinite;
+.chakra-gauge.cbar .cg-count small {
+  font-size: clamp(6px, calc(var(--uc-w, 140px) * 0.058), 9px);
+  color: rgba(var(--cb-gold), 0.95);
+  text-shadow: 0 1px 1px #000;
 }
+.chakra-gauge.cbar.ult-ready .cg-count b { color: #ffe0c2; text-shadow: 0 0 5px rgba(var(--cb-ult), 0.95), 0 1px 1px #000; }
+.chakra-gauge.cbar.is-empty .cg-count b { color: #6f8d8f; text-shadow: 0 1px 1px #000; }
 
-@keyframes ultimateReadyPulse {
-  0%, 100% {
-    filter: drop-shadow(0 0 8px rgba(255, 50, 50, 0.9))
-            drop-shadow(0 0 16px rgba(255, 50, 50, 0.6));
-  }
-  50% {
-    filter: drop-shadow(0 0 12px rgba(255, 50, 50, 1))
-            drop-shadow(0 0 24px rgba(255, 50, 50, 0.8));
-  }
+.chakra-gauge.cbar .cg-count.bump-up   { animation: cbCountUp 0.35s ease-out; }
+.chakra-gauge.cbar .cg-count.bump-down { animation: cbCountDown 0.35s ease-out; }
+@keyframes cbCountUp   { 45% { transform: scale(1.3); } }
+@keyframes cbCountDown { 45% { transform: scale(0.8); filter: brightness(0.7); } }
+
+/* ---- mini (bench mini card) ---- */
+.chakra-gauge.cbar.mini .cb-track {
+  height: 100%;
+  border-width: 1px;
+  border-radius: 1px;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.8);
 }
+.chakra-gauge.cbar.mini .cb-fill { box-shadow: 0 0 3px rgba(var(--cb-cyan), 0.8); }
+.chakra-gauge.cbar.mini .cb-fill::after { width: 1px; }
 
-/* === Chakra Gain Flash Effect === */
-.chakra-segment.chakra-gain-flash {
-  animation: chakraGainFlash 0.5s ease-out;
-}
-
-@keyframes chakraGainFlash {
-  0% {
-    filter: brightness(1);
-    opacity: 0;
-  }
-  50% {
-    filter: brightness(2) drop-shadow(0 0 10px rgba(100, 150, 255, 1));
-    opacity: 1;
-  }
-  100% {
-    filter: brightness(1);
-    opacity: 1;
-  }
+@media (prefers-reduced-motion: reduce) {
+  .chakra-gauge.cbar .cb-fill,
+  .chakra-gauge.cbar .cb-ghost { transition: none !important; animation: none !important; }
 }
 
 /* === LIGHTNING EFFECT (Jagged Bolts Around Chakra Frame) === */
@@ -158,10 +209,11 @@
 /* IMPORTANT: pointer-events MUST be none so drag targeting works */
 .lightning-effect {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 160%;
-  height: 160%;
+  top: 42%;
+  left: 52%;
+  width: 120%;
+  height: auto;
+  aspect-ratio: 1;
   transform: translate(-50%, -50%);
   pointer-events: none !important; /* CRITICAL: Must not block dragging */
   z-index: 200;
@@ -285,16 +337,15 @@
   100% { opacity: 1; filter: blur(1px); }
 }
 
-/* === Attack Type Selected Feedback === */
+/* === Attack Type Selected Feedback (portrait flash in the card window) === */
 .unit-ring.attack-selected {
-  filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.8));
-  animation: attackSelectedPulse 0.5s ease-out;
+  animation: attackSelectedFlash 0.5s ease-out;
 }
 
-@keyframes attackSelectedPulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.08); }
-  100% { transform: scale(1); }
+@keyframes attackSelectedFlash {
+  0%   { filter: brightness(1); }
+  35%  { filter: brightness(1.6) saturate(1.2); }
+  100% { filter: brightness(1); }
 }
 
 /* === Targeting Overlay (Drag-to-Target System) === */
@@ -332,20 +383,7 @@
   }
 }
 
-/* Debug helpers */
-.unit-ring.debug { outline: 2px dashed rgba(255,0,0,0.4); }
-.chakra-container.debug { outline: 1px dashed rgba(0,255,0,0.4); }
-.portrait.debug { outline: 1px dashed rgba(0,0,255,0.4); }
-
-/* === Professional Styling === */
-/* Ensure no distortion, proper centering, and smooth performance */
-.unit-ring * {
-  image-rendering: -webkit-optimize-contrast;
-  image-rendering: crisp-edges;
-}
-
-.chakra-segment {
-  will-change: transform;
-  backface-visibility: hidden;
-  -webkit-font-smoothing: subpixel-antialiased;
-}
+/* Retired: the circular wheel layers (.chakra-container / .chakra-segment /
+   .chakra-frame) are no longer rendered. */
+.unit-ring .chakra-container,
+.unit-ring .chakra-frame { display: none !important; }

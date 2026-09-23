@@ -203,7 +203,10 @@
     },
 
     /**
-     * Show end-of-mission results screen with chest reveals
+     * Show end-of-mission results screen with chest reveals.
+     * JJK theme (css/battle-results-jjk.css): ink backdrop, crimson title plate,
+     * rank emblem, stage chips whose chests open in sequence, and reward tiles
+     * (real icons + ×qty + readable names) that pop in and stack as chests open.
      */
     async showResultsScreen(core) {
       if (this.collectedChests.length === 0) {
@@ -212,193 +215,145 @@
       }
 
       console.log(`[BattleRewards] Showing results screen with ${this.collectedChests.length} chests`);
+      document.getElementById('results-screen')?.remove();
 
-      // Create results overlay
-      const resultsOverlay = document.createElement('div');
-      resultsOverlay.id = 'results-screen';
-      resultsOverlay.className = 'battle-results-screen';
-      resultsOverlay.style.cssText = `
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background:
-          linear-gradient(rgba(6,5,10,0.55), rgba(6,5,10,0.78)),
-          url('assets/ui/generated/results_bg.webp') center center / cover no-repeat,
-          #0a0a0f;
-        z-index: 10000;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        animation: fadeIn 0.3s ease-out;
-      `;
+      const esc = (v) => String(v ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+      const RF = window.RewardFormat;
+      const mission = core?.missionData || {};
+      const rank = core?.difficulty || localStorage.getItem('currentDifficulty') || '';
+      const clear = core?._missionResult || null;              // MissionProgress.completeMission result
+      const expList = Array.isArray(core?._expResults) ? core._expResults.filter(Boolean) : [];
+      const expGained = expList.reduce((sum, r) => sum + (Number(r.expGained) || 0), 0);
+      const rankAfter = expList.length ? expList[expList.length - 1].rankAfter : null;
+      const rankUp = expList.some(r => r.rankAfter != null && r.rankBefore != null && r.rankAfter > r.rankBefore);
 
-      // Title
-      const title = document.createElement('div');
-      title.textContent = 'MISSION REWARDS';
-      title.style.cssText = `
-        font-family: 'Cinzel', serif;
-        font-size: 3rem;
-        color: #FFD700;
-        text-shadow:
-          0 0 20px rgba(255, 215, 0, 0.8),
-          0 0 40px rgba(255, 215, 0, 0.4);
-        margin-bottom: 3rem;
-        letter-spacing: 0.2em;
-      `;
-      resultsOverlay.appendChild(title);
+      const overlay = document.createElement('div');
+      overlay.id = 'results-screen';
+      overlay.className = 'battle-results-screen mr-modal';
+      overlay.setAttribute('role', 'dialog');
+      overlay.setAttribute('aria-modal', 'true');
+      overlay.setAttribute('aria-label', 'Mission Complete');
 
-      // Chest container
-      const chestContainer = document.createElement('div');
-      chestContainer.style.cssText = `
-        display: flex;
-        flex-wrap: wrap;
-        gap: 2rem;
-        justify-content: center;
-        max-width: 800px;
-        margin-bottom: 3rem;
-      `;
-      resultsOverlay.appendChild(chestContainer);
+      const stageChips = this.collectedChests.map((c, i) => `
+        <div class="mr-stage" data-i="${i}" style="--d:${0.45 + i * 0.12}s">
+          <span class="mr-stage-chest"><img src="${this.chestSprites.closed}" alt="" draggable="false"></span>
+          <span class="mr-stage-label">Stage ${esc(c.stageIndex)}</span>
+        </div>`).join('');
 
-      document.body.appendChild(resultsOverlay);
+      overlay.innerHTML = `
+        <div class="mr-backdrop"></div>
+        <div class="mr-burst"><div class="mr-rays"></div><div class="mr-flare"></div></div>
+        <div class="mr-card">
+          <div class="mr-banner"><span>Mission Complete</span></div>
+          ${rank ? `<div class="mr-rank" title="${esc(rank)}-Rank"><span>${esc(rank)}</span></div>` : ''}
+          <div class="mr-head">
+            ${mission.name ? `<div class="mr-mission">${esc(mission.name)}</div>` : ''}
+            <div class="mr-meta">
+              ${rank ? `<span class="jjk-chip mr-chip">${esc(rank)}-Rank</span>` : ''}
+              ${clear && clear.isFirstClear ? '<span class="jjk-chip mr-chip mr-chip--first">First Clear</span>' : ''}
+            </div>
+          </div>
+          <div class="mr-stages">${stageChips}</div>
+          <div class="mr-label"><span>Rewards Obtained</span></div>
+          <div class="mr-grid" aria-live="polite"></div>
+          <div class="mr-extra"></div>
+          <div class="mr-actions"></div>
+        </div>`;
+      document.body.appendChild(overlay);
 
-      // Show chests one by one with reveals
+      const card = overlay.querySelector('.mr-card');
+      const grid = overlay.querySelector('.mr-grid');
+      const extra = overlay.querySelector('.mr-extra');
+      const tiles = new Map();
+      let tileCount = 0;
+
+      const addTile = (item, isBonus) => {
+        const existing = tiles.get(item.key);
+        if (existing) {
+          existing.qty += Number(item.qty) || 0;
+          const q = existing.el.querySelector('.mr-qty');
+          q.textContent = `×${RF ? RF.fmtQty(existing.qty) : existing.qty}`;
+          q.classList.toggle('is-long', q.textContent.length > 6);
+          existing.el.classList.remove('is-bump');
+          void existing.el.offsetWidth;
+          existing.el.classList.add('is-bump');
+          return;
+        }
+        const el = document.createElement('div');
+        el.className = `mr-tile${item.kind === 'character' ? ' is-char' : ''}${isBonus ? ' is-bonus' : ''}`;
+        el.style.setProperty('--d', `${(tileCount % 6) * 0.08}s`);
+        const fb = item.fallback || this.chestSprites.closed;
+        el.innerHTML = `
+          <div class="mr-tile-glow"></div>
+          <div class="mr-socket">
+            <img class="mr-icon" src="${esc(item.icon)}" alt="" draggable="false" onerror="this.onerror=null;this.src='${esc(fb)}'">
+            <span class="mr-qty${String(item.qty).length > 4 ? ' is-long' : ''}">×${RF ? RF.fmtQty(item.qty) : esc(item.qty)}</span>
+            ${isBonus ? '<span class="mr-tag">Bonus</span>' : ''}
+          </div>
+          <div class="mr-name">${esc(item.name)}</div>`;
+        grid.appendChild(el);
+        tiles.set(item.key, { el, qty: Number(item.qty) || 0 });
+        tileCount++;
+        card.classList.toggle('is-many', tileCount > 6);
+      };
+
+      const toItems = (rewards) => {
+        if (RF) return RF.items(rewards);
+        return Object.entries(rewards || {}).filter(([k]) => k !== 'characters')
+          .map(([k, v]) => ({ key: k, name: this.formatRewardName(k), qty: v, icon: this.chestSprites.closed }));
+      };
+
+      // Open chests one by one; tiles pop in (and stack) as each opens
       for (let i = 0; i < this.collectedChests.length; i++) {
-        await this.delay(400);
-        await this.revealChest(this.collectedChests[i], chestContainer, i);
+        const chest = this.collectedChests[i];
+        const chip = overlay.querySelector(`.mr-stage[data-i="${i}"]`);
+        await this.delay(i === 0 ? 700 : 380);
+        if (chip) chip.classList.add('is-opening');
+        await this.delay(420);
+        if (chip) {
+          chip.classList.remove('is-opening');
+          chip.classList.add('is-open');
+          const img = chip.querySelector('img');
+          if (img) img.src = this.chestSprites.open;
+        }
+        toItems(chest.rewards).forEach(it => addTile(it, false));
+        // Apply rewards to inventory
+        this.applyRewardsToInventory(chest.rewards);
+      }
+
+      // Clear bonus (completion / first-clear — already granted by MissionProgress)
+      if (clear && clear.rewards && Object.keys(clear.rewards).length) {
+        await this.delay(300);
+        toItems(clear.rewards).forEach(it => addTile({ ...it, key: 'bonus_' + it.key }, true));
+      }
+
+      // Player EXP / rank up
+      if (expGained > 0 || rankUp) {
+        await this.delay(250);
+        extra.innerHTML = `
+          ${expGained > 0 ? `<span class="mr-exp"><img src="assets/ui/jjk/star_gold.webp" alt="" draggable="false">Player EXP <b>+${expGained.toLocaleString()}</b></span>` : ''}
+          ${rankUp ? `<span class="mr-rankup">Rank Up!${rankAfter != null ? ` <b>Rank ${esc(rankAfter)}</b>` : ''}</span>` : ''}`;
+        extra.classList.add('is-in');
       }
 
       // Continue button
-      await this.delay(800);
+      await this.delay(450);
       const continueBtn = document.createElement('button');
-      continueBtn.textContent = 'CONTINUE';
-      continueBtn.style.cssText = `
-        font-family: 'Cinzel', serif;
-        font-size: 1.5rem;
-        padding: 1rem 3rem;
-        background: linear-gradient(135deg, #D4AF37, #FFD700);
-        color: #000;
-        border: 3px solid #FFD700;
-        border-radius: 8px;
-        cursor: pointer;
-        box-shadow: 0 4px 15px rgba(255, 215, 0, 0.5);
-        transition: all 0.2s;
-        animation: fadeIn 0.5s ease-out;
-      `;
-
-      continueBtn.onmouseenter = () => {
-        continueBtn.style.transform = 'scale(1.1)';
-        continueBtn.style.boxShadow = '0 6px 25px rgba(255, 215, 0, 0.8)';
-      };
-
-      continueBtn.onmouseleave = () => {
-        continueBtn.style.transform = 'scale(1)';
-        continueBtn.style.boxShadow = '0 4px 15px rgba(255, 215, 0, 0.5)';
-      };
-
+      continueBtn.type = 'button';
+      continueBtn.className = 'jjk-btn mr-continue';
+      continueBtn.textContent = 'Continue';
       continueBtn.onclick = () => {
+        continueBtn.disabled = true;
         this.closeResultsScreen();
       };
-
-      resultsOverlay.appendChild(continueBtn);
-    },
-
-    /**
-     * Reveal individual chest with animation
-     */
-    async revealChest(chest, container, index) {
-      // Create chest card
-      const chestCard = document.createElement('div');
-      chestCard.style.cssText = `
-        width: 150px;
-        padding: 1.5rem;
-        background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
-        border: 2px solid #FFD700;
-        border-radius: 12px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-        text-align: center;
-        animation: cardAppear 0.5s ease-out;
-      `;
-
-      // Stage label
-      const stageLabel = document.createElement('div');
-      stageLabel.textContent = `Stage ${chest.stageIndex}`;
-      stageLabel.style.cssText = `
-        font-family: 'Cinzel', serif;
-        font-size: 0.9rem;
-        color: #D4AF37;
-        margin-bottom: 1rem;
-      `;
-      chestCard.appendChild(stageLabel);
-
-      // Chest icon (will flash)
-      const chestIcon = document.createElement('div');
-      const chestIconSprite = this.isChestSpriteAvailable('closed');
-      chestIcon.style.cssText = `
-        width: 60px;
-        height: 60px;
-        margin: 0 auto 1rem;
-        background: ${this.getChestBackground('closed')};
-        ${chestIconSprite ? `
-        filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.5));
-        ` : `
-        border: 3px solid #FFD700;
-        border-radius: 6px;
-        box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
-        `}
-      `;
-      chestCard.appendChild(chestIcon);
-
-      // Rewards list (hidden initially)
-      const rewardsList = document.createElement('div');
-      rewardsList.style.cssText = `
-        opacity: 0;
-        transition: opacity 0.5s;
-      `;
-
-      for (const [item, amount] of Object.entries(chest.rewards)) {
-        const rewardItem = document.createElement('div');
-        let color = '#FFF';
-        if (item === 'characters') {
-          const list = Array.isArray(amount) ? amount.filter(c => c && c.characterId) : [];
-          if (!list.length) continue;
-          const tiers = list.map(c => c.tierCode || '').filter(Boolean).join(', ');
-          rewardItem.textContent = `★ New Unit${list.length > 1 ? 's' : ''} Unlocked!${tiers ? ` (${tiers})` : ''}`;
-          color = '#ffd76a';
-        } else {
-          rewardItem.textContent = `${this.formatRewardName(item)}: ${amount}`;
-        }
-        rewardItem.style.cssText = `
-          font-family: 'Cinzel', serif;
-          font-size: 0.8rem;
-          color: ${color};
-          margin: 0.3rem 0;
-        `;
-        rewardsList.appendChild(rewardItem);
-      }
-
-      chestCard.appendChild(rewardsList);
-      container.appendChild(chestCard);
-
-      // Flash chest and reveal rewards
-      await this.delay(600);
-      chestIcon.style.animation = 'chestFlash 0.5s ease-in-out 3';
-
-      await this.delay(1500);
-      chestIcon.style.background = this.getChestBackground('open');
-      chestIcon.style.opacity = '0.3';
-      rewardsList.style.opacity = '1';
-
-      // Apply rewards to inventory
-      this.applyRewardsToInventory(chest.rewards);
+      overlay.querySelector('.mr-actions').appendChild(continueBtn);
     },
 
     /**
      * Format reward item name for display
      */
     formatRewardName(itemKey) {
+      if (window.RewardFormat) return window.RewardFormat.name(itemKey);
       const names = {
         ryo: 'Ryo',
         pearls: 'Pearls',
@@ -518,7 +473,7 @@
     closeResultsScreen() {
       const resultsScreen = document.getElementById('results-screen');
       if (resultsScreen) {
-        resultsScreen.style.animation = 'fadeOut 0.3s ease-out';
+        resultsScreen.classList.add('is-leaving');
         setTimeout(() => {
           resultsScreen.remove();
           // Return to missions page

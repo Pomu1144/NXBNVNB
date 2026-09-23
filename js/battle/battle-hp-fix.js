@@ -139,8 +139,9 @@ if (document.readyState === 'loading') {
 if (window.BattleCombat && window.BattleCombat.performAttack) {
   const originalAttack = window.BattleCombat.performAttack;
 
-  window.BattleCombat.performAttack = function(attacker, target, core) {
-    const result = originalAttack.call(this, attacker, target, core);
+  window.BattleCombat.performAttack = function(attacker, target, core, ...rest) {
+    // Forward onDone (and any other trailing args) so the turn still ends.
+    const result = originalAttack.call(this, attacker, target, core, ...rest);
 
     // Force HP bar update after attack
     requestAnimationFrame(() => {
@@ -156,8 +157,9 @@ if (window.BattleCombat && window.BattleCombat.performAttack) {
 if (window.BattleCombat && window.BattleCombat.performJutsu) {
   const originalJutsu = window.BattleCombat.performJutsu;
 
-  window.BattleCombat.performJutsu = function(attacker, target, core) {
-    const result = originalJutsu.call(this, attacker, target, core);
+  window.BattleCombat.performJutsu = function(attacker, target, core, ...rest) {
+    // Forward onDone (and any other trailing args) so the turn still ends.
+    const result = originalJutsu.call(this, attacker, target, core, ...rest);
 
     // Force HP bar update after jutsu
     setTimeout(() => {
@@ -177,8 +179,9 @@ if (window.BattleCombat && window.BattleCombat.performJutsu) {
 if (window.BattleCombat && window.BattleCombat.performUltimate) {
   const originalUltimate = window.BattleCombat.performUltimate;
 
-  window.BattleCombat.performUltimate = function(attacker, targets, core) {
-    const result = originalUltimate.call(this, attacker, targets, core);
+  window.BattleCombat.performUltimate = function(attacker, targets, core, ...rest) {
+    // Forward onDone (and any other trailing args) so the turn still ends.
+    const result = originalUltimate.call(this, attacker, targets, core, ...rest);
 
     // Force HP bar updates at multiple intervals for multi-hit ultimate
     setTimeout(() => forceUpdateAllHPBars(), 200);
@@ -194,8 +197,9 @@ if (window.BattleCombat && window.BattleCombat.performUltimate) {
 if (window.BattleCombat && window.BattleCombat.performMultiAttack) {
   const originalMulti = window.BattleCombat.performMultiAttack;
 
-  window.BattleCombat.performMultiAttack = function(attacker, targets, core) {
-    const result = originalMulti.call(this, attacker, targets, core);
+  window.BattleCombat.performMultiAttack = function(attacker, targets, core, ...rest) {
+    // Forward onDone (and any other trailing args) so the turn still ends.
+    const result = originalMulti.call(this, attacker, targets, core, ...rest);
 
     // Update after each hit
     setTimeout(() => forceUpdateAllHPBars(), 200);

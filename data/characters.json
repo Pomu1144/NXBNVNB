@@ -113515,13 +113515,37 @@
     "type": "Jutsu",
     "byTier": {
      "6S": {
-      "chakraCost": 43,
+      "chakraCost": 4,
       "hits": 8,
       "shape": "—",
       "range": "—",
       "position": "Whole Map",
       "description": "4.5x attack to all enemies (6x attack if they are Attack Weakened).",
       "nwusDescription": "3.5x attack to all enemies (5x attack if they are Attack Weakened)."
+     }
+    }
+   },
+   "ultimate": {
+    "name": "Secret Technique: Time-Space: Rasengan Barrage",
+    "type": "Ultimate",
+    "byTier": {
+     "6S": {
+      "chakraCost": 8,
+      "hits": 18,
+      "shape": "—",
+      "range": "Whole Map",
+      "position": "On-screen",
+      "description": "18x attack toward 1 enemy(s) on-screen, 85% chance of attack weakened for 8 turn(s), and restores own Chakra Gauge by 2.",
+      "effects": {
+       "multiplier": 18,
+       "targets": 1,
+       "debuff": {
+        "type": "attack_weakened",
+        "chance": 0.85,
+        "turns": 8
+       },
+       "selfChakra": 2
+      }
      }
     }
    }
@@ -113555,7 +113579,7 @@
   "metadata": {
    "cardNumber": 2101,
    "maxLevel": null,
-   "hitCount": 0
+   "hitCount": 18
   }
  },
  {
