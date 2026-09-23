@@ -269,11 +269,16 @@
 
   <!-- Card Inventory Modal (for Equipment Slots) -->
   <div id="card-inventory-modal" class="card-inventory-modal" aria-hidden="true">
-    <div class="card-inventory-panel">
-      <h2 class="card-inventory-title">Select Jutsu Card</h2>
-      <div class="card-inventory-grid" id="card-inventory-grid"></div>
+    <div class="card-inventory-panel jjk-panel" role="dialog" aria-modal="true" aria-labelledby="card-inventory-title">
+      <div class="card-inventory-head">
+        <h2 class="card-inventory-title jjk-title-plate" id="card-inventory-title">Select Jutsu Card</h2>
+        <span class="card-inventory-sub" id="card-inventory-sub"></span>
+      </div>
+      <div class="card-inventory-grid" id="card-inventory-grid" role="listbox" aria-label="Owned jutsu cards"></div>
+      <div class="card-inventory-detail" id="card-inventory-detail" aria-live="polite"></div>
       <div class="card-inventory-actions">
-        <button class="btn-dark" id="card-inventory-cancel">Cancel</button>
+        <button class="jjk-btn card-inventory-btn" type="button" id="card-inventory-cancel">Cancel</button>
+        <button class="jjk-btn card-inventory-btn is-primary" type="button" id="card-inventory-equip" disabled>Equip</button>
       </div>
     </div>
   </div>

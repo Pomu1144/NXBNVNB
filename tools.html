@@ -25,57 +25,122 @@
     <a class="jjk-icon-btn jjk-back" href="village.html" aria-label="Back to Village"><img src="assets/ui/jjk/back_arrow.webp" alt="" /></a>
     <h1 class="jjk-title-plate">Tools</h1>
   </header>
-  <div id="tools-bg"></div>
-  <div id="tools-backdrop"></div>
-  <main class="tools-content">
+  <main class="tl-app" id="tools-app">
 
-    <!-- The mockup image is the frame; functional zones sit over its regions -->
-    <div class="tools-skin-stage">
-      <!-- LEFT rail: owned character roster -->
-      <div class="zone zone-roster">
-        <div class="tools-search-wrap">
-          <span class="tools-search-ico">⚲</span>
-          <input type="text" id="tools-search" class="tools-roster-search" placeholder="Search" />
+    <!-- LEFT: owned roster -->
+    <section class="tl-roster jjk-panel" aria-label="Shinobi roster">
+      <div class="tl-panel-head">
+        <h2 class="tl-panel-title">Shinobi</h2>
+        <span class="jjk-chip tl-count" id="tools-roster-count">0</span>
+      </div>
+      <div class="tl-search">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/></svg>
+        <input type="search" id="tools-search" placeholder="Search name or title" autocomplete="off" aria-label="Search roster" />
+      </div>
+      <div class="tl-filters">
+        <label class="tl-select"><span class="sr-only">Sort by</span>
+          <select id="tools-sort" aria-label="Sort roster">
+            <option value="stars">Stars</option>
+            <option value="level">Level</option>
+            <option value="power">Power</option>
+            <option value="name">Name</option>
+            <option value="equipped">Equipped</option>
+          </select>
+        </label>
+        <button type="button" class="tl-dir" id="tools-sort-dir" aria-label="Toggle sort direction" title="Toggle sort direction">&#9660;</button>
+        <label class="tl-select"><span class="sr-only">Filter</span>
+          <select id="tools-filter" aria-label="Filter roster">
+            <option value="all">All</option>
+            <option value="7">7&#9733;+</option>
+            <option value="6">6&#9733;</option>
+            <option value="5">5&#9733;</option>
+            <option value="4">&le;4&#9733;</option>
+            <option value="geared">Geared</option>
+            <option value="empty">No gear</option>
+          </select>
+        </label>
+      </div>
+      <div class="tl-roster-list" id="tools-roster-list" role="listbox" aria-label="Characters"></div>
+    </section>
+
+    <!-- CENTER: art, identity, slots -->
+    <section class="tl-stage jjk-panel" aria-label="Selected character">
+      <div class="tl-art-frame" id="tools-art-frame">
+        <img id="character-full-image" class="tl-art" src="" alt="" hidden />
+        <div class="tl-empty" id="tools-empty-hint">Select a shinobi from the roster</div>
+        <div class="tl-ident" id="selected-character-info" hidden>
+          <div class="tl-stars" id="tools-star-row"></div>
+          <div class="tl-name" id="character-name"></div>
+          <div class="tl-version" id="character-version"></div>
         </div>
-        <div class="tools-roster-list" id="tools-roster-list"></div>
-      </div>
-
-      <!-- CENTER: name + stars at the top nameplate, power+grade, character art -->
-      <div class="zone zone-nameplate" id="selected-character-info" style="display:none">
-        <div class="tools-np-line">
-          <span class="character-name" id="character-name"></span>
-          <span class="character-version" id="character-version"></span>
+        <div class="tl-power" id="tools-power-badge" hidden>
+          <span class="tl-grade" id="tools-grade">&mdash;</span>
+          <span class="tl-power-txt"><small>Power</small><b id="power-value">&mdash;</b></span>
         </div>
-        <div class="tools-star-row" id="tools-star-row"></div>
-      </div>
-      <div class="zone zone-power" id="tools-power-badge" style="display:none">
-        <span class="tools-grade" id="tools-grade">—</span>
-        <span class="tools-power-txt"><span class="tpl">POWER</span><span class="power-value" id="power-value">—</span></span>
-      </div>
-      <div class="zone zone-art">
-        <img id="character-full-image" class="tools-art" src="" alt="" style="display:none" />
-        <div class="tools-empty-hint" id="tools-empty-hint">Select a character</div>
+        <div class="tl-level jjk-chip" id="tools-level-chip" hidden></div>
       </div>
 
-      <!-- Stats band -->
-      <div class="zone zone-stats stats-display" id="stats-display" style="display:none">
-        <div class="stat-item"><span class="stat-label">HP</span><span class="stat-value" id="stat-health">0</span></div>
-        <div class="stat-item"><span class="stat-label">ATK</span><span class="stat-value" id="stat-attack">0</span></div>
-        <div class="stat-item"><span class="stat-label">SPD</span><span class="stat-value" id="stat-speed">0</span></div>
+      <div class="tl-slots" id="equipment-container" hidden>
+        <div class="tl-slot-group">
+          <div class="tl-group-label">Jutsu</div>
+          <div class="tl-slot-row">
+            <button type="button" class="tl-slot" data-slot="jutsu1"></button>
+            <button type="button" class="tl-slot" data-slot="jutsu2"></button>
+            <button type="button" class="tl-slot" data-slot="jutsu3"></button>
+            <button type="button" class="tl-slot tl-slot--ult" data-slot="ultimate"></button>
+          </div>
+        </div>
+        <div class="tl-slot-group">
+          <div class="tl-group-label">Tools</div>
+          <div class="tl-slot-row">
+            <button type="button" class="tl-slot" data-slot="equipment1"></button>
+            <button type="button" class="tl-slot" data-slot="equipment2"></button>
+            <button type="button" class="tl-slot" data-slot="equipment3"></button>
+            <button type="button" class="tl-slot" data-slot="equipment4"></button>
+            <button type="button" class="tl-slot" data-slot="equipment5"></button>
+          </div>
+        </div>
       </div>
+    </section>
 
-      <!-- Equipment row -->
-      <div class="zone zone-equip equipment-container" id="equipment-container" style="display:none">
-        <div class="equipment-slot" data-slot="1"></div>
-        <div class="equipment-slot" data-slot="2"></div>
-        <div class="equipment-slot" data-slot="3"></div>
-        <div class="equipment-slot" data-slot="4"></div>
-        <div class="equipment-slot" data-slot="5"></div>
-        <div class="equipment-slot" data-slot="6"></div>
+    <!-- RIGHT: stats + equipped list + actions -->
+    <section class="tl-side jjk-panel" aria-label="Stats and gear">
+      <div class="tl-panel-head">
+        <h2 class="tl-panel-title">Stats</h2>
+        <span class="jjk-chip tl-set" id="tools-set-bonus" hidden>7&#9733; Set +30%</span>
       </div>
-
-    </div>
+      <dl class="tl-stats" id="stats-display"></dl>
+      <div class="tl-panel-head tl-panel-head--sub">
+        <h2 class="tl-panel-title">Equipped</h2>
+        <span class="jjk-chip tl-count" id="tools-equip-count">0/9</span>
+      </div>
+      <ul class="tl-equipped" id="tools-equipped-list"></ul>
+      <div class="tl-actions">
+        <button type="button" class="jjk-btn tl-act" id="tools-auto">Auto-Equip</button>
+        <button type="button" class="jjk-btn tl-act tl-act--ghost" id="tools-clear">Unequip All</button>
+      </div>
+    </section>
   </main>
+
+  <!-- Card picker (themed modal) -->
+  <div class="tl-modal" id="tools-picker" hidden>
+    <div class="tl-modal-card jjk-panel" role="dialog" aria-modal="true" aria-labelledby="tools-picker-title">
+      <div class="tl-modal-head">
+        <h2 id="tools-picker-title">Equip</h2>
+        <button type="button" class="tl-x" id="tools-picker-close" aria-label="Close">&times;</button>
+      </div>
+      <div class="tl-current" id="tools-picker-current" hidden></div>
+      <div class="tl-modal-tools">
+        <div class="tl-tabs" id="tools-picker-tabs" role="tablist"></div>
+        <label class="tl-search tl-search--sm">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/></svg>
+          <input type="search" id="tools-picker-search" placeholder="Search cards" autocomplete="off" aria-label="Search cards" />
+        </label>
+      </div>
+      <div class="tl-card-grid" id="tools-picker-grid"></div>
+    </div>
+  </div>
+  <div class="tl-toast" id="tools-toast" role="status" aria-live="polite"></div>
 
   <div class="bottom-bar">
     <div class="bottom-bar-content">
@@ -96,6 +161,9 @@
   <script src="js/resources.js"></script>
   <script src="js/character_inv.js?v=2"></script>
   <script src="js/progression.js"></script>
+  <script src="js/limit-break.js"></script>
+  <script src="js/card-levels.js"></script>
+  <script src="js/jutsu-inventory.js"></script>
   <script src="js/tools.js"></script>
   <script src="js/navigation.js"></script>
 </body>

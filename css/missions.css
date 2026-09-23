@@ -455,3 +455,41 @@ html.is-mobile.is-landscape.is-compact body.page-missions .start-btn {
   height: 34px;
   font-size: 13px;
 }
+
+/* ---------- Scrolling: the list is the page's only scroller ----------
+   (html/body never scroll; header, panel and dock are fixed). JS in
+   missions.js forwards wheel/drag from outside the list to it. */
+body.page-missions .mission-list-container {
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
+}
+/* tab row: horizontal swipes only, vertical drags are routed to the list */
+body.page-missions .mission-tabs { touch-action: pan-x; }
+body.page-missions .mission-tabs .tab-btn { touch-action: pan-x; }
+
+/* Rank without icon art (e.g. "D") falls back to text: was browser-default
+   black on the dark card */
+body.page-missions .difficulty-icon-btn.difficulty-fallback {
+  min-width: 48px;
+  height: 48px;
+  padding: 0 10px;
+  font-family: var(--jjk-font);
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--jjk-gold-hi, #f0d58a);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
+  background: rgba(3, 10, 12, 0.6);
+  border: 1px solid rgba(201, 162, 78, 0.55);
+}
+body.page-missions .difficulty-icon-btn.difficulty-fallback.active {
+  color: #fff4cf;
+  border-color: var(--jjk-gold, #c9a24e);
+}
+body.page-missions .error-message {
+  padding: 24px;
+  text-align: center;
+  color: var(--jjk-text, #e9e1cc);
+}

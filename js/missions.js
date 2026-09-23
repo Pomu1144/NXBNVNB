@@ -6,6 +6,66 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let allMissions = [];
 
+  /* ------------------------------------------------------------------
+   * Scroll routing. The page itself never scrolls (header, panel and
+   * dock are all position:fixed), so the ONLY scroller is
+   * .mission-list-container. Natively that means a wheel / drag only
+   * works while the pointer is inside that inner box — over the tabs,
+   * the panel frame or the empty left half of the screen nothing moved.
+   * Forward those gestures to the list so the missions always scroll.
+   * ------------------------------------------------------------------ */
+  const scroller = document.querySelector('.mission-list-container');
+  const NO_ROUTE = '.mission-list-container, .bottom-bar, #rotate-device-overlay, [class*="modal"], dialog';
+  const shouldRoute = (t) => scroller && !(t && t.closest && t.closest(NO_ROUTE));
+
+  window.addEventListener('wheel', (e) => {
+    if (e.ctrlKey || !shouldRoute(e.target)) return;
+    let dy = e.deltaY;
+    if (!dy) return;
+    if (e.deltaMode === 1) dy *= 40;                          // lines
+    else if (e.deltaMode === 2) dy *= scroller.clientHeight;  // pages
+    scroller.scrollBy({ top: dy, left: 0, behavior: 'auto' });
+  }, { passive: true });
+
+  // Touch: vertical drags that start outside the list (tab row, panel frame,
+  // left side) scroll the list; horizontal drags on the tab row are left to
+  // the browser (the row is touch-action: pan-x on mobile), taps still click.
+  let tStart = null, tLastY = 0, tLastT = 0, tVel = 0, tMode = null, tRaf = 0;
+  window.addEventListener('touchstart', (e) => {
+    cancelAnimationFrame(tRaf);
+    if (e.touches.length !== 1 || !shouldRoute(e.target)) { tStart = null; return; }
+    const t = e.touches[0];
+    tStart = { x: t.clientX, y: t.clientY };
+    tLastY = t.clientY; tLastT = performance.now(); tVel = 0; tMode = null;
+  }, { passive: true });
+  window.addEventListener('touchmove', (e) => {
+    if (!tStart || e.touches.length !== 1) return;
+    const t = e.touches[0];
+    if (!tMode) {
+      const dx = Math.abs(t.clientX - tStart.x), dy = Math.abs(t.clientY - tStart.y);
+      if (dx < 6 && dy < 6) return;
+      tMode = dy > dx ? 'y' : 'x';
+    }
+    if (tMode !== 'y') return;
+    const now = performance.now();
+    const step = tLastY - t.clientY;
+    scroller.scrollTop += step;
+    const dt = Math.max(1, now - tLastT);
+    tVel = 0.8 * (step / dt) + 0.2 * tVel;
+    tLastY = t.clientY; tLastT = now;
+  }, { passive: true });
+  window.addEventListener('touchend', () => {
+    if (!tStart || tMode !== 'y') { tStart = null; return; }
+    tStart = null;
+    let v = tVel * 16;                                        // px per frame
+    const glide = () => {
+      if (Math.abs(v) < 0.5) return;
+      scroller.scrollTop += v; v *= 0.94;
+      tRaf = requestAnimationFrame(glide);
+    };
+    if (performance.now() - tLastT < 80) glide();
+  }, { passive: true });
+
   // A mission may gate itself behind another mission's rank clear via a
   // `requires: { mission, rank }` field. Read the shared progress store
   // directly (mission-progress.js isn't loaded on this page).
@@ -174,6 +234,8 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.tab-btn').forEach(tab => {
       tab.classList.toggle('active', tab.textContent === categoryName);
     });
+    // New category starts at the top of its list
+    if (scroller) scroller.scrollTop = 0;
   }
 
   /**

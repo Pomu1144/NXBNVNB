@@ -91,7 +91,7 @@ body.page-characters::-webkit-scrollbar {
 /* Keep character art crisp when the browser resamples it */
 .char-slot img,
 .char-grid img,
-.nameplate-stars .star,
+.bz-star,
 .result-card-inner img {
   image-rendering: -webkit-optimize-contrast;
 }
@@ -326,46 +326,59 @@ body.page-characters::-webkit-scrollbar {
   font-weight: 500;
 }
 
-/* ---------- Stars (overlapping nameplate) ---------- */
-/* Stars are anchored to the nameplate itself (their positioned parent) and
-   sit straddling its top edge, so they never drift or overlap the name as
-   the modal scales with the browser. Size + overlap scale together. */
+/* ---------- Star component (shared: .bz-stars / .bz-star) ----------
+   One star look everywhere: the gold JJK star asset, sized by a single
+   --bz-star-size custom property. Containers set the size; the row never
+   wraps, so the count is always readable. Same block lives in teams.css. */
+.bz-stars {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: var(--bz-star-gap, 1px);
+  line-height: 0;
+  vertical-align: middle;
+  pointer-events: none;
+}
+.bz-star {
+  display: block;
+  flex: 0 0 auto;
+  width: var(--bz-star-size, 14px);
+  height: calc(var(--bz-star-size, 14px) * 0.97);   /* asset is 96x93 */
+  object-fit: contain;
+  filter: drop-shadow(0 1px 1.5px rgba(0,0,0,.85));
+  user-select: none;
+  -webkit-user-drag: none;
+}
+.bz-stars[data-count="8"], .bz-stars[data-count="9"], .bz-stars[data-count="10"] { --bz-star-gap: -1px; }
+
+/* ---------- Nameplate stars ----------
+   Anchored to the nameplate box (its positioned parent). The scroll art is a
+   square image drawn with background-size:cover, so the red scroll's height is
+   always 10% of the box WIDTH and it is vertically centred. top:50% plus a
+   percentage margin-top (percent margins resolve against width) lands the row
+   exactly on the scroll's top rim at every window size — no vw/vh drift. */
 .nameplate-stars {
+  --bz-star-size: 24px;
   position: absolute;
-  bottom: 100%;
-  left: 14px;
-  transform: translateY(50%);
-  text-align: left;
+  top: 50%;
+  left: 13%;
+  margin-top: -5%;
+  transform: translateY(-78%);
   z-index: 10;
   display: flex;
   align-items: center;
   pointer-events: none;
 }
-.nameplate-stars .star {
-  width: clamp(36px, 6vw, 54px);
-  height: clamp(36px, 6vw, 54px);
-  display: inline-block;
-  filter: drop-shadow(0 2px 3px rgba(0,0,0,.8));
-  margin-left: -0.42em;
-  font-size: clamp(36px, 6vw, 54px); /* drives the em-based overlap above */
-  position: relative;
+/* Compact phones: mobile.css shrink-wraps the nameplate (margin-left:auto),
+   which squashed the scroll art to ~15px tall and let the name spill out.
+   Give it a real width so the scroll, name and stars keep their proportions. */
+html.is-mobile.is-landscape.is-compact .page-characters .nameplate {
+  width: 88%;
+  margin-left: auto;
+  margin-right: auto;
+  box-sizing: border-box;
 }
-.nameplate-stars .star:first-child {
-  margin-left: 0;
-  z-index: 10;
-}
-.nameplate-stars .star:nth-child(2) { z-index: 9; }
-.nameplate-stars .star:nth-child(3) { z-index: 8; }
-.nameplate-stars .star:nth-child(4) { z-index: 7; }
-.nameplate-stars .star:nth-child(5) { z-index: 6; }
-.nameplate-stars .star:nth-child(6) { z-index: 5; }
-.nameplate-stars .star:nth-child(7) { z-index: 4; }
-.nameplate-stars .star:nth-child(8) { z-index: 3; }
-.nameplate-stars .star:nth-child(9) { z-index: 2; }
-.nameplate-stars .star:nth-child(10) { z-index: 1; }
-
-/* (Stars now anchor to the nameplate's top edge with size-relative units,
-   so no per-mode offset hack is needed for fullscreen.) */
+html.is-mobile .nameplate-stars { --bz-star-size: 18px; }
 
 /* ---------- Tabs ---------- */
 .char-tabs {
@@ -1999,90 +2012,233 @@ body.page-characters::-webkit-scrollbar {
   transition-delay: 0.2s;
 }
 
-/* ========== Card Inventory Modal (Equipment Slots) ========== */
+/* ========== Card Inventory Modal — "Select Jutsu Card" (JJK theme) ========== */
 .card-inventory-modal {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.85);
+  inset: 0;
+  background: rgba(2, 8, 10, 0.78);
   display: none;
   align-items: center;
   justify-content: center;
   z-index: 2000;
   backdrop-filter: blur(4px);
+  padding: 16px;
+  box-sizing: border-box;
 }
-
-.card-inventory-modal[aria-hidden="false"] {
-  display: flex;
-}
+.card-inventory-modal[aria-hidden="false"] { display: flex; }
 
 .card-inventory-panel {
-  background-image: url('../assets/ui/infoframe.png');
-  background-size: 100% 100%;
-  background-repeat: no-repeat;
-  background-position: center;
-  padding: 40px;
-  width: 700px;
-  min-height: 500px;
-  max-height: 85vh;
-  overflow-y: auto;
+  width: min(860px, 100%);
+  max-height: min(86vh, 760px);
   display: flex;
   flex-direction: column;
+  gap: 12px;
+  padding: 18px 20px 16px;
+  box-sizing: border-box;
+  font-family: var(--jjk-font);
+  color: var(--jjk-text);
 }
 
-.card-inventory-title {
-  font-family: "Cinzel", serif;
-  font-size: 24px;
-  color: #d9b362;
-  text-align: center;
-  margin-bottom: 20px;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+.card-inventory-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-left: -20px;               /* plate bleeds to the panel edge */
+}
+.card-inventory-title.jjk-title-plate {
+  margin: 0;
+  font-size: 22px;
+  min-height: 44px;
+}
+.card-inventory-sub {
+  font-size: 13px;
+  color: var(--jjk-muted);
+  letter-spacing: 0.3px;
 }
 
 .card-inventory-grid {
+  --ci-min: 138px;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-  gap: 16px;
-  max-height: 60vh;
+  grid-template-columns: repeat(auto-fill, minmax(var(--ci-min), 1fr));
+  gap: 12px;
+  flex: 1 1 auto;
+  min-height: 180px;
   overflow-y: auto;
-  padding: 16px;
+  padding: 12px;
+  background: rgba(3, 10, 12, 0.55);
+  border: 1px solid rgba(201, 162, 78, 0.22);
+  scrollbar-width: thin;
+  scrollbar-color: var(--jjk-gold-lo) transparent;
 }
+.card-inventory-grid.is-empty { display: flex; align-items: center; justify-content: center; }
 
-.card-inventory-item {
+/* Card tile */
+.ci-card {
+  --ci-tint: #c9a24e;
   position: relative;
-  aspect-ratio: 1;
-  border-radius: 12px;
-  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  text-align: left;
+  font: inherit;
+  color: inherit;
   cursor: pointer;
-  transition: all 0.3s ease;
-  background: rgba(10, 10, 15, 0.7);
-  border: 2px solid rgba(217, 179, 98, 0.2);
+  background: linear-gradient(180deg, #10262c, #081417);
+  border: 1px solid color-mix(in srgb, var(--ci-tint) 45%, transparent);
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.5);
+  transition: transform .15s var(--jjk-ease), border-color .15s, box-shadow .15s;
+  overflow: hidden;
 }
+.ci-card.r1, .ci-card.r2, .ci-card.r3 { --ci-tint: #7a8a8c; }
+.ci-card.r4 { --ci-tint: #4f9aa3; }
+.ci-card.r5 { --ci-tint: #9486c9; }
+.ci-card.r6 { --ci-tint: #c9a24e; }
+.ci-card.r7, .ci-card.r8, .ci-card.r9, .ci-card.r10 { --ci-tint: #d0543f; }
+.ci-card:hover:not(.is-equipped) {
+  transform: translateY(-2px);
+  border-color: var(--ci-tint);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(0,0,0,0.5);
+}
+.ci-card:focus-visible { outline: 2px solid var(--jjk-gold-hi); outline-offset: 2px; }
+.ci-card.is-selected {
+  border-color: var(--jjk-gold-hi);
+  box-shadow: 0 0 0 2px var(--jjk-gold), 0 0 18px rgba(241, 217, 138, 0.35);
+}
+.ci-card.is-selected::after {            /* gold check seal, top-right */
+  content: "✓";
+  position: absolute;
+  top: 6px; right: 6px;
+  width: 22px; height: 22px;
+  display: grid; place-items: center;
+  font-size: 13px; font-weight: 800;
+  color: #231c08;
+  background: linear-gradient(180deg, var(--jjk-gold-hi), var(--jjk-gold));
+  border: 1px solid var(--jjk-gold-lo);
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.6);
+  z-index: 3;
+}
+.ci-card.is-equipped { cursor: default; filter: saturate(0.4) brightness(0.7); }
 
-.card-inventory-item img {
+.ci-art {
+  position: relative;
+  display: block;
+  aspect-ratio: 4 / 3;
+  background: #050c0e;
+  border-bottom: 1px solid color-mix(in srgb, var(--ci-tint) 60%, transparent);
+}
+.ci-art > img {
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
-
-.card-inventory-item:hover {
-  transform: translateY(-4px) scale(1.05);
-  border-color: rgba(217, 179, 98, 0.6);
-  box-shadow: 0 8px 16px rgba(217, 179, 98, 0.3);
+.ci-icon {
+  position: absolute;
+  left: 5px; bottom: 5px;
+  width: 30px; height: 30px;
+  display: grid; place-items: center;
+  background: rgba(3, 10, 12, 0.85);
+  border: 1px solid rgba(201, 162, 78, 0.6);
+}
+.ci-icon img { width: 26px; height: 26px; object-fit: contain; }
+.ci-tag {
+  position: absolute;
+  top: 6px; left: 6px;
+  padding: 1px 8px;
+  font-size: 10px; font-weight: 800; letter-spacing: 0.5px;
+  color: var(--jjk-text);
+  background: var(--jjk-crimson);
+  clip-path: polygon(4px 0, 100% 0, calc(100% - 4px) 100%, 0 100%);
 }
 
-.card-inventory-item:active {
-  transform: translateY(0) scale(0.98);
+.ci-body {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 6px 8px 8px;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--ci-tint) 12%, transparent), transparent);
 }
+.ci-name {
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--jjk-text);
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+  min-height: 2.4em;
+}
+.ci-stars { --bz-star-size: 11px; display: flex; height: 12px; }
+.ci-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+  font-size: 10px;
+  line-height: 1;
+}
+.ci-type {
+  padding: 2px 6px;
+  color: var(--jjk-gold-hi);
+  background: rgba(3, 10, 12, 0.85);
+  border: 1px solid rgba(201, 162, 78, 0.4);
+  white-space: nowrap;
+}
+.ci-lv { color: var(--jjk-muted); white-space: nowrap; }
+
+/* Empty state */
+.ci-empty {
+  max-width: 420px;
+  text-align: center;
+  padding: 18px 10px;
+}
+.ci-empty-icon { width: 44px; height: auto; opacity: 0.55; filter: grayscale(0.4); }
+.ci-empty-title { margin-top: 8px; font-size: 18px; font-weight: 800; color: var(--jjk-gold-hi); }
+.ci-empty-text { margin: 8px 0 14px; font-size: 13px; line-height: 1.5; color: var(--jjk-muted); }
+.ci-empty-text b { color: var(--jjk-text); }
+.ci-empty-link.jjk-btn { display: inline-flex; align-items: center; justify-content: center; text-decoration: none; }
+
+/* Selected-card strip + actions */
+.card-inventory-detail {
+  min-height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+  font-size: 13px;
+}
+.card-inventory-detail:empty { display: none; }
+.ci-hint { color: var(--jjk-muted); }
+.ci-detail-name { color: var(--jjk-gold-hi); font-weight: 700; }
+.ci-detail-stats { display: inline-flex; gap: 12px; }
+.ci-stat { color: var(--jjk-text); font-variant-numeric: tabular-nums; }
+.ci-stat i { font-style: normal; color: var(--jjk-muted); margin-right: 4px; font-size: 11px; }
 
 .card-inventory-actions {
   display: flex;
   justify-content: center;
-  gap: 12px;
-  margin-top: 20px;
+  gap: 14px;
 }
+.card-inventory-btn.jjk-btn { min-width: 140px; }
+
+/* Compact phones (landscape ~844x390): shorter panel, smaller tiles */
+html.is-mobile .card-inventory-modal { padding: 8px; }
+html.is-mobile .card-inventory-panel { max-height: calc(100vh - 16px); max-height: calc(100dvh - 16px); padding: 10px 12px; gap: 8px; }
+html.is-mobile .card-inventory-head { margin-left: -12px; }
+html.is-mobile .card-inventory-title.jjk-title-plate { font-size: 16px; min-height: 32px; padding: 4px 44px 4px 14px; }
+html.is-mobile .card-inventory-sub { font-size: 11px; }
+html.is-mobile .card-inventory-grid { --ci-min: 112px; gap: 8px; padding: 8px; min-height: 120px; }
+html.is-mobile .ci-art { aspect-ratio: 16 / 10; }
+html.is-mobile .card-inventory-btn.jjk-btn { min-width: 110px; height: 34px; font-size: 13px; }
+html.is-mobile .card-inventory-detail { font-size: 11px; min-height: 16px; }
+html.is-mobile .ci-empty { padding: 6px; }
+html.is-mobile .ci-empty-text { margin: 4px 0 8px; font-size: 12px; }
 
 /* ========== Jutsu/Ultimate Slots (Now in Ninjutsu Tab) ========== */
 .jutsu-slots-container {
@@ -2300,73 +2456,6 @@ body.page-characters::-webkit-scrollbar {
   border-radius: 6px;
   letter-spacing: 0.08em;
   margin-bottom: 4px;
-}
-
-/* ========== Card Inventory Item (improved) ========== */
-.card-inventory-item {
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  aspect-ratio: unset;
-  min-height: 160px;
-  border-radius: 12px;
-  overflow: hidden;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  background: rgba(10, 10, 15, 0.85);
-  border: 2px solid rgba(217, 179, 98, 0.25);
-}
-
-.card-inventory-item > img:first-child {
-  width: 100%;
-  height: 100px;
-  object-fit: cover;
-  border-radius: 10px 10px 0 0;
-  flex-shrink: 0;
-}
-
-.card-inv-icon-wrap {
-  position: absolute;
-  bottom: 58px;
-  right: 6px;
-  width: 32px;
-  height: 32px;
-  background: rgba(0,0,0,0.7);
-  border-radius: 6px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid rgba(217,179,98,0.4);
-}
-
-.card-inv-jutsu-icon {
-  width: 28px;
-  height: 28px;
-  object-fit: contain;
-}
-
-.card-inv-label {
-  padding: 4px 6px;
-  background: rgba(0,0,0,0.75);
-  flex-shrink: 0;
-}
-
-.card-inv-jutsu-name {
-  font-family: "Cinzel", serif;
-  font-size: 9px;
-  color: #d9b362;
-  text-align: center;
-  line-height: 1.2;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.card-inv-level {
-  font-size: 9px;
-  color: #aaa;
-  text-align: center;
-  margin-top: 2px;
 }
 
 /* ========== Jutsu Slot Level Badge ========== */

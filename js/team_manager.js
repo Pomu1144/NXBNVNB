@@ -64,9 +64,12 @@
     return map[code] ?? 0;
   };
 
+  // Shared star component (.bz-stars / .bz-star, styled in teams.css — same
+  // markup as js/characters.js). Size comes from the container's --bz-star-size.
   const renderStars = (n) => {
-    const count = Math.max(0, Math.min(10, n));
-    return new Array(count).fill(0).map(() => "<span class='star'>★</span>").join("");
+    const count = Math.max(0, Math.min(10, Number(n) || 0));
+    const star = "<img src='assets/ui/jjk/star_gold.webp' class='bz-star' alt='' draggable='false'>";
+    return `<span class="bz-stars" data-count="${count}" role="img" aria-label="${count} star${count === 1 ? "" : "s"}">${star.repeat(count)}</span>`;
   };
 
   function resolveTierArt(c, tier) {
@@ -143,9 +146,9 @@
   }
 
   // A unit's POWER CEILING at its current star tier — the effective power it
-  // would have at that tier's max level. The letter grade is based on this,
-  // NOT the current level, so a freshly-pulled 7S still grades as the top-tier
-  // unit it is, while a 6S vs 7S of the same card still grade differently.
+  // would have at that tier's max level. Shown on roster cards (and used by the
+  // "Potential" sort) instead of current power, so a freshly-pulled 7S still
+  // reads as the top-tier unit it is, while a 6S vs 7S of the same card differ.
   function tierCeilingPower(char, inst) {
     const tier = inst?.tierCode || minTier(char);
     try {
@@ -161,28 +164,13 @@
     return safeNum(char?.powerRank, 0);
   }
 
-  // Map a power-ceiling value onto an SS→D letter grade.
-  function gradeFromPower(p) {
-    if (p >= 18000) return "SS";
-    if (p >= 13000) return "S";
-    if (p >= 9000)  return "A";
-    if (p >= 5500)  return "B";
-    if (p >= 2500)  return "C";
-    return "D";
-  }
-
-  // Letter grade = the unit's tier power ceiling (level-independent).
-  function gradeOf(char, inst) {
-    return gradeFromPower(tierCeilingPower(char, inst));
-  }
-  const GRADE_ORDER = { SS: 6, S: 5, A: 4, B: 3, C: 2, D: 1 };
 
   function sortKey(inst, char) {
     const tier = inst.tierCode || minTier(char);
     const stats = pickStats(char, DISPLAY_MODE);
     switch (currentSort) {
       case "power": return effectivePower(char, inst);
-      case "grade": return GRADE_ORDER[gradeOf(char, inst)] * 1e7 + effectivePower(char, inst);
+      case "grade": return tierCeilingPower(char, inst) * 1e3 + safeNum(inst.level, 0); // "Potential"
       case "star":  return starsFromTier(tier) * 1e7 + safeNum(char.powerRank, 0);
       case "level": return safeNum(inst.level, 0) * 1e7 + safeNum(char.powerRank, 0);
       case "atk":   return safeNum(stats.atk, 0);
@@ -574,8 +562,9 @@
       const tier = inst.tierCode || minTier(char);
       const art = resolveTierArt(char, tier);
       const isAssigned = assignedUids.has(inst.uid);
-      const rarity = safeNum(char.rarity, starsFromTier(tier) || 1);
-      const is7Star = (starsFromTier(tier) || 0) >= 7;
+      const stars = starsFromTier(tier) || safeNum(char.rarity, 1);
+      const is7Star = stars >= 7;
+      const power = Math.round(tierCeilingPower(char, inst));
       // Lightning overlay: injected by js/seven-star-fx.js only while the
       // card is on-screen (one shared video for the page), placed before the
       // portrait <img> where the per-card <video> used to be.
@@ -585,14 +574,18 @@
         <div class="team-char-card ${isAssigned ? 'assigned' : ''}${is7Star ? ' is-7star' : ''}"
              data-uid="${inst.uid}"
              data-char-id="${char.id}"
-             data-rarity="${rarity}"
+             data-stars="${Math.min(stars, 7)}"
+             title="${safeStr(char.name)} · ${stars}★ · Lv ${inst.level} · Power ${power.toLocaleString()}"
              draggable="${!isAssigned}"${fxAttr}>
-          <span class="team-char-grade">${gradeOf(char, inst)}</span>
           <img src="${art.portrait}" alt="${char.name}" loading="lazy" decoding="async"
                onerror="this.src='assets/characters/_common/silhouette.png';" />
           <div class="team-char-card-info">
             <div class="team-char-card-name">${safeStr(char.name)}</div>
-            <div class="team-char-card-level">Lv ${inst.level} ${renderStars(starsFromTier(tier))}</div>
+            <div class="team-char-card-stars">${renderStars(stars)}</div>
+            <div class="team-char-card-meta">
+              <span class="tcc-lv">Lv <b>${inst.level}</b></span>
+              <span class="tcc-power" title="Power at max level for this star tier">${power.toLocaleString()}</span>
+            </div>
           </div>
         </div>
       `;
