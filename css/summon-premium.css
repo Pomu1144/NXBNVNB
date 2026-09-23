@@ -1,0 +1,506 @@
+/* css/summon-premium.css — metallic-gold bezels, kunai arrows, lacquer plate
+   summon buttons and the Shinobi / Jutsu Cards segmented tab bar.
+   Loaded after summon.html's inline <style>, so it wins on equal specificity. */
+
+:root {
+  /* Multi-stop polished gold: dark root → bright face → shadow → specular → root */
+  --gold-bezel: linear-gradient(135deg,
+    #5c4012 0%, #c89a3e 10%, #f7e08a 20%, #b8862b 34%,
+    #fff3b0 48%, #d6a847 58%, #7a5418 72%, #e8c46a 86%, #5c4012 100%);
+  --gold-bezel-v: linear-gradient(180deg,
+    #fff3b0 0%, #f7e08a 14%, #b8862b 42%, #7a5418 58%, #d9ad4f 80%, #5c4012 100%);
+  /* Antique (idle) gold — same stops, knocked back */
+  --gold-antique: linear-gradient(135deg,
+    #3a2809 0%, #8a6726 22%, #c9a55a 44%, #6e4c16 64%, #a8823c 84%, #3a2809 100%);
+  --lacquer-dark: linear-gradient(180deg, rgba(28,17,8,0.94), rgba(10,6,3,0.96));
+  --gold-text: #f6dc8c;
+  --cream-text: #fff3d2;
+  --font-brush: 'Shojumaru', 'Rowdies', 'Cinzel', serif;
+  --font-game: 'Rowdies', 'Oswald', 'Cinzel', sans-serif;
+}
+
+/* ═══════════════════ Top bar + segmented tabs ═══════════════════ */
+.summon-topbar {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 10px;
+}
+.summon-topbar #btn-back-to-home { justify-self: start; }
+.summon-topbar .summon-currency-hud { justify-self: end; }
+
+.summon-tabs {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  width: 340px;
+  max-width: 100%;
+  margin: 0;
+  padding: 4px;
+  border: 2px solid transparent;
+  border-radius: 999px;
+  background: var(--lacquer-dark) padding-box, var(--gold-bezel) border-box;
+  box-shadow:
+    0 6px 18px rgba(0,0,0,0.6),
+    inset 0 2px 6px rgba(0,0,0,0.8),
+    inset 0 -1px 0 rgba(255,225,150,0.10);
+}
+.summon-tab {
+  position: relative;
+  min-width: 0;
+  height: 36px;
+  padding: 0 12px;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  color: rgba(222,196,138,0.72);
+  font-family: var(--font-brush);
+  font-size: 15px;
+  font-weight: 400;
+  letter-spacing: 1px;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  text-shadow: 0 2px 2px rgba(0,0,0,0.85);
+  transition: color .2s ease, background .2s ease, box-shadow .2s ease, transform .12s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.summon-tab:hover:not(.active) {
+  color: #f3d98f;
+  background: linear-gradient(180deg, rgba(120,70,20,0.28), rgba(60,30,8,0.18));
+}
+.summon-tab:active { transform: translateY(1px); }
+.summon-tab.active {
+  color: #2b1603;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.45) 0%, rgba(255,255,255,0) 46%),
+    linear-gradient(180deg, #fff1a8 0%, #f2cf6a 30%, #c8922e 62%, #8f5f17 100%);
+  text-shadow: 0 1px 0 rgba(255,244,200,0.75);
+  box-shadow:
+    0 0 14px rgba(255,200,80,0.55),
+    0 2px 5px rgba(0,0,0,0.6),
+    inset 0 1px 0 rgba(255,255,255,0.7),
+    inset 0 -2px 3px rgba(90,50,8,0.55);
+}
+
+/* ═══════════════════ Side panels: warm lacquer + gold rim ═══════════════════ */
+.banner-rail-col,
+.draw-col {
+  border: 2px solid transparent;
+  background: var(--lacquer-dark) padding-box, var(--gold-bezel) border-box;
+  box-shadow:
+    0 12px 30px rgba(0,0,0,0.6),
+    inset 0 0 0 1px rgba(0,0,0,0.65),
+    inset 0 1px 0 rgba(255,230,160,0.14),
+    inset 0 0 30px rgba(0,0,0,0.55);
+}
+.rail-heading {
+  font-family: var(--font-brush);
+  font-weight: 400;
+  font-size: 14px;
+  letter-spacing: 2px;
+  color: var(--gold-text);
+  text-shadow: 0 2px 3px rgba(0,0,0,0.9), 0 0 10px rgba(255,190,70,0.35);
+  border-bottom: 1px solid transparent;
+  border-image: linear-gradient(90deg, transparent, #c9a24a 30%, #fff0a8 50%, #c9a24a 70%, transparent) 1;
+}
+
+/* Rail thumbnails: antique gold bezel idle, polished lit gold when active */
+#banner-preview-scroll { padding: 4px 3px; gap: 10px; }
+#banner-preview-scroll .preview-item {
+  position: relative;
+  border: 2px solid transparent;
+  border-radius: 9px;
+  opacity: 1;
+  background: #0b0703 padding-box, var(--gold-antique) border-box;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.6);
+  transition: box-shadow .18s ease, transform .18s ease, background .18s ease;
+}
+#banner-preview-scroll .preview-item img {
+  filter: brightness(0.62) saturate(0.75);
+  transition: filter .18s ease;
+}
+#banner-preview-scroll .preview-item:hover { transform: translateY(-1px); }
+#banner-preview-scroll .preview-item:hover img { filter: brightness(0.88) saturate(0.95); }
+#banner-preview-scroll .preview-item.active {
+  border-width: 3px;
+  background: #0b0703 padding-box, var(--gold-bezel) border-box;
+  box-shadow:
+    0 0 0 1px rgba(40,22,2,0.9),
+    0 0 14px rgba(255,200,80,0.55),
+    0 4px 10px rgba(0,0,0,0.6);
+}
+#banner-preview-scroll .preview-item.active img { filter: none; }
+/* specular glint across the active bezel */
+#banner-preview-scroll .preview-item.active::after {
+  content: '';
+  position: absolute; inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 1px 0 rgba(255,250,220,0.55), inset 0 0 0 1px rgba(60,34,4,0.6);
+  pointer-events: none;
+}
+
+/* ═══════════════════ Center stage: metallic gold bezel ═══════════════════ */
+.featured-stage {
+  border: 4px solid transparent;
+  border-radius: 18px;
+  background: linear-gradient(#0a0603, #0a0603) padding-box, var(--gold-bezel) border-box;
+  box-shadow:
+    0 0 0 1px rgba(46,26,4,0.95),
+    0 16px 44px rgba(0,0,0,0.72),
+    0 0 26px rgba(255,196,80,0.14);
+}
+/* Warm, desaturated hall backdrop (the raw art reads navy/purple) */
+.featured-stage::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse at 50% 55%, rgba(0,0,0,0) 30%, rgba(0,0,0,0.78) 100%),
+    url('../assets/ui/summon_hall_bg.webp') center / cover no-repeat;
+  filter: sepia(0.85) saturate(0.9) hue-rotate(-12deg) brightness(0.62) contrast(1.05);
+  pointer-events: none;
+}
+/* Inner fine rim + inset shadow so the bezel reads as raised metal */
+.featured-stage::after {
+  content: '';
+  position: absolute; inset: 5px;
+  border-radius: 12px;
+  border: 1px solid rgba(247,224,138,0.30);
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.6), inset 0 0 36px rgba(0,0,0,0.75);
+  pointer-events: none;
+  z-index: 3;
+}
+.featured-glow {
+  width: 78%;
+  background: radial-gradient(circle, rgba(255,196,80,0.26), rgba(200,120,30,0.10) 45%, transparent 68%);
+}
+
+/* Banner art inside its own polished gold frame */
+#stage-banner-img {
+  max-width: calc(100% - 128px);
+  max-height: calc(100% - 64px);
+  padding: 4px;
+  border-radius: 12px;
+  background: var(--gold-bezel);
+  box-shadow:
+    0 0 0 1px rgba(46,26,4,0.95),
+    0 14px 34px rgba(0,0,0,0.75),
+    0 0 30px rgba(255,200,90,0.22);
+  filter: none;
+}
+
+.stage-tier-badge {
+  font-family: var(--font-brush); font-weight: 400; letter-spacing: 1.5px;
+  border: 1.5px solid transparent;
+  background: var(--lacquer-dark) padding-box, var(--gold-bezel) border-box;
+  color: var(--gold-text); top: 14px;
+}
+.featured-stage[data-view="char5"] .stage-tier-badge {
+  border-color: transparent;
+  background: var(--lacquer-dark) padding-box,
+    linear-gradient(135deg, #5d6570, #e8edf3 45%, #8d96a3 70%, #3f454e) border-box;
+  color: #e6ebf2;
+}
+.char-stats {
+  border: 1.5px solid transparent;
+  background: var(--lacquer-dark) padding-box, var(--gold-antique) border-box;
+}
+.stage-dots { bottom: 14px; }
+.stage-dot { background: rgba(255,236,190,0.28); box-shadow: 0 0 0 1px rgba(0,0,0,0.6); }
+.stage-dot.active { background: #f7e08a; box-shadow: 0 0 8px rgba(255,210,100,0.85), 0 0 0 1px rgba(60,34,4,0.8); }
+
+/* ═══════════════════ Kunai arrows ═══════════════════ */
+.stage-arrow {
+  position: absolute; top: 50%;
+  transform: translateY(-50%);
+  width: 64px; height: 52px;
+  padding: 0; margin: 0;
+  border: none; border-radius: 0;
+  background: none;
+  box-shadow: none;
+  font-size: 0; color: transparent;
+  cursor: pointer; z-index: 4;
+  -webkit-tap-highlight-color: transparent;
+}
+.stage-arrow.left { left: 12px; }
+.stage-arrow.right { right: 12px; }
+.stage-arrow::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: url('../assets/ui/hf/arrow.webp') center / contain no-repeat;
+  filter: drop-shadow(0 0 6px rgba(255,200,90,0.55)) drop-shadow(0 3px 4px rgba(0,0,0,0.85));
+  transition: filter .2s ease, scale .2s ease;
+  animation: kunaiNudgeR 1.8s ease-in-out infinite;
+}
+.stage-arrow.left::before {
+  scale: -1 1;               /* art points right → mirror for the left arrow */
+  animation-name: kunaiNudgeL;
+}
+.stage-arrow:hover::before {
+  filter: drop-shadow(0 0 10px rgba(255,214,110,0.95)) drop-shadow(0 0 3px rgba(255,240,190,0.9)) drop-shadow(0 3px 4px rgba(0,0,0,0.85)) brightness(1.15);
+  animation-duration: .9s;
+}
+.stage-arrow.right:hover::before { scale: 1.12 1.12; }
+.stage-arrow.left:hover::before { scale: -1.12 1.12; }
+.stage-arrow:active::before { translate: 0 1px; animation-play-state: paused; }
+.stage-arrow:focus-visible { outline: none; }
+.stage-arrow:focus-visible::before { filter: drop-shadow(0 0 10px rgba(255,214,110,1)); }
+@keyframes kunaiNudgeR { 0%,100% { translate: 0 0; } 50% { translate: 5px 0; } }
+@keyframes kunaiNudgeL { 0%,100% { translate: 0 0; } 50% { translate: -5px 0; } }
+
+/* ═══════════════════ Draw panel text ═══════════════════ */
+.draw-col { gap: 12px; }
+.draw-col #banner-name {
+  font-family: var(--font-brush);
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 1.25;
+  letter-spacing: 1px;
+  color: var(--gold-text);
+  text-shadow: 0 2px 3px rgba(0,0,0,0.9), 0 0 12px rgba(255,190,70,0.3);
+}
+.draw-col #banner-description { color: #cdb690; }
+
+/* ═══════════════════ Lacquer plate summon buttons ═══════════════════ */
+.summon-buttons,
+.draw-col .summon-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-top: auto;
+  padding: 0;
+}
+.plate-btn {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  width: 100%;
+  height: auto;
+  min-height: 0;
+  padding: 0 0 1px;
+  border: none;
+  border-radius: 999px;
+  background: transparent center / 100% 100% no-repeat;
+  cursor: pointer;
+  container-type: inline-size;
+  filter: drop-shadow(0 6px 10px rgba(0,0,0,0.6));
+  transition: transform .14s ease, filter .18s ease;
+  -webkit-tap-highlight-color: transparent;
+  overflow: visible;
+  flex: 0 0 auto;
+}
+/* Plate art aspect ratios are locked so the lacquer never squashes */
+.plate-single { aspect-ratio: 900 / 265; background-image: url('../assets/ui/hf/btn_single.webp'); width: 92%; }
+.plate-multi  { aspect-ratio: 900 / 283; background-image: url('../assets/ui/hf/btn_multi.webp'); }
+
+.plate-btn .summon-btn-label,
+.plate-btn .plate-label {
+  display: block;
+  font-family: var(--font-brush);
+  font-weight: 400;
+  font-size: clamp(12px, 6.1cqw, 24px);
+  max-width: 70%;
+  overflow: hidden;
+  text-overflow: clip;
+  line-height: 1;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--cream-text);
+  text-shadow:
+    0 2px 0 rgba(20,6,2,0.95),
+    1px 1px 0 rgba(20,6,2,0.9), -1px -1px 0 rgba(20,6,2,0.9),
+    1px -1px 0 rgba(20,6,2,0.9), -1px 1px 0 rgba(20,6,2,0.9),
+    0 0 12px rgba(255,210,120,0.45);
+}
+.plate-multi .summon-btn-label,
+.plate-multi .plate-label { font-size: clamp(12px, 5.5cqw, 24px); color: #fff0b8; }
+.plate-btn .summon-btn-label em,
+.plate-btn .plate-label em {
+  font-style: normal;
+  font-family: var(--font-game);
+  font-weight: 700;
+  font-size: 1.12em;
+  letter-spacing: 0;
+  color: #ffd75e;
+}
+.plate-btn .summon-btn-cost,
+.plate-btn .plate-cost {
+  position: static;
+  transform: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 10px 2px 5px;
+  border-radius: 999px;
+  border: 1px solid rgba(247,224,138,0.55);
+  background: linear-gradient(180deg, rgba(0,0,0,0.62), rgba(10,4,2,0.78));
+  box-shadow: inset 0 1px 0 rgba(255,240,190,0.18), 0 1px 2px rgba(0,0,0,0.5);
+  font-family: var(--font-game);
+  font-weight: 700;
+  font-size: clamp(10px, 4cqw, 14px);
+  line-height: 1.1;
+  color: #ffeab0;
+  text-shadow: 0 1px 1px rgba(0,0,0,0.9);
+  opacity: 1;
+}
+.plate-btn .btn-cost-icon,
+.plate-btn .plate-cost img {
+  width: 15px; height: 15px; object-fit: contain;
+  filter: drop-shadow(0 0 3px rgba(255,120,120,0.5));
+}
+
+/* Hero CTA: warm halo + periodic sheen sweep across the lacquer */
+.plate-multi:not(:disabled):not(.is-short) {
+  animation: plateHalo 2.8s ease-in-out infinite;
+}
+@keyframes plateHalo {
+  0%,100% { filter: drop-shadow(0 6px 10px rgba(0,0,0,0.6)) drop-shadow(0 0 6px rgba(255,150,60,0.25)); }
+  50%     { filter: drop-shadow(0 6px 10px rgba(0,0,0,0.6)) drop-shadow(0 0 14px rgba(255,170,70,0.55)); }
+}
+.plate-multi::after {
+  content: '';
+  position: absolute;
+  inset: 16% 11% 18%;
+  border-radius: 999px;
+  background: linear-gradient(105deg, transparent 38%, rgba(255,246,214,0.55) 50%, transparent 62%) no-repeat;
+  background-size: 260% 100%;
+  background-position: 160% 0;
+  mix-blend-mode: screen;
+  pointer-events: none;
+  animation: plateSheen 3.6s ease-in-out infinite;
+}
+@keyframes plateSheen {
+  0%, 55% { background-position: 160% 0; }
+  85%, 100% { background-position: -60% 0; }
+}
+.plate-multi:disabled::after,
+.plate-multi.is-short::after { animation: none; opacity: 0; }
+
+.plate-btn:hover:not(:disabled):not(.is-short) {
+  transform: translateY(-2px) scale(1.03);
+  filter: brightness(1.14) drop-shadow(0 8px 12px rgba(0,0,0,0.6)) drop-shadow(0 0 12px rgba(255,200,100,0.45));
+  animation: none;
+}
+.plate-btn:active:not(:disabled) {
+  transform: translateY(2px) scale(0.975);
+  filter: brightness(0.94) drop-shadow(0 2px 4px rgba(0,0,0,0.7));
+  transition-duration: .05s;
+}
+.plate-btn:disabled,
+.plate-btn.is-short {
+  filter: grayscale(0.8) brightness(0.62) drop-shadow(0 4px 8px rgba(0,0,0,0.6));
+  animation: none;
+}
+.plate-btn:disabled { cursor: not-allowed; }
+.plate-btn:focus-visible { outline: none; filter: brightness(1.14) drop-shadow(0 0 10px rgba(255,214,110,0.9)); }
+
+/* ═══════════════════ Rates / Featured / Contents ═══════════════════ */
+.summon-info-buttons,
+.draw-col .summon-info-buttons {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  padding: 0;
+}
+.summon-info-btn,
+.draw-col .summon-info-btn {
+  height: 34px;
+  padding: 0 6px;
+  border: 1.5px solid transparent;
+  border-radius: 999px;
+  background:
+    linear-gradient(180deg, rgba(255,236,180,0.10), rgba(255,236,180,0) 50%) padding-box,
+    linear-gradient(180deg, #2e1b0b, #140a04) padding-box,
+    var(--gold-bezel) border-box;
+  color: #f1d993;
+  font-family: var(--font-game);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  white-space: nowrap;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.9);
+  box-shadow: 0 3px 8px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,236,180,0.18);
+  cursor: pointer;
+  transition: filter .15s ease, transform .12s ease, color .15s ease;
+  filter: none;
+}
+.summon-info-btn:hover,
+.draw-col .summon-info-btn:hover {
+  color: #fff3c4;
+  filter: brightness(1.2);
+  transform: translateY(-1px);
+  box-shadow: 0 0 12px rgba(255,200,90,0.35), 0 3px 8px rgba(0,0,0,0.55);
+}
+.summon-info-btn:active { transform: translateY(1px); filter: brightness(0.95); }
+
+/* ═══════════════════ Responsive ═══════════════════ */
+@media (max-height: 760px) and (min-width: 901px) {
+  .gacha-stage { margin-top: 8px; }
+  .draw-col { gap: 8px; padding: 10px 12px; }
+  .draw-col .featured-ribbon { width: 150px; }
+  .plate-single { width: 86%; }
+  .plate-multi { width: 94%; }
+}
+@media (max-width: 900px) {
+  .summon-page { height: auto; min-height: 100vh; overflow-y: auto; }
+  html, body { overflow-y: auto; }
+  .featured-stage { min-height: 260px; }
+  #stage-banner-img { max-width: calc(100% - 96px); }
+  .stage-arrow { width: 46px; height: 38px; }
+  .stage-arrow.left { left: 6px; } .stage-arrow.right { right: 6px; }
+  .draw-col .summon-buttons { flex-direction: row; align-items: center; }
+  .draw-col .plate-btn { width: auto; flex: 1 1 0; min-width: 0; }
+  .draw-col .plate-single { flex-grow: 0.94; }
+  .banner-rail-col { flex: none; }
+  #banner-preview-scroll { flex-direction: row !important; overflow-x: auto; overflow-y: hidden; }
+  #banner-preview-scroll .preview-item { width: 130px; flex: 0 0 130px; }
+}
+@media (max-width: 640px) {
+  .summon-topbar { grid-template-columns: 1fr auto; row-gap: 8px; }
+  .summon-topbar .summon-tabs { grid-column: 1 / -1; grid-row: 2; justify-self: center; width: min(340px, 100%); }
+  .summon-tab { font-size: 13px; }
+}
+@media (max-width: 480px) {
+  .draw-col .summon-buttons { flex-direction: column; }
+  .draw-col .plate-btn { width: 100%; flex: none; }
+  .draw-col .plate-single { width: 92%; }
+}
+
+/* Keep the character slide clear of the kunai arrows */
+.featured-stage[data-view="char6"] .stage-view-char,
+.featured-stage[data-view="char5"] .stage-view-char { padding: 0 84px; }
+@media (max-width: 900px) {
+  .featured-stage[data-view="char6"] .stage-view-char,
+  .featured-stage[data-view="char5"] .stage-view-char { padding: 0 56px; gap: 10px; }
+}
+
+/* Landscape phones: keep stage + draw panel side by side above the fold */
+@media (max-width: 900px) and (max-height: 520px) and (orientation: landscape) {
+  .summon-topbar { padding-top: 6px; }
+  .summon-tab { height: 30px; font-size: 13px; }
+  .gacha-stage, .jutsu-summon-panel {
+    grid-template-columns: minmax(0, 1fr) 250px;
+    gap: 8px; margin-top: 6px;
+  }
+  .featured-stage, .jutsu-stage { height: calc(100vh - 150px); min-height: 200px; }
+  .banner-rail-col, .jutsu-rail { grid-column: 1 / -1; }
+  .draw-col, .jutsu-draw-col { height: calc(100vh - 150px); min-height: 200px; overflow-y: auto; padding: 8px 10px; gap: 6px; }
+  .draw-col .featured-ribbon { width: 120px; }
+  .draw-col #banner-name { font-size: 14px; }
+  .draw-col #banner-description { display: none; }
+  .jutsu-banner-sub, .jutsu-banner-kicker { display: none; }
+  .jutsu-banner-title { font-size: 18px; margin-top: 0; }
+  .draw-col .summon-buttons, .jutsu-draw-col .summon-buttons { flex-direction: column; gap: 4px; }
+  .draw-col .plate-btn, .jutsu-draw-col .plate-btn { width: 100%; flex: none; }
+  .draw-col .plate-single, .jutsu-draw-col .plate-single { width: 90%; }
+  .summon-info-btn { height: 28px; font-size: 10px; letter-spacing: 0.6px; }
+  .stage-arrow { width: 40px; height: 34px; }
+  #stage-banner-img { max-width: calc(100% - 80px); max-height: calc(100% - 40px); }
+}

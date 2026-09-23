@@ -244,9 +244,8 @@
   async function loadBase() {
     // Let the browser/service-worker cache this 2.5MB file (revalidated via
     // ETag). A per-load cache-buster forced a full re-download every visit.
-    const res = await fetch('data/characters.json');
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const json = await res.json();
+    // Shared with the dev panel / SummonEvolve (one download + one parse).
+    const json = await window.loadCharactersData();
     BASE = Array.isArray(json) ? json : (Array.isArray(json.characters) ? json.characters : []);
     BYID = BASE.reduce((acc, c) => (acc[c.id] = c, acc), Object.create(null));
   }
@@ -283,14 +282,17 @@
       return { curStars, maxStars, power, name, level };
     };
 
-    const sortedInstances = instances.slice().sort((a, b) => {
-      const ka = sortKey(a), kb = sortKey(b);
+    // Compute each key once (not twice per comparison — sort makes
+    // O(n log n) comparisons and the old comparator rebuilt both keys).
+    const keyed = instances.map(inst => ({ inst, k: sortKey(inst) }));
+    const sortedInstances = keyed.sort((x, y) => {
+      const ka = x.k, kb = y.k;
       if (kb.curStars !== ka.curStars) return kb.curStars - ka.curStars;
       if (kb.maxStars !== ka.maxStars) return kb.maxStars - ka.maxStars;
       if (kb.power !== ka.power) return kb.power - ka.power;
       if (ka.name !== kb.name) return ka.name.localeCompare(kb.name);
       return kb.level - ka.level;
-    });
+    }).map(x => x.inst);
 
     GRID.innerHTML = sortedInstances.map(inst => {
       const c = BYID[inst.charId];
@@ -321,6 +323,7 @@
       return `
         <button class="char-slot${fxClass}"${fxAttr} type="button" data-uid="${inst.uid}">
           <img class="char-portrait-img" src="${safeStr(art.portrait, c.portrait)}" alt="${c.name} portrait"
+               width="200" height="200" loading="lazy" decoding="async"
                onerror="this.onerror=null;this.src='assets/characters/_common/silhouette.png';" />
           <div class="char-card-level">${levelBadgeHTML(c, inst)}</div>
           ${ultimateBadgeHTML(c, inst)}

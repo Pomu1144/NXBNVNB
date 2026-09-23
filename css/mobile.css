@@ -1,0 +1,696 @@
+/* ==========================================================================
+   css/mobile.css — phone / tablet ONLY
+   --------------------------------------------------------------------------
+   Every rule here is scoped under `html.is-mobile`, a class set by
+   js/device-detect.js on touch phones/tablets only. Desktop and laptops never
+   get that class, so nothing in this file can affect them (even in a small
+   window).
+     html.is-mobile.is-landscape.is-compact -> compact game UI for phones
+                                              (landscape, <= 540px tall)
+     html.is-mobile.is-portrait    -> "rotate your device" overlay
+   ========================================================================== */
+
+/* Fonts used by the rotate overlay (declared here so this file is standalone;
+   @font-face only downloads when a mobile-only rule actually uses it). */
+@font-face {
+  font-family: 'Shojumaru';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../assets/fonts/shojumaru-400.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Rowdies';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../assets/fonts/rowdies-400.woff2') format('woff2');
+}
+
+/* --------------------------------------------------------------------------
+   0. Shared tokens
+   -------------------------------------------------------------------------- */
+html.is-mobile {
+  --safe-t: env(safe-area-inset-top, 0px);
+  --safe-r: env(safe-area-inset-right, 0px);
+  --safe-b: env(safe-area-inset-bottom, 0px);
+  --safe-l: env(safe-area-inset-left, 0px);
+  --safe-x: max(env(safe-area-inset-left, 0px), env(safe-area-inset-right, 0px));
+  --m-dock-h: 58px;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+/* --------------------------------------------------------------------------
+   1. Touch behaviour: no text selection / callouts / tap flashes, no
+      double-tap zoom delay, no rubber-band pull-to-refresh.
+   -------------------------------------------------------------------------- */
+html.is-mobile,
+html.is-mobile body {
+  overscroll-behavior: none;
+}
+html.is-mobile body {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+html.is-mobile *,
+html.is-mobile *::before,
+html.is-mobile *::after {
+  -webkit-tap-highlight-color: transparent;
+}
+html.is-mobile input,
+html.is-mobile textarea,
+html.is-mobile select,
+html.is-mobile [contenteditable="true"] {
+  -webkit-user-select: text;
+  user-select: text;
+  -webkit-touch-callout: default;
+  font-size: max(16px, 1em); /* stops iOS zoom-on-focus */
+}
+html.is-mobile img {
+  -webkit-user-drag: none;
+  user-select: none;
+}
+html.is-mobile button,
+html.is-mobile a,
+html.is-mobile [role="button"],
+html.is-mobile [onclick] {
+  touch-action: manipulation;
+}
+/* Sticky :hover transforms feel broken on touch; neutralise the common ones */
+@media (hover: none) {
+  html.is-mobile .bottom-bar .hud-button:hover:not(.active) {
+    transform: none;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   2. Portrait: full-screen "rotate your device" overlay
+      (element injected by js/device-detect.js on mobile only)
+   -------------------------------------------------------------------------- */
+html.is-mobile #rotate-device-overlay {
+  display: none;
+}
+html.is-mobile.is-portrait #rotate-device-overlay {
+  display: flex;
+  position: fixed;
+  inset: 0;
+  z-index: 2147483000;
+  align-items: center;
+  justify-content: center;
+  padding: calc(24px + var(--safe-t)) calc(24px + var(--safe-r)) calc(24px + var(--safe-b)) calc(24px + var(--safe-l));
+  background:
+    radial-gradient(ellipse 80% 55% at 50% 42%, rgba(120, 70, 20, 0.35), transparent 70%),
+    radial-gradient(circle at 50% 50%, #1a1512 0%, #0a0808 70%, #050404 100%);
+  color: #f3e3bd;
+  text-align: center;
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+html.is-mobile.is-portrait body {
+  overflow: hidden !important;
+}
+html.is-mobile #rotate-device-overlay .rdo-card {
+  position: relative;
+  max-width: 320px;
+  width: 100%;
+  padding: 34px 22px 28px;
+  border-radius: 18px;
+  background:
+    linear-gradient(180deg, rgba(38, 30, 24, 0.96), rgba(16, 12, 10, 0.98));
+  border: 2px solid #b8913f;
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.8),
+    0 0 0 5px rgba(60, 44, 20, 0.9),
+    0 0 0 6px rgba(214, 170, 80, 0.55),
+    0 18px 40px rgba(0, 0, 0, 0.7),
+    inset 0 1px 0 rgba(255, 230, 170, 0.25);
+}
+html.is-mobile #rotate-device-overlay .rdo-card::before {
+  /* gold diamond ornament on the top edge */
+  content: "";
+  position: absolute;
+  top: -9px;
+  left: 50%;
+  width: 16px;
+  height: 16px;
+  transform: translateX(-50%) rotate(45deg);
+  background: linear-gradient(135deg, #fff1b8, #d6a640 45%, #7a5415);
+  box-shadow: 0 0 10px rgba(255, 200, 90, 0.7);
+}
+html.is-mobile #rotate-device-overlay .rdo-phone {
+  position: relative;
+  width: 56px;
+  height: 96px;
+  margin: 6px auto 26px;
+  border-radius: 12px;
+  border: 4px solid #e2bf6d;
+  box-shadow: 0 0 18px rgba(255, 190, 80, 0.45), inset 0 0 0 2px rgba(0, 0, 0, 0.6);
+  background: #111;
+  animation: rdo-rotate 2.4s cubic-bezier(.6, 0, .3, 1) infinite;
+  transform-origin: 50% 50%;
+}
+html.is-mobile #rotate-device-overlay .rdo-screen {
+  position: absolute;
+  inset: 8px 4px 12px;
+  border-radius: 3px;
+  background: linear-gradient(160deg, #ffb13b, #e0561b 60%, #7d1f0e);
+  opacity: 0.9;
+}
+html.is-mobile #rotate-device-overlay .rdo-phone::after {
+  /* home button */
+  content: "";
+  position: absolute;
+  bottom: 3px;
+  left: 50%;
+  width: 8px;
+  height: 4px;
+  border-radius: 2px;
+  transform: translateX(-50%);
+  background: #e2bf6d;
+}
+html.is-mobile #rotate-device-overlay .rdo-arrow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 118px;
+  height: 118px;
+  margin: -59px 0 0 -59px;
+  border-radius: 50%;
+  border: 3px solid transparent;
+  border-top-color: rgba(255, 214, 120, 0.85);
+  border-right-color: rgba(255, 214, 120, 0.85);
+  animation: rdo-arrow 2.4s cubic-bezier(.6, 0, .3, 1) infinite;
+}
+html.is-mobile #rotate-device-overlay .rdo-title {
+  font-family: 'Shojumaru', 'Rowdies', 'Bangers', 'Arial Black', sans-serif;
+  font-size: 24px;
+  line-height: 1.15;
+  letter-spacing: 0.02em;
+  color: #ffd98a;
+  text-shadow: 0 2px 0 #3b2208, 0 0 12px rgba(255, 170, 50, 0.45);
+  margin-bottom: 10px;
+}
+html.is-mobile #rotate-device-overlay .rdo-text {
+  font-family: 'Rowdies', 'Trebuchet MS', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.45;
+  color: #d9c7a0;
+}
+@keyframes rdo-rotate {
+  0%, 20%   { transform: rotate(0deg); }
+  50%, 75%  { transform: rotate(-90deg); }
+  100%      { transform: rotate(0deg); }
+}
+@keyframes rdo-arrow {
+  0%, 20%   { transform: rotate(0deg); opacity: 0; }
+  35%       { opacity: 1; }
+  50%, 75%  { transform: rotate(-90deg); opacity: 0; }
+  100%      { transform: rotate(0deg); opacity: 0; }
+}
+
+/* --------------------------------------------------------------------------
+   3. Landscape: bottom dock (css/bottombar.css reads these tokens)
+   -------------------------------------------------------------------------- */
+html.is-mobile.is-landscape.is-compact {
+  --dock-h: var(--m-dock-h);
+  --dock-rail-h: 16px;
+  --dock-tile-w: clamp(50px, 8.4vw, 74px);
+  --dock-socket: 28px;
+  --dock-icon: 18px;
+  --dock-label: 8px;
+  --dock-gap: clamp(0px, 0.6vw, 6px);
+  --dock-lift: 3px;
+  --dock-safe-b: calc(var(--safe-b) * 0.45);
+}
+html.is-mobile.is-landscape.is-compact body .bottom-bar .bottom-bar-content {
+  padding-left: max(10px, var(--safe-l)) !important;
+  padding-right: max(10px, var(--safe-r)) !important;
+  justify-content: center !important;
+  overflow: visible !important;
+}
+html.is-mobile.is-landscape.is-compact body .bottom-bar .hud-button::after {
+  letter-spacing: 0.03em;
+}
+
+/* Village's own dock (.bottom-icon-bar) */
+html.is-mobile.is-landscape.is-compact .bottom-icon-bar {
+  height: calc(var(--m-dock-h) - 6px) !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  padding: 0 max(8px, var(--safe-x)) calc(var(--safe-b) * 0.45) !important;
+  gap: clamp(2px, 1.2vw, 14px) !important;
+  justify-content: center !important;
+  overflow: hidden !important;
+}
+html.is-mobile.is-landscape.is-compact .bottom-icon {
+  gap: 2px !important;
+}
+html.is-mobile.is-landscape.is-compact .bottom-icon-image {
+  width: 26px !important;
+  height: 26px !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+}
+html.is-mobile.is-landscape.is-compact .bottom-icon-label {
+  font-size: 8px !important;
+  letter-spacing: 0 !important;
+}
+
+/* --------------------------------------------------------------------------
+   4. Landscape: generic compaction for short viewports
+   -------------------------------------------------------------------------- */
+html.is-mobile.is-landscape.is-compact body {
+  /* keep content clear of notches / home indicator */
+  padding-left: var(--safe-l);
+  padding-right: var(--safe-r);
+  box-sizing: border-box;
+}
+/* Generic modal sizing so dialogs fit a ~360-430px tall screen */
+html.is-mobile.is-landscape.is-compact [class*="modal"][class*="content"],
+html.is-mobile.is-landscape.is-compact .modal-content,
+html.is-mobile.is-landscape.is-compact .modal-box,
+html.is-mobile.is-landscape.is-compact .modal-panel {
+  max-height: calc(var(--app-vh, 100vh) - 24px - var(--safe-t) - var(--safe-b)) !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Horizontal overflow guard (decorative layers bleeding past the edge) */
+html.is-mobile body {
+  overflow-x: clip;
+}
+/* rem-based UI shrinks a notch on phones */
+html.is-mobile.is-landscape.is-compact {
+  font-size: 13px;
+}
+
+/* ==========================================================================
+   5. Per-page landscape fixes
+   ========================================================================== */
+
+/* ---------- Village / index (fixed 16:9 game canvas) ----------
+   Phones are ~19.5:9, so the 16:9 canvas letterboxed with black side bars.
+   Fill the whole screen instead (inside the safe area). */
+html.is-mobile.is-landscape.is-compact .game-canvas-wrapper {
+  height: var(--app-vh, 100vh) !important;
+}
+html.is-mobile.is-landscape.is-compact .game-canvas {
+  top: 0 !important;
+  left: var(--safe-l) !important;
+  right: var(--safe-r) !important;
+  bottom: 0 !important;
+  width: auto !important;
+  height: auto !important;
+  max-width: none !important;
+  max-height: none !important;
+  transform: none !important;
+}
+
+/* ---------- Characters ---------- */
+html.is-mobile.is-landscape.is-compact .page-characters .page-title {
+  font-size: 18px !important;
+  padding: calc(4px + var(--safe-t)) 0 2px !important;
+  letter-spacing: 1px;
+}
+html.is-mobile.is-landscape.is-compact .page-characters .char-content {
+  min-height: 0 !important;
+  padding-bottom: calc(var(--m-dock-h) + 16px) !important;
+}
+html.is-mobile.is-landscape.is-compact .page-characters .char-grid {
+  grid-template-columns: repeat(auto-fill, minmax(92px, 1fr)) !important;
+  gap: 8px !important;
+  padding: 6px 12px !important;
+}
+/* character detail modal: keep art | info side by side and fit the height */
+html.is-mobile.is-landscape.is-compact .page-characters .char-modal-panel {
+  grid-template-columns: 36% minmax(0, 1fr) !important;
+  gap: 8px !important;
+  width: calc(100vw - 16px - var(--safe-l) - var(--safe-r)) !important;
+  height: calc(var(--app-vh, 100vh) - 12px) !important;
+  max-height: calc(var(--app-vh, 100vh) - 12px) !important;
+  padding: 8px !important;
+}
+html.is-mobile.is-landscape.is-compact .page-characters #char-modal-img {
+  max-height: 100% !important;
+  padding: 2px !important;
+}
+html.is-mobile.is-landscape.is-compact .page-characters .tab-panels {
+  min-height: 0 !important;
+  padding: 6px 8px 4px !important;
+}
+html.is-mobile.is-landscape.is-compact .page-characters .char-tabs {
+  flex-wrap: nowrap !important;
+  overflow-x: auto;
+  gap: 4px !important;
+}
+html.is-mobile.is-landscape.is-compact .page-characters .char-tabs {
+  justify-content: flex-start !important;
+}
+html.is-mobile.is-landscape.is-compact .page-characters .char-tabs .tab-btn {
+  flex: 1 1 0 !important;
+  min-width: 0 !important;
+  width: auto !important;
+  white-space: nowrap;
+  padding: 5px 9px !important;
+  font-size: 10px !important;
+  min-height: 0 !important;
+}
+html.is-mobile.is-landscape.is-compact .page-characters .char-modal-info {
+  padding-bottom: 2px !important;
+  min-width: 0 !important;
+}
+html.is-mobile.is-landscape.is-compact .page-characters .nameplate {
+  min-height: 46px !important;
+  padding: 8px 12px !important;
+  right: auto !important;
+  margin-left: auto;
+  max-width: 88% !important;
+}
+html.is-mobile.is-landscape.is-compact .page-characters .nameplate-name {
+  font-size: 16px !important;
+}
+html.is-mobile.is-landscape.is-compact .page-characters .nameplate-version {
+  font-size: 10px !important;
+}
+html.is-mobile.is-landscape.is-compact .page-characters .char-modal-actions {
+  margin-top: 2px !important;
+  flex: none;
+}
+html.is-mobile.is-landscape.is-compact .page-characters .char-close-btn {
+  width: 150px !important;
+  height: 50px !important;
+}
+html.is-mobile.is-landscape.is-compact .page-characters .nameplate {
+  min-height: 52px !important;
+}
+
+/* ---------- Teams ---------- */
+html.is-mobile.is-landscape.is-compact .page-teams .team-content {
+  padding: calc(4px + var(--safe-t)) 10px calc(var(--m-dock-h) + 16px) !important;
+}
+html.is-mobile.is-landscape.is-compact .page-teams .page-title {
+  font-size: 18px !important;
+  margin: 0 0 6px !important;
+}
+html.is-mobile.is-landscape.is-compact .page-teams .team-selector {
+  align-items: center;
+  gap: 6px !important;
+  margin-bottom: 8px !important;
+}
+html.is-mobile.is-landscape.is-compact .page-teams .team-tabs-row {
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  overflow-x: auto;
+  gap: 4px !important;
+  scrollbar-width: none;
+  max-width: 100%;
+}
+html.is-mobile.is-landscape.is-compact .page-teams .team-tab {
+  flex: none;
+  padding: 5px 10px !important;
+  font-size: 10px !important;
+  white-space: nowrap;
+}
+html.is-mobile.is-landscape.is-compact .page-teams .btn-rename-team {
+  flex: none;
+  padding: 5px 10px !important;
+  font-size: 10px !important;
+  white-space: nowrap;
+  margin: 0 !important;
+}
+html.is-mobile.is-landscape.is-compact .page-teams .team-formation {
+  padding: 8px 10px !important;
+  margin-bottom: 10px !important;
+}
+html.is-mobile.is-landscape.is-compact .page-teams .formation-header {
+  margin-bottom: 6px !important;
+  padding-bottom: 4px !important;
+}
+html.is-mobile.is-landscape.is-compact .page-teams .formation-header h2 {
+  font-size: 15px !important;
+}
+html.is-mobile.is-landscape.is-compact .page-teams .team-stats {
+  font-size: 11px !important;
+  gap: 10px !important;
+}
+html.is-mobile.is-landscape.is-compact .page-teams .section-label {
+  font-size: 11px !important;
+  margin: 2px 0 !important;
+}
+html.is-mobile.is-landscape.is-compact .page-teams .slot-row {
+  grid-template-columns: repeat(4, minmax(0, 150px)) !important;
+  gap: 8px !important;
+  min-height: 0 !important;
+  margin-block: 4px !important;
+}
+html.is-mobile.is-landscape.is-compact .page-teams .team-slot {
+  min-height: 118px !important;
+}
+html.is-mobile.is-landscape.is-compact .page-teams .commander-container {
+  grid-template-columns: 150px 1fr !important;
+  gap: 10px !important;
+}
+html.is-mobile.is-landscape.is-compact .page-teams .commander-section {
+  margin-top: 10px !important;
+  padding-top: 8px !important;
+}
+html.is-mobile.is-landscape.is-compact .page-teams .commander-slot {
+  min-height: 150px !important;
+}
+html.is-mobile.is-landscape.is-compact .page-teams #prebattle-footer {
+  padding: 6px 12px !important;
+  padding-left: max(12px, var(--safe-l)) !important;
+  padding-right: max(12px, var(--safe-r)) !important;
+}
+
+/* ---------- Missions ---------- */
+html.is-mobile.is-landscape.is-compact .page-missions .mission-page-container {
+  top: calc(6px + var(--safe-t)) !important;
+  bottom: calc(var(--m-dock-h) + 6px) !important;
+  right: max(8px, var(--safe-r)) !important;
+  transform: none !important;
+  width: min(64%, 620px) !important;
+  max-height: none !important;
+  padding: 8px 10px !important;
+  border-width: 2px !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+html.is-mobile.is-landscape.is-compact .page-missions .page-title {
+  font-size: 17px !important;
+  margin-bottom: 4px !important;
+  flex: none;
+}
+html.is-mobile.is-landscape.is-compact .page-missions .mission-tabs {
+  flex: none;
+  flex-wrap: nowrap !important;
+  justify-content: flex-start !important;
+  overflow-x: auto;
+  gap: 6px !important;
+  margin-bottom: 6px !important;
+  padding: 3px 2px !important;
+  scrollbar-width: none;
+}
+html.is-mobile.is-landscape.is-compact .page-missions .tab-btn {
+  flex: none;
+  font-size: 9px !important;
+  padding: 6px 14px !important;
+  min-height: 28px !important;
+  white-space: nowrap;
+}
+html.is-mobile.is-landscape.is-compact .page-missions .tab-btn::after {
+  bottom: 4px !important;
+}
+html.is-mobile.is-landscape.is-compact .page-missions .mission-list-container {
+  height: auto !important;
+  flex: 1 1 auto;
+  min-height: 0;
+  padding: 6px !important;
+}
+html.is-mobile.is-landscape.is-compact .page-missions .mission-card {
+  margin-bottom: 10px !important;
+  padding: 8px !important;
+  gap: 6px !important;
+}
+
+/* ---------- Inventory ---------- */
+html.is-mobile.is-landscape.is-compact .inventory-page-container {
+  top: calc(6px + var(--safe-t)) !important;
+  bottom: calc(var(--m-dock-h) + 6px) !important;
+  left: max(8px, var(--safe-l)) !important;
+  right: max(8px, var(--safe-r)) !important;
+  transform: none !important;
+  width: auto !important;
+  max-width: none !important;
+  max-height: none !important;
+  padding: 8px 12px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  border-width: 2px !important;
+}
+html.is-mobile.is-landscape.is-compact .inventory-page-container .page-title {
+  font-size: 16px !important;
+  margin-bottom: 6px !important;
+  flex: none;
+}
+html.is-mobile.is-landscape.is-compact .inventory-tabs {
+  flex: none;
+  flex-wrap: nowrap !important;
+  overflow-x: auto;
+  gap: 6px !important;
+  margin-bottom: 6px !important;
+  scrollbar-width: none;
+}
+html.is-mobile.is-landscape.is-compact .inventory-tabs .tab-btn {
+  flex: none;
+  padding: 5px 10px !important;
+  font-size: 10px !important;
+  white-space: nowrap;
+}
+html.is-mobile.is-landscape.is-compact .inventory-content {
+  flex: 1 1 auto;
+  min-height: 0;
+  max-height: none !important;
+  padding: 6px !important;
+}
+html.is-mobile.is-landscape.is-compact .inventory-content .items-grid {
+  grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)) !important;
+  gap: 8px !important;
+  padding: 4px !important;
+}
+
+/* ---------- Shop ---------- */
+html.is-mobile.is-landscape.is-compact .page-shop .resource-bar {
+  top: calc(6px + var(--safe-t)) !important;
+  right: max(8px, var(--safe-r)) !important;
+  gap: 10px !important;
+  padding: 4px 10px !important;
+  border-width: 1px !important;
+  border-radius: 999px !important;
+}
+html.is-mobile.is-landscape.is-compact .page-shop .resource-item {
+  gap: 4px !important;
+}
+html.is-mobile.is-landscape.is-compact .page-shop .resource-label {
+  display: none !important;
+}
+html.is-mobile.is-landscape.is-compact .page-shop .resource-item img {
+  width: 16px !important;
+  height: 16px !important;
+}
+html.is-mobile.is-landscape.is-compact .page-shop .resource-value {
+  font-size: 12px !important;
+  min-width: 0 !important;
+}
+html.is-mobile.is-landscape.is-compact .page-shop .shop-content {
+  padding: calc(8px + var(--safe-t)) 14px calc(var(--m-dock-h) + 18px) !important;
+}
+html.is-mobile.is-landscape.is-compact .page-shop .page-title {
+  font-size: 20px !important;
+  margin: 0 0 8px !important;
+  text-align: left;
+  padding-left: 4px;
+  line-height: 28px;
+}
+html.is-mobile.is-landscape.is-compact .page-shop .shop-tabs {
+  flex-wrap: nowrap !important;
+  justify-content: flex-start !important;
+  overflow-x: auto;
+  gap: 6px !important;
+  margin-bottom: 8px !important;
+  scrollbar-width: none;
+}
+html.is-mobile.is-landscape.is-compact .page-shop .shop-tab {
+  flex: none;
+  width: 150px !important;
+  height: 38px !important;
+  font-size: 11px !important;
+}
+html.is-mobile.is-landscape.is-compact .page-shop .shop-grid {
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)) !important;
+  gap: 12px !important;
+  margin-top: 6px !important;
+}
+
+/* ---------- Tools (portrait frame artwork) ---------- */
+html.is-mobile.is-landscape.is-compact .page-tools .tools-content {
+  padding: calc(4px + var(--safe-t)) 8px 0 !important;
+}
+html.is-mobile.is-landscape.is-compact .page-tools .page-title {
+  position: absolute !important;
+  top: calc(6px + var(--safe-t));
+  left: max(14px, var(--safe-l));
+  margin: 0 !important;
+  font-size: 20px !important;
+  letter-spacing: 3px !important;
+  z-index: 2;
+}
+/* The frame art is a tall 896x1200 mockup whose working panel spans ~19%-61%
+   of its height. Size the stage so that band fills the space above the dock
+   and pull the decorative top rows up out of view. */
+html.is-mobile.is-landscape.is-compact .page-tools .tools-content {
+  height: var(--app-vh, 100vh);
+  box-sizing: border-box;
+  overflow: hidden !important;
+}
+html.is-mobile.is-landscape.is-compact .page-tools .tools-skin-stage {
+  --tools-avail: calc(var(--app-vh, 100vh) - var(--m-dock-h) - 4px - var(--safe-t));
+  height: calc(var(--tools-avail) / 0.42) !important;
+  width: auto !important;
+  max-width: none !important;
+  margin: calc(var(--tools-avail) / 0.42 * -0.19 + var(--safe-t)) auto 0 !important;
+}
+
+/* ---------- Summon / Fusion / Arena: generic safety ----------
+   (bodies are restyled elsewhere; keep them inside the screen and clear of
+   the compact dock) */
+html.is-mobile.is-landscape.is-compact .page-summon,
+html.is-mobile.is-landscape.is-compact .page-fusion,
+html.is-mobile.is-landscape.is-compact .page-arena {
+  --bottom-bar-h: var(--m-dock-h);
+}
+html.is-mobile.is-landscape.is-compact body.page-tools {
+  height: var(--app-vh, 100vh);
+  overflow: hidden !important;
+}
+html.is-mobile.is-landscape.is-compact .inventory-content .item-card .item-name {
+  font-size: 10px !important;
+  min-height: 22px !important;
+  margin-bottom: 4px !important;
+}
+html.is-mobile.is-landscape.is-compact .page-characters .stats-grid {
+  height: auto !important;
+  max-height: none !important;
+}
+html.is-mobile.is-landscape.is-compact .page-characters .stats-grid > * {
+  flex-shrink: 0 !important;
+}
+html.is-mobile.is-landscape.is-compact .page-characters .stat-label {
+  font-size: 12px !important;
+}
+html.is-mobile.is-landscape.is-compact .page-characters .stat-value {
+  font-size: 13px !important;
+}
+/* Stats / Equip dividers use magic negative margins tuned for a 600px-wide
+   image; on a narrow modal they swallow the rows. Crop the art to its
+   visible band and put it back in normal flow. */
+html.is-mobile.is-landscape.is-compact .page-characters .stats-divider,
+html.is-mobile.is-landscape.is-compact .page-characters .equip-divider {
+  top: 0 !important;
+  margin: 2px 0 4px !important;
+}
+html.is-mobile.is-landscape.is-compact .page-characters .stats-divider img,
+html.is-mobile.is-landscape.is-compact .page-characters .equip-divider img {
+  width: 100% !important;
+  max-width: 420px !important;
+  height: auto !important;
+  aspect-ratio: 700 / 55;
+  object-fit: cover !important;
+  object-position: 50% 32.6% !important;
+}

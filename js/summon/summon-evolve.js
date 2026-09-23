@@ -13,7 +13,7 @@
 
   const ready = Promise.all([
     fetch('data/awakening-transforms.json').then(r => r.json()).catch(() => []),
-    fetch('data/characters.json').then(r => r.json()).catch(() => ([]))
+    (window.loadCharactersData ? window.loadCharactersData() : fetch('data/characters.json').then(r => r.json())).catch(() => ([]))
   ]).then(([transforms, chars]) => {
     const arr = Array.isArray(chars) ? chars : (chars.characters || Object.values(chars));
     for (const c of arr) if (c && c.id) state.byId[c.id] = c;

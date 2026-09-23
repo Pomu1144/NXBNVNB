@@ -315,55 +315,43 @@
   function initBottomIcons() {
     console.log("[Navigation] Initializing bottom icons...");
 
-    // Notice
-    const iconNotice = document.querySelector('.bottom-icon[data-action="notice"]');
-    console.log("[Navigation] Notice icon found:", iconNotice);
-    if (iconNotice) {
-      iconNotice.addEventListener('click', () => {
-        console.log("[Navigation] Notice clicked");
-        alert("Notice System\n\nNo new notices at this time.");
-      });
-    }
+    // Notice / Present Box / Achievements
+    // These icons are handled in-game by the page itself (village.html wires
+    // them to ModalManager / DashboardMailbox / Achievements). Binding a second
+    // handler here caused a native alert() to pop up before the in-game modal,
+    // so we only attach a fallback when the page has NOT claimed the icon.
+    const inGameInfo = (msg) => {
+      if (window.ModalManager && typeof window.ModalManager.showInfo === 'function') {
+        window.ModalManager.showInfo(msg);
+      } else {
+        console.warn('[Navigation]', msg);
+      }
+    };
+    const bindFallback = (action, handler) => {
+      const el = document.querySelector(`.bottom-icon[data-action="${action}"]`);
+      if (!el || document.body.dataset.bottomIconsHandled === 'page') return;
+      el.addEventListener('click', handler);
+    };
 
-    // Present Box
-    const iconPresents = document.querySelector('.bottom-icon[data-action="presents"]');
-    if (iconPresents) {
-      iconPresents.addEventListener('click', () => {
-        console.log("[Navigation] Present Box clicked");
-        alert("Present Box\n\nNo presents available.");
-      });
-    }
+    bindFallback('notice', () => inGameInfo('Notice Board\n\nNo new notices at this time.'));
 
-    // Achievements
-    const iconAchievements = document.querySelector('.bottom-icon[data-action="achievements"]');
-    if (iconAchievements) {
-      iconAchievements.addEventListener('click', () => {
-        console.log("[Navigation] Achievements clicked");
-        alert("Achievements\n\nComing soon!");
-      });
-    }
+    bindFallback('presents', () => {
+      if (window.DashboardMailbox) window.DashboardMailbox.openMailbox();
+      else inGameInfo('Present Box\n\nPresent box is still loading. Please try again.');
+    });
 
-    // Panel Missions
-    const iconPanelMissions = document.querySelector('.bottom-icon[data-action="panel-missions"]');
-    if (iconPanelMissions) {
-      iconPanelMissions.addEventListener('click', () => {
-        console.log("[Navigation] Panel Missions clicked");
-        if (window.PanelMissions) {
-          window.PanelMissions.openPanelModal();
-        } else {
-          alert('Panel Missions system not loaded. Please reload the page.');
-        }
-      });
-    }
+    bindFallback('achievements', () => {
+      if (window.Achievements && window.Achievements.openAchievementsModal) window.Achievements.openAchievementsModal();
+      else inGameInfo('Achievements\n\nComing soon!');
+    });
 
-    // Chat
-    const iconChat = document.querySelector('.bottom-icon[data-action="chat"]');
-    if (iconChat) {
-      iconChat.addEventListener('click', () => {
-        console.log("[Navigation] Chat clicked");
-        alert("Chat System\n\nComing soon!");
-      });
-    }
+    // Panel Missions / Chat (also handled by the page on village.html)
+    bindFallback('panel-missions', () => {
+      if (window.PanelMissions) window.PanelMissions.openPanelModal();
+      else inGameInfo('Panel Missions\n\nPanel missions are still loading. Please try again.');
+    });
+
+    bindFallback('chat', () => inGameInfo('Chat\n\nChat system coming soon!'));
 
     // Inventory (Storage)
     const iconInventory = document.querySelector('.bottom-icon[data-action="inventory"]');

@@ -136,60 +136,82 @@ body {
   border-radius: 4px 4px 0 0;
 }
 
-/* === Center Section - Username Display === */
+/* === Center Section - Username Nameplate ===
+   Art: assets/ui/hf/nameplate.webp (900x190) — black lacquer plate with gold
+   border, shuriken end caps and red cords. Drawn with border-image so the
+   end caps keep their proportions (110px of 190px per side = 0.579 x height)
+   while only the wooden middle stretches to fit the name. */
 .username-container {
   display: flex;
   justify-content: center;
   align-items: center;
   position: relative;
-  min-width: 221px;
-  max-width: 340px;
+  min-width: 0;
+  max-width: 360px;
 }
 
 .username-holder {
+  --np-h: 48px;
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 28px 27px;
-  min-width: 204px;
+  box-sizing: border-box;
+  height: var(--np-h);
+  min-width: 230px;
+  max-width: 360px;
+  padding: 0 calc(var(--np-h) * 0.62);
+  border: 0 solid transparent;
+  border-image-source: url("../assets/ui/hf/nameplate.webp");
+  border-image-slice: 0 110 0 110 fill;
+  border-image-width: 0 calc(var(--np-h) * 0.579);
+  border-image-repeat: stretch;
+  filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.65));
+  cursor: default;
 }
 
-/* Name Holder Background — parchment scroll (assets/ui/generated/ribbon_nameplate.webp) */
+/* soft gold sheen across the lacquer */
 .username-holder::before {
   content: "";
   position: absolute;
-  inset: 0;
-  background-image: url("../assets/ui/generated/ribbon_nameplate.webp");
-  background-size: 100% 100%;
-  background-position: center;
-  background-repeat: no-repeat;
-  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.55));
-  z-index: 1;
+  left: calc(var(--np-h) * 0.62);
+  right: calc(var(--np-h) * 0.62);
+  top: 22%;
+  height: 28%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center, rgba(255, 220, 140, 0.12), transparent 70%);
   pointer-events: none;
 }
 
 .username-text {
   position: relative;
   z-index: 2;
-  font-size: 17px;
+  display: block;
+  min-width: 0;
+  max-width: 240px;
+  font-family: "Rowdies", "Oswald", sans-serif;
   font-weight: 700;
-  color: #3a2a12;
-  text-shadow: 0 1px 0 rgba(255, 250, 230, 0.5);
-  letter-spacing: 1px;
+  font-size: 18px;
+  line-height: var(--np-h);
+  letter-spacing: 0.4px;
+  text-transform: none;
+  font-variant: normal;
   text-align: center;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 220px;
-  padding: 0 26px;
-  transition: all 0.3s ease;
+  color: #ffe7a6;
+  background: linear-gradient(180deg, #fff6d6 0%, #ffe08a 45%, #e3a93b 80%, #f6d27a 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 1px 0 #1a0f02) drop-shadow(0 0 5px rgba(0, 0, 0, 0.8));
+  padding: 0 2px;
+  transition: filter 0.2s ease;
 }
 
 .username-holder:hover .username-text {
-  color: #7a5417;
-  text-shadow: 0 1px 0 rgba(255, 250, 230, 0.6), 0 0 12px rgba(212, 175, 55, 0.5);
-  transform: scale(1.05);
+  filter: drop-shadow(0 1px 0 #1a0f02) drop-shadow(0 0 8px rgba(255, 200, 90, 0.45));
 }
 
 /* === Right Section - Currency HUD === */
@@ -361,13 +383,14 @@ body {
   }
 
   .username-holder {
-    padding: 14px 16px;
-    min-width: 120px;
+    --np-h: 36px;
+    min-width: 140px;
+    max-width: 220px;
   }
 
   .username-text {
-    font-size: 13px;
-    max-width: 140px;
+    font-size: 14px;
+    max-width: 150px;
   }
 
   .currency-hud {

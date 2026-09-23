@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <title>Blazing — Village HUD</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <script src="js/device-detect.js"></script>
   <!-- PWA App Container -->
   <link rel="manifest" href="manifest.json" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -29,6 +30,8 @@
   <link rel="stylesheet" href="css/ui-layout.css?v=2" />
   <link rel="stylesheet" href="css/settings-modal.css?v=2" />
   <link rel="stylesheet" href="css/modal-system.css?v=1" />
+  <link rel="stylesheet" href="css/fonts.css" />
+  <link rel="stylesheet" id="present-box-css" href="css/present-box.css?v=1" />
   <!-- Hide scrollbar but keep functionality -->
   <style>
     /* Hide scrollbar for Chrome, Safari and Opera */
@@ -44,9 +47,10 @@
       scrollbar-width: none;  /* Firefox */
     }
   </style>
+  <link rel="stylesheet" href="css/mobile.css" />
 </head>
 
-<body>
+<body data-bottom-icons-handled="page">
   <!-- 16:9 Game Canvas Wrapper -->
   <div class="game-canvas-wrapper">
     <div class="game-canvas">
@@ -331,6 +335,8 @@
           }
         }
       }
+
+      window.addEventListener('mailboxUpdated', () => updateMailboxBadge());
 
       function updateMailboxBadge() {
         if (!window.DashboardMailbox) return;

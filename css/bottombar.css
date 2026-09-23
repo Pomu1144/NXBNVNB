@@ -1,219 +1,349 @@
-/* Bottom HUD - DEFINITIVE NO BORDER VERSION */
-.bottom-bar {
+/* ==========================================================================
+   BOTTOM DOCK (shared by every non-village page)
+   --------------------------------------------------------------------------
+   Markup (unchanged on every page):
+     <div class="bottom-bar"><div class="bottom-bar-content">
+       <button class="hud-button [active]" id="btn-xxx" aria-label="..."><img ...></button>
+   Look: lacquered seigaiha dock (assets/ui/hf/navbar_*.webp, sliced from
+   navbar.webp so the gold rail + center ornament keep their proportions at any
+   width), each tab = gold-bevel socket (socket.webp) + icon + short label.
+   Selectors are prefixed with `.bottom-bar` so they win over the legacy
+   `.hud-button` rules in background.css / missions.css / teams.css regardless
+   of stylesheet order. This file is standalone (declares its own font).
+   ========================================================================== */
+
+@font-face {
+  font-family: 'Rowdies';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('../assets/fonts/rowdies-700.woff2') format('woff2');
+}
+
+:root {
+  --dock-h: 88px;          /* total dock height (incl. rail)            */
+  --dock-rail-h: 26px;     /* rendered height of the gold rail strip    */
+  --dock-tile-w: 82px;     /* width of one tab                          */
+  --dock-socket: 48px;     /* socket square size                        */
+  --dock-icon: 30px;       /* icon size inside socket                   */
+  --dock-label: 10.5px;    /* label font-size                           */
+  --dock-gap: 8px;
+  --dock-lift: 7px;        /* how far the active tab rises              */
+  --dock-safe-b: 0px;      /* bottom safe-area (set by mobile.css)      */
+}
+
+/* ---------- Dock surface ---------- */
+html body .bottom-bar {
+  --cap-w: calc(var(--dock-rail-h) * 1.25);
+  --orn-w: calc(var(--dock-rail-h) * 2.25);
   position: fixed !important;
-  bottom: 0 !important;
   left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  top: auto !important;
   width: 100% !important;
-  height: 80px !important;
+  height: calc(var(--dock-h) + var(--dock-safe-b)) !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  margin: 0 !important;
+  padding: calc(var(--dock-rail-h) * 0.8) 0 calc(var(--dock-safe-b) + 4px) !important;
+  box-sizing: border-box !important;
   z-index: 1000 !important;
   display: flex !important;
-  align-items: center !important;
+  align-items: stretch !important;
   justify-content: center !important;
-  background: rgba(30, 30, 35, 0.4) !important;
-  backdrop-filter: blur(6px) !important;
-  box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.3) !important;
-  border: 0px solid transparent !important;
-  outline: 0px solid transparent !important;
-  border-width: 0 !important;
-  border-style: none !important;
+  border: 0 !important;
+  outline: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  background-color: transparent !important;
+  background-image:
+    url('../assets/ui/hf/navbar_orn.webp'),
+    url('../assets/ui/hf/navbar_cap_l.webp'),
+    url('../assets/ui/hf/navbar_cap_r.webp'),
+    url('../assets/ui/hf/navbar_rail.webp'),
+    url('../assets/ui/hf/navbar_body.webp'),
+    linear-gradient(to bottom,
+      transparent calc(var(--dock-rail-h) * 0.8),
+      rgba(10, 9, 12, 0.72) calc(var(--dock-rail-h) * 0.8),
+      rgba(4, 4, 6, 0.92) 100%) !important;
+  background-repeat: no-repeat !important;
+  background-position:
+    center top,
+    left top,
+    right top,
+    center top,
+    center calc(var(--dock-rail-h) * 0.82),
+    0 0 !important;
+  background-size:
+    var(--orn-w) var(--dock-rail-h),
+    var(--cap-w) var(--dock-rail-h),
+    var(--cap-w) var(--dock-rail-h),
+    calc(100% - 2 * var(--cap-w) + 2px) var(--dock-rail-h),
+    max(100%, 460px) auto,
+    100% 100% !important;
+  pointer-events: none; /* only the tabs catch clicks; transparent rail zone passes through */
+  -webkit-user-select: none;
+  user-select: none;
 }
 
-.bottom-bar::before {
+/* Kill legacy decorative line */
+html body .bottom-bar::before {
+  content: none !important;
+  display: none !important;
+}
+
+/* Soft shadow the dock casts upward onto the page */
+html body .bottom-bar::after {
   content: "";
   position: absolute;
-  top: -3px;
   left: 0;
-  width: 100%;
-  height: 3px;
-  background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.6), transparent);
+  right: 0;
+  top: calc(var(--dock-rail-h) * 0.55 - 14px);
+  height: 14px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.45), transparent);
   pointer-events: none;
+  z-index: -1;
 }
 
-.bottom-bar-content {
-  width: 100%;
-  max-width: 1200px; /* Increased to accommodate all buttons */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: clamp(6px, 2vw, 30px);
-  padding: 0 clamp(8px, 2vw, 20px);
-  box-sizing: border-box;
-  border: 0px solid transparent !important;
-  outline: 0px solid transparent !important;
-  pointer-events: auto !important;
-  z-index: 1001 !important; /* Above parent to ensure clickability */
-}
-
-.hud-button {
-  width: 70px !important;
-  height: 70px !important;
-  min-width: 70px !important;
-  min-height: 70px !important;
-  max-width: 70px !important;
-  max-height: 70px !important;
-  aspect-ratio: 1 !important;
-  border-radius: 50% !important;
-  background: radial-gradient(circle at 30% 30%, rgba(40, 40, 50, 0.9), rgba(20, 20, 30, 0.9));
-  border: 3px solid rgba(217, 179, 98, 0.4);
-  box-shadow:
-    0 4px 12px rgba(0, 0, 0, 0.6),
-    0 0 20px rgba(217, 179, 98, 0.15),
-    inset 0 2px 4px rgba(255, 255, 255, 0.1),
-    inset 0 -2px 4px rgba(0, 0, 0, 0.3);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  cursor: pointer !important;
-  pointer-events: auto !important;
+html body .bottom-bar .bottom-bar-content {
+  width: 100% !important;
+  max-width: 1100px !important;
+  height: 100% !important;
+  margin: 0 auto !important;
+  padding: 0 calc(var(--dock-rail-h) * 1.1) !important;
+  box-sizing: border-box !important;
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: var(--dock-gap) !important;
+  border: 0 !important;
+  outline: 0 !important;
+  background: none !important;
+  pointer-events: none;
   position: relative;
-  transition: all 0.3s ease;
-  overflow: hidden;
-  flex-shrink: 0 !important;
+  z-index: 1;
 }
 
-.hud-button:hover {
-  transform: scale(1.15);
-  border-color: rgba(255, 215, 0, 0.8);
-  box-shadow:
-    0 6px 20px rgba(0, 0, 0, 0.7),
-    0 0 30px rgba(217, 179, 98, 0.4),
-    inset 0 2px 6px rgba(255, 255, 255, 0.15);
-}
-
-.hud-button:active {
-  transform: scale(1.05);
-  filter: brightness(0.95);
-}
-
-.hud-button.active {
-  border-color: rgba(255, 215, 0, 1);
-  background: radial-gradient(circle at 30% 30%, rgba(60, 50, 30, 0.9), rgba(40, 35, 25, 0.9));
-  box-shadow:
-    0 6px 20px rgba(0, 0, 0, 0.7),
-    0 0 35px rgba(255, 215, 0, 0.5),
-    inset 0 2px 6px rgba(255, 215, 0, 0.2);
-}
-
-.hud-button img {
-  width: 60% !important;
-  height: 60% !important;
-  aspect-ratio: 1 !important;
-  object-fit: contain !important;
-  object-position: center !important;
-  /* Neutralize stale absolute-positioning from background.css (.hud-button img
-     top/left/transform) that otherwise leaks in on pages where background.css
-     loads before bottombar.css (Fusion/Shop/Characters), shoving the icon out
-     of the button. Flexbox on .hud-button handles centering. */
+/* ---------- Tab ---------- */
+html body .bottom-bar .hud-button {
+  all: unset;
+  display: block !important;
+  pointer-events: auto !important;
+  cursor: pointer !important;
   position: relative !important;
-  top: auto !important;
-  left: auto !important;
+  flex: 0 0 var(--dock-tile-w) !important;
+  width: var(--dock-tile-w) !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  height: calc(var(--dock-socket) * 1.03 + var(--dock-label) + 5px) !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  aspect-ratio: auto !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 12px !important;
+  box-sizing: border-box !important;
+  overflow: visible !important;
+  background: none !important;
+  box-shadow: none !important;
+  outline: none;
+  transform: none;
+  transition: transform 0.18s cubic-bezier(.3, 1.4, .5, 1), filter 0.18s ease;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+/* Socket (gold bevel lacquer frame) */
+html body .bottom-bar .hud-button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: var(--dock-socket);
+  height: calc(var(--dock-socket) * 1.03);
+  transform: translateX(-50%);
+  background: url('../assets/ui/hf/socket.webp') center / 100% 100% no-repeat;
+  filter: brightness(0.78) saturate(0.75) drop-shadow(0 2px 3px rgba(0, 0, 0, 0.7));
+  transition: filter 0.18s ease;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Icon */
+html body .bottom-bar .hud-button img {
+  position: absolute !important;
+  top: calc((var(--dock-socket) * 1.03 - var(--dock-icon)) / 2) !important;
+  left: 50% !important;
   right: auto !important;
   bottom: auto !important;
-  z-index: 1;
+  width: var(--dock-icon) !important;
+  height: var(--dock-icon) !important;
+  max-width: none !important;
+  max-height: none !important;
+  margin: 0 !important;
+  aspect-ratio: 1 !important;
+  object-fit: contain !important;
+  transform: translateX(-50%) !important;
   border-radius: 0 !important;
-  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.6));
   display: block !important;
-  margin: 0 auto !important;
-  transform: translate3d(0, 0, 0) !important;
-}
-
-
-.hud-button::after {
-  content: attr(aria-label);
-  position: absolute;
-  bottom: 80px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(20, 20, 25, 0.9);
-  color: #f4efe3;
-  font-family: "Times New Roman", serif;
-  font-size: 16px;
-  padding: 6px 12px;
-  border-radius: 8px;
-  opacity: 0;
+  z-index: 1;
+  opacity: 0.82;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.9)) saturate(0.85);
+  transition: opacity 0.18s ease, filter 0.18s ease;
   pointer-events: none;
+}
+
+/* Label (from aria-label; ids below give the short game names) */
+html body .bottom-bar .hud-button::after {
+  content: attr(aria-label);
+  position: absolute !important;
+  left: 50% !important;
+  right: auto !important;
+  top: auto !important;
+  bottom: 0 !important;
+  transform: translateX(-50%) !important;
+  opacity: 1 !important;
+  display: block !important;
+  width: max-content;
+  max-width: calc(var(--dock-tile-w) + 6px);
+  overflow: hidden;
+  text-overflow: clip;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: none !important;
+  font-family: 'Rowdies', 'Bangers', 'Arial Black', 'Trebuchet MS', sans-serif !important;
+  font-weight: 700;
+  font-size: var(--dock-label) !important;
+  line-height: 1 !important;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
   white-space: nowrap;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
-  border: 1px solid rgba(255, 215, 100, 0.3);
-  transition: opacity 0.2s ease-out, transform 0.2s ease-out;
+  color: #bfa574;
+  text-shadow: 0 1px 0 #000, 0 0 3px rgba(0, 0, 0, 0.95), 0 0 6px rgba(0, 0, 0, 0.8);
+  transition: color 0.18s ease, text-shadow 0.18s ease;
+  pointer-events: none;
+  z-index: 2;
 }
 
-.hud-button:hover::after {
+html body .bottom-bar #btn-village::after    { content: "Village"; }
+html body .bottom-bar #btn-characters::after { content: "Shinobi"; }
+html body .bottom-bar #btn-fusion::after     { content: "Fusion"; }
+html body .bottom-bar #btn-teams::after      { content: "Teams"; }
+html body .bottom-bar #btn-tools::after      { content: "Tools"; }
+html body .bottom-bar #btn-summon::after     { content: "Summon"; }
+html body .bottom-bar #btn-missions::after   { content: "Missions"; }
+html body .bottom-bar #btn-inventory::after  { content: "Items"; }
+html body .bottom-bar #btn-shop::after       { content: "Shop"; }
+
+/* ---------- Hover (mouse only) ---------- */
+@media (hover: hover) {
+  html body .bottom-bar .hud-button:hover {
+    transform: translateY(-3px);
+  }
+  html body .bottom-bar .hud-button:hover::before {
+    filter: brightness(1.02) saturate(1) drop-shadow(0 3px 5px rgba(0, 0, 0, 0.8))
+      drop-shadow(0 0 5px rgba(255, 196, 90, 0.35));
+  }
+  html body .bottom-bar .hud-button:hover img {
+    opacity: 1;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.9)) brightness(1.1);
+  }
+  html body .bottom-bar .hud-button:hover::after {
+    color: #f3d796;
+  }
+}
+
+html body .bottom-bar .hud-button:focus-visible::before {
+  filter: brightness(1.1) drop-shadow(0 0 6px rgba(255, 210, 110, 0.9));
+}
+
+/* ---------- Press ---------- */
+html body .bottom-bar .hud-button:active {
+  transform: translateY(1px) scale(0.94);
+  transition-duration: 0.06s;
+}
+
+/* ---------- Active (current page) ---------- */
+html body .bottom-bar .hud-button.active {
+  transform: translateY(calc(var(--dock-lift) * -1));
+  background:
+    radial-gradient(ellipse 55% 42% at 50% 36%, rgba(255, 196, 80, 0.42), rgba(255, 170, 40, 0) 70%) !important;
+}
+html body .bottom-bar .hud-button.active::before {
+  filter: brightness(1.18) saturate(1.1)
+    drop-shadow(0 0 4px rgba(255, 214, 120, 0.95))
+    drop-shadow(0 0 12px rgba(255, 170, 40, 0.65))
+    drop-shadow(0 5px 6px rgba(0, 0, 0, 0.75));
+}
+html body .bottom-bar .hud-button.active img {
   opacity: 1;
-  transform: translateX(-50%) translateY(-5px);
+  filter: drop-shadow(0 0 4px rgba(255, 220, 140, 0.8)) brightness(1.15);
 }
-
-@media (max-width: 1024px) {
-  .bottom-bar {
-    height: 72px !important;
-  }
-
-  .hud-button {
-    width: 58px !important;
-    height: 58px !important;
-    min-width: 58px !important;
-    min-height: 58px !important;
-    max-width: 58px !important;
-    max-height: 58px !important;
-    border-width: 2px;
-  }
-
-  .hud-button::after {
-    display: none;
+html body .bottom-bar .hud-button.active::after {
+  color: #ffe9a8;
+  text-shadow: 0 1px 0 #000, 0 0 3px rgba(0, 0, 0, 0.9), 0 0 8px rgba(255, 190, 60, 0.85);
+}
+@media (hover: hover) {
+  html body .bottom-bar .hud-button.active:hover {
+    transform: translateY(calc(var(--dock-lift) * -1 - 1px));
   }
 }
+html body .bottom-bar .hud-button.active:active {
+  transform: translateY(calc(var(--dock-lift) * -1 + 2px)) scale(0.95);
+}
 
-@media (max-width: 768px) {
-  .bottom-bar {
-    height: 64px !important;
+/* ---------- Narrow windows (desktop resized) ---------- */
+@media (max-width: 860px) {
+  :root {
+    --dock-tile-w: 68px;
+    --dock-gap: 4px;
+    --dock-label: 9.5px;
   }
+}
 
-  .bottom-bar-content {
-    justify-content: flex-start;
-    overflow-x: auto;
-    overflow-y: hidden;
-    scroll-behavior: smooth;
+@media (max-width: 660px) {
+  :root {
+    --dock-h: 76px;
+    --dock-tile-w: 60px;
+    --dock-socket: 40px;
+    --dock-icon: 25px;
+    --dock-label: 9px;
+    --dock-gap: 2px;
+  }
+  html body .bottom-bar .bottom-bar-content {
+    justify-content: flex-start !important;
+    overflow-x: auto !important;
+    overflow-y: visible !important;
+    scrollbar-width: none;
     -webkit-overflow-scrolling: touch;
-    touch-action: pan-x;
+    padding: 0 12px !important;
   }
+  html body .bottom-bar .bottom-bar-content::-webkit-scrollbar { display: none; }
+}
 
-  .hud-button {
-    width: 50px !important;
-    height: 50px !important;
-    min-width: 50px !important;
-    min-height: 50px !important;
-    max-width: 50px !important;
-    max-height: 50px !important;
+/* Short viewports (any device): compact dock */
+@media (max-height: 480px) and (orientation: landscape) {
+  :root {
+    --dock-h: 62px;
+    --dock-rail-h: 22px;
+    --dock-tile-w: 64px;
+    --dock-socket: 32px;
+    --dock-icon: 21px;
+    --dock-label: 8.5px;
+    --dock-gap: 4px;
+    --dock-lift: 4px;
   }
 }
 
-/* KILL ALL RED BORDERS GLOBALLY */
-div[class*="bottom"] {
-  border: none !important;
+/* Legacy guard: some pages had a global rule killing borders on anything
+   named *bottom*; keep it harmless. */
+div[class*="bottom-bar"] {
   outline: none !important;
-}
-
-/* Landscape mobile — max 420px tall */
-@media (max-height: 420px) and (orientation: landscape) {
-  .bottom-bar {
-    height: 55px !important;
-    min-height: 50px !important;
-    max-height: 55px !important;
-  }
-
-  .hud-button {
-    width: 44px !important;
-    height: 44px !important;
-    min-width: 44px !important;
-    min-height: 44px !important;
-    max-width: 44px !important;
-    max-height: 44px !important;
-    border-width: 2px !important;
-  }
-
-  .bottom-bar-content {
-    gap: clamp(4px, 1.2vw, 12px);
-    padding: 0 6px;
-  }
 }

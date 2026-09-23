@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <title>Blazing — Fusion</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <script src="js/device-detect.js"></script>
   <!-- PWA App Container -->
   <link rel="manifest" href="manifest.json" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -15,19 +16,33 @@
   <link rel="stylesheet" href="css/fusion.css" />
   <link rel="stylesheet" href="css/background.css" />
   <link rel="stylesheet" href="css/bottombar.css" />
+  <link rel="stylesheet" href="css/mobile.css" />
 </head>
 <body class="page-fusion">
   <div id="full-bg"></div>
+  <!-- Ambient scene layers (decorative, CSS-only animation) -->
+  <div class="fx-scene" aria-hidden="true">
+    <div class="fx-backdrop"></div>
+    <div class="fx-vignette"></div>
+    <div class="fx-embers">
+      <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+    </div>
+  </div>
 
   <!-- ==================== MAIN FUSION UI ==================== -->
   <main class="fusion-content">
-    <h1 class="page-title">FUSION</h1>
+    <header class="fusion-header">
+      <div class="title-plate">
+        <h1 class="page-title">Fusion</h1>
+        <span class="title-sub">Sealing Shrine</span>
+      </div>
 
-    <!-- ---- Fusion Tabs ---- -->
-    <div class="fusion-tabs">
-      <button class="fusion-tab active" data-tab="fusions">Fusions</button>
-      <button class="fusion-tab" data-tab="exchanges">Exchanges</button>
-    </div>
+      <!-- ---- Fusion Tabs ---- -->
+      <div class="fusion-tabs" role="tablist">
+        <button class="fusion-tab active" data-tab="fusions">Fusions</button>
+        <button class="fusion-tab" data-tab="exchanges">Exchanges</button>
+      </div>
+    </header>
 
     <!-- ---- Tab: Fusions ---- -->
     <div id="tab-fusions" class="fusion-tab-content active">
@@ -35,12 +50,20 @@
 
       <!-- ---- Left: Available Recipes ---- -->
       <section class="fusion-recipes-panel">
-        <h2 class="panel-title">Fusion Recipes</h2>
+        <h2 class="panel-title"><span>Fusion Recipes</span></h2>
         <div id="fusions-grid" class="fusions-grid"></div>
       </section>
 
       <!-- ---- Right: Active Fusion Workspace ---- -->
       <section class="fusion-workspace-panel">
+        <!-- Sealing array under the altar (decorative) -->
+        <div class="altar-seal" aria-hidden="true">
+          <div class="seal-ring seal-ring--outer"></div>
+          <div class="seal-ring seal-ring--inner"></div>
+          <div class="seal-core"></div>
+        </div>
+
+        <p class="altar-hint">Choose a recipe, or place two shinobi upon the seal</p>
 
         <!-- Unit Slots -->
         <div class="fusion-slots-row">
@@ -54,7 +77,7 @@
             <div id="info-1" class="fusion-slot-info"></div>
           </div>
 
-          <div class="fusion-plus-sign">+</div>
+          <div class="fusion-plus-sign" aria-hidden="true"><span>+</span></div>
 
           <div class="fusion-slot-wrapper">
             <div id="slot-2" class="fusion-slot">
@@ -66,15 +89,16 @@
             <div id="info-2" class="fusion-slot-info"></div>
           </div>
 
-          <div class="fusion-arrow-sign">→</div>
+          <div class="fusion-arrow-sign" aria-hidden="true"><span class="flow-line"></span><img src="assets/ui/hf/arrow.webp" alt=""></div>
 
           <div class="fusion-slot-wrapper">
             <div id="result-slot" class="fusion-slot result-slot">
               <div class="slot-placeholder">
                 <div class="slot-icon">?</div>
-                <div class="slot-label">Result</div>
+                <div class="slot-label">Fusion Result</div>
               </div>
             </div>
+            <div id="result-info" class="fusion-slot-info result-info"></div>
           </div>
         </div>
 
@@ -162,13 +186,13 @@
   <div class="bottom-bar">
     <div class="bottom-bar-content">
       <button class="hud-button" id="btn-village" aria-label="Village"><img src="assets/icons/nav/village_btm_btn.png" alt="Village"></button>
-      <button class="hud-button" id="btn-characters" aria-label="Characters"><img src="assets/icons/nav/characters_icon.png" alt="Characters" onerror="this.style.display='none'"></button>
+      <button class="hud-button" id="btn-characters" aria-label="Shinobi"><img src="assets/icons/nav/characters_icon.png" alt="Characters" onerror="this.style.display='none'"></button>
       <button class="hud-button active" id="btn-fusion" aria-label="Fusion"><img src="assets/icons/nav/fusion_btm_btn.png" alt="Fusion"></button>
       <button class="hud-button" id="btn-teams" aria-label="Teams"><img src="assets/icons/nav/teams_icon.png" alt="Teams"></button>
       <button class="hud-button" id="btn-tools" aria-label="Tools"><img src="assets/icons/nav/guilds_icon.png" alt="Tools"></button>
       <button class="hud-button" id="btn-summon" aria-label="Summon"><img src="assets/icons/nav/summon_btm_btn.png" alt="Summon"></button>
       <button class="hud-button" id="btn-missions" aria-label="Missions"><img src="assets/icons/nav/mission_btm_btn.png" alt="Missions"></button>
-      <button class="hud-button" id="btn-inventory" aria-label="Inventory"><img src="assets/icons/nav/inventory_icon.png" alt="Inventory"></button>
+      <button class="hud-button" id="btn-inventory" aria-label="Items"><img src="assets/icons/nav/inventory_icon.png" alt="Inventory"></button>
       <button class="hud-button" id="btn-shop" aria-label="Shop"><img src="assets/icons/nav/shop_btm_btn.png" alt="Shop"></button>
     </div>
   </div>
@@ -197,7 +221,7 @@
       // Group instances by base character name
       const groups = {};
       inv.forEach(inst => {
-        const base = window.CharacterInventory?.getCharacterById?.(inst.charId);
+        const base = ExchangeSystem._base(inst.charId);
         if (!base) return;
         const key = base.name;
         if (!groups[key]) groups[key] = { name: key, units: [] };
@@ -228,7 +252,7 @@
                 const isSelected = this.selected.some(s => s.uid === inst.uid);
                 return `<div class="exchange-unit-card${isSelected ? ' selected' : ''}"
                               data-uid="${inst.uid}" data-name="${g.name}">
-                  <img src="${art}" alt="${base.name}" onerror="this.src='assets/Main Background/Background.png'">
+                  <img src="${art}" alt="${base.name}" onerror="this.style.visibility='hidden'">
                   <div class="exchange-unit-tier">${tier(inst.tierCode)}</div>
                 </div>`;
               }).join('')}
@@ -244,11 +268,28 @@
       this.updateSelectionUI();
     },
 
+    // Character data comes from FusionSystem (characters.json); fall back to a
+    // global CharacterInventory if some other script provides one.
+    _chars() {
+      return window.FusionSystem?.charactersData || window.CharacterInventory?.allCharacters?.() || [];
+    },
+    _base(id) {
+      if (!id) return null;
+      return this._chars().find(c => c.id === id) || window.CharacterInventory?.getCharacterById?.(id) || null;
+    },
+    _hasTier(c, tier) {
+      if (c.artByTier?.[tier]) return true;
+      return (c.tiers || []).some(t => t.tier === tier);
+    },
+
     _portrait(base, tierCode) {
-      if (!base || !tierCode) return 'assets/Main Background/Background.png';
+      const fallback = 'assets/characters/common/silhouette.png';
+      if (!base) return fallback;
+      const art = base.artByTier?.[tierCode];
+      if (art?.portrait) return art.portrait;
       const tiers = base.tiers || [];
       const t = tiers.find(t => t.tier === tierCode) || tiers[0];
-      return t?.portrait || t?.art || 'assets/Main Background/Background.png';
+      return t?.portrait || t?.art || base.portrait || fallback;
     },
 
     toggleSelect(card) {
@@ -269,7 +310,7 @@
           return;
         }
         const inst = window.InventoryChar?.getByUid(uid);
-        const base = window.CharacterInventory?.getCharacterById?.(inst?.charId);
+        const base = ExchangeSystem._base(inst?.charId);
         this.selected.push({ uid, name, portrait: this._portrait(base, inst?.tierCode), tier: inst?.tierCode });
         card.classList.add('selected');
       }
@@ -310,11 +351,11 @@
 
       // Remove the 5 selected units
       const name = this.selected[0].name;
-      this.selected.forEach(s => inv.removeByUid?.(s.uid));
+      this.selected.forEach(s => (inv.removeOneByUid || inv.removeByUid)?.(s.uid));
 
       // Find the next tier up for this character group
       const remaining = inv.allInstances().filter(inst => {
-        const base = window.CharacterInventory?.getCharacterById?.(inst.charId);
+        const base = ExchangeSystem._base(inst.charId);
         return base?.name === name;
       });
       const usedTiers = this.selected.map(s => s.tier);
@@ -325,12 +366,13 @@
       const nextTier = this.tierOrder[nextTierIdx];
 
       // Find a base character with this name at the next tier
-      const allChars = window.CharacterInventory?.allCharacters?.() || [];
-      const candidates = allChars.filter(c => c.name === name && (c.tiers || []).some(t => t.tier === nextTier));
+      const allChars = this._chars();
+      const candidates = allChars.filter(c => c.name === name && this._hasTier(c, nextTier));
       const grantChar = candidates[Math.floor(Math.random() * candidates.length)] || candidates[0];
 
       if (grantChar) {
-        inv.addInstance?.({ charId: grantChar.id, tierCode: nextTier, level: 1 });
+        if (inv.addCopy) inv.addCopy(grantChar.id, 1, nextTier);
+        else inv.addInstance?.({ charId: grantChar.id, tierCode: nextTier, level: 1 });
       }
 
       this.selected = [];
@@ -339,10 +381,11 @@
       const modal = document.getElementById('fusion-success-modal');
       const content = document.getElementById('success-content');
       if (modal && content) {
-        content.innerHTML = `<p style="color:#d9b362;font-size:1.1rem;font-family:'Cinzel',serif">
+        content.innerHTML = `<p style="color:#d9b362;font-size:1.1rem;font-family:'Rowdies',sans-serif">
           Exchanged 5 ${name} copies for a <strong>${nextTier}</strong> version!
         </p>`;
         modal.setAttribute('aria-hidden', 'false');
+        modal.classList.add('open');
       }
 
       this.render();

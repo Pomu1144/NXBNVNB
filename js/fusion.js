@@ -199,6 +199,7 @@
           </div>
         `;
         slotEl.classList.remove('filled');
+        delete slotEl.dataset.tier;
         infoEl.innerHTML = '';
         return;
       }
@@ -208,6 +209,7 @@
 
       slotEl.innerHTML = `<img src="${unit.portrait}" alt="${unit.charData?.name || 'Unknown'}">`;
       slotEl.classList.add('filled');
+      slotEl.dataset.tier = this.tierRank(unit.tierCode);
 
       infoEl.innerHTML = `
         <div class="unit-name">${unit.charData?.name || 'Unknown'}</div>
@@ -394,8 +396,10 @@
 
       resultSlot.innerHTML = `<img src="${portrait}" alt="${resultChar.name}">`;
       resultSlot.classList.add('filled');
+      resultSlot.dataset.tier = this.tierRank(fusion.result.tier);
 
       const bonusStats = fusion.result.bonusStats || {};
+      if (!resultInfo) return;
       resultInfo.innerHTML = `
         <div class="unit-name">${resultChar.name}</div>
         <div class="unit-tier">Tier: ${fusion.result.tier}</div>
@@ -422,7 +426,8 @@
         </div>
       `;
       resultSlot.classList.remove('filled');
-      resultInfo.innerHTML = '';
+      delete resultSlot.dataset.tier;
+      if (resultInfo) resultInfo.innerHTML = '';
     },
 
     // Perform fusion
@@ -474,7 +479,12 @@
         newChar.fusionLegacySteps = legacyBonus;
         newChar.fusionPath = fusion.fusionPath || null;
 
-        window.InventoryChar?.save();
+        // Persist the extra fields (InventoryChar has no public save())
+        window.InventoryChar?.updateInstance?.(newChar.uid, {
+          level: newChar.level,
+          fusionLegacySteps: newChar.fusionLegacySteps,
+          fusionPath: newChar.fusionPath
+        });
       }
 
       console.log("[Fusion] ✅ Fusion successful:", newChar);
@@ -500,7 +510,7 @@
     // Show success modal
     showSuccessModal(fusion, newChar, legacyBonus) {
       const modal = document.getElementById('fusion-success-modal');
-      const resultEl = document.getElementById('success-result');
+      const resultEl = document.getElementById('success-result') || document.getElementById('success-content');
 
       const charData = this.charactersData.find(c => c.id === fusion.result.characterId);
       const tierData = charData?.artByTier?.[fusion.result.tier] || {};
@@ -534,6 +544,7 @@
     // Clear selection
     clearSelection() {
       this.selectedUnits = { slot1: null, slot2: null };
+      document.querySelectorAll('.fusion-card.selected').forEach(c => c.classList.remove('selected'));
       this.updateSlotDisplay(1);
       this.updateSlotDisplay(2);
       this.clearResultSlot();
@@ -578,40 +589,41 @@
         const resultPortrait = this.getCharacterPortrait(result, fusion.result.tier);
 
         const materials = Object.entries(fusion.requirements.materials || {})
-          .map(([mat, amt]) => `<div class="material-tag">${mat}: ${amt}</div>`)
+          // Scrolls are no longer required (see validateFusion) — don't advertise them
+          .filter(([mat]) => !mat.toLowerCase().includes('scroll'))
+          .map(([mat, amt]) => {
+            const icon = this.currencyIcon(mat);
+            return `<div class="material-tag" data-mat="${mat}">${icon ? `<img src="${icon}" alt="" class="material-icon">` : ''}<span class="material-amt">${Number(amt).toLocaleString()}</span></div>`;
+          })
           .join('');
+        const levelTag = fusion.requirements.minLevel
+          ? `<div class="material-tag level-tag"><span class="material-lv">Lv</span><span class="material-amt">${fusion.requirements.minLevel}</span></div>` : '';
+        const step = fusion.stepNumber ? `<span class="fusion-card-step">Step ${fusion.stepNumber}</span>` : '';
+        const unitHtml = (c, portrait, tier, extra = '') => `
+              <div class="fusion-preview-unit${extra}" data-tier="${this.tierRank(tier)}">
+                <div class="fusion-preview-frame"><img src="${portrait}" alt="${c?.name || 'Unknown'}" class="fusion-preview-icon" loading="lazy" onerror="this.style.visibility='hidden'"></div>
+                <div class="fusion-preview-name">${c?.name || 'Unknown'}</div>
+                <div class="fusion-preview-version">${c?.version || ''}</div>
+              </div>`;
 
         return `
-          <div class="fusion-card" data-fusion-id="${fusion.id}">
-            <div class="fusion-card-title">${fusion.name || 'Unknown Fusion'}</div>
+          <div class="fusion-card" data-fusion-id="${fusion.id}" role="button" tabindex="0">
+            <div class="fusion-card-head">
+              <div class="fusion-card-title">${fusion.name || 'Unknown Fusion'}</div>
+              ${step}
+            </div>
 
             <!-- Fusion Preview with Icons -->
             <div class="fusion-preview">
-              <div class="fusion-preview-unit">
-                <img src="${char1Portrait}" alt="${char1?.name || 'Unknown'}" class="fusion-preview-icon">
-                <div class="fusion-preview-name">${char1?.name || 'Unknown'}</div>
-                <div class="fusion-preview-version">${char1?.version || ''}</div>
-              </div>
-
+              ${unitHtml(char1, char1Portrait, char1?.starMinCode)}
               <div class="fusion-preview-plus">+</div>
-
-              <div class="fusion-preview-unit">
-                <img src="${char2Portrait}" alt="${char2?.name || 'Unknown'}" class="fusion-preview-icon">
-                <div class="fusion-preview-name">${char2?.name || 'Unknown'}</div>
-                <div class="fusion-preview-version">${char2?.version || ''}</div>
-              </div>
-
-              <div class="fusion-preview-arrow">→</div>
-
-              <div class="fusion-preview-unit result">
-                <img src="${resultPortrait}" alt="${result?.name || 'Unknown'}" class="fusion-preview-icon">
-                <div class="fusion-preview-name">${result?.name || 'Unknown'}</div>
-                <div class="fusion-preview-version">${result?.version || ''}</div>
-              </div>
+              ${unitHtml(char2, char2Portrait, char2?.starMinCode)}
+              <div class="fusion-preview-arrow"></div>
+              ${unitHtml(result, resultPortrait, fusion.result.tier, ' result')}
             </div>
 
             <div class="fusion-card-description">${fusion.description || ''}</div>
-            <div class="fusion-card-materials">${materials}</div>
+            <div class="fusion-card-materials">${levelTag}${materials}</div>
           </div>
         `;
       }).join('');
@@ -622,7 +634,28 @@
           const fusionId = card.dataset.fusionId;
           this.autoPopulateFusion(fusionId);
         });
+        card.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); card.click(); }
+        });
       });
+    },
+
+    // Map a tier code (3S, 5S, 6SB…) to a rarity bucket used for frame colors
+    tierRank(tier) {
+      const n = parseInt(String(tier || ''), 10);
+      if (!n) return 'x';
+      if (n <= 3) return '3';
+      if (n >= 7) return '7';
+      return String(n);
+    },
+
+    // Currency icon for a material key (null if none)
+    currencyIcon(mat) {
+      const m = String(mat).toLowerCase();
+      if (m === 'ryo') return 'assets/icons/currency/ryo.png';
+      if (m.includes('pearl')) return 'assets/icons/currency/ninjapearl.png';
+      if (m.includes('shinobite')) return 'assets/icons/currency/shinobite.png';
+      return null;
     },
 
     // Get character portrait by tier
@@ -662,6 +695,10 @@
       // Clear previous selection
       this.clearSelection();
 
+      // Highlight the chosen recipe card
+      document.querySelectorAll('.fusion-card.selected').forEach(c => c.classList.remove('selected'));
+      document.querySelector(`.fusion-card[data-fusion-id="${fusionId}"]`)?.classList.add('selected');
+
       // Populate slots if units are found
       if (unit1) {
         const tierData = char1Data?.artByTier?.[unit1.tierCode] || {};
@@ -683,7 +720,10 @@
       this.validateFusion();
 
       // Scroll to fusion area
-      document.querySelector('.fusion-container')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      // On stacked (narrow) layouts, bring the altar into view
+      if (window.matchMedia('(max-width: 760px)').matches) {
+        document.querySelector('.fusion-workspace-panel')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
     }
   };
 

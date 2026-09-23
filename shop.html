@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <title>Blazing — Shop</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <script src="js/device-detect.js"></script>
   <!-- PWA App Container -->
   <link rel="manifest" href="manifest.json" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -31,6 +32,7 @@
       scrollbar-width: none;  /* Firefox */
     }
   </style>
+  <link rel="stylesheet" href="css/mobile.css" />
 </head>
 <body class="page-shop">
   <div id="shop-bg"></div>
@@ -134,7 +136,7 @@
       <button class="hud-button" id="btn-village" aria-label="Village">
         <img src="assets/icons/nav/village_btm_btn.png" alt="Village">
       </button>
-      <button class="hud-button" id="btn-characters" aria-label="Characters">
+      <button class="hud-button" id="btn-characters" aria-label="Shinobi">
         <img src="assets/icons/nav/characters_icon.png" alt="Characters" onerror="this.style.display='none'">
       </button>
       <button class="hud-button" id="btn-fusion" aria-label="Fusion">
@@ -152,7 +154,7 @@
       <button class="hud-button" id="btn-missions" aria-label="Missions">
         <img src="assets/icons/nav/mission_btm_btn.png" alt="Missions">
       </button>
-      <button class="hud-button" id="btn-inventory" aria-label="Inventory">
+      <button class="hud-button" id="btn-inventory" aria-label="Items">
         <img src="assets/icons/nav/inventory_icon.png" alt="Inventory">
       </button>
       <button class="hud-button active" id="btn-shop" aria-label="Shop">

@@ -229,6 +229,10 @@ body.page-characters::-webkit-scrollbar {
   animation: ultimate-badge-glow 2s ease-in-out infinite;
 }
 
+/* PERF: cards scrolled off-screen get .fx-off (js/seven-star-fx.js) so a big
+   roster doesn't run ~one filter animation per maxed unit every frame. */
+.char-slot.fx-off .ultimate-badge { animation: none; }
+
 @keyframes ultimate-badge-glow {
   0%, 100% {
     filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.6)) drop-shadow(0 0 8px rgba(255, 215, 0, 0.4));
