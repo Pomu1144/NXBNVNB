@@ -252,6 +252,13 @@
       // Mirror HTML5 DnD, which pointer-cancels the 2-stage input manager.
       const im = window.BattleInputManager;
       if (im && im.currentState === im.STATES?.DRAGGING) im.cancelDrag();
+      // A skill armed by tapping the holder card (input manager) carries
+      // over to this sprite drag instead of being dropped for a plain move.
+      if (im && im.selectedUnit === unit && im.currentState === im.STATES?.READY_TO_DRAG) {
+        const t = im.selectedAttackType;
+        if (t === "jutsu" || t === "ultimate") core.queuedAction = t;
+        im.resetState();
+      }
 
       core.units?.stopRun?.(unit); // stop any in-flight run-to
       this.beginDrag(unit, core);
@@ -444,6 +451,10 @@
      * The caller runs handleDragEnd() afterwards.
      */
     dropAt(clientX, clientY, core) {
+      // The queued action is consumed by this drop (a stale "jutsu" left in
+      // core.queuedAction let a later enemy tap cast it a second time).
+      core.queuedAction = null;
+      window.BattleChakra?.clearEnemyHighlights?.(core);
       const rect = core.dom.scene.getBoundingClientRect();
       const dropX = clientX - rect.left;
       const dropY = clientY - rect.top;
@@ -638,12 +649,10 @@
       let shape, args, color;
 
       if (action === "ultimate" && skills?.ultimate) {
-        shape = skills.ultimate.data?.shape || "sector";
-        args = skills.ultimate.data?.shapeArgs || { radius: 260, angleDeg: 90 };
+        ({ shape, args } = this.skillArea(skills.ultimate, "ultimate"));
         color = "ultimate";
       } else if (action === "jutsu" && skills?.jutsu) {
-        shape = skills.jutsu.data?.shape || "circle";
-        args = skills.jutsu.data?.shapeArgs || { radius: 140 };
+        ({ shape, args } = this.skillArea(skills.jutsu, "jutsu"));
         color = "jutsu";
       } else {
         shape = "circle";
@@ -663,12 +672,11 @@
       let shape, args;
 
       // Determine shape and args based on action type
+      let all = false;
       if (actionType === "jutsu" && skills?.jutsu) {
-        shape = skills.jutsu.data?.shape || "circle";
-        args = skills.jutsu.data?.shapeArgs || { radius: 140 };
+        ({ shape, args, all } = this.skillArea(skills.jutsu, "jutsu"));
       } else if (actionType === "ultimate" && skills?.ultimate) {
-        shape = skills.ultimate.data?.shape || "sector";
-        args = skills.ultimate.data?.shapeArgs || { radius: 260, angleDeg: 90 };
+        ({ shape, args, all } = this.skillArea(skills.ultimate, "ultimate"));
       } else {
         shape = "circle";
         args = { radius: 400 }; // Increased to 400 for much more forgiving targeting
@@ -679,6 +687,8 @@
       }
 
       const targets = [];
+      // Whole-map / all-enemies skills hit every living enemy wherever the drop lands
+      if (all) return core.enemyTeam.filter(u => u.stats.hp > 0);
       for (const unit of core.enemyTeam) {
         if (unit.stats.hp <= 0) {
           if (this.DEBUG_DRAG) console.log(`[Drag]   - ${unit.name}: DEAD, skipping`);
@@ -712,6 +722,26 @@
 
       if (this.DEBUG_DRAG) console.log(`[Drag] findUnitsInRange result: ${targets.length} targets`);
       return targets;
+    },
+
+    /**
+     * Targeting area for a skill entry ({ meta, data } from getUnitSkills).
+     * characters.json stores placeholders like shape "—" (or text such as
+     * "Whole Map"), which isUnitInShape() does not know, so every jutsu
+     * drop found 0 targets and just ended the turn. Unknown shapes fall back
+     * to the defaults; "whole map" / "all enemies" skills hit everyone.
+     */
+    skillArea(entry, action) {
+      const d = entry?.data || {};
+      const KNOWN = ["circle", "rect", "line", "sector"];
+      const def = action === "ultimate"
+        ? { shape: "sector", args: { radius: 260, angleDeg: 90 } }
+        : { shape: "circle", args: { radius: 140 } };
+      const shape = KNOWN.includes(String(d.shape || "").toLowerCase()) ? String(d.shape).toLowerCase() : def.shape;
+      const args = (d.shapeArgs && typeof d.shapeArgs === "object") ? d.shapeArgs : def.args;
+      const text = `${d.shape || ""} ${d.range || ""} ${d.position || ""} ${d.description || ""}`;
+      const all = /whole map|all enem/i.test(text);
+      return { shape, args, all };
     },
 
     /**

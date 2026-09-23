@@ -281,6 +281,88 @@
   50%      { filter: drop-shadow(0 0 10px rgba(255, 110, 60, 0.95)) drop-shadow(0 4px 6px rgba(0, 0, 0, 0.75)); }
 }
 
+/* === Lightning border (battle-team-holder.js voltHTML / updateVolt) ===
+   Blue = jutsu affordable, red = ultimate affordable. Two SVGs sit 10% /
+   7% outside the card (room for displacement + glow), above the art and
+   below the slot badge / backup mini card:
+     .uc-volt-glow  static blurred halo (only its opacity breathes)
+     .uc-volt       crackling rim + running arcs; the JS ticker (~14 fps)
+                    re-seeds the noise and drives --ucv-o1/o2 (arc
+                    offsets) and --ucv-f (discharge flash).
+   Stroke widths are in art units (card art is 360×515) × --ucv-k. */
+#team-holder .uc-volt,
+#team-holder .uc-volt-glow {
+  --ucv-k: 1;
+  position: absolute;
+  left: -10%;
+  top: -6.99%;
+  width: 120%;
+  height: 113.98%;
+  z-index: 4;
+  overflow: visible;
+  pointer-events: none;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  color: var(--ucv-c);
+}
+#team-holder .is-jutsu { --ucv-c: #4fdcff; --ucv-hot: #e8fdff; }
+#team-holder .is-ult   { --ucv-c: #ff3a24; --ucv-hot: #fff0d8; }
+#team-holder .uc-volt {
+  will-change: opacity; /* own layer: its repaints don't touch the card */
+  animation: ucvIn 0.4s ease-out, ucvFlicker 3.1s linear 0.4s infinite;
+}
+#team-holder .uc-volt-glow {
+  z-index: 3;
+  will-change: opacity;
+  animation: ucvBreathe 1.7s ease-in-out infinite;
+}
+#team-holder .ucv-glow {
+  stroke: currentColor;
+  stroke-width: calc(22px * var(--ucv-k));
+}
+#team-holder .ucv-rim {
+  stroke: currentColor;
+  stroke-width: calc(4.5px * var(--ucv-k));
+}
+#team-holder .ucv-arc.c { stroke: currentColor; stroke-width: calc(11px * var(--ucv-k)); }
+#team-holder .ucv-arc.h { stroke: var(--ucv-hot); stroke-width: calc(4px * var(--ucv-k)); }
+#team-holder .ucv-arc.a1 {
+  stroke-dasharray: 110 190 45 655;
+  stroke-dashoffset: calc(var(--ucv-o1, 0) * 1px);
+}
+#team-holder .ucv-arc.a2 {
+  stroke-dasharray: 60 320 130 490;
+  stroke-dashoffset: calc(var(--ucv-o2, 400) * 1px);
+}
+#team-holder .ucv-flash {
+  stroke: var(--ucv-hot);
+  stroke-width: calc(6px * var(--ucv-k));
+  opacity: var(--ucv-f, 0);
+}
+/* hidden while the swap ghosts fly; downed cards never charge */
+#team-holder .unit-card.is-swapping > .uc-volt,
+#team-holder .unit-card.is-swapping > .uc-volt-glow,
+#team-holder .unit-card.is-dead > .uc-volt,
+#team-holder .unit-card.is-dead > .uc-volt-glow { display: none; }
+
+@keyframes ucvIn {
+  0%   { opacity: 0; transform: scale(1.06); }
+  35%  { opacity: 1; }
+  100% { opacity: 1; transform: none; }
+}
+@keyframes ucvBreathe {
+  0%, 100% { opacity: 0.4; }
+  50%      { opacity: 0.7; }
+}
+/* mostly steady, with short irregular dips and surges */
+@keyframes ucvFlicker {
+  0%, 100% { opacity: 0.9; }
+  17% { opacity: 0.9; } 18% { opacity: 0.45; } 19% { opacity: 1; } 21% { opacity: 0.85; }
+  52% { opacity: 0.9; } 53% { opacity: 1; } 54% { opacity: 0.55; } 55.5% { opacity: 1; } 57% { opacity: 0.9; }
+  81% { opacity: 0.8; } 82% { opacity: 1; } 84% { opacity: 0.9; }
+}
+
 /* === Acting unit === */
 #team-holder .unit-card.is-acting {
   transform: translateY(-7%);
@@ -580,9 +662,17 @@ html.is-mobile #team-holder .uc-mini { --m-w: calc(var(--uc-w) * 0.42); left: 77
 html.is-mobile #team-holder .ucm-tag { font-size: 7px; padding: 0 3px 0 1px; }
 html.is-mobile #team-holder .unit-name { font-size: clamp(7px, calc(var(--uc-w) * 0.095), 10px); }
 html.is-mobile #team-holder .uc-tag { font-size: 6.5px; }
+/* small cards: thicker strokes so the bolts stay visible */
+html.is-mobile #team-holder .uc-volt,
+html.is-mobile #team-holder .uc-volt-glow { --ucv-k: 1.6; }
 
 @media (prefers-reduced-motion: reduce) {
   #team-holder .unit-card,
   #team-holder .unit-card::before,
   #team-holder .uc-art { animation: none !important; transition: none; }
+  /* static glow + still (undisplaced-in-time) rim, no running arcs */
+  #team-holder .uc-volt,
+  #team-holder .uc-volt-glow { animation: none !important; }
+  #team-holder .ucv-arcs { display: none; }
+  #team-holder .uc-volt-glow { opacity: 0.55; }
 }

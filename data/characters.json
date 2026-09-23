@@ -41703,12 +41703,13 @@
     "type": "Jutsu",
     "byTier": {
      "5S": {
-      "chakraCost": 98,
+      "chakraCost": 9,
       "hits": 6,
       "shape": "Cone",
       "range": "Vast",
       "position": "Right",
-      "description": "6x attack toward all enemies in range, with a 70% chance of slip damage for 5 turn(s) and knocks them back."
+      "description": "6x attack toward all enemies in range, with a 70% chance of slip damage for 5 turn(s) and knocks them back.",
+      "chakraCostMax": 8
      }
     }
    }
@@ -41808,12 +41809,13 @@
     "type": "Jutsu",
     "byTier": {
      "6S": {
-      "chakraCost": 86,
+      "chakraCost": 8,
       "hits": 6,
       "shape": "Cone",
       "range": "Vast",
       "position": "Right",
-      "description": "7x attack toward all enemies in range, with a 80% chance of slip damage for 5 turn(s) and knocks them back."
+      "description": "7x attack toward all enemies in range, with a 80% chance of slip damage for 5 turn(s) and knocks them back.",
+      "chakraCostMax": 6
      }
     }
    }
@@ -43109,12 +43111,13 @@
     "type": "Jutsu",
     "byTier": {
      "5S": {
-      "chakraCost": 76,
+      "chakraCost": 7,
       "hits": 6,
       "shape": "H. Rectangle",
       "range": "Vast",
       "position": "Right",
-      "description": "5.3x attack toward 1 enemy(s) in range and gives you 1 perfect dodge(s) for 2 turn(s)."
+      "description": "5.3x attack toward 1 enemy(s) in range and gives you 1 perfect dodge(s) for 2 turn(s).",
+      "chakraCostMax": 6
      }
     }
    }
@@ -43214,12 +43217,13 @@
     "type": "Jutsu",
     "byTier": {
      "6S": {
-      "chakraCost": 65,
+      "chakraCost": 6,
       "hits": 6,
       "shape": "H. Rectangle",
       "range": "Vast",
       "position": "Right",
-      "description": "5.8x attack toward 1 enemy(s) in range and gives you 2 perfect dodge(s) for 2 turn(s)."
+      "description": "5.8x attack toward 1 enemy(s) in range and gives you 2 perfect dodge(s) for 2 turn(s).",
+      "chakraCostMax": 5
      }
     }
    }
@@ -43432,12 +43436,13 @@
     "type": "Jutsu",
     "byTier": {
      "6S": {
-      "chakraCost": 43,
+      "chakraCost": 4,
       "hits": 10,
       "shape": "Cross (x)",
       "range": "Vast",
       "position": "Center",
-      "description": "4x attack toward 1 enemy(s) in range and gives you 3 perfect dodge(s) for 2 turn(s)."
+      "description": "4x attack toward 1 enemy(s) in range and gives you 3 perfect dodge(s) for 2 turn(s).",
+      "chakraCostMax": 3
      }
     }
    }
@@ -45287,12 +45292,13 @@
     "type": "Jutsu",
     "byTier": {
      "5S": {
-      "chakraCost": 76,
+      "chakraCost": 7,
       "hits": 15,
       "shape": "Circle",
       "range": "Mid",
       "position": "Right",
-      "description": "Removes Barrier of 1 enemy(s) in range, 6x attack and knocks them back."
+      "description": "Removes Barrier of 1 enemy(s) in range, 6x attack and knocks them back.",
+      "chakraCostMax": 6
      }
     }
    }
@@ -45396,12 +45402,13 @@
     "type": "Jutsu",
     "byTier": {
      "6S": {
-      "chakraCost": 65,
+      "chakraCost": 6,
       "hits": 15,
       "shape": "Circle",
       "range": "Mid",
       "position": "Right",
-      "description": "Removes Barrier of 1 enemy(s) in range, 7x attack and knocks them back."
+      "description": "Removes Barrier of 1 enemy(s) in range, 7x attack and knocks them back.",
+      "chakraCostMax": 5
      }
     }
    }
@@ -45513,12 +45520,13 @@
     "type": "Jutsu",
     "byTier": {
      "5S": {
-      "chakraCost": 65,
+      "chakraCost": 6,
       "hits": 8,
       "shape": "Circle",
       "range": "Mid",
       "position": "Right",
-      "description": "4.5x attack toward all enemies in range, with a 70% chance of slip damage for 6 turn(s) and knocks the back."
+      "description": "4.5x attack toward all enemies in range, with a 70% chance of slip damage for 6 turn(s) and knocks the back.",
+      "chakraCostMax": 5
      }
     }
    }
@@ -45622,12 +45630,13 @@
     "type": "Jutsu",
     "byTier": {
      "6S": {
-      "chakraCost": 54,
+      "chakraCost": 5,
       "hits": 8,
       "shape": "Circle",
       "range": "Mid",
       "position": "Right",
-      "description": "5.5x attack toward all enemies in range, with a 80% chance of slip damage for 7 turn(s) and knocks the back."
+      "description": "5.5x attack toward all enemies in range, with a 80% chance of slip damage for 7 turn(s) and knocks the back.",
+      "chakraCostMax": 4
      }
     }
    }
@@ -53553,12 +53562,13 @@
     "type": "Jutsu",
     "byTier": {
      "5S": {
-      "chakraCost": 65,
+      "chakraCost": 6,
       "hits": 6,
       "shape": "H. Rectangle (Fat)",
       "range": "Mid",
       "position": "Right",
-      "description": "3.5x attack toward 1 enemy(s) in range."
+      "description": "3.5x attack toward 1 enemy(s) in range.",
+      "chakraCostMax": 5
      }
     }
    }
@@ -53658,12 +53668,13 @@
     "type": "Jutsu",
     "byTier": {
      "6S": {
-      "chakraCost": 54,
+      "chakraCost": 5,
       "hits": 6,
       "shape": "H. Rectangle (Fat)",
       "range": "Mid",
       "position": "Right",
-      "description": "4x attack toward 1 enemy(s) in range."
+      "description": "4x attack toward 1 enemy(s) in range.",
+      "chakraCostMax": 4
      }
     }
    }
@@ -55651,13 +55662,14 @@
     "type": "Jutsu",
     "byTier": {
      "6S": {
-      "chakraCost": 54,
+      "chakraCost": 5,
       "hits": 7,
       "shape": "H. Rectangle (Fat)",
       "range": "Long",
       "position": "Right",
       "description": "4.7x attack toward all enemies in range and knocks them back. 70% chance of jutsu sealing for 2 turn(s).",
-      "nwusDescription": "4.5x attack toward all enemies in range and knocks them back, with a 70% chance of jutsu sealing for 1 second(s)."
+      "nwusDescription": "4.5x attack toward all enemies in range and knocks them back, with a 70% chance of jutsu sealing for 1 second(s).",
+      "chakraCostMax": 4
      }
     }
    }
@@ -59339,12 +59351,13 @@
     "type": "Jutsu",
     "byTier": {
      "6S": {
-      "chakraCost": 54,
+      "chakraCost": 5,
       "hits": 5,
       "shape": "Circle",
       "range": "Mid",
       "position": "Right",
-      "description": "2.8x attack toward all enemies in range, 55% chance of slip damage and/or attack reduction for 2 turn(s) each."
+      "description": "2.8x attack toward all enemies in range, 55% chance of slip damage and/or attack reduction for 2 turn(s) each.",
+      "chakraCostMax": 4
      }
     }
    }
@@ -59785,13 +59798,14 @@
     "type": "Jutsu",
     "byTier": {
      "6S": {
-      "chakraCost": 54,
+      "chakraCost": 5,
       "hits": 6,
       "shape": "Circle",
       "range": "Mid",
       "position": "Right",
       "description": "6.5x attack toward 1 enemy(s) in range and knocks them back.",
-      "nwusDescription": "7x attack toward 1 enemy(s) in range, knocks them back, and reduces their Chakra Gauge by 1."
+      "nwusDescription": "7x attack toward 1 enemy(s) in range, knocks them back, and reduces their Chakra Gauge by 1.",
+      "chakraCostMax": 4
      }
     }
    }
@@ -62116,13 +62130,14 @@
     "type": "Jutsu",
     "byTier": {
      "5S": {
-      "chakraCost": 65,
+      "chakraCost": 6,
       "hits": 6,
       "shape": "Circle",
       "range": "Mid",
       "position": "Right",
       "description": "3.8x attack toward 1 enemy(s) in range and knocks them back.",
-      "nwusDescription": "3.8x attack toward 1 enemy(s) in range, knocks them back, and reduces their Chakra Gauge by 1."
+      "nwusDescription": "3.8x attack toward 1 enemy(s) in range, knocks them back, and reduces their Chakra Gauge by 1.",
+      "chakraCostMax": 5
      }
     }
    }
@@ -62222,13 +62237,14 @@
     "type": "Jutsu",
     "byTier": {
      "6S": {
-      "chakraCost": 54,
+      "chakraCost": 5,
       "hits": 6,
       "shape": "Circle",
       "range": "Mid",
       "position": "Right",
       "description": "4.4x attack toward 1 enemy(s) in range and knocks them back.",
-      "nwusDescription": "4.4x attack toward 1 enemy(s) in range, knocks them back, and reduces their Chakra Gauge by 1."
+      "nwusDescription": "4.4x attack toward 1 enemy(s) in range, knocks them back, and reduces their Chakra Gauge by 1.",
+      "chakraCostMax": 4
      }
     }
    }
@@ -62774,13 +62790,14 @@
     "type": "Jutsu",
     "byTier": {
      "5S": {
-      "chakraCost": 65,
+      "chakraCost": 6,
       "hits": 9,
       "shape": "Cone",
       "range": "Long",
       "position": "Right",
       "description": "5.4x attack toward all enemies in range and knocks them back. 30% chance of jutsu sealing for 2 turn(s).",
-      "nwusDescription": "4.2x attack toward all enemies in range and knocks them back, with a 30% chance of jutsu sealing for 2  second(s)."
+      "nwusDescription": "4.2x attack toward all enemies in range and knocks them back, with a 30% chance of jutsu sealing for 2  second(s).",
+      "chakraCostMax": 5
      }
     }
    }
@@ -62880,13 +62897,14 @@
     "type": "Jutsu",
     "byTier": {
      "6S": {
-      "chakraCost": 54,
+      "chakraCost": 5,
       "hits": 6,
       "shape": "Cone",
       "range": "Long",
       "position": "Right",
       "description": "5.4x attack toward all enemies in range and knocks them back. 40% chance of jutsu sealing for 2 turn(s).",
-      "nwusDescription": "4.6x attack toward all enemies in range and knocks them back, with a 40% chance of jutsu sealing for 2 second(s)."
+      "nwusDescription": "4.6x attack toward all enemies in range and knocks them back, with a 40% chance of jutsu sealing for 2 second(s).",
+      "chakraCostMax": 4
      }
     }
    }
@@ -63660,13 +63678,14 @@
     "type": "Jutsu",
     "byTier": {
      "5S": {
-      "chakraCost": 65,
+      "chakraCost": 6,
       "hits": 9,
       "shape": "H. Rectangle (Fat)",
       "range": "Short",
       "position": "Right",
       "description": "5.8x attack toward all enemies in range, knocking them back, gives you 40% damage reduction for 1 turn(s), and restores own Chakra Gauge by 1.",
-      "nwusDescription": "4.8x attack toward all enemies in range, knocking them back, gives you 20% damage reduction for 2 second(s), and restores own Chakra Gauge by 1."
+      "nwusDescription": "4.8x attack toward all enemies in range, knocking them back, gives you 20% damage reduction for 2 second(s), and restores own Chakra Gauge by 1.",
+      "chakraCostMax": 5
      }
     }
    }
@@ -63770,13 +63789,14 @@
     "type": "Jutsu",
     "byTier": {
      "6S": {
-      "chakraCost": 54,
+      "chakraCost": 5,
       "hits": 9,
       "shape": "H. Rectangle (Fat)",
       "range": "Short",
       "position": "Right",
       "description": "6.3x attack toward all enemies in range, knocking them back, gives you 40% damage reduction for 1 turn(s), and restores own Chakra Gauge by 1.",
-      "nwusDescription": "5.3x attack toward all enemies in range, knocking them back, gives you 20% damage reduction for 2 second(s), and restores own Chakra Gauge by 1."
+      "nwusDescription": "5.3x attack toward all enemies in range, knocking them back, gives you 20% damage reduction for 2 second(s), and restores own Chakra Gauge by 1.",
+      "chakraCostMax": 4
      }
     }
    }
@@ -67537,12 +67557,13 @@
     "type": "Jutsu",
     "byTier": {
      "6S": {
-      "chakraCost": 43,
+      "chakraCost": 4,
       "hits": 10,
       "shape": "Circle",
       "range": "Long",
       "position": "Center",
-      "description": "Ignores Substitution for 1 enemy(s) in range, 6x attack toward them, and 90% chance of Attack Reduction for 3 turn(s)."
+      "description": "Ignores Substitution for 1 enemy(s) in range, 6x attack toward them, and 90% chance of Attack Reduction for 3 turn(s).",
+      "chakraCostMax": 3
      }
     }
    }
@@ -67874,12 +67895,13 @@
     "type": "Jutsu",
     "byTier": {
      "5S": {
-      "chakraCost": 98,
+      "chakraCost": 9,
       "hits": 10,
       "shape": "Circle",
       "range": "Mid",
       "position": "Right",
-      "description": "5x attack toward all enemies in range, with a 60% chance of slip damage for 3 turn(s) and knocks them back."
+      "description": "5x attack toward all enemies in range, with a 60% chance of slip damage for 3 turn(s) and knocks them back.",
+      "chakraCostMax": 8
      }
     }
    }
@@ -67979,12 +68001,13 @@
     "type": "Jutsu",
     "byTier": {
      "6S": {
-      "chakraCost": 86,
+      "chakraCost": 8,
       "hits": 10,
       "shape": "Circle",
       "range": "Mid",
       "position": "Right",
-      "description": "5.5x attack toward all enemies in range, with a 70% chance of slip damage for 3 turn(s) and knocks them back."
+      "description": "5.5x attack toward all enemies in range, with a 70% chance of slip damage for 3 turn(s) and knocks them back.",
+      "chakraCostMax": 6
      }
     }
    }
@@ -68311,13 +68334,14 @@
     "type": "Jutsu",
     "byTier": {
      "6S": {
-      "chakraCost": 54,
+      "chakraCost": 5,
       "hits": 8,
       "shape": "Circle",
       "range": "Long",
       "position": "Center",
       "description": "Removes Barrier of all enemies in range, 5.2x attack and knocks them back.",
-      "nwusDescription": "Removes Barrier of all enemies in range, 4.5x attack and knocks them back."
+      "nwusDescription": "Removes Barrier of all enemies in range, 4.5x attack and knocks them back.",
+      "chakraCostMax": 4
      }
     }
    }
@@ -69199,13 +69223,14 @@
     "type": "Jutsu",
     "byTier": {
      "6S": {
-      "chakraCost": 54,
+      "chakraCost": 5,
       "hits": 6,
       "shape": "Cone",
       "range": "Long",
       "position": "Right",
       "description": "6.5x attack to all Body elemental enemies in range, 5.5x attack to all the other elements, and 70% chance of immobilization for 1 turn(s).",
-      "nwusDescription": "5.5x attack to all Body elemental enemies in range, 4.5x attack to all the other elements, and 60% chance of immobilization for 1 second(s)."
+      "nwusDescription": "5.5x attack to all Body elemental enemies in range, 4.5x attack to all the other elements, and 60% chance of immobilization for 1 second(s).",
+      "chakraCostMax": 4
      }
     }
    }
@@ -71540,13 +71565,14 @@
     "type": "Jutsu",
     "byTier": {
      "6S": {
-      "chakraCost": 54,
+      "chakraCost": 5,
       "hits": 10,
       "shape": "H. Rectangle (1/3)",
       "range": "Long",
       "position": "Center",
       "description": "4.8x attack toward 1 enemy(s) in range, 40% chance of jutsu sealing for 3 turn(s) and/or immobilization for 1 turn(s) each.",
-      "nwusDescription": "4.8x attack toward 1 enemy(s) in range, 40% chance of jutsu sealing for 2 second(s) and/or immobilization for 1 second(s) each."
+      "nwusDescription": "4.8x attack toward 1 enemy(s) in range, 40% chance of jutsu sealing for 2 second(s) and/or immobilization for 1 second(s) each.",
+      "chakraCostMax": 4
      }
     }
    }
@@ -76231,13 +76257,14 @@
     "type": "Jutsu",
     "byTier": {
      "6S": {
-      "chakraCost": 54,
+      "chakraCost": 5,
       "hits": 6,
       "shape": "H. Rectangle (Fat)",
       "range": "Short",
       "position": "Right",
       "description": "Removes Perfect Dodge for all enemies in range and ignores Substitution with 3x attack toward them, knocking them back.",
-      "nwusDescription": "Removes Perfect Dodge for all enemies in range and ignores Substitution with 4.8x attack toward them, knocking them back."
+      "nwusDescription": "Removes Perfect Dodge for all enemies in range and ignores Substitution with 4.8x attack toward them, knocking them back.",
+      "chakraCostMax": 4
      }
     }
    }
@@ -77448,12 +77475,13 @@
     "type": "Jutsu",
     "byTier": {
      "6S": {
-      "chakraCost": 65,
+      "chakraCost": 6,
       "hits": 9,
       "shape": "H. Rectangle (Fat)",
       "range": "Mid",
       "position": "Right",
-      "description": "Boosts your own attack by 25% for 6 turn(s). 3.2x attack to 1 enemy(s) within range and knocks them back."
+      "description": "Boosts your own attack by 25% for 6 turn(s). 3.2x attack to 1 enemy(s) within range and knocks them back.",
+      "chakraCostMax": 5
      }
     }
    }
@@ -83605,13 +83633,14 @@
     "type": "Jutsu",
     "byTier": {
      "6S": {
-      "chakraCost": 54,
+      "chakraCost": 5,
       "hits": 7,
       "shape": "Circle",
       "range": "Short",
       "position": "Right",
       "description": "3x attack toward all enemies in range.",
-      "nwusDescription": "Ignores damage reduction effects (Reduce Damage) for all enemies in range with 4.8x attack toward them."
+      "nwusDescription": "Ignores damage reduction effects (Reduce Damage) for all enemies in range with 4.8x attack toward them.",
+      "chakraCostMax": 4
      }
     }
    }
@@ -85595,13 +85624,14 @@
     "type": "Jutsu",
     "byTier": {
      "6S": {
-      "chakraCost": 65,
+      "chakraCost": 6,
       "hits": 7,
       "shape": "Circle",
       "range": "Long",
       "position": "Right",
       "description": "3.5x attack toward all enemies in range and knocks them back.",
-      "nwusDescription": "5.5x attack toward all enemies in range and knocks them back. Restores own Chakra Gauge by 2 and health by 12500."
+      "nwusDescription": "5.5x attack toward all enemies in range and knocks them back. Restores own Chakra Gauge by 2 and health by 12500.",
+      "chakraCostMax": 5
      }
     }
    }
@@ -86929,13 +86959,14 @@
     "type": "Jutsu",
     "byTier": {
      "5S": {
-      "chakraCost": 65,
+      "chakraCost": 6,
       "hits": 13,
       "shape": "Circle",
       "range": "Mid",
       "position": "Right",
       "description": "Ignores damage reduction effects (Reduce Damage) for all enemies in range with 4.5x attack toward them. 40% chance of health recovery sealing for 3 turn(s) and/or immobilization for 2 turn(s) each.",
-      "nwusDescription": "Ignores damage reduction effects (Reduce Damage) for all enemies in range with 3x attack toward them. 40% chance of health recovery sealing for 3 turn(s) and/or immobilization for 1 second(s) each."
+      "nwusDescription": "Ignores damage reduction effects (Reduce Damage) for all enemies in range with 3x attack toward them. 40% chance of health recovery sealing for 3 turn(s) and/or immobilization for 1 second(s) each.",
+      "chakraCostMax": 5
      }
     }
    }
@@ -87043,13 +87074,14 @@
     "type": "Jutsu",
     "byTier": {
      "6S": {
-      "chakraCost": 54,
+      "chakraCost": 5,
       "hits": 13,
       "shape": "Circle",
       "range": "Mid",
       "position": "Right",
       "description": "Ignores damage reduction effects (Reduce Damage) for all enemies in range with 5.5x attack toward them. 50% chance of health recovery sealing for 3 turn(s) and/or immobilization for 2 turn(s) each.",
-      "nwusDescription": "Ignores damage reduction effects (Reduce Damage) for all enemies in range with 4x attack toward them. 50% chance of health recovery sealing for 3 turn(s) and/or immobilization for 1 second(s) each."
+      "nwusDescription": "Ignores damage reduction effects (Reduce Damage) for all enemies in range with 4x attack toward them. 50% chance of health recovery sealing for 3 turn(s) and/or immobilization for 1 second(s) each.",
+      "chakraCostMax": 4
      }
     }
    }
@@ -88949,13 +88981,14 @@
     "type": "Jutsu",
     "byTier": {
      "6S": {
-      "chakraCost": 54,
+      "chakraCost": 5,
       "hits": 7,
       "shape": "Semicircle",
       "range": "Long",
       "position": "Right",
       "description": "2.5x attack toward all enemies in range and knocks them back.",
-      "nwusDescription": "4.2x attack toward all enemies in range and knocks them back. The enemy receives increased damage from their non-effective elemental affinities by 10% for 3 turn(s)."
+      "nwusDescription": "4.2x attack toward all enemies in range and knocks them back. The enemy receives increased damage from their non-effective elemental affinities by 10% for 3 turn(s).",
+      "chakraCostMax": 4
      }
     }
    }
@@ -89169,13 +89202,14 @@
     "type": "Jutsu",
     "byTier": {
      "6S": {
-      "chakraCost": 65,
+      "chakraCost": 6,
       "hits": 6,
       "shape": "Semicircle",
       "range": "Short",
       "position": "Right",
       "description": "Changes the element of all enemies in range to Skill for 3 turn(s) with 4.5x attack toward them.",
-      "nwusDescription": "Changes the element of all enemies in range to Skill for 2 turn(s) with 4x attack toward them."
+      "nwusDescription": "Changes the element of all enemies in range to Skill for 2 turn(s) with 4x attack toward them.",
+      "chakraCostMax": 5
      }
     }
    }
@@ -92389,13 +92423,14 @@
     "type": "Jutsu",
     "byTier": {
      "6S": {
-      "chakraCost": 54,
+      "chakraCost": 5,
       "hits": 5,
       "shape": "H. Rectangle (Fat)",
       "range": "Mid",
       "position": "Right",
       "description": "Ignores damage reduction effects (Reduce Damage) for all enemies in range with 4.3x attack toward them.",
-      "nwusDescription": "Ignores damage reduction effects (Reduce Damage) for all enemies in range with 4x attack toward them."
+      "nwusDescription": "Ignores damage reduction effects (Reduce Damage) for all enemies in range with 4x attack toward them.",
+      "chakraCostMax": 4
      }
     }
    }
@@ -93183,13 +93218,14 @@
     "type": "Jutsu",
     "byTier": {
      "6S": {
-      "chakraCost": 43,
+      "chakraCost": 4,
       "hits": 6,
       "shape": "H. Rectangle",
       "range": "Long",
       "position": "Right",
       "description": "6.6x attack toward 1 enemy(s) in range and knocks them back.",
-      "nwusDescription": "3.6x attack toward 1 enemy(s) in range and knocks them back."
+      "nwusDescription": "3.6x attack toward 1 enemy(s) in range and knocks them back.",
+      "chakraCostMax": 3
      }
     }
    }
@@ -99323,13 +99359,14 @@
     "type": "Jutsu",
     "byTier": {
      "6S": {
-      "chakraCost": 54,
+      "chakraCost": 5,
       "hits": 6,
       "shape": "H. Rectangle (Fat)",
       "range": "Short",
       "position": "Right",
       "description": "4.2x attack toward 1 enemy(s) in range.",
-      "nwusDescription": "6x attack toward 1 enemy(s) in range, with a 40% chance of speed reduction for 2 second(s), and reduces their Chakra Gauge by 1."
+      "nwusDescription": "6x attack toward 1 enemy(s) in range, with a 40% chance of speed reduction for 2 second(s), and reduces their Chakra Gauge by 1.",
+      "chakraCostMax": 4
      }
     }
    }
@@ -107585,13 +107622,14 @@
     "type": "Jutsu",
     "byTier": {
      "5S": {
-      "chakraCost": 86,
+      "chakraCost": 8,
       "hits": 5,
       "shape": "H. Rectangle",
       "range": "Long",
       "position": "Right",
       "description": "3x attack toward all enemies in range and gives you a 10% Damage Boost Against Bravery for 3 turn(s).",
-      "nwusDescription": "3.3x attack toward all enemies in range and gives you a 10% Damage Boost Against Bravery for 3 turn(s)."
+      "nwusDescription": "3.3x attack toward all enemies in range and gives you a 10% Damage Boost Against Bravery for 3 turn(s).",
+      "chakraCostMax": 6
      }
     }
    }
@@ -107691,13 +107729,14 @@
     "type": "Jutsu",
     "byTier": {
      "6S": {
-      "chakraCost": 75,
+      "chakraCost": 7,
       "hits": 5,
       "shape": "H. Rectangle",
       "range": "Long",
       "position": "Right",
       "description": "4x attack toward all enemies in range and gives you a 10% Damage Boost Against Bravery for 3 turn(s).",
-      "nwusDescription": "4.2x attack toward all enemies in range and gives you a 10% Damage Boost Against Bravery for 3 turn(s)."
+      "nwusDescription": "4.2x attack toward all enemies in range and gives you a 10% Damage Boost Against Bravery for 3 turn(s).",
+      "chakraCostMax": 5
      }
     }
    }
@@ -112386,12 +112425,13 @@
     "type": "Jutsu",
     "byTier": {
      "7S": {
-      "chakraCost": 54,
+      "chakraCost": 5,
       "hits": 13,
       "shape": "H. Rectangle (Fat)",
       "range": "Mid",
       "position": "Right",
-      "description": "7x attack toward 1 enemy(s) in range and increases your chance to dodge by 30% for 2 turn(s)."
+      "description": "7x attack toward 1 enemy(s) in range and increases your chance to dodge by 30% for 2 turn(s).",
+      "chakraCostMax": 4
      }
     }
    }
@@ -113521,7 +113561,8 @@
       "range": "—",
       "position": "Whole Map",
       "description": "4.5x attack to all enemies (6x attack if they are Attack Weakened).",
-      "nwusDescription": "3.5x attack to all enemies (5x attack if they are Attack Weakened)."
+      "nwusDescription": "3.5x attack to all enemies (5x attack if they are Attack Weakened).",
+      "chakraCostMax": 3
      }
     }
    },
@@ -116152,13 +116193,14 @@
     "type": "Jutsu",
     "byTier": {
      "6S": {
-      "chakraCost": 43,
+      "chakraCost": 4,
       "hits": 4,
       "shape": "Circle",
       "range": "Mid",
       "position": "Right",
       "description": "3.3x attack toward all enemies in range and knocks them back. 25% chance of health recovery sealing for 3 turn(s) and/or attack weakened for 2 turn(s) each.",
-      "nwusDescription": "3x attack toward all enemies in range and knocks them back. 25% chance of health recovery sealing for 3 turn(s) and/or attack weakened for 2 turn(s) each."
+      "nwusDescription": "3x attack toward all enemies in range and knocks them back. 25% chance of health recovery sealing for 3 turn(s) and/or attack weakened for 2 turn(s) each.",
+      "chakraCostMax": 3
      }
     }
    }
@@ -117610,13 +117652,14 @@
     "type": "Jutsu",
     "byTier": {
      "5S": {
-      "chakraCost": 54,
+      "chakraCost": 5,
       "hits": 6,
       "shape": "—",
       "range": "Whole Map",
       "position": "Right",
       "description": "4.5x attack toward all enemies in range, 75% chance of attack weakened for 6 turn(s), and 65% chance of immobilization for 4 turn(s).",
-      "nwusDescription": "4x attack toward all enemies in range, 75% chance of attack weakened for 6 turn(s), and 65% chance of immobilization for 1 second(s)."
+      "nwusDescription": "4x attack toward all enemies in range, 75% chance of attack weakened for 6 turn(s), and 65% chance of immobilization for 1 second(s).",
+      "chakraCostMax": 4
      }
     }
    }
@@ -117720,13 +117763,14 @@
     "type": "Jutsu",
     "byTier": {
      "6S": {
-      "chakraCost": 43,
+      "chakraCost": 4,
       "hits": 6,
       "shape": "—",
       "range": "Whole Map",
       "position": "Right",
       "description": "5.5x attack toward all enemies in range, 85% chance of attack weakened for 6 turn(s), and 75% chance of immobilization for 4 turn(s).",
-      "nwusDescription": "5x attack toward all enemies in range, 85% chance of attack weakened for 6 turn(s), and 75% chance of immobilization for 1 second(s)."
+      "nwusDescription": "5x attack toward all enemies in range, 85% chance of attack weakened for 6 turn(s), and 75% chance of immobilization for 1 second(s).",
+      "chakraCostMax": 3
      }
     }
    }

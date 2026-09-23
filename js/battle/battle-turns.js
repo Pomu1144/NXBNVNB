@@ -410,9 +410,13 @@
       }
 
       // Get skill costs
-      const jCost = Number(skills.jutsu?.data?.chakraCost ?? 4);
-      const uCost = Number(skills.ultimate?.data?.chakraCost ?? 8);
-      const sCost = Number(skills.secret?.data?.chakraCost ?? 12);
+      // Effective costs (chakraCostMax when maxed, passive reduction applied)
+      const costOf = (entry, fb) => window.BattleCombat?.getSkillChakraCost
+        ? window.BattleCombat.getSkillChakraCost(unit, entry, fb)
+        : Number(entry?.data?.chakraCost ?? fb);
+      const jCost = costOf(skills.jutsu, 4);
+      const uCost = costOf(skills.ultimate, 8);
+      const sCost = costOf(skills.secret, 12);
 
       // Check unlock status
       const jutsuUnlocked = window.BattleCombat?.isJutsuUnlocked(unit) ?? true;
@@ -472,6 +476,31 @@
       this.renderEquippedJutsuIcons(unit, core);
 
       core.dom.actionPanel.classList.remove("hidden");
+      this.keepUnitClearOfPanel(unit, core);
+    },
+
+    /**
+     * The action panel floats over the left of the battlefield, where player
+     * units stand (knockback clamps them to x ≥ 10%). A unit under the panel
+     * cannot be tapped or dragged — its jutsu / ultimate looked unusable.
+     * When the acting unit is covered, step it out to the panel's right.
+     */
+    keepUnitClearOfPanel(unit, core) {
+      const panel = core.dom.actionPanel;
+      const scene = core.dom.scene;
+      if (!panel || !scene || !unit?.pos) return;
+      const unitEl = scene.querySelector(`.battle-unit[data-unit-id="${unit.id}"]`);
+      if (!unitEl) return;
+      const pr = panel.getBoundingClientRect();
+      const ur = unitEl.getBoundingClientRect();
+      const sr = scene.getBoundingClientRect();
+      if (!pr.width || !sr.width) return;
+      const overlaps = ur.left < pr.right && ur.right > pr.left && ur.top < pr.bottom && ur.bottom > pr.top;
+      if (!overlaps) return;
+      const x = ((pr.right - sr.left + ur.width / 2 + 12) / sr.width) * 100;
+      if (!(x > 0 && x < 60)) return; // panel spans most of the field: leave it
+      unit.pos = { x, y: unit.pos.y };
+      core.units?.updateUnitPosition(unit, core);
     },
 
     /**
@@ -586,7 +615,7 @@
       if (!this.currentUnit) return;
 
       const skills = window.BattleCombat?.getUnitSkills(this.currentUnit);
-      const cost = Number(skills?.jutsu?.data?.chakraCost ?? 4);
+      const cost = window.BattleCombat?.getSkillChakraCost(this.currentUnit, skills?.jutsu, 4) ?? 4;
 
       // Check if jutsu exists
       if (!skills?.jutsu) {
@@ -616,6 +645,7 @@
       // Check chakra
       if (this.currentUnit.chakra < cost) {
         console.warn("[Turns] Not enough chakra for jutsu");
+        window.BattleNarrator?.narrate(`Not enough chakra! Need ${cost}, have ${this.currentUnit.chakra}.`, core);
         return;
       }
 
@@ -660,9 +690,10 @@
       }
 
       // Check chakra
-      const cost = Number(skills.ultimate.data?.chakraCost ?? 8);
+      const cost = window.BattleCombat.getSkillChakraCost(this.currentUnit, skills.ultimate, 8);
       if (this.currentUnit.chakra < cost) {
         console.warn("[Turns] Not enough chakra for ultimate");
+        window.BattleNarrator?.narrate(`Not enough chakra! Need ${cost}, have ${this.currentUnit.chakra}.`, core);
         return;
       }
 
@@ -699,7 +730,7 @@
       }
 
       // Check chakra
-      const cost = Number(skills.secret.data?.chakraCost ?? 12);
+      const cost = window.BattleCombat.getSkillChakraCost(this.currentUnit, skills.secret, 12);
       if (this.currentUnit.chakra < cost) {
         console.warn("[Turns] Not enough chakra for secret technique");
         if (window.BattleNarrator) {

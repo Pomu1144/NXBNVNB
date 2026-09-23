@@ -6,16 +6,16 @@
    * BattleChakra Module
    * Handles multi-click chakra activation for Jutsu/Ultimate/Secret modes
    *
-   * System:
-   * - 1 click + 4 chakra  = Blue mode (Jutsu ready)
-   * - 2 clicks + 8 chakra = Red mode (Ultimate ready)
-   * - 3 clicks + 10 chakra = Purple mode (Secret Jutsu ready)
+   * System (costs are per unit: BattleCombat.getSkillChakraCost):
+   * - 1 click  + jutsu cost    = Blue mode (Jutsu ready)
+   * - 2 clicks + ultimate cost = Red mode (Ultimate ready)
+   * - 3 clicks + secret cost   = Purple mode (Secret Jutsu ready)
    *
    * Features:
    * - Click counter with visual feedback
    * - 400ms click window for combos
    * - Color-changing chakra bar
-   * - Auto-reset on timeout
+   * - Armed mode persists until an enemy is targeted or the turn ends
    */
   const BattleChakra = {
     // ===== State =====
@@ -23,6 +23,26 @@
     clickTimeout: null,
     lastClickedUnit: null,
     CLICK_WINDOW: 400, // Milliseconds for multi-click combo
+
+    /**
+     * Effective jutsu / ultimate / secret costs + unlock state for a unit
+     * (BattleCombat.getSkillChakraCost: chakraCostMax when maxed).
+     */
+    getModeCosts(unit) {
+      const C = window.BattleCombat;
+      const skills = C?.getUnitSkills?.(unit) || {};
+      const cost = (entry, fb) => entry
+        ? (C?.getSkillChakraCost ? C.getSkillChakraCost(unit, entry, fb) : Number(entry.data?.chakraCost ?? fb))
+        : Infinity;
+      return {
+        jutsu: cost(skills.jutsu, 4),
+        ultimate: cost(skills.ultimate, 8),
+        secret: cost(skills.secret, 12),
+        jutsuOk: !!skills.jutsu && (C?.isJutsuUnlocked?.(unit) ?? true) && !((unit.jutsuCooldown || 0) > 0),
+        ultOk: !!skills.ultimate && (C?.isUltimateUnlocked?.(unit) ?? true) && !((unit.ultimateCooldown || 0) > 0),
+        secretOk: !!skills.secret && (C?.isSecretUnlocked?.(unit) ?? false)
+      };
+    },
 
     /**
      * Handle unit click for chakra activation
@@ -42,23 +62,31 @@
       // Clear previous timeout
       if (this.clickTimeout) clearTimeout(this.clickTimeout);
 
-      // Check chakra requirements for each mode
-      if (this.clickCount === 1 && unit.chakra >= 4) {
+      // Check chakra requirements for each mode (effective per-unit costs)
+      const costs = this.getModeCosts(unit);
+      if (this.clickCount === 1 && costs.jutsuOk && unit.chakra >= costs.jutsu) {
         unit.chakraMode = "JUTSU";
         core.queuedAction = "jutsu";
         console.log(`[Chakra] 🔵 ${unit.name} - Blue mode (Jutsu ready, ${unit.chakra}/10 chakra)`);
-      } else if (this.clickCount === 2 && unit.chakra >= 8) {
+      } else if (this.clickCount === 2 && costs.ultOk && unit.chakra >= costs.ultimate) {
         unit.chakraMode = "ULTIMATE";
         core.queuedAction = "ultimate";
         console.log(`[Chakra] 🔴 ${unit.name} - Red mode (Ultimate ready, ${unit.chakra}/10 chakra)`);
-      } else if (this.clickCount === 3 && unit.chakra >= 10) {
+      } else if (this.clickCount === 3 && costs.secretOk && unit.chakra >= costs.secret) {
         unit.chakraMode = "SECRET";
         core.queuedAction = "secret";
         console.log(`[Chakra] 🟣 ${unit.name} - Secret mode (Secret Jutsu ready, ${unit.chakra}/10 chakra)`);
       } else {
         // Insufficient chakra for requested mode
-        const required = this.clickCount === 1 ? 4 : this.clickCount === 2 ? 8 : 10;
-        console.log(`[Chakra] ⚠️ ${unit.name} - Insufficient chakra (have ${unit.chakra}, need ${required})`);
+        const kind = this.clickCount === 1 ? 'jutsu' : this.clickCount === 2 ? 'ultimate' : 'secret';
+        const required = costs[kind];
+        console.log(`[Chakra] ⚠️ ${unit.name} - ${kind} unavailable (have ${unit.chakra}, need ${required})`);
+        if (this.clickCount <= 3 && Number.isFinite(required)) {
+          const ok = kind === 'jutsu' ? costs.jutsuOk : kind === 'ultimate' ? costs.ultOk : costs.secretOk;
+          window.BattleNarrator?.narrate?.(ok
+            ? `Not enough chakra for ${kind} (need ${required}, have ${unit.chakra})`
+            : `${kind[0].toUpperCase() + kind.slice(1)} unavailable`, core);
+        }
         this.resetChakraMode(unit, core);
         return;
       }
@@ -67,10 +95,14 @@
       this.updateUnitChakraDisplay(unit, core);
       this.highlightEnemies(core);
 
-      // Set timeout to auto-reset if no enemy clicked
+      // The click window only groups taps into a 1×/2×/3× combo. The
+      // selected mode stays armed until the player targets an enemy (tap or
+      // drag) or the turn ends — it used to be cleared after 400 ms, so a
+      // jutsu/ultimate selected by tapping the unit was lost before the
+      // player could reach the enemy.
       this.clickTimeout = setTimeout(() => {
-        console.log(`[Chakra] ⏱️ ${unit.name} - Click window expired, resetting mode`);
-        this.resetChakraMode(unit, core);
+        this.clickCount = 0;
+        this.lastClickedUnit = null;
       }, this.CLICK_WINDOW);
     },
 
@@ -94,8 +126,14 @@
         this.executeAttack(targetUnit, core, currentUnit);
       } else if (action === "jutsu") {
         this.executeJutsu(targetUnit, core, currentUnit);
-      } else if (action === "ultimate" || action === "secret") {
+      } else if (action === "ultimate") {
         this.executeUltimate(core, currentUnit);
+      } else if (action === "secret") {
+        if (window.BattleCombat?.performSecret(currentUnit, core)) {
+          if (core.turns?.currentUnit === currentUnit) core.turns.endTurn(core);
+        } else {
+          this.resetChakraMode(currentUnit, core);
+        }
       }
     },
 
@@ -180,9 +218,9 @@
      * @returns {string} CSS class name
      */
     getChakraClass(unit) {
-      if (unit.chakra >= 10 && unit.chakraMode === "SECRET") return "secret";
-      if (unit.chakra >= 8 && unit.chakraMode === "ULTIMATE") return "red";
-      if (unit.chakra >= 4 && unit.chakraMode === "JUTSU") return "blue";
+      if (unit.chakraMode === "SECRET") return "secret";
+      if (unit.chakraMode === "ULTIMATE") return "red";
+      if (unit.chakraMode === "JUTSU") return "blue";
       return "neutral";
     },
 
@@ -263,23 +301,24 @@
         core.dom.actionChakra?.parentNode?.appendChild(chakraStatusEl);
       }
 
-      let statusText = "Click unit for Jutsu";
+      const costs = this.getModeCosts(unit);
+      let statusText = costs.jutsuOk ? `Jutsu needs ${costs.jutsu} chakra` : "Click unit for Jutsu";
       let statusClass = "neutral";
 
-      // Determine available modes based on chakra
-      if (unit.chakra >= 10) {
+      // Determine available modes based on effective costs
+      if (costs.secretOk && unit.chakra >= costs.secret) {
         statusText = "3× clicks for Secret";
         statusClass = "secret";
-      } else if (unit.chakra >= 8) {
+      } else if (costs.ultOk && unit.chakra >= costs.ultimate) {
         statusText = "2× clicks for Ultimate";
         statusClass = "red";
-      } else if (unit.chakra >= 4) {
+      } else if (costs.jutsuOk && unit.chakra >= costs.jutsu) {
         statusText = "1× click for Jutsu";
         statusClass = "blue";
       }
 
       // Show current active mode
-      if (unit.chakraMode !== "NONE") {
+      if (unit.chakraMode && unit.chakraMode !== "NONE") {
         statusText = `${unit.chakraMode} MODE ACTIVE`;
         statusClass = unit.chakraMode.toLowerCase();
       }
@@ -330,19 +369,19 @@
           name: "Jutsu",
           color: "#00BFFF",
           icon: "",
-          available: unit.chakra >= 4
+          available: unit.chakra >= this.getModeCosts(unit).jutsu
         },
         ULTIMATE: {
           name: "Ultimate",
           color: "#FF4D4D",
           icon: "",
-          available: unit.chakra >= 8
+          available: unit.chakra >= this.getModeCosts(unit).ultimate
         },
         SECRET: {
           name: "Secret Jutsu",
           color: "#C000FF",
           icon: "",
-          available: unit.chakra >= 10
+          available: unit.chakra >= this.getModeCosts(unit).secret
         }
       };
 
@@ -455,10 +494,11 @@
      */
     getAvailableActions(unit) {
       const actions = ["attack"];
+      const costs = this.getModeCosts(unit);
 
-      if (unit.chakra >= 4) actions.push("jutsu");
-      if (unit.chakra >= 8) actions.push("ultimate");
-      if (unit.chakra >= 10) actions.push("secret");
+      if (costs.jutsuOk && unit.chakra >= costs.jutsu) actions.push("jutsu");
+      if (costs.ultOk && unit.chakra >= costs.ultimate) actions.push("ultimate");
+      if (costs.secretOk && unit.chakra >= costs.secret) actions.push("secret");
 
       return actions;
     }
