@@ -23,12 +23,15 @@ The JSON written next to the sheet adds:
   heightScale  – render height relative to the idle sheet, so the character
                  stays the same size even though effects make the frame taller
   anchorX      – horizontal position of the character's body in the frame (0..1)
+Effects that the source art cuts off at the canvas border are feathered out
+(see feather_clipped_edges; disable with "featherEdges": false in the spec).
 All key poses must share one canvas size and framing (feet near the bottom).
 """
 import json
 import os
 import sys
 
+import numpy as np
 from PIL import Image
 
 sys.path.insert(0, os.path.dirname(__file__))
@@ -37,6 +40,58 @@ from build_spritesheet import key_green  # noqa: E402
 
 def alpha_box(im, thresh=16):
     return im.getchannel("A").point(lambda v: 255 if v > thresh else 0).getbbox()
+
+
+def feather_clipped_edges(im, ramp_frac=0.15, min_rows=12, seed=0):
+    """Fade out effects that the source art cut off at the canvas border.
+
+    Generated key poses sometimes have the jutsu (e.g. a Rasengan) running off
+    the canvas, which leaves a hard straight edge in the sheet. For each canvas
+    side that opaque pixels touch, alpha is ramped to 0 over ~ramp_frac of the
+    canvas, only along the stretch of the edge that is actually cut (so a
+    foot or cape near, but not on, the border keeps full opacity), with the
+    ramp width wobbling so the fade doesn't read as another straight line."""
+    a = np.asarray(im).astype(np.float32)
+    alpha = a[..., 3] / 255.0
+    h, w = alpha.shape
+    rng = np.random.default_rng(seed)
+    base = ramp_frac * max(w, h)
+
+    def wobble(n):
+        # smooth 1-D noise in 0.65..1.35 along an edge of length n
+        pts = rng.uniform(0.65, 1.35, 9)
+        return np.interp(np.arange(n), np.linspace(0, n - 1, 9), pts)
+
+    def coverage(edge):
+        # 1 where the edge is cut, easing to 0 over ~base px beyond the cut
+        cut = (edge > 0.25).astype(np.float32)
+        k = int(base) | 1
+        ker = np.hanning(k + 2)[1:-1]
+        ker /= ker.max()
+        spread = np.convolve(cut, ker, mode="same")
+        return np.clip(spread, 0.0, 1.0)
+
+    def ramp(dist, width):
+        t = np.clip(dist / width, 0.0, 1.0)
+        return t * t * (3 - 2 * t)  # smoothstep
+
+    ys, xs = np.mgrid[0:h, 0:w].astype(np.float32)
+    sides = {
+        "left": (alpha[:, 0], lambda c: 1 - c[:, None] * (1 - ramp(xs, base * wobble(h)[:, None]))),
+        "right": (alpha[:, -1], lambda c: 1 - c[:, None] * (1 - ramp(w - 1 - xs, base * wobble(h)[:, None]))),
+        "top": (alpha[0, :], lambda c: 1 - c[None, :] * (1 - ramp(ys, base * wobble(w)[None, :]))),
+        "bottom": (alpha[-1, :], lambda c: 1 - c[None, :] * (1 - ramp(h - 1 - ys, base * wobble(w)[None, :]))),
+    }
+    mult = np.ones_like(alpha)
+    touched = []
+    for name, (edge, fn) in sides.items():
+        if (edge > 0.25).sum() >= min_rows:
+            mult *= fn(coverage(edge))
+            touched.append(name)
+    if not touched:
+        return im, touched
+    a[..., 3] = alpha * mult * 255.0
+    return Image.fromarray(a.clip(0, 255).astype(np.uint8), "RGBA"), touched
 
 
 def main():
@@ -50,6 +105,11 @@ def main():
     for k, im in keys.items():
         if im.size != size:
             keys[k] = im.resize(size, Image.LANCZOS)
+    if spec.get("featherEdges", True):
+        for i, k in enumerate(list(keys)):
+            keys[k], touched = feather_clipped_edges(keys[k], seed=i + 1)
+            if touched:
+                print(f"  {k}: feathered clipped edge(s) {', '.join(touched)}")
 
     # One crop box for every key → no jitter, lunges keep their travel.
     boxes = [alpha_box(im) for im in keys.values()]

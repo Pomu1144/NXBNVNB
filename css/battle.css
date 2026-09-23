@@ -287,6 +287,10 @@ html, body.page-battle {
   object-fit: cover;
   object-position: center 20%;
   display: block;
+  /* Portraits are full Blazing cards (frame, element orb, star badge).
+     Zoom onto the face so the ring doesn't show frame strips and badges. */
+  transform: scale(1.55);
+  transform-origin: 56% 32%;
 }
 
 /* player position badge */

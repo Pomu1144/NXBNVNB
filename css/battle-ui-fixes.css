@@ -493,11 +493,11 @@
                 character about its feet (the ground line stays at
                 centre + --sprite-box / 2). */
 .battle-unit {
-  --sprite-h: 88px;
+  --sprite-h: 101px; /* +15%: 88px read too small next to stage props */
   --sprite-box: 120px;
 }
 html.is-mobile .battle-unit {
-  --sprite-h: 66px;
+  --sprite-h: 76px;
   --sprite-box: 92px;
 }
 .battle-unit .unit-sprite.unit-sprite--anim {

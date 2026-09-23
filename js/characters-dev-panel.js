@@ -125,6 +125,10 @@
         <div class="chardev-note">Maxes evolution, awakening, dupes &amp; limit break (Lv 150).</div>
         <button class="chardev-btn" id="chardev-add-minato">Add Minato (animated sprite)</button>
         <div class="chardev-note">Adds Minato Namikaze 6★ (minato_2101), the unit with the idle/run battle spritesheet.</div>
+        <button class="chardev-btn" id="chardev-add-naruto">Add Naruto (animated sprite)</button>
+        <div class="chardev-note">Adds Naruto Uzumaki 7★ (naruto_2115, Tailed Beast Planetary Rasen Shuriken) with battle spritesheets.</div>
+        <button class="chardev-btn" id="chardev-add-kakashi">Add Kakashi (animated sprite)</button>
+        <div class="chardev-note">Adds Kakashi Hatake 6★ (kakashi_705, Lightning Blade) with battle spritesheets.</div>
       </div>`;
     document.body.appendChild(panel);
 
@@ -145,6 +149,8 @@
     });
 
     panel.querySelector("#chardev-add-minato").addEventListener("click", addSpriteMinato);
+    panel.querySelector("#chardev-add-naruto").addEventListener("click", addSpriteNaruto);
+    panel.querySelector("#chardev-add-kakashi").addEventListener("click", addSpriteKakashi);
 
     panel.querySelector("#chardev-maxall").addEventListener("click", () => {
       const n = maxAllOwned();
@@ -153,17 +159,25 @@
     });
   }
 
-  // Add a maxed copy of the animated-sprite test unit (Minato Namikaze, minato_2101).
-  function addSpriteMinato() {
+  // Add a maxed copy of a unit that has animated battle spritesheets.
+  function addSpriteUnit(charId, tier, label) {
     const IC = global.InventoryChar;
     if (!IC) { toast("Inventory not ready"); return null; }
-    const inst = IC.addCopy("minato_2101", 1, "6S");
+    const inst = IC.addCopy(charId, 1, tier);
     // Max it so the jutsu (Lv 20) and ultimate (Lv 50) are unlocked in battle.
     maxOutInstance(inst.uid);
     refreshGrid();
-    toast("Added Minato Namikaze (animated sprite, maxed) ✓");
+    toast(`Added ${label} (animated sprite, maxed) ✓`);
     return IC.getByUid(inst.uid) || inst;
   }
+
+  // Minato Namikaze 6★ (minato_2101).
+  function addSpriteMinato() { return addSpriteUnit("minato_2101", "6S", "Minato Namikaze"); }
+  // Naruto Uzumaki 7★ "Full-Out Battle" (naruto_2115).
+  function addSpriteNaruto() { return addSpriteUnit("naruto_2115", "7S", "Naruto Uzumaki"); }
+  // Kakashi Hatake 6★ "Unshakeable Calm" (kakashi_705; maxing awakens it to its
+  // 6SB form kakashi_706, which shares the same spritesheets).
+  function addSpriteKakashi() { return addSpriteUnit("kakashi_705", "6S", "Kakashi Hatake"); }
 
   async function init() {
     await loadChars();
@@ -179,5 +193,5 @@
     init();
   }
 
-  global.CharDevTools = { maxOutInstance, maxAllOwned, addSpriteMinato };
+  global.CharDevTools = { maxOutInstance, maxAllOwned, addSpriteMinato, addSpriteNaruto, addSpriteKakashi };
 })(window);
