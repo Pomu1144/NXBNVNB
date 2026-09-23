@@ -502,6 +502,30 @@ body.page-teams {
 }
 .sort-opt.active::before { content: "✦ "; color: var(--gold); }
 
+/* ---------- Star component (shared: .bz-stars / .bz-star) ----------
+   Same block as css/characters.css — gold JJK star asset sized by
+   --bz-star-size on the container; the row never wraps. */
+.bz-stars {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: var(--bz-star-gap, 1px);
+  line-height: 0;
+  vertical-align: middle;
+  pointer-events: none;
+}
+.bz-star {
+  display: block;
+  flex: 0 0 auto;
+  width: var(--bz-star-size, 14px);
+  height: calc(var(--bz-star-size, 14px) * 0.97);
+  object-fit: contain;
+  filter: drop-shadow(0 1px 1.5px rgba(0,0,0,.85));
+  user-select: none;
+  -webkit-user-drag: none;
+}
+.bz-stars[data-count="8"], .bz-stars[data-count="9"], .bz-stars[data-count="10"] { --bz-star-gap: -1px; }
+
 /* Character Grid */
 #team-char-grid {
   display: grid;
@@ -532,7 +556,7 @@ body.page-teams {
   pointer-events: none;
 }
 
-.team-char-card img {
+.team-char-card > img {
   width: 100%;
   height: 140px;
   object-fit: cover;
@@ -552,33 +576,70 @@ body.page-teams {
   text-overflow: ellipsis;
 }
 
-.team-char-card-level {
-  color: var(--gold);
-  font-size: 10px;
+.team-char-card-stars {
+  --bz-star-size: 13px;
+  display: flex;
+  align-items: center;
+  height: 15px;
+  margin-top: 3px;
 }
 
-.team-char-card-level .star {
-  color: var(--gold);
-  font-size: 10px;
+.team-char-card-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+  margin-top: 3px;
+  font-family: var(--jjk-font, serif);
+  line-height: 1;
 }
-
-/* Rarity accent — colored top edge so rarity grouping reads at a glance */
-.team-char-card[data-rarity]::after {
+.tcc-lv {
+  font-size: 10px;
+  color: var(--jjk-muted, #93a3a3);
+  white-space: nowrap;
+}
+.tcc-lv b { color: var(--jjk-text, #ece6d6); font-weight: 700; }
+.tcc-power {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 2px 7px 2px 5px;
+  font-size: 10px;
+  font-weight: 800;
+  color: var(--jjk-gold-hi, #f1d98a);
+  background: rgba(5,14,17,0.9);
+  border: 1px solid rgba(201,162,78,0.45);
+  clip-path: polygon(4px 0, 100% 0, calc(100% - 4px) 100%, 0 100%);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.tcc-power::before {           /* small chakra diamond instead of a letter */
   content: "";
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 4px;
-  z-index: 2;
-  background: var(--rarity-color, rgba(255,215,120,0.4));
-  box-shadow: 0 0 8px var(--rarity-color, transparent);
+  width: 6px; height: 6px;
+  transform: rotate(45deg);
+  background: linear-gradient(135deg, var(--jjk-gold-hi, #f1d98a), var(--jjk-gold-lo, #6e5320));
+  flex: 0 0 auto;
 }
-.team-char-card[data-rarity="7"], .team-char-card[data-rarity="8"],
-.team-char-card[data-rarity="9"], .team-char-card[data-rarity="10"] { --rarity-color: #ff5a4d; }
-.team-char-card[data-rarity="6"] { --rarity-color: #f4cf5e; }
-.team-char-card[data-rarity="5"] { --rarity-color: #b98cff; }
-.team-char-card[data-rarity="4"] { --rarity-color: #5ea8ff; }
-.team-char-card[data-rarity="3"] { --rarity-color: #6bcf7f; }
-.team-char-card[data-rarity="2"], .team-char-card[data-rarity="1"] { --rarity-color: #9aa0aa; }
+
+/* Tier tint — the frame colour climbs with star tier so strong units read
+   at a glance without a letter grade (bronze → teal → violet → gold → crimson). */
+.team-char-card { --tier-tint: rgba(201,162,78,0.35); }
+.team-char-card[data-stars="1"],
+.team-char-card[data-stars="2"],
+.team-char-card[data-stars="3"] { --tier-tint: #7a6a4f; }
+.team-char-card[data-stars="4"] { --tier-tint: #4f9aa3; }
+.team-char-card[data-stars="5"] { --tier-tint: #9486c9; }
+.team-char-card[data-stars="6"] { --tier-tint: #c9a24e; }
+.team-char-card[data-stars="7"] { --tier-tint: #d0543f; }
+.team-char-card[data-stars] {
+  border-color: color-mix(in srgb, var(--tier-tint) 70%, transparent);
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.55), inset 0 -18px 24px -18px color-mix(in srgb, var(--tier-tint) 55%, transparent);
+}
+.team-char-card[data-stars] .team-char-card-info {
+  border-top: 1px solid color-mix(in srgb, var(--tier-tint) 75%, transparent);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--tier-tint) 16%, rgba(5,12,14,0.94)), rgba(5,10,12,0.96));
+}
+.team-char-card[data-stars]:hover { border-color: var(--tier-tint); }
 
 /* ---------- 7-Star Lightning Effect (team roster cards) ---------- */
 .team-char-card.is-7star {
@@ -604,7 +665,6 @@ body.page-teams {
   opacity: 1;
 }
 /* Keep badges & footer text crisp above the lightning */
-.team-char-card.is-7star .team-char-grade { z-index: 4; }
 .team-char-card.is-7star .team-char-card-info { position: relative; z-index: 3; }
 
 /* PERF: the pulsing box-shadow only runs while the card is on-screen
@@ -618,23 +678,6 @@ body.page-teams {
 @media (prefers-reduced-motion: reduce) {
   .team-char-card.is-7star { animation: none; }
   .team-char-card.is-7star .seven-star-fx { display: none; }
-}
-
-/* SS–D grade badge (top-right) */
-.team-char-grade {
-  position: absolute;
-  top: 6px; right: 6px;
-  z-index: 3;
-  min-width: 20px;
-  padding: 1px 5px;
-  border-radius: 5px;
-  font-family: "Cinzel", serif;
-  font-weight: 800;
-  font-size: 10px;
-  text-align: center;
-  color: #12100a;
-  background: var(--rarity-color, #d9b362);
-  box-shadow: 0 1px 4px rgba(0,0,0,0.6);
 }
 
 /* Preview Modal */
@@ -707,14 +750,12 @@ body.page-teams {
 }
 
 #preview-stars {
-  text-align: center;
+  --bz-star-size: 22px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 24px;
   margin: 10px 0;
-  color: var(--gold);
-  font-size: 16px;
-}
-
-#preview-stars .star {
-  color: var(--gold);
 }
 
 .preview-stats {

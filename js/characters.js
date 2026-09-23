@@ -181,7 +181,13 @@
   window.resolveTierArt = resolveTierArt;
 
   /* ---------- Stars HTML ---------- */
-  const renderStars = (n) => new Array(Math.max(0, Math.min(10, n))).fill(0).map(() => "<img src='assets/ui/NormalStar.png' class='star' alt='star'>").join("");
+  // Shared star component (.bz-stars / .bz-star — styled in characters.css and
+  // teams.css). Size comes from the container's --bz-star-size.
+  const renderStars = (n) => {
+    const count = Math.max(0, Math.min(10, Number(n) || 0));
+    const star = "<img src='assets/ui/jjk/star_gold.webp' class='bz-star' alt='' draggable='false'>";
+    return `<span class="bz-stars" data-count="${count}" role="img" aria-label="${count} star${count === 1 ? "" : "s"}">${star.repeat(count)}</span>`;
+  };
   window.renderStars = renderStars;
   window.starsFromTier = starsFromTier;
 
@@ -2028,6 +2034,9 @@
   const CARD_MODAL = document.getElementById('card-inventory-modal');
   const CARD_GRID = document.getElementById('card-inventory-grid');
   const CARD_CANCEL = document.getElementById('card-inventory-cancel');
+  const CARD_EQUIP = document.getElementById('card-inventory-equip');
+  const CARD_SUB = document.getElementById('card-inventory-sub');
+  const CARD_DETAIL = document.getElementById('card-inventory-detail');
   const REPLACEMENT_MODAL = document.getElementById('jutsu-replacement-modal');
   const REPLACEMENT_OPTIONS = document.getElementById('replacement-options');
   const REPLACEMENT_CANCEL = document.getElementById('replacement-cancel');
@@ -2042,6 +2051,7 @@
   let pendingCardToEquip = null;
   let currentSlotType = null; // Track which type of slot was clicked ('jutsu', 'ultimate', or 'equipment')
   let currentSlotNumber = null; // Track equipment slot number (1-5)
+  let selectedCardId = null;    // Card highlighted in the picker (equipped on "Equip")
 
   // Load jutsu cards JSON — prefers CardSystem (which already loaded cards.json),
   // falls back to direct fetch if CardSystem isn't ready yet.
@@ -2538,6 +2548,7 @@
         });
 
     // Gate by gacha ownership: players only equip jutsu cards they have pulled.
+    const ownedTotal = window.JutsuInventory ? window.JutsuInventory.count() : jutsuCardsData.length;
     if (window.JutsuInventory) {
       eligibleCards = eligibleCards.filter(card => window.JutsuInventory.has(card.id));
     }
@@ -2546,40 +2557,94 @@
 
     const resolvePath = window.CardSystem ? window.CardSystem.resolveCardPath : (p => p);
     const getCardLv  = window.CardSystem ? window.CardSystem.getCardLevel  : () => 1;
+    const starsHTML  = window.renderStars || (n => '★'.repeat(n));
+    const esc = (v) => String(v ?? '').replace(/[&<>"']/g, ch => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[ch]));
+    const charName = (document.getElementById('nameplate-name')?.textContent || '').trim();
 
-    // Render jutsu cards (only eligible ones)
-    CARD_GRID.innerHTML = eligibleCards.map(card => {
+    const slotLabel = currentSlotType === 'ultimate' ? 'Ultimate slot'
+      : currentSlotType === 'jutsu' && currentSlotNumber ? `Jutsu slot ${String(currentSlotNumber).replace(/\D/g, '') || ''}`.trim()
+      : currentSlotNumber ? `Equip slot ${currentSlotNumber}` : 'Jutsu slot';
+    if (CARD_SUB) {
+      CARD_SUB.textContent = eligibleCards.length
+        ? `${slotLabel} · ${eligibleCards.length} usable card${eligibleCards.length === 1 ? '' : 's'}`
+        : slotLabel;
+    }
+
+    selectedCardId = null;
+    const isEmpty = !eligibleCards.length;
+    CARD_GRID.classList.toggle('is-empty', isEmpty);
+    if (CARD_EQUIP) CARD_EQUIP.hidden = isEmpty;   // nothing to equip — Cancel only
+    updateSelectionUI();
+
+    // Empty state — either nothing pulled yet, or nothing this ninja can use.
+    if (!eligibleCards.length) {
+      const none = ownedTotal === 0;
+      CARD_GRID.innerHTML = `
+        <div class="ci-empty">
+          <img class="ci-empty-icon" src="assets/ui/jjk/star_gold.webp" alt="" aria-hidden="true">
+          <div class="ci-empty-title">${none ? 'No jutsu cards yet' : 'No compatible jutsu cards'}</div>
+          <p class="ci-empty-text">${none
+            ? 'Jutsu cards are earned from the <b>Jutsu Cards</b> tab on the Summon screen.'
+            : `You own ${ownedTotal} jutsu card${ownedTotal === 1 ? '' : 's'}, but none can be used by ${esc(charName) || 'this ninja'}. Cards are tied to specific shinobi — summon more from the <b>Jutsu Cards</b> tab.`}</p>
+          <a class="jjk-btn ci-empty-link" href="summon.html">Go to Summon</a>
+        </div>`;
+      CARD_MODAL.setAttribute('aria-hidden', 'false');
+      return;
+    }
+
+    const rarityNum = (card) => Math.max(1, Math.min(10, parseInt(card.rarity, 10) || 1));
+    const equippedHere = new Set(Object.values(getEquippedJutsu(uid) || {}).filter(Boolean));
+    const sorted = eligibleCards.slice().sort((x, y) =>
+      (equippedHere.has(x.id) - equippedHere.has(y.id)) ||
+      (rarityNum(y) - rarityNum(x)) ||
+      String(x.name).localeCompare(String(y.name)));
+
+    // Render owned, eligible jutsu cards as tiles
+    CARD_GRID.innerHTML = sorted.map(card => {
       const iconSrc = resolvePath(card.icon);
       // Only treat as having distinct full art when fullArt exists and differs
-      // from the icon; otherwise the card would render the icon twice
-      // (big image + corner badge both = the icon).
+      // from the icon; otherwise the card would render the icon twice.
       const hasFullArt = !!card.fullArt && card.fullArt !== card.icon;
       const mainSrc = hasFullArt ? resolvePath(card.fullArt) : iconSrc;
       const jutsuName = card.jutsuName || card.name;
       const curLv = getCardLv(card.id);
-      const maxLv = window.CardSystem ? window.CardSystem.getCardMaxLevel(card) : 70;
-      // If full art 404s at runtime, fall back to the icon AND hide the badge
-      // so we still never show the icon twice.
-      const onErr = "this.onerror=null;this.src='" + iconSrc + "';var w=this.parentNode.querySelector('.card-inv-icon-wrap');if(w)w.style.display='none';";
+      const maxLv = window.CardSystem ? window.CardSystem.getCardMaxLevel(card) : (parseInt(String(card.stats?.cardLevel || '').split('/').pop(), 10) || 70);
+      const r = rarityNum(card);
+      const isEq = equippedHere.has(card.id);
+      // If full art 404s at runtime, fall back to the icon AND hide the badge.
+      const onErr = "this.onerror=null;this.src='" + iconSrc + "';var w=this.parentNode.querySelector('.ci-icon');if(w)w.style.display='none';";
       return `
-        <div class="card-inventory-item" data-card-id="${card.id}">
-          <img src="${mainSrc}" alt="${card.name}"${hasFullArt ? ` onerror="${onErr}"` : ''}>
-          ${hasFullArt ? `<div class="card-inv-icon-wrap">
-            <img class="card-inv-jutsu-icon" src="${iconSrc}" alt="${jutsuName}" onerror="this.style.display='none';">
-          </div>` : ``}
-          <div class="card-inv-label">
-            <div class="card-inv-jutsu-name">${jutsuName}</div>
-            <div class="card-inv-level">Lv ${curLv} / ${maxLv}</div>
-          </div>
-        </div>
-      `;
+        <button type="button" class="ci-card r${r}${isEq ? ' is-equipped' : ''}" data-card-id="${esc(card.id)}"
+                role="option" aria-selected="false"${isEq ? ' aria-disabled="true"' : ''}
+                title="${esc(card.name)} — ${esc(jutsuName)}">
+          <span class="ci-art">
+            <img src="${esc(mainSrc)}" alt="" loading="lazy" decoding="async"${hasFullArt ? ` onerror="${onErr}"` : ''}>
+            ${hasFullArt ? `<span class="ci-icon"><img src="${esc(iconSrc)}" alt="" onerror="this.parentNode.style.display='none';"></span>` : ''}
+            ${isEq ? '<span class="ci-tag">Equipped</span>' : ''}
+          </span>
+          <span class="ci-body">
+            <span class="ci-name">${esc(card.name)}</span>
+            <span class="ci-stars">${starsHTML(r)}</span>
+            <span class="ci-meta">
+              <span class="ci-type">${esc(card.cardType || 'Jutsu')}</span>
+              <span class="ci-lv">Lv ${curLv}/${maxLv}</span>
+            </span>
+          </span>
+        </button>`;
     }).join('');
 
-    // Add click handlers to card items
-    CARD_GRID.querySelectorAll('.card-inventory-item').forEach(item => {
+    // Single tap selects; double tap / Enter equips straight away.
+    CARD_GRID.querySelectorAll('.ci-card').forEach(item => {
+      const id = item.getAttribute('data-card-id');
       item.addEventListener('click', () => {
-        const cardId = item.getAttribute('data-card-id');
-        handleCardSelection(cardId);
+        if (item.classList.contains('is-equipped')) return;
+        selectedCardId = id;
+        updateSelectionUI();
+      });
+      item.addEventListener('dblclick', () => {
+        if (item.classList.contains('is-equipped')) return;
+        selectedCardId = id;
+        confirmSelection();
       });
     });
 
@@ -2587,9 +2652,38 @@
     CARD_MODAL.setAttribute('aria-hidden', 'false');
   }
 
+  // Reflect the highlighted card in the grid, the detail strip and the Equip button.
+  function updateSelectionUI() {
+    CARD_GRID.querySelectorAll('.ci-card').forEach(el => {
+      const on = el.getAttribute('data-card-id') === selectedCardId;
+      el.classList.toggle('is-selected', on);
+      el.setAttribute('aria-selected', on ? 'true' : 'false');
+    });
+    if (CARD_EQUIP) CARD_EQUIP.disabled = !selectedCardId;
+    if (!CARD_DETAIL) return;
+    const card = selectedCardId && jutsuCardsData.find(c => c.id === selectedCardId);
+    if (!card) {
+      CARD_DETAIL.innerHTML = CARD_GRID.classList.contains('is-empty') ? '' : '<span class="ci-hint">Tap a card to select it, then Equip.</span>';
+      return;
+    }
+    const st = card.stats || {};
+    const bits = [['HP', st.hp], ['ATK', st.atk], ['DEF', st.def]]
+      .filter(([, v]) => v != null && v !== '')
+      .map(([k, v]) => `<span class="ci-stat"><i>${k}</i>${v}</span>`).join('');
+    const nm = String(card.jutsuName || card.name).replace(/[&<>"]/g, ch => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' }[ch]));
+    CARD_DETAIL.innerHTML = `<span class="ci-detail-name">${nm}</span><span class="ci-detail-stats">${bits}</span>`;
+  }
+
+  function confirmSelection() {
+    if (!selectedCardId) return;
+    const id = selectedCardId;
+    handleCardSelection(id);
+  }
+
   // Close card inventory modal
   function closeCardInventory() {
     CARD_MODAL.setAttribute('aria-hidden', 'true');
+    selectedCardId = null;
     currentCharacterUid = null;
     currentSlotType = null;
     currentSlotNumber = null;
@@ -2663,6 +2757,10 @@
 
   // Wire up cancel buttons
   CARD_CANCEL.addEventListener('click', closeCardInventory);
+  if (CARD_EQUIP) CARD_EQUIP.addEventListener('click', confirmSelection);
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && CARD_MODAL.getAttribute('aria-hidden') === 'false') closeCardInventory();
+  });
   if (REPLACEMENT_CANCEL) {
     REPLACEMENT_CANCEL.addEventListener('click', closeReplacementPopup);
   }

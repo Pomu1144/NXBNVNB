@@ -40,40 +40,40 @@
 
   <!-- Login Overlay -->
   <div id="login-overlay" class="login-overlay" role="dialog" aria-modal="true" aria-labelledby="login-title" data-redirect="village.html">
+    <div class="login-art" aria-hidden="true"></div>
+
     <div class="login-panel">
-      <div class="login-hero">
-        <div class="login-hero__glow"></div>
-        <div class="login-hero__content">
-          <p class="login-eyebrow">Village Access Gate</p>
-          <h2 id="login-title" class="login-heading">Sign in to enter the plaza</h2>
-          <p class="login-copy">Log in once to unlock the HUD. You will stay signed in when you return from other screens.</p>
-          <div class="login-actions">
-            <button type="button" class="login-primary" data-login-fast>Enter the Village</button>
-            <p class="login-hint">Already signed in? Tap the button above to dismiss this screen immediately.</p>
-          </div>
-          <ul class="login-perks">
-            <li>Sync ninja rank and currencies</li>
-            <li>Keep your username visible on the HUD</li>
-            <li>Skip this step next time on this device</li>
-          </ul>
-        </div>
-      </div>
+      <header class="login-brand">
+        <p class="login-brand__kicker">Naruto</p>
+        <h1 id="login-title" class="login-brand__word">Blazing</h1>
+        <span class="login-brand__rule" aria-hidden="true"></span>
+      </header>
 
-      <div class="login-form" data-login-form>
+      <div class="login-form jjk-panel" data-login-form>
+        <h2 class="login-plate jjk-title-plate">Sign In</h2>
         <form>
-          <label class="login-label" for="login-username">Username</label>
-          <input id="login-username" data-login-username type="text" name="username" maxlength="20" placeholder="Enter your ninja name" autocomplete="username" required />
+          <label class="login-field">
+            <span class="login-label">Ninja Name</span>
+            <input id="login-username" data-login-username type="text" name="username" maxlength="20" placeholder="Enter your ninja name" autocomplete="username" required />
+          </label>
 
-          <label class="login-label" for="login-password">Password</label>
-          <input id="login-password" data-login-password type="password" name="password" maxlength="32" placeholder="••••••••" autocomplete="current-password" required />
+          <label class="login-field">
+            <span class="login-label">Password</span>
+            <input id="login-password" data-login-password type="password" name="password" maxlength="32" placeholder="••••••••" autocomplete="current-password" required />
+          </label>
 
-          <button type="submit" class="login-primary">Log In</button>
-          <button type="button" class="login-create" data-login-create>Create Account</button>
-          <button type="button" class="login-secondary" data-login-guest>Continue as guest</button>
+          <button type="submit" class="login-primary jjk-btn">Log In</button>
+
+          <div class="login-alt">
+            <button type="button" class="login-create jjk-tab" data-login-create>Create Account</button>
+            <button type="button" class="login-secondary" data-login-guest>Continue as guest</button>
+          </div>
 
           <div class="login-feedback" data-login-feedback aria-live="polite"></div>
-          <p class="login-note">Your session and new accounts are remembered locally so returning to the Village HUD won't prompt you again.</p>
+          <p class="login-note">Progress is saved on this device.</p>
         </form>
+        <!-- Legacy quick-enter hook (handled in js/login-overlay.js); hidden, guest covers it -->
+        <button type="button" data-login-fast hidden>Enter the Village</button>
       </div>
     </div>
   </div>
