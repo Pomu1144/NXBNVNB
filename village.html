@@ -27,11 +27,12 @@
   <link rel="stylesheet" href="css/background.css?v=2" />
   <link rel="stylesheet" href="css/top-bar.css?v=2" />
   <link rel="stylesheet" href="css/character-vignette.css?v=2" />
+  <link rel="stylesheet" href="css/home-character.css" />
   <link rel="stylesheet" href="css/dashboard.css?v=2" />
   <link rel="stylesheet" href="css/summon-banner-carousel.css?v=2" />
   <link rel="stylesheet" href="css/ui-layout.css?v=2" />
   <link rel="stylesheet" href="css/settings-modal.css?v=2" />
-  <link rel="stylesheet" href="css/modal-system.css?v=1" />
+  <link rel="stylesheet" href="css/modal-system.css?v=2" />
   <link rel="stylesheet" href="css/fonts.css" />
   <link rel="stylesheet" id="present-box-css" href="css/present-box.css?v=2" />
   <link rel="stylesheet" href="css/achievements.css?v=2" />
@@ -231,16 +232,17 @@
   <script src="js/touch-manager.js"></script>
 
   <!-- Game Scripts -->
-  <script src="js/modal-manager.js?v=1"></script>
+  <script src="js/modal-manager.js?v=2"></script>
   <script src="js/user-profile.js?v=2"></script>
   <script src="js/music-player.js?v=2"></script>
   <script src="js/character_inv.js?v=2"></script>
   <script src="js/resources.js?v=2"></script>
+  <script src="js/reward-format.js?v=1"></script>
   <script src="js/daily-missions.js?v=2"></script>
   <script src="js/ninja-rank.js"></script>
   <script src="js/exp-rewards.js"></script>
   <script src="js/top-bar-enhanced.js"></script>
-  <script src="js/character-vignette.js?v=2"></script>
+  <script src="js/character-vignette.js?v=3"></script>
   <script src="js/settings-modal.js?v=2"></script>
   <script src="js/announcement-slideshow.js?v=2"></script>
   <script src="js/dashboard-mailbox.js?v=2"></script>
@@ -317,10 +319,17 @@
       if (typeof window.DailyMissions !== "undefined") {
         const loginResult = await window.DailyMissions.processLogin();
         if (loginResult.ok && !loginResult.alreadyClaimed) {
-          const rewardText = Object.entries(loginResult.reward)
-            .map(([mat, amt]) => `${mat}: ${amt}`)
-            .join(", ");
-          if (window.ModalManager) { window.ModalManager.showInfo(`Login Bonus Day ${loginResult.loginDay}!\n\nRewards:\n${rewardText}`); }
+          const reward = loginResult.reward || {};
+          const items = window.RewardFormat ? window.RewardFormat.items(reward) : [];
+          const streak = loginResult.loginStreak > 1 ? `${loginResult.loginStreak}-day streak — come back tomorrow for more.` : 'Come back tomorrow for more rewards.';
+          if (items.length && window.DashboardMailbox && typeof window.DashboardMailbox.showRewardReveal === 'function') {
+            window.DashboardMailbox.showRewardReveal(items, { title: `Login Bonus · Day ${loginResult.loginDay}`, note: streak });
+          } else if (window.ModalManager) {
+            const rewardText = Object.entries(reward)
+              .map(([mat, amt]) => `${window.RewardFormat ? window.RewardFormat.name(mat) : mat} ×${Number(amt).toLocaleString()}`)
+              .join('\n');
+            window.ModalManager.showInfo(`Day ${loginResult.loginDay} rewards:\n${rewardText}`, null, { title: 'Login Bonus' });
+          }
         }
       }
 

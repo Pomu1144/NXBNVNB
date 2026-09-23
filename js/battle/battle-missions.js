@@ -273,6 +273,7 @@
       try {
         if (window.MissionProgress && missionId && difficulty) {
           const result = await window.MissionProgress.completeMission(missionId, difficulty);
+          bm._missionResult = result || null; // shown on the Mission Rewards screen
           console.log("[Missions] Completion recorded:", missionId, difficulty, result?.rewards);
         }
       } catch (err) {
@@ -283,11 +284,12 @@
         if (window.ExpRewards) {
           const stats = this.calculateBattleStats(bm);
           const expByDifficulty = { C: "MISSION_EASY", B: "MISSION_NORMAL", A: "MISSION_HARD", S: "MISSION_EXTREME" };
-          window.ExpRewards.giveReward(expByDifficulty[difficulty] || "MISSION_NORMAL");
-          window.ExpRewards.onBattleWin({
+          const expMission = window.ExpRewards.giveReward(expByDifficulty[difficulty] || "MISSION_NORMAL");
+          const expWin = window.ExpRewards.onBattleWin({
             unitsLost: stats.totalUnits - stats.survivingUnits,
             damageTaken: stats.maxTeamHP - stats.teamHP
           });
+          bm._expResults = [expMission, expWin].filter(Boolean);
         }
       } catch (err) {
         console.error("[Missions] Failed to award EXP:", err);
@@ -614,7 +616,7 @@
       if (!bm.dom.battleResult) return;
 
       // Set title with proper class
-      bm.dom.resultTitle.textContent = isVictory ? "VICTORY" : "DEFEAT";
+      bm.dom.resultTitle.textContent = isVictory ? "Victory" : "Defeat";
       bm.dom.resultTitle.className = isVictory ? "result-title victory" : "result-title defeat";
 
       // Create professional stats HTML

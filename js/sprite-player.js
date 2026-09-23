@@ -3,6 +3,7 @@
  *   const p = SpritePlayer.create(containerEl, 'assets/sprites/naruto_666', { height: 180 });
  *   await p.play('idle');                 // loops
  *   await p.play('attack', { then: 'idle' }); // plays once, then returns to idle
+ *   p.setState('run');                    // no-op if 'run' is already playing
  *
  * Each animation lives at <base>/<name>.webp + <name>.json, as produced by
  * tools/sprites/build_spritesheet.py. Frames are shown by moving the
@@ -38,18 +39,43 @@
 
     let timer = null;
     let token = 0;
+    let current = null; // name of the animation currently playing/requested
 
     function stop() {
       if (timer) cancelAnimationFrame(timer);
       timer = null;
     }
 
-    async function play(name, { then = null, speed = 1 } = {}) {
-      const my = ++token;
-      const anim = await loadAnim(base, name);
-      if (my !== token) return; // superseded by a newer play() call
+    /* Keep the body on the unit's spot: sheets whose character isn't centred
+     * in the frame carry anchorX (0..1). The flex slot centres the element, so
+     * shift it by the anchor's distance from the centre, mirrored when the
+     * sprite is flipped. Uses the CSS `translate` property so it composes with
+     * the facing/lean `transform` set by the battle code. */
+    function applyAnchor(anim, w) {
+      const ax = Number(anim.anchorX);
+      if (!Number.isFinite(ax) || Math.abs(ax - 0.5) < 1e-3) { el.style.translate = ''; return; }
+      const flipped = /scaleX\(\s*-1/.test(el.style.transform || '');
+      const dx = (ax - 0.5) * w * (flipped ? 1 : -1);
+      el.style.translate = `${dx.toFixed(1)}px 0`;
+    }
 
-      const h = opts.height || anim.frameHeight;
+    /**
+     * play(name, { then, speed, onFrame(i), onHit(hitIndex, frameIndex), onEnd() })
+     *  - onFrame fires once for every frame index reached, in order.
+     *  - onHit fires once for each frame listed in the sheet's `hits`, at the
+     *    moment that frame is shown. If a slow tick skips frames, the skipped
+     *    frames' callbacks are fired (in order) before the current one.
+     *  - onEnd fires once when a non-looping sheet finishes (not when it is
+     *    superseded by another play()).
+     */
+    async function play(name, { then = null, speed = 1, onFrame = null, onHit = null, onEnd = null } = {}) {
+      const my = ++token;
+      current = name;
+      const anim = await loadAnim(base, name);
+      if (my !== token) return; // superseded by a newer play()
+
+      const hs = Number(anim.heightScale) > 0 ? Number(anim.heightScale) : 1;
+      const h = Math.round((opts.height ? opts.height * hs : anim.frameHeight));
       const s = h / anim.frameHeight;
       const w = Math.round(anim.frameWidth * s);
       const rows = Math.ceil(anim.frames / anim.columns);
@@ -57,40 +83,81 @@
       el.style.height = `${h}px`;
       el.style.backgroundImage = `url("${anim.url}")`;
       el.style.backgroundSize = `${anim.columns * w}px ${rows * h}px`;
+      el.dataset.anim = name;
+      applyAnchor(anim, w);
 
       stop();
       const frameMs = 1000 / (anim.fps * speed);
       const start = performance.now();
       const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+      const hitIdx = new Map((Array.isArray(anim.hits) ? anim.hits : []).map((f, k) => [f, k]));
+      let reached = -1; // last frame index whose callbacks have fired
+      let lastShown = -1;
+      const safe = (fn, ...a) => { try { fn(...a); } catch (e) { console.error('[SpritePlayer] callback error', e); } };
+      const fireUpTo = upTo => {
+        while (reached < upTo) {
+          reached++;
+          if (onFrame) safe(onFrame, reached);
+          if (onHit && hitIdx.has(reached)) safe(onHit, hitIdx.get(reached), reached);
+        }
+      };
+      const show = i => {
+        if (i === lastShown) return;
+        lastShown = i;
+        const col = i % anim.columns;
+        const row = Math.floor(i / anim.columns);
+        el.style.backgroundPosition = `${-col * w}px ${-row * h}px`;
+        applyAnchor(anim, w); // facing may have changed since the last frame
+      };
+      const oneShot = !anim.loop || !!then;
 
       return new Promise(resolve => {
         const tick = now => {
           if (my !== token) return resolve();
           let i = Math.floor((now - start) / frameMs);
           if (i >= anim.frames) {
-            if (anim.loop && !then) i %= anim.frames;
+            if (!oneShot) i %= anim.frames;
             else {
+              fireUpTo(anim.frames - 1);
               stop();
+              if (onEnd) safe(onEnd);
               resolve();
-              if (then) play(then);
+              if (then && my === token) play(then);
               return;
             }
           }
-          if (reduceMotion) i = 0;
-          const col = i % anim.columns;
-          const row = Math.floor(i / anim.columns);
-          el.style.backgroundPosition = `${-col * w}px ${-row * h}px`;
+          show(reduceMotion ? 0 : i);
+          if (oneShot) fireUpTo(i);
+          else if (onFrame && i !== reached) { reached = i; safe(onFrame, i); }
           timer = requestAnimationFrame(tick);
         };
+        show(0);
+        if (oneShot) fireUpTo(0);
         timer = requestAnimationFrame(tick);
       });
     }
 
-    return { el, play, stop, destroy() { token++; stop(); el.remove(); } };
+    /** Metadata (frames, fps, hits, ...) of an animation, loading it if needed. */
+    function meta(name) { return loadAnim(base, name); }
+
+    /* Switch to a looping animation only if it isn't already the current one,
+     * so callers can request a state every frame (e.g. on pointermove)
+     * without restarting the sheet from frame 0. */
+    function setState(name, opts) {
+      if (current === name) return Promise.resolve();
+      return play(name, opts);
+    }
+
+    return {
+      el, play, setState, stop, meta,
+      get current() { return current; },
+      destroy() { token++; current = null; stop(); el.remove(); },
+    };
   }
 
   // Characters that have animated battle spritesheets, keyed by character id.
-  // Each folder holds idle.webp/.json and run.webp/.json.
+  // Each folder holds idle.webp/.json and run.webp/.json, plus optional
+  // one-shot attack sheets (jutsu / ultimate) whose JSON lists hit frames.
   const REGISTRY = {
     minato_2101: 'assets/sprites/minato_2101',
   };

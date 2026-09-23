@@ -444,12 +444,14 @@
 
         // Watchdog: if the combat callback never fires (mirrors the AI
         // turn's safety net), release the turn instead of soft-locking
-        setTimeout(() => {
+        const watchdog = () => {
           if (core?.turns && core.turns.currentUnit === attacker) {
+            if (attacker._actionBusy) { setTimeout(watchdog, 1000); return; } // sprite skill still playing
             console.warn(`[InputManager] Watchdog releasing stuck turn for ${attacker.name}`);
             core.turns.endTurn(core);
           }
-        }, 6000);
+        };
+        setTimeout(watchdog, 6000);
       }
     },
 

@@ -475,6 +475,12 @@
         window.BattleEquippedUltimate.onNinjutsuUse(attacker.id);
       }
 
+      // Animated sprite units play their own jutsu sheet, one damage number per hit.
+      if (this.usesSpriteSkill(attacker)) {
+        this.performSpriteSkill(attacker, 'jutsu', j, [target], core, onDone);
+        return true;
+      }
+
       // Get multiplier from skill data (extract from description like "2.2x attack...")
       let mult = 2.0;
       const m = String(j.data.description || "").match(/([\d.]+)x/i);
@@ -670,6 +676,12 @@
       } else {
         if (attacker.chakra < cost) return false;
         attacker.chakra -= cost;
+      }
+
+      // Animated sprite units play their own ultimate sheet, one damage number per hit.
+      if (this.usesSpriteSkill(attacker)) {
+        this.performSpriteSkill(attacker, 'ultimate', u, targets, core, onDone);
+        return true;
       }
 
       // Get multiplier (extract from description like "1.5x attack...")
@@ -986,6 +998,12 @@
         window.BattleEquippedUltimate.onNinjutsuUse(attacker.id);
       }
 
+      // Animated sprite units play their own jutsu sheet, one damage number per hit.
+      if (this.usesSpriteSkill(attacker)) {
+        this.performSpriteSkill(attacker, 'jutsu', j, targets, core, onDone);
+        return true;
+      }
+
       // Get multiplier (extract from description like "2.0x attack...")
       let mult = 2.0;
       const m = String(j.data.description || "").match(/([\d.]+)x/i);
@@ -1038,6 +1056,296 @@
       }, targets.length * 200 + 800);
 
       return true;
+    },
+
+    /* ===== Spritesheet Skills (units with animated battle sprites) ===== */
+
+    /**
+     * Units with an animated field sprite (SpritePlayer registry) play their
+     * own 'jutsu' / 'ultimate' sheet instead of the generic skill overlay.
+     * The sheet's JSON lists the frames where a strike lands ("hits"); each
+     * one deals a slice of the skill's damage with its own damage number.
+     */
+    usesSpriteSkill(unit) {
+      return !!(unit?._sprite && unit.charId && window.SpritePlayer?.has(unit.charId));
+    },
+
+    /** Living, on-field opponents of a unit. */
+    getOpponents(unit, core) {
+      const team = unit.isPlayer ? core.enemyTeam : core.activeTeam;
+      return (team || []).filter(u => u && !u.isBench && u.stats?.hp > 0);
+    },
+
+    /** Base multiplier of a skill (structured effects first, then description). */
+    getSkillMultiplier(data, fallback) {
+      const fx = Number(data?.effects?.multiplier);
+      if (fx > 0) return fx;
+      const m = String(data?.description || "").match(/([\d.]+)x/i);
+      return (m && Number(m[1])) || fallback;
+    },
+
+    /** True if the unit currently has an attack-weakening debuff. */
+    isAttackWeakened(unit) {
+      return !!unit?.statusEffects?.some(e =>
+        (e.type === 'attack_weakened' || e.type === 'atk_reduction' || e.tag === 'atkDown' || e.kind === 'ATTACK_DEBUFF') &&
+        (typeof e.turnsRemaining !== 'number' || e.turnsRemaining > 0)
+      );
+    },
+
+    /** Per-target multiplier, e.g. "4.5x attack (6x attack if they are Attack Weakened)". */
+    getTargetMultiplier(data, target, base) {
+      const m = String(data?.description || "").match(/\(\s*([\d.]+)x[^)]*if\s+(?:they\s+are|the\s+target\s+is|target\s+is)\s+attack\s+weakened/i);
+      if (m && this.isAttackWeakened(target)) return Number(m[1]) || base;
+      return base;
+    },
+
+    /** Which enemies a sprite skill strikes (first entry = the one the unit dashes to). */
+    resolveSkillTargets(attacker, data, given, core) {
+      const opponents = this.getOpponents(attacker, core);
+      const alive = (given || []).filter(t => t && t.stats?.hp > 0 && opponents.includes(t));
+      const dist = t => Math.hypot((t.pos?.x || 0) - (attacker.pos?.x || 0), (t.pos?.y || 0) - (attacker.pos?.y || 0));
+      const desc = String(data?.description || "").toLowerCase();
+      if (/all enemies/.test(desc)) {
+        const first = alive[0] || [...opponents].sort((a, b) => dist(a) - dist(b))[0];
+        return first ? [first, ...opponents.filter(t => t !== first)] : [];
+      }
+      const n = Number(data?.effects?.targets) || Number(desc.match(/(\d+)\s*enem/)?.[1]) || alive.length || 1;
+      const pool = alive.length ? [...alive].sort((a, b) => dist(a) - dist(b)) : [];
+      for (const t of [...opponents].sort((a, b) => dist(a) - dist(b))) if (!pool.includes(t)) pool.push(t);
+      // A single chosen target (tap/drag) stays first even if another is closer.
+      if (given?.length === 1 && alive[0]) {
+        pool.splice(pool.indexOf(alive[0]), 1);
+        pool.unshift(alive[0]);
+      }
+      return pool.slice(0, n);
+    },
+
+    /**
+     * Split a total into `n` hit slices that add up exactly to `total`.
+     * Slightly uneven (±15%) with a heavier final blow, like a real combo.
+     */
+    splitDamage(total, n) {
+      total = Math.max(0, Math.floor(total)); n = Math.max(1, n | 0);
+      if (n === 1) return [total];
+      const w = Array.from({ length: n }, (_, i) => (i === n - 1 ? 1.6 : 0.85 + Math.random() * 0.3));
+      const W = w.reduce((a, b) => a + b, 0);
+      const out = w.map(x => Math.floor(total * x / W));
+      let rest = total - out.reduce((a, b) => a + b, 0);
+      for (let i = n - 1; rest > 0; i = (i - 1 + n) % n, rest--) out[i]++;
+      return out;
+    },
+
+    /** Attack Weakened: -30% ATK for N turns (same buff/debuff shape as ATK reduction). */
+    applyAttackWeakened(target, turns, core) {
+      if (!target || target.stats.hp <= 0) return;
+      target.statusEffects = target.statusEffects || [];
+      const existing = target.statusEffects.find(e => e.type === 'attack_weakened');
+      if (existing) {
+        existing.turnsRemaining = Math.max(existing.turnsRemaining || 0, turns);
+      } else {
+        const pct = 30;
+        const amt = Math.floor((target.stats.atk || 0) * pct / 100);
+        target.statusEffects.push({
+          type: 'attack_weakened', kind: 'buff', category: 'debuff', tag: 'atkDown',
+          name: 'Attack Weakened', color: '#ff8888', value: -amt,
+          payload: { atkBoost: -amt },
+          turnsRemaining: turns
+        });
+      }
+      console.log(`[Combat] ${target.name} is Attack Weakened for ${turns} turn(s)`);
+      window.BattleEffects?.showEffectIndicator(target, 'ATK WEAKENED', '#ff8888', core);
+    },
+
+    /** Structured skill debuffs ({type, chance, turns}). */
+    applySkillDebuff(target, debuff, core) {
+      if (!debuff || !target || target.stats.hp <= 0) return;
+      const chance = debuff.chance == null ? 1 : Number(debuff.chance);
+      if (Math.random() >= chance) return;
+      if (debuff.type === 'attack_weakened') this.applyAttackWeakened(target, Number(debuff.turns) || 1, core);
+      else console.warn(`[Combat] Unknown skill debuff type: ${debuff.type}`);
+    },
+
+    /** Run the unit's field element to a grid position (percent) with the run sheet. */
+    dashUnitTo(unit, unitEl, to, core) {
+      return new Promise(resolve => {
+        core.units?.stopRun?.(unit); // cancel any in-flight runTo()
+        const token = (unit._runToken = (unit._runToken || 0) + 1);
+        const fromX = parseFloat(unitEl.style.left), fromY = parseFloat(unitEl.style.top);
+        const x0 = Number.isFinite(fromX) ? fromX : unit.pos.x, y0 = Number.isFinite(fromY) ? fromY : unit.pos.y;
+        const dist = Math.hypot(to.x - x0, to.y - y0);
+        if (dist < 0.5) { unitEl.style.left = `${to.x}%`; unitEl.style.top = `${to.y}%`; return resolve(); }
+        core.units?.setSpriteFacing?.(unit, to.x < x0);
+        unit._sprite?.play('run');
+        const duration = Math.min(520, 200 + dist * 7);
+        const start = performance.now();
+        const step = now => {
+          if (unit._runToken !== token) return resolve();
+          const t = Math.min(1, (now - start) / duration);
+          const e = 1 - Math.pow(1 - t, 2); // ease-out: fast start, plant the feet
+          unitEl.style.left = `${x0 + (to.x - x0) * e}%`;
+          unitEl.style.top = `${y0 + (to.y - y0) * e}%`;
+          if (t < 1) requestAnimationFrame(step); else resolve();
+        };
+        requestAnimationFrame(step);
+      });
+    },
+
+    /** Grid position (percent) from which the attacker strikes `target`. */
+    getStrikePosition(attacker, target, attackerEl, core, meta) {
+      const grid = core.dom.grid?.getBoundingClientRect();
+      const tEl = core.dom.scene?.querySelector(`.battle-unit[data-unit-id="${target.id}"]`);
+      if (!grid?.width || !tEl) return { x: target.pos.x, y: target.pos.y };
+      const dir = target.pos.x >= attacker.pos.x ? 1 : -1; // attacker comes from this side
+      const tSprite = tEl.querySelector('.unit-sprite') || tEl;
+      const tW = tSprite.getBoundingClientRect().width || 60;
+      const h = attacker._sprite?.el?.offsetHeight || 120;
+      const aW = meta ? meta.frameWidth * (h * (meta.heightScale || 1) / meta.frameHeight) : h * 0.8;
+      const gapPx = tW * 0.45 + aW * 0.28;
+      const x = Math.max(3, Math.min(97, target.pos.x - dir * (gapPx / grid.width) * 100));
+      return { x, y: target.pos.y };
+    },
+
+    /**
+     * Jutsu / ultimate for a sprite unit: dash in, play the sheet, deal one
+     * slice of damage (and one damage number) per hit frame, dash back, then
+     * apply end-of-skill effects and end the turn.
+     */
+    performSpriteSkill(attacker, kind, skill, givenTargets, core, onDone) {
+      const data = skill.data || {};
+      const targets = this.resolveSkillTargets(attacker, data, givenTargets, core);
+      if (!targets.length) { core.checkBattleEnd?.(); onDone?.(); return; }
+      const baseMult = this.getSkillMultiplier(data, kind === 'ultimate' ? 1.5 : 2.0);
+      const skillName = data.name || data.skillName || skill.meta?.name || kind;
+      const wait = ms => new Promise(r => setTimeout(r, ms));
+      const anims = window.BattleAnimations;
+      const sprite = attacker._sprite;
+      const unitEl = core.dom.scene?.querySelector(`.battle-unit[data-unit-id="${attacker.id}"]`);
+      // Turn watchdogs (AI safety net, input manager) wait while this is set.
+      attacker._actionBusy = true;
+      const done = () => { attacker._actionBusy = false; core.checkBattleEnd?.(); onDone?.(); };
+
+      window.BattleAttackNames?.showAttackName(skillName, kind);
+      if (window.BattleNarrator) {
+        if (kind === 'ultimate') window.BattleNarrator.narrateUltimate?.(attacker, targets, core);
+        else window.BattleNarrator.narrateJutsu?.(attacker, targets[0], core);
+      }
+      if (core.units) core.units.updateUnitDisplay(attacker, core); else core.updateUnitDisplay?.(attacker);
+
+      // One damage roll per target (crit / variance / element, as the generic
+      // path does), then split across the hit frames.
+      const plans = targets.map(target => {
+        const mult = this.getTargetMultiplier(data, target, baseMult);
+        const r = this.calculateDamage(attacker, target, mult);
+        return { target, mult, total: r.damage, isCritical: r.isCritical, dodged: !!r.dodged, dealt: 0, slices: [] };
+      });
+
+      (async () => {
+        let meta = null;
+        try { meta = sprite ? await sprite.meta(kind) : null; } catch (e) {
+          console.warn(`[Combat] ${attacker.name} has no '${kind}' sheet, using timed hits`, e);
+        }
+        const hitCount = Math.max(1, (meta?.hits?.length) || Number(data.hits) || 1);
+        plans.forEach(p => { p.slices = this.splitDamage(p.total, hitCount); });
+        console.log(`[Combat] ${attacker.name} ${kind} "${skillName}": ${hitCount} hits`,
+          plans.map(p => `${p.target.name} ${p.total} (${p.mult}x${p.isCritical ? ', crit' : ''}) = [${p.slices.join(', ')}]`));
+
+        const prevZ = unitEl?.style.zIndex, prevTransition = unitEl?.style.transition;
+        if (unitEl) { unitEl.style.zIndex = '70'; unitEl.style.transition = 'none'; }
+        const home = { x: attacker.pos.x, y: attacker.pos.y };
+        const anchor = targets[0];
+
+        await wait(350); // let the skill name land
+        if (meta && unitEl) {
+          await this.dashUnitTo(attacker, unitEl, this.getStrikePosition(attacker, anchor, unitEl, core, meta), core);
+          const curX = parseFloat(unitEl.style.left);
+          core.units?.setSpriteFacing?.(attacker, anchor.pos.x < curX);
+        }
+
+        let next = 0;
+        const counter = { el: null };
+        const doHit = k => {
+          for (; next <= k && next < hitCount; next++) this.applySpriteHit(plans, next, hitCount, attacker, kind, core, counter);
+        };
+        await new Promise(resolve => {
+          let finished = false, guard = null;
+          const finish = () => {
+            if (finished) return; finished = true;
+            clearTimeout(guard);
+            doHit(hitCount - 1); // anything not yet landed (interrupted / hidden tab)
+            resolve();
+          };
+          if (meta && sprite) {
+            sprite.play(kind, { onHit: k => doHit(k), onEnd: finish });
+            guard = setTimeout(finish, (meta.frames / meta.fps) * 1000 + 1500);
+          } else {
+            anims?.playSkillAnimation?.(attacker, kind, data.animationGif || null, core.dom);
+            let k = 0;
+            const iv = setInterval(() => { doHit(k++); if (k >= hitCount) { clearInterval(iv); setTimeout(finish, 250); } }, 110);
+          }
+        });
+
+        if (meta && unitEl) {
+          await wait(120);
+          await this.dashUnitTo(attacker, unitEl, home, core);
+          unitEl.style.left = `${attacker.pos.x}%`;
+          unitEl.style.top = `${attacker.pos.y}%`;
+        }
+        if (unitEl) { unitEl.style.zIndex = prevZ || ''; unitEl.style.transition = prevTransition || ''; }
+        core.units?.settleSprite?.(attacker); // idle, default facing
+
+        // End-of-skill effects on the survivors.
+        const survivors = plans.filter(p => !p.dodged && p.target.stats.hp > 0).map(p => p.target);
+        const fx = data.effects;
+        if (fx) {
+          if (fx.debuff) survivors.forEach(t => this.applySkillDebuff(t, fx.debuff, core));
+          if (Number(fx.selfChakra) > 0) {
+            if (core.chakra) core.chakra.addChakra(attacker, Number(fx.selfChakra), core);
+            else attacker.chakra = Math.min(attacker.maxChakra || 10, (attacker.chakra || 0) + Number(fx.selfChakra));
+            window.BattleChakraWheel?.updateChakraWheel?.(attacker, core);
+          }
+        } else {
+          this.applyDescriptionEffects(data.description, attacker, survivors, core);
+        }
+        survivors.forEach(t => core.units ? core.units.updateUnitDisplay(t, core) : core.updateUnitDisplay?.(t));
+        if (core.units) core.units.updateUnitDisplay(attacker, core); else core.updateUnitDisplay?.(attacker);
+        core.updateTeamHP?.();
+
+        await wait(450);
+        done();
+      })().catch(err => {
+        console.error('[Combat] sprite skill failed', err);
+        core.units?.settleSprite?.(attacker);
+        done();
+      });
+    },
+
+    /** Land hit `k` of a sprite combo on every target that is still standing. */
+    applySpriteHit(plans, k, hitCount, attacker, kind, core, counter) {
+      const anims = window.BattleAnimations;
+      let landed = false;
+      plans.forEach(p => {
+        const t = p.target;
+        if (p.dodged || t.stats.hp <= 0) return; // no numbers on a dead target
+        const amt = p.slices[k] || 0;
+        if (amt <= 0) return;
+        t.stats.hp = Math.max(0, t.stats.hp - amt);
+        p.dealt += amt;
+        landed = true;
+        anims?.showComboHit?.(t, amt, p.isCritical, core.dom, k, hitCount);
+
+        if (t.stats.hp <= 0) {
+          const remaining = (t.isPlayer ? core.activeTeam : core.enemyTeam).filter(e => e && e.stats.hp > 0).length;
+          if (window.BattleFinish?.shouldTriggerFinish?.(t, remaining, kind === 'ultimate')) {
+            setTimeout(() => window.BattleFinish.playFinishEffects(attacker, t, core), 200);
+          }
+        }
+        if (core.units) core.units.updateUnitDisplay(t, core); else core.updateUnitDisplay?.(t);
+      });
+      if (landed) {
+        const first = plans.find(p => !p.dodged)?.target;
+        if (first) counter.el = anims?.showComboCounter?.(first, k + 1, core.dom, counter.el) || counter.el;
+        core.updateTeamHP?.();
+      }
     },
 
     /* ===== Guard Action ===== */

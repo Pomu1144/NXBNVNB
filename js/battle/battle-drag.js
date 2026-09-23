@@ -33,7 +33,7 @@
      * Create a targeting marker on a unit
      */
     createTargetMarker(unit, core) {
-      const unitEl = core.dom.scene?.querySelector(`[data-unit-id="${unit.id}"]`);
+      const unitEl = core.dom.scene?.querySelector(`.battle-unit[data-unit-id="${unit.id}"]`);
       if (!unitEl) return null;
 
       // Remove existing marker if present
@@ -178,6 +178,17 @@
       // Only allow drag if it's this unit's turn
       if (core.turns && core.turns.currentUnit !== unit) return;
 
+      this.beginDrag(unit, core);
+
+      e.dataTransfer.effectAllowed = "move";
+      e.dataTransfer.setData("text/plain", unit.id);
+      e.currentTarget.style.opacity = "0.7";
+
+      if (this.DEBUG_DRAG) console.log(`[Drag] Dragging ${unit.name}, action: ${this.dragAction}`);
+    },
+
+    /** Shared drag-start state for HTML5 and sprite pointer drags. */
+    beginDrag(unit, core) {
       this.draggingUnit = unit;
       this.dragStartPos = { ...unit.pos };
       this.isDragging = true;
@@ -192,12 +203,177 @@
       } else {
         this.dragAction = "move";
       }
+    },
 
-      e.dataTransfer.effectAllowed = "move";
-      e.dataTransfer.setData("text/plain", unit.id);
-      e.currentTarget.style.opacity = "0.7";
+    /* ===== Sprite pointer-drag =====
+     * Units with an animated sprite (unit._sprite) are dragged with pointer
+     * events instead of HTML5 DnD: the unit element itself follows the
+     * pointer (no ghost image, works on touch), playing 'run' while the
+     * pointer moves and 'idle' once it rests. Targeting and the drop reuse
+     * dragOverAt()/dropAt(), the same paths as the HTML5 handlers.
+     */
+    SPRITE_DRAG_THRESHOLD: 6,   // px of travel before a press becomes a drag
+    SPRITE_RUN_MIN_SPEED: 0.04, // px/ms; slower than this doesn't count as moving
+    SPRITE_IDLE_AFTER: 120,     // ms without movement before switching to idle
+    SPRITE_LEAN_DEG: 6,         // forward lean while running
+    SPRITE_ATTACK_GAP_PX: 90,   // stand this far beside an enemy dropped on
+    spriteDrag: null,           // active pointer session
 
-      if (this.DEBUG_DRAG) console.log(`[Drag] Dragging ${unit.name}, action: ${this.dragAction}`);
+    handleSpritePointerDown(e, unit, core, unitEl) {
+      if (!unit._sprite || this.isDragging || this.spriteDrag) return;
+      if (e.pointerType === "mouse" && e.button !== 0) return;
+      if (!e.isPrimary) return;
+      if (core.turns && core.turns.currentUnit !== unit) return;
+      if (unit.stats && unit.stats.hp <= 0) return;
+
+      e.preventDefault(); // no text selection / native image drag
+      const sd = this.spriteDrag = {
+        unit, core, el: unitEl, pointerId: e.pointerId,
+        startX: e.clientX, startY: e.clientY,
+        lastX: e.clientX, lastY: e.clientY, lastT: e.timeStamp,
+        active: false, idleTimer: null, facingLeft: false,
+      };
+      try { unitEl.setPointerCapture(e.pointerId); } catch (_) { /* ignore */ }
+
+      sd.onMove = ev => this.spriteDragMove(ev);
+      sd.onUp = ev => this.spriteDragUp(ev);
+      sd.onCancel = ev => { if (!ev.pointerId || ev.pointerId === sd.pointerId) this.spriteDragCancel(); };
+      sd.onKey = ev => { if (ev.key === "Escape") this.spriteDragCancel(); };
+      unitEl.addEventListener("pointermove", sd.onMove);
+      unitEl.addEventListener("pointerup", sd.onUp);
+      unitEl.addEventListener("pointercancel", sd.onCancel);
+      unitEl.addEventListener("lostpointercapture", sd.onCancel);
+      window.addEventListener("keydown", sd.onKey);
+    },
+
+    spriteDragActivate(sd) {
+      const { unit, core, el } = sd;
+      sd.active = true;
+      // Mirror HTML5 DnD, which pointer-cancels the 2-stage input manager.
+      const im = window.BattleInputManager;
+      if (im && im.currentState === im.STATES?.DRAGGING) im.cancelDrag();
+
+      core.units?.stopRun?.(unit); // stop any in-flight run-to
+      this.beginDrag(unit, core);
+      sd.facingLeft = !unit.isPlayer;
+      el.classList.add("is-sprite-dragging");
+      if (this.DEBUG_DRAG) console.log(`[Drag] Sprite-dragging ${unit.name}, action: ${this.dragAction}`);
+    },
+
+    /** Place the unit element's centre at the pointer (scene %, clamped). */
+    spriteDragPlace(sd, clientX, clientY) {
+      const rect = sd.core.dom.scene.getBoundingClientRect();
+      const x = Math.max(0, Math.min(100, ((clientX - rect.left) / rect.width) * 100));
+      const y = Math.max(0, Math.min(100, ((clientY - rect.top) / rect.height) * 100));
+      sd.el.style.left = `${x}%`;
+      sd.el.style.top = `${y}%`;
+    },
+
+    spriteDragMove(ev) {
+      const sd = this.spriteDrag;
+      if (!sd || ev.pointerId !== sd.pointerId) return;
+      if (!sd.active) {
+        if (Math.hypot(ev.clientX - sd.startX, ev.clientY - sd.startY) < this.SPRITE_DRAG_THRESHOLD) return;
+        this.spriteDragActivate(sd);
+      }
+      const { unit, core } = sd;
+      const sprite = unit._sprite;
+
+      const dx = ev.clientX - sd.lastX;
+      const dy = ev.clientY - sd.lastY;
+      const dt = Math.max(1, ev.timeStamp - sd.lastT);
+      const dist = Math.hypot(dx, dy);
+      sd.lastX = ev.clientX; sd.lastY = ev.clientY; sd.lastT = ev.timeStamp;
+
+      this.spriteDragPlace(sd, ev.clientX, ev.clientY);
+
+      if (sprite && dist >= 1 && dist / dt >= this.SPRITE_RUN_MIN_SPEED) {
+        if (Math.abs(dx) >= 1) sd.facingLeft = dx < 0;
+        core.units?.setSpriteFacing?.(unit, sd.facingLeft, this.SPRITE_LEAN_DEG);
+        sprite.setState("run"); // no-op while already running
+        clearTimeout(sd.idleTimer);
+        sd.idleTimer = setTimeout(() => {
+          if (this.spriteDrag !== sd || !unit._sprite) return;
+          core.units?.setSpriteFacing?.(unit, sd.facingLeft, 0);
+          unit._sprite.setState("idle");
+        }, this.SPRITE_IDLE_AFTER);
+      }
+
+      // Targeting preview / markers (pointermove is already frame-aligned).
+      this.lastUpdateTime = 0;
+      this.dragOverAt(ev.clientX, ev.clientY, core);
+    },
+
+    /** Detach the pointer session's listeners; returns the session. */
+    spriteDragTeardown() {
+      const sd = this.spriteDrag;
+      if (!sd) return null;
+      this.spriteDrag = null;
+      clearTimeout(sd.idleTimer);
+      sd.el.removeEventListener("pointermove", sd.onMove);
+      sd.el.removeEventListener("pointerup", sd.onUp);
+      sd.el.removeEventListener("pointercancel", sd.onCancel);
+      sd.el.removeEventListener("lostpointercapture", sd.onCancel);
+      window.removeEventListener("keydown", sd.onKey);
+      try { sd.el.releasePointerCapture(sd.pointerId); } catch (_) { /* ignore */ }
+      sd.el.classList.remove("is-sprite-dragging");
+      if (sd.active) {
+        // Swallow the click that follows the release so it isn't treated as
+        // a unit tap (chakra / input-manager click handlers).
+        const swallow = ev => { ev.stopPropagation(); ev.preventDefault(); };
+        sd.el.addEventListener("click", swallow, { capture: true, once: true });
+        setTimeout(() => sd.el.removeEventListener("click", swallow, { capture: true }), 350);
+      }
+      return sd;
+    },
+
+    spriteDragUp(ev) {
+      const cur = this.spriteDrag;
+      if (!cur || ev.pointerId !== cur.pointerId) return;
+      const sd = this.spriteDragTeardown();
+      if (!sd.active) return; // a plain tap: let the click handler run
+
+      const { unit, core } = sd;
+      const rect = core.dom.scene.getBoundingClientRect();
+      const inside = ev.clientX >= rect.left && ev.clientX <= rect.right &&
+                     ev.clientY >= rect.top && ev.clientY <= rect.bottom;
+      if (!inside) {
+        this.spriteDragRestore(sd);
+        return;
+      }
+
+      // The sprite is already standing at the drop point: settle to idle
+      // there, then resolve the drop (move/attack/jutsu/ultimate). A plain
+      // move's updateUnitPosition() finds it already in place, so there is
+      // no second run.
+      this.spriteDragPlace(sd, ev.clientX, ev.clientY);
+      core.units?.settleSprite?.(unit);
+      const hit = this.findUnitAtPosition(ev.clientX - rect.left, ev.clientY - rect.top, false, core);
+      const startX = this.dragStartPos ? this.dragStartPos.x : unit.pos.x;
+      this.dropAt(ev.clientX, ev.clientY, core);
+
+      // Dropped right on top of an enemy: step to its side instead of
+      // standing inside it (a short hop, then idle).
+      if (hit && hit.pos && unit.stats.hp > 0) {
+        const side = startX <= hit.pos.x ? -1 : 1;
+        const gap = (this.SPRITE_ATTACK_GAP_PX / rect.width) * 100;
+        unit.pos = { x: Math.max(0, Math.min(100, hit.pos.x + side * gap)), y: hit.pos.y };
+        core.units?.updateUnitPosition(unit, core);
+      }
+      this.handleDragEnd(ev, core);
+    },
+
+    spriteDragCancel() {
+      const sd = this.spriteDragTeardown();
+      if (sd && sd.active) this.spriteDragRestore(sd);
+    },
+
+    /** Cancelled/out-of-bounds drop: run back to where the drag started. */
+    spriteDragRestore(sd) {
+      const { unit, core } = sd;
+      if (this.dragStartPos) unit.pos = { ...this.dragStartPos };
+      this.handleDragEnd(null, core);
+      core.units?.updateUnitPosition(unit, core); // runs back, then idles
     },
 
     /**
@@ -207,6 +383,15 @@
       e.preventDefault();
       e.dataTransfer.dropEffect = "move";
 
+      if (!this.isDragging || !this.draggingUnit) return;
+      this.dragOverAt(e.clientX, e.clientY, core);
+    },
+
+    /**
+     * Targeting preview for a pointer at (clientX, clientY). Shared by the
+     * HTML5 dragover handler and the sprite pointer-drag.
+     */
+    dragOverAt(clientX, clientY, core) {
       if (!this.isDragging || !this.draggingUnit) return;
 
       // Throttle updates to avoid lag (max 60fps)
@@ -222,8 +407,8 @@
       }
 
       const rect = core.dom.scene.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
+      const x = clientX - rect.left;
+      const y = clientY - rect.top;
 
       // Determine effective action (auto-detect if dragging over enemy)
       let effectiveAction = this.dragAction;
@@ -249,10 +434,19 @@
       e.preventDefault();
 
       if (!this.isDragging || !this.draggingUnit) return;
+      this.dropAt(e.clientX, e.clientY, core);
+      this.handleDragEnd(e, core);
+    },
 
+    /**
+     * Resolve a drop at (clientX, clientY): reposition, attack, jutsu or
+     * ultimate. Shared by the HTML5 drop handler and the sprite pointer-drag.
+     * The caller runs handleDragEnd() afterwards.
+     */
+    dropAt(clientX, clientY, core) {
       const rect = core.dom.scene.getBoundingClientRect();
-      const dropX = e.clientX - rect.left;
-      const dropY = e.clientY - rect.top;
+      const dropX = clientX - rect.left;
+      const dropY = clientY - rect.top;
 
       const dropXPercent = (dropX / rect.width) * 100;
       const dropYPercent = (dropY / rect.height) * 100;
@@ -356,8 +550,6 @@
         }
         if (core.turns) core.turns.endTurn(core);
       }
-
-      this.handleDragEnd(e, core);
     },
 
     /**
@@ -381,6 +573,8 @@
      * Cleanup method for battle end (Bug #6 & #20)
      */
     cleanup(core) {
+      this.spriteDragTeardown();
+
       // Remove resize listener
       if (this.resizeListener) {
         window.removeEventListener("resize", this.resizeListener);
@@ -491,7 +685,7 @@
           continue;
         }
 
-        const unitEl = core.dom.scene?.querySelector(`[data-unit-id="${unit.id}"]`);
+        const unitEl = core.dom.scene?.querySelector(`.battle-unit[data-unit-id="${unit.id}"]`);
         if (!unitEl) {
           if (this.DEBUG_DRAG) console.log(`[Drag]   - ${unit.name}: NO ELEMENT, skipping`);
           continue;
@@ -608,7 +802,7 @@
 
       // For each main target, find nearby enemies
       mainTargets.forEach(mainTarget => {
-        const mainEl = core.dom.scene?.querySelector(`[data-unit-id="${mainTarget.id}"]`);
+        const mainEl = core.dom.scene?.querySelector(`.battle-unit[data-unit-id="${mainTarget.id}"]`);
         if (!mainEl) return;
 
         const mainRect = mainEl.getBoundingClientRect();
@@ -623,7 +817,7 @@
           // Skip if already in proximity list
           if (proximityTargets.includes(enemy)) return;
 
-          const enemyEl = core.dom.scene?.querySelector(`[data-unit-id="${enemy.id}"]`);
+          const enemyEl = core.dom.scene?.querySelector(`.battle-unit[data-unit-id="${enemy.id}"]`);
           if (!enemyEl) return;
 
           const enemyRect = enemyEl.getBoundingClientRect();
@@ -650,7 +844,7 @@
       for (const unit of targets) {
         if (unit.stats.hp <= 0 || unit.isBench) continue;
 
-        const unitEl = core.dom.scene?.querySelector(`[data-unit-id="${unit.id}"]`);
+        const unitEl = core.dom.scene?.querySelector(`.battle-unit[data-unit-id="${unit.id}"]`);
         if (!unitEl) continue;
 
         const rect = unitEl.getBoundingClientRect();

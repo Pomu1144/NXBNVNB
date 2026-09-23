@@ -193,7 +193,7 @@
      * @param {Object} core - Reference to BattleManager
      */
     showClickCounter(unit, count, core) {
-      const unitEl = core.dom.scene?.querySelector(`[data-unit-id="${unit.id}"]`);
+      const unitEl = core.dom.scene?.querySelector(`.battle-unit[data-unit-id="${unit.id}"]`);
       if (!unitEl) return;
 
       // Remove existing counter
@@ -216,7 +216,7 @@
      * @param {Object} core - Reference to BattleManager
      */
     updateUnitChakraDisplay(unit, core) {
-      const unitEl = core.dom.scene?.querySelector(`[data-unit-id="${unit.id}"]`);
+      const unitEl = core.dom.scene?.querySelector(`.battle-unit[data-unit-id="${unit.id}"]`);
       if (!unitEl) return;
 
       const chakraBar = unitEl.querySelector(".chakra-fill");
@@ -426,7 +426,7 @@
      * @param {Object} core - Reference to BattleManager
      */
     showChakraGain(unit, amount, core) {
-      const unitEl = core.dom.scene?.querySelector(`[data-unit-id="${unit.id}"]`);
+      const unitEl = core.dom.scene?.querySelector(`.battle-unit[data-unit-id="${unit.id}"]`);
       if (!unitEl) return;
 
       const rect = unitEl.getBoundingClientRect();

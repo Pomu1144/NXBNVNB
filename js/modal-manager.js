@@ -44,18 +44,19 @@
      * Show a success message modal
      * @param {string} message - Message to display
      * @param {Function} onClose - Optional callback when modal closes
+     * @param {Object} [opts] - { title } to override the header text
      */
-    showSuccess(message, onClose) {
+    showSuccess(message, onClose, opts = {}) {
       const modal = this.createModal('success');
       modal.innerHTML = `
         <div class="modal-header modal-success">
-          <h3 class="modal-title">Success</h3>
+          <h3 class="modal-title">${this.escapeHtml((opts && opts.title) || 'Success')}</h3>
         </div>
         <div class="modal-body">
           <p class="modal-message">${this.escapeHtml(message)}</p>
         </div>
         <div class="modal-footer">
-          <button class="modal-btn modal-btn-primary" id="modal-confirm-btn">OK</button>
+          <button class="modal-btn modal-btn-primary jjk-btn" id="modal-confirm-btn">OK</button>
         </div>
       `;
 
@@ -68,18 +69,19 @@
      * Show an error message modal
      * @param {string} message - Error message to display
      * @param {Function} onClose - Optional callback when modal closes
+     * @param {Object} [opts] - { title } to override the header text
      */
-    showError(message, onClose) {
+    showError(message, onClose, opts = {}) {
       const modal = this.createModal('error');
       modal.innerHTML = `
         <div class="modal-header modal-error">
-          <h3 class="modal-title">Error</h3>
+          <h3 class="modal-title">${this.escapeHtml((opts && opts.title) || 'Error')}</h3>
         </div>
         <div class="modal-body">
           <p class="modal-message">${this.escapeHtml(message)}</p>
         </div>
         <div class="modal-footer">
-          <button class="modal-btn modal-btn-primary" id="modal-confirm-btn">OK</button>
+          <button class="modal-btn modal-btn-primary jjk-btn" id="modal-confirm-btn">OK</button>
         </div>
       `;
 
@@ -92,18 +94,19 @@
      * Show an info message modal
      * @param {string} message - Info message to display
      * @param {Function} onClose - Optional callback when modal closes
+     * @param {Object} [opts] - { title } to override the header text
      */
-    showInfo(message, onClose) {
+    showInfo(message, onClose, opts = {}) {
       const modal = this.createModal('info');
       modal.innerHTML = `
         <div class="modal-header modal-info">
-          <h3 class="modal-title">Information</h3>
+          <h3 class="modal-title">${this.escapeHtml((opts && opts.title) || 'Information')}</h3>
         </div>
         <div class="modal-body">
           <p class="modal-message">${this.escapeHtml(message)}</p>
         </div>
         <div class="modal-footer">
-          <button class="modal-btn modal-btn-primary" id="modal-confirm-btn">OK</button>
+          <button class="modal-btn modal-btn-primary jjk-btn" id="modal-confirm-btn">OK</button>
         </div>
       `;
 
@@ -129,7 +132,7 @@
         </div>
         <div class="modal-footer">
           <button class="modal-btn modal-btn-secondary" id="modal-cancel-btn">Cancel</button>
-          <button class="modal-btn modal-btn-primary" id="modal-confirm-btn">Confirm</button>
+          <button class="modal-btn modal-btn-primary jjk-btn" id="modal-confirm-btn">Confirm</button>
         </div>
       `;
 
@@ -155,7 +158,7 @@
         </div>
         <div class="modal-footer">
           <button class="modal-btn modal-btn-secondary" id="modal-cancel-btn">Cancel</button>
-          <button class="modal-btn modal-btn-primary" id="modal-confirm-btn">Submit</button>
+          <button class="modal-btn modal-btn-primary jjk-btn" id="modal-confirm-btn">Submit</button>
         </div>
       `;
 

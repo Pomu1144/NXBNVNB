@@ -728,7 +728,8 @@
 }
 .rr-ok:hover { filter: brightness(1.12) drop-shadow(0 0 8px rgba(241, 217, 138, 0.4)); }
 .rr-ok:active { transform: translateY(1px) scale(0.98); }
-.rr-ok:focus-visible { outline: 1px solid var(--pb-gold-hi); outline-offset: 5px; }
+.rr-ok:focus-visible { outline: none; filter: brightness(1.1) drop-shadow(0 0 10px rgba(241, 217, 138, 0.55)); }
+.rr-qty.is-long { font-size: 15px; -webkit-text-stroke-width: 2.5px; }
 
 /* ---------- Keyframes ---------- */
 @keyframes pbFade { from { opacity: 0; } to { opacity: 1; } }

@@ -1,229 +1,225 @@
-/* css/modal-system.css - Custom Modal System Styling
-   Themed to the game's gold/Cinzel design language. */
+/* css/modal-system.css - Custom Modal System Styling (js/modal-manager.js)
+   JJK theme: ink-teal panel with gold hairline + corner brackets, crimson
+   brush title plate, Kaisei Tokumin serif body, khaki .jjk-btn actions.
+   Matches the Present Box alert / reward reveal (css/present-box.css). */
 
 @import url("fonts.css");
 
-/* Overlay */
 .modal-overlay {
+  --mm-gold: var(--jjk-gold, #c9a24e);
+  --mm-gold-hi: var(--jjk-gold-hi, #f1d98a);
+  --mm-line: rgba(201, 162, 78, 0.5);
+  --mm-text: var(--jjk-text, #ece6d6);
+  --mm-muted: var(--jjk-muted, #93a3a3);
+  --mm-font: var(--jjk-font, 'Kaisei Tokumin', 'Times New Roman', serif);
+
   position: fixed;
-  top: 0;
-  left: 0;
+  inset: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.82);
-  backdrop-filter: blur(6px);
+  background: radial-gradient(ellipse at center, rgba(8, 26, 30, 0.6) 0%, rgba(2, 7, 9, 0.9) 70%);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 10000;
   opacity: 0;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.25s ease;
 }
+.modal-overlay.modal-open { opacity: 1; }
 
-.modal-overlay.modal-open {
-  opacity: 1;
-}
-
-/* Modal Container — engraved gold frame (assets/ui/generated/panel_frame.webp) */
+/* Panel */
 .modal-container {
-  font-family: "Cinzel", serif;
-  background:
-    radial-gradient(circle at 50% 0%, rgba(212, 175, 55, 0.08), transparent 55%),
-    linear-gradient(135deg, rgba(15, 20, 45, 0.99) 0%, rgba(8, 10, 25, 0.99) 100%);
-  border: 26px solid transparent;
-  border-image: url("../assets/ui/generated/panel_frame.webp") 115 fill round;
-  box-shadow:
-    0 0 50px rgba(184, 152, 95, 0.35),
-    0 18px 50px rgba(0, 0, 0, 0.7);
-  min-width: 320px;
-  max-width: 500px;
-  width: 90%;
-  max-height: 80vh;
-  overflow: hidden;
-  transform: scale(0.92) translateY(12px);
-  opacity: 0;
-  transition: all 0.25s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.modal-container.modal-show {
-  transform: scale(1) translateY(0);
-  opacity: 1;
-}
-
-/* Modal Header */
-.modal-header {
   position: relative;
-  padding: 18px 24px 14px;
-  text-align: center;
+  box-sizing: border-box;
+  font-family: var(--mm-font);
+  color: var(--mm-text);
+  background:
+    linear-gradient(180deg, rgba(7, 22, 26, 0.5), rgba(4, 12, 15, 0.88)),
+    url("../assets/ui/jjk/ink_bg.webp") center / cover no-repeat,
+    var(--jjk-ink, #071418);
+  border: 1px solid var(--mm-line);
+  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.75), inset 0 0 0 1px rgba(0, 0, 0, 0.6), inset 0 0 70px rgba(0, 0, 0, 0.5);
+  min-width: 300px;
+  max-width: 520px;
+  width: 90%;
+  max-height: 84vh;
+  display: flex;
+  flex-direction: column;
+  padding-top: 78px;
+  transform: scale(0.94);
+  opacity: 0;
+  transition: transform 0.28s cubic-bezier(0.2, 1.3, 0.4, 1), opacity 0.2s ease;
 }
-
-/* Ornamental rule under the header */
-.modal-header::after {
+.modal-container::before {
   content: '';
   position: absolute;
-  left: 50%;
-  bottom: 0;
-  transform: translateX(-50%);
-  width: 78%;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, #d4af37 20%, #f0d98c 50%, #d4af37 80%, transparent);
-  box-shadow: 0 0 8px rgba(212, 175, 55, 0.5);
+  inset: -4px;
+  pointer-events: none;
+  z-index: 2;
+  --c: var(--mm-gold);
+  background:
+    linear-gradient(var(--c), var(--c)) left top / 22px 2px,
+    linear-gradient(var(--c), var(--c)) left top / 2px 22px,
+    linear-gradient(var(--c), var(--c)) right top / 22px 2px,
+    linear-gradient(var(--c), var(--c)) right top / 2px 22px,
+    linear-gradient(var(--c), var(--c)) left bottom / 22px 2px,
+    linear-gradient(var(--c), var(--c)) left bottom / 2px 22px,
+    linear-gradient(var(--c), var(--c)) right bottom / 22px 2px,
+    linear-gradient(var(--c), var(--c)) right bottom / 2px 22px;
+  background-repeat: no-repeat;
 }
+.modal-container.modal-show { transform: scale(1); opacity: 1; }
 
+/* Header: crimson brush title plate pinned top-left */
+.modal-header {
+  position: absolute;
+  left: -10px;
+  top: 18px;
+  z-index: 3;
+  padding: 0;
+  max-width: calc(100% - 10px);
+}
 .modal-title {
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  min-width: 230px;
+  height: 48px;
   margin: 0;
-  font-size: 20px;
-  font-weight: 700;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: #d4af37;
-  text-shadow: 0 0 18px rgba(212, 175, 55, 0.45), 0 2px 4px rgba(0, 0, 0, 0.9);
+  padding: 0 64px 0 26px;
+  background: url("../assets/ui/jjk/title_plate.webp") left center / 100% 100% no-repeat;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.6));
+  font-family: var(--mm-font);
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  text-transform: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--mm-text);
+  text-shadow: 0 2px 0 rgba(0, 0, 0, 0.6);
+  transform-origin: left center;
+  animation: mmBanner 0.4s 0.05s cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
+/* Error: darker, muted plate */
+.modal-header.modal-error .modal-title { filter: saturate(0.7) brightness(0.85) drop-shadow(0 4px 6px rgba(0, 0, 0, 0.6)); }
 
-/* Header accent variants — same gold plate, different underline glow */
-.modal-header.modal-success .modal-title { color: #cfe3a8; text-shadow: 0 0 18px rgba(140, 200, 90, 0.4), 0 2px 4px rgba(0,0,0,0.9); }
-.modal-header.modal-success::after { background: linear-gradient(90deg, transparent, #9dc06b 20%, #cfe3a8 50%, #9dc06b 80%, transparent); box-shadow: 0 0 8px rgba(140, 200, 90, 0.45); }
-
-.modal-header.modal-error .modal-title { color: #e8b4a0; text-shadow: 0 0 18px rgba(200, 90, 60, 0.45), 0 2px 4px rgba(0,0,0,0.9); }
-.modal-header.modal-error::after { background: linear-gradient(90deg, transparent, #c05a3c 20%, #e8b4a0 50%, #c05a3c 80%, transparent); box-shadow: 0 0 8px rgba(200, 90, 60, 0.5); }
-
-/* Modal Body */
+/* Body */
 .modal-body {
-  padding: 22px 26px;
-  color: #eee6d1;
-  font-size: 15px;
-  line-height: 1.65;
-  letter-spacing: 0.4px;
+  padding: 6px 28px 10px;
+  color: var(--mm-text);
+  font-size: 16px;
+  line-height: 1.6;
+  letter-spacing: 0.2px;
   max-height: 60vh;
   overflow-y: auto;
 }
-
 .modal-message {
   margin: 0;
   white-space: pre-line;
   text-align: center;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
 }
 
-/* Modal Input */
+/* Input */
 .modal-input {
   width: 100%;
-  padding: 12px 16px;
-  margin-top: 16px;
-  background: rgba(8, 10, 25, 0.8);
-  border: 1.5px solid rgba(184, 152, 95, 0.45);
-  border-radius: 8px;
-  color: #eee6d1;
+  padding: 10px 14px;
+  margin-top: 14px;
+  background: rgba(5, 14, 17, 0.9);
+  border: 1px solid var(--mm-line);
+  border-radius: 0;
+  color: var(--mm-text);
   font-size: 15px;
-  font-family: "Cinzel", serif;
-  letter-spacing: 0.5px;
-  transition: all 0.25s ease;
+  font-family: var(--mm-font);
+  transition: border-color 0.2s, box-shadow 0.2s;
   box-sizing: border-box;
 }
-
 .modal-input:focus {
   outline: none;
-  border-color: #d4af37;
-  background: rgba(12, 16, 35, 0.9);
-  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.18), 0 0 14px rgba(212, 175, 55, 0.25);
+  border-color: var(--mm-gold-hi);
+  box-shadow: 0 0 0 2px rgba(241, 217, 138, 0.15);
 }
 
-/* Selection Body */
+/* Selection list */
 .modal-selection-body {
-  padding: 12px 16px;
+  padding: 6px 18px 8px;
   max-height: 400px;
   overflow-y: auto;
 }
-
 .modal-selection-item {
-  padding: 14px 16px;
+  padding: 12px 16px;
   margin-bottom: 8px;
-  background: rgba(18, 22, 42, 0.7);
-  border: 1.5px solid rgba(139, 115, 85, 0.35);
-  border-radius: 10px;
+  background: linear-gradient(90deg, rgba(12, 34, 41, 0.85), rgba(12, 34, 41, 0.35));
+  border: 1px solid rgba(201, 162, 78, 0.3);
+  border-left: 3px solid rgba(201, 162, 78, 0.6);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: background 0.15s, border-color 0.15s, transform 0.15s;
 }
-
 .modal-selection-item:hover {
-  background: rgba(212, 175, 55, 0.08);
-  border-color: #d4af37;
-  box-shadow: 0 0 16px rgba(212, 175, 55, 0.2);
-  transform: translateX(4px);
+  background: linear-gradient(90deg, rgba(45, 107, 115, 0.45), rgba(12, 34, 41, 0.5));
+  border-color: rgba(241, 217, 138, 0.6);
+  transform: translateX(3px);
 }
-
 .modal-selection-name {
   font-size: 15px;
-  font-weight: 700;
-  color: #d4af37;
-  margin-bottom: 4px;
-  letter-spacing: 0.6px;
+  font-weight: 800;
+  color: var(--mm-gold-hi);
+  margin-bottom: 2px;
 }
-
 .modal-selection-desc {
   font-size: 13px;
-  color: #b8a080;
+  color: var(--mm-muted);
   line-height: 1.4;
 }
 
-/* Modal Footer */
+/* Footer + buttons */
 .modal-footer {
-  padding: 14px 24px 20px;
+  padding: 10px 24px 22px;
   display: flex;
-  gap: 12px;
+  gap: 14px;
   justify-content: center;
 }
-
-/* Modal Buttons */
 .modal-btn {
-  font-family: "Cinzel", serif;
-  padding: 11px 30px;
-  border-radius: 8px;
-  font-size: 13px;
-  font-weight: 700;
+  border: 0;
   cursor: pointer;
-  transition: all 0.2s ease;
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
+  min-width: 140px;
+  height: 44px;
+  padding: 0 28px;
+  font-family: var(--mm-font);
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  text-transform: none;
+  border-radius: 0;
+  transition: filter 0.15s, transform 0.12s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
-
 .modal-btn-primary {
-  background: url("../assets/ui/generated/button_gold.webp") center / 100% 100% no-repeat;
-  border: none;
-  color: #14100a;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
-  text-shadow: 0 1px 0 rgba(255, 235, 170, 0.5);
+  background: url("../assets/ui/jjk/action_btn.webp") center / 100% 100% no-repeat;
+  color: #231c08;
+  text-shadow: 0 1px 0 rgba(255, 240, 190, 0.55);
+  filter: drop-shadow(0 0 6px rgba(241, 217, 138, 0.25));
 }
-
-.modal-btn-primary:hover {
-  filter: brightness(1.25);
-  box-shadow: 0 0 24px rgba(212, 175, 55, 0.55), 0 4px 14px rgba(0, 0, 0, 0.5);
-  transform: translateY(-2px);
-}
-
-.modal-btn-primary:active {
-  transform: translateY(0);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
-}
-
 .modal-btn-secondary {
-  background: rgba(10, 10, 20, 0.85);
-  color: #d4af37;
-  border: 2px solid rgba(212, 175, 55, 0.35);
+  background: url("../assets/ui/jjk/tab.webp") center / 100% 100% no-repeat;
+  color: var(--mm-text);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
 }
+.modal-btn:hover { filter: brightness(1.12); }
+.modal-btn:active { transform: translateY(1px) scale(0.98); }
+.modal-btn:focus-visible { outline: 1px solid var(--mm-gold-hi); outline-offset: 4px; }
 
-.modal-btn-secondary:hover {
-  background: rgba(212, 175, 55, 0.12);
-  border-color: rgba(212, 175, 55, 0.7);
-  transform: translateY(-2px);
-}
-
-.modal-btn-secondary:active {
-  transform: translateY(0);
+@keyframes mmBanner {
+  0% { opacity: 0; transform: scaleX(0.3); }
+  100% { opacity: 1; transform: scaleX(1); }
 }
 
 /* =========================================================
    Shared themed close button (replaces the red circle X)
-   Usage: class="game-close-btn" — an engraved gold ring
+   Usage: class="game-close-btn" — gold ring, theme serif
    ========================================================= */
 .game-close-btn {
   width: 32px;
@@ -233,7 +229,7 @@
   background:
     radial-gradient(circle at 35% 30%, rgba(212, 175, 55, 0.22), rgba(10, 10, 20, 0.9) 65%);
   color: #d4af37;
-  font-family: "Cinzel", serif;
+  font-family: var(--jjk-font, "Kaisei Tokumin", serif);
   font-size: 14px;
   font-weight: 700;
   line-height: 1;
@@ -254,84 +250,42 @@
 }
 
 /* Scrollbar Styling */
+.modal-body,
+.modal-selection-body {
+  scrollbar-width: thin;
+  scrollbar-color: var(--jjk-gold-lo, #6e5320) transparent;
+}
 .modal-body::-webkit-scrollbar,
-.modal-selection-body::-webkit-scrollbar {
-  width: 8px;
-}
-
+.modal-selection-body::-webkit-scrollbar { width: 6px; }
 .modal-body::-webkit-scrollbar-track,
-.modal-selection-body::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.2);
-  border-radius: 4px;
-}
-
+.modal-selection-body::-webkit-scrollbar-track { background: transparent; }
 .modal-body::-webkit-scrollbar-thumb,
-.modal-selection-body::-webkit-scrollbar-thumb {
-  background: rgba(184, 152, 95, 0.5);
-  border-radius: 4px;
-}
+.modal-selection-body::-webkit-scrollbar-thumb { background: rgba(201, 162, 78, 0.45); }
 
-.modal-body::-webkit-scrollbar-thumb:hover,
-.modal-selection-body::-webkit-scrollbar-thumb:hover {
-  background: rgba(212, 175, 55, 0.7);
-}
-
-/* Mobile Responsiveness */
-@media (max-width: 480px) {
+/* Short / phone landscape + narrow portrait */
+@media (max-height: 540px), (max-width: 480px) {
   .modal-container {
-    min-width: 280px;
-    width: 95%;
-    max-height: 90vh;
+    min-width: 0;
+    width: min(460px, 92vw);
+    max-height: 92vh;
+    max-height: 92dvh;
+    padding-top: 56px;
   }
-
-  .modal-header {
-    padding: 14px 20px 12px;
-  }
-
-  .modal-title {
-    font-size: 17px;
-  }
-
-  .modal-body {
-    padding: 18px;
-    font-size: 14px;
-  }
-
-  .modal-footer {
-    flex-direction: column-reverse;
-    gap: 8px;
-  }
-
-  .modal-btn {
-    width: 100%;
-    padding: 14px;
-  }
-
-  .modal-selection-item {
-    padding: 12px;
-  }
-
-  .modal-selection-name {
-    font-size: 14px;
-  }
-
-  .modal-selection-desc {
-    font-size: 12px;
-  }
+  .modal-header { top: 10px; }
+  .modal-title { height: 38px; min-width: 170px; font-size: 18px; padding: 0 46px 0 18px; }
+  .modal-body { padding: 4px 18px 6px; font-size: 14.5px; }
+  .modal-footer { padding: 6px 16px 14px; }
+  .modal-btn { height: 38px; min-width: 120px; font-size: 15px; }
+  .modal-selection-item { padding: 10px 12px; }
+  .modal-selection-name { font-size: 14px; }
+  .modal-selection-desc { font-size: 12px; }
+}
+@media (max-width: 480px) and (min-height: 541px) {
+  .modal-footer { flex-direction: column-reverse; gap: 8px; }
+  .modal-btn { width: 100%; }
 }
 
-/* Animation for long messages */
-@keyframes slideIn {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.modal-message {
-  animation: slideIn 0.3s ease;
+@media (prefers-reduced-motion: reduce) {
+  .modal-overlay, .modal-container { transition: none; }
+  .modal-title { animation: none; }
 }
