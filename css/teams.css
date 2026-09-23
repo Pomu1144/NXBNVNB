@@ -1083,7 +1083,7 @@ body.page-teams .team-content {
   padding-bottom: 90px;
 }
 
-/* Team tabs: slanted plates, active = khaki-gold */
+/* Team tabs: washi ticket plates, active = crimson */
 body.page-teams .team-selector { gap: 8px; margin-bottom: 16px; }
 body.page-teams .team-tabs-row { gap: 0 2px; }
 body.page-teams .team-tab.jjk-tab {
@@ -1092,26 +1092,32 @@ body.page-teams .team-tab.jjk-tab {
   padding: 0 20px;
   border: 0;
   border-radius: 0;
-  background: url('../assets/ui/jjk/tab.webp') center / 100% 100% no-repeat;
+  box-sizing: border-box;
+  background: none;
+  border-image: url('../assets/ui/jjk/btn_ticket.webp') 36 fill / var(--jjk-tkt-w, 14px) stretch;
   box-shadow: none;
+  filter: brightness(0.82) saturate(0.85);
   font-family: var(--jjk-font);
   font-weight: 700;
   font-size: 15px;
   letter-spacing: 0.02em;
   text-transform: none;
-  color: var(--jjk-text);
+  color: rgba(236, 230, 214, 0.8);
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
 }
 body.page-teams .team-tab.jjk-tab:hover {
   transform: none;
   box-shadow: none;
-  filter: brightness(1.18);
+  filter: none;
+  color: var(--jjk-text);
 }
 body.page-teams .team-tab.jjk-tab.active {
-  background: url('../assets/ui/jjk/tab_active.webp') center / 106% 128% no-repeat;
-  color: #2a220c;
+  background: none;
+  border-image-source: url('../assets/ui/jjk/btn_ticket_red.webp');
+  filter: none;
   font-weight: 800;
-  text-shadow: 0 1px 0 rgba(255, 245, 200, 0.6);
+  color: var(--jjk-gold-hi, #f1d98a);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.95), 0 0 8px rgba(60, 0, 0, 0.6);
   box-shadow: none;
 }
 body.page-teams .btn-rename-team {
@@ -1120,15 +1126,19 @@ body.page-teams .btn-rename-team {
   font-size: 13px;
   letter-spacing: 0.02em;
   color: var(--jjk-text);
-  background: rgba(5, 14, 17, 0.85);
-  border: 1px solid rgba(201, 162, 78, 0.5);
+  border: 0;
   border-radius: 0;
+  box-sizing: border-box;
+  min-height: 32px;
   padding: 5px 22px;
-  clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
+  background: none;
+  border-image: url('../assets/ui/jjk/btn_ticket.webp') 36 fill / var(--jjk-tkt-w-sm, 10px) stretch;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
 }
 body.page-teams .btn-rename-team:hover {
-  background: rgba(19, 48, 57, 0.95);
-  border-color: var(--jjk-gold);
+  background: none;
+  filter: brightness(1.14);
+  color: var(--jjk-gold-hi);
 }
 
 /* Panels */
@@ -1197,18 +1207,21 @@ body.page-teams .btn-dark {
   padding: 0 28px;
   border: 0;
   border-radius: 0;
+  box-sizing: border-box;
   font-family: var(--jjk-font);
   font-weight: 800;
   font-size: 15px;
   transition: filter .15s, transform .12s var(--jjk-ease);
 }
 body.page-teams .btn-darkgold {
-  background: url('../assets/ui/jjk/action_btn.webp') center / 100% 100% no-repeat;
-  color: #231c08;
-  text-shadow: 0 1px 0 rgba(255, 240, 190, 0.55);
+  background: none;
+  border-image: url('../assets/ui/jjk/btn_ticket_red.webp') 36 fill / var(--jjk-tkt-w, 14px) stretch;
+  color: var(--jjk-gold-hi, #f1d98a);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.95), 0 0 8px rgba(60, 0, 0, 0.6);
 }
 body.page-teams .btn-dark {
-  background: url('../assets/ui/jjk/tab.webp') center / 100% 100% no-repeat;
+  background: none;
+  border-image: url('../assets/ui/jjk/btn_ticket.webp') 36 fill / var(--jjk-tkt-w, 14px) stretch;
   color: var(--jjk-text);
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
 }
@@ -1216,7 +1229,14 @@ body.page-teams .btn-darkgold:hover,
 body.page-teams .btn-dark:hover { background-color: transparent; filter: brightness(1.14); }
 body.page-teams .btn-darkgold:active,
 body.page-teams .btn-dark:active { transform: translateY(1px) scale(0.98); }
-body.page-teams .btn-darkgold[disabled] { filter: grayscale(0.85) brightness(0.6); }
+body.page-teams .btn-darkgold[disabled],
+body.page-teams .btn-dark[disabled] {
+  border-image-source: url('../assets/ui/jjk/btn_ticket_off.webp');
+  color: #8f9a98;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
+  filter: none;
+  cursor: not-allowed;
+}
 
 body.page-teams #char-filter {
   border-radius: 0;
@@ -1254,7 +1274,6 @@ html.is-mobile.is-landscape.is-compact body.page-teams .team-tab.jjk-tab {
   padding: 0 12px !important;
   font-size: 11px !important;
 }
-html.is-mobile.is-landscape.is-compact body.page-teams .team-tab.jjk-tab.active { background-size: 108% 132% !important; }
 html.is-mobile.is-landscape.is-compact body.page-teams .btn-darkgold,
 html.is-mobile.is-landscape.is-compact body.page-teams .btn-dark {
   min-width: 110px;

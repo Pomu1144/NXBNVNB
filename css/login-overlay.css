@@ -194,8 +194,11 @@ body.login-active { overflow: hidden; }
   -webkit-box-shadow: 0 0 0 40px #0a1d22 inset;
 }
 
-/* Primary: khaki metal action plate */
+/* Primary: crimson washi ticket plate */
 .login-primary.jjk-btn {
+  border-image-source: url('../assets/ui/jjk/btn_ticket_red.webp');
+  color: var(--jjk-gold-hi, #f1d98a);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.95), 0 0 8px rgba(60, 0, 0, 0.6);
   width: 100%;
   height: 52px;
   margin-top: 4px;
@@ -211,6 +214,8 @@ body.login-active { overflow: hidden; }
   gap: 10px;
 }
 .login-create.jjk-tab {
+  filter: none;
+  color: var(--jjk-text, #ece6d6);
   flex: 1 1 auto;
   min-width: 0;
   height: 42px;

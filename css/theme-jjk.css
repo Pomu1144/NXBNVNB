@@ -1,5 +1,5 @@
 /* ─────────────────────────────────────────────────────────────
-   Shared UI theme — ink-teal + antique gold, angular plates
+   Shared UI theme — ink-teal + antique gold, washi ticket plates
    (art direction modelled on JJK Phantom Parade menus).
    Load after css/fonts.css. Components are opt-in via .jjk-* classes.
    ───────────────────────────────────────────────────────────── */
@@ -80,32 +80,59 @@
   padding: 14px 20px;
 }
 
+/* ── Ticket plates ────────────────────────────────────────────
+   Buttons and tabs use the same washi "ticket" as the summon draw buttons:
+   rectangular paper, small 45° chamfered corners, thin gold frame and
+   lattice frets in the corners. Drawn as a 9-slice border-image so the
+   frets/chamfer never distort:
+     btn_ticket.webp      ink-teal washi, gold hairline — default / inactive tab
+     btn_ticket_red.webp  crimson washi, gold double frame — primary / active tab
+     btn_ticket_off.webp  desaturated dark — disabled
+   Slice 36 (of the 150px-tall art) holds the corner fret + chamfer;
+   --jjk-tkt-w is the on-screen size of that corner (≈14px at 44px tall).
+   Text on every plate is light (cream / gold-hi) with a dark shadow. */
+:root { --jjk-tkt-w: 14px; --jjk-tkt-w-sm: 10px; }
+html.is-mobile.is-landscape.is-compact { --jjk-tkt-w: 10px; --jjk-tkt-w-sm: 8px; }
+
 /* ── Tabs (segmented) ────────────────────────────────────────── */
 .jjk-tab {
-  position: relative; border: 0; cursor: pointer;
+  position: relative; border: 0; cursor: pointer; box-sizing: border-box;
   min-width: 120px; height: 40px; padding: 0 22px;
-  background: url('../assets/ui/jjk/tab.webp') center / 100% 100% no-repeat;
+  background: none;
+  border-image: url('../assets/ui/jjk/btn_ticket.webp') 36 fill / var(--jjk-tkt-w) stretch;
   font-family: var(--jjk-font); font-weight: 700; font-size: 15px;
-  color: var(--jjk-text); text-shadow: 0 1px 2px rgba(0,0,0,0.9);
+  color: rgba(236,230,214,0.78); text-shadow: 0 1px 2px rgba(0,0,0,0.9);
+  filter: brightness(0.82) saturate(0.85);
   transition: filter .15s, transform .15s var(--jjk-ease);
 }
-.jjk-tab:hover { filter: brightness(1.15); }
+.jjk-tab:hover { filter: brightness(1); color: var(--jjk-text); }
 .jjk-tab.active, .jjk-tab[aria-selected="true"] {
-  background-image: url('../assets/ui/jjk/tab_active.webp');
-  color: #2a220c; text-shadow: 0 1px 0 rgba(255,245,200,0.6);
+  border-image-source: url('../assets/ui/jjk/btn_ticket_red.webp');
+  filter: none;
+  color: var(--jjk-gold-hi); text-shadow: 0 1px 2px rgba(0,0,0,0.95), 0 0 8px rgba(60,0,0,0.6);
 }
 
-/* ── Action button (khaki metal parallelogram) ───────────────── */
+/* ── Action button (washi ticket plate) ──────────────────────── */
 .jjk-btn {
-  border: 0; cursor: pointer; min-width: 120px; height: 44px; padding: 0 26px;
-  background: url('../assets/ui/jjk/action_btn.webp') center / 100% 100% no-repeat;
+  border: 0; cursor: pointer; box-sizing: border-box;
+  min-width: 120px; height: 44px; padding: 0 26px;
+  background: none;
+  border-image: url('../assets/ui/jjk/btn_ticket.webp') 36 fill / var(--jjk-tkt-w) stretch;
   font-family: var(--jjk-font); font-weight: 800; font-size: 16px;
-  color: #231c08; text-shadow: 0 1px 0 rgba(255,240,190,0.55);
+  color: var(--jjk-text); text-shadow: 0 1px 2px rgba(0,0,0,0.9), 0 0 6px rgba(0,0,0,0.5);
   transition: filter .15s, transform .12s var(--jjk-ease);
+}
+.jjk-btn.is-primary {
+  border-image-source: url('../assets/ui/jjk/btn_ticket_red.webp');
+  color: var(--jjk-gold-hi); text-shadow: 0 1px 2px rgba(0,0,0,0.95), 0 0 8px rgba(60,0,0,0.6);
 }
 .jjk-btn:hover:not(:disabled) { filter: brightness(1.12); }
 .jjk-btn:active:not(:disabled) { transform: translateY(1px) scale(0.98); }
-.jjk-btn:disabled { filter: grayscale(0.85) brightness(0.6); cursor: not-allowed; }
+.jjk-btn:disabled, .jjk-btn.is-disabled {
+  border-image-source: url('../assets/ui/jjk/btn_ticket_off.webp');
+  color: #8f9a98; text-shadow: 0 1px 2px rgba(0,0,0,0.9);
+  filter: none; cursor: not-allowed;
+}
 
 /* ── Chip / badge ────────────────────────────────────────────── */
 .jjk-chip {

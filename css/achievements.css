@@ -73,7 +73,12 @@
   display: inline-flex; align-items: center; justify-content: center; gap: 8px;
   min-width: 150px; height: 44px; font-size: 16px;
 }
-.ach-claim-all:disabled { filter: grayscale(.9) brightness(.5); }
+.ach-claim-all.jjk-btn:not(:disabled),
+.ach-claim.jjk-btn:not(:disabled) {
+  border-image-source: url('../assets/ui/jjk/btn_ticket_red.webp');
+  color: var(--jjk-gold-hi, #f1d98a);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.95), 0 0 8px rgba(60, 0, 0, 0.6);
+}
 .ach-btn-badge {
   display: inline-grid; place-items: center;
   min-width: 22px; height: 22px; padding: 0 6px;
@@ -117,7 +122,7 @@
 .ach-cat.active { transform: translateX(6px); }
 .ach-cat-name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .ach-cat-count { font-size: 12px; font-weight: 700; color: var(--jjk-muted); letter-spacing: .3px; }
-.ach-cat.active .ach-cat-count { color: #4a3d15; }
+.ach-cat.active .ach-cat-count { color: rgba(241, 217, 138, 0.75); }
 .ach-cat-count { margin-left: auto; }
 .ach-cat-dot {
   flex: 0 0 auto; margin-left: -2px;
