@@ -24,7 +24,7 @@
   const num = n => (typeof n === 'number' ? n.toLocaleString() : (n || '—'));
 
   function artFor(ch, banner) {
-    if (ch && ch.full) return ch.full.replace(/\.gif$/i, '.png'); // prefer static PNG
+    if (ch && ch.full) return ch.full.replace(/\.gif$/i, '.webp'); // prefer the static image
     if (ch && ch.portrait) return ch.portrait;
     return banner && banner.image ? banner.image : '';
   }

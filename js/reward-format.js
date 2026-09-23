@@ -227,7 +227,7 @@
             kind: 'character',
             name: charName(ch.characterId),
             qty: ch.quantity || 1,
-            icon: `assets/characters/${ch.characterId}/portrait_${ch.tierCode || '6S'}.png`,
+            icon: `assets/characters/${ch.characterId}/portrait_${ch.tierCode || '6S'}.webp`,
             fallback: 'assets/icons/characters_icon.png',
             tier: ch.tierCode || ''
           });

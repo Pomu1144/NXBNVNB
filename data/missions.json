@@ -13046,7 +13046,7 @@
   "id": "si_raging_fourth_tail",
   "category": "Super Impact",
   "name": "Super Impact! The Raging Fourth Tail",
-  "banner": "assets/characters/naruto_281/full_5S.png",
+  "banner": "assets/characters/naruto_281/full_5S.webp",
   "sortOrder": 0.05,
   "difficulties": {
    "S": [
@@ -13122,7 +13122,7 @@
   "id": "si_eight_gates",
   "category": "Super Impact",
   "name": "Super Impact! Eight Gates Unleashed",
-  "banner": "assets/characters/rock_149/full_6S.png",
+  "banner": "assets/characters/rock_149/full_6S.webp",
   "sortOrder": 0.2,
   "difficulties": {
    "S": [
@@ -13198,7 +13198,7 @@
   "id": "si_slug_princess",
   "category": "Super Impact",
   "name": "Super Impact! The Slug Princess",
-  "banner": "assets/characters/tsunade_168/full_6S.png",
+  "banner": "assets/characters/tsunade_168/full_6S.webp",
   "sortOrder": 0.3,
   "difficulties": {
    "S": [
@@ -13274,7 +13274,7 @@
   "id": "si_sand_final_weapon",
   "category": "Super Impact",
   "name": "Super Impact! The Sand's Final Weapon",
-  "banner": "assets/characters/gaara_174/full_6S.png",
+  "banner": "assets/characters/gaara_174/full_6S.webp",
   "sortOrder": 0.4,
   "difficulties": {
    "S": [

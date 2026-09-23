@@ -89,7 +89,7 @@
     const map = (c && c.artByTier) || {};
     const t = map[tier] || {};
     const portrait = t.portrait || c.portrait || c.card || c.icon || 'assets/placeholder.png';
-    const full = (t.full || c.full || c.card || portrait).replace(/\.gif$/i, '.png');
+    const full = (t.full || c.full || c.card || portrait).replace(/\.gif$/i, '.webp');
     return { portrait, full };
   }
   function levelCap(inst, c) {
