@@ -131,30 +131,24 @@
      * Narrate jutsu skill
      */
     narrateJutsu(attacker, target, core) {
-      const skillName = this.getSkillName(attacker, 'jutsu');
-      const text = `${skillName}!`;
-      this.showAction(text, 'jutsu', core.dom);
-      console.log(`[Narrator] ${text}`);
+      // Skill names are shown by the single Blazing-style callout
+      // (BattleAttackNames); no second text here.
     },
 
     /**
      * Narrate ultimate skill
      */
     narrateUltimate(attacker, targets, core) {
-      const skillName = this.getSkillName(attacker, 'ultimate');
-      const text = `${skillName}!`;
-      this.showAction(text, 'ultimate', core.dom);
-      console.log(`[Narrator] ${text}`);
+      // Skill names are shown by the single Blazing-style callout
+      // (BattleAttackNames); no second text here.
     },
 
     /**
      * Narrate secret technique
      */
     narrateSecret(attacker, targets, core) {
-      const skillName = this.getSkillName(attacker, 'secret');
-      const text = `${skillName}!`;
-      this.showAction(text, 'secret', core.dom);
-      console.log(`[Narrator] ${text}`);
+      // Skill names are shown by the single Blazing-style callout
+      // (BattleAttackNames); no second text here.
     },
 
     /**

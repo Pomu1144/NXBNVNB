@@ -54257,7 +54257,7 @@
   "metadata": {
    "cardNumber": 508,
    "maxLevel": null,
-   "hitCount": 0
+   "hitCount": 13
   }
  },
  {
@@ -54339,6 +54339,24 @@
       "description": "6.5x attack toward 1 enemy(s) in range and increases your chance to dodge by 30% for 2 turn(s)."
      }
     }
+   },
+   "ultimate": {
+    "name": "Susano'o: Kamui Lightning Blade",
+    "type": "Ultimate",
+    "byTier": {
+     "6S": {
+      "chakraCost": 10,
+      "hits": 13,
+      "shape": "H. Rectangle (2/3)",
+      "range": "Vast",
+      "position": "Center",
+      "description": "14x attack toward all enemies in range, knocking them back, and gives you 30% damage reduction for 2 turn(s).",
+      "nwusDescription": "14x attack toward all enemies in range, knocking them back, and gives you 30% damage reduction for 2 second(s).",
+      "effects": {
+       "multiplier": 14
+      }
+     }
+    }
    }
   },
   "abilities": [
@@ -54370,7 +54388,7 @@
   "metadata": {
    "cardNumber": 509,
    "maxLevel": null,
-   "hitCount": 0
+   "hitCount": 13
   }
  },
  {
@@ -76152,6 +76170,25 @@
       "nwusDescription": "5x attack toward 1 enemy(s) in range, knocking them back and removing Barrier and perfect dodge."
      }
     }
+   },
+   "ultimate": {
+    "name": "Kamui",
+    "type": "Ultimate",
+    "byTier": {
+     "6S": {
+      "chakraCost": 10,
+      "hits": 14,
+      "shape": "Circle",
+      "range": "Long",
+      "position": "Center",
+      "description": "Removes Perfect Dodge for 1 enemy(s) in range and ignores Substitution with 15x attack toward them, with a 80% chance of jutsu sealing for 5 turn(s).",
+      "nwusDescription": "Removes Perfect Dodge for 1 enemy(s) in range and ignores Substitution with 12x attack toward them, with a 80% chance of jutsu sealing for 3 second(s).",
+      "effects": {
+       "multiplier": 15,
+       "targets": 1
+      }
+     }
+    }
    }
   },
   "abilities": [
@@ -76179,7 +76216,7 @@
   "metadata": {
    "cardNumber": 705,
    "maxLevel": null,
-   "hitCount": 0
+   "hitCount": 14
   }
  },
  {
@@ -76267,6 +76304,26 @@
       "chakraCostMax": 4
      }
     }
+   },
+   "ultimate": {
+    "name": "Kamui",
+    "type": "Ultimate",
+    "byTier": {
+     "6SB": {
+      "chakraCost": 10,
+      "hits": 14,
+      "shape": "Circle",
+      "range": "Long",
+      "position": "Center",
+      "description": "Removes Perfect Dodge for 1 enemy(s) in range and ignores Substitution with 9x attack toward them, with a 80% chance of jutsu sealing for 5 turn(s).",
+      "nwusDescription": "Removes Perfect Dodge for 1 enemy(s) in range and ignores Substitution with 15x attack toward them, with a 80% chance of jutsu sealing for 3 second(s).",
+      "effects": {
+       "multiplier": 9,
+       "targets": 1
+      },
+      "chakraCostMax": 8
+     }
+    }
    }
   },
   "abilities": [
@@ -76294,7 +76351,7 @@
   "metadata": {
    "cardNumber": 706,
    "maxLevel": null,
-   "hitCount": 0
+   "hitCount": 14
   }
  },
  {
@@ -112434,6 +112491,25 @@
       "chakraCostMax": 4
      }
     }
+   },
+   "ultimate": {
+    "name": "Susano'o: Kamui Lightning Blade",
+    "type": "Ultimate",
+    "byTier": {
+     "7S": {
+      "chakraCost": 10,
+      "chakraCostMax": 8,
+      "hits": 13,
+      "shape": "H. Rectangle (2/3)",
+      "range": "Vast",
+      "position": "Center",
+      "description": "20x attack toward all enemies in range, knocking them back, and gives you 30% damage reduction for 2 turn(s).",
+      "nwusDescription": "17x attack toward all enemies in range, knocking them back, and gives you 30% damage reduction for 2 second(s).",
+      "effects": {
+       "multiplier": 20
+      }
+     }
+    }
    }
   },
   "abilities": [
@@ -112469,7 +112545,7 @@
   "metadata": {
    "cardNumber": 2091,
    "maxLevel": null,
-   "hitCount": 0
+   "hitCount": 13
   }
  },
  {
@@ -115169,6 +115245,26 @@
       "nwusDescription": "5.5x attack toward all enemies in range and knocks them back. Cures own attack weakened and restores 15000 of own health."
      }
     }
+   },
+   "ultimate": {
+    "name": "Rasengan",
+    "type": "Ultimate",
+    "byTier": {
+     "7S": {
+      "chakraCost": 6,
+      "hits": 16,
+      "shape": "—",
+      "range": "Whole Map",
+      "position": "Right",
+      "description": "Removes Perfect Dodge and Barrier for 1 enemy(s) in range and ignores Substitution with 19.5x attack toward them, knocking them back. Restores own Chakra Gauge by 2.",
+      "nwusDescription": "Removes Perfect Dodge and Barrier for 1 enemy(s) in range and ignores Substitution with 15.5x attack toward them, knocking them back. Restores own Chakra Gauge by 2.",
+      "effects": {
+       "multiplier": 19.5,
+       "targets": 1,
+       "selfChakra": 2
+      }
+     }
+    }
    }
   },
   "abilities": [
@@ -115200,7 +115296,7 @@
   "metadata": {
    "cardNumber": 2115,
    "maxLevel": null,
-   "hitCount": 0
+   "hitCount": 16
   }
  },
  {

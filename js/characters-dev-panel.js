@@ -129,6 +129,8 @@
         <div class="chardev-note">Adds Naruto Uzumaki 7★ (naruto_2115, Tailed Beast Planetary Rasen Shuriken) with battle spritesheets.</div>
         <button class="chardev-btn" id="chardev-add-kakashi">Add Kakashi (animated sprite)</button>
         <div class="chardev-note">Adds Kakashi Hatake 6★ (kakashi_705, Lightning Blade) with battle spritesheets.</div>
+        <button class="chardev-btn" id="chardev-add-kakashi-ewh">Add Kakashi EWH (animated sprite)</button>
+        <div class="chardev-note">Adds Kakashi Hatake "Entrusted With Hope" 7★ (kakashi_2091, Twin Lightning Shiver) with battle spritesheets.</div>
       </div>`;
     document.body.appendChild(panel);
 
@@ -151,6 +153,7 @@
     panel.querySelector("#chardev-add-minato").addEventListener("click", addSpriteMinato);
     panel.querySelector("#chardev-add-naruto").addEventListener("click", addSpriteNaruto);
     panel.querySelector("#chardev-add-kakashi").addEventListener("click", addSpriteKakashi);
+    panel.querySelector("#chardev-add-kakashi-ewh").addEventListener("click", addSpriteKakashiEWH);
 
     panel.querySelector("#chardev-maxall").addEventListener("click", () => {
       const n = maxAllOwned();
@@ -178,6 +181,8 @@
   // Kakashi Hatake 6★ "Unshakeable Calm" (kakashi_705; maxing awakens it to its
   // 6SB form kakashi_706, which shares the same spritesheets).
   function addSpriteKakashi() { return addSpriteUnit("kakashi_705", "6S", "Kakashi Hatake"); }
+  // Kakashi Hatake 7★ "Entrusted With Hope" (kakashi_2091).
+  function addSpriteKakashiEWH() { return addSpriteUnit("kakashi_2091", "7S", "Kakashi Hatake (Entrusted With Hope)"); }
 
   async function init() {
     await loadChars();
@@ -193,5 +198,5 @@
     init();
   }
 
-  global.CharDevTools = { maxOutInstance, maxAllOwned, addSpriteMinato, addSpriteNaruto, addSpriteKakashi };
+  global.CharDevTools = { maxOutInstance, maxAllOwned, addSpriteMinato, addSpriteNaruto, addSpriteKakashi, addSpriteKakashiEWH };
 })(window);

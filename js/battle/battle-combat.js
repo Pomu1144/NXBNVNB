@@ -563,11 +563,13 @@
       // Create GSAP timeline for smooth sequencing
       if (window.gsap) {
         const tl = window.gsap.timeline({
+          paused: true, // started once the cut-in is done
           onComplete: () => {
             core.checkBattleEnd();
             onDone?.();
           }
         });
+        this.afterCutin(attacker, 'jutsu', j.data.name || j.data.skillName || j.meta.name, () => tl.play());
 
         // Step 1: Show attack name (0s)
         tl.call(() => {
@@ -752,11 +754,13 @@
       // Create GSAP timeline for smooth sequencing
       if (window.gsap) {
         const tl = window.gsap.timeline({
+          paused: true, // started once the cut-in is done
           onComplete: () => {
             core.checkBattleEnd();
             onDone?.();
           }
         });
+        this.afterCutin(attacker, 'ultimate', u.data.name || u.data.skillName || u.meta.name, () => tl.play());
 
         // Step 1: Show attack name (0s)
         tl.call(() => {
@@ -1077,48 +1081,52 @@
 
       console.log(`[Combat] ${attacker.name} multi-jutsu ${targets.length} enemies`);
 
-      // Play animation
-      const animGif = j.data.animationGif || attacker._ref?.base?.jutsuAnimation;
-      if (window.BattleAnimations) {
-        window.BattleAnimations.playSkillAnimation(attacker, "jutsu", animGif, core.dom);
-      }
+      const skillName = j.data.name || j.data.skillName || j.meta.name;
+      this.afterCutin(attacker, 'jutsu', skillName, () => {
+        window.BattleAttackNames?.showAttackName(skillName, 'jutsu');
+        // Play animation
+        const animGif = j.data.animationGif || attacker._ref?.base?.jutsuAnimation;
+        if (window.BattleAnimations) {
+          window.BattleAnimations.playSkillAnimation(attacker, "jutsu", animGif, core.dom);
+        }
 
-      // Hit all targets
-      targets.forEach((target, i) => {
-        setTimeout(() => {
-          const {damage, isCritical, breakdown} = this.calculateDamage(attacker, target, mult);
-          target.stats.hp = Math.max(0, target.stats.hp - damage);
-
-          // Apply knockback for multi-jutsu
-          if (window.BattlePhysics) {
-            window.BattlePhysics.applyKnockback(target, attacker, 45, core);
-          }
-
+        // Hit all targets
+        targets.forEach((target, i) => {
           setTimeout(() => {
-            if (window.BattleAnimations) {
-              window.BattleAnimations.showDamage(target, damage, isCritical, core.dom, false, breakdown);
+            const {damage, isCritical, breakdown} = this.calculateDamage(attacker, target, mult);
+            target.stats.hp = Math.max(0, target.stats.hp - damage);
+
+            // Apply knockback for multi-jutsu
+            if (window.BattlePhysics) {
+              window.BattlePhysics.applyKnockback(target, attacker, 45, core);
             }
-          }, 150);
 
-          if (core.units) {
-            core.units.updateUnitDisplay(target, core);
-          } else {
-            core.updateUnitDisplay(target);
-          }
-        }, i * 200 + 400);
+            setTimeout(() => {
+              if (window.BattleAnimations) {
+                window.BattleAnimations.showDamage(target, damage, isCritical, core.dom, false, breakdown);
+              }
+            }, 150);
+
+            if (core.units) {
+              core.units.updateUnitDisplay(target, core);
+            } else {
+              core.updateUnitDisplay(target);
+            }
+          }, i * 200 + 400);
+        });
+
+        if (core.units) {
+          core.units.updateUnitDisplay(attacker, core);
+        } else {
+          core.updateUnitDisplay(attacker);
+        }
+
+        setTimeout(() => {
+          core.updateTeamHP();
+          core.checkBattleEnd();
+          onDone?.();
+        }, targets.length * 200 + 800);
       });
-
-      if (core.units) {
-        core.units.updateUnitDisplay(attacker, core);
-      } else {
-        core.updateUnitDisplay(attacker);
-      }
-
-      setTimeout(() => {
-        core.updateTeamHP();
-        core.checkBattleEnd();
-        onDone?.();
-      }, targets.length * 200 + 800);
 
       return true;
     },
@@ -1287,6 +1295,22 @@
     },
 
     /**
+     * Play the skill cut-in (BattleCutin), then run `fn`. The unit counts as
+     * busy meanwhile so the turn watchdogs wait. Runs `fn` right away (next
+     * microtask) when cut-ins are off.
+     */
+    afterCutin(attacker, kind, skillName, fn) {
+      const C = window.BattleCutin;
+      if (!C?.wants?.(attacker, kind)) { Promise.resolve().then(fn); return; }
+      const wasBusy = attacker._actionBusy;
+      attacker._actionBusy = true;
+      C.play(attacker, kind, skillName).catch(() => {}).then(() => {
+        attacker._actionBusy = wasBusy || false;
+        fn();
+      });
+    },
+
+    /**
      * Jutsu / ultimate for a sprite unit: dash in, play the sheet, deal one
      * slice of damage (and one damage number) per hit frame, dash back, then
      * apply end-of-skill effects and end the turn.
@@ -1305,11 +1329,10 @@
       attacker._actionBusy = true;
       const done = () => { attacker._actionBusy = false; core.checkBattleEnd?.(); onDone?.(); };
 
-      window.BattleAttackNames?.showAttackName(skillName, kind);
-      if (window.BattleNarrator) {
-        if (kind === 'ultimate') window.BattleNarrator.narrateUltimate?.(attacker, targets, core);
-        else window.BattleNarrator.narrateJutsu?.(attacker, targets[0], core);
-      }
+      // Callout band stays up for the whole sprite attack; hidden when it ends.
+      // It is shown after the cut-in (if any) has played.
+      let callout = null;
+      const hideCallout = () => window.BattleAttackNames?.hideAttackName?.(callout);
       if (core.units) core.units.updateUnitDisplay(attacker, core); else core.updateUnitDisplay?.(attacker);
 
       // One damage roll per target (crit / variance / element, as the generic
@@ -1335,6 +1358,9 @@
         const home = { x: attacker.pos.x, y: attacker.pos.y };
         const anchor = targets[0];
 
+        // Blazing-style cut-in first (resolves at once when off / not wanted).
+        try { await window.BattleCutin?.play?.(attacker, kind, skillName); } catch (e) { /* cosmetic */ }
+        callout = window.BattleAttackNames?.showAttackName(skillName, kind, { hold: 'manual' });
         await wait(350); // let the skill name land
         if (meta && unitEl) {
           await this.dashUnitTo(attacker, unitEl, this.getStrikePosition(attacker, anchor, unitEl, core, meta), core);
@@ -1365,6 +1391,7 @@
           }
         });
 
+        hideCallout();
         if (meta && unitEl) {
           await wait(120);
           await this.dashUnitTo(attacker, unitEl, home, core);
@@ -1395,6 +1422,7 @@
         done();
       })().catch(err => {
         console.error('[Combat] sprite skill failed', err);
+        hideCallout();
         core.units?.settleSprite?.(attacker);
         done();
       });
@@ -1517,15 +1545,16 @@
       console.log(`[Combat] ${caster.name} uses SECRET: ${secret.meta.name}`);
 
       // Display attack name BEFORE effects apply (Storm 4 style)
-      if (window.BattleAttackNames) {
+      {
         const attackName = secret.data.name || secret.data.skillName || secret.meta.name;
-        window.BattleAttackNames.showAttackName(attackName, 'secret');
+        const showName = () => window.BattleAttackNames?.showAttackName(attackName, 'secret');
+        if (window.BattleCutin?.wants?.(caster, 'secret')) {
+          window.BattleCutin.play(caster, 'secret', attackName).catch(() => {}).then(showName);
+        } else {
+          showName();
+        }
       }
 
-      // Narrate action
-      if (window.BattleNarrator) {
-        window.BattleNarrator.showAction(secret.meta.name, "secret", core.dom);
-      }
 
       // Get effects from secret technique
       const effects = secret.data.effects;

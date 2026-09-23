@@ -128,8 +128,8 @@
 
       console.log(`[Entrance] Boss entrance for ${unit.name}`);
 
-      // Screen flash
-      this.createScreenFlash(core);
+      // (No full-screen white flash here: with the hp > 2000 "boss" test it fired
+      // on almost every mission load.)
 
       // Start from center, large scale
       unitEl.style.transform = 'translateX(0%) scale(3)';

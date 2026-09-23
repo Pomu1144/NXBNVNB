@@ -177,6 +177,7 @@
             <button type="button" class="bdev-close" id="bdev-close" title="Collapse" aria-label="Collapse dev panel">›</button>
           </div>
           <button type="button" class="jjk-btn is-primary bdev-maxall" id="bdev-maxall">Max chakra</button>
+          <button type="button" class="jjk-btn bdev-maxall bdev-cutins" id="bdev-cutins" aria-pressed="true">Cut-ins: On</button>
           <div class="bdev-sub">Set turn <small>tap a unit to act now</small></div>
           <div class="bdev-list" id="bdev-list"></div>
           <div class="bdev-status" id="bdev-status" aria-live="polite"></div>
@@ -189,6 +190,20 @@
       root.querySelector("#bdev-tab").addEventListener("click", () => this.setCollapsed(false));
       root.querySelector("#bdev-close").addEventListener("click", () => this.setCollapsed(true));
       root.querySelector("#bdev-maxall").addEventListener("click", () => this.maxAllChakra());
+      const cutBtn = root.querySelector("#bdev-cutins");
+      const syncCut = () => {
+        const on = window.BattleCutin?.isEnabled?.() !== false;
+        cutBtn.textContent = `Cut-ins: ${on ? "On" : "Off"}`;
+        cutBtn.setAttribute("aria-pressed", String(on));
+      };
+      cutBtn.addEventListener("click", () => {
+        const C = window.BattleCutin;
+        if (!C) return;
+        C.setEnabled(!C.isEnabled());
+        syncCut();
+        this.flash(`Skill cut-ins ${C.isEnabled() ? "on" : "off"}`);
+      });
+      syncCut();
 
       this.list.addEventListener("click", e => {
         const row = e.target.closest("[data-uid]");

@@ -163,6 +163,10 @@
     naruto_2115: 'assets/sprites/naruto_2115',
     kakashi_705: 'assets/sprites/kakashi_705',
     kakashi_706: 'assets/sprites/kakashi_705', // 6★ Blazing Burst form of the same unit (maxing awakens 705 into it)
+    // Kakashi Hatake "Entrusted With Hope" (5★ / 6★ / 7★) share one sprite set.
+    kakashi_508: 'assets/sprites/kakashi_2091',
+    kakashi_509: 'assets/sprites/kakashi_2091',
+    kakashi_2091: 'assets/sprites/kakashi_2091',
   };
 
   window.SpritePlayer = {
