@@ -1,0 +1,252 @@
+/* ===================================================
+   SKILL CUT-IN (Naruto Blazing style)
+   Dimmed field, ink-splash band in the skill colour with the unit's full art
+   inside, torn brush name banner on top. Built by js/battle/battle-cutin.js.
+   Ink textures: assets/ui/cutin/*.webp (white ink, tinted here via masks).
+   =================================================== */
+
+.battle-cutin {
+  --ci-c1: #3fd6ff;                   /* jutsu: cyan-blue ink (HUD lightning) */
+  --ci-c2: #0b62e0;
+  --ci-glow: rgba(70, 205, 255, 0.75);
+  --ci-font: 30px;
+  --ci-rot: -7deg;
+
+  position: absolute;
+  inset: 0;
+  z-index: 900;                       /* above units, callout band, numbers */
+  overflow: hidden;
+  pointer-events: auto;               /* tap to skip */
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.battle-cutin.ci-ultimate {
+  --ci-c1: #ff4a3d;
+  --ci-c2: #8a0d16;
+  --ci-glow: rgba(255, 60, 50, 0.75);
+}
+.battle-cutin.ci-secret {
+  --ci-c1: #ffd75a;
+  --ci-c2: #a8740a;
+  --ci-glow: rgba(255, 215, 80, 0.75);
+}
+.battle-cutin.ci-enemy { --ci-rot: 7deg; }
+
+/* ---- dimmer ---- */
+.battle-cutin .ci-dim {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 50% 50%, rgba(0,0,0,0.58) 0%, rgba(0,0,0,0.8) 100%);
+  opacity: 0;
+  transition: opacity 150ms linear;
+}
+
+/* ---- the ink band ---- */
+.battle-cutin .ci-stage {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: min(52%, 780px);
+  margin-left: calc(min(52%, 780px) / -2);
+  transform: translate(38%, 6%) rotate(var(--ci-rot)) scale(0.92);
+  opacity: 0;
+  transition: transform 260ms cubic-bezier(.16,.84,.3,1), opacity 180ms linear;
+}
+.battle-cutin.ci-enemy .ci-stage { transform: translate(-38%, 6%) rotate(var(--ci-rot)) scale(0.92); }
+
+.battle-cutin .ci-stage > div {
+  position: absolute;
+  -webkit-mask-repeat: no-repeat;
+          mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%;
+          mask-size: 100% 100%;
+  -webkit-mask-position: center;
+          mask-position: center;
+}
+
+/* long diagonal brush streak behind everything */
+.battle-cutin .ci-streak {
+  inset: -14% -30%;
+  -webkit-mask-image: url('../assets/ui/cutin/ink_band.webp');
+          mask-image: url('../assets/ui/cutin/ink_band.webp');
+  background: linear-gradient(180deg, var(--ci-c1), var(--ci-c2));
+  transform: rotate(38deg) scaleX(0.55);
+  opacity: 0.5;
+}
+/* big coloured splash, the "frame" */
+.battle-cutin .ci-splash {
+  inset: -7% -16%;
+  -webkit-mask-image: url('../assets/ui/cutin/ink_splash.webp');
+          mask-image: url('../assets/ui/cutin/ink_splash.webp');
+  background:
+    radial-gradient(ellipse at 50% 45%, var(--ci-c1) 0%, var(--ci-c1) 35%, var(--ci-c2) 100%);
+  filter: drop-shadow(0 0 18px var(--ci-glow));
+}
+/* bright rim just outside the art */
+.battle-cutin .ci-rim {
+  inset: -1.5% 1%;
+  -webkit-mask-image: url('../assets/ui/cutin/ink_band.webp');
+          mask-image: url('../assets/ui/cutin/ink_band.webp');
+  background: linear-gradient(160deg, #fff 0%, var(--ci-c1) 35%, var(--ci-c1) 70%, var(--ci-c2) 100%);
+  filter: drop-shadow(0 0 10px var(--ci-glow));
+  transform: scale(-1, 1);            /* mirrored so the edges interleave */
+}
+/* the character art, cut to a rough vertical brush band */
+.battle-cutin .ci-art {
+  inset: 0 5%;
+  -webkit-mask-image: url('../assets/ui/cutin/ink_band.webp');
+          mask-image: url('../assets/ui/cutin/ink_band.webp');
+  overflow: hidden;
+  background: #05080c;
+}
+.battle-cutin .ci-art img {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 118%;
+  height: 106%;
+  object-fit: cover;
+  object-position: 50% 30%;
+  transform: translate(-50%, -50%) rotate(calc(var(--ci-rot) * -1)) scale(1.18) translate(3%, 2%);
+  transition: transform 1400ms linear;
+  will-change: transform;
+}
+.battle-cutin .ci-tint {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(0deg, var(--ci-c1) 0%, rgba(0,0,0,0) 32%),
+    linear-gradient(90deg, var(--ci-c2) 0%, rgba(0,0,0,0) 22%, rgba(0,0,0,0) 78%, var(--ci-c2) 100%);
+  mix-blend-mode: screen;
+  opacity: 0.55;
+}
+/* flying droplets */
+.battle-cutin .ci-splatter {
+  inset: -6% -18%;
+  -webkit-mask-image: url('../assets/ui/cutin/ink_splatter.webp');
+          mask-image: url('../assets/ui/cutin/ink_splatter.webp');
+  background: var(--ci-c1);
+  filter: drop-shadow(0 0 6px var(--ci-glow));
+  transform: scale(0.7) rotate(calc(var(--ci-rot) * -2));
+  opacity: 0;
+  transition: transform 320ms 90ms cubic-bezier(.2,.9,.25,1.2), opacity 160ms 90ms linear;
+}
+
+/* ---- torn brush name banner ---- */
+.battle-cutin .ci-banner {
+  position: absolute;
+  left: 50%;
+  top: 5%;
+  width: min(66%, 900px);
+  min-height: calc(var(--ci-font) * 2.9);
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: calc(var(--ci-font) * 0.5) 9%;
+  box-sizing: border-box;
+  clip-path: inset(0 50% 0 50%);
+  opacity: 0;
+  transition: clip-path 240ms 80ms cubic-bezier(.2,.8,.2,1), opacity 120ms 80ms linear;
+}
+.battle-cutin .ci-banner-bg {
+  position: absolute;
+  inset: 0;
+  background: url('../assets/ui/cutin/name_banner.webp') center / 100% 100% no-repeat;
+  filter: drop-shadow(0 4px 10px rgba(0,0,0,0.7));
+}
+.battle-cutin .ci-name {
+  position: relative;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  max-width: 100%;
+  font-family: 'Kaisei Tokumin', 'Times New Roman', serif;
+  font-weight: 800;
+  font-size: var(--ci-font);
+  line-height: 1.15;
+  text-align: center;
+  color: #ecd8a4;
+  background: linear-gradient(180deg, #fbefcb 0%, #e6cd8c 55%, #c9a557 100%);
+  -webkit-background-clip: text;
+          background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 0 rgba(0,0,0,0.95)) drop-shadow(0 0 4px rgba(0,0,0,0.8));
+  overflow-wrap: anywhere;
+}
+
+.battle-cutin .ci-skip {
+  position: absolute;
+  right: 2.5%;
+  bottom: 3%;
+  font: 700 11px 'Kaisei Tokumin', serif;
+  letter-spacing: 0.12em;
+  color: rgba(236, 230, 214, 0.55);
+  text-shadow: 0 1px 2px #000;
+  opacity: 0;
+  transition: opacity 200ms 300ms linear;
+}
+
+/* ---- in ---- */
+.battle-cutin.is-in .ci-dim { opacity: 1; }
+.battle-cutin.is-in .ci-stage,
+.battle-cutin.ci-enemy.is-in .ci-stage {
+  transform: translate(0, 0) rotate(var(--ci-rot)) scale(1);
+  opacity: 1;
+}
+.battle-cutin.is-in .ci-art img {
+  transform: translate(-50%, -50%) rotate(calc(var(--ci-rot) * -1)) scale(1.08) translate(-2%, -1%);
+}
+.battle-cutin.is-in .ci-splatter {
+  transform: scale(1) rotate(calc(var(--ci-rot) * -2));
+  opacity: 0.85;
+}
+.battle-cutin.is-in .ci-banner { clip-path: inset(-20% 0 -20% 0); opacity: 1; }
+.battle-cutin.is-in .ci-skip { opacity: 1; }
+
+/* ---- out: quick sweep away ---- */
+.battle-cutin.is-out { pointer-events: none; }
+.battle-cutin.is-out .ci-dim { opacity: 0; transition-duration: 200ms; }
+.battle-cutin.is-out .ci-stage {
+  transform: translate(-45%, -4%) rotate(var(--ci-rot)) scale(1.04);
+  opacity: 0;
+  transition: transform 200ms cubic-bezier(.6,0,.9,.4), opacity 200ms linear;
+}
+.battle-cutin.ci-enemy.is-out .ci-stage { transform: translate(45%, -4%) rotate(var(--ci-rot)) scale(1.04); }
+.battle-cutin.is-out .ci-art img { transition: none; transform: translate(-50%, -50%) rotate(calc(var(--ci-rot) * -1)) scale(1.08) translate(-2%, -1%); }
+.battle-cutin.is-out .ci-splatter { opacity: 0; transform: scale(1.15); transition: all 200ms linear; }
+.battle-cutin.is-out .ci-banner { opacity: 0; clip-path: inset(-20% 0 -20% 0); transition: opacity 160ms linear; }
+.battle-cutin.is-out .ci-skip { opacity: 0; transition: opacity 100ms linear; }
+
+/* ---- phones (landscape) ---- */
+html.is-mobile .battle-cutin { --ci-font: 18px; }
+html.is-mobile .battle-cutin .ci-stage { width: min(50%, 460px); margin-left: calc(min(50%, 460px) / -2); }
+html.is-mobile .battle-cutin .ci-banner { top: 3%; width: min(72%, 620px); }
+html.is-mobile .battle-cutin .ci-skip { font-size: 9px; }
+@media (max-height: 480px) {
+  .battle-cutin { --ci-font: 18px; }
+  .battle-cutin .ci-banner { top: 3%; }
+}
+
+/* ---- reduced motion: plain fade ---- */
+.battle-cutin.ci-rm .ci-stage,
+.battle-cutin.ci-rm.is-in .ci-stage,
+.battle-cutin.ci-rm.is-out .ci-stage {
+  transform: rotate(var(--ci-rot));
+  transition: opacity 160ms linear;
+}
+.battle-cutin.ci-rm .ci-art img,
+.battle-cutin.ci-rm.is-in .ci-art img {
+  transform: translate(-50%, -50%) rotate(calc(var(--ci-rot) * -1)) scale(1.1);
+  transition: none;
+}
+.battle-cutin.ci-rm .ci-splatter,
+.battle-cutin.ci-rm.is-in .ci-splatter { transform: none; transition: opacity 160ms linear; }
+.battle-cutin.ci-rm .ci-banner { clip-path: none; transition: opacity 160ms linear; }
+
+/* dev panel toggle (js/battle/battle-dev-panel.js) */
+#battle-dev-panel .bdev-cutins { margin-top: 6px; }

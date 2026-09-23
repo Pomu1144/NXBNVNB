@@ -225,6 +225,8 @@
           this.dom.scene.style.backgroundSize = 'cover';
           this.dom.scene.style.backgroundPosition = 'center';
           console.log("[BattleCore] 🌄 Map loaded:", firstStage.map);
+        } else if (this.dom.scene) {
+          this.dom.scene.style.backgroundImage = "url('assets/maps/bg_170101_tenti.png')";
         }
       }
 
@@ -681,13 +683,7 @@
       this.commanderUltimateUsed = true;
 
       // Show narrator message
-      if (window.BattleNarrator) {
-        window.BattleNarrator.showAction?.(
-          `${this.commander.name}: ${this.commander.ultimate.name}!`,
-          "ultimate",
-          this.dom
-        );
-      }
+      window.BattleAttackNames?.showAttackName(this.commander.ultimate.name, 'ultimate');
 
       // Apply ultimate effects to enemies
       if (this.commander.ultimate.effects && window.BattleBuffs) {

@@ -1,210 +1,223 @@
 /* ===================================================
-   ATTACK NAME DISPLAY SYSTEM
-   Storm 4 / Anime-Style Attack Name Splash
+   SKILL CALLOUT (Blazing style)
+   One full-width band just below the HUD / speed gauge that names the
+   jutsu, ultimate or secret technique being used. Black band, thin gold
+   rules with diamond caps, clean white name. Built by
+   js/battle/battle-attack-names.js; only one exists at a time.
    =================================================== */
 
-/* === Base Attack Name Container === */
-.attack-name-display {
-  position: fixed;
-  top: 8%;
-  left: 50%;
-  transform: translate(-50%, 0) scale(0.7);
-  z-index: 9999;
+.skill-callout {
+  --sc-h: 60px;
+  --sc-font: 30px;
+  --sc-gold-hi: #ffe6a3;
+  --sc-gold: #c9a24e;
+  --sc-gold-lo: #4a3712;
+  --sc-accent: #4aa8ff;            /* jutsu */
+  --sc-accent-glow: rgba(74, 168, 255, 0.55);
 
-  /* Typography */
-  font-family: "Cinzel", serif;
-  font-size: 48px;
-  font-weight: 700;
-  font-style: italic;
-  text-align: center;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  white-space: nowrap;
-
-  /* Initial state */
-  opacity: 0;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 84px;                        /* JS re-anchors under the speed gauge */
+  height: var(--sc-h);
+  z-index: 120;                     /* over units / side panel, under modals */
   pointer-events: none;
-
-  /* Ensure no collisions */
-  max-width: 90vw;
-  overflow: visible;
+  user-select: none;
+  contain: layout paint;
+}
+.skill-callout.sc-ultimate {
+  --sc-accent: #ff4a4a;
+  --sc-accent-glow: rgba(255, 60, 60, 0.55);
+}
+.skill-callout.sc-secret {
+  --sc-accent: #ffd45c;
+  --sc-accent-glow: rgba(255, 205, 80, 0.55);
 }
 
-/* === ULTIMATE JUTSU (DARK Red with Thin Gold Stroke) === */
-.attack-name-ultimate {
-  color: #5C0000; /* Much darker red */
-  text-shadow:
-    /* Thin gold stroke (2px instead of 4px) */
-    -2px -2px 0 #D4AF37,
-    2px -2px 0 #D4AF37,
-    -2px 2px 0 #D4AF37,
-    2px 2px 0 #D4AF37,
-    /* Red inner glow */
-    0 0 15px rgba(200, 0, 0, 0.8),
-    0 0 30px rgba(200, 0, 0, 0.6),
-    0 0 45px rgba(200, 0, 0, 0.4);
+/* Black band, fading out at the far left/right ends */
+.skill-callout .sc-band {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0) 40%),
+    linear-gradient(90deg,
+      rgba(0,0,0,0) 0%,
+      rgba(0,0,0,0.66) 4%,
+      rgba(0,0,0,0.8) 12%,
+      rgba(0,0,0,0.8) 88%,
+      rgba(0,0,0,0.66) 96%,
+      rgba(0,0,0,0) 100%);
 }
-
-/* === SECRET TECHNIQUE (DARK DARK Gold with Thin White Lines) === */
-.attack-name-secret {
-  color: #8B7500; /* Dark dark gold */
-  text-shadow:
-    /* Thin white lines (2px) */
-    -2px -2px 0 #FFFFFF,
-    2px -2px 0 #FFFFFF,
-    -2px 2px 0 #FFFFFF,
-    2px 2px 0 #FFFFFF,
-    /* Gold sparkle glow */
-    0 0 20px rgba(212, 175, 55, 1),
-    0 0 40px rgba(212, 175, 55, 0.8),
-    0 0 60px rgba(212, 175, 55, 0.6);
+/* Type accent: a faint coloured glow line just inside the top and bottom
+   rules, strongest at the centre. */
+.skill-callout .sc-band::before,
+.skill-callout .sc-band::after {
+  content: "";
+  position: absolute;
+  left: 12%;
+  right: 12%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--sc-accent) 50%, transparent);
+  box-shadow: 0 0 6px 1px var(--sc-accent-glow);
+  opacity: 0.55;
 }
+.skill-callout .sc-band::before { top: 3px; }
+.skill-callout .sc-band::after  { bottom: 3px; }
 
-/* === REGULAR JUTSU (Blue with Light Blue Stroke) === */
-.attack-name-jutsu {
-  color: #4169E1; /* Royal blue */
-  text-shadow:
-    /* Light blue stroke */
-    -3px -3px 0 #87CEEB,
-    3px -3px 0 #87CEEB,
-    -3px 3px 0 #87CEEB,
-    3px 3px 0 #87CEEB,
-    -3px 0 0 #87CEEB,
-    3px 0 0 #87CEEB,
-    0 -3px 0 #87CEEB,
-    0 3px 0 #87CEEB,
-    /* Blue flame glow */
-    0 0 15px rgba(65, 105, 225, 0.9),
-    0 0 30px rgba(65, 105, 225, 0.7),
-    0 0 45px rgba(100, 150, 255, 0.5);
+/* Gold rules (1px bright over 1px dark), fading at the ends */
+.skill-callout .sc-rule {
+  position: absolute;
+  left: 3%;
+  right: 3%;
+  height: 2px;
+  background:
+    linear-gradient(90deg, rgba(241,217,138,0) 0%, var(--sc-gold-hi) 6%, var(--sc-gold-hi) 94%, rgba(241,217,138,0) 100%) top / 100% 1px no-repeat,
+    linear-gradient(90deg, rgba(74,55,18,0) 0%, var(--sc-gold-lo) 6%, var(--sc-gold-lo) 94%, rgba(74,55,18,0) 100%) bottom / 100% 1px no-repeat;
+  filter: drop-shadow(0 0 3px rgba(201,162,78,0.55));
 }
+.skill-callout .sc-rule.top    { top: -1px; }
+.skill-callout .sc-rule.bottom { bottom: -1px; }
 
-/* === NORMAL ATTACK (White with Black Outline) === */
-.attack-name-normal {
-  color: #FFFFFF;
-  font-size: 32px; /* Smaller */
-  text-shadow:
-    /* Black outline */
-    -2px -2px 0 #000000,
-    2px -2px 0 #000000,
-    -2px 2px 0 #000000,
-    2px 2px 0 #000000,
-    -2px 0 0 #000000,
-    2px 0 0 #000000,
-    0 -2px 0 #000000,
-    0 2px 0 #000000;
-}
-
-/* === ANIMATION PHASES === */
-
-/* Phase 1: Scale Up (0.25s) */
-.attack-name-display.phase-scale {
-  animation: attackNameScaleUp 0.25s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
-}
-
-@keyframes attackNameScaleUp {
-  0% {
-    opacity: 0;
-    transform: translate(-50%, 0) scale(0.7);
-  }
-  60% {
-    opacity: 1;
-    transform: translate(-50%, 0) scale(1.1);
-  }
-  100% {
-    opacity: 1;
-    transform: translate(-50%, 0) scale(1);
-  }
-}
-
-/* Phase 2: Glow Pulse (0.15s) */
-.attack-name-display.phase-glow {
-  animation: attackNameGlow 0.15s ease-out;
-}
-
-@keyframes attackNameGlow {
-  0% {
-    filter: brightness(1);
-  }
-  50% {
-    filter: brightness(1.4) drop-shadow(0 0 20px currentColor);
-  }
-  100% {
-    filter: brightness(1);
-  }
-}
-
-/* Phase 3: Hold (automatic - no animation needed) */
-
-/* Phase 4: Fade Out with Upward Drift (0.6s) */
-.attack-name-display.phase-fadeout {
-  animation: attackNameFadeOut 0.6s ease-in forwards;
-}
-
-@keyframes attackNameFadeOut {
-  0% {
-    opacity: 1;
-    transform: translate(-50%, 0) scale(1);
-  }
-  100% {
-    opacity: 0;
-    transform: translate(-50%, -30px) scale(0.95);
-  }
-}
-
-/* === Special Effects === */
-
-/* Slight shake for Ultimate names */
-.attack-name-ultimate.phase-scale {
-  animation:
-    attackNameScaleUp 0.25s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards,
-    attackNameShake 0.15s 0.25s ease-in-out;
-}
-
-@keyframes attackNameShake {
-  0%, 100% { transform: translate(-50%, 0) scale(1); }
-  25% { transform: translate(-48%, 0) scale(1); }
-  75% { transform: translate(-52%, 0) scale(1); }
-}
-
-/* Particle burst effect (optional - can be added later) */
-.attack-name-display.phase-scale::before {
-  content: '';
+/* Diamond ornaments at both ends of each rule */
+.skill-callout .sc-rule::before,
+.skill-callout .sc-rule::after {
+  content: "";
   position: absolute;
   top: 50%;
-  left: 50%;
-  width: 200%;
-  height: 200%;
-  transform: translate(-50%, -50%);
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, transparent 70%);
-  opacity: 0;
-  pointer-events: none;
-  z-index: -1;
-  animation: particleBurst 0.4s ease-out;
+  width: 7px;
+  height: 7px;
+  background: linear-gradient(135deg, var(--sc-gold-hi) 0%, var(--sc-gold) 55%, var(--sc-gold-lo) 100%);
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.85), 0 0 4px rgba(241,217,138,0.45);
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+.skill-callout .sc-rule::before { left: 4%; }
+.skill-callout .sc-rule::after  { left: 96%; }
+
+/* Content row */
+.skill-callout .sc-body {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 var(--sc-side, 18%);
+  box-sizing: border-box;
+}
+.skill-callout .sc-name {
+  display: inline-block;
+  font-family: 'Kaisei Tokumin', 'Times New Roman', serif;
+  font-weight: 800;
+  font-size: var(--sc-font);
+  line-height: 1;
+  letter-spacing: 0.01em;
+  color: #fff;
+  white-space: nowrap;
+  text-transform: none;
+  font-style: normal;
+  -webkit-text-stroke: 0;
+  paint-order: stroke fill;
+  text-shadow:
+    -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000,
+    0 2px 0 #000, 0 2px 6px rgba(0,0,0,0.9);
+  transform-origin: 50% 50%;
 }
 
-@keyframes particleBurst {
-  0% {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(0.5);
-  }
-  50% {
-    opacity: 0.6;
-  }
-  100% {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(1.5);
-  }
+/* Small kicker at the left end ("Jutsu" / "Ultimate" / "Secret") */
+.skill-callout .sc-kicker {
+  position: absolute;
+  left: 7%;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-family: 'Kaisei Tokumin', 'Times New Roman', serif;
+  font-weight: 700;
+  font-size: 12px;
+  font-variant: small-caps;
+  text-transform: lowercase;
+  letter-spacing: 0.14em;
+  color: var(--sc-gold-hi);
+  text-shadow: 0 1px 2px #000;
+  white-space: nowrap;
+  opacity: 0.92;
+}
+.skill-callout .sc-kicker::before {
+  content: "";
+  width: 3px;
+  height: 16px;
+  border-radius: 1px;
+  background: var(--sc-accent);
+  box-shadow: 0 0 6px var(--sc-accent-glow);
 }
 
-/* === Responsive Design === */
-@media (max-width: 768px) {
-  .attack-name-display {
-    font-size: 32px;
-    top: 10%;
-  }
+/* ---- Animation: wipe open from the centre, name eases in ---- */
+.skill-callout {
+  clip-path: inset(0 50% 0 50%);
+  opacity: 1;
+}
+.skill-callout .sc-name,
+.skill-callout .sc-kicker { opacity: 0; }
 
-  .attack-name-normal {
-    font-size: 24px;
-  }
+.skill-callout.is-in {
+  animation: scWipeOpen 180ms cubic-bezier(.2,.8,.2,1) forwards;
+}
+.skill-callout.is-in .sc-name {
+  animation: scNameIn 220ms 90ms cubic-bezier(.2,.8,.2,1) forwards;
+}
+.skill-callout.is-in .sc-kicker {
+  animation: scKickerIn 220ms 120ms ease-out forwards;
+}
+.skill-callout.is-out {
+  clip-path: inset(0 0 0 0);
+  animation: scFadeOut 200ms ease-in forwards;
+}
+.skill-callout.is-out .sc-name,
+.skill-callout.is-out .sc-kicker { opacity: 1; }
+
+@keyframes scWipeOpen {
+  from { clip-path: inset(0 50% 0 50%); }
+  to   { clip-path: inset(-8px 0 -8px 0); }
+}
+@keyframes scNameIn {
+  from { opacity: 0; transform: translateY(5px) scale(var(--sc-fit, 1), 1); }
+  to   { opacity: 1; transform: translateY(0) scale(var(--sc-fit, 1), 1); }
+}
+@keyframes scKickerIn {
+  from { opacity: 0; }
+  to   { opacity: 0.92; }
+}
+@keyframes scFadeOut {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+.skill-callout .sc-name { transform: scale(var(--sc-fit, 1), 1); }
+
+/* ---- Phones ---- */
+html.is-mobile .skill-callout {
+  --sc-h: 38px;
+  --sc-font: 19px;
+}
+html.is-mobile .skill-callout .sc-kicker { font-size: 10px; gap: 5px; left: 5%; }
+html.is-mobile .skill-callout .sc-kicker::before { height: 11px; width: 2px; }
+html.is-mobile .skill-callout .sc-rule::before,
+html.is-mobile .skill-callout .sc-rule::after { width: 5px; height: 5px; }
+html.is-mobile .skill-callout .sc-band::before { top: 2px; }
+html.is-mobile .skill-callout .sc-band::after  { bottom: 2px; }
+
+@media (max-height: 480px) {
+  .skill-callout { --sc-h: 40px; --sc-font: 20px; }
+}
+
+/* ---- Reduced motion: plain fade ---- */
+@media (prefers-reduced-motion: reduce) {
+  .skill-callout { clip-path: none; opacity: 0; }
+  .skill-callout.is-in { animation: scFadeIn 160ms linear forwards; }
+  .skill-callout.is-in .sc-name,
+  .skill-callout.is-in .sc-kicker { animation: none; opacity: 1; }
+  .skill-callout.is-out { clip-path: none; animation: scFadeOut 200ms linear forwards; }
+}
+@keyframes scFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }

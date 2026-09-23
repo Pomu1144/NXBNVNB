@@ -42,7 +42,7 @@ def alpha_box(im, thresh=16):
     return im.getchannel("A").point(lambda v: 255 if v > thresh else 0).getbbox()
 
 
-def feather_clipped_edges(im, ramp_frac=0.15, min_rows=12, seed=0):
+def feather_clipped_edges(im, ramp_frac=0.15, min_rows=12, seed=0, sides=("left", "right", "top", "bottom")):
     """Fade out effects that the source art cut off at the canvas border.
 
     Generated key poses sometimes have the jutsu (e.g. a Rasengan) running off
@@ -76,7 +76,7 @@ def feather_clipped_edges(im, ramp_frac=0.15, min_rows=12, seed=0):
         return t * t * (3 - 2 * t)  # smoothstep
 
     ys, xs = np.mgrid[0:h, 0:w].astype(np.float32)
-    sides = {
+    side_fns = {
         "left": (alpha[:, 0], lambda c: 1 - c[:, None] * (1 - ramp(xs, base * wobble(h)[:, None]))),
         "right": (alpha[:, -1], lambda c: 1 - c[:, None] * (1 - ramp(w - 1 - xs, base * wobble(h)[:, None]))),
         "top": (alpha[0, :], lambda c: 1 - c[None, :] * (1 - ramp(ys, base * wobble(w)[None, :]))),
@@ -84,8 +84,8 @@ def feather_clipped_edges(im, ramp_frac=0.15, min_rows=12, seed=0):
     }
     mult = np.ones_like(alpha)
     touched = []
-    for name, (edge, fn) in sides.items():
-        if (edge > 0.25).sum() >= min_rows:
+    for name, (edge, fn) in side_fns.items():
+        if name in sides and (edge > 0.25).sum() >= min_rows:
             mult *= fn(coverage(edge))
             touched.append(name)
     if not touched:
