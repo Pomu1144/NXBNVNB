@@ -193,14 +193,14 @@
 .jutsu-balance b { font-weight: 800; font-size: 15px; color: var(--jjk-text, #ece6d6); letter-spacing: 0; }
 
 .jutsu-draw-row { margin-top: auto; }
-.jutsu-draw-btn.plate-btn { color: inherit; }
+.jutsu-draw-btn.tkt { color: inherit; }
 
 @media (max-height: 760px) and (min-width: 901px) {
   .jutsu-summon-panel { margin-top: 8px; }
   .jutsu-draw-col { gap: 10px; padding: 12px; }
   .jutsu-banner-title { font-size: 22px; }
-  .jutsu-draw-col .plate-single { width: 86%; }
-  .jutsu-draw-col .plate-multi { width: 94%; }
+  .jutsu-draw-col .tkt-single { width: 84%; }
+  .jutsu-draw-col .tkt-multi { width: 96%; }
 }
 @media (max-width: 900px) {
   .jutsu-summon-panel { grid-template-columns: 1fr; gap: 10px; flex: none; max-height: none; }
@@ -209,13 +209,14 @@
   .jutsu-rail { order: 3; }
   .jutsu-rates { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); }
   .jutsu-draw-col .summon-buttons { flex-direction: row; align-items: center; }
-  .jutsu-draw-col .plate-btn { width: auto; flex: 1 1 0; min-width: 0; }
-  .jutsu-draw-col .plate-single { flex-grow: 0.94; }
+  .jutsu-draw-col .tkt { width: auto; flex: 1 1 0; min-width: 0; }
+  .jutsu-draw-col .tkt-single { flex-grow: 0.9; }
   .jutsu-show-frame { width: min(calc(100% - 96px), calc((100% - 40px) * 1.333)); max-height: calc(100% - 40px); }
 }
 @media (max-width: 480px) {
   .jutsu-draw-col .summon-buttons { flex-direction: column; }
-  .jutsu-draw-col .plate-btn { width: 100%; flex: none; }
+  .jutsu-draw-col .tkt { width: 100%; flex: none; }
+  .jutsu-draw-col .tkt-single { width: 88%; }
 }
 
 /* ---- Results modal ---- */

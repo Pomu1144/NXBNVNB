@@ -217,155 +217,155 @@ html.is-mobile #rotate-device-overlay .rdo-text {
 /* --------------------------------------------------------------------------
    3. Landscape: bottom dock (css/bottombar.css reads these tokens)
    --------------------------------------------------------------------------
-   Phones get a dock with hierarchy instead of nine identical plates:
-     Village | Shinobi Fusion Teams Tools | SUMMON | Missions Items Shop
-   - slim, icon-first plates with small labels for the regular tabs
-   - Summon is the primary tab: taller plate raised above the band, bigger
-     icon, gold label + glow (it keeps the gold plate when it's the page)
-   - thin gold rules + a little air separate the groups
-   Same art (tab.webp / tab_active.webp, Kaisei Tokumin). */
+   Phones keep ONE rounded nav strip (navstrip.webp running continuously
+   behind every tab) but with hierarchy instead of nine identical segments:
+     Village ‖ Shinobi Fusion Teams Tools ‖ SUMMON ‖ Missions Items Shop
+   - slim, icon-first segments with small labels
+   - group boundaries use a stronger straight gold rule (‖) instead of the
+     thin slanted one
+   - Summon is the primary tab: a wider segment that rises a few px above
+     the strip on the same texture (fixed-attachment, so the pattern stays
+     continuous), gold-edged top, bigger icon, gold label
+   Same art (navstrip*.webp, Kaisei Tokumin). */
 html.is-mobile.is-landscape.is-compact {
   --dock-h: calc(var(--m-dock-h) - 6px);
-  --dock-plate-h: 40px;
-  --dock-icon: 22px;
-  --dock-label: 7.5px;
+  --dock-plate-h: 42px;
+  --dock-icon: 21px;
+  --dock-label: 8px;
+  --dock-radius: 13px;
   --dock-safe-b: calc(var(--safe-b) * 0.45);
-  --dock-tab-w: clamp(56px, 8.6vw, 80px);   /* regular plate width      */
-  --dock-grp: clamp(10px, 1.9vw, 18px);     /* gap between tab groups   */
+  --dock-raise: 7px;                        /* how far Summon rises       */
 }
-/* let the raised Summon plate break out of the band */
+/* let the raised Summon segment break out of the band + strip */
 html.is-mobile.is-landscape.is-compact body .bottom-bar {
   overflow: visible !important;
 }
 html.is-mobile.is-landscape.is-compact body .bottom-bar .bottom-bar-content {
-  padding-left: max(8px, var(--safe-x)) !important;
-  padding-right: max(8px, var(--safe-x)) !important;
-  gap: 0 !important;
-  justify-content: center !important;
-  align-items: center !important;
+  width: calc(100% - 2 * max(8px, var(--safe-x))) !important;
   overflow: visible !important;
 }
 html.is-mobile.is-landscape.is-compact body .bottom-bar .hud-button {
-  flex: 0 0 auto !important;
-  width: var(--dock-tab-w) !important;
-  max-width: none !important;
   flex-direction: column !important;
   gap: 2px !important;
-  padding: 0 !important;
-  margin: 0 -1px !important;
+  padding: 0 1px !important;
 }
 html.is-mobile.is-landscape.is-compact body .bottom-bar .hud-button::after {
   letter-spacing: 0.01em !important;
-  color: rgba(236, 230, 214, 0.78);
+  color: rgba(236, 230, 214, 0.82);
 }
-/* group separators: thin gold rule centred in the gap before a group */
-html.is-mobile.is-landscape.is-compact body .bottom-bar #btn-characters,
-html.is-mobile.is-landscape.is-compact body .bottom-bar #btn-summon,
-html.is-mobile.is-landscape.is-compact body .bottom-bar #btn-missions {
-  margin-left: var(--dock-grp) !important;
-}
+/* group boundaries: straight dark|gold|dark rule */
 html.is-mobile.is-landscape.is-compact body .bottom-bar #btn-characters::before,
-html.is-mobile.is-landscape.is-compact body .bottom-bar #btn-summon::before,
 html.is-mobile.is-landscape.is-compact body .bottom-bar #btn-missions::before {
-  content: "" !important;
-  display: block !important;
-  position: absolute !important;
-  top: 50%;
-  left: calc(var(--dock-grp) / -2 - 1px);
-  width: 1px;
-  height: 28px;
-  margin-top: -14px;
-  background: linear-gradient(180deg, transparent, rgba(230, 200, 120, 0.85) 30%, rgba(230, 200, 120, 0.85) 70%, transparent);
-  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.35);
-  pointer-events: none;
+  left: -2px !important;
+  top: 3px !important;
+  bottom: 3px !important;
+  width: 3px !important;
+  transform: none !important;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.85) 0 33%, #e2c270 33% 67%, rgba(0, 0, 0, 0.85) 67% 100%) !important;
+  -webkit-mask-image: linear-gradient(180deg, transparent, #000 12%, #000 88%, transparent) !important;
+  mask-image: linear-gradient(180deg, transparent, #000 12%, #000 88%, transparent) !important;
 }
-/* Summon: the raised primary tab */
+/* Summon: the raised primary segment */
 html.is-mobile.is-landscape.is-compact body .bottom-bar #btn-summon {
-  --plate-h: 52px;
-  width: calc(var(--dock-tab-w) * 1.32) !important;
-  translate: 0 -7px;
-  gap: 2px !important;
-  filter: drop-shadow(0 0 5px rgba(241, 217, 138, 0.45)) drop-shadow(0 3px 4px rgba(0, 0, 0, 0.85));
+  flex-grow: 1.4 !important;
+  margin-top: calc(var(--dock-raise) * -1) !important;
+  background-color: #0b1c20 !important;
+  background-image: url('../assets/ui/jjk/navstrip.webp') !important;
+  background-repeat: repeat-x !important;
+  background-size: var(--dock-tex-size) !important;
+  background-position: var(--dock-tex-pos) !important;
+  background-attachment: fixed !important;
+  border: 1px solid rgba(226, 194, 112, 0.95) !important;
+  border-bottom: 0 !important;
+  border-radius: 11px 11px 0 0 !important;
+  box-shadow:
+    0 -3px 8px rgba(241, 217, 138, 0.22),
+    inset 0 1px 0 rgba(255, 238, 180, 0.35),
+    inset 0 -8px 12px rgba(0, 0, 0, 0.3) !important;
+  gap: 1px !important;
   z-index: 2;
 }
-/* its separator sits on the band, not on the raised plate */
-html.is-mobile.is-landscape.is-compact body .bottom-bar #btn-summon::before {
-  margin-top: -7px;
+/* its own gold edges replace the rules on either side */
+html.is-mobile.is-landscape.is-compact body .bottom-bar #btn-summon::before,
+html.is-mobile.is-landscape.is-compact body .bottom-bar #btn-summon + .hud-button::before {
+  opacity: 0 !important;
 }
 html.is-mobile.is-landscape.is-compact body .bottom-bar #btn-summon img {
-  width: 30px !important;
-  height: 30px !important;
+  width: 27px !important;
+  height: 27px !important;
 }
 html.is-mobile.is-landscape.is-compact body .bottom-bar #btn-summon::after {
   font-size: 9.5px !important;
   font-weight: 800;
   color: var(--jjk-gold-hi, #f1d98a);
 }
-html.is-mobile.is-landscape.is-compact body .bottom-bar #btn-summon.active::after {
-  color: #2a220c;
+html.is-mobile.is-landscape.is-compact body .bottom-bar #btn-summon:hover {
+  background-image: linear-gradient(180deg, rgba(241, 217, 138, 0.16), rgba(241, 217, 138, 0.04)), url('../assets/ui/jjk/navstrip.webp') !important;
 }
-/* current page stays full-contrast */
+/* Summon as the current page / pressed: gold segment, still raised */
+html.is-mobile.is-landscape.is-compact body .bottom-bar #btn-summon.active,
+html.is-mobile.is-landscape.is-compact body .bottom-bar #btn-summon:active {
+  background-color: #b89a52 !important;
+  background-image: url('../assets/ui/jjk/navstrip_active.webp') !important;
+  box-shadow:
+    0 -3px 8px rgba(241, 217, 138, 0.3),
+    inset 0 0 0 1px rgba(255, 244, 205, 0.35),
+    inset 0 3px 7px rgba(90, 62, 12, 0.55) !important;
+}
+html.is-mobile.is-landscape.is-compact body .bottom-bar #btn-summon.active::after,
 html.is-mobile.is-landscape.is-compact body .bottom-bar .hud-button.active::after {
   color: #2a220c;
 }
 
-/* Village's own dock (.bottom-icon-bar): same slim icon-first plates,
-   grouped  Notice Presents Achievements | Panel Chat |
-            Inventory Teams Resources Tools | (Settings, icon-only) */
+/* Village's own dock (.bottom-icon-bar): same one-strip treatment, grouped
+     Notice Presents Achievements ‖ Panel Chat ‖
+     Inventory Teams Resources Tools ‖ (Settings, icon-only end cap) */
 html.is-mobile.is-landscape.is-compact .bottom-icon-bar {
-  height: calc(var(--m-dock-h) - 6px) !important;
+  --vb-h: 42px;
+  --vb-radius: 13px;
+  bottom: calc(var(--safe-b) * 0.45 + 5px) !important;
+  left: max(8px, var(--safe-x)) !important;
+  right: max(8px, var(--safe-x)) !important;
+  max-width: none !important;
+  height: var(--vb-h) !important;
   min-height: 0 !important;
   max-height: none !important;
-  padding: 0 max(8px, var(--safe-x)) calc(var(--safe-b) * 0.45) !important;
-  gap: 0 !important;
-  justify-content: center !important;
-  overflow: hidden !important;
+  padding: 0 !important;
 }
 html.is-mobile.is-landscape.is-compact .bottom-icon-bar .bottom-icon {
-  --plate-h: 40px !important;
-  flex: 0 0 auto !important;
-  width: clamp(56px, 8.2vw, 76px) !important;
-  max-width: none !important;
   flex-direction: column !important;
   gap: 2px !important;
-  padding: 0 !important;
-  margin: 0 -1px !important;
+  padding: 0 1px !important;
 }
 html.is-mobile.is-landscape.is-compact .bottom-icon-image {
-  width: 22px !important;
-  height: 22px !important;
+  width: 21px !important;
+  height: 21px !important;
   min-width: 0 !important;
   min-height: 0 !important;
 }
 html.is-mobile.is-landscape.is-compact .bottom-icon-label {
-  font-size: 7.5px !important;
+  font-size: 8px !important;
   letter-spacing: 0 !important;
-  color: rgba(236, 230, 214, 0.78);
-}
-html.is-mobile.is-landscape.is-compact .bottom-icon-bar .bottom-icon[data-action="panel-missions"],
-html.is-mobile.is-landscape.is-compact .bottom-icon-bar .bottom-icon[data-action="inventory"],
-html.is-mobile.is-landscape.is-compact .bottom-icon-bar .bottom-icon[data-action="settings"] {
-  margin-left: clamp(10px, 1.9vw, 18px) !important;
+  color: rgba(236, 230, 214, 0.82);
 }
 html.is-mobile.is-landscape.is-compact .bottom-icon-bar .bottom-icon[data-action="panel-missions"]::before,
 html.is-mobile.is-landscape.is-compact .bottom-icon-bar .bottom-icon[data-action="inventory"]::before,
 html.is-mobile.is-landscape.is-compact .bottom-icon-bar .bottom-icon[data-action="settings"]::before {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: calc(clamp(10px, 1.9vw, 18px) / -2 - 1px);
-  width: 1px;
-  height: 28px;
-  margin-top: -14px;
-  background: linear-gradient(180deg, transparent, rgba(230, 200, 120, 0.85) 30%, rgba(230, 200, 120, 0.85) 70%, transparent);
-  pointer-events: none;
+  left: -2px;
+  top: 3px;
+  bottom: 3px;
+  width: 3px;
+  transform: none;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.85) 0 33%, #e2c270 33% 67%, rgba(0, 0, 0, 0.85) 67% 100%);
+  -webkit-mask-image: linear-gradient(180deg, transparent, #000 12%, #000 88%, transparent);
+  mask-image: linear-gradient(180deg, transparent, #000 12%, #000 88%, transparent);
 }
 html.is-mobile.is-landscape.is-compact .bottom-icon-bar .bottom-icon[data-action="achievements"] {
-  width: clamp(70px, 10.2vw, 92px) !important;
+  flex-grow: 1.45 !important;
 }
 /* Settings: compact icon-only end cap */
 html.is-mobile.is-landscape.is-compact .bottom-icon-bar .bottom-icon[data-action="settings"] {
-  width: 46px !important;
+  flex: 0 0 46px !important;
 }
 html.is-mobile.is-landscape.is-compact .bottom-icon-bar .bottom-icon[data-action="settings"] .bottom-icon-label {
   display: none;
@@ -373,6 +373,12 @@ html.is-mobile.is-landscape.is-compact .bottom-icon-bar .bottom-icon[data-action
 html.is-mobile.is-landscape.is-compact .bottom-icon-bar .bottom-icon[data-action="settings"] .bottom-icon-image {
   width: 24px !important;
   height: 24px !important;
+}
+html.is-mobile.is-landscape.is-compact .bottom-icon-notification {
+  top: 4px;
+  right: 8px;
+  width: 7px;
+  height: 7px;
 }
 
 /* --------------------------------------------------------------------------

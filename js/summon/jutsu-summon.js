@@ -264,13 +264,25 @@
           <span>Shinobites</span><b id="jutsu-shinobite-count">0</b>
         </div>
         <div class="summon-buttons jutsu-draw-row">
-          <button class="jutsu-draw-btn plate-btn plate-single" id="jutsu-draw-single" type="button">
-            <span class="plate-label">Single Summon</span>
-            <span class="plate-cost"><img src="assets/icons/currency/shinobite.png" alt="" onerror="this.style.display='none'">×<span>${COST.single}</span></span>
+          <button class="jutsu-draw-btn tkt tkt-single" id="jutsu-draw-single" type="button" aria-label="Single jutsu summon, 1 pull">
+            <span class="tkt-body" aria-hidden="true"></span>
+            <span class="tkt-stub"><span class="tkt-count"><i>×</i>1</span><span class="tkt-unit">Pull</span></span>
+            <span class="tkt-main">
+              <span class="tkt-kicker">Jutsu</span>
+              <span class="tkt-label">Summon</span>
+              <span class="tkt-cost"><img src="assets/icons/currency/shinobite.png" alt="" onerror="this.style.display='none'"><span>${COST.single}</span></span>
+            </span>
+            <span class="tkt-seal" aria-hidden="true"><b>召</b></span>
           </button>
-          <button class="jutsu-draw-btn multi plate-btn plate-multi" id="jutsu-draw-multi" type="button">
-            <span class="plate-label">Multi Summon <em>×${COST.multiCount}</em></span>
-            <span class="plate-cost"><img src="assets/icons/currency/shinobite.png" alt="" onerror="this.style.display='none'">×<span>${COST.multi}</span></span>
+          <button class="jutsu-draw-btn multi tkt tkt-multi" id="jutsu-draw-multi" type="button" aria-label="Multi jutsu summon, ${COST.multiCount} pulls">
+            <span class="tkt-body" aria-hidden="true"></span>
+            <span class="tkt-stub"><span class="tkt-count"><i>×</i>${COST.multiCount}</span><span class="tkt-unit">Pulls</span></span>
+            <span class="tkt-main">
+              <span class="tkt-kicker">Jutsu</span>
+              <span class="tkt-label">Summon</span>
+              <span class="tkt-cost"><img src="assets/icons/currency/shinobite.png" alt="" onerror="this.style.display='none'"><span>${COST.multi}</span></span>
+            </span>
+            <span class="tkt-seal" aria-hidden="true"><b>召</b></span>
           </button>
         </div>
       </aside>`;

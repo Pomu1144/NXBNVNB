@@ -309,190 +309,433 @@ body.page-summon { font-family: var(--jjk-font); color: var(--jjk-text); backgro
 .step-bar { border-radius: 0; background: rgba(0,0,0,0.6); border: 1px solid rgba(201,162,78,0.4); height: 6px; }
 .step-bar-fill { border-radius: 0; background: linear-gradient(90deg, var(--jjk-gold-lo), var(--jjk-gold-hi)); }
 
-/* ═══════════════════ Lacquer plate summon buttons ═══════════════════ */
+/* ═══════════════════ Draw buttons — summoning talisman tickets ═══════════════════
+   Each button is a washi ticket (assets/ui/jjk/ticket_*.webp) shown at its native
+   aspect ratio. The art is split at the perforation into two clipped layers — the
+   stub (.tkt-stub) and the body (.tkt-body) — so the stub can tilt on hover as if
+   it's about to tear. Art sits on each layer's ::before so the "not enough"
+   desaturation never greys the red cost number. Positions below were measured from
+   the source art: --p = perforation x (%), --seal-x / --seal-y / --seal-d = hanko circle. */
+@font-face {  /* 召 / 回 only (Google Fonts text= subset) — the Latin Kaisei files lack CJK */
+  font-family: 'Kaisei Tokumin'; font-style: normal; font-weight: 800; font-display: block;
+  src: url('../assets/fonts/kaisei-800-seal.woff2') format('woff2');
+  unicode-range: U+53EC, U+56DE;
+}
 .summon-buttons,
 .draw-col .summon-buttons {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: clamp(10px, 1.8vh, 18px);
   margin-top: auto;
-  padding: 0;
+  padding: 0 0 12px;
 }
-.plate-btn {
+.tkt {
+  --art: none;
+  --p: 24.8;                 /* perforation, % of width */
+  --seal-x: 91.1%; --seal-y: 73.3%; --seal-d: 8.6%;
+  --glow: rgba(0,0,0,0);
   position: relative;
+  isolation: isolate;
+  display: block;
+  flex: 0 0 auto;
+  width: 100%;
+  height: auto;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  color: #f4efe2;
+  font-family: var(--jjk-font);
+  line-height: 1;
+  text-align: left;
+  cursor: pointer;
+  container-type: inline-size;
+  filter: drop-shadow(0 5px 8px rgba(0,0,0,0.6)) drop-shadow(0 0 0 var(--glow));
+  transition: transform .2s var(--jjk-ease, ease), filter .25s ease;
+  -webkit-tap-highlight-color: transparent;
+  overflow: visible;
+}
+.tkt-single {
+  --art: url('../assets/ui/jjk/ticket_single.webp');
+  aspect-ratio: 900 / 348;
+  width: 90%;
+}
+.tkt-multi {
+  --art: url('../assets/ui/jjk/ticket_multi.webp');
+  --p: 23.7;
+  --seal-x: 91.9%; --seal-y: 79.2%; --seal-d: 9.4%;
+  aspect-ratio: 900 / 355;
+  width: 100%;
+}
+
+/* Art layers: the stub keeps [0, p%], the body keeps [p%, 100%]. Each ::before is
+   stretched back to the full ticket width so the halves line up seamlessly. */
+.tkt .tkt-body,
+.tkt .tkt-stub {
+  position: absolute;
+  top: 0; bottom: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.tkt .tkt-body { left: calc(var(--p) * 1%); right: 0; z-index: 0; }
+.tkt .tkt-stub {
+  left: 0;
+  width: calc(var(--p) * 1%);
+  z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 4px;
-  width: 100%;
-  height: auto;
-  min-height: 0;
-  padding: 0 0 1px;
-  border: none;
-  border-radius: 999px;
-  background: transparent center / 100% 100% no-repeat;
-  cursor: pointer;
-  container-type: inline-size;
-  filter: drop-shadow(0 6px 10px rgba(0,0,0,0.6));
-  transition: transform .14s ease, filter .18s ease;
-  -webkit-tap-highlight-color: transparent;
-  overflow: visible;
-  flex: 0 0 auto;
+  gap: 1.1cqw;
+  padding-top: 0.6cqw;
+  transform-origin: 100% 100%;
+  transition: transform .28s cubic-bezier(.3,1.6,.5,1);
 }
-/* Plate art aspect ratios are locked so the lacquer never squashes */
-.plate-single { aspect-ratio: 900 / 265; background-image: url('../assets/ui/hf/btn_single.webp'); width: 92%; }
-.plate-multi  { aspect-ratio: 900 / 283; background-image: url('../assets/ui/hf/btn_multi.webp'); }
-
-.plate-btn .summon-btn-label,
-.plate-btn .plate-label {
-  display: block;
-  font-family: var(--font-brush);
-  font-weight: 400;
-  font-size: clamp(12px, 6.1cqw, 24px);
-  max-width: 70%;
-  overflow: hidden;
-  text-overflow: clip;
-  line-height: 1;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  white-space: nowrap;
-  color: var(--cream-text);
-  text-shadow:
-    0 2px 0 rgba(20,6,2,0.95),
-    1px 1px 0 rgba(20,6,2,0.9), -1px -1px 0 rgba(20,6,2,0.9),
-    1px -1px 0 rgba(20,6,2,0.9), -1px 1px 0 rgba(20,6,2,0.9),
-    0 0 12px rgba(255,210,120,0.45);
-}
-.plate-multi .summon-btn-label,
-.plate-multi .plate-label { font-size: clamp(12px, 5.5cqw, 24px); color: #fff0b8; }
-.plate-btn .summon-btn-label em,
-.plate-btn .plate-label em {
-  font-style: normal;
-  font-family: var(--font-game);
-  font-weight: 700;
-  font-size: 1.12em;
-  letter-spacing: 0;
-  color: #ffd75e;
-}
-.plate-btn .summon-btn-cost,
-.plate-btn .plate-cost {
-  clip-path: polygon(6px 0, 100% 0, calc(100% - 6px) 100%, 0 100%);
-  position: static;
-  transform: none;
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  padding: 2px 10px 2px 5px;
-  border-radius: 999px;
-  border: 1px solid rgba(247,224,138,0.55);
-  background: linear-gradient(180deg, rgba(0,0,0,0.62), rgba(10,4,2,0.78));
-  box-shadow: inset 0 1px 0 rgba(255,240,190,0.18), 0 1px 2px rgba(0,0,0,0.5);
-  font-family: var(--font-game);
-  font-weight: 700;
-  font-size: clamp(10px, 4cqw, 14px);
-  line-height: 1.1;
-  color: #ffeab0;
-  text-shadow: 0 1px 1px rgba(0,0,0,0.9);
-  opacity: 1;
-}
-.plate-btn .btn-cost-icon,
-.plate-btn .plate-cost img {
-  width: 15px; height: 15px; object-fit: contain;
-  filter: drop-shadow(0 0 3px rgba(255,120,120,0.5));
-}
-
-/* Hero CTA: warm halo + periodic sheen sweep across the lacquer */
-.plate-multi:not(:disabled):not(.is-short) {
-  animation: plateHalo 2.8s ease-in-out infinite;
-}
-@keyframes plateHalo {
-  0%,100% { filter: drop-shadow(0 6px 10px rgba(0,0,0,0.6)) drop-shadow(0 0 6px rgba(255,150,60,0.25)); }
-  50%     { filter: drop-shadow(0 6px 10px rgba(0,0,0,0.6)) drop-shadow(0 0 14px rgba(255,170,70,0.55)); }
-}
-.plate-multi::after {
+.tkt .tkt-body::before,
+.tkt .tkt-stub::before {
   content: '';
   position: absolute;
-  inset: 16% 11% 18%;
-  border-radius: 999px;
-  background: linear-gradient(105deg, transparent 38%, rgba(255,246,214,0.55) 50%, transparent 62%) no-repeat;
+  top: 0; bottom: 0;
+  z-index: -1;
+  width: calc(100% * 100 / var(--w));
+  background: var(--art) 0 0 / 100% 100% no-repeat;
+  transition: filter .25s ease;
+}
+.tkt .tkt-stub { --w: var(--p); }
+.tkt .tkt-stub::before { left: 0; }
+.tkt .tkt-body { --w: calc(100 - var(--p)); }
+.tkt .tkt-body::before { left: calc(-100% * var(--p) / (100 - var(--p))); }
+
+/* Stub: the draw count is the focal point */
+.tkt .tkt-count {
+  position: relative;
+  font-family: var(--jjk-font);
+  font-weight: 800;
+  font-size: 16cqw;
+  letter-spacing: -0.04em;
+  line-height: 0.9;
+  white-space: nowrap;
+  color: #f1d98a;
+  background: linear-gradient(180deg, #fff4c6 0%, #f1d98a 38%, #c99a45 70%, #f6dc8c 100%);
+  -webkit-background-clip: text;
+          background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0.25cqw 0 rgba(0,0,0,0.85)) drop-shadow(0 0 1.2cqw rgba(0,0,0,0.6));
+}
+.tkt .tkt-count i {
+  font-style: normal;
+  font-size: 0.42em;
+  font-weight: 700;
+  letter-spacing: 0;
+  margin-right: 0.04em;
+  vertical-align: 0.62em;
+}
+.tkt-single .tkt-count { font-size: 17cqw; }
+.tkt-multi .tkt-count { font-size: 12.6cqw; }
+.tkt .tkt-unit {
+  font-family: var(--jjk-font);
+  font-weight: 700;
+  font-size: max(8px, 2.6cqw);
+  letter-spacing: 0.34em;
+  margin-right: -0.34em;
+  text-transform: uppercase;
+  color: rgba(241,217,138,0.78);
+  text-shadow: 0 1px 1px rgba(0,0,0,0.9);
+  white-space: nowrap;
+}
+
+/* Body: label, gold rule, inline cost */
+.tkt .tkt-main {
+  position: absolute;
+  z-index: 2;
+  top: 0; bottom: 0;
+  left: calc(var(--p) * 1% + 6%);
+  right: 16%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 0;
+  pointer-events: none;
+  white-space: nowrap;
+}
+.tkt .tkt-kicker {
+  font-weight: 700;
+  font-size: max(8px, 3cqw);
+  letter-spacing: 0.36em;
+  text-transform: uppercase;
+  color: rgba(241,217,138,0.82);
+  text-shadow: 0 1px 1px rgba(0,0,0,0.9);
+  margin-bottom: 0.9cqw;
+}
+.tkt .tkt-label {
+  position: relative;
+  font-family: var(--jjk-font);
+  font-weight: 800;
+  font-size: 8.4cqw;
+  letter-spacing: 0.04em;
+  color: #f4efe2;
+  text-transform: none;
+  text-shadow: 0 1px 0 rgba(0,0,0,0.9), 0 0 1.6cqw rgba(0,0,0,0.75);
+  text-rendering: geometricPrecision;
+  font-kerning: normal;
+  padding-bottom: 1.8cqw;
+  margin-bottom: 1.8cqw;
+}
+.tkt .tkt-label::after {        /* thin gold rule, fading out to the right */
+  content: '';
+  position: absolute;
+  left: 0; bottom: 0;
+  width: 128%;
+  height: max(1px, 0.24cqw);
+  background: linear-gradient(90deg, #f1d98a 0%, rgba(201,154,69,0.85) 55%, rgba(201,154,69,0));
+  box-shadow: 0 1px 1px rgba(0,0,0,0.6);
+}
+.tkt .tkt-cost {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3em;
+  font-family: var(--jjk-font);
+  font-weight: 800;
+  font-size: 5.6cqw;
+  letter-spacing: 0.02em;
+  color: #fbf3dc;
+  text-shadow: 0 1px 1px rgba(0,0,0,0.95), 0 0 1cqw rgba(0,0,0,0.6);
+  transition: color .2s ease;
+}
+.tkt .tkt-cost img {
+  width: 1.15em; height: 1.15em; object-fit: contain;
+  filter: drop-shadow(0 1px 1px rgba(0,0,0,0.8));
+}
+
+/* Seal: our 召 stamped into the hanko circle */
+.tkt .tkt-seal {
+  position: absolute;
+  z-index: 2;
+  left: var(--seal-x);
+  top: var(--seal-y);
+  width: var(--seal-d);
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  display: grid;
+  place-items: center;
+  rotate: -12deg;
+  pointer-events: none;
+  transition: scale .22s cubic-bezier(.3,1.8,.5,1), opacity .2s ease, filter .2s ease;
+}
+.tkt .tkt-seal b {
+  font-family: 'Kaisei Tokumin', serif;
+  font-weight: 800;
+  font-size: 6.2cqw;
+  line-height: 1;
+}
+/* Single: carved seal — pale paper showing through red ink */
+.tkt-single .tkt-seal b {
+  color: rgba(255,228,208,0.92);
+  text-shadow: 0 0 0.2cqw rgba(120,10,6,0.9), 0.15cqw 0.2cqw 0 rgba(90,0,0,0.55);
+  mix-blend-mode: screen;
+}
+/* Multi: gold-leaf character in the gold ring */
+.tkt-multi .tkt-seal b {
+  font-size: 6.4cqw;
+  background: linear-gradient(170deg, #fff6cf 0%, #f1d98a 40%, #b98a35 75%, #f6dc8c 100%);
+  -webkit-background-clip: text;
+          background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0.2cqw 0 rgba(40,0,0,0.9)) drop-shadow(0 0 1cqw rgba(255,200,110,0.45));
+}
+
+/* Hero: soft warm breathing glow + gold foil sweep masked to the ticket shape */
+.tkt-multi { --glow: rgba(241,190,100,0.28); }
+.tkt-multi:not(:disabled):not(.is-short) { animation: tktGlow 3.2s ease-in-out infinite; }
+@keyframes tktGlow {
+  0%, 100% { filter: drop-shadow(0 5px 8px rgba(0,0,0,0.6)) drop-shadow(0 0 4px rgba(241,190,100,0.22)); }
+  50%      { filter: drop-shadow(0 5px 8px rgba(0,0,0,0.6)) drop-shadow(0 0 12px rgba(245,170,80,0.5)); }
+}
+.tkt-multi::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  -webkit-mask: var(--art) 0 0 / 100% 100% no-repeat;
+          mask: var(--art) 0 0 / 100% 100% no-repeat;
+  background: linear-gradient(105deg, transparent 38%, rgba(255,232,170,0.16) 46%, rgba(255,248,220,0.5) 50%, rgba(255,232,170,0.16) 54%, transparent 62%) no-repeat;
   background-size: 260% 100%;
   background-position: 160% 0;
   mix-blend-mode: screen;
-  pointer-events: none;
-  animation: plateSheen 3.6s ease-in-out infinite;
+  animation: tktFoil 4.6s ease-in-out infinite;
 }
-@keyframes plateSheen {
-  0%, 55% { background-position: 160% 0; }
-  85%, 100% { background-position: -60% 0; }
+@keyframes tktFoil {
+  0%, 58%   { background-position: 160% 0; }
+  90%, 100% { background-position: -60% 0; }
 }
-.plate-multi:disabled::after,
-.plate-multi.is-short::after { animation: none; opacity: 0; }
 
-.plate-btn:hover:not(:disabled):not(.is-short) {
-  transform: translateY(-2px) scale(1.03);
-  filter: brightness(1.14) drop-shadow(0 8px 12px rgba(0,0,0,0.6)) drop-shadow(0 0 12px rgba(255,200,100,0.45));
+/* Hover: lift, stub starts to tear away at the perforation */
+.tkt:hover:not(:disabled):not(.is-short) { transform: translateY(-3px); }
+.tkt:hover:not(:disabled):not(.is-short) .tkt-stub { transform: translateX(-1.2%) rotate(-3deg); }
+.tkt:hover:not(:disabled):not(.is-short) .tkt-body::before,
+.tkt:hover:not(:disabled):not(.is-short) .tkt-stub::before { filter: brightness(1.12); }
+.tkt-single:hover:not(:disabled):not(.is-short) { filter: drop-shadow(0 9px 12px rgba(0,0,0,0.6)) drop-shadow(0 0 8px rgba(120,210,200,0.28)); }
+.tkt-multi:hover:not(:disabled):not(.is-short) {
   animation: none;
+  filter: drop-shadow(0 9px 12px rgba(0,0,0,0.6)) drop-shadow(0 0 14px rgba(245,170,80,0.6));
 }
-.plate-btn:active:not(:disabled) {
-  transform: translateY(2px) scale(0.975);
-  filter: brightness(0.94) drop-shadow(0 2px 4px rgba(0,0,0,0.7));
-  transition-duration: .05s;
-}
-.plate-btn:disabled,
-.plate-btn.is-short {
-  filter: grayscale(0.8) brightness(0.62) drop-shadow(0 4px 8px rgba(0,0,0,0.6));
-  animation: none;
-}
-.plate-btn:disabled { cursor: not-allowed; }
-.plate-btn:focus-visible { outline: none; filter: brightness(1.14) drop-shadow(0 0 10px rgba(255,214,110,0.9)); }
 
-/* ═══════════════════ Rates / Featured / Contents ═══════════════════ */
+/* Press: the seal gets stamped */
+.tkt:active:not(:disabled) { transform: translateY(1px); transition-duration: .06s; }
+.tkt:active:not(:disabled) .tkt-seal { scale: 0.8; filter: brightness(1.35); transition-duration: .06s; }
+
+/* Unaffordable: paper desaturates, cost goes red, seal fades */
+.tkt:disabled,
+.tkt.is-short { cursor: not-allowed; animation: none; }
+.tkt:disabled .tkt-body::before, .tkt.is-short .tkt-body::before,
+.tkt:disabled .tkt-stub::before, .tkt.is-short .tkt-stub::before {
+  filter: grayscale(0.85) brightness(0.62);
+}
+.tkt:disabled::after, .tkt.is-short::after { animation: none; opacity: 0; }
+.tkt:disabled .tkt-count, .tkt.is-short .tkt-count,
+.tkt:disabled .tkt-label, .tkt.is-short .tkt-label,
+.tkt:disabled .tkt-kicker, .tkt.is-short .tkt-kicker,
+.tkt:disabled .tkt-unit, .tkt.is-short .tkt-unit { opacity: 0.55; }
+.tkt:disabled .tkt-cost, .tkt.is-short .tkt-cost { color: #ff6f5e; }
+.tkt:disabled .tkt-cost img, .tkt.is-short .tkt-cost img { filter: grayscale(0.5) brightness(0.8); }
+.tkt:disabled .tkt-seal, .tkt.is-short .tkt-seal { opacity: 0.3; filter: grayscale(0.7); }
+.tkt:focus-visible { outline: none; }
+.tkt:focus-visible .tkt-body::before,
+.tkt:focus-visible .tkt-stub::before { filter: brightness(1.16); }
+.tkt:focus-visible { filter: drop-shadow(0 5px 8px rgba(0,0,0,0.6)) drop-shadow(0 0 6px rgba(241,217,138,0.9)); }
+@media (prefers-reduced-motion: reduce) {
+  .tkt-multi, .tkt-multi::after { animation: none !important; }
+  .tkt, .tkt .tkt-stub { transition: none; }
+}
+
+/* ═══════════════════ Rates / Featured / Contents ═══════════════════
+   Slim dark angled plates with a gold hairline (outer = hairline, ::before = face). */
 .summon-info-buttons,
 .draw-col .summon-info-buttons {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
+  gap: 6px;
   padding: 0;
 }
 .summon-info-btn,
 .draw-col .summon-info-btn {
-  height: 36px;
+  --cut: 9px;
+  position: relative;
+  isolation: isolate;
+  height: 32px;
   min-width: 0;
-  padding: 0 8px;
+  padding: 0 10px;
   border: 0;
   border-radius: 0;
-  background: url('../assets/ui/jjk/action_btn.webp') center / 100% 100% no-repeat;
-  color: #231c08;
+  clip-path: polygon(var(--cut) 0, 100% 0, calc(100% - var(--cut)) 100%, 0 100%);
+  background: linear-gradient(90deg, rgba(110,83,32,0.9), rgba(241,217,138,0.95) 50%, rgba(110,83,32,0.9));
+  color: var(--jjk-text, #ece6d6);
   font-family: var(--jjk-font);
-  font-size: 14px;
-  font-weight: 800;
-  letter-spacing: 0.5px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
   text-transform: none;
   white-space: nowrap;
-  text-shadow: 0 1px 0 rgba(255,240,190,0.55);
+  text-shadow: 0 1px 2px rgba(0,0,0,0.95);
   box-shadow: none;
+  filter: drop-shadow(0 3px 4px rgba(0,0,0,0.55));
   cursor: pointer;
-  transition: filter .15s ease, transform .12s ease;
-  filter: drop-shadow(0 3px 5px rgba(0,0,0,0.55));
+  transition: color .15s ease, transform .12s ease;
+}
+.summon-info-btn::before {
+  content: '';
+  position: absolute;
+  inset: 1px 1px;
+  z-index: -1;
+  clip-path: polygon(var(--cut) 0, 100% 0, calc(100% - var(--cut)) 100%, 0 100%);
+  background: linear-gradient(180deg, rgba(19,48,57,0.98), rgba(6,17,21,0.98));
+  transition: background .15s ease;
 }
 .summon-info-btn:hover,
 .draw-col .summon-info-btn:hover {
-  color: #231c08;
-  filter: brightness(1.12) drop-shadow(0 3px 5px rgba(0,0,0,0.55));
+  color: var(--jjk-gold-hi, #f1d98a);
+  background: linear-gradient(90deg, rgba(110,83,32,0.9), rgba(241,217,138,0.95) 50%, rgba(110,83,32,0.9));
   transform: translateY(-1px);
   box-shadow: none;
 }
-.summon-info-btn:active { transform: translateY(1px); filter: brightness(0.95); }
+.summon-info-btn:hover::before { background: linear-gradient(180deg, rgba(32,74,84,0.98), rgba(10,28,33,0.98)); }
+.summon-info-btn:active { transform: translateY(1px); }
+.summon-info-btn:focus-visible { outline: none; color: var(--jjk-gold-hi, #f1d98a); }
+
+/* ═══════════════════ Banner header + rate-up list ═══════════════════
+   Same kicker plate as the Jutsu tab, then the banner title, then the rate-up
+   units as ruled rows — so the panel reads top-down: banner → who's boosted → tickets. */
+.draw-col .banner-info-section { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.banner-kicker {
+  display: inline-block;
+  font-family: var(--jjk-font); font-weight: 700; font-size: 10px; letter-spacing: 2px;
+  text-transform: uppercase; color: #fff;
+  padding: 4px 22px 4px 14px;
+  background: url('../assets/ui/jjk/title_plate.webp') left center / 100% 100% no-repeat;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+  margin-bottom: 4px;
+}
+.pickup { display: flex; flex-direction: column; gap: 6px; }
+.pickup[hidden] { display: none; }
+.pickup-head {
+  display: flex; align-items: center; gap: 10px;
+  font-family: var(--jjk-font); font-weight: 700; font-size: 10px; letter-spacing: 3px;
+  text-transform: uppercase; color: var(--jjk-gold, #c9a24e);
+}
+.pickup-head::before, .pickup-head::after {
+  content: ''; flex: 1; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(201,162,78,0.55));
+}
+.pickup-head::after { background: linear-gradient(90deg, rgba(201,162,78,0.55), transparent); }
+.pickup-list { display: flex; flex-direction: column; gap: 6px; }
+.pickup-unit {
+  position: relative;
+  display: flex; align-items: center; gap: 10px;
+  width: 100%; padding: 6px 12px 6px 6px;
+  border: 0; text-align: left; color: inherit; font: inherit;
+  background:
+    linear-gradient(90deg, rgba(201,162,78,0.14), rgba(201,162,78,0) 70%),
+    linear-gradient(180deg, rgba(14,38,45,0.9), rgba(6,17,21,0.92));
+  box-shadow: inset 0 0 0 1px rgba(201,162,78,0.35);
+  clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 0 100%);
+}
+button.pickup-unit { cursor: pointer; transition: filter 0.15s; }
+button.pickup-unit:hover { filter: brightness(1.18); }
+button.pickup-unit:focus-visible { outline: none; box-shadow: inset 0 0 0 1px var(--jjk-gold-hi, #f1d98a); }
+.pickup-portrait {
+  flex: none; width: 52px; height: 52px; overflow: hidden;
+  box-shadow: 0 0 0 1px rgba(241,217,138,0.7), 0 2px 6px rgba(0,0,0,0.6);
+  background: #0b1a1e;
+}
+.pickup-portrait img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.pickup-text { display: flex; flex-direction: column; min-width: 0; line-height: 1.2; }
+.pickup-name {
+  font-family: var(--jjk-font); font-weight: 800; font-size: 14px; color: var(--jjk-text, #ece6d6);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.pickup-ver {
+  font-family: var(--jjk-font); font-size: 11px; color: var(--jjk-muted, #93a3a3);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.pickup-stars {
+  margin-top: 2px;
+  font-family: var(--jjk-font); font-weight: 800; font-size: 12px; color: var(--jjk-gold-hi, #f1d98a);
+  text-shadow: 0 0 6px rgba(241,217,138,0.35);
+}
+.pickup-stars i { font-style: normal; color: var(--jjk-muted, #93a3a3); margin: 0 3px; font-weight: 500; }
 
 /* ═══════════════════ Responsive ═══════════════════ */
 @media (max-height: 760px) and (min-width: 901px) {
   .gacha-stage { margin-top: 8px; }
   .draw-col { gap: 8px; padding: 10px 12px; }
-  .draw-col .featured-ribbon { width: 150px; }
-  .plate-single { width: 86%; }
-  .plate-multi { width: 94%; }
+  .pickup-portrait { width: 44px; height: 44px; }
+  .tkt-single { width: 84%; }
+  .tkt-multi { width: 96%; }
 }
 @media (max-width: 900px) {
   .summon-page { height: auto; min-height: 100vh; overflow-y: auto; }
@@ -502,8 +745,8 @@ body.page-summon { font-family: var(--jjk-font); color: var(--jjk-text); backgro
   .stage-arrow { width: 46px; height: 38px; }
   .stage-arrow.left { left: 6px; } .stage-arrow.right { right: 6px; }
   .draw-col .summon-buttons { flex-direction: row; align-items: center; }
-  .draw-col .plate-btn { width: auto; flex: 1 1 0; min-width: 0; }
-  .draw-col .plate-single { flex-grow: 0.94; }
+  .draw-col .tkt { width: auto; flex: 1 1 0; min-width: 0; }
+  .draw-col .tkt-single { flex-grow: 0.9; }
   .banner-rail-col { flex: none; }
   #banner-preview-scroll { flex-direction: row !important; overflow-x: auto; overflow-y: hidden; }
   #banner-preview-scroll .preview-item { width: 130px; flex: 0 0 130px; }
@@ -515,8 +758,8 @@ body.page-summon { font-family: var(--jjk-font); color: var(--jjk-text); backgro
 }
 @media (max-width: 480px) {
   .draw-col .summon-buttons { flex-direction: column; }
-  .draw-col .plate-btn { width: 100%; flex: none; }
-  .draw-col .plate-single { width: 92%; }
+  .draw-col .tkt { width: 100%; flex: none; }
+  .draw-col .tkt-single { width: 88%; }
 }
 
 /* Keep the character slide clear of the kunai arrows */
@@ -537,30 +780,30 @@ body.page-summon { font-family: var(--jjk-font); color: var(--jjk-text); backgro
   }
   .featured-stage, .jutsu-stage { height: calc(100vh - 150px); min-height: 200px; }
   .banner-rail-col, .jutsu-rail { grid-column: 1 / -1; }
-  .draw-col, .jutsu-draw-col { height: calc(100vh - 150px); min-height: 200px; overflow-y: auto; padding: 8px 10px; gap: 6px; }
-  .draw-col .featured-ribbon { width: 120px; }
+  .draw-col, .jutsu-draw-col { height: calc(100vh - 150px); min-height: 200px; overflow-y: auto; padding: 6px 10px; gap: 6px; }
+  .banner-kicker, .pickup { display: none; }
   .draw-col #banner-name { font-size: 14px; }
   .draw-col #banner-description { display: none; }
   .jutsu-banner-sub, .jutsu-banner-kicker { display: none; }
   .jutsu-banner-title { font-size: 18px; margin-top: 0; }
-  .draw-col .summon-buttons, .jutsu-draw-col .summon-buttons { flex-direction: column; gap: 4px; }
-  .draw-col .plate-btn, .jutsu-draw-col .plate-btn { width: 100%; flex: none; }
-  .draw-col .plate-single, .jutsu-draw-col .plate-single { width: 90%; }
-  .summon-info-btn { height: 28px; font-size: 10px; letter-spacing: 0.6px; }
+  .draw-col .summon-buttons, .jutsu-draw-col .summon-buttons { flex-direction: column; gap: 6px; padding-bottom: 2px; }
+  .draw-col .tkt, .jutsu-draw-col .tkt { flex: none; }
+  .draw-col .tkt-single, .jutsu-draw-col .tkt-single { width: 60%; }
+  .draw-col .tkt-multi, .jutsu-draw-col .tkt-multi { width: 68%; }
+  .jutsu-draw-col .tkt-single { width: 70%; }
+  .jutsu-draw-col .tkt-multi { width: 80%; }
+  /* small tickets: drop the kicker, enlarge label/cost so they stay legible */
+  .tkt .tkt-kicker { display: none; }
+  .tkt .tkt-label { font-size: 10.5cqw; letter-spacing: 0.01em; padding-bottom: 1.4cqw; margin-bottom: 2cqw; }
+  .tkt .tkt-cost { font-size: 7.4cqw; }
+  .tkt .tkt-unit { font-size: 4.4cqw; letter-spacing: 0.14em; margin-right: -0.14em; }
+  .tkt .tkt-seal b { font-size: 7cqw; }
+  .summon-info-btn, .draw-col .summon-info-btn { --cut: 7px; height: 26px; font-size: 11px; letter-spacing: 0.04em; padding: 0 6px; }
   .stage-arrow { width: 40px; height: 34px; }
   #stage-banner-img { max-width: calc(100% - 80px); max-height: calc(100% - 40px); }
 }
 
-/* ═══════════════════ Cost pill + results modal → shared JJK look ═══════════════════ */
-.plate-btn .summon-btn-cost,
-.plate-btn .plate-cost {
-  border: 0; border-radius: 0;
-  background: rgba(5,14,17,0.85);
-  box-shadow: inset 0 0 0 1px rgba(201,162,78,0.6);
-  padding: 2px 12px 2px 8px;
-  color: var(--jjk-text);
-}
-
+/* ═══════════════════ Results modal → shared JJK look ═══════════════════ */
 .summon-modal .modal-overlay { background: rgba(3,9,11,0.9); }
 .summon-modal .modal-content { justify-content: center; gap: 22px; }
 .summon-modal .result-grid { max-width: 700px; gap: 10px; }
@@ -667,7 +910,4 @@ body.page-summon { font-family: var(--jjk-font); color: var(--jjk-text); backgro
 .summon-info-modal .sim-rate-value,
 .summon-info-modal .sim-char-name { font-family: var(--jjk-font); font-weight: 700; }
 .summon-info-modal .sim-rate-label { color: var(--jjk-muted); text-transform: none; letter-spacing: 0.5px; }
-.plate-btn .summon-btn-label em,
-.plate-btn .plate-label em { font-size: 0.92em; font-weight: 800; }
-.plate-multi .summon-btn-label,
-.plate-multi .plate-label { max-width: 80%; font-size: clamp(11px, 5.1cqw, 23px); letter-spacing: 0.02em; }
+
