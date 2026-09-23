@@ -244,84 +244,114 @@
 }
 
 /* ==========================================
-   BOTTOM ICON BAR (10 Icon Buttons)
-   JJK-style dock: ink-teal band with a gold hairline; each icon sits on an
-   angular gunmetal plate (assets/ui/jjk/tab.webp, 600x137, drawn with
-   border-image so the slanted ends + gold corner brackets keep their shape).
-   Hover/press swaps to the khaki-gold active plate (tab_active.webp).
+   BOTTOM ICON BAR (Village dock)
+   JJK Phantom Parade nav strip, same recipe as the page dock in
+   css/bottombar.css: the bar itself is ONE rounded strip whose background
+   is assets/ui/jjk/navstrip.webp tiled horizontally (pattern runs
+   continuously behind every icon); icons are transparent equal-width
+   segments split by thin slanted dark+gold rules (::before). There's no
+   "current page" here, so hover brightens and press shows the khaki-gold
+   navstrip_active.webp (same px size + fixed attachment so the patterns
+   line up).
    ========================================== */
 
 .bottom-icon-bar {
+  --vb-h: 50px;
+  --vb-radius: 16px;
+  --vb-tex-size: auto calc(var(--vb-h) * 2.1);
   position: absolute; /* positioned relative to game-canvas */
-  bottom: 0;
-  left: 0;
-  width: 100%;
+  bottom: 8px;
+  left: 12px;
+  right: 12px;
+  width: auto;
+  max-width: 1320px;
+  margin: 0 auto;
   box-sizing: border-box;
-  height: 66px;
-  min-height: 60px;
-  max-height: 70px;
-  background:
-    linear-gradient(0deg, rgba(4, 12, 15, 0.98) 0%, rgba(8, 24, 29, 0.94) 75%, rgba(8, 24, 29, 0.86) 100%);
-  border-top: 0;
+  height: var(--vb-h);
+  min-height: 0;
+  max-height: none;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: stretch;
   gap: 0;
-  padding: 0 12px;
+  padding: 0;
   z-index: 100;
-  box-shadow: 0 -6px 18px rgba(0, 0, 0, 0.55);
+  border: 1px solid rgba(201, 162, 78, 0.8);
+  border-radius: var(--vb-radius);
+  background-color: #0b1c20;
+  background-image: url('../assets/ui/jjk/navstrip.webp');
+  background-repeat: repeat-x;
+  background-size: var(--vb-tex-size);
+  background-position: 0 100%;
+  background-attachment: fixed;
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.75),
+    0 5px 14px rgba(0, 0, 0, 0.65),
+    inset 0 1px 0 rgba(255, 232, 170, 0.22),
+    inset 0 -10px 16px rgba(0, 0, 0, 0.35);
   overflow: hidden;
   font-family: var(--jjk-font, 'Kaisei Tokumin', serif);
 }
-.bottom-icon-bar::before {
-  content: "";
-  position: absolute;
-  left: 0; right: 0; top: 0;
-  height: 1px;
-  background: linear-gradient(90deg,
-    transparent 0%, rgba(201, 162, 78, 0.55) 12%, #e6c878 50%,
-    rgba(201, 162, 78, 0.55) 88%, transparent 100%);
-  pointer-events: none;
-}
 
 .bottom-icon {
-  --plate-h: 44px;
   position: relative;
   box-sizing: border-box;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  gap: 6px;
-  height: var(--plate-h);
+  gap: 7px;
   min-width: 0;
-  flex: 0 1 auto;
-  padding: 0 calc(var(--plate-h) * 0.5);
-  margin: 0 -3px;                  /* slanted plates nest into each other */
-  border: 0 solid transparent;
-  border-image-source: url('../assets/ui/jjk/tab.webp');
-  border-image-slice: 0 80 0 80 fill;
-  border-image-width: 0 calc(var(--plate-h) * 0.584);
-  border-image-repeat: stretch;
-  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.7));
+  flex: 1 1 0;
+  padding: 0 6px;
+  margin: 0;
+  background: transparent;
   cursor: pointer;
-  transition: filter 0.15s ease, transform 0.15s ease;
+  transition: background-color 0.15s ease, box-shadow 0.15s ease;
   pointer-events: auto;
   user-select: none;
   -webkit-user-select: none;
   -webkit-tap-highlight-color: transparent;
 }
+/* the long "Achievements" label gets a wider share of the strip */
+.bottom-icon[data-action="achievements"] { flex-grow: 1.4; }
+.bottom-icon:first-child { border-radius: calc(var(--vb-radius) - 1px) 0 0 calc(var(--vb-radius) - 1px); }
+.bottom-icon:last-child  { border-radius: 0 calc(var(--vb-radius) - 1px) calc(var(--vb-radius) - 1px) 0; }
+
+/* slanted dark + gold divider on the left edge of every segment but the first */
+.bottom-icon + .bottom-icon::before {
+  content: "";
+  position: absolute;
+  left: -1px;
+  top: 5px;
+  bottom: 5px;
+  width: 2px;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.8) 0 50%, rgba(214, 178, 98, 0.75) 50% 100%);
+  -webkit-mask-image: linear-gradient(180deg, transparent, #000 22%, #000 78%, transparent);
+  mask-image: linear-gradient(180deg, transparent, #000 22%, #000 78%, transparent);
+  transform: skewX(-14deg);
+  pointer-events: none;
+  z-index: 1;
+}
 
 .bottom-icon:hover {
-  transform: translateY(-2px);
-  filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.75)) brightness(1.15);
+  background: linear-gradient(180deg, rgba(241, 217, 138, 0.16), rgba(241, 217, 138, 0.04) 70%, rgba(241, 217, 138, 0.1));
 }
 
 .bottom-icon:active {
-  transform: translateY(0);
-  border-image-source: url('../assets/ui/jjk/tab_active.webp');
-  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.7));
+  background-color: #b89a52;
+  background-image: url('../assets/ui/jjk/navstrip_active.webp');
+  background-repeat: repeat-x;
+  background-size: var(--vb-tex-size);
+  background-position: 0 100%;
+  background-attachment: fixed;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 244, 205, 0.35),
+    inset 0 3px 7px rgba(90, 62, 12, 0.55),
+    inset 0 -4px 8px rgba(70, 48, 8, 0.5);
 }
+.bottom-icon:active::before,
+.bottom-icon:active + .bottom-icon::before { opacity: 0; }
 
 /* Icon image */
 .bottom-icon-image {
@@ -339,7 +369,10 @@
 }
 
 .bottom-icon:hover .bottom-icon-image {
-  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.9)) brightness(1.1);
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.9)) brightness(1.15);
+}
+.bottom-icon:active .bottom-icon-image {
+  filter: brightness(0.22) sepia(0.6) drop-shadow(0 1px 0 rgba(255, 240, 190, 0.5));
 }
 
 /* Icon label */
@@ -349,9 +382,11 @@
   font-weight: 700;
   color: var(--jjk-text, #ece6d6);
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.95);
-  letter-spacing: 0.02em;
+  letter-spacing: 0.03em;
   white-space: nowrap;
-  line-height: 1;
+  line-height: 1.1;
+  min-width: 0;
+  overflow: hidden;
 }
 
 .bottom-icon:hover .bottom-icon-label {
@@ -359,14 +394,15 @@
 }
 .bottom-icon:active .bottom-icon-label {
   color: #2a220c;
+  font-weight: 800;
   text-shadow: 0 1px 0 rgba(255, 245, 200, 0.6);
 }
 
-/* Notification dot (crimson gem on the plate's top edge) */
+/* Notification dot (crimson gem near the segment's top-right) */
 .bottom-icon-notification {
   position: absolute;
-  top: 3px;
-  right: calc(var(--plate-h, 44px) * 0.5);
+  top: 6px;
+  right: 12px;
   width: 8px;
   height: 8px;
   background: #d23a2a;
@@ -383,16 +419,16 @@
   50% { opacity: 0.6; }
 }
 
-/* Narrower canvases: stack icon over label on a taller plate */
-@media (max-width: 1240px) {
+/* Narrower canvases: stack icon over label */
+@media (max-width: 1360px) {
+  .bottom-icon-bar { --vb-h: 54px; }
   .bottom-icon {
-    --plate-h: 52px;
     flex-direction: column;
-    gap: 2px;
-    padding: 0 calc(var(--plate-h) * 0.42);
+    gap: 3px;
+    padding: 0 3px;
   }
   .bottom-icon-image { width: 24px; height: 24px; }
-  .bottom-icon-label { font-size: 11px; }
+  .bottom-icon-label { font-size: 11.5px; }
 }
 
 /* Placeholder icon style (if PNG not loaded) */
@@ -582,14 +618,7 @@
     left: 10px;
   }
 
-  .bottom-icon-bar {
-    padding: 0 8px;
-  }
-
-  .bottom-icon {
-    --plate-h: 50px;
-    padding: 0 calc(var(--plate-h) * 0.36);
-  }
+  .bottom-icon-bar { --vb-h: 52px; --vb-radius: 14px; left: 8px; right: 8px; }
 
   .bottom-icon-image {
     width: 22px;
@@ -598,6 +627,7 @@
 
   .bottom-icon-label {
     font-size: 10px;
+    letter-spacing: 0;
   }
 }
 
@@ -608,39 +638,24 @@
     display: none; /* Hide on mobile, show only bottom bar */
   }
 
-  .bottom-icon-bar {
-    height: 62px;
-    overflow-x: auto;
-    justify-content: flex-start;
-  }
-
-  .bottom-icon { flex: 0 0 auto; }
+  .bottom-icon-bar { left: 6px; right: 6px; bottom: 6px; }
+  .bottom-icon { padding: 0 1px; }
+  .bottom-icon-label { font-size: 9px; }
 }
 
 @media (max-width: 480px) {
-  .bottom-icon-bar {
-    padding: 0 6px;
-  }
+  .bottom-icon-image { width: 20px; height: 20px; }
+  .bottom-icon-label { font-size: 8px; }
 }
 
 /* Landscape mobile (iPhone SE, iPhone 8, iPhone 12 mini, etc.) — max 420px tall */
 @media (max-height: 420px) and (orientation: landscape) {
-  .bottom-icon-bar {
-    height: 55px;
-    min-height: 50px;
-    max-height: 55px;
-    gap: 0;
-    padding: 0 6px;
-  }
+  .bottom-icon-bar { --vb-h: 46px; --vb-radius: 13px; bottom: 5px; }
 
   .bottom-icon {
-    --plate-h: 46px;
-    flex: 1 1 0;
-    max-width: 96px;
     flex-direction: column;
     gap: 2px;
-    padding: 0 calc(var(--plate-h) * 0.3);
-    margin: 0 -2px;
+    padding: 0 2px;
   }
 
   .bottom-icon-image {
@@ -649,7 +664,7 @@
   }
 
   .bottom-icon-label {
-    font-size: 8px;
+    font-size: 8.5px;
     letter-spacing: 0;
   }
 

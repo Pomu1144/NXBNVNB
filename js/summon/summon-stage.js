@@ -114,6 +114,8 @@
     const dot5 = document.querySelector('.stage-dot[data-view="char5"]');
     if (dot5) dot5.style.display = (f && f.twoTier) ? '' : 'none';
 
+    renderPickup(banner);
+
     // reset to banner view on banner change
     setView('banner');
 
@@ -124,6 +126,31 @@
         it.classList.toggle('active', !!(img && img.getAttribute('src') === banner.image));
       });
     }
+  }
+
+  // Rate-up list in the draw panel: one row per featured unit (evolved form).
+  // Clicking a row shows that unit's form on the stage.
+  function renderPickup(banner) {
+    const box = $('pickup'), list = $('pickup-list');
+    if (!box || !list) return;
+    const ids = (banner.featured || []).filter(id => state.charMap[id] || window.SummonEvolve);
+    box.hidden = ids.length === 0;
+    list.innerHTML = ids.slice(0, 3).map((id, i) => {
+      const f = formsFor(id);
+      const ch = f.evolved || f.base;
+      if (!ch) return '';
+      const stars = f.twoTier ? `★${f.minStar}<i>→</i>★${f.maxStar}` : `★${f.maxStar}`;
+      const tag = i === 0 ? 'button' : 'div'; // the stage only shows the lead unit
+      return `<${tag} class="pickup-unit"${i === 0 ? ` type="button" aria-label="View ${ch.name}"` : ''}>
+          <span class="pickup-portrait"><img src="${ch.portrait || ''}" alt="" onerror="this.style.visibility='hidden'"></span>
+          <span class="pickup-text">
+            <span class="pickup-name">${ch.name || ''}</span>
+            <span class="pickup-ver">${ch.version || ''}</span>
+            <span class="pickup-stars">${stars}</span>
+          </span>
+        </${tag}>`;
+    }).join('');
+    list.querySelector('button.pickup-unit')?.addEventListener('click', () => setView('char6'));
   }
 
   function setView(view) {

@@ -4,31 +4,38 @@
    Markup (unchanged on every page):
      <div class="bottom-bar"><div class="bottom-bar-content">
        <button class="hud-button [active]" id="btn-xxx" aria-label="..."><img ...></button>
-   Look: identical to the village dock (.bottom-icon-bar, css/ui-layout.css):
-   ink-teal band with a gold hairline; each tab is an angular gunmetal plate
-   (assets/ui/jjk/tab.webp drawn via border-image so the slanted ends keep
-   their shape), plates overlap slightly, icon + Kaisei Tokumin label side by
-   side (stacked below 1240px). Hover lifts + gold label, press swaps to
-   tab_active.webp. Only addition: the CURRENT page's tab (.active) stays on
-   the khaki-gold plate with dark text.
-     img = icon      ::after = label (keyed on id)
+   Look (JJK Phantom Parade nav strip): the tabs form ONE rounded strip.
+   .bottom-bar is the dark band; .bottom-bar-content is the strip, whose
+   background is assets/ui/jjk/navstrip.webp tiled horizontally so its
+   brushed-metal cloud pattern runs continuously behind every tab. Tabs are
+   transparent, equal-width segments split by thin slanted dark+gold rules;
+   the strip's outer ends are rounded. The CURRENT page's segment (.active)
+   shows navstrip_active.webp (khaki-gold, same cloud emboss) with dark text.
+   Both textures use background-attachment: fixed with the same px size, so
+   the gold pattern lines up with the teal one around it.
+     img = icon      ::after = label (keyed on id)      ::before = divider
    Selectors are prefixed with `html body .bottom-bar` so they beat the legacy
    `.hud-button` rules in background.css / missions.css / teams.css
-   regardless of stylesheet order. Mobile sizing: css/mobile.css section 3
-   overrides the --dock-* tokens.
+   regardless of stylesheet order. Mobile: css/mobile.css section 3 overrides
+   the --dock-* tokens and groups the tabs (still one strip).
+   The village dock (.bottom-icon-bar, css/ui-layout.css) uses the same recipe.
    ========================================================================== */
 
 @font-face { font-family: 'Kaisei Tokumin'; font-style: normal; font-weight: 700; font-display: swap; src: url('../assets/fonts/kaisei-700.woff2') format('woff2'); }
 @font-face { font-family: 'Kaisei Tokumin'; font-style: normal; font-weight: 800; font-display: swap; src: url('../assets/fonts/kaisei-800.woff2') format('woff2'); }
 
-/* Metrics mirror the village dock (.bottom-icon-bar in css/ui-layout.css) so
-   switching pages from the village feels seamless. */
 :root {
-  --dock-h: 66px;          /* band height (without safe area)             */
-  --dock-plate-h: 44px;    /* height of one tab plate                     */
-  --dock-icon: 26px;       /* icon size                                   */
-  --dock-label: 13px;      /* label font-size                             */
-  --dock-safe-b: 0px;      /* bottom safe-area (set by mobile.css)        */
+  --dock-h: 66px;           /* band height (without safe area)            */
+  --dock-plate-h: 50px;     /* strip height                               */
+  --dock-icon: 26px;        /* icon size                                  */
+  --dock-label: 13px;       /* label font-size                            */
+  --dock-safe-b: 0px;       /* bottom safe-area (set by mobile.css)       */
+  --dock-strip-max: 1240px; /* max strip width                            */
+  --dock-radius: 16px;      /* rounded outer ends                         */
+  /* the 1200x411 tile is drawn at ~2x the strip height so the cloud scrolls
+     read at a legible size; shared by the strip and the active segment */
+  --dock-tex-size: auto calc(var(--dock-plate-h) * 2.1);
+  --dock-tex-pos: 0 100%;
 }
 
 /* ---------- Band ---------- */
@@ -56,95 +63,118 @@ html body .bottom-bar {
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
   background:
-    linear-gradient(0deg, rgba(4, 12, 15, 0.98) 0%, rgba(8, 24, 29, 0.94) 75%, rgba(8, 24, 29, 0.86) 100%) !important;
-  overflow: hidden !important;
+    linear-gradient(0deg, rgba(3, 9, 11, 0.96) 0%, rgba(5, 14, 17, 0.9) 60%, rgba(5, 14, 17, 0.7) 100%) !important;
+  overflow: visible !important;
   font-family: var(--jjk-font, 'Kaisei Tokumin', serif);
   -webkit-user-select: none;
   user-select: none;
 }
 
-/* Gold hairline along the top edge (replaces any legacy decoration) */
+/* no band hairline: the strip carries its own gold edge */
 html body .bottom-bar::before {
-  content: "" !important;
-  display: block !important;
-  position: absolute !important;
-  left: 0 !important;
-  right: 0 !important;
-  top: 0 !important;
-  width: auto !important;
-  height: 1px !important;
-  background: linear-gradient(90deg,
-    transparent 0%, rgba(201, 162, 78, 0.55) 12%, #e6c878 50%,
-    rgba(201, 162, 78, 0.55) 88%, transparent 100%) !important;
-  pointer-events: none;
+  content: none !important;
+  display: none !important;
 }
 html body .bottom-bar::after {
   content: none !important;
   display: none !important;
 }
 
+/* ---------- The strip ---------- */
 html body .bottom-bar .bottom-bar-content {
-  width: 100% !important;
+  width: min(calc(100% - 24px), var(--dock-strip-max)) !important;
   max-width: none !important;
-  height: 100% !important;
-  margin: 0 !important;
-  padding: 0 12px !important;
+  height: var(--dock-plate-h) !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
   box-sizing: border-box !important;
   display: flex !important;
   flex-wrap: nowrap !important;
-  align-items: center !important;
+  align-items: stretch !important;
   justify-content: center !important;
   gap: 0 !important;
-  border: 0 !important;
-  outline: 0 !important;
-  background: none !important;
   position: relative;
+  border: 1px solid rgba(201, 162, 78, 0.8) !important;
+  border-radius: var(--dock-radius) !important;
+  outline: 0 !important;
+  background-color: #0b1c20 !important;
+  background-image: url('../assets/ui/jjk/navstrip.webp') !important;
+  background-repeat: repeat-x !important;
+  background-size: var(--dock-tex-size) !important;
+  background-position: var(--dock-tex-pos) !important;
+  background-attachment: fixed !important;
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.75),
+    0 4px 12px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(255, 232, 170, 0.22),
+    inset 0 -10px 16px rgba(0, 0, 0, 0.35) !important;
+  overflow: hidden !important;
   scrollbar-width: none;
 }
 html body .bottom-bar .bottom-bar-content::-webkit-scrollbar { display: none; }
 
-/* ---------- Tab plate (same border-image recipe as .bottom-icon) ---------- */
+/* ---------- Segment ---------- */
 html body .bottom-bar .hud-button {
   all: unset;
-  --plate-h: var(--dock-plate-h);
   position: relative !important;
   box-sizing: border-box !important;
   display: flex !important;
   flex-direction: row !important;
   align-items: center !important;
   justify-content: center !important;
-  gap: 6px !important;
-  height: var(--plate-h) !important;
+  gap: 7px !important;
+  height: auto !important;
   min-height: 0 !important;
   max-height: none !important;
   width: auto !important;
   min-width: 0 !important;
   max-width: none !important;
   aspect-ratio: auto !important;
-  flex: 0 1 auto !important;
-  padding: 0 calc(var(--plate-h) * 0.5) !important;
-  margin: 0 -3px !important;              /* slanted plates nest into each other */
-  border: 0 solid transparent !important;
-  border-image-source: url('../assets/ui/jjk/tab.webp') !important;
-  border-image-slice: 0 80 0 80 fill !important;
-  border-image-width: 0 calc(var(--plate-h) * 0.584) !important;
-  border-image-repeat: stretch !important;
+  flex: 1 1 0 !important;
+  padding: 0 6px !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-image: none !important;
   border-radius: 0 !important;
-  background: none !important;
+  background: transparent !important;
   box-shadow: none !important;
   overflow: visible !important;
-  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.7));
+  filter: none;
   cursor: pointer !important;
   pointer-events: auto !important;
   outline: none;
   transform: none;
-  transition: filter 0.15s ease, transform 0.15s ease;
+  transition: background-color 0.15s ease, box-shadow 0.15s ease;
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
 }
+html body .bottom-bar .hud-button:first-child {
+  border-radius: calc(var(--dock-radius) - 1px) 0 0 calc(var(--dock-radius) - 1px) !important;
+}
+html body .bottom-bar .hud-button:last-child {
+  border-radius: 0 calc(var(--dock-radius) - 1px) calc(var(--dock-radius) - 1px) 0 !important;
+}
+
+/* Divider: thin slanted dark + gold rule on the left edge of every segment
+   but the first */
 html body .bottom-bar .hud-button::before {
   content: none !important;
   display: none !important;
+}
+html body .bottom-bar .hud-button + .hud-button::before {
+  content: "" !important;
+  display: block !important;
+  position: absolute !important;
+  left: -1px;
+  top: 5px;
+  bottom: 5px;
+  width: 2px;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.8) 0 50%, rgba(214, 178, 98, 0.75) 50% 100%);
+  -webkit-mask-image: linear-gradient(180deg, transparent, #000 22%, #000 78%, transparent);
+  mask-image: linear-gradient(180deg, transparent, #000 22%, #000 78%, transparent);
+  transform: skewX(-14deg);
+  pointer-events: none;
+  z-index: 1;
 }
 
 /* Icon */
@@ -175,7 +205,10 @@ html body .bottom-bar .hud-button::after {
   position: static !important;
   transform: none !important;
   display: block !important;
-  flex: 0 0 auto;
+  flex: 0 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: clip;
   opacity: 1 !important;
   padding: 0 !important;
   margin: 0 !important;
@@ -184,8 +217,8 @@ html body .bottom-bar .hud-button::after {
   font-family: var(--jjk-font, 'Kaisei Tokumin', serif) !important;
   font-weight: 700;
   font-size: var(--dock-label) !important;
-  line-height: 1 !important;
-  letter-spacing: 0.02em;
+  line-height: 1.1 !important;
+  letter-spacing: 0.03em;
   text-transform: none;
   white-space: nowrap;
   color: var(--jjk-text, #ece6d6);
@@ -203,89 +236,86 @@ html body .bottom-bar #btn-missions::after   { content: "Missions"; }
 html body .bottom-bar #btn-inventory::after  { content: "Items"; }
 html body .bottom-bar #btn-shop::after       { content: "Shop"; }
 
-/* ---------- Hover: lift + brighten, label turns gold ---------- */
+/* ---------- Hover: gentle brighten, label turns gold ---------- */
 html body .bottom-bar .hud-button:hover {
-  transform: translateY(-2px);
-  filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.75)) brightness(1.15);
+  background: linear-gradient(180deg, rgba(241, 217, 138, 0.16), rgba(241, 217, 138, 0.04) 70%, rgba(241, 217, 138, 0.1)) !important;
 }
 html body .bottom-bar .hud-button:hover img {
-  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.9)) brightness(1.1);
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.9)) brightness(1.15);
 }
 html body .bottom-bar .hud-button:hover::after {
   color: var(--jjk-gold-hi, #f1d98a);
 }
 html body .bottom-bar .hud-button:focus-visible {
-  filter: drop-shadow(0 0 4px rgba(241, 217, 138, 0.9)) brightness(1.15);
+  box-shadow: inset 0 0 0 1px rgba(241, 217, 138, 0.9) !important;
 }
 
-/* ---------- Press: swap to the khaki-gold plate ---------- */
-html body .bottom-bar .hud-button:active {
-  transform: translateY(0);
-  border-image-source: url('../assets/ui/jjk/tab_active.webp') !important;
-  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.7));
-}
-html body .bottom-bar .hud-button:active::after {
-  color: #2a220c;
-  text-shadow: 0 1px 0 rgba(255, 245, 200, 0.6);
-}
-
-/* ---------- Current page: khaki-gold plate, dark text ---------- */
+/* ---------- Press + current page: khaki-gold segment of the same pattern ---------- */
+html body .bottom-bar .hud-button:active,
 html body .bottom-bar .hud-button.active {
-  border-image-source: url('../assets/ui/jjk/tab_active.webp') !important;
-  /* tab_active.webp carries a glow margin (175px tall vs 137 for tab.webp);
-     let it spill past the box so the gold face matches the other plates */
-  border-image-outset: calc(var(--plate-h) * 0.13) 3px !important;
+  background-color: #b89a52 !important;
+  background-image: url('../assets/ui/jjk/navstrip_active.webp') !important;
+  background-repeat: repeat-x !important;
+  background-size: var(--dock-tex-size) !important;
+  background-position: var(--dock-tex-pos) !important;
+  background-attachment: fixed !important;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 244, 205, 0.35),
+    inset 0 3px 7px rgba(90, 62, 12, 0.55),
+    inset 0 -4px 8px rgba(70, 48, 8, 0.5) !important;
 }
-html body .bottom-bar .hud-button.active img {
-  /* white glyphs -> dark bronze on the khaki plate (keeps inner detail) */
+/* hide the rule on the gold segment and on the one right after it */
+html body .bottom-bar .hud-button.active::before,
+html body .bottom-bar .hud-button.active + .hud-button::before {
+  opacity: 0;
+}
+html body .bottom-bar .hud-button.active img,
+html body .bottom-bar .hud-button:active img {
+  /* white glyphs -> dark bronze on the khaki segment (keeps inner detail) */
   filter: brightness(0.22) sepia(0.6) drop-shadow(0 1px 0 rgba(255, 240, 190, 0.5));
 }
 html body .bottom-bar .hud-button.active::after,
-html body .bottom-bar .hud-button.active:hover::after {
+html body .bottom-bar .hud-button.active:hover::after,
+html body .bottom-bar .hud-button:active::after {
   color: #2a220c;
   font-weight: 800;
   text-shadow: 0 1px 0 rgba(255, 245, 200, 0.6);
 }
 html body .bottom-bar .hud-button.active:hover {
-  transform: none;
-  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.7)) brightness(1.06);
+  filter: brightness(1.05);
 }
 
-/* ---------- Responsive (same breakpoints as the village dock) ---------- */
-/* Narrower windows: stack icon over label on a taller plate */
+/* ---------- Responsive ---------- */
+/* Narrower windows: icon above label */
 @media (max-width: 1240px) {
   :root {
-    --dock-plate-h: 52px;
+    --dock-plate-h: 54px;
     --dock-icon: 24px;
-    --dock-label: 11px;
+    --dock-label: 11.5px;
   }
   html body .bottom-bar .hud-button {
     flex-direction: column !important;
-    gap: 2px !important;
-    padding: 0 calc(var(--plate-h) * 0.42) !important;
+    gap: 3px !important;
   }
 }
 @media (max-width: 1024px) {
   :root {
-    --dock-plate-h: 50px;
+    --dock-plate-h: 52px;
     --dock-icon: 22px;
-    --dock-label: 10px;
+    --dock-label: 10.5px;
+    --dock-radius: 14px;
   }
-  html body .bottom-bar .bottom-bar-content { padding: 0 8px !important; }
-  html body .bottom-bar .hud-button { padding: 0 calc(var(--plate-h) * 0.36) !important; }
 }
 @media (max-width: 768px) {
-  :root { --dock-h: 62px; }
+  :root { --dock-h: 62px; --dock-plate-h: 50px; }
   html body .bottom-bar .bottom-bar-content {
-    justify-content: flex-start !important;
-    overflow-x: auto !important;
-    overflow-y: hidden !important;
-    -webkit-overflow-scrolling: touch;
+    width: calc(100% - 12px) !important;
   }
-  html body .bottom-bar .hud-button { flex: 0 0 auto !important; }
+  html body .bottom-bar .hud-button { padding: 0 2px !important; }
+  html body .bottom-bar .hud-button::after { letter-spacing: 0; }
 }
 @media (max-width: 480px) {
-  html body .bottom-bar .bottom-bar-content { padding: 0 6px !important; }
+  :root { --dock-label: 9px; --dock-icon: 20px; }
 }
 /* Short landscape viewports */
 @media (max-height: 420px) and (orientation: landscape) {
@@ -293,16 +323,13 @@ html body .bottom-bar .hud-button.active:hover {
     --dock-h: 55px;
     --dock-plate-h: 46px;
     --dock-icon: 22px;
-    --dock-label: 8px;
+    --dock-label: 8.5px;
+    --dock-radius: 13px;
   }
-  html body .bottom-bar .bottom-bar-content { padding: 0 6px !important; }
   html body .bottom-bar .hud-button {
-    flex: 1 1 0 !important;
-    max-width: 96px !important;
     flex-direction: column !important;
     gap: 2px !important;
-    padding: 0 calc(var(--plate-h) * 0.3) !important;
-    margin: 0 -2px !important;
+    padding: 0 2px !important;
   }
   html body .bottom-bar .hud-button::after { letter-spacing: 0; }
 }

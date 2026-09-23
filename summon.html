@@ -655,7 +655,6 @@
       border: 1px solid rgba(184,152,95,0.3);
       border-radius: 14px; padding: 12px; overflow-y: auto;
     }
-    .draw-col .featured-ribbon { width: 172px; margin: -2px auto 0; display: block; filter: drop-shadow(0 3px 8px rgba(0,0,0,0.6)); }
     .draw-col .banner-info-section { text-align: center; }
     .draw-col #banner-name { font-size: 17px; }
     .draw-col #banner-description { font-size: 11px; line-height: 1.4; }
@@ -674,7 +673,6 @@
 
     @media (max-width: 480px) {
       .result-grid { grid-template-columns: repeat(4, 1fr); gap: 6px; }
-      .summon-btn-label { font-size: 11px; }
     }
   </style>
   <link rel="stylesheet" href="css/summon-premium.css" />
@@ -753,13 +751,18 @@
 
       <!-- RIGHT: featured badge + draw panel -->
       <aside class="draw-col">
-        <img class="featured-ribbon" src="assets/ui/featured_ribbon.webp" alt="Featured Gacha"
-             onerror="this.style.display='none'">
         <div class="banner-info-section">
+          <div class="banner-kicker">Featured Summon</div>
           <div id="banner-name">Loading Banner…</div>
           <div id="banner-description">Summon powerful ninja!</div>
           <div id="banner-timer"></div>
         </div>
+
+        <!-- Rate-up units: who the tickets below are chasing -->
+        <section class="pickup" id="pickup" hidden>
+          <div class="pickup-head"><span>Rate Up</span></div>
+          <div class="pickup-list" id="pickup-list"></div>
+        </section>
 
         <div class="step-progress hidden" id="step-progress">
           <span class="step-label">Step</span>
@@ -772,19 +775,37 @@
         </div>
 
         <div class="summon-buttons">
-          <button class="summon-btn summon-btn-single plate-btn plate-single" id="btn-single" type="button">
-            <span class="summon-btn-label">Single Summon</span>
-            <span class="summon-btn-cost">
-              <img src="assets/icons/currency/ninjapearl.png" alt="" class="btn-cost-icon" onerror="this.style.display='none'">
-              ×<span id="single-cost">5</span>
+          <button class="summon-btn summon-btn-single tkt tkt-single" id="btn-single" type="button" aria-label="Single summon, 1 pull">
+            <span class="tkt-body" aria-hidden="true"></span>
+            <span class="tkt-stub">
+              <span class="tkt-count"><i>×</i>1</span>
+              <span class="tkt-unit">Pull</span>
             </span>
+            <span class="tkt-main">
+              <span class="tkt-kicker">Shinobi</span>
+              <span class="tkt-label summon-btn-label">Summon</span>
+              <span class="tkt-cost summon-btn-cost">
+                <img src="assets/icons/currency/ninjapearl.png" alt="" class="btn-cost-icon" onerror="this.style.display='none'">
+                <span id="single-cost">5</span>
+              </span>
+            </span>
+            <span class="tkt-seal" aria-hidden="true"><b>召</b></span>
           </button>
-          <button class="summon-btn summon-btn-multi plate-btn plate-multi" id="btn-multi" type="button">
-            <span class="summon-btn-label">Multi Summon <em>×10</em></span>
-            <span class="summon-btn-cost">
-              <img src="assets/icons/currency/ninjapearl.png" alt="" class="btn-cost-icon" onerror="this.style.display='none'">
-              ×<span id="multi-cost">30</span>
+          <button class="summon-btn summon-btn-multi tkt tkt-multi" id="btn-multi" type="button" aria-label="Multi summon, 10 pulls">
+            <span class="tkt-body" aria-hidden="true"></span>
+            <span class="tkt-stub">
+              <span class="tkt-count"><i>×</i>10</span>
+              <span class="tkt-unit">Pulls</span>
             </span>
+            <span class="tkt-main">
+              <span class="tkt-kicker">Shinobi</span>
+              <span class="tkt-label summon-btn-label">Summon</span>
+              <span class="tkt-cost summon-btn-cost">
+                <img src="assets/icons/currency/ninjapearl.png" alt="" class="btn-cost-icon" onerror="this.style.display='none'">
+                <span id="multi-cost">30</span>
+              </span>
+            </span>
+            <span class="tkt-seal" aria-hidden="true"><b>召</b></span>
           </button>
         </div>
 
