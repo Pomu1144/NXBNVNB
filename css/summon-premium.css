@@ -15,200 +15,242 @@
   --lacquer-dark: linear-gradient(180deg, rgba(28,17,8,0.94), rgba(10,6,3,0.96));
   --gold-text: #f6dc8c;
   --cream-text: #fff3d2;
-  --font-brush: 'Shojumaru', 'Rowdies', 'Cinzel', serif;
-  --font-game: 'Rowdies', 'Oswald', 'Cinzel', sans-serif;
+  --font-brush: 'Shojumaru', 'Kaisei Tokumin', serif;   /* only the hero summon plates */
+  --font-game: 'Kaisei Tokumin', 'Times New Roman', serif;
 }
 
-/* ═══════════════════ Top bar + segmented tabs ═══════════════════ */
+/* ═══════════════════ Page ground: ink-teal (shared JJK theme) ═══════════════════ */
+body.page-summon { font-family: var(--jjk-font); color: var(--jjk-text); background: var(--jjk-ink); }
+#summon-bg {
+  background:
+    radial-gradient(ellipse at 50% 40%, rgba(20,60,68,0.22), rgba(4,10,12,0.82) 78%),
+    url('../assets/ui/jjk/ink_bg.webp') center / cover no-repeat,
+    var(--jjk-ink);
+}
+#summon-bg::after {
+  background: linear-gradient(180deg, rgba(4,10,12,0.15) 0%, rgba(4,10,12,0) 40%, rgba(4,10,12,0.6) 100%);
+}
+
+/* ═══════════════════ Top bar: back + crimson title | tabs | currency ═══════════════════ */
 .summon-topbar {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
   gap: 10px;
+  padding: 12px 14px 0;
 }
-.summon-topbar #btn-back-to-home { justify-self: start; }
+.summon-titlebar { justify-self: start; display: flex; align-items: center; gap: 10px; min-width: 0; }
+.summon-topbar #btn-back-to-home {
+  width: 52px; height: 52px; padding: 0;
+  border: 0; border-radius: 0;
+  background: url('../assets/ui/jjk/icon_btn.webp') center / 100% 100% no-repeat;
+  font-size: 0; letter-spacing: 0;
+}
+.summon-topbar #btn-back-to-home:hover { background: url('../assets/ui/jjk/icon_btn.webp') center / 100% 100% no-repeat; border: 0; }
+.jjk-back-glyph { width: 60%; height: 60%; object-fit: contain; pointer-events: none; filter: drop-shadow(0 1px 1px rgba(0,0,0,0.8)); }
+.summon-title { margin: 0; white-space: nowrap; }
 .summon-topbar .summon-currency-hud { justify-self: end; }
 
+/* Currency: angular ink chips with gold rule */
+.summon-currency-hud { gap: 10px; }
+.summon-currency-hud .currency-chip {
+  gap: 7px;
+  min-width: 96px;
+  height: 32px;
+  padding: 0 18px 0 12px;
+  border: 0; border-radius: 0;
+  background:
+    linear-gradient(180deg, rgba(12,34,41,0.95), rgba(5,14,17,0.95)) padding-box;
+  box-shadow: inset 0 0 0 1px rgba(201,162,78,0.55);
+  clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
+  font-family: var(--jjk-font);
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--jjk-text);
+  justify-content: flex-end;
+}
+.summon-currency-hud .currency-icon { width: 20px; height: 20px; margin-right: auto; }
+
+/* Segmented Shinobi / Jutsu Cards tabs → JJK plates */
 .summon-tabs {
   position: relative;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 4px;
-  width: 340px;
+  display: flex;
+  gap: 2px;
+  width: auto;
   max-width: 100%;
   margin: 0;
-  padding: 4px;
-  border: 2px solid transparent;
-  border-radius: 999px;
-  background: var(--lacquer-dark) padding-box, var(--gold-bezel) border-box;
-  box-shadow:
-    0 6px 18px rgba(0,0,0,0.6),
-    inset 0 2px 6px rgba(0,0,0,0.8),
-    inset 0 -1px 0 rgba(255,225,150,0.10);
+  padding: 0;
+  border: 0;
+  background: none;
+  box-shadow: none;
 }
+.summon-tab.jjk-tab,
 .summon-tab {
-  position: relative;
-  min-width: 0;
-  height: 36px;
-  padding: 0 12px;
-  border: none;
-  border-radius: 999px;
-  background: transparent;
-  color: rgba(222,196,138,0.72);
-  font-family: var(--font-brush);
-  font-size: 15px;
-  font-weight: 400;
+  min-width: 150px;
+  height: 42px;
+  padding: 0 26px;
+  border: 0;
+  border-radius: 0;
+  background: url('../assets/ui/jjk/tab.webp') center / 100% 100% no-repeat;
+  font-family: var(--jjk-font);
+  font-size: 16px;
+  font-weight: 700;
   letter-spacing: 1px;
-  line-height: 1;
+  color: var(--jjk-text);
   white-space: nowrap;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.9);
+  box-shadow: none;
   cursor: pointer;
-  text-shadow: 0 2px 2px rgba(0,0,0,0.85);
-  transition: color .2s ease, background .2s ease, box-shadow .2s ease, transform .12s ease;
   -webkit-tap-highlight-color: transparent;
 }
-.summon-tab:hover:not(.active) {
-  color: #f3d98f;
-  background: linear-gradient(180deg, rgba(120,70,20,0.28), rgba(60,30,8,0.18));
-}
+.summon-tab:hover:not(.active) { background: url('../assets/ui/jjk/tab.webp') center / 100% 100% no-repeat; filter: brightness(1.15); color: #fff; }
 .summon-tab:active { transform: translateY(1px); }
 .summon-tab.active {
-  color: #2b1603;
-  background:
-    linear-gradient(180deg, rgba(255,255,255,0.45) 0%, rgba(255,255,255,0) 46%),
-    linear-gradient(180deg, #fff1a8 0%, #f2cf6a 30%, #c8922e 62%, #8f5f17 100%);
-  text-shadow: 0 1px 0 rgba(255,244,200,0.75);
-  box-shadow:
-    0 0 14px rgba(255,200,80,0.55),
-    0 2px 5px rgba(0,0,0,0.6),
-    inset 0 1px 0 rgba(255,255,255,0.7),
-    inset 0 -2px 3px rgba(90,50,8,0.55);
+  background: url('../assets/ui/jjk/tab_active.webp') center / 100% 100% no-repeat;
+  color: #2a220c;
+  text-shadow: 0 1px 0 rgba(255,245,200,0.6);
+  box-shadow: none;
 }
 
-/* ═══════════════════ Side panels: warm lacquer + gold rim ═══════════════════ */
+/* ═══════════════════ Side panels: ink-teal + thin gold rule + corner brackets ═══════════════════ */
 .banner-rail-col,
 .draw-col {
-  border: 2px solid transparent;
-  background: var(--lacquer-dark) padding-box, var(--gold-bezel) border-box;
-  box-shadow:
-    0 12px 30px rgba(0,0,0,0.6),
-    inset 0 0 0 1px rgba(0,0,0,0.65),
-    inset 0 1px 0 rgba(255,230,160,0.14),
-    inset 0 0 30px rgba(0,0,0,0.55);
+  position: relative;
+  border: 1px solid rgba(201,162,78,0.55);
+  border-radius: 0;
+  background:
+    url('../assets/ui/jjk/ink_bg.webp') center / cover no-repeat,
+    var(--jjk-ink-2);
+  background-blend-mode: soft-light, normal;
+  box-shadow: 0 10px 32px rgba(0,0,0,0.6), inset 0 0 0 1px rgba(0,0,0,0.55), inset 0 0 40px rgba(0,0,0,0.45);
 }
+.banner-rail-col::before, .banner-rail-col::after,
+.draw-col::before, .draw-col::after {
+  content: ''; position: absolute; width: 16px; height: 16px; pointer-events: none; z-index: 2;
+  border: 2px solid var(--jjk-gold);
+}
+.banner-rail-col::before, .draw-col::before { top: 3px; left: 3px; border-right: 0; border-bottom: 0; }
+.banner-rail-col::after, .draw-col::after { bottom: 3px; right: 3px; border-left: 0; border-top: 0; }
 .rail-heading {
-  font-family: var(--font-brush);
-  font-weight: 400;
-  font-size: 14px;
-  letter-spacing: 2px;
-  color: var(--gold-text);
-  text-shadow: 0 2px 3px rgba(0,0,0,0.9), 0 0 10px rgba(255,190,70,0.35);
+  font-family: var(--jjk-font);
+  font-weight: 800;
+  font-size: 15px;
+  letter-spacing: 3px;
+  color: var(--jjk-gold-hi);
+  text-shadow: 0 2px 3px rgba(0,0,0,0.9);
   border-bottom: 1px solid transparent;
-  border-image: linear-gradient(90deg, transparent, #c9a24a 30%, #fff0a8 50%, #c9a24a 70%, transparent) 1;
+  border-image: linear-gradient(90deg, transparent, rgba(201,162,78,0.8) 30%, var(--jjk-gold-hi) 50%, rgba(201,162,78,0.8) 70%, transparent) 1;
 }
 
-/* Rail thumbnails: antique gold bezel idle, polished lit gold when active */
+/* Rail thumbnails: thin antique rule idle, khaki-gold frame when active */
 #banner-preview-scroll { padding: 4px 3px; gap: 10px; }
 #banner-preview-scroll .preview-item {
   position: relative;
-  border: 2px solid transparent;
-  border-radius: 9px;
+  border: 1px solid rgba(201,162,78,0.35);
+  border-radius: 0;
   opacity: 1;
-  background: #0b0703 padding-box, var(--gold-antique) border-box;
+  background: var(--jjk-ink);
   box-shadow: 0 3px 8px rgba(0,0,0,0.6);
-  transition: box-shadow .18s ease, transform .18s ease, background .18s ease;
+  transition: box-shadow .18s ease, transform .18s ease, border-color .18s ease;
 }
 #banner-preview-scroll .preview-item img {
-  filter: brightness(0.62) saturate(0.75);
+  filter: brightness(0.6) saturate(0.7);
   transition: filter .18s ease;
 }
-#banner-preview-scroll .preview-item:hover { transform: translateY(-1px); }
+#banner-preview-scroll .preview-item:hover { transform: translateX(2px); border-color: rgba(201,162,78,0.7); }
 #banner-preview-scroll .preview-item:hover img { filter: brightness(0.88) saturate(0.95); }
 #banner-preview-scroll .preview-item.active {
-  border-width: 3px;
-  background: #0b0703 padding-box, var(--gold-bezel) border-box;
-  box-shadow:
-    0 0 0 1px rgba(40,22,2,0.9),
-    0 0 14px rgba(255,200,80,0.55),
-    0 4px 10px rgba(0,0,0,0.6);
+  border: 2px solid var(--jjk-khaki);
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.85), 0 4px 12px rgba(0,0,0,0.7);
 }
 #banner-preview-scroll .preview-item.active img { filter: none; }
-/* specular glint across the active bezel */
+/* small gold corner brackets on the active banner */
+#banner-preview-scroll .preview-item.active::before,
 #banner-preview-scroll .preview-item.active::after {
-  content: '';
-  position: absolute; inset: 0;
-  border-radius: inherit;
-  box-shadow: inset 0 1px 0 rgba(255,250,220,0.55), inset 0 0 0 1px rgba(60,34,4,0.6);
-  pointer-events: none;
+  content: ''; position: absolute; width: 10px; height: 10px; pointer-events: none; z-index: 1;
+  border: 2px solid var(--jjk-gold-hi);
 }
+#banner-preview-scroll .preview-item.active::before { top: 2px; left: 2px; border-right: 0; border-bottom: 0; }
+#banner-preview-scroll .preview-item.active::after { bottom: 2px; right: 2px; border-left: 0; border-top: 0; }
 
-/* ═══════════════════ Center stage: metallic gold bezel ═══════════════════ */
+/* ═══════════════════ Center stage: thin antique-gold frame ═══════════════════ */
 .featured-stage {
-  border: 4px solid transparent;
-  border-radius: 18px;
-  background: linear-gradient(#0a0603, #0a0603) padding-box, var(--gold-bezel) border-box;
+  border: 3px solid transparent;
+  border-radius: 4px;
+  background: linear-gradient(var(--jjk-ink), var(--jjk-ink)) padding-box, var(--gold-bezel) border-box;
   box-shadow:
-    0 0 0 1px rgba(46,26,4,0.95),
-    0 16px 44px rgba(0,0,0,0.72),
-    0 0 26px rgba(255,196,80,0.14);
+    0 0 0 1px rgba(10,6,2,0.95),
+    0 16px 44px rgba(0,0,0,0.72);
 }
-/* Warm, desaturated hall backdrop (the raw art reads navy/purple) */
+/* Hall backdrop pulled into the ink-teal palette */
 .featured-stage::before {
   content: '';
   position: absolute; inset: 0;
   background:
-    radial-gradient(ellipse at 50% 55%, rgba(0,0,0,0) 30%, rgba(0,0,0,0.78) 100%),
+    radial-gradient(ellipse at 50% 55%, rgba(0,0,0,0) 30%, rgba(2,8,10,0.82) 100%),
     url('../assets/ui/summon_hall_bg.webp') center / cover no-repeat;
-  filter: sepia(0.85) saturate(0.9) hue-rotate(-12deg) brightness(0.62) contrast(1.05);
+  filter: grayscale(0.7) sepia(0.35) hue-rotate(140deg) saturate(1.1) brightness(0.55) contrast(1.05);
   pointer-events: none;
 }
 /* Inner fine rim + inset shadow so the bezel reads as raised metal */
 .featured-stage::after {
   content: '';
-  position: absolute; inset: 5px;
-  border-radius: 12px;
-  border: 1px solid rgba(247,224,138,0.30);
+  position: absolute; inset: 6px;
+  border-radius: 0;
+  border: 1px solid rgba(201,162,78,0.35);
   box-shadow: inset 0 0 0 1px rgba(0,0,0,0.6), inset 0 0 36px rgba(0,0,0,0.75);
   pointer-events: none;
   z-index: 3;
 }
 .featured-glow {
   width: 78%;
-  background: radial-gradient(circle, rgba(255,196,80,0.26), rgba(200,120,30,0.10) 45%, transparent 68%);
+  background: radial-gradient(circle, rgba(90,170,170,0.18), rgba(30,90,95,0.10) 45%, transparent 68%);
 }
 
 /* Banner art inside its own polished gold frame */
 #stage-banner-img {
   max-width: calc(100% - 128px);
   max-height: calc(100% - 64px);
-  padding: 4px;
-  border-radius: 12px;
+  padding: 3px;
+  border-radius: 2px;
   background: var(--gold-bezel);
   box-shadow:
-    0 0 0 1px rgba(46,26,4,0.95),
-    0 14px 34px rgba(0,0,0,0.75),
-    0 0 30px rgba(255,200,90,0.22);
+    0 0 0 1px rgba(10,6,2,0.95),
+    0 14px 34px rgba(0,0,0,0.75);
   filter: none;
 }
 
 .stage-tier-badge {
-  font-family: var(--font-brush); font-weight: 400; letter-spacing: 1.5px;
-  border: 1.5px solid transparent;
-  background: var(--lacquer-dark) padding-box, var(--gold-bezel) border-box;
-  color: var(--gold-text); top: 14px;
+  font-family: var(--jjk-font); font-weight: 800; letter-spacing: 1.5px;
+  border: 0; border-radius: 0;
+  background: rgba(5,14,17,0.92);
+  box-shadow: inset 0 0 0 1px rgba(201,162,78,0.6);
+  clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
+  padding: 4px 22px;
+  color: var(--jjk-gold-hi); top: 14px;
 }
 .featured-stage[data-view="char5"] .stage-tier-badge {
-  border-color: transparent;
-  background: var(--lacquer-dark) padding-box,
-    linear-gradient(135deg, #5d6570, #e8edf3 45%, #8d96a3 70%, #3f454e) border-box;
+  background: rgba(5,14,17,0.92);
+  box-shadow: inset 0 0 0 1px rgba(200,210,220,0.6);
   color: #e6ebf2;
 }
 .char-stats {
-  border: 1.5px solid transparent;
-  background: var(--lacquer-dark) padding-box, var(--gold-antique) border-box;
+  border: 1px solid rgba(201,162,78,0.55);
+  border-radius: 0;
+  background: linear-gradient(180deg, rgba(14,38,45,0.94), rgba(6,17,21,0.96));
+  font-family: var(--jjk-font);
 }
+.char-stats .cs-head { font-family: var(--jjk-font); font-weight: 800; color: var(--jjk-gold-hi); }
+.char-stats .cs-label { color: var(--jjk-muted); }
+.char-stats .cs-val.gold { color: var(--jjk-gold-hi); }
+.featured-caption { background: linear-gradient(0deg, rgba(4,10,12,0.94), transparent); }
+.featured-rank, .featured-name, .featured-title { font-family: var(--jjk-font); }
+.featured-rank { color: var(--jjk-gold-hi); font-weight: 800; }
+.featured-name { font-weight: 800; }
+.featured-title { color: var(--jjk-khaki); }
 .stage-dots { bottom: 14px; }
-.stage-dot { background: rgba(255,236,190,0.28); box-shadow: 0 0 0 1px rgba(0,0,0,0.6); }
-.stage-dot.active { background: #f7e08a; box-shadow: 0 0 8px rgba(255,210,100,0.85), 0 0 0 1px rgba(60,34,4,0.8); }
+.stage-dot { width: 7px; height: 7px; border-radius: 0; transform: rotate(45deg); background: rgba(236,230,214,0.3); box-shadow: 0 0 0 1px rgba(0,0,0,0.6); }
+.stage-dot.active { background: var(--jjk-gold-hi); box-shadow: 0 0 0 1px rgba(60,34,4,0.8); }
 
 /* ═══════════════════ Kunai arrows ═══════════════════ */
 .stage-arrow {
@@ -252,15 +294,20 @@
 /* ═══════════════════ Draw panel text ═══════════════════ */
 .draw-col { gap: 12px; }
 .draw-col #banner-name {
-  font-family: var(--font-brush);
-  font-weight: 400;
-  font-size: 18px;
+  font-family: var(--jjk-font);
+  font-weight: 800;
+  font-size: 20px;
   line-height: 1.25;
-  letter-spacing: 1px;
-  color: var(--gold-text);
-  text-shadow: 0 2px 3px rgba(0,0,0,0.9), 0 0 12px rgba(255,190,70,0.3);
+  letter-spacing: 0.5px;
+  color: var(--jjk-gold-hi);
+  text-shadow: 0 2px 3px rgba(0,0,0,0.9);
 }
-.draw-col #banner-description { color: #cdb690; }
+.draw-col #banner-description { font-family: var(--jjk-font); font-weight: 500; font-size: 12px; color: var(--jjk-muted); }
+.draw-col #banner-timer { font-family: var(--jjk-font); color: #e07a6a; }
+.step-progress { font-family: var(--jjk-font); color: var(--jjk-gold-hi); }
+.step-label { color: var(--jjk-muted); }
+.step-bar { border-radius: 0; background: rgba(0,0,0,0.6); border: 1px solid rgba(201,162,78,0.4); height: 6px; }
+.step-bar-fill { border-radius: 0; background: linear-gradient(90deg, var(--jjk-gold-lo), var(--jjk-gold-hi)); }
 
 /* ═══════════════════ Lacquer plate summon buttons ═══════════════════ */
 .summon-buttons,
@@ -331,6 +378,7 @@
 }
 .plate-btn .summon-btn-cost,
 .plate-btn .plate-cost {
+  clip-path: polygon(6px 0, 100% 0, calc(100% - 6px) 100%, 0 100%);
   position: static;
   transform: none;
   display: inline-flex;
@@ -410,33 +458,31 @@
 }
 .summon-info-btn,
 .draw-col .summon-info-btn {
-  height: 34px;
-  padding: 0 6px;
-  border: 1.5px solid transparent;
-  border-radius: 999px;
-  background:
-    linear-gradient(180deg, rgba(255,236,180,0.10), rgba(255,236,180,0) 50%) padding-box,
-    linear-gradient(180deg, #2e1b0b, #140a04) padding-box,
-    var(--gold-bezel) border-box;
-  color: #f1d993;
-  font-family: var(--font-game);
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 1.2px;
-  text-transform: uppercase;
+  height: 36px;
+  min-width: 0;
+  padding: 0 8px;
+  border: 0;
+  border-radius: 0;
+  background: url('../assets/ui/jjk/action_btn.webp') center / 100% 100% no-repeat;
+  color: #231c08;
+  font-family: var(--jjk-font);
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  text-transform: none;
   white-space: nowrap;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.9);
-  box-shadow: 0 3px 8px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,236,180,0.18);
+  text-shadow: 0 1px 0 rgba(255,240,190,0.55);
+  box-shadow: none;
   cursor: pointer;
-  transition: filter .15s ease, transform .12s ease, color .15s ease;
-  filter: none;
+  transition: filter .15s ease, transform .12s ease;
+  filter: drop-shadow(0 3px 5px rgba(0,0,0,0.55));
 }
 .summon-info-btn:hover,
 .draw-col .summon-info-btn:hover {
-  color: #fff3c4;
-  filter: brightness(1.2);
+  color: #231c08;
+  filter: brightness(1.12) drop-shadow(0 3px 5px rgba(0,0,0,0.55));
   transform: translateY(-1px);
-  box-shadow: 0 0 12px rgba(255,200,90,0.35), 0 3px 8px rgba(0,0,0,0.55);
+  box-shadow: none;
 }
 .summon-info-btn:active { transform: translateY(1px); filter: brightness(0.95); }
 
@@ -504,3 +550,124 @@
   .stage-arrow { width: 40px; height: 34px; }
   #stage-banner-img { max-width: calc(100% - 80px); max-height: calc(100% - 40px); }
 }
+
+/* ═══════════════════ Cost pill + results modal → shared JJK look ═══════════════════ */
+.plate-btn .summon-btn-cost,
+.plate-btn .plate-cost {
+  border: 0; border-radius: 0;
+  background: rgba(5,14,17,0.85);
+  box-shadow: inset 0 0 0 1px rgba(201,162,78,0.6);
+  padding: 2px 12px 2px 8px;
+  color: var(--jjk-text);
+}
+
+.summon-modal .modal-overlay { background: rgba(3,9,11,0.9); }
+.summon-modal .modal-content { justify-content: center; gap: 22px; }
+.summon-modal .result-grid { max-width: 700px; gap: 10px; }
+.summon-modal .result-card,
+.summon-modal .result-card.rarity-bronze,
+.summon-modal .result-card.rarity-silver,
+.summon-modal .result-card.rarity-gold,
+.summon-modal .result-card.featured {
+  position: relative;
+  border: 1px solid rgba(147,163,163,0.45);
+  border-radius: 2px;
+  background: linear-gradient(180deg, rgba(19,48,57,0.95), rgba(6,17,21,0.98));
+  box-shadow: 0 6px 16px rgba(0,0,0,0.6);
+  overflow: hidden;
+}
+.summon-modal .result-card.rarity-gold { border-color: rgba(201,162,78,0.8); }
+.summon-modal .result-card.featured {
+  border-color: var(--jjk-gold-hi);
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.8), 0 0 14px rgba(241,217,138,0.35), 0 6px 16px rgba(0,0,0,0.6);
+  animation: cardReveal 0.4s ease backwards;
+}
+.summon-modal .result-card-inner img,
+.summon-modal .result-card img {
+  height: auto;
+  aspect-ratio: 1;
+  object-fit: contain;
+  margin: 0;
+  padding: 10px 10px 0;
+  background: radial-gradient(circle at 50% 40%, rgba(45,107,115,0.35), transparent 70%);
+  filter: drop-shadow(0 2px 5px rgba(0,0,0,0.6));
+}
+.summon-modal .result-card.featured img { filter: drop-shadow(0 0 8px rgba(241,217,138,0.6)); }
+.summon-modal .result-card-info { padding: 6px 6px 10px; }
+.summon-modal .result-card-name {
+  font-family: var(--jjk-font); font-weight: 700; font-size: 12px; color: var(--jjk-text);
+  margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.summon-modal .result-card-rarity { font-size: 11px; color: var(--jjk-gold-hi); text-shadow: none; margin: 0; }
+.summon-modal .result-card-featured {
+  display: inline-block; margin-top: 5px;
+  padding: 2px 12px; border-radius: 0;
+  background: var(--jjk-crimson); box-shadow: inset 0 0 0 1px rgba(241,217,138,0.6);
+  clip-path: polygon(5px 0, 100% 0, calc(100% - 5px) 100%, 0 100%);
+  font-family: var(--jjk-font); font-weight: 800; font-size: 10px; letter-spacing: 1px; color: #fff;
+}
+.summon-modal .btn-continue {
+  width: min(260px, 70vw);
+  aspect-ratio: auto;
+  height: 52px;
+  margin-top: 0;
+  background: url('../assets/ui/jjk/action_btn.webp') center / 100% 100% no-repeat;
+  color: #231c08;
+  font-family: var(--jjk-font);
+  font-weight: 800;
+  font-size: 18px;
+  letter-spacing: 3px;
+  text-shadow: 0 1px 0 rgba(255,240,190,0.55);
+  box-shadow: none;
+  border-radius: 0;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.6));
+}
+.summon-modal .btn-continue:hover { color: #231c08; background: url('../assets/ui/jjk/action_btn.webp') center / 100% 100% no-repeat; filter: brightness(1.12) drop-shadow(0 4px 8px rgba(0,0,0,0.6)); }
+
+/* Info modal (Rates / Featured / Contents) */
+.summon-info-modal .sim-overlay { background: rgba(3,9,11,0.85); }
+.summon-info-modal .sim-panel {
+  border: 1px solid rgba(201,162,78,0.6);
+  border-radius: 0;
+  background: linear-gradient(180deg, rgba(14,38,45,0.97), rgba(6,17,21,0.98));
+  box-shadow: 0 20px 60px rgba(0,0,0,0.75), inset 0 0 0 1px rgba(0,0,0,0.5);
+  font-family: var(--jjk-font);
+}
+.summon-info-modal .sim-title {
+  font-family: var(--jjk-font); font-weight: 800; text-transform: none; letter-spacing: 1px;
+  color: #fff; text-shadow: 0 2px 0 rgba(0,0,0,0.6);
+  padding: 4px 56px 4px 18px;
+  background: url('../assets/ui/jjk/title_plate.webp') left center / 100% 100% no-repeat;
+}
+.summon-info-modal .sim-title::before { display: none; }
+.summon-info-modal .sim-close {
+  width: 38px; height: 38px; border: 0; border-radius: 0;
+  background: url('../assets/ui/jjk/icon_btn.webp') center / 100% 100% no-repeat;
+  color: var(--jjk-text); box-shadow: none;
+}
+.summon-info-modal .sim-body { color: var(--jjk-text); }
+.summon-info-modal .sim-rate-row {
+  border-radius: 0;
+  background: linear-gradient(90deg, rgba(19,48,57,0.85), rgba(7,20,24,0.85));
+  border: 1px solid rgba(201,162,78,0.28);
+  box-shadow: none;
+}
+.summon-info-modal .sim-section-label { font-family: var(--jjk-font); font-weight: 800; color: var(--jjk-gold-hi); }
+.summon-info-modal .sim-char-card { border-radius: 0; background: rgba(7,20,24,0.8); border-color: rgba(201,162,78,0.3); }
+.summon-info-modal .sim-char-card img { border-radius: 0; }
+
+/* Top bar at compact heights / widths */
+@media (max-height: 760px) {
+  .summon-topbar { padding-top: 8px; }
+  .summon-topbar #btn-back-to-home { width: 46px; height: 46px; }
+  .summon-title.jjk-title-plate { min-height: 40px; font-size: 21px; padding-right: 54px; }
+  .summon-tab, .summon-tab.jjk-tab { height: 38px; min-width: 136px; }
+}
+.summon-info-modal .sim-rate-label,
+.summon-info-modal .sim-rate-value,
+.summon-info-modal .sim-char-name { font-family: var(--jjk-font); font-weight: 700; }
+.summon-info-modal .sim-rate-label { color: var(--jjk-muted); text-transform: none; letter-spacing: 0.5px; }
+.plate-btn .summon-btn-label em,
+.plate-btn .plate-label em { font-size: 0.92em; font-weight: 800; }
+.plate-multi .summon-btn-label,
+.plate-multi .plate-label { max-width: 80%; font-size: clamp(11px, 5.1cqw, 23px); letter-spacing: 0.02em; }

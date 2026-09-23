@@ -12,6 +12,8 @@
   <meta name="theme-color" content="#000000" />
   <link rel="apple-touch-icon" href="assets/icons/achievement_icon.png" />
   <script src="js/pwa-register.js"></script>
+  <link rel="stylesheet" href="css/fonts.css" />
+  <link rel="stylesheet" href="css/theme-jjk.css" />
   <link rel="stylesheet" href="css/summon-results.css" />
   <link rel="stylesheet" href="css/summon-dev-panel.css" />
   <link rel="stylesheet" href="css/bottombar.css" />
@@ -684,7 +686,10 @@
   <div class="summon-page">
     <!-- Top bar -->
     <div class="summon-topbar">
-      <button id="btn-back-to-home">← Village</button>
+      <div class="summon-titlebar">
+        <button id="btn-back-to-home" class="jjk-icon-btn" type="button" aria-label="Back to Village"><img src="assets/ui/jjk/back_arrow.webp" alt="" class="jjk-back-glyph" draggable="false"></button>
+        <h1 class="jjk-title-plate summon-title">Summon</h1>
+      </div>
       <div class="summon-currency-hud">
         <div class="currency-chip">
           <img src="assets/icons/currency/ninjapearl.png" alt="Pearls" class="currency-icon" onerror="this.style.display='none'">

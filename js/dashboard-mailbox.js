@@ -189,7 +189,7 @@ class DashboardMailbox {
       const l = document.createElement('link');
       l.id = 'present-box-css';
       l.rel = 'stylesheet';
-      l.href = 'css/present-box.css?v=1';
+      l.href = 'css/present-box.css?v=2';
       document.head.appendChild(l);
     }
     if (!document.querySelector('link[href*="css/fonts.css"]')) {
@@ -228,7 +228,7 @@ class DashboardMailbox {
     if (unclaimed) {
       action = `<button class="pb-btn pb-btn-gold pb-row-claim" onclick="event.stopPropagation();window.DashboardMailbox.claimRewards(${index})">Claim</button>`;
     } else if (done) {
-      action = `<span class="pb-stamp">Claimed</span>`;
+      action = `<span class="pb-stamp"><img src="assets/ui/jjk/stamp_claimed.webp" alt="" draggable="false"><span>Claimed</span></span>`;
     } else {
       action = `<button class="pb-btn pb-btn-dark pb-row-view" onclick="event.stopPropagation();window.DashboardMailbox.viewMessage(${index})">View</button>`;
     }
@@ -266,10 +266,10 @@ class DashboardMailbox {
       <div class="mailbox-modal pb-modal" id="mailbox-modal" role="dialog" aria-modal="true" aria-label="Present Box">
         <div class="pb-backdrop" onclick="window.DashboardMailbox.closeMailbox()"></div>
         <div class="pb-frame">
-          <button class="pb-close" aria-label="Close" onclick="window.DashboardMailbox.closeMailbox()"></button>
+          <button class="pb-close jjk-icon-btn" aria-label="Close" onclick="window.DashboardMailbox.closeMailbox()"></button>
           <div class="pb-inner">
             <div class="pb-head">
-              <h2 class="pb-title">Present Box</h2>
+              <h2 class="pb-title jjk-title-plate">Present Box</h2>
               <div class="pb-counts">
                 <span class="pb-count"><b>${this.messages.length}</b> Presents</span>
                 ${this.unreadCount ? `<span class="pb-count pb-count-new"><b>${this.unreadCount}</b> New</span>` : ''}
@@ -339,7 +339,7 @@ class DashboardMailbox {
       <div class="message-view-modal pb-modal pb-modal--view" id="message-view-modal" role="dialog" aria-modal="true">
         <div class="pb-backdrop" onclick="window.DashboardMailbox.closeMessageView()"></div>
         <div class="pb-frame pb-frame--view">
-          <button class="pb-close" aria-label="Close" onclick="window.DashboardMailbox.closeMessageView()"></button>
+          <button class="pb-close jjk-icon-btn" aria-label="Close" onclick="window.DashboardMailbox.closeMessageView()"></button>
           <div class="pb-inner">
             <div class="pb-head pb-head--view">
               <h3 class="pb-view-title">${this._esc(message.title)}</h3>

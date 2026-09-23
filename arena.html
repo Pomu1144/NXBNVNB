@@ -14,6 +14,8 @@
   <link rel="apple-touch-icon" href="assets/icons/achievement_icon.png" />
   <script src="js/pwa-register.js"></script>
   <link rel="stylesheet" href="css/fonts.css" />
+  <link rel="stylesheet" href="css/theme-jjk.css" />
+  <link rel="stylesheet" href="css/fonts.css" />
   <link rel="stylesheet" href="css/bottombar.css" />
   <link rel="stylesheet" href="css/arena.css" />
   <link rel="stylesheet" href="css/mobile.css" />
@@ -23,10 +25,10 @@
 
   <div class="arena-page">
     <header class="arena-topbar">
-      <a href="village.html" class="arena-back" aria-label="Back to village">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>
+      <a href="village.html" class="arena-back jjk-icon-btn" aria-label="Back to village">
+        <img src="assets/ui/jjk/back_arrow.webp" alt="" class="jjk-back-glyph" draggable="false">
       </a>
-      <h1 class="arena-title">Arena</h1>
+      <h1 class="arena-title jjk-title-plate">Arena</h1>
       <div class="arena-stars-chip" title="Arena Stars">
         <img src="assets/ui/star_icon.png" alt="">
         <span id="arena-stars-total">0</span>
@@ -522,7 +524,6 @@
         <div class="aos-cards">${cardsHTML}</div>
         <div class="aos-footer">
           <button class="aos-rescout" onclick="rescoutOpponents()">Scout Again</button>
-          <div class="aos-hint">Tougher rivals = more stars</div>
         </div>
       </div>`;
 

@@ -622,3 +622,7 @@
   font-display: swap;
   src: url('../assets/fonts/bangers-400.woff2') format('woff2');
 }
+/* JJK-style mincho serif for UI labels (Latin subset) */
+@font-face { font-family: 'Kaisei Tokumin'; font-style: normal; font-weight: 500; font-display: swap; src: url('../assets/fonts/kaisei-500.woff2') format('woff2'); }
+@font-face { font-family: 'Kaisei Tokumin'; font-style: normal; font-weight: 700; font-display: swap; src: url('../assets/fonts/kaisei-700.woff2') format('woff2'); }
+@font-face { font-family: 'Kaisei Tokumin'; font-style: normal; font-weight: 800; font-display: swap; src: url('../assets/fonts/kaisei-800.woff2') format('woff2'); }

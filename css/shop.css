@@ -544,3 +544,264 @@
     gap: 12px;
   }
 }
+
+/* ==========================================================================
+   JJK ink-teal theme pass (header = .jjk-page-header in shop.html)
+   ========================================================================== */
+.page-shop {
+  font-family: var(--jjk-font);
+  background: var(--jjk-ink, #071418);
+  color: var(--jjk-text);
+}
+.page-shop #shop-bg {
+  background:
+    radial-gradient(ellipse at 50% 35%, rgba(24, 70, 78, 0.28), rgba(3, 9, 11, 0.86) 78%),
+    url('../assets/ui/jjk/ink_bg.webp') center / cover no-repeat,
+    var(--jjk-ink, #071418);
+}
+
+/* Currency plates, top-right (same row as the page header) */
+.page-shop .resource-bar {
+  top: 16px;
+  right: 16px;
+  gap: 8px;
+  padding: 0;
+  background: none;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+.page-shop .resource-item {
+  position: relative;
+  width: 168px;
+  height: 34px;
+  gap: 0;
+  padding: 0 30px 0 5px;
+  background: url('../assets/ui/jjk/currency.webp') center / 100% 100% no-repeat;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.6));
+}
+.page-shop .resource-item img {
+  width: 24px;
+  height: 24px;
+  flex: none;
+}
+.page-shop .resource-label {
+  /* icon identifies the currency; keep the name for screen readers */
+  position: absolute;
+  width: 1px; height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+.page-shop .resource-value {
+  flex: 1;
+  min-width: 0;
+  font-family: var(--jjk-font);
+  font-weight: 800;
+  font-size: 16px;
+  color: var(--jjk-text);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
+}
+
+.page-shop .shop-content {
+  padding: calc(var(--jjk-header-h) + 4px) 32px 110px;
+}
+
+/* Tabs -> JJK plates */
+.page-shop .shop-tabs { gap: 2px; margin-bottom: 26px; }
+.page-shop .shop-tab {
+  width: 190px;
+  height: 42px;
+  padding: 0 20px;
+  background: url('../assets/ui/jjk/tab.webp') center / 100% 100% no-repeat;
+  filter: none;
+  font-family: var(--jjk-font);
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 0.02em;
+  color: var(--jjk-text);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
+}
+.page-shop .shop-tab:hover {
+  transform: none;
+  filter: brightness(1.18);
+  color: var(--jjk-text);
+}
+.page-shop .shop-tab.active {
+  background: url('../assets/ui/jjk/tab_active.webp') center / 106% 128% no-repeat;
+  color: #2a220c;
+  font-weight: 800;
+  text-shadow: 0 1px 0 rgba(255, 245, 200, 0.6);
+  transform: none;
+}
+
+/* Item cards: ink plates with gold hairline + corner brackets */
+.page-shop .shop-grid { gap: 22px; margin-top: 0; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); }
+.page-shop .shop-item {
+  aspect-ratio: auto;
+  min-height: 200px;
+  background: linear-gradient(180deg, rgba(14, 38, 45, 0.94), rgba(6, 17, 21, 0.96));
+  border: 1px solid rgba(201, 162, 78, 0.45);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(0, 0, 0, 0.5);
+  filter: none;
+}
+.page-shop .shop-item::before,
+.page-shop .shop-item::after {
+  content: ''; position: absolute; width: 14px; height: 14px; pointer-events: none;
+  border: 2px solid var(--jjk-gold);
+}
+.page-shop .shop-item::before { top: -3px; left: -3px; border-right: 0; border-bottom: 0; }
+.page-shop .shop-item::after  { bottom: -3px; right: -3px; border-left: 0; border-top: 0; }
+.page-shop .shop-item:hover {
+  transform: translateY(-2px);
+  filter: none;
+  border-color: rgba(241, 217, 138, 0.8);
+}
+.page-shop .si-inner {
+  position: relative;
+  inset: auto;
+  height: 100%;
+  min-height: 200px;
+  padding: 14px 16px 12px;
+}
+.page-shop .item-name {
+  font-family: var(--jjk-font);
+  font-weight: 800;
+  font-size: 18px;
+  color: var(--jjk-text);
+  letter-spacing: 0.01em;
+}
+.page-shop .item-tier {
+  font-family: var(--jjk-font);
+  border-radius: 0;
+  color: var(--jjk-gold-hi);
+  background: rgba(3, 10, 12, 0.9);
+  border: 1px solid rgba(201, 162, 78, 0.55);
+  box-shadow: none;
+  clip-path: polygon(5px 0, 100% 0, calc(100% - 5px) 100%, 0 100%);
+  padding: 2px 10px;
+}
+.page-shop .item-icon {
+  width: 84px;
+  background: url('../assets/ui/jjk/icon_btn.webp') center / 100% 100% no-repeat;
+}
+.page-shop .item-description {
+  font-family: var(--jjk-font);
+  font-size: 14px;
+  color: var(--jjk-muted);
+}
+.page-shop .item-footer { border-top-color: rgba(201, 162, 78, 0.25); }
+.page-shop .item-cost {
+  font-family: var(--jjk-font);
+  font-weight: 800;
+  color: var(--jjk-gold-hi);
+}
+.page-shop .btn-buy {
+  width: 120px;
+  height: 40px;
+  background: url('../assets/ui/jjk/action_btn.webp') center / 100% 100% no-repeat;
+  font-family: var(--jjk-font);
+  font-weight: 800;
+  font-size: 15px;
+  letter-spacing: 0.02em;
+  color: #231c08;
+  text-shadow: 0 1px 0 rgba(255, 240, 190, 0.55);
+}
+.page-shop .btn-buy:hover { transform: none; filter: brightness(1.12); }
+.page-shop .btn-buy:active { transform: translateY(1px) scale(0.98); }
+.page-shop .btn-buy:disabled { filter: grayscale(0.85) brightness(0.6); cursor: not-allowed; }
+
+/* Purchase / success modals */
+.page-shop .modal { background: rgba(3, 9, 11, 0.82); }
+.page-shop .modal-content {
+  position: relative;
+  border-radius: 0;
+  background: linear-gradient(180deg, rgba(14, 38, 45, 0.97), rgba(6, 17, 21, 0.98));
+  border: 1px solid rgba(201, 162, 78, 0.55);
+}
+.page-shop .modal-title,
+.page-shop .purchase-item-name { font-family: var(--jjk-font); font-weight: 800; color: var(--jjk-gold-hi); }
+.page-shop .purchase-item-desc,
+.page-shop .success-message { font-family: var(--jjk-font); color: var(--jjk-muted); }
+.page-shop .purchase-preview,
+.page-shop .purchase-cost {
+  border-radius: 0;
+  background: rgba(3, 10, 12, 0.6);
+  border: 1px solid rgba(201, 162, 78, 0.25);
+  color: var(--jjk-gold-hi);
+}
+.page-shop .purchase-preview img { border-radius: 0; border-color: rgba(201, 162, 78, 0.45); }
+.page-shop .quantity-selector label { font-family: var(--jjk-font); color: var(--jjk-muted); }
+.page-shop .qty-btn,
+.page-shop #qty-input {
+  border-radius: 0;
+  background: rgba(3, 10, 12, 0.85);
+  border: 1px solid rgba(201, 162, 78, 0.55);
+  color: var(--jjk-text);
+  font-family: var(--jjk-font);
+}
+.page-shop .btn-confirm,
+.page-shop .btn-cancel {
+  height: 44px;
+  padding: 0 20px;
+  border: 0;
+  border-radius: 0;
+  font-family: var(--jjk-font);
+  font-weight: 800;
+  font-size: 16px;
+}
+.page-shop .btn-confirm {
+  background: url('../assets/ui/jjk/action_btn.webp') center / 100% 100% no-repeat;
+  color: #231c08;
+  text-shadow: 0 1px 0 rgba(255, 240, 190, 0.55);
+}
+.page-shop .btn-cancel {
+  background: url('../assets/ui/jjk/tab.webp') center / 100% 100% no-repeat;
+  color: var(--jjk-text);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
+}
+.page-shop .btn-confirm:hover,
+.page-shop .btn-cancel:hover { transform: none; box-shadow: none; filter: brightness(1.14); background-color: transparent; }
+.page-shop .success-title { font-family: var(--jjk-font); color: var(--jjk-good); text-shadow: none; }
+
+/* Narrow desktop windows: currency row drops under the header */
+@media (max-width: 1100px) {
+  .page-shop .resource-bar { position: absolute; top: 70px; }
+  .page-shop .shop-content { padding-top: calc(var(--jjk-header-h) + 48px); }
+}
+@media (max-width: 768px) {
+  .page-shop .resource-item { width: 130px; }
+  .page-shop .shop-tab { width: 46%; max-width: 190px; font-size: 13px; }
+}
+
+/* Mobile (compact landscape): currency plates stay top-right */
+html.is-mobile.is-landscape.is-compact body.page-shop .resource-bar {
+  position: fixed !important;
+  top: calc(8px + var(--safe-t, 0px)) !important;
+  gap: 4px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+}
+html.is-mobile.is-landscape.is-compact body.page-shop .resource-item {
+  width: 108px;
+  height: 26px;
+  padding: 0 18px 0 3px;
+}
+html.is-mobile.is-landscape.is-compact body.page-shop .shop-content {
+  padding-top: calc(var(--jjk-header-h) + var(--safe-t, 0px)) !important;
+}
+html.is-mobile.is-landscape.is-compact body.page-shop .shop-tab {
+  width: auto !important;
+  min-width: 110px;
+  padding: 0 18px !important;
+  white-space: nowrap;
+  height: 30px !important;
+  font-size: 12px !important;
+}
+html.is-mobile.is-landscape.is-compact body.page-shop .btn-buy {
+  width: 96px;
+  height: 32px;
+  font-size: 13px;
+}

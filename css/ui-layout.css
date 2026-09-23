@@ -14,12 +14,11 @@
   width: 298px;
   height: 120px;
   overflow: visible;
-  border-radius: 8px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.7);
-  border: 2px solid rgba(255, 165, 0, 0.4);
-  background: rgba(20, 20, 30, 0.95);
-  backdrop-filter: blur(8px);
-  font-family: "Cinzel", serif;
+  border-radius: 0;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.85), 0 8px 22px rgba(0, 0, 0, 0.7);
+  border: 1px solid rgba(201, 162, 78, 0.7);
+  background: linear-gradient(180deg, rgba(14, 38, 45, 0.95), rgba(6, 17, 21, 0.97));
+  font-family: var(--jjk-font, 'Kaisei Tokumin', serif);
 }
 
 .announcement-track {
@@ -41,16 +40,16 @@
 }
 
 .announcement-slide h3 {
-  font-size: 18px;
-  font-weight: 700;
-  color: #ff6b00;
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--jjk-gold-hi, #f1d98a);
   margin: 0 0 8px 0;
   text-align: center;
 }
 
 .announcement-slide p {
-  font-size: 14px;
-  color: #ddd;
+  font-size: 13px;
+  color: var(--jjk-text, #ece6d6);
   margin: 0;
   text-align: center;
   line-height: 1.5;
@@ -67,25 +66,23 @@
 }
 
 .announcement-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.3);
-  border: 1px solid rgba(255, 255, 255, 0.4);
+  width: 7px;
+  height: 7px;
+  border-radius: 0;
+  transform: rotate(45deg);
+  background: rgba(236, 230, 214, 0.28);
+  border: 1px solid rgba(201, 162, 78, 0.7);
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
 .announcement-dot:hover {
-  background: rgba(255, 255, 255, 0.5);
-  transform: scale(1.2);
+  background: rgba(236, 230, 214, 0.5);
 }
 
 .announcement-dot.active {
-  background: #ff6b00;
-  border-color: #ff6b00;
-  box-shadow: 0 0 8px rgba(255, 107, 0, 0.8);
-  transform: scale(1.2);
+  background: var(--jjk-gold-hi, #f1d98a);
+  border-color: var(--jjk-gold, #c9a24e);
 }
 
 /* ==========================================
@@ -122,11 +119,16 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  border-radius: 6px;
+  border-radius: 0;
   cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
-  border: 1px solid rgba(255, 165, 0, 0.3);
+  transition: transform 0.2s ease, filter 0.2s ease, box-shadow 0.2s ease;
+  /* thin antique-gold frame: gold line + dark keyline + inner hairline */
+  border: 1px solid var(--jjk-gold, #c9a24e);
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.85),
+    inset 0 0 0 1px rgba(0, 0, 0, 0.55),
+    inset 0 0 0 2px rgba(241, 217, 138, 0.22),
+    0 4px 10px rgba(0, 0, 0, 0.6);
   position: relative;
   overflow: hidden;
 }
@@ -170,13 +172,18 @@
 
 /* Hover effect */
 .banner-button:hover {
-  transform: translateX(-5px) scale(1.02); /* Reduced 55%: -10px × 0.45 = -5px */
-  box-shadow: 0 4px 14px rgba(255, 165, 0, 0.5); /* Reduced 55%: 8px → 4px, 30px → 14px */
-  border-color: rgba(255, 165, 0, 0.8);
+  transform: translateX(-4px);
+  filter: brightness(1.08);
+  border-color: var(--jjk-gold-hi, #f1d98a);
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.85),
+    inset 0 0 0 1px rgba(0, 0, 0, 0.55),
+    inset 0 0 0 2px rgba(241, 217, 138, 0.35),
+    0 6px 14px rgba(0, 0, 0, 0.7);
 }
 
 .banner-button:active {
-  transform: translateX(-2px) scale(0.98); /* Reduced 55%: -5px × 0.45 = -2px */
+  transform: translateX(-2px) scale(0.98);
 }
 
 /* Glow effect on hover */
@@ -184,7 +191,7 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(255, 165, 0, 0.1), transparent);
+  background: linear-gradient(135deg, rgba(241, 217, 138, 0.12), transparent 55%);
   opacity: 0;
   transition: opacity 0.3s ease;
   pointer-events: none;
@@ -238,38 +245,67 @@
 
 /* ==========================================
    BOTTOM ICON BAR (10 Icon Buttons)
+   JJK-style dock: ink-teal band with a gold hairline; each icon sits on an
+   angular gunmetal plate (assets/ui/jjk/tab.webp, 600x137, drawn with
+   border-image so the slanted ends + gold corner brackets keep their shape).
+   Hover/press swaps to the khaki-gold active plate (tab_active.webp).
    ========================================== */
 
 .bottom-icon-bar {
-  position: absolute; /* Changed from fixed - positioned relative to game-canvas */
+  position: absolute; /* positioned relative to game-canvas */
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 80px; /* Reduced from 90px to prevent cutoff */
-  min-height: 70px; /* Prevent compression */
-  max-height: 80px; /* Prevent overflow */
-  background: rgba(10, 10, 15, 0.95);
-  border-top: 2px solid rgba(139, 115, 85, 0.6);
+  box-sizing: border-box;
+  height: 66px;
+  min-height: 60px;
+  max-height: 70px;
+  background:
+    linear-gradient(0deg, rgba(4, 12, 15, 0.98) 0%, rgba(8, 24, 29, 0.94) 75%, rgba(8, 24, 29, 0.86) 100%);
+  border-top: 0;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: clamp(10px, 2vw, 28px); /* Responsive gap that shrinks on mobile */
-  padding: 0 10px; /* Reduced padding */
+  gap: 0;
+  padding: 0 12px;
   z-index: 100;
-  box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(10px);
-  overflow: hidden; /* Prevent icons from extending outside */
+  box-shadow: 0 -6px 18px rgba(0, 0, 0, 0.55);
+  overflow: hidden;
+  font-family: var(--jjk-font, 'Kaisei Tokumin', serif);
+}
+.bottom-icon-bar::before {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; top: 0;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent 0%, rgba(201, 162, 78, 0.55) 12%, #e6c878 50%,
+    rgba(201, 162, 78, 0.55) 88%, transparent 100%);
+  pointer-events: none;
 }
 
 .bottom-icon {
+  --plate-h: 44px;
+  position: relative;
+  box-sizing: border-box;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
   gap: 6px;
+  height: var(--plate-h);
+  min-width: 0;
+  flex: 0 1 auto;
+  padding: 0 calc(var(--plate-h) * 0.5);
+  margin: 0 -3px;                  /* slanted plates nest into each other */
+  border: 0 solid transparent;
+  border-image-source: url('../assets/ui/jjk/tab.webp');
+  border-image-slice: 0 80 0 80 fill;
+  border-image-width: 0 calc(var(--plate-h) * 0.584);
+  border-image-repeat: stretch;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.7));
   cursor: pointer;
-  transition: all 0.2s ease;
-  position: relative;
+  transition: filter 0.15s ease, transform 0.15s ease;
   pointer-events: auto;
   user-select: none;
   -webkit-user-select: none;
@@ -277,69 +313,86 @@
 }
 
 .bottom-icon:hover {
-  transform: translateY(-5px);
+  transform: translateY(-2px);
+  filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.75)) brightness(1.15);
 }
 
 .bottom-icon:active {
-  transform: translateY(-2px);
+  transform: translateY(0);
+  border-image-source: url('../assets/ui/jjk/tab_active.webp');
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.7));
 }
 
 /* Icon image */
 .bottom-icon-image {
-  width: clamp(36px, 4vw, 48px); /* Responsive size that shrinks on mobile */
-  height: clamp(36px, 4vw, 48px);
-  min-width: 32px; /* Prevent shrinking too small */
-  min-height: 32px;
-  max-width: 48px; /* Prevent growing too large */
-  max-height: 48px;
-  aspect-ratio: 1 / 1; /* Keep icons square */
-  object-fit: contain; /* Never distort */
-  filter: brightness(0.9) drop-shadow(0 2px 6px rgba(0, 0, 0, 0.8));
-  transition: all 0.2s ease;
+  width: 26px;
+  height: 26px;
+  min-width: 0;
+  min-height: 0;
+  max-width: none;
+  max-height: none;
+  flex: 0 0 auto;
+  aspect-ratio: 1 / 1;
+  object-fit: contain;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.9));
+  transition: filter 0.15s ease;
 }
 
 .bottom-icon:hover .bottom-icon-image {
-  filter: brightness(1.2) drop-shadow(0 4px 12px rgba(255, 165, 0, 0.6));
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.9)) brightness(1.1);
 }
 
 /* Icon label */
 .bottom-icon-label {
-  font-size: 12px;
-  color: #b8985f;
-  font-weight: 600;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
-  letter-spacing: 0.3px;
+  font-family: var(--jjk-font, 'Kaisei Tokumin', serif);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--jjk-text, #ece6d6);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.95);
+  letter-spacing: 0.02em;
   white-space: nowrap;
-  font-family: "Cinzel", serif;
+  line-height: 1;
 }
 
 .bottom-icon:hover .bottom-icon-label {
-  color: #d4af37;
+  color: var(--jjk-gold-hi, #f1d98a);
+}
+.bottom-icon:active .bottom-icon-label {
+  color: #2a220c;
+  text-shadow: 0 1px 0 rgba(255, 245, 200, 0.6);
 }
 
-/* Notification dot */
+/* Notification dot (crimson gem on the plate's top edge) */
 .bottom-icon-notification {
   position: absolute;
-  top: -2px;
-  right: 4px;
-  width: 10px;
-  height: 10px;
-  background: #ff3333;
-  border-radius: 50%;
-  border: 2px solid rgba(10, 10, 15, 0.95);
-  box-shadow: 0 0 8px rgba(255, 51, 51, 0.8);
+  top: 3px;
+  right: calc(var(--plate-h, 44px) * 0.5);
+  width: 8px;
+  height: 8px;
+  background: #d23a2a;
+  border-radius: 0;
+  transform: rotate(45deg);
+  border: 1px solid #f1d98a;
+  box-shadow: 0 0 5px rgba(210, 58, 42, 0.8);
+  z-index: 2;
   animation: notificationPulse 2s ease-in-out infinite;
 }
 
 @keyframes notificationPulse {
-  0%, 100% {
-    transform: scale(1);
-    opacity: 1;
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+/* Narrower canvases: stack icon over label on a taller plate */
+@media (max-width: 1240px) {
+  .bottom-icon {
+    --plate-h: 52px;
+    flex-direction: column;
+    gap: 2px;
+    padding: 0 calc(var(--plate-h) * 0.42);
   }
-  50% {
-    transform: scale(1.2);
-    opacity: 0.8;
-  }
+  .bottom-icon-image { width: 24px; height: 24px; }
+  .bottom-icon-label { font-size: 11px; }
 }
 
 /* Placeholder icon style (if PNG not loaded) */
@@ -351,20 +404,72 @@
 }
 
 /* ==========================================
-   SUMMON BANNER CAROUSEL (Index.html)
+   SUMMON BANNER CAROUSEL (Village)
+   Metallic antique-gold bezel with angular corner brackets.
+   .summon-banner-frame carries the bezel + brackets (unclipped);
+   .summon-banner-carousel inside it clips the sliding track.
    ========================================== */
 
-.summon-banner-carousel {
+.summon-banner-frame {
+  --sb-w: 480px;
+  --sb-h: 268px;            /* 480 / 1.79 — matches banner art so nothing is cropped */
   position: fixed;
   left: 20px;
-  top: 92px;               /* sit clear below the top bar */
+  top: 92px;                /* sit clear below the top bar */
   z-index: 50;
-  width: 480px;            /* larger showcase */
-  height: 268px;           /* 480 / 1.79 — matches banner art so nothing is cropped */
+  box-sizing: content-box;
+  width: var(--sb-w);
+  height: var(--sb-h);
+  padding: 5px;             /* bezel thickness */
+  background:
+    linear-gradient(135deg,
+      #5a4218 0%, #c9a24e 12%, #f6e3a1 24%, #a8822f 38%,
+      #6e5320 50%, #d9b861 64%, #fff0b8 76%, #9c7a2c 88%, #4d3812 100%);
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.9),
+    0 10px 26px rgba(0, 0, 0, 0.75);
+}
+/* angular gold corner brackets (top-left / bottom-right like .jjk-panel,
+   plus the other two for a full frame) */
+.summon-banner-frame::before,
+.summon-banner-frame::after {
+  content: '';
+  position: absolute;
+  inset: -7px;
+  pointer-events: none;
+  z-index: 3;
+  --bk: 20px;   /* bracket arm length */
+  --bw: 2px;    /* bracket stroke */
+  background:
+    linear-gradient(var(--jjk-gold-hi, #f1d98a), var(--jjk-gold-hi, #f1d98a)) top left / var(--bk) var(--bw) no-repeat,
+    linear-gradient(var(--jjk-gold-hi, #f1d98a), var(--jjk-gold-hi, #f1d98a)) top left / var(--bw) var(--bk) no-repeat,
+    linear-gradient(var(--jjk-gold-hi, #f1d98a), var(--jjk-gold-hi, #f1d98a)) top right / var(--bk) var(--bw) no-repeat,
+    linear-gradient(var(--jjk-gold-hi, #f1d98a), var(--jjk-gold-hi, #f1d98a)) top right / var(--bw) var(--bk) no-repeat,
+    linear-gradient(var(--jjk-gold-hi, #f1d98a), var(--jjk-gold-hi, #f1d98a)) bottom left / var(--bk) var(--bw) no-repeat,
+    linear-gradient(var(--jjk-gold-hi, #f1d98a), var(--jjk-gold-hi, #f1d98a)) bottom left / var(--bw) var(--bk) no-repeat,
+    linear-gradient(var(--jjk-gold-hi, #f1d98a), var(--jjk-gold-hi, #f1d98a)) bottom right / var(--bk) var(--bw) no-repeat,
+    linear-gradient(var(--jjk-gold-hi, #f1d98a), var(--jjk-gold-hi, #f1d98a)) bottom right / var(--bw) var(--bk) no-repeat;
+  filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.9));
+}
+/* ::after = fine dark + gold inner line where the bezel meets the art */
+.summon-banner-frame::after {
+  inset: 4px;
+  background: none;
+  border: 1px solid rgba(255, 240, 190, 0.55);
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.75), inset 0 0 14px rgba(0, 0, 0, 0.45);
+  filter: none;
+}
+
+.summon-banner-carousel {
+  position: relative;
+  z-index: 1;
+  width: var(--sb-w, 480px);
+  height: var(--sb-h, 268px);
   overflow: hidden;
-  border-radius: 12px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.8);
-  border: 3px solid rgba(200, 100, 255, 0.6);
+  border-radius: 0;
+  border: 0;
+  box-shadow: none;
+  background: var(--jjk-ink, #071418);
 }
 
 .summon-carousel-track {
@@ -373,91 +478,84 @@
   height: 100%;
 }
 
-/* Individual summon banner card - VISUAL ONLY (non-clickable) */
+/* Individual summon banner card */
 .summon-banner-card {
-  min-width: 480px;
-  width: 480px;
-  height: 268px;
-  background-image: linear-gradient(135deg, rgba(80, 40, 120, 0.9), rgba(120, 60, 180, 0.95)); /* Default fallback */
+  min-width: var(--sb-w, 480px);
+  width: var(--sb-w, 480px);
+  height: var(--sb-h, 268px);
+  background-image: linear-gradient(135deg, #0c2229, #133039); /* fallback while art loads */
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: filter 0.2s ease;
   position: relative;
   overflow: hidden;
   flex-shrink: 0;
 }
+.summon-banner-card:hover { filter: brightness(1.06); }
 
-/* Gradient fallbacks for different banner types */
-.summon-banner-card.banner-type-blazing-festival {
-  background-image: linear-gradient(135deg, rgba(180, 20, 20, 0.9), rgba(220, 60, 60, 0.95));
-  border-color: rgba(255, 100, 100, 0.8);
-}
-
-.summon-banner-card.banner-type-blazing-bash {
-  background-image: linear-gradient(135deg, rgba(20, 80, 180, 0.9), rgba(60, 120, 220, 0.95));
-  border-color: rgba(100, 150, 255, 0.8);
-}
-
-.summon-banner-card.banner-type-anniversary {
-  background-image: linear-gradient(135deg, rgba(180, 120, 20, 0.9), rgba(220, 160, 60, 0.95));
-  border-color: rgba(255, 200, 100, 0.8);
-}
-
-.summon-banner-card.banner-type-birthday {
-  background-image: linear-gradient(135deg, rgba(180, 20, 120, 0.9), rgba(220, 60, 160, 0.95));
-  border-color: rgba(255, 100, 200, 0.8);
-}
-
-.summon-banner-card:hover {
-  transform: translateX(10px) scale(1.05);
-  box-shadow: 0 8px 30px rgba(200, 100, 255, 0.7);
-  border-color: rgba(200, 100, 255, 0.9);
-} */
-
-/* .summon-banner-card:active {
-  transform: translateX(5px) scale(1.02);
-} */
-
-/* Banner card glow */
-.summon-banner-card::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, rgba(200, 100, 255, 0.2), transparent);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  pointer-events: none;
-}
-
-/* Hover glow DISABLED - visual only mode */
-/* .summon-banner-card:hover::before {
-  opacity: 1;
-} */
-
-/* Banner card title */
-.summon-banner-title {
-  position: absolute;
-  top: 10px; /* Reduced from 15px */
-  left: 14px; /* Reduced from 20px */
-  font-size: 15px; /* Reduced 30%: 22px × 0.7 = 15.4px ≈ 15px */
-  font-weight: 700;
-  color: #fff;
-  text-shadow: 0 2px 7px rgba(0, 0, 0, 0.9); /* Reduced from 3px 10px */
-  letter-spacing: 0.35px; /* Reduced from 0.5px */
-  font-family: "Cinzel", serif;
-}
-
-/* Banner card subtitle */
+/* The banner art already carries its own title — hide the text overlay. */
+.summon-banner-title,
 .summon-banner-subtitle {
+  display: none;
+}
+
+/* Arrows: small gold chevrons, revealed on hover */
+.summon-carousel-arrow {
   position: absolute;
-  top: 32px; /* Reduced from 45px */
-  left: 14px; /* Reduced from 20px */
-  font-size: 10px; /* Reduced 30%: 14px × 0.7 = 9.8px ≈ 10px */
-  color: #ddd;
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.9); /* Reduced from 2px 6px */
-  font-family: "Cinzel", serif;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 4;
+  width: 26px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  line-height: 1;
+  color: var(--jjk-gold-hi, #f1d98a);
+  background: rgba(5, 14, 17, 0.72);
+  border: 1px solid rgba(201, 162, 78, 0.6);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s ease, background 0.2s ease;
+  user-select: none;
+}
+.summon-carousel-arrow.left  { left: 6px; }
+.summon-carousel-arrow.right { right: 6px; }
+.summon-banner-carousel:hover .summon-carousel-arrow { opacity: 1; }
+.summon-carousel-arrow:hover { background: rgba(19, 48, 57, 0.9); }
+
+/* Dots: tiny gold diamonds along the bottom edge */
+.summon-carousel-dots {
+  position: absolute;
+  left: 50%;
+  bottom: 8px;
+  transform: translateX(-50%);
+  z-index: 4;
+  display: flex;
+  gap: 8px;
+  padding: 4px 10px;
+  background: rgba(5, 14, 17, 0.55);
+  clip-path: polygon(6px 0, 100% 0, calc(100% - 6px) 100%, 0 100%);
+}
+.summon-carousel-dot {
+  width: 7px;
+  height: 7px;
+  transform: rotate(45deg);
+  background: rgba(236, 230, 214, 0.28);
+  border: 1px solid rgba(201, 162, 78, 0.7);
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+.summon-carousel-dot.active {
+  background: var(--jjk-gold-hi, #f1d98a);
+}
+/* With a long banner list the dot row would span the whole art — hide it
+   (arrows + auto-advance still work). */
+.summon-carousel-dots:has(> .summon-carousel-dot:nth-child(13)) {
+  display: none;
 }
 
 /* ==========================================
@@ -466,27 +564,12 @@
 
 @media (max-width: 1400px) {
   .right-banner-panel {
-    width: 350px;
+    width: min(260px, 23vw);
   }
 
-  .banner-button {
-    width: 350px;
-    height: 130px;
-  }
-
-  .banner-button.missions {
-    height: 170px;
-  }
-
-  .summon-banner-carousel {
-    width: 400px;
-    height: 224px;
-  }
-
-  .summon-banner-card {
-    min-width: 400px;
-    width: 400px;
-    height: 224px;
+  .summon-banner-frame {
+    --sb-w: 400px;
+    --sb-h: 224px;
   }
 }
 
@@ -495,41 +578,22 @@
     right: 10px;
   }
 
-  .summon-banner-carousel {
+  .summon-banner-frame {
     left: 10px;
   }
 
   .bottom-icon-bar {
-    gap: 20px;
-    padding: 0 10px;
+    padding: 0 8px;
+  }
+
+  .bottom-icon {
+    --plate-h: 50px;
+    padding: 0 calc(var(--plate-h) * 0.36);
   }
 
   .bottom-icon-image {
-    width: 42px;
-    height: 42px;
-  }
-
-  .bottom-icon-label {
-    font-size: 11px;
-  }
-}
-
-@media (max-width: 768px) {
-  .right-banner-panel,
-  .summon-banner-carousel {
-    display: none; /* Hide on mobile, show only bottom bar */
-  }
-
-  .bottom-icon-bar {
-    gap: 12px;
-    height: 80px;
-    overflow-x: auto;
-    justify-content: flex-start;
-  }
-
-  .bottom-icon-image {
-    width: 38px;
-    height: 38px;
+    width: 22px;
+    height: 22px;
   }
 
   .bottom-icon-label {
@@ -537,19 +601,25 @@
   }
 }
 
+@media (max-width: 768px) {
+  .right-banner-panel,
+  .summon-banner-frame,
+  .summon-banner-carousel {
+    display: none; /* Hide on mobile, show only bottom bar */
+  }
+
+  .bottom-icon-bar {
+    height: 62px;
+    overflow-x: auto;
+    justify-content: flex-start;
+  }
+
+  .bottom-icon { flex: 0 0 auto; }
+}
+
 @media (max-width: 480px) {
   .bottom-icon-bar {
-    gap: 8px;
-    padding: 0 8px;
-  }
-
-  .bottom-icon-image {
-    width: 36px;
-    height: 36px;
-  }
-
-  .bottom-icon-label {
-    font-size: 9px;
+    padding: 0 6px;
   }
 }
 
@@ -559,25 +629,27 @@
     height: 55px;
     min-height: 50px;
     max-height: 55px;
-    gap: clamp(4px, 1.2vw, 12px);
+    gap: 0;
     padding: 0 6px;
   }
 
   .bottom-icon {
+    --plate-h: 46px;
+    flex: 1 1 0;
+    max-width: 96px;
+    flex-direction: column;
     gap: 2px;
+    padding: 0 calc(var(--plate-h) * 0.3);
+    margin: 0 -2px;
   }
 
   .bottom-icon-image {
-    width: 26px;
-    height: 26px;
-    min-width: 22px;
-    min-height: 22px;
-    max-width: 30px;
-    max-height: 30px;
+    width: 22px;
+    height: 22px;
   }
 
   .bottom-icon-label {
-    font-size: 7px;
+    font-size: 8px;
     letter-spacing: 0;
   }
 
@@ -589,6 +661,7 @@
   }
 
   .right-banner-panel,
+  .summon-banner-frame,
   .summon-banner-carousel {
     display: none;
   }

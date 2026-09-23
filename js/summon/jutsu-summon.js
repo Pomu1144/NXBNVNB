@@ -211,8 +211,8 @@
     tabBar.className = "summon-tabs";
     tabBar.setAttribute("role", "tablist");
     tabBar.innerHTML = `
-      <button class="summon-tab active" type="button" role="tab" aria-selected="true" data-tab="characters">Shinobi</button>
-      <button class="summon-tab" type="button" role="tab" aria-selected="false" data-tab="jutsu">Jutsu Cards</button>`;
+      <button class="summon-tab jjk-tab active" type="button" role="tab" aria-selected="true" data-tab="characters">Shinobi</button>
+      <button class="summon-tab jjk-tab" type="button" role="tab" aria-selected="false" data-tab="jutsu">Jutsu Cards</button>`;
     const topbar = page.querySelector(".summon-topbar");
     const hud = topbar && topbar.querySelector(".summon-currency-hud");
     if (topbar && hud) topbar.insertBefore(tabBar, hud);

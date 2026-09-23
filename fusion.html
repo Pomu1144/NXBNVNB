@@ -13,6 +13,8 @@
   <meta name="theme-color" content="#000000" />
   <link rel="apple-touch-icon" href="assets/icons/achievement_icon.png" />
   <script src="js/pwa-register.js"></script>
+  <link rel="stylesheet" href="css/fonts.css" />
+  <link rel="stylesheet" href="css/theme-jjk.css" />
   <link rel="stylesheet" href="css/fusion.css" />
   <link rel="stylesheet" href="css/background.css" />
   <link rel="stylesheet" href="css/bottombar.css" />
@@ -32,15 +34,20 @@
   <!-- ==================== MAIN FUSION UI ==================== -->
   <main class="fusion-content">
     <header class="fusion-header">
-      <div class="title-plate">
-        <h1 class="page-title">Fusion</h1>
-        <span class="title-sub">Sealing Shrine</span>
+      <div class="fusion-titlebar">
+        <button id="btn-fusion-back" class="jjk-icon-btn" type="button" aria-label="Back to Village" onclick="location.href='village.html'"><img src="assets/ui/jjk/back_arrow.webp" alt="" class="jjk-back-glyph" draggable="false"></button>
+        <h1 class="jjk-title-plate fusion-title">Fusion</h1>
       </div>
 
       <!-- ---- Fusion Tabs ---- -->
       <div class="fusion-tabs" role="tablist">
-        <button class="fusion-tab active" data-tab="fusions">Fusions</button>
-        <button class="fusion-tab" data-tab="exchanges">Exchanges</button>
+        <button class="fusion-tab jjk-tab active" data-tab="fusions">Fusions</button>
+        <button class="fusion-tab jjk-tab" data-tab="exchanges">Exchanges</button>
+      </div>
+
+      <div class="fusion-currency" aria-label="Ryo">
+        <img src="assets/icons/currency/ryo.png" alt="" onerror="this.style.display='none'">
+        <span id="fusion-ryo">0</span>
       </div>
     </header>
 
@@ -200,6 +207,16 @@
   <script src="js/vendor/howler.min.js"></script>
   <script src="js/audio-manager.js"></script>
   <script>
+  // ── Header ryo counter (refreshes after fuse / exchange) ──────
+  function refreshFusionRyo() {
+    const el = document.getElementById('fusion-ryo');
+    const v = window.Resources?.get?.('ryo');
+    if (el && typeof v === 'number') el.textContent = v.toLocaleString();
+  }
+  window.addEventListener('load', refreshFusionRyo);
+  window.addEventListener('storage', refreshFusionRyo);
+  document.addEventListener('click', () => setTimeout(refreshFusionRyo, 400), true);
+
   // ── Fusion page tab switching ──────────────────────────────────
   document.querySelectorAll('.fusion-tab').forEach(btn => {
     btn.addEventListener('click', () => {
