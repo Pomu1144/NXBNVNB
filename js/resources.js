@@ -11,39 +11,39 @@
   const MATERIAL_TYPES = {
     // ========== RAMEN (EXP Items) - 25 Types (5 Elements × 5 Tiers) ==========
     // Heart Ramen - using actual ramen character portraits
-    "ramen_heart_1star": { name: "1★ Heart Ichiraku Ramen", desc: "Heart element ramen. Provides 500 EXP.", icon: "assets/characters/heart_915/portrait_1S.png", category: "ramen", element: "heart", exp: 500 },
-    "ramen_heart_2star": { name: "2★ Heart Ichiraku Ramen", desc: "Heart element ramen. Provides 1,500 EXP.", icon: "assets/characters/heart_916/portrait_2S.png", category: "ramen", element: "heart", exp: 1500 },
-    "ramen_heart_3star": { name: "3★ Heart Ichiraku Ramen", desc: "Heart element ramen. Provides 5,000 EXP.", icon: "assets/characters/heart_917/portrait_3S.png", category: "ramen", element: "heart", exp: 5000 },
-    "ramen_heart_4star": { name: "4★ Heart Ichiraku Ramen", desc: "Heart element ramen. Provides 15,000 EXP.", icon: "assets/characters/heart_967/portrait_4S.png", category: "ramen", element: "heart", exp: 15000 },
-    "ramen_heart_5star": { name: "5★ Heart Ichiraku Ramen", desc: "Heart element ramen. Provides 50,000 EXP.", icon: "assets/characters/heart_1071/portrait_5S.png", category: "ramen", element: "heart", exp: 50000 },
+    "ramen_heart_1star": { name: "1★ Heart Ichiraku Ramen", desc: "Heart element ramen. Provides 500 EXP.", icon: "assets/characters/heart_915/portrait_1S.webp", category: "ramen", element: "heart", exp: 500 },
+    "ramen_heart_2star": { name: "2★ Heart Ichiraku Ramen", desc: "Heart element ramen. Provides 1,500 EXP.", icon: "assets/characters/heart_916/portrait_2S.webp", category: "ramen", element: "heart", exp: 1500 },
+    "ramen_heart_3star": { name: "3★ Heart Ichiraku Ramen", desc: "Heart element ramen. Provides 5,000 EXP.", icon: "assets/characters/heart_917/portrait_3S.webp", category: "ramen", element: "heart", exp: 5000 },
+    "ramen_heart_4star": { name: "4★ Heart Ichiraku Ramen", desc: "Heart element ramen. Provides 15,000 EXP.", icon: "assets/characters/heart_967/portrait_4S.webp", category: "ramen", element: "heart", exp: 15000 },
+    "ramen_heart_5star": { name: "5★ Heart Ichiraku Ramen", desc: "Heart element ramen. Provides 50,000 EXP.", icon: "assets/characters/heart_1071/portrait_5S.webp", category: "ramen", element: "heart", exp: 50000 },
 
     // Skill Ramen - using actual ramen character portraits
-    "ramen_skill_1star": { name: "1★ Skill Ichiraku Ramen", desc: "Skill element ramen. Provides 500 EXP.", icon: "assets/characters/skill_918/portrait_1S.png", category: "ramen", element: "skill", exp: 500 },
-    "ramen_skill_2star": { name: "2★ Skill Ichiraku Ramen", desc: "Skill element ramen. Provides 1,500 EXP.", icon: "assets/characters/skill_919/portrait_2S.png", category: "ramen", element: "skill", exp: 1500 },
-    "ramen_skill_3star": { name: "3★ Skill Ichiraku Ramen", desc: "Skill element ramen. Provides 5,000 EXP.", icon: "assets/characters/skill_920/portrait_3S.png", category: "ramen", element: "skill", exp: 5000 },
-    "ramen_skill_4star": { name: "4★ Skill Ichiraku Ramen", desc: "Skill element ramen. Provides 15,000 EXP.", icon: "assets/characters/skill_968/portrait_4S.png", category: "ramen", element: "skill", exp: 15000 },
-    "ramen_skill_5star": { name: "5★ Skill Ichiraku Ramen", desc: "Skill element ramen. Provides 50,000 EXP.", icon: "assets/characters/skill_1074/portrait_5S.png", category: "ramen", element: "skill", exp: 50000 },
+    "ramen_skill_1star": { name: "1★ Skill Ichiraku Ramen", desc: "Skill element ramen. Provides 500 EXP.", icon: "assets/characters/skill_918/portrait_1S.webp", category: "ramen", element: "skill", exp: 500 },
+    "ramen_skill_2star": { name: "2★ Skill Ichiraku Ramen", desc: "Skill element ramen. Provides 1,500 EXP.", icon: "assets/characters/skill_919/portrait_2S.webp", category: "ramen", element: "skill", exp: 1500 },
+    "ramen_skill_3star": { name: "3★ Skill Ichiraku Ramen", desc: "Skill element ramen. Provides 5,000 EXP.", icon: "assets/characters/skill_920/portrait_3S.webp", category: "ramen", element: "skill", exp: 5000 },
+    "ramen_skill_4star": { name: "4★ Skill Ichiraku Ramen", desc: "Skill element ramen. Provides 15,000 EXP.", icon: "assets/characters/skill_968/portrait_4S.webp", category: "ramen", element: "skill", exp: 15000 },
+    "ramen_skill_5star": { name: "5★ Skill Ichiraku Ramen", desc: "Skill element ramen. Provides 50,000 EXP.", icon: "assets/characters/skill_1074/portrait_5S.webp", category: "ramen", element: "skill", exp: 50000 },
 
     // Body Ramen - using actual ramen character portraits
-    "ramen_body_1star": { name: "1★ Body Ichiraku Ramen", desc: "Body element ramen. Provides 500 EXP.", icon: "assets/characters/body_921/portrait_1S.png", category: "ramen", element: "body", exp: 500 },
-    "ramen_body_2star": { name: "2★ Body Ichiraku Ramen", desc: "Body element ramen. Provides 1,500 EXP.", icon: "assets/characters/body_922/portrait_2S.png", category: "ramen", element: "body", exp: 1500 },
-    "ramen_body_3star": { name: "3★ Body Ichiraku Ramen", desc: "Body element ramen. Provides 5,000 EXP.", icon: "assets/characters/body_923/portrait_3S.png", category: "ramen", element: "body", exp: 5000 },
-    "ramen_body_4star": { name: "4★ Body Ichiraku Ramen", desc: "Body element ramen. Provides 15,000 EXP.", icon: "assets/characters/body_969/portrait_4S.png", category: "ramen", element: "body", exp: 15000 },
-    "ramen_body_5star": { name: "5★ Body Ichiraku Ramen", desc: "Body element ramen. Provides 50,000 EXP.", icon: "assets/characters/body_1077/portrait_5S.png", category: "ramen", element: "body", exp: 50000 },
+    "ramen_body_1star": { name: "1★ Body Ichiraku Ramen", desc: "Body element ramen. Provides 500 EXP.", icon: "assets/characters/body_921/portrait_1S.webp", category: "ramen", element: "body", exp: 500 },
+    "ramen_body_2star": { name: "2★ Body Ichiraku Ramen", desc: "Body element ramen. Provides 1,500 EXP.", icon: "assets/characters/body_922/portrait_2S.webp", category: "ramen", element: "body", exp: 1500 },
+    "ramen_body_3star": { name: "3★ Body Ichiraku Ramen", desc: "Body element ramen. Provides 5,000 EXP.", icon: "assets/characters/body_923/portrait_3S.webp", category: "ramen", element: "body", exp: 5000 },
+    "ramen_body_4star": { name: "4★ Body Ichiraku Ramen", desc: "Body element ramen. Provides 15,000 EXP.", icon: "assets/characters/body_969/portrait_4S.webp", category: "ramen", element: "body", exp: 15000 },
+    "ramen_body_5star": { name: "5★ Body Ichiraku Ramen", desc: "Body element ramen. Provides 50,000 EXP.", icon: "assets/characters/body_1077/portrait_5S.webp", category: "ramen", element: "body", exp: 50000 },
 
     // Bravery Ramen - using actual ramen character portraits
-    "ramen_bravery_1star": { name: "1★ Bravery Ichiraku Ramen", desc: "Bravery element ramen. Provides 500 EXP.", icon: "assets/characters/bravery_924/portrait_1S.png", category: "ramen", element: "bravery", exp: 500 },
-    "ramen_bravery_2star": { name: "2★ Bravery Ichiraku Ramen", desc: "Bravery element ramen. Provides 1,500 EXP.", icon: "assets/characters/bravery_925/portrait_2S.png", category: "ramen", element: "bravery", exp: 1500 },
-    "ramen_bravery_3star": { name: "3★ Bravery Ichiraku Ramen", desc: "Bravery element ramen. Provides 5,000 EXP.", icon: "assets/characters/bravery_926/portrait_3S.png", category: "ramen", element: "bravery", exp: 5000 },
-    "ramen_bravery_4star": { name: "4★ Bravery Ichiraku Ramen", desc: "Bravery element ramen. Provides 15,000 EXP.", icon: "assets/characters/bravery_970/portrait_4S.png", category: "ramen", element: "bravery", exp: 15000 },
-    "ramen_bravery_5star": { name: "5★ Bravery Ichiraku Ramen", desc: "Bravery element ramen. Provides 50,000 EXP.", icon: "assets/characters/bravery_1080/portrait_5S.png", category: "ramen", element: "bravery", exp: 50000 },
+    "ramen_bravery_1star": { name: "1★ Bravery Ichiraku Ramen", desc: "Bravery element ramen. Provides 500 EXP.", icon: "assets/characters/bravery_924/portrait_1S.webp", category: "ramen", element: "bravery", exp: 500 },
+    "ramen_bravery_2star": { name: "2★ Bravery Ichiraku Ramen", desc: "Bravery element ramen. Provides 1,500 EXP.", icon: "assets/characters/bravery_925/portrait_2S.webp", category: "ramen", element: "bravery", exp: 1500 },
+    "ramen_bravery_3star": { name: "3★ Bravery Ichiraku Ramen", desc: "Bravery element ramen. Provides 5,000 EXP.", icon: "assets/characters/bravery_926/portrait_3S.webp", category: "ramen", element: "bravery", exp: 5000 },
+    "ramen_bravery_4star": { name: "4★ Bravery Ichiraku Ramen", desc: "Bravery element ramen. Provides 15,000 EXP.", icon: "assets/characters/bravery_970/portrait_4S.webp", category: "ramen", element: "bravery", exp: 15000 },
+    "ramen_bravery_5star": { name: "5★ Bravery Ichiraku Ramen", desc: "Bravery element ramen. Provides 50,000 EXP.", icon: "assets/characters/bravery_1080/portrait_5S.webp", category: "ramen", element: "bravery", exp: 50000 },
 
     // Wisdom Ramen - using actual ramen character portraits
-    "ramen_wisdom_1star": { name: "1★ Wisdom Ichiraku Ramen", desc: "Wisdom element ramen. Provides 500 EXP.", icon: "assets/characters/wisdom_927/portrait_1S.png", category: "ramen", element: "wisdom", exp: 500 },
-    "ramen_wisdom_2star": { name: "2★ Wisdom Ichiraku Ramen", desc: "Wisdom element ramen. Provides 1,500 EXP.", icon: "assets/characters/wisdom_928/portrait_2S.png", category: "ramen", element: "wisdom", exp: 1500 },
-    "ramen_wisdom_3star": { name: "3★ Wisdom Ichiraku Ramen", desc: "Wisdom element ramen. Provides 5,000 EXP.", icon: "assets/characters/wisdom_929/portrait_3S.png", category: "ramen", element: "wisdom", exp: 5000 },
-    "ramen_wisdom_4star": { name: "4★ Wisdom Ichiraku Ramen", desc: "Wisdom element ramen. Provides 15,000 EXP.", icon: "assets/characters/wisdom_971/portrait_4S.png", category: "ramen", element: "wisdom", exp: 15000 },
-    "ramen_wisdom_5star": { name: "5★ Wisdom Ichiraku Ramen", desc: "Wisdom element ramen. Provides 50,000 EXP.", icon: "assets/characters/wisdom_1083/portrait_5S.png", category: "ramen", element: "wisdom", exp: 50000 },
+    "ramen_wisdom_1star": { name: "1★ Wisdom Ichiraku Ramen", desc: "Wisdom element ramen. Provides 500 EXP.", icon: "assets/characters/wisdom_927/portrait_1S.webp", category: "ramen", element: "wisdom", exp: 500 },
+    "ramen_wisdom_2star": { name: "2★ Wisdom Ichiraku Ramen", desc: "Wisdom element ramen. Provides 1,500 EXP.", icon: "assets/characters/wisdom_928/portrait_2S.webp", category: "ramen", element: "wisdom", exp: 1500 },
+    "ramen_wisdom_3star": { name: "3★ Wisdom Ichiraku Ramen", desc: "Wisdom element ramen. Provides 5,000 EXP.", icon: "assets/characters/wisdom_929/portrait_3S.webp", category: "ramen", element: "wisdom", exp: 5000 },
+    "ramen_wisdom_4star": { name: "4★ Wisdom Ichiraku Ramen", desc: "Wisdom element ramen. Provides 15,000 EXP.", icon: "assets/characters/wisdom_971/portrait_4S.webp", category: "ramen", element: "wisdom", exp: 15000 },
+    "ramen_wisdom_5star": { name: "5★ Wisdom Ichiraku Ramen", desc: "Wisdom element ramen. Provides 50,000 EXP.", icon: "assets/characters/wisdom_1083/portrait_5S.webp", category: "ramen", element: "wisdom", exp: 50000 },
 
     // ========== ENHANCEMENT ITEMS (Stat Boosts) ==========
     "health_boost": { name: "Health Boost \"Health and Endurance\"", desc: "Increases HP stat permanently by 100.", icon: "assets/items/health_boost.png", category: "enhancement", statBoost: { hp: 100 } },

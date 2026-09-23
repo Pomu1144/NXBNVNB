@@ -183,7 +183,7 @@
         "id": "acquisition_stone",
         "name": "Acquisition Stone",
         "description": "Exchange for specific characters in the character shop.",
-        "icon": "assets/characters/acquisition_1016/portrait_6S.png",
+        "icon": "assets/characters/acquisition_1016/portrait_6S.webp",
         "cost": {
           "granny_coin": 200
         },
@@ -193,7 +193,7 @@
         "id": "acquisition_stone_shard",
         "name": "Acquisition Stone Shard",
         "description": "Shard form of Acquisition Stone. Collect to fuse into a full substitute stone.",
-        "icon": "assets/characters/acquisition_1029/portrait_5S.png",
+        "icon": "assets/characters/acquisition_1029/portrait_5S.webp",
         "cost": {
           "granny_coin": 30
         },

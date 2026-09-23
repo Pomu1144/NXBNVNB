@@ -158,7 +158,7 @@ class DashboardMailbox {
         key, kind: 'character',
         name: this._charName(ch.characterId),
         qty: ch.quantity || 1,
-        icon: `assets/characters/${ch.characterId}/portrait_${ch.tierCode || '3S'}.png`,
+        icon: `assets/characters/${ch.characterId}/portrait_${ch.tierCode || '3S'}.webp`,
         fallback: 'assets/icons/characters_icon.png',
         claimed: claimed.includes(key)
       });

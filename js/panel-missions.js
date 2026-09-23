@@ -278,7 +278,7 @@ class PanelMissions {
       const known = !!this._chars?.[reward.characterId];
       return {
         kind: 'character',
-        icon: `assets/characters/${reward.characterId}/portrait_${tier}.png`,
+        icon: `assets/characters/${reward.characterId}/portrait_${tier}.webp`,
         fallback: 'assets/icons/characters_icon.png',
         name: known ? this._charName(reward.characterId) : `${this._tierLabel(tier)} Ninja`,
         tier: this._tierLabel(tier),
