@@ -607,6 +607,10 @@ body.page-teams {
 .team-char-card.is-7star .team-char-grade { z-index: 4; }
 .team-char-card.is-7star .team-char-card-info { position: relative; z-index: 3; }
 
+/* PERF: the pulsing box-shadow only runs while the card is on-screen
+   (.fx-live, toggled by js/seven-star-fx.js). */
+.team-char-card.is-7star:not(.fx-live) { animation: none; }
+
 @keyframes teamSevenStarPulse {
   0%, 100% { box-shadow: 0 0 12px rgba(220,90,200,.4), 0 0 20px rgba(255,180,80,.16), inset 0 0 0 1px rgba(255,170,220,.18); }
   50%      { box-shadow: 0 0 24px rgba(255,120,220,.72), 0 0 32px rgba(255,190,90,.3), inset 0 0 0 1px rgba(255,200,235,.4); }

@@ -368,10 +368,9 @@
       : '';
 
     const is7Star = (starsFromTier(tier) || 0) >= 7;
-    const lightningFX = is7Star
-      ? `<video class="seven-star-fx" src="assets/effects/sevenstar_lightning.mp4"
-                autoplay loop muted playsinline preload="auto" aria-hidden="true"></video>`
-      : '';
+    // The lightning overlay is injected by js/seven-star-fx.js (shared video,
+    // only while on-screen) right before .lv-badge — where the <video> sat.
+    const fxAttr = is7Star ? ' data-fx="7star" data-fx-before=":scope > .lv-badge"' : '';
 
     // Card stat contributions (CRI, CRIT DMG, EVA)
     const cardContrib = window.CardSystem?.getEquippedContributions
@@ -385,10 +384,9 @@
 
     slotEl.innerHTML = `
       <div class="slot-card${is7Star ? ' is-7star' : ''}">
-        <div class="portrait">
+        <div class="portrait"${fxAttr}>
           <img src="${img}" alt="${char.name}"
                onerror="this.src='assets/characters/_common/silhouette.png';" />
-          ${lightningFX}
           <div class="lv-badge">Lv ${inst.level}</div>
           ${teamUltimateBadge}
         </div>
@@ -578,20 +576,19 @@
       const isAssigned = assignedUids.has(inst.uid);
       const rarity = safeNum(char.rarity, starsFromTier(tier) || 1);
       const is7Star = (starsFromTier(tier) || 0) >= 7;
-      const lightningFX = is7Star
-        ? `<video class="seven-star-fx" src="assets/effects/sevenstar_lightning.mp4"
-                  autoplay loop muted playsinline preload="auto" aria-hidden="true"></video>`
-        : "";
+      // Lightning overlay: injected by js/seven-star-fx.js only while the
+      // card is on-screen (one shared video for the page), placed before the
+      // portrait <img> where the per-card <video> used to be.
+      const fxAttr = is7Star ? ' data-fx="7star" data-fx-before=":scope > img"' : "";
 
       return `
         <div class="team-char-card ${isAssigned ? 'assigned' : ''}${is7Star ? ' is-7star' : ''}"
              data-uid="${inst.uid}"
              data-char-id="${char.id}"
              data-rarity="${rarity}"
-             draggable="${!isAssigned}">
+             draggable="${!isAssigned}"${fxAttr}>
           <span class="team-char-grade">${gradeOf(char, inst)}</span>
-          ${lightningFX}
-          <img src="${art.portrait}" alt="${char.name}"
+          <img src="${art.portrait}" alt="${char.name}" loading="lazy" decoding="async"
                onerror="this.src='assets/characters/_common/silhouette.png';" />
           <div class="team-char-card-info">
             <div class="team-char-card-name">${safeStr(char.name)}</div>
@@ -851,8 +848,12 @@
     }
   }
 
+  // Debounced: rebuilding the whole roster grid on every keystroke stutters
+  // typing with a big roster.
+  let filterTimer = 0;
   function filterCharacters() {
-    renderCharacterGrid(charFilter.value);
+    clearTimeout(filterTimer);
+    filterTimer = setTimeout(() => renderCharacterGrid(charFilter.value), 120);
   }
 
   /* =========================

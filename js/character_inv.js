@@ -268,6 +268,25 @@
   };
 })(window);
 
+// ---------- Shared characters.json loader ----------
+// characters.json is ~2.6 MB. Several scripts on the same page (roster grid,
+// dev panel, SummonEvolve) each fetched + JSON.parsed their own copy — two of
+// them with cache:"no-store", forcing full re-downloads on every visit. They
+// now share one request and one parsed object (treat it as read-only).
+(function (global) {
+  let _p = null;
+  global.loadCharactersData = function loadCharactersData() {
+    if (!_p) {
+      _p = fetch("data/characters.json").then((res) => {
+        if (!res.ok) throw new Error(`characters.json HTTP ${res.status}`);
+        return res.json();
+      });
+      _p.catch(() => { _p = null; }); // allow a retry after a failure
+    }
+    return _p;
+  };
+})(window);
+
 // ---------- Add Character by ID (main menu helper) ----------
 window.addCharacterById = async function (charId) {
   try {

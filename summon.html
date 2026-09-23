@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <title>Blazing — Summon</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <script src="js/device-detect.js"></script>
   <link rel="manifest" href="manifest.json" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-fullscreen" />
@@ -55,7 +56,7 @@
       display: flex;
       flex-direction: column;
       height: 100vh;
-      padding-bottom: 84px; /* bottom nav */
+      padding-bottom: 96px; /* bottom nav (fixed, ~88px incl. ornament) */
       width: 100%;
       max-width: min(1400px, 96vw);
       margin: 0 auto;
@@ -237,145 +238,6 @@
       background: linear-gradient(90deg, #b8985f, #d4af37);
       border-radius: 2px;
       transition: width 0.4s ease;
-    }
-
-    /* ── Summon buttons ───────────────────────────────────────── */
-    .summon-buttons {
-      display: flex;
-      gap: 14px;
-      padding: 10px 10px;
-      flex-shrink: 0;
-      justify-content: center;
-      align-items: center; /* let each button keep its own height */
-      /* Anchor the action cluster to the bottom of the screen */
-      margin-top: auto;
-    }
-
-    .summon-btn {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 3px;
-      padding: 10px 8px;
-      border-radius: 14px;
-      cursor: pointer;
-      font-family: 'Cinzel', serif;
-      font-weight: 700;
-      transition: all 0.2s;
-      position: relative;
-      overflow: hidden;
-      box-shadow: 0 4px 14px rgba(0,0,0,0.55);
-    }
-    .summon-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none !important; }
-
-    /* Hierarchy: Single is the modest option, Multi is the premium hero CTA */
-    .summon-btn-single {
-      flex: 0 1 320px;
-      min-height: 54px;
-      font-size: 13px;
-    }
-    .summon-btn-multi {
-      flex: 0 1 480px;
-      min-height: 74px;
-      font-size: 15px;
-      transform: scale(1.02);
-    }
-    .summon-btn-multi .summon-btn-label { font-size: clamp(13px, 1.8vw, 16px); }
-    /* Premium sheen + pulse to draw the eye to the value action */
-    .summon-btn-multi::after {
-      content: '';
-      position: absolute;
-      top: 0; left: -60%;
-      width: 40%; height: 100%;
-      background: linear-gradient(100deg, transparent, rgba(255,248,220,0.55), transparent);
-      transform: skewX(-18deg);
-      animation: multiSheen 3.4s ease-in-out infinite;
-      pointer-events: none;
-    }
-    @keyframes multiSheen {
-      0%, 62% { left: -60%; }
-      82%, 100% { left: 130%; }
-    }
-    .summon-btn-multi:not(:disabled) {
-      box-shadow: 0 6px 20px rgba(0,0,0,0.6), 0 0 24px rgba(212,175,55,0.4);
-      animation: multiPulse 2.6s ease-in-out infinite;
-    }
-    @keyframes multiPulse {
-      0%, 100% { box-shadow: 0 6px 20px rgba(0,0,0,0.6), 0 0 20px rgba(212,175,55,0.35); }
-      50% { box-shadow: 0 6px 22px rgba(0,0,0,0.6), 0 0 32px rgba(255,215,80,0.6); }
-    }
-
-    /* Both summon buttons share the gold plate for one consistent design */
-    .summon-btn-single {
-      background: url('assets/ui/generated/button_gold.webp') center / 100% 100% no-repeat;
-      border: none;
-      color: #14100a;
-      text-shadow: 0 1px 0 rgba(255,235,170,0.5);
-    }
-    .summon-btn-single:hover:not(:disabled) {
-      filter: brightness(1.22);
-      box-shadow: 0 0 22px rgba(212,175,55,0.45);
-      transform: translateY(-2px);
-    }
-    .summon-btn-multi {
-      background: url('assets/ui/generated/button_gold.webp') center / 100% 100% no-repeat;
-      border: none;
-      color: #14100a;
-      text-shadow: 0 1px 0 rgba(255,235,170,0.6);
-      filter: brightness(1.12) saturate(1.1);
-    }
-    .summon-btn-multi:hover:not(:disabled) {
-      filter: brightness(1.32) saturate(1.15);
-      transform: translateY(-2px) scale(1.03);
-    }
-    /* Single reads as the secondary option: slightly dimmer plate */
-    .summon-btn-single { filter: brightness(0.9); }
-    .summon-btn-single:hover:not(:disabled) { filter: brightness(1.12); }
-
-    .summon-btn-label {
-      font-size: clamp(11px, 1.6vw, 14px);
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-    }
-    .summon-btn-cost {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      font-size: 12px;
-      opacity: 0.9;
-    }
-    .btn-cost-icon { width: 13px; height: 13px; object-fit: contain; }
-
-    /* ── Info buttons ─────────────────────────────────────────── */
-    .summon-info-buttons {
-      display: flex;
-      gap: 10px;
-      padding: 0 10px 12px;
-      flex-shrink: 0;
-      justify-content: center;
-    }
-    .summon-info-btn {
-      flex: 0 1 260px;
-      padding: 10px 6px;
-      background: url('assets/ui/generated/button_gold.webp') center / 100% 100% no-repeat;
-      border: none;
-      border-radius: 8px;
-      color: #14100a;
-      font-family: 'Cinzel', serif;
-      font-size: 11px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.2s;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      text-shadow: 0 1px 0 rgba(255,235,170,0.5);
-      box-shadow: 0 3px 10px rgba(0,0,0,0.55);
-    }
-    .summon-info-btn:hover {
-      filter: brightness(1.22);
-      box-shadow: 0 0 16px rgba(212,175,55,0.35);
-      transform: translateY(-1px);
     }
 
     /* ── Summon animation overlay ─────────────────────────────── */
@@ -756,18 +618,6 @@
     .char-stats .cs-label { color: #b8a888; letter-spacing: 0.4px; }
     .char-stats .cs-val { color: #fff; font-weight: 700; }
     .char-stats .cs-val.gold { color: #f4cf5e; }
-    /* Nav arrows */
-    .stage-arrow {
-      position: absolute; top: 50%; transform: translateY(-50%);
-      width: 40px; height: 40px; border-radius: 50%;
-      background: radial-gradient(circle at 35% 30%, rgba(212,175,55,0.25), rgba(8,10,20,0.92) 68%);
-      border: 1.5px solid rgba(212,175,55,0.6); color: #f4cf5e;
-      font-size: 22px; line-height: 1; cursor: pointer; z-index: 4;
-      display: flex; align-items: center; justify-content: center;
-      transition: all 0.18s ease; box-shadow: 0 2px 10px rgba(0,0,0,0.5);
-    }
-    .stage-arrow:hover { border-color: #ffd700; color: #ffd700; box-shadow: 0 0 14px rgba(212,175,55,0.5); }
-    .stage-arrow.left { left: 12px; } .stage-arrow.right { right: 12px; }
     .stage-dots {
       position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%);
       display: flex; gap: 7px; z-index: 4;
@@ -808,39 +658,6 @@
     .draw-col #banner-name { font-size: 17px; }
     .draw-col #banner-description { font-size: 11px; line-height: 1.4; }
     .draw-col .summon-buttons { display: flex; flex-direction: column; gap: 10px; margin-top: auto; }
-    /* Higgsfield-generated draw button plates, forced to a compact fixed height
-       (overrides the old plate's baked-in aspect ratio) */
-    .draw-col .summon-btn,
-    .draw-col .summon-btn-single,
-    .draw-col .summon-btn-multi {
-      aspect-ratio: auto !important;
-      width: 100% !important; align-self: stretch !important; box-sizing: border-box;
-      height: 66px !important; min-height: 0 !important; max-height: 66px !important;
-      padding: 0 !important; border: none !important;
-      background: center / 100% 100% no-repeat !important;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.45) !important;
-      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px;
-      transition: transform 0.15s ease, filter 0.15s ease;
-    }
-    .draw-col .summon-btn-single { background-image: url('assets/ui/draw_single.webp') !important; }
-    .draw-col .summon-btn-multi  { background-image: url('assets/ui/draw_multi.webp') !important; }
-    .draw-col .summon-btn-single::after, .draw-col .summon-btn-multi::after { display: none !important; }
-    .draw-col .summon-btn:hover:not(:disabled) { transform: translateY(-1px); filter: brightness(1.12) drop-shadow(0 0 8px rgba(255,210,90,0.4)); }
-    .draw-col .summon-btn:disabled { filter: grayscale(0.4) brightness(0.7); }
-    /* Label is baked into the button art; keep only a small cost pill */
-    .draw-col .summon-btn { position: relative; }
-    .draw-col .summon-btn .summon-btn-label { display: none; }
-    .draw-col .summon-btn .summon-btn-cost {
-      position: absolute; bottom: 5px; left: 50%; transform: translateX(-50%);
-      display: flex; align-items: center; gap: 3px;
-      background: rgba(0,0,0,0.5); padding: 1px 9px; border-radius: 10px;
-      font-size: 11px; font-weight: 700; color: #ffe9b8;
-      text-shadow: 0 1px 2px rgba(0,0,0,0.9);
-    }
-    .draw-col .summon-btn .btn-cost-icon { width: 12px; height: 12px; }
-    .draw-col .summon-info-buttons { display: flex; gap: 6px; }
-    .draw-col .summon-info-btn { flex: 1; padding: 7px 4px; font-size: 12px; }
-
     @media (max-width: 900px) {
       .gacha-stage {
         grid-template-columns: 1fr; height: auto; gap: 10px;
@@ -858,6 +675,8 @@
       .summon-btn-label { font-size: 11px; }
     }
   </style>
+  <link rel="stylesheet" href="css/summon-premium.css" />
+  <link rel="stylesheet" href="css/mobile.css" />
 </head>
 <body class="page-summon">
   <div id="summon-bg"></div>
@@ -912,8 +731,8 @@
         </div>
 
         <!-- nav arrows + dots -->
-        <button class="stage-arrow left" id="stage-prev" type="button" aria-label="Previous view">‹</button>
-        <button class="stage-arrow right" id="stage-next" type="button" aria-label="Next view">›</button>
+        <button class="stage-arrow left" id="stage-prev" type="button" aria-label="Previous view"></button>
+        <button class="stage-arrow right" id="stage-next" type="button" aria-label="Next view"></button>
         <div class="stage-dots">
           <span class="stage-dot active" data-view="banner"></span>
           <span class="stage-dot" data-view="char6"></span>
@@ -948,15 +767,15 @@
         </div>
 
         <div class="summon-buttons">
-          <button class="summon-btn summon-btn-single" id="btn-single">
+          <button class="summon-btn summon-btn-single plate-btn plate-single" id="btn-single" type="button">
             <span class="summon-btn-label">Single Summon</span>
             <span class="summon-btn-cost">
               <img src="assets/icons/currency/ninjapearl.png" alt="" class="btn-cost-icon" onerror="this.style.display='none'">
               ×<span id="single-cost">5</span>
             </span>
           </button>
-          <button class="summon-btn summon-btn-multi" id="btn-multi">
-            <span class="summon-btn-label">Multi Summon ×10</span>
+          <button class="summon-btn summon-btn-multi plate-btn plate-multi" id="btn-multi" type="button">
+            <span class="summon-btn-label">Multi Summon <em>×10</em></span>
             <span class="summon-btn-cost">
               <img src="assets/icons/currency/ninjapearl.png" alt="" class="btn-cost-icon" onerror="this.style.display='none'">
               ×<span id="multi-cost">30</span>
@@ -1012,13 +831,13 @@
   <div class="bottom-bar">
     <div class="bottom-bar-content">
       <button class="hud-button" id="btn-village" aria-label="Village"><img src="assets/icons/nav/village_btm_btn.png" alt="Village"></button>
-      <button class="hud-button" id="btn-characters" aria-label="Characters"><img src="assets/icons/nav/characters_icon.png" alt="Characters" onerror="this.style.display='none'"></button>
+      <button class="hud-button" id="btn-characters" aria-label="Shinobi"><img src="assets/icons/nav/characters_icon.png" alt="Characters" onerror="this.style.display='none'"></button>
       <button class="hud-button" id="btn-fusion" aria-label="Fusion"><img src="assets/icons/nav/fusion_btm_btn.png" alt="Fusion"></button>
       <button class="hud-button" id="btn-teams" aria-label="Teams"><img src="assets/icons/nav/teams_icon.png" alt="Teams"></button>
       <button class="hud-button" id="btn-tools" aria-label="Tools"><img src="assets/icons/nav/guilds_icon.png" alt="Tools"></button>
       <button class="hud-button active" id="btn-summon" aria-label="Summon"><img src="assets/icons/nav/summon_btm_btn.png" alt="Summon"></button>
       <button class="hud-button" id="btn-missions" aria-label="Missions"><img src="assets/icons/nav/mission_btm_btn.png" alt="Missions"></button>
-      <button class="hud-button" id="btn-inventory" aria-label="Inventory"><img src="assets/icons/nav/inventory_icon.png" alt="Inventory"></button>
+      <button class="hud-button" id="btn-inventory" aria-label="Items"><img src="assets/icons/nav/inventory_icon.png" alt="Inventory"></button>
       <button class="hud-button" id="btn-shop" aria-label="Shop"><img src="assets/icons/nav/shop_btm_btn.png" alt="Shop"></button>
     </div>
   </div>

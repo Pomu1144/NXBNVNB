@@ -273,3 +273,48 @@
   console.log("[TopBar] Module loaded ✅");
 
 })(window);
+
+/* ------------------------------------------------------------------
+ * HUD name tag formatter
+ * Many scripts write the raw username into #username-display
+ * (session-gate, login-overlay, settings, UserProfile...). Normalise it
+ * here so the nameplate always shows a clean display name:
+ *  - e-mail style logins show only the part before '@'
+ *  - full value kept in the title attribute for hover
+ * ------------------------------------------------------------------ */
+(function () {
+  "use strict";
+
+  function displayName(raw) {
+    let name = String(raw || "").trim();
+    if (name.includes("@")) name = name.split("@")[0];
+    return name || "Ninja";
+  }
+
+  function bind() {
+    const el = document.getElementById("username-display");
+    if (!el || el.dataset.nameTagBound) return;
+    el.dataset.nameTagBound = "1";
+
+    const apply = () => {
+      const raw = el.textContent;
+      const clean = displayName(raw);
+      if (raw !== clean) {
+        el.dataset.fullName = raw.trim();
+        el.textContent = clean; // re-triggers observer once; idempotent
+      } else if (!el.dataset.fullName || displayName(el.dataset.fullName) !== clean) {
+        el.dataset.fullName = clean;
+      }
+      el.title = el.dataset.fullName || clean;
+    };
+
+    new MutationObserver(apply).observe(el, { childList: true, characterData: true, subtree: true });
+    apply();
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", bind);
+  } else {
+    bind();
+  }
+})();

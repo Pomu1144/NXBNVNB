@@ -78,184 +78,370 @@ class DashboardMailbox {
   }
 
   openMailbox() {
+    this.loadMessages();
+    this.updateUnreadCount();
     this.showMailboxModal();
   }
 
-  showMailboxModal() {
-    const messagesHTML = this.messages.map((msg, index) => {
-      const date = new Date(msg.date).toLocaleDateString();
-      const readClass = msg.read ? 'read' : 'unread';
-      const hasRewards = msg.rewards && Object.keys(msg.rewards).length > 0;
-
-      return `
-        <div class="mail-item ${readClass}" onclick="window.DashboardMailbox.viewMessage(${index})">
-          <div class="mail-header">
-            ${!msg.read ? '<span class="mail-unread-dot"></span>' : ''}
-            <div class="mail-title">${msg.title}</div>
-            <div class="mail-date">${date}</div>
-          </div>
-          <div class="mail-preview">${msg.message.substring(0, 80)}${msg.message.length > 80 ? '...' : ''}</div>
-          ${hasRewards ? '<div class="mail-has-rewards">📦 Contains Rewards</div>' : ''}
-        </div>
-      `;
-    }).join('');
-
-    const modalHTML = `
-      <div class="mailbox-modal" id="mailbox-modal">
-        <div class="mailbox-overlay" onclick="window.DashboardMailbox.closeMailbox()"></div>
-        <div class="mailbox-content">
-          <div class="mailbox-header">
-            <h2 class="mailbox-title">🎁 Present Box</h2>
-            <button class="mailbox-close" onclick="window.DashboardMailbox.closeMailbox()">✕</button>
-          </div>
-          <div class="mailbox-stats">
-            <div class="mailbox-stat">
-              <span class="stat-label">Total Messages:</span>
-              <span class="stat-value">${this.messages.length}</span>
-            </div>
-            <div class="mailbox-stat">
-              <span class="stat-label">Unread:</span>
-              <span class="stat-value unread">${this.unreadCount}</span>
-            </div>
-          </div>
-          <div class="mailbox-list">
-            ${messagesHTML.length > 0 ? messagesHTML : '<div class="no-messages">No messages</div>'}
-          </div>
-        </div>
-      </div>
-    `;
-
-    // Remove existing modal if present
-    const existingModal = document.getElementById('mailbox-modal');
-    if (existingModal) {
-      existingModal.remove();
-    }
-
-    // Add modal to body
-    document.body.insertAdjacentHTML('beforeend', modalHTML);
-
-    // Add CSS for mailbox modal
-    this.injectMailboxStyles();
+  /* ------------------------------------------------------------------
+   * Helpers
+   * ------------------------------------------------------------------ */
+  _esc(str) {
+    return String(str == null ? '' : str)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
   }
 
+  _fmtQty(n) {
+    const v = Number(n) || 0;
+    return v.toLocaleString();
+  }
+
+  _relDate(iso) {
+    const d = new Date(iso);
+    if (isNaN(d)) return '';
+    const days = Math.floor((Date.now() - d.getTime()) / 86400000);
+    if (days <= 0) return 'Today';
+    if (days === 1) return 'Yesterday';
+    if (days < 7) return `${days} days ago`;
+    return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+  }
+
+  /** Icon URL for a resource / item name or id */
+  _resourceIconUrl(nameOrId) {
+    const n = String(nameOrId || '').toLowerCase();
+    if (n.includes('pearl')) return 'assets/icons/currency/ninjapearl.png';
+    if (n.includes('ryo')) return 'assets/icons/currency/ryo.png';
+    if (n.includes('shinobite')) return 'assets/icons/currency/shinobite.png';
+    return 'assets/icons/chestunopened.png';
+  }
+
+  _charName(id) {
+    try {
+      const list = window.CharacterData || window.CHARACTERS || null;
+      if (Array.isArray(list)) {
+        const c = list.find(x => x.id === id);
+        if (c && c.name) return c.name;
+      }
+    } catch (e) { /* ignore */ }
+    return String(id || 'Ninja')
+      .replace(/_\d+$/, '')
+      .replace(/_/g, ' ')
+      .replace(/\b\w/g, m => m.toUpperCase());
+  }
+
+  /**
+   * Normalise every reward format (legacy flat map, {resources, characters})
+   * into a flat list: { key, name, qty, icon, kind, claimed }
+   */
+  _collectRewards(msg) {
+    const out = [];
+    const r = msg && msg.rewards;
+    if (!r || typeof r !== 'object') return out;
+    const claimed = msg.claimed || [];
+
+    (r.resources || []).forEach(res => {
+      const key = `res_${res.resourceId || res.name}`;
+      out.push({
+        key, kind: 'resource',
+        name: res.name || res.resourceId,
+        qty: res.quantity,
+        icon: this._resourceIconUrl(res.resourceId || res.name),
+        claimed: claimed.includes(key)
+      });
+    });
+
+    (r.characters || []).forEach(ch => {
+      const key = `char_${ch.characterId}`;
+      out.push({
+        key, kind: 'character',
+        name: this._charName(ch.characterId),
+        qty: ch.quantity || 1,
+        icon: `assets/characters/${ch.characterId}/portrait_${ch.tierCode || '3S'}.png`,
+        fallback: 'assets/icons/characters_icon.png',
+        claimed: claimed.includes(key)
+      });
+    });
+
+    Object.keys(r).filter(k => k !== 'characters' && k !== 'resources').forEach(name => {
+      const key = `legacy_${name}`;
+      out.push({
+        key, kind: 'resource',
+        name, qty: r[name],
+        icon: this._resourceIconUrl(name),
+        claimed: claimed.includes(key)
+      });
+    });
+    return out;
+  }
+
+  _hasUnclaimed(msg) {
+    return !msg.allClaimed && this._collectRewards(msg).some(x => !x.claimed);
+  }
+
+  _imgTag(item, cls) {
+    const fb = item.fallback || 'assets/icons/chestunopened.png';
+    return `<img class="${cls}" src="${this._esc(item.icon)}" alt="" draggable="false" onerror="this.onerror=null;this.src='${fb}'">`;
+  }
+
+  _ensureStyles() {
+    if (!document.getElementById('present-box-css')) {
+      const l = document.createElement('link');
+      l.id = 'present-box-css';
+      l.rel = 'stylesheet';
+      l.href = 'css/present-box.css?v=1';
+      document.head.appendChild(l);
+    }
+    if (!document.querySelector('link[href*="css/fonts.css"]')) {
+      const f = document.createElement('link');
+      f.rel = 'stylesheet';
+      f.href = 'css/fonts.css';
+      document.head.appendChild(f);
+    }
+  }
+
+  _refreshBadge() {
+    this.updateUnreadCount();
+    try { window.dispatchEvent(new CustomEvent('mailboxUpdated', { detail: { unread: this.unreadCount } })); } catch (e) { /* ignore */ }
+    if (typeof window.updateBottomBarBadges === 'function') {
+      try { window.updateBottomBarBadges(); } catch (e) { /* ignore */ }
+    }
+  }
+
+  /* ------------------------------------------------------------------
+   * Present Box list
+   * ------------------------------------------------------------------ */
+  _rowHTML(msg, index) {
+    const rewards = this._collectRewards(msg);
+    const unclaimed = this._hasUnclaimed(msg);
+    const done = rewards.length > 0 && !unclaimed;
+    const chips = rewards.slice(0, 4).map(it => `
+      <span class="pb-chip${it.claimed ? ' is-claimed' : ''}">
+        ${this._imgTag(it, 'pb-chip-icon')}<span class="pb-chip-qty">&times;${this._fmtQty(it.qty)}</span>
+      </span>`).join('') + (rewards.length > 4 ? `<span class="pb-chip pb-chip-more">+${rewards.length - 4}</span>` : '');
+
+    const iconSrc = rewards.length
+      ? (done ? 'assets/icons/chestopened.png' : 'assets/icons/chestunopened.png')
+      : 'assets/icons/notice_icon.png';
+
+    let action;
+    if (unclaimed) {
+      action = `<button class="pb-btn pb-btn-gold pb-row-claim" onclick="event.stopPropagation();window.DashboardMailbox.claimRewards(${index})">Claim</button>`;
+    } else if (done) {
+      action = `<span class="pb-stamp">Claimed</span>`;
+    } else {
+      action = `<button class="pb-btn pb-btn-dark pb-row-view" onclick="event.stopPropagation();window.DashboardMailbox.viewMessage(${index})">View</button>`;
+    }
+
+    return `
+      <div class="pb-row ${msg.read ? 'is-read' : 'is-unread'}${done ? ' is-done' : ''}" style="--i:${index}" onclick="window.DashboardMailbox.viewMessage(${index})">
+        <div class="pb-row-icon"><img src="${iconSrc}" alt="" draggable="false" onerror="this.src='assets/icons/present_icon.png'"></div>
+        <div class="pb-row-main">
+          <div class="pb-row-top">
+            ${!msg.read ? '<span class="pb-new">NEW</span>' : ''}
+            <span class="pb-row-title">${this._esc(msg.title)}</span>
+          </div>
+          <div class="pb-row-text">${this._esc(msg.message)}</div>
+          ${chips ? `<div class="pb-chips">${chips}</div>` : ''}
+        </div>
+        <div class="pb-row-side">
+          <span class="pb-row-date">${this._relDate(msg.date)}</span>
+          ${action}
+        </div>
+      </div>`;
+  }
+
+  showMailboxModal() {
+    this._ensureStyles();
+    const claimable = this.messages.filter(m => this._hasUnclaimed(m)).length;
+    const listHTML = this.messages.length
+      ? this.messages.map((m, i) => this._rowHTML(m, i)).join('')
+      : `<div class="pb-empty">
+           <img src="assets/icons/chestopened.png" alt="" draggable="false">
+           <div class="pb-empty-title">No Presents</div>
+           <div class="pb-empty-sub">Rewards from events, missions and gift codes will arrive here.</div>
+         </div>`;
+
+    const modalHTML = `
+      <div class="mailbox-modal pb-modal" id="mailbox-modal" role="dialog" aria-modal="true" aria-label="Present Box">
+        <div class="pb-backdrop" onclick="window.DashboardMailbox.closeMailbox()"></div>
+        <div class="pb-frame">
+          <button class="pb-close" aria-label="Close" onclick="window.DashboardMailbox.closeMailbox()"></button>
+          <div class="pb-inner">
+            <div class="pb-head">
+              <h2 class="pb-title">Present Box</h2>
+              <div class="pb-counts">
+                <span class="pb-count"><b>${this.messages.length}</b> Presents</span>
+                ${this.unreadCount ? `<span class="pb-count pb-count-new"><b>${this.unreadCount}</b> New</span>` : ''}
+              </div>
+            </div>
+            <div class="pb-list">${listHTML}</div>
+            <div class="pb-foot">
+              <span class="pb-foot-note">Presents are kept for 30 days.</span>
+              <button class="pb-btn pb-btn-crimson pb-claim-all" ${claimable ? '' : 'disabled'} onclick="window.DashboardMailbox.claimAll()">
+                Claim All${claimable ? ` <span class="pb-btn-badge">${claimable}</span>` : ''}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>`;
+
+    const existing = document.getElementById('mailbox-modal');
+    const keepScroll = existing ? existing.querySelector('.pb-list')?.scrollTop : 0;
+    if (existing) existing.remove();
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
+    const modal = document.getElementById('mailbox-modal');
+    if (existing) {
+      modal.classList.add('no-anim');
+      const list = modal.querySelector('.pb-list');
+      if (list) list.scrollTop = keepScroll || 0;
+    }
+    this._bindEsc();
+  }
+
+  _bindEsc() {
+    if (this._escBound) return;
+    this._escBound = true;
+    document.addEventListener('keydown', (e) => {
+      if (e.key !== 'Escape') return;
+      if (document.getElementById('reward-reveal')) return this.closeRewardReveal();
+      if (document.getElementById('message-view-modal')) return this.closeMessageView();
+      if (document.getElementById('mailbox-modal')) this.closeMailbox();
+    });
+  }
+
+  /* ------------------------------------------------------------------
+   * Single present view
+   * ------------------------------------------------------------------ */
   viewMessage(index) {
     const message = this.messages[index];
     if (!message) return;
-
-    // Mark as read
+    this._ensureStyles();
     this.markAsRead(message.id);
+    this.closeMessageView();
 
-    let rewardsHTML = '';
-    const hasCharacterRewards = message.rewards && message.rewards.characters && message.rewards.characters.length > 0;
-    const hasResourceRewards = message.rewards && message.rewards.resources && message.rewards.resources.length > 0;
-    const hasLegacyRewards = message.rewards && !hasCharacterRewards && !hasResourceRewards && Object.keys(message.rewards).length > 0;
-
-    if (hasCharacterRewards || hasResourceRewards || hasLegacyRewards) {
-      rewardsHTML = '<div class="message-rewards"><h4>Rewards:</h4><ul>';
-
-      // Character rewards
-      if (hasCharacterRewards) {
-        message.rewards.characters.forEach(char => {
-          const alreadyClaimed = message.claimed && message.claimed.includes(`char_${char.characterId}`);
-          const claimStatus = alreadyClaimed ? ' (Claimed)' : '';
-          rewardsHTML += `<li class="${alreadyClaimed ? 'reward-claimed' : ''}">Character: ${char.characterId} x${char.quantity}${claimStatus}</li>`;
-        });
-      }
-
-      // Resource rewards
-      if (hasResourceRewards) {
-        message.rewards.resources.forEach(res => {
-          const key = `res_${res.resourceId || res.name}`;
-          const claimed = message.claimed && message.claimed.includes(key);
-          const icon = this._resourceIcon(res.resourceId || res.name);
-          rewardsHTML += `<li class="${claimed ? 'reward-claimed' : ''}">${icon}${res.name}: ${res.quantity.toLocaleString()}${claimed ? ' (Claimed)' : ''}</li>`;
-        });
-      }
-
-      // Legacy rewards (backward compatibility)
-      if (hasLegacyRewards) {
-        for (const [item, amount] of Object.entries(message.rewards)) {
-          if (item !== 'characters' && item !== 'resources') {
-            const key = `legacy_${item}`;
-            const claimed = message.claimed && message.claimed.includes(key);
-            const icon = this._resourceIcon(item);
-            rewardsHTML += `<li class="${claimed ? 'reward-claimed' : ''}">${icon}${item}: ${amount}${claimed ? ' (Claimed)' : ''}</li>`;
-          }
-        }
-      }
-
-      rewardsHTML += '</ul>';
-
-      // Claim button (shown whenever there are any unclaimed rewards)
-      if (!message.allClaimed) {
-        rewardsHTML += `<button class="btn-claim-rewards" onclick="window.DashboardMailbox.claimRewards(${index})">Claim All Rewards</button>`;
-      }
-
-      rewardsHTML += '</div>';
-    }
-
-    const date = new Date(message.date).toLocaleString();
-
-    const messageHTML = `
-      <div class="message-view-modal" id="message-view-modal">
-        <div class="message-overlay" onclick="window.DashboardMailbox.closeMessageView()"></div>
-        <div class="message-content">
-          <div class="message-header">
-            <h3>${message.title}</h3>
-            <button class="message-close" onclick="window.DashboardMailbox.closeMessageView()">✕</button>
-          </div>
-          <div class="message-date">${date}</div>
-          <div class="message-body">${message.message}</div>
-          ${rewardsHTML}
-          <button class="btn-message-ok" onclick="window.DashboardMailbox.closeMessageView()">OK</button>
+    const rewards = this._collectRewards(message);
+    const unclaimed = this._hasUnclaimed(message);
+    const tiles = rewards.map(it => `
+      <div class="pb-tile${it.claimed ? ' is-claimed' : ''}">
+        <div class="pb-tile-socket">
+          ${this._imgTag(it, 'pb-tile-icon')}
+          <span class="pb-tile-qty">&times;${this._fmtQty(it.qty)}</span>
+          ${it.claimed ? '<span class="pb-tile-check"></span>' : ''}
         </div>
-      </div>
-    `;
+        <div class="pb-tile-name">${this._esc(it.name)}</div>
+      </div>`).join('');
 
-    document.body.insertAdjacentHTML('beforeend', messageHTML);
-    this.injectMessageViewStyles();
+    const date = new Date(message.date);
+    const dateStr = isNaN(date) ? '' : date.toLocaleString(undefined, { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' });
 
-    // Update the mailbox view to reflect read status
-    this.closeMailbox();
-    setTimeout(() => this.openMailbox(), 300);
+    const html = `
+      <div class="message-view-modal pb-modal pb-modal--view" id="message-view-modal" role="dialog" aria-modal="true">
+        <div class="pb-backdrop" onclick="window.DashboardMailbox.closeMessageView()"></div>
+        <div class="pb-frame pb-frame--view">
+          <button class="pb-close" aria-label="Close" onclick="window.DashboardMailbox.closeMessageView()"></button>
+          <div class="pb-inner">
+            <div class="pb-head pb-head--view">
+              <h3 class="pb-view-title">${this._esc(message.title)}</h3>
+              <span class="pb-row-date">${dateStr}</span>
+            </div>
+            <div class="pb-view-body">
+              <p class="pb-view-text">${this._esc(message.message)}</p>
+              ${rewards.length ? `
+                <div class="pb-view-label"><span>Contents</span></div>
+                <div class="pb-tiles">${tiles}</div>` : ''}
+            </div>
+            <div class="pb-foot pb-foot--center">
+              <button class="pb-btn pb-btn-dark" onclick="window.DashboardMailbox.closeMessageView()">Close</button>
+              ${unclaimed ? `<button class="pb-btn pb-btn-gold" onclick="window.DashboardMailbox.claimRewards(${index})">Claim</button>` : ''}
+            </div>
+          </div>
+        </div>
+      </div>`;
+
+    document.body.insertAdjacentHTML('beforeend', html);
+    this._bindEsc();
+    this._refreshBadge();
+    // Refresh the list behind so read state updates (no re-open animation)
+    if (document.getElementById('mailbox-modal')) this.showMailboxModal();
   }
 
+  /* ------------------------------------------------------------------
+   * Small in-game notice (errors / info)
+   * ------------------------------------------------------------------ */
   showCustomAlert(title, message, type = 'info') {
-    const alertHTML = `
-      <div class="custom-alert-modal" id="custom-alert-modal">
-        <div class="custom-alert-overlay" onclick="document.getElementById('custom-alert-modal').remove()"></div>
-        <div class="custom-alert-content ${type}">
-          <div class="custom-alert-header">
-            <h3>${title}</h3>
-          </div>
-          <div class="custom-alert-body">${message}</div>
-          <button class="custom-alert-ok" onclick="document.getElementById('custom-alert-modal').remove()">OK</button>
+    this._ensureStyles();
+    const el = document.getElementById('custom-alert-modal');
+    if (el) el.remove();
+    const html = `
+      <div class="custom-alert-modal pb-modal pb-modal--alert ${type}" id="custom-alert-modal" role="alertdialog" aria-modal="true">
+        <div class="pb-backdrop" onclick="document.getElementById('custom-alert-modal').remove()"></div>
+        <div class="pb-alert">
+          <div class="pb-alert-title">${this._esc(title)}</div>
+          <div class="pb-alert-body">${message}</div>
+          <button class="pb-btn pb-btn-gold" onclick="document.getElementById('custom-alert-modal').remove()">OK</button>
         </div>
-      </div>
-    `;
-    document.body.insertAdjacentHTML('beforeend', alertHTML);
-    this.injectCustomAlertStyles();
+      </div>`;
+    document.body.insertAdjacentHTML('beforeend', html);
   }
 
-  claimRewards(index) {
-    const message = this.messages[index];
-    if (!message || !message.rewards) {
-      this.showCustomAlert('No Rewards', 'No rewards to claim!', 'error');
-      return;
-    }
+  /* ------------------------------------------------------------------
+   * Reward reveal (generic): items = [{ icon, name, qty, fallback? }]
+   * ------------------------------------------------------------------ */
+  showRewardReveal(items, opts = {}) {
+    this._ensureStyles();
+    this.closeRewardReveal(true);
+    const list = (items || []).filter(Boolean);
+    const title = opts.title || 'Rewards Obtained';
+    const note = opts.note || '';
+    const many = list.length > 5;
 
-    if (message.allClaimed) {
-      this.showCustomAlert('Already Claimed', 'All rewards have already been claimed!', 'error');
-      return;
-    }
+    const tiles = list.map((it, i) => `
+      <div class="rr-tile" style="--d:${0.35 + i * 0.09}s">
+        <div class="rr-tile-glow"></div>
+        <div class="rr-socket">
+          ${this._imgTag(it, 'rr-icon')}
+          <span class="rr-qty">&times;${this._fmtQty(it.qty)}</span>
+        </div>
+        <div class="rr-name">${this._esc(it.name)}</div>
+      </div>`).join('');
 
+    const html = `
+      <div class="rr-modal" id="reward-reveal" role="dialog" aria-modal="true" aria-label="${this._esc(title)}">
+        <div class="rr-backdrop"></div>
+        <div class="rr-burst"><div class="rr-rays"></div><div class="rr-flare"></div></div>
+        <div class="rr-card${many ? ' is-many' : ''}">
+          <div class="rr-banner"><span>${this._esc(title)}</span></div>
+          <div class="rr-grid">${tiles}</div>
+          ${note ? `<div class="rr-note">${this._esc(note)}</div>` : ''}
+          <button class="rr-ok" onclick="window.DashboardMailbox.closeRewardReveal()">OK</button>
+        </div>
+      </div>`;
+    document.body.insertAdjacentHTML('beforeend', html);
+    this._bindEsc();
+    const ok = document.querySelector('#reward-reveal .rr-ok');
+    if (ok) setTimeout(() => ok.focus({ preventScroll: true }), 50);
+  }
+
+  closeRewardReveal(immediate) {
+    const el = document.getElementById('reward-reveal');
+    if (!el) return;
+    if (immediate) { el.remove(); return; }
+    el.classList.add('is-leaving');
+    setTimeout(() => el.remove(), 220);
+  }
+
+  /* ------------------------------------------------------------------
+   * Claiming
+   * ------------------------------------------------------------------ */
+  /** Grants every unclaimed reward in a message. Returns the granted items. */
+  _grant(message) {
+    if (!message || !message.rewards || message.allClaimed) return [];
     if (!message.claimed) message.claimed = [];
+    const granted = [];
+    const r = message.rewards;
 
-    const claimedLines = [];
-
-    // ── Claim resource rewards ──────────────────────────────
-    const resources = message.rewards.resources || [];
-    resources.forEach(res => {
+    (r.resources || []).forEach(res => {
       const key = `res_${res.resourceId || res.name}`;
       if (message.claimed.includes(key)) return;
       if (window.Resources) {
@@ -263,58 +449,77 @@ class DashboardMailbox {
         if (id) window.Resources.add(id, res.quantity);
       }
       message.claimed.push(key);
-      claimedLines.push(`${this._resourceIcon(res.resourceId || res.name)} ${res.name}: +${res.quantity.toLocaleString()}`);
     });
 
-    // ── Claim character rewards ─────────────────────────────
-    const characters = message.rewards.characters || [];
-    characters.forEach(charReward => {
-      const key = `char_${charReward.characterId}`;
+    (r.characters || []).forEach(ch => {
+      const key = `char_${ch.characterId}`;
       if (message.claimed.includes(key)) return;
       if (window.InventoryChar) {
-        for (let i = 0; i < charReward.quantity; i++) {
-          window.InventoryChar.addCopy(charReward.characterId, 1, charReward.tierCode || '3S');
+        for (let i = 0; i < ch.quantity; i++) {
+          window.InventoryChar.addCopy(ch.characterId, 1, ch.tierCode || '3S');
         }
       }
       message.claimed.push(key);
-      claimedLines.push(`Character: ${charReward.characterId} ×${charReward.quantity}`);
     });
 
-    // ── Legacy flat rewards (old format) ───────────────────
-    const legacyKeys = Object.keys(message.rewards).filter(k => k !== 'characters' && k !== 'resources');
-    legacyKeys.forEach(name => {
+    Object.keys(r).filter(k => k !== 'characters' && k !== 'resources').forEach(name => {
       const key = `legacy_${name}`;
       if (message.claimed.includes(key)) return;
-      const qty = message.rewards[name];
       const id = this._resourceNameToId(name);
-      if (id && window.Resources) window.Resources.add(id, qty);
+      if (id && window.Resources) window.Resources.add(id, r[name]);
       message.claimed.push(key);
-      claimedLines.push(`${this._resourceIcon(name)} ${name}: +${qty}`);
     });
 
-    if (claimedLines.length === 0) {
-      this.showCustomAlert('Already Claimed', 'All rewards have already been claimed!', 'error');
+    this._collectRewards(message).forEach(it => { if (it.claimed) granted.push(it); });
+    if (this._collectRewards(message).every(it => it.claimed)) message.allClaimed = true;
+    message.read = true;
+    return granted;
+  }
+
+  claimRewards(index) {
+    const message = this.messages[index];
+    if (!message || !message.rewards) {
+      this.showCustomAlert('No Rewards', 'This present has nothing to claim.', 'error');
       return;
     }
-
-    // Mark fully claimed
-    const totalRewardKeys = [
-      ...resources.map(r => `res_${r.resourceId || r.name}`),
-      ...characters.map(c => `char_${c.characterId}`),
-      ...legacyKeys.map(k => `legacy_${k}`)
-    ];
-    if (totalRewardKeys.every(k => message.claimed.includes(k))) {
-      message.allClaimed = true;
+    const pending = this._collectRewards(message).filter(it => !it.claimed);
+    if (message.allClaimed || pending.length === 0) {
+      this.showCustomAlert('Already Claimed', 'You have already claimed this present.', 'error');
+      return;
     }
-
+    this._grant(message);
     this.saveMessages();
+    this._refreshBadge();
 
-    const hasChars = claimedLines.some(l => l.startsWith('Character:'));
-    const suffix = hasChars ? '<br><br>Check your Characters page!' : '';
-    this.showCustomAlert('Rewards Claimed!', `You received:<br><br>${claimedLines.map(l => `• ${l}`).join('<br>')}${suffix}`, 'success');
-
+    const hasChars = pending.some(it => it.kind === 'character');
     this.closeMessageView();
-    setTimeout(() => this.viewMessage(index), 100);
+    if (document.getElementById('mailbox-modal')) this.showMailboxModal();
+    this.showRewardReveal(pending, { note: hasChars ? 'New ninja added to your Characters.' : '' });
+  }
+
+  claimAll() {
+    const totals = new Map();
+    let hasChars = false;
+    this.messages.forEach(msg => {
+      const pending = this._collectRewards(msg).filter(it => !it.claimed);
+      if (!pending.length || msg.allClaimed) return;
+      this._grant(msg);
+      pending.forEach(it => {
+        if (it.kind === 'character') hasChars = true;
+        const k = it.kind === 'character' ? it.key : (this._resourceNameToId(it.name) || it.name);
+        const cur = totals.get(k);
+        if (cur) cur.qty += Number(it.qty) || 0;
+        else totals.set(k, { ...it, qty: Number(it.qty) || 0 });
+      });
+    });
+    if (!totals.size) {
+      this.showCustomAlert('Nothing to Claim', 'All presents have already been claimed.', 'info');
+      return;
+    }
+    this.saveMessages();
+    this._refreshBadge();
+    if (document.getElementById('mailbox-modal')) this.showMailboxModal();
+    this.showRewardReveal([...totals.values()], { note: hasChars ? 'New ninja added to your Characters.' : '' });
   }
 
   /** Map a display name → Resources key */
@@ -345,554 +550,14 @@ class DashboardMailbox {
 
   closeMessageView() {
     const modal = document.getElementById('message-view-modal');
-    if (modal) {
-      modal.remove();
-    }
+    if (modal) modal.remove();
   }
 
   closeMailbox() {
     const modal = document.getElementById('mailbox-modal');
-    if (modal) {
-      modal.remove();
-    }
-  }
-
-  injectMailboxStyles() {
-    if (document.getElementById('mailbox-modal-styles')) return;
-
-    const styles = `
-      <style id="mailbox-modal-styles">
-        .mailbox-modal {
-          position: fixed;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          z-index: 9999;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-
-        .mailbox-overlay {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          background: rgba(0, 0, 0, 0.8);
-          backdrop-filter: blur(5px);
-        }
-
-        .mailbox-content {
-          position: relative;
-          background: linear-gradient(135deg, rgba(26, 31, 58, 0.98), rgba(15, 20, 35, 0.98));
-          border: 3px solid #b8985f;
-          border-radius: 16px;
-          padding: 30px;
-          max-width: 700px;
-          width: 90%;
-          max-height: 80vh;
-          overflow-y: auto;
-          box-shadow: 0 10px 50px rgba(0, 0, 0, 0.9);
-        }
-
-        .mailbox-header {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          margin-bottom: 20px;
-          padding-bottom: 15px;
-          border-bottom: 2px solid rgba(184, 152, 95, 0.3);
-        }
-
-        .mailbox-title {
-          font-family: 'Times New Roman', Times, serif;
-          font-size: 28px;
-          font-weight: 700;
-          color: #d4af37;
-          text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9);
-          margin: 0;
-        }
-
-        .mailbox-close {
-          background: radial-gradient(circle at 35% 30%, rgba(212,175,55,0.22), rgba(10,10,20,0.9) 65%);
-          border: 1.5px solid rgba(212,175,55,0.55);
-          color: #d4af37;
-          font-size: 18px;
-          width: 40px;
-          height: 40px;
-          border-radius: 50%;
-          cursor: pointer;
-          transition: all 0.2s ease;
-          box-shadow: inset 0 1px 0 rgba(212,175,55,0.3), 0 2px 6px rgba(0,0,0,0.6);
-        }
-
-        .mailbox-close:hover {
-          border-color: #ffd700;
-          color: #ffd700;
-          box-shadow: 0 0 14px rgba(212,175,55,0.5);
-          transform: rotate(90deg);
-        }
-
-        .mailbox-stats {
-          display: flex;
-          gap: 20px;
-          margin-bottom: 20px;
-        }
-
-        .mailbox-stat {
-          flex: 1;
-          background: rgba(20, 20, 30, 0.6);
-          border: 1px solid rgba(139, 115, 85, 0.4);
-          border-radius: 8px;
-          padding: 12px 16px;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-        }
-
-        .stat-label {
-          font-size: 14px;
-          color: #b8985f;
-          font-weight: 600;
-        }
-
-        .stat-value {
-          font-size: 18px;
-          color: #d4af37;
-          font-weight: 700;
-        }
-
-        .stat-value.unread {
-          color: #ff6b6b;
-        }
-
-        .mailbox-list {
-          display: flex;
-          flex-direction: column;
-          gap: 10px;
-        }
-
-        .mail-item {
-          background: rgba(20, 20, 30, 0.6);
-          border: 2px solid rgba(139, 115, 85, 0.4);
-          border-radius: 10px;
-          padding: 15px;
-          cursor: pointer;
-          transition: all 0.3s ease;
-          position: relative;
-        }
-
-        .mail-item:hover {
-          border-color: rgba(212, 175, 55, 0.7);
-          background: rgba(30, 30, 40, 0.7);
-          transform: translateX(5px);
-        }
-
-        .mail-item.unread {
-          border-color: rgba(255, 193, 7, 0.6);
-          background: rgba(255, 193, 7, 0.05);
-        }
-
-        .mail-header {
-          display: flex;
-          align-items: center;
-          gap: 10px;
-          margin-bottom: 8px;
-        }
-
-        .mail-unread-dot {
-          width: 10px;
-          height: 10px;
-          background: #ff6b6b;
-          border-radius: 50%;
-          flex-shrink: 0;
-        }
-
-        .mail-title {
-          font-family: 'Times New Roman', Times, serif;
-          font-size: 16px;
-          font-weight: 700;
-          color: #d4af37;
-          flex: 1;
-        }
-
-        .mail-date {
-          font-size: 12px;
-          color: #b8985f;
-        }
-
-        .mail-preview {
-          font-size: 14px;
-          color: #f0e6d1;
-          line-height: 1.4;
-        }
-
-        .mail-has-rewards {
-          margin-top: 8px;
-          font-size: 12px;
-          color: #6bcf7f;
-          font-weight: 600;
-        }
-
-        .no-messages {
-          text-align: center;
-          padding: 40px;
-          color: #b8985f;
-          font-size: 16px;
-        }
-      </style>
-    `;
-
-    document.head.insertAdjacentHTML('beforeend', styles);
-  }
-
-  injectMessageViewStyles() {
-    if (document.getElementById('message-view-styles')) return;
-
-    const styles = `
-      <style id="message-view-styles">
-        .message-view-modal {
-          position: fixed;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          z-index: 10000;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-
-        .message-overlay {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          background: rgba(0, 0, 0, 0.85);
-          backdrop-filter: blur(5px);
-        }
-
-        .message-content {
-          position: relative;
-          background: linear-gradient(135deg, rgba(26, 31, 58, 0.98), rgba(15, 20, 35, 0.98));
-          border: 3px solid #d4af37;
-          border-radius: 16px;
-          padding: 30px;
-          max-width: 600px;
-          width: 90%;
-          max-height: 80vh;
-          overflow-y: auto;
-          box-shadow: 0 10px 50px rgba(0, 0, 0, 0.9);
-        }
-
-        .message-header {
-          display: flex;
-          justify-content: space-between;
-          align-items: flex-start;
-          margin-bottom: 15px;
-          padding-bottom: 15px;
-          border-bottom: 2px solid rgba(184, 152, 95, 0.3);
-        }
-
-        .message-header h3 {
-          font-family: 'Times New Roman', Times, serif;
-          font-size: 24px;
-          font-weight: 700;
-          color: #d4af37;
-          margin: 0;
-          flex: 1;
-        }
-
-        .message-close {
-          background: radial-gradient(circle at 35% 30%, rgba(212,175,55,0.22), rgba(10,10,20,0.9) 65%);
-          border: 1.5px solid rgba(212,175,55,0.55);
-          color: #d4af37;
-          font-size: 16px;
-          width: 36px;
-          height: 36px;
-          border-radius: 50%;
-          cursor: pointer;
-          transition: all 0.2s ease;
-          flex-shrink: 0;
-          box-shadow: inset 0 1px 0 rgba(212,175,55,0.3), 0 2px 6px rgba(0,0,0,0.6);
-        }
-
-        .message-close:hover {
-          border-color: #ffd700;
-          color: #ffd700;
-          box-shadow: 0 0 14px rgba(212,175,55,0.5);
-          transform: rotate(90deg);
-        }
-
-        .message-date {
-          font-size: 12px;
-          color: #b8985f;
-          margin-bottom: 20px;
-          font-style: italic;
-        }
-
-        .message-body {
-          font-family: 'Times New Roman', Times, serif;
-          font-size: 16px;
-          color: #f0e6d1;
-          line-height: 1.6;
-          margin-bottom: 20px;
-        }
-
-        .message-rewards {
-          background: rgba(40, 167, 69, 0.1);
-          border: 2px solid rgba(40, 167, 69, 0.4);
-          border-radius: 10px;
-          padding: 15px;
-          margin-bottom: 20px;
-        }
-
-        .message-rewards h4 {
-          font-family: 'Times New Roman', Times, serif;
-          font-size: 18px;
-          color: #6bcf7f;
-          margin: 0 0 10px 0;
-        }
-
-        .message-rewards ul {
-          list-style: none;
-          padding: 0;
-          margin: 0;
-        }
-
-        .message-rewards li {
-          font-size: 14px;
-          color: #f0e6d1;
-          padding: 5px 0;
-        }
-
-        .message-rewards li.reward-claimed {
-          opacity: 0.5;
-          text-decoration: line-through;
-        }
-
-        .btn-claim-rewards {
-          width: 100%;
-          background: linear-gradient(135deg, #3d3020 0%, #5a4a2f 25%, #4a3a25 50%, #6b5a3f 75%, #4a3a25 100%);
-          border: 2px solid #8b7355;
-          color: #d4af37;
-          font-family: 'Times New Roman', Times, serif;
-          font-size: 16px;
-          font-weight: 700;
-          padding: 14px;
-          border-radius: 8px;
-          cursor: pointer;
-          transition: all 0.3s ease;
-          text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
-          box-shadow:
-            0 4px 8px rgba(0, 0, 0, 0.6),
-            inset 0 1px 0 rgba(255, 215, 0, 0.2),
-            inset 0 -1px 0 rgba(0, 0, 0, 0.4);
-          margin-top: 15px;
-          position: relative;
-          overflow: hidden;
-        }
-
-        .btn-claim-rewards::before {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: -100%;
-          width: 100%;
-          height: 100%;
-          background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.3), transparent);
-          transition: left 0.5s ease;
-        }
-
-        .btn-claim-rewards:hover {
-          background: linear-gradient(135deg, #4a3a25 0%, #6b5a3f 25%, #5a4a2f 50%, #7d6b4f 75%, #5a4a2f 100%);
-          border-color: #a08968;
-          color: #ffd700;
-          transform: translateY(-2px);
-          box-shadow:
-            0 6px 16px rgba(139, 115, 85, 0.6),
-            inset 0 1px 0 rgba(255, 215, 0, 0.3),
-            inset 0 -1px 0 rgba(0, 0, 0, 0.5);
-        }
-
-        .btn-claim-rewards:hover::before {
-          left: 100%;
-        }
-
-        .btn-claim-rewards:active {
-          transform: translateY(0);
-          box-shadow:
-            0 2px 4px rgba(0, 0, 0, 0.4),
-            inset 0 1px 3px rgba(0, 0, 0, 0.6);
-        }
-
-        .btn-message-ok {
-          width: 100%;
-          background: linear-gradient(135deg, #b8985f, #d4af37);
-          border: 2px solid #d4af37;
-          color: #1a1f3a;
-          font-family: 'Times New Roman', Times, serif;
-          font-size: 18px;
-          font-weight: 700;
-          padding: 12px;
-          border-radius: 8px;
-          cursor: pointer;
-          transition: all 0.3s ease;
-        }
-
-        .btn-message-ok:hover {
-          background: linear-gradient(135deg, #d4af37, #f0e6d1);
-          transform: translateY(-2px);
-          box-shadow: 0 4px 12px rgba(212, 175, 55, 0.5);
-        }
-      </style>
-    `;
-
-    document.head.insertAdjacentHTML('beforeend', styles);
-  }
-
-  injectCustomAlertStyles() {
-    if (document.getElementById('custom-alert-styles')) return;
-
-    const styles = `
-      <style id="custom-alert-styles">
-        .custom-alert-modal {
-          position: fixed;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          z-index: 10001;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          animation: fadeIn 0.2s ease;
-        }
-
-        @keyframes fadeIn {
-          from { opacity: 0; }
-          to { opacity: 1; }
-        }
-
-        .custom-alert-overlay {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          background: rgba(0, 0, 0, 0.85);
-          backdrop-filter: blur(5px);
-        }
-
-        .custom-alert-content {
-          position: relative;
-          background: linear-gradient(135deg, rgba(26, 31, 58, 0.98), rgba(15, 20, 35, 0.98));
-          border: 3px solid #d4af37;
-          border-radius: 16px;
-          padding: 30px;
-          max-width: 500px;
-          width: 90%;
-          box-shadow: 0 10px 50px rgba(0, 0, 0, 0.9);
-          animation: slideDown 0.3s ease;
-        }
-
-        @keyframes slideDown {
-          from {
-            opacity: 0;
-            transform: translateY(-50px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        .custom-alert-content.error {
-          border-color: #ff6b6b;
-        }
-
-        .custom-alert-content.success {
-          border-color: #6bcf7f;
-        }
-
-        .custom-alert-header {
-          margin-bottom: 20px;
-          padding-bottom: 15px;
-          border-bottom: 2px solid rgba(184, 152, 95, 0.3);
-        }
-
-        .custom-alert-header h3 {
-          font-family: 'Times New Roman', Times, serif;
-          font-size: 24px;
-          font-weight: 700;
-          color: #d4af37;
-          margin: 0;
-          text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9);
-        }
-
-        .custom-alert-content.error .custom-alert-header h3 {
-          color: #ff6b6b;
-        }
-
-        .custom-alert-content.success .custom-alert-header h3 {
-          color: #6bcf7f;
-        }
-
-        .custom-alert-body {
-          font-family: 'Times New Roman', Times, serif;
-          font-size: 16px;
-          color: #f0e6d1;
-          line-height: 1.6;
-          margin-bottom: 25px;
-          text-align: center;
-        }
-
-        .custom-alert-ok {
-          width: 100%;
-          background: linear-gradient(135deg, #b8985f, #d4af37);
-          border: 2px solid #d4af37;
-          color: #1a1f3a;
-          font-family: 'Times New Roman', Times, serif;
-          font-size: 18px;
-          font-weight: 700;
-          padding: 12px;
-          border-radius: 8px;
-          cursor: pointer;
-          transition: all 0.3s ease;
-        }
-
-        .custom-alert-ok:hover {
-          background: linear-gradient(135deg, #d4af37, #f0e6d1);
-          transform: translateY(-2px);
-          box-shadow: 0 4px 12px rgba(212, 175, 55, 0.5);
-        }
-
-        .custom-alert-content.error .custom-alert-ok {
-          background: linear-gradient(135deg, #aa4a4a, #ff6b6b);
-          border-color: #ff6b6b;
-          color: #fff;
-        }
-
-        .custom-alert-content.error .custom-alert-ok:hover {
-          background: linear-gradient(135deg, #ff6b6b, #ff8787);
-        }
-
-        .custom-alert-content.success .custom-alert-ok {
-          background: linear-gradient(135deg, #4a9959, #6bcf7f);
-          border-color: #6bcf7f;
-          color: #fff;
-        }
-
-        .custom-alert-content.success .custom-alert-ok:hover {
-          background: linear-gradient(135deg, #6bcf7f, #7de092);
-        }
-      </style>
-    `;
-
-    document.head.insertAdjacentHTML('beforeend', styles);
+    if (!modal) return;
+    modal.classList.add('is-leaving');
+    setTimeout(() => modal.remove(), 180);
   }
 }
 

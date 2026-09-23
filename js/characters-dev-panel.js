@@ -12,8 +12,9 @@
 
   async function loadChars() {
     try {
-      const res = await fetch("data/characters.json", { cache: "no-store" });
-      const data = await res.json();
+      const data = global.loadCharactersData
+        ? await global.loadCharactersData()
+        : await (await fetch("data/characters.json")).json();
       (Array.isArray(data) ? data : data.characters || []).forEach(c => { BYID[c.id] = c; });
     } catch (e) {
       console.error("[CharDev] Failed to load characters.json", e);
