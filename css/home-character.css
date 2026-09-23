@@ -91,11 +91,14 @@
   left: 50%; bottom: 1.5%;
   transform: translateX(-50%);
   display: inline-flex; align-items: center; gap: 8px;
+  box-sizing: border-box;
+  min-height: 32px;
   padding: 5px 18px 5px 14px;
-  border: 1px solid rgba(201, 162, 78, 0.6);
-  background: linear-gradient(180deg, rgba(14, 38, 45, 0.92), rgba(6, 17, 21, 0.95));
-  clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
+  border: 0;
+  background: none;
+  border-image: url('../assets/ui/jjk/btn_ticket.webp') 36 fill / var(--jjk-tkt-w-sm, 10px) stretch;
   color: var(--jjk-text, #ece6d6);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
   font-family: var(--jjk-font, 'Kaisei Tokumin', serif);
   font-weight: 700; font-size: 13px;
   white-space: nowrap;
@@ -197,5 +200,5 @@ html.is-mobile.is-landscape.is-compact .character-vignette-container.home-char-s
 }
 html.is-mobile.is-landscape.is-compact .home-char { margin-left: 2vw; }
 html.is-mobile.is-landscape.is-compact .home-char-switch {
-  font-size: 10px; padding: 3px 12px 3px 10px; gap: 5px;
+  font-size: 10px; padding: 3px 12px 3px 10px; gap: 5px; min-height: 24px;
 }

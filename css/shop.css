@@ -608,31 +608,36 @@
   padding: calc(var(--jjk-header-h, 78px) + 4px) 32px 110px;
 }
 
-/* Tabs -> JJK plates */
+/* Tabs -> washi ticket plates (teal idle, crimson active) */
 .page-shop .shop-tabs { gap: 2px; margin-bottom: 26px; }
 .page-shop .shop-tab {
   width: 190px;
   height: 42px;
   padding: 0 20px;
-  background: url('../assets/ui/jjk/tab.webp') center / 100% 100% no-repeat;
-  filter: none;
+  border: 0;
+  box-sizing: border-box;
+  background: none;
+  border-image: url('../assets/ui/jjk/btn_ticket.webp') 36 fill / var(--jjk-tkt-w, 14px) stretch;
+  filter: brightness(0.82) saturate(0.85);
   font-family: var(--jjk-font, 'Kaisei Tokumin', 'Times New Roman', serif);
   font-weight: 700;
   font-size: 15px;
   letter-spacing: 0.02em;
-  color: var(--jjk-text, #ece6d6);
+  color: rgba(236, 230, 214, 0.8);
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
 }
 .page-shop .shop-tab:hover {
   transform: none;
-  filter: brightness(1.18);
+  filter: none;
   color: var(--jjk-text, #ece6d6);
 }
 .page-shop .shop-tab.active {
-  background: url('../assets/ui/jjk/tab_active.webp') center / 106% 128% no-repeat;
-  color: #2a220c;
+  background: none;
+  border-image-source: url('../assets/ui/jjk/btn_ticket_red.webp');
+  filter: none;
   font-weight: 800;
-  text-shadow: 0 1px 0 rgba(255, 245, 200, 0.6);
+  color: var(--jjk-gold-hi, #f1d98a);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.95), 0 0 8px rgba(60, 0, 0, 0.6);
   transform: none;
 }
 
@@ -700,17 +705,25 @@
 .page-shop .btn-buy {
   width: 120px;
   height: 40px;
-  background: url('../assets/ui/jjk/action_btn.webp') center / 100% 100% no-repeat;
+  border: 0;
+  box-sizing: border-box;
+  background: none;
+  border-image: url('../assets/ui/jjk/btn_ticket_red.webp') 36 fill / var(--jjk-tkt-w, 14px) stretch;
   font-family: var(--jjk-font, 'Kaisei Tokumin', 'Times New Roman', serif);
   font-weight: 800;
   font-size: 15px;
   letter-spacing: 0.02em;
-  color: #231c08;
-  text-shadow: 0 1px 0 rgba(255, 240, 190, 0.55);
+  color: var(--jjk-gold-hi, #f1d98a);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.95), 0 0 8px rgba(60, 0, 0, 0.6);
 }
 .page-shop .btn-buy:hover { transform: none; filter: brightness(1.12); }
 .page-shop .btn-buy:active { transform: translateY(1px) scale(0.98); }
-.page-shop .btn-buy:disabled { filter: grayscale(0.85) brightness(0.6); cursor: not-allowed; }
+.page-shop .btn-buy:disabled {
+  border-image-source: url('../assets/ui/jjk/btn_ticket_off.webp');
+  color: #8f9a98;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
+  filter: none; cursor: not-allowed;
+}
 
 /* Purchase / success modals */
 .page-shop .modal { background: rgba(3, 9, 11, 0.82); }
@@ -750,14 +763,17 @@
   font-family: var(--jjk-font, 'Kaisei Tokumin', 'Times New Roman', serif);
   font-weight: 800;
   font-size: 16px;
+  box-sizing: border-box;
 }
 .page-shop .btn-confirm {
-  background: url('../assets/ui/jjk/action_btn.webp') center / 100% 100% no-repeat;
-  color: #231c08;
-  text-shadow: 0 1px 0 rgba(255, 240, 190, 0.55);
+  background: none;
+  border-image: url('../assets/ui/jjk/btn_ticket_red.webp') 36 fill / var(--jjk-tkt-w, 14px) stretch;
+  color: var(--jjk-gold-hi, #f1d98a);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.95), 0 0 8px rgba(60, 0, 0, 0.6);
 }
 .page-shop .btn-cancel {
-  background: url('../assets/ui/jjk/tab.webp') center / 100% 100% no-repeat;
+  background: none;
+  border-image: url('../assets/ui/jjk/btn_ticket.webp') 36 fill / var(--jjk-tkt-w, 14px) stretch;
   color: var(--jjk-text, #ece6d6);
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
 }

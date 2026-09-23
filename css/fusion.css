@@ -923,13 +923,15 @@ body.page-fusion #full-bg { display: none; }
   height: clamp(42px, 4vw, 48px);
   padding: 0 28px;
   border-radius: 0;
-  background: url("../assets/ui/jjk/action_btn.webp") center / 100% 100% no-repeat;
+  box-sizing: border-box;
+  background: none;
+  border-image: url("../assets/ui/jjk/btn_ticket.webp") 36 fill / var(--jjk-tkt-w, 14px) stretch;
   font-family: var(--font-ui);
   font-weight: 800;
   font-size: 16px;
   letter-spacing: 0.12em;
-  color: #231c08;
-  text-shadow: 0 1px 0 rgba(255, 240, 190, 0.55);
+  color: var(--jjk-text, #ece6d6);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9), 0 0 6px rgba(0, 0, 0, 0.5);
   filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.55));
 }
 .clear-btn:hover:not(:disabled) { transform: translateY(-2px); filter: brightness(1.12) drop-shadow(0 4px 8px rgba(0, 0, 0, 0.55)); }

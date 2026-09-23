@@ -362,6 +362,11 @@
 .mr-rankup { color: var(--mr-gold-hi); text-shadow: 0 0 10px rgba(241, 217, 138, 0.5); }
 
 .mr-actions { min-height: 48px; display: flex; justify-content: center; margin-top: 4px; }
+.mr-continue.jjk-btn {
+  border-image-source: url('../assets/ui/jjk/btn_ticket_red.webp');
+  color: var(--mr-gold-hi, #f1d98a);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.95), 0 0 8px rgba(60, 0, 0, 0.6);
+}
 .mr-continue {
   min-width: 210px;
   height: 48px;
@@ -468,6 +473,7 @@
 }
 #battle-result .result-btn {
   border: 0;
+  box-sizing: border-box;
   cursor: pointer;
   min-width: 160px;
   height: 46px;
@@ -479,14 +485,16 @@
   transition: filter 0.15s, transform 0.12s var(--jjk-ease, ease-out);
 }
 #battle-result .result-btn.primary {
-  color: #231c08;
-  text-shadow: 0 1px 0 rgba(255, 240, 190, 0.55);
-  background: url('../assets/ui/jjk/action_btn.webp') center / 100% 100% no-repeat;
+  color: var(--mr-gold-hi, #f1d98a);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.95), 0 0 8px rgba(60, 0, 0, 0.6);
+  background: none;
+  border-image: url('../assets/ui/jjk/btn_ticket_red.webp') 36 fill / var(--jjk-tkt-w, 14px) stretch;
 }
 #battle-result .result-btn.secondary {
   color: var(--mr-text);
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
-  background: url('../assets/ui/jjk/tab.webp') center / 100% 100% no-repeat;
+  background: none;
+  border-image: url('../assets/ui/jjk/btn_ticket.webp') 36 fill / var(--jjk-tkt-w, 14px) stretch;
 }
 #battle-result .result-btn:hover { filter: brightness(1.12); }
 #battle-result .result-btn:active { transform: translateY(1px) scale(0.98); }

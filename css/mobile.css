@@ -653,7 +653,7 @@ html.is-mobile.is-landscape.is-compact body.page-missions .mission-tabs .tab-btn
   height: 28px !important;
   min-height: 0 !important;
   padding: 0 16px !important;
-  margin: 0 -2px !important;
+  margin: 0 1px !important;
   font-size: 10.5px !important;
   white-space: nowrap;
 }

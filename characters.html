@@ -90,22 +90,22 @@
               <div class="level-strip">
                 <span class="level-badge">
                   <span class="lv">Lv</span> <span id="status-level">1</span>
+                  <span class="cap-sep">/</span>
+                  <span id="status-cap">70</span>
                 </span>
-                <span class="cap-sep">/</span>
-                <span id="status-cap">70</span>
+                <div class="tip-line" id="awaken-tip"></div>
               </div>
               <div class="growth-buttons">
-                <button class="btn-darkgold" id="btn-levelup">Level Up</button>
-                <button class="btn-dark" id="btn-feeddupe">Latent Awaken</button>
-                <button class="btn-awaken" id="btn-awaken" disabled>Awaken</button>
-                <button class="btn-limitbreak" id="btn-limitbreak" disabled>Limit Break</button>
+                <button class="jjk-btn growth-btn" id="btn-levelup">Level Up</button>
+                <button class="jjk-btn growth-btn" id="btn-feeddupe">Latent Awaken</button>
+                <button class="jjk-btn growth-btn" id="btn-awaken" disabled>Awaken</button>
+                <button class="jjk-btn growth-btn" id="btn-limitbreak" disabled>Limit Break</button>
               </div>
               <div class="limitbreak-info" id="limitbreak-info" style="display:none;">
                 <div class="lb-level">LB: <span id="lb-current">0</span>/<span id="lb-max">0</span></div>
                 <div class="lb-bonus" id="lb-bonus"></div>
               </div>
-              <div class="tip-line" id="awaken-tip"></div>
-              <div class="materials-display" id="materials-display"></div>
+              <div class="materials-display jjk-panel" id="materials-display"></div>
             </div>
           </section>
 
@@ -232,7 +232,7 @@
         </div>
 
         <div class="char-modal-actions">
-          <button class="char-close-btn" id="char-modal-close">Close</button>
+          <button class="jjk-btn char-close-btn" id="char-modal-close">Close</button>
         </div>
       </div>
     </div>
@@ -333,6 +333,7 @@
   <script src="js/character_inv.js"></script>
   <script src="js/progression.js"></script>
   <script src="js/resources.js"></script>
+  <script src="js/reward-format.js"></script>
   <script src="js/daily-missions.js"></script>
   <script src="js/awakening.js"></script>
   <script src="js/awakening-animation.js"></script>

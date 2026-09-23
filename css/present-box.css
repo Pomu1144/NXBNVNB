@@ -309,7 +309,7 @@
 }
 .pb-stamp img { width: 36px; height: auto; transform: rotate(-10deg); filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.6)); }
 
-/* ---------- Buttons (theme parallelograms) ---------- */
+/* ---------- Buttons (washi ticket plates) ---------- */
 .pb-btn {
   position: relative;
   font-family: var(--pb-font);
@@ -321,6 +321,7 @@
   padding: 0 24px;
   min-width: 104px;
   border: 0;
+  box-sizing: border-box;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
@@ -332,12 +333,13 @@
 .pb-btn:hover { filter: brightness(1.12); }
 .pb-btn:active { transform: translateY(1px) scale(0.98); }
 
-/* khaki metal action (Claim) */
+/* primary action (Claim / OK): crimson ticket, gold-hi label */
 .pb-btn-gold,
 .pb-btn-crimson {
-  color: #231c08;
-  text-shadow: 0 1px 0 rgba(255, 240, 190, 0.55);
-  background: url('../assets/ui/jjk/action_btn.webp') center / 100% 100% no-repeat;
+  color: var(--jjk-gold-hi, #f1d98a);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.95), 0 0 8px rgba(60, 0, 0, 0.6);
+  background: none;
+  border-image: url('../assets/ui/jjk/btn_ticket_red.webp') 36 fill / var(--jjk-tkt-w, 14px) stretch;
 }
 /* primary Claim All: same plate, larger, soft gold glow */
 .pb-btn-crimson {
@@ -346,16 +348,20 @@
   font-size: 16px;
   filter: drop-shadow(0 0 6px rgba(241, 217, 138, 0.3));
 }
-/* secondary: dark iron tab plate */
+/* secondary (View / Close): ink-teal ticket */
 .pb-btn-dark {
   color: var(--pb-text);
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
-  background: url('../assets/ui/jjk/tab.webp') center / 100% 100% no-repeat;
+  background: none;
+  border-image: url('../assets/ui/jjk/btn_ticket.webp') 36 fill / var(--jjk-tkt-w, 14px) stretch;
 }
 
 .pb-btn[disabled] {
   cursor: not-allowed;
-  filter: grayscale(0.9) brightness(0.5);
+  filter: none;
+  border-image-source: url('../assets/ui/jjk/btn_ticket_off.webp');
+  color: #8f9a98;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
 }
 .pb-btn[disabled]:active { transform: none; }
 
@@ -718,10 +724,12 @@
   font-weight: 800;
   font-size: 19px;
   letter-spacing: 1px;
-  color: #231c08;
+  box-sizing: border-box;
   cursor: pointer;
-  text-shadow: 0 1px 0 rgba(255, 240, 190, 0.55);
-  background: url('../assets/ui/jjk/action_btn.webp') center / 100% 100% no-repeat;
+  color: var(--jjk-gold-hi, #f1d98a);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.95), 0 0 8px rgba(60, 0, 0, 0.6);
+  background: none;
+  border-image: url('../assets/ui/jjk/btn_ticket_red.webp') 36 fill / 16px stretch;
   filter: drop-shadow(0 0 8px rgba(241, 217, 138, 0.3));
   animation: rrPop 0.45s calc(var(--ok-d, 0.6s)) cubic-bezier(0.2, 1.5, 0.4, 1) both;
   transition: filter 0.15s ease, transform 0.1s ease;

@@ -2227,6 +2227,19 @@ html.is-mobile .nameplate-stars { --bz-star-size: 18px; }
 }
 .card-inventory-btn.jjk-btn { min-width: 140px; }
 
+/* Cancel buttons of the dupe / ramen / jutsu-replacement pickers: teal ticket */
+body.page-characters .btn-dark {
+  box-sizing: border-box;
+  min-width: 140px; min-height: 42px; padding: 0 26px;
+  border: 0; border-radius: 0; box-shadow: none;
+  background: none;
+  border-image: url('../assets/ui/jjk/btn_ticket.webp') 36 fill / var(--jjk-tkt-w, 14px) stretch;
+  font-family: var(--jjk-font); font-weight: 800; font-size: 15px; letter-spacing: 0.02em;
+  color: var(--jjk-text, #ece6d6);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9), 0 0 6px rgba(0, 0, 0, 0.5);
+}
+body.page-characters .btn-dark:hover:not(:disabled) { transform: none; box-shadow: none; filter: brightness(1.12); }
+
 /* Compact phones (landscape ~844x390): shorter panel, smaller tiles */
 html.is-mobile .card-inventory-modal { padding: 8px; }
 html.is-mobile .card-inventory-panel { max-height: calc(100vh - 16px); max-height: calc(100dvh - 16px); padding: 10px 12px; gap: 8px; }
@@ -2813,7 +2826,7 @@ body.page-characters .char-modal-art {
   border: 1px solid rgba(201, 162, 78, 0.22);
 }
 
-/* Modal tabs -> slanted JJK plates */
+/* Modal tabs -> washi ticket plates (teal idle, crimson active) */
 body.page-characters .char-tabs { gap: 2px; padding: 10px 0 6px; }
 body.page-characters .char-tabs .tab-btn {
   flex: 0 1 140px;
@@ -2821,33 +2834,40 @@ body.page-characters .char-tabs .tab-btn {
   min-width: 0;
   height: 40px;
   padding: 0 14px;
-  background: url('../assets/ui/jjk/tab.webp') center / 100% 100% no-repeat;
+  border: 0;
+  border-radius: 0;
+  box-sizing: border-box;
+  background: none;
+  border-image: url('../assets/ui/jjk/btn_ticket.webp') 36 fill / var(--jjk-tkt-w, 14px) stretch;
   font-family: var(--jjk-font);
   font-weight: 700;
   font-size: 14px;
-  color: var(--jjk-text);
+  color: rgba(236, 230, 214, 0.8);
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
   white-space: nowrap;
+  filter: brightness(0.82) saturate(0.85);
 }
-body.page-characters .char-tabs .tab-btn:hover { filter: brightness(1.18); }
+body.page-characters .char-tabs .tab-btn:hover { filter: none; color: var(--jjk-text); }
 body.page-characters .char-tabs .tab-btn.is-active {
-  background-image: url('../assets/ui/jjk/tab_active.webp');
-  background-size: 106% 128%;
-  color: #2a220c;
+  border-image-source: url('../assets/ui/jjk/btn_ticket_red.webp');
+  filter: none;
   font-weight: 800;
-  text-shadow: 0 1px 0 rgba(255, 245, 200, 0.6);
+  color: var(--jjk-gold-hi, #f1d98a);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.95), 0 0 8px rgba(60, 0, 0, 0.6);
 }
 
-/* Close -> khaki action plate */
+/* Close -> teal ticket plate (secondary action) */
 body.page-characters .char-close-btn {
   width: 170px;
   height: 46px;
-  background: url('../assets/ui/jjk/action_btn.webp') center / 100% 100% no-repeat;
+  box-sizing: border-box;
+  background: none;
+  border-image: url('../assets/ui/jjk/btn_ticket.webp') 36 fill / var(--jjk-tkt-w, 14px) stretch;
   font-family: var(--jjk-font);
   font-weight: 800;
   font-size: 17px;
-  color: #231c08;
-  text-shadow: 0 1px 0 rgba(255, 240, 190, 0.55);
+  color: var(--jjk-text, #ece6d6);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9), 0 0 6px rgba(0, 0, 0, 0.5);
 }
 body.page-characters .char-close-btn:hover { transform: none; filter: brightness(1.12); }
 body.page-characters .char-close-btn:active { transform: translateY(1px) scale(0.98); }
@@ -2869,4 +2889,388 @@ html.is-mobile.is-landscape.is-compact body.page-characters .char-close-btn {
   width: 120px !important;
   height: 34px !important;
   font-size: 14px !important;
+}
+
+/* ==========================================================================
+   Character detail modal — JJK pass (header, art frame, power plate,
+   Awakening tab: level readout, action buttons, materials list)
+   ========================================================================== */
+
+/* ── Name header: gold-ruled plate, Kaisei name, muted version, gold stars ── */
+body.page-characters .nameplate {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  right: auto;
+  max-width: none;
+  width: auto;
+  min-height: 0;
+  margin: 2px 8px 0;
+  padding: 6px 6px 12px 18px;
+  background: none;
+  border: 0;
+  flex: 0 0 auto;
+}
+body.page-characters .char-tabs { flex: 0 0 auto; }
+body.page-characters .nameplate::before {           /* gold accent bar */
+  content: '';
+  position: absolute; left: 0; top: 8px; bottom: 14px; width: 4px;
+  background: linear-gradient(180deg, var(--jjk-gold-hi), var(--jjk-gold) 60%, var(--jjk-gold-lo));
+  clip-path: polygon(0 0, 100% 4px, 100% 100%, 0 calc(100% - 4px));
+}
+body.page-characters .nameplate::after {            /* gold rule, fading out */
+  content: '';
+  position: absolute; left: 0; right: 0; bottom: 0; height: 1px;
+  background: linear-gradient(90deg, var(--jjk-gold) 0%, rgba(201,162,78,0.55) 55%, rgba(201,162,78,0) 100%);
+}
+body.page-characters .nameplate-main {
+  position: static; left: auto;
+  min-width: 0;
+  display: flex; flex-direction: column; align-items: flex-start;
+}
+body.page-characters .nameplate-name {
+  font-family: var(--jjk-font);
+  font-size: 30px; font-weight: 800; line-height: 1.1;
+  color: #fff8e6;
+  letter-spacing: 0.5px;
+  text-shadow: 0 2px 0 rgba(0,0,0,0.6), 0 0 14px rgba(0,0,0,0.5);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%;
+}
+body.page-characters .nameplate-version {
+  font-family: var(--jjk-font);
+  font-size: 14px; font-weight: 700;
+  color: var(--jjk-muted);
+  letter-spacing: 1px;
+  margin-top: 3px;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+}
+body.page-characters .nameplate-stars {
+  --bz-star-size: 22px;
+  position: static; left: auto; top: auto; margin: 0 0 3px; transform: none;
+  flex: 0 0 auto;
+}
+
+/* ── Art column: framed full art that fills the column ─────────────────── */
+body.page-characters .char-modal-art {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  border: 1px solid var(--jjk-gold);
+  outline: 1px solid rgba(201,162,78,0.25);
+  outline-offset: 3px;
+  margin: 4px;
+  background:
+    radial-gradient(ellipse at 50% 42%, rgba(45,107,115,0.35), transparent 65%),
+    rgba(3,10,12,0.9);
+}
+body.page-characters #char-modal-img {
+  /* the whole art, never cropped: a box sized to the art (square full art),
+     centred slightly above the middle, edges feathered into the backdrop */
+  position: absolute; left: 0; right: 0; top: 44%;
+  transform: translateY(-50%);
+  width: 100%; height: auto; max-width: none; max-height: 100%;
+  padding: 0; margin: 0 auto;
+  object-fit: contain;
+  z-index: 1;
+  -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 9%, #000 91%, transparent 100%);
+          mask-image: linear-gradient(180deg, transparent 0, #000 9%, #000 91%, transparent 100%);
+}
+/* fill the frame around the uncropped art with a blurred, dimmed copy of it
+   (--art is set from js/characters.js when the image loads) */
+body.page-characters .char-modal-art::before {
+  content: '';
+  position: absolute; inset: -30px; z-index: 0; pointer-events: none;
+  background: var(--art, none) 50% 42% / cover no-repeat;
+  filter: blur(22px) brightness(0.5) saturate(1.1);
+}
+body.page-characters .char-modal-art::after {       /* inner rim + bottom fade for the plate */
+  content: '';
+  position: absolute; inset: 0; pointer-events: none; z-index: 2;
+  background: linear-gradient(0deg, rgba(3,9,11,0.88) 0%, rgba(3,9,11,0.35) 18%, transparent 34%);
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.6), inset 0 0 40px rgba(0,0,0,0.55);
+}
+
+/* Latent ability icons: tidy column in the frame's top-right corner */
+body.page-characters .char-modal-art .passive-icons-right {
+  top: 12px; right: 12px; transform: none;
+  gap: 8px;
+  z-index: 5;
+}
+body.page-characters .char-modal-art .passive-icon {
+  width: 42px; height: 42px; padding: 4px;
+  border-radius: 0;
+  border: 1px solid rgba(201,162,78,0.8);
+  background: rgba(5,14,17,0.88);
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.7), 0 4px 10px rgba(0,0,0,0.6);
+  backdrop-filter: none;
+}
+body.page-characters .char-modal-art .passive-icon img { border-radius: 0; }
+body.page-characters .char-modal-art .passive-icon.locked::before { border-radius: 0; }
+body.page-characters .char-modal-art .passive-icon:hover { transform: translateX(-2px); }
+
+/* Power plate: bottom-left of the frame (grade seal + "Power" + value) */
+body.page-characters #char-power-holder-container {
+  position: absolute;
+  left: 12px; right: 12px; bottom: 12px; top: auto;
+  width: auto; transform: none;
+  display: flex; justify-content: flex-start;
+  z-index: 5;
+  pointer-events: none;
+}
+.cm-power {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 5px 30px 5px 6px;
+  background: linear-gradient(90deg, rgba(5,14,17,0.95), rgba(5,14,17,0.7));
+  box-shadow: inset 0 0 0 1px rgba(201,162,78,0.7);
+  clip-path: polygon(0 0, 100% 0, calc(100% - 16px) 100%, 0 100%);
+  pointer-events: auto;
+}
+.cm-power-grade { display: flex; align-items: center; justify-content: center; width: 50px; height: 50px; flex: 0 0 auto; }
+/* grade PNGs are 500×500 with the letter in the middle ~50%: draw at 2× and
+   let the transparent margin overflow so the letter fills the seal */
+.cm-power-grade .power-grade-img { width: 100px; height: 100px; max-width: none; margin: -25px; object-fit: contain; flex: 0 0 auto; }
+.cm-power-grade .power-grade-animated { width: 46px !important; height: 46px !important; font-size: 17px !important; }
+.cm-power-txt { display: flex; flex-direction: column; line-height: 1; font-family: var(--jjk-font); }
+.cm-power-txt small {
+  font-size: 11px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--jjk-muted); margin-bottom: 4px;
+}
+.cm-power-txt b {
+  font-size: 26px; font-weight: 800; color: var(--jjk-gold-hi);
+  font-variant-numeric: tabular-nums; letter-spacing: 0.5px;
+  text-shadow: 0 2px 0 rgba(0,0,0,0.7);
+}
+
+/* ── Awakening tab ─────────────────────────────────────────────────────── */
+body.page-characters .growth-ops {
+  max-height: none;
+  overflow: visible;
+  display: flex; flex-direction: column; gap: 12px;
+  padding-top: 2px;
+  font-family: var(--jjk-font);
+}
+
+/* Level readout: slanted ink plate + tip line */
+body.page-characters .level-strip {
+  display: flex; align-items: center; justify-content: flex-start; gap: 16px;
+  margin: 0; font-size: inherit;
+}
+body.page-characters .level-badge {
+  display: inline-flex; align-items: baseline; gap: 6px;
+  padding: 6px 30px 6px 18px;
+  background: linear-gradient(90deg, rgba(19,48,57,0.95), rgba(6,17,21,0.95));
+  box-shadow: inset 0 0 0 1px rgba(201,162,78,0.6);
+  clip-path: polygon(0 0, 100% 0, calc(100% - 14px) 100%, 0 100%);
+  color: var(--jjk-text);
+  font-family: var(--jjk-font);
+  text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+}
+body.page-characters .level-badge::before { content: none; }
+body.page-characters .level-badge .lv {
+  margin: 0; font-size: 13px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--jjk-muted);
+}
+body.page-characters #status-level {
+  font-size: 26px; font-weight: 800; line-height: 1; color: var(--jjk-text);
+  font-variant-numeric: tabular-nums;
+}
+body.page-characters #status-level.max { color: var(--jjk-gold-hi); }
+body.page-characters #status-level.limit-break,
+body.page-characters #status-level.limit-break-max { color: #e8705e !important; }
+body.page-characters .level-badge .cap-sep { margin-left: 2px; font-size: 16px; color: var(--jjk-muted); }
+body.page-characters #status-cap { font-size: 16px; font-weight: 700; color: var(--jjk-muted); font-variant-numeric: tabular-nums; }
+body.page-characters .tip-line {
+  display: flex; align-items: center; gap: 8px;
+  text-align: left; font-size: 14px; color: var(--jjk-muted);
+  font-family: var(--jjk-font);
+}
+body.page-characters .tip-line:not(:empty)::before {
+  content: ''; width: 7px; height: 7px; flex: 0 0 auto;
+  background: var(--jjk-gold); transform: rotate(45deg);
+}
+
+/* Growth actions: 2×2 grid of crimson ticket plates (primary), no wells */
+body.page-characters .growth-buttons {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px 16px;
+  margin: 0;
+}
+body.page-characters .growth-btn {
+  position: relative;
+  isolation: isolate;
+  width: 100%; min-width: 0; height: 46px; padding: 0 30px;
+  font-size: 16px; letter-spacing: 0.3px; text-transform: none;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  box-shadow: none; border-radius: 0;
+  box-sizing: border-box;
+  border-image-source: url('../assets/ui/jjk/btn_ticket_red.webp');
+  color: var(--jjk-gold-hi, #f1d98a);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.95), 0 0 8px rgba(60, 0, 0, 0.6);
+  filter: drop-shadow(0 3px 5px rgba(0,0,0,0.5));
+}
+body.page-characters .growth-btn:hover:not(:disabled) { filter: brightness(1.12) drop-shadow(0 3px 5px rgba(0,0,0,0.5)); }
+/* Disabled: desaturated "off" ticket plate with a readable muted label */
+body.page-characters .growth-btn:disabled,
+body.page-characters .char-close-btn:disabled {
+  filter: none;
+  cursor: not-allowed;
+  background: none;
+  border-image-source: url('../assets/ui/jjk/btn_ticket_off.webp');
+  color: #8f9e9e;
+  text-shadow: 0 1px 1px rgba(0,0,0,0.9);
+}
+
+/* Limit-break summary */
+body.page-characters .limitbreak-info {
+  margin: 0;
+  padding: 10px 14px;
+  border: 0; border-left: 3px solid var(--jjk-crimson);
+  border-radius: 0;
+  background: linear-gradient(90deg, rgba(142,28,28,0.18), rgba(6,17,21,0.6) 70%);
+  font-size: 14px;
+}
+body.page-characters .lb-level { color: #e8705e; font-weight: 800; letter-spacing: 1px; margin-bottom: 4px; }
+body.page-characters .lb-bonus { color: var(--jjk-text); font-size: 13px; }
+
+/* Materials: JJK panel with ruled rows */
+body.page-characters .materials-display.jjk-panel {
+  margin: 4px 3px 3px;
+  padding: 14px 16px 14px;
+  border-radius: 0;
+  background: linear-gradient(180deg, rgba(14,38,45,0.94), rgba(6,17,21,0.96));
+  border: 1px solid rgba(201,162,78,0.55);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.45), inset 0 0 0 1px rgba(0,0,0,0.5);
+}
+body.page-characters .materials-display:empty { display: none; }
+body.page-characters .materials-title {
+  display: flex; align-items: center; gap: 10px;
+  margin: 0 0 10px;
+  font-family: var(--jjk-font);
+  font-size: 12px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--jjk-gold);
+}
+body.page-characters .materials-title::after {
+  content: ''; flex: 1; height: 1px;
+  background: linear-gradient(90deg, rgba(201,162,78,0.55), transparent);
+}
+body.page-characters .material-item.jjk-row {
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  min-height: 46px;
+  margin: 0 0 5px;
+  padding: 5px 22px 5px 12px;
+  border-radius: 0;
+  font-size: 15px;
+  /* row_card's art has a fixed divider at 81% that fights the amount column
+     at this short height, so rows use the flat variant of the same card:
+     ink face, gold wash from the left, gold hairline, clipped corner */
+  background:
+    linear-gradient(90deg, rgba(201,162,78,0.12), rgba(201,162,78,0) 60%),
+    linear-gradient(180deg, rgba(19,48,57,0.9), rgba(6,17,21,0.92));
+  box-shadow: inset 0 0 0 1px rgba(201,162,78,0.32);
+  clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 0 100%);
+}
+body.page-characters .material-item.jjk-row.insufficient {
+  background:
+    linear-gradient(90deg, rgba(142,28,28,0.22), rgba(142,28,28,0) 60%),
+    linear-gradient(180deg, rgba(19,48,57,0.9), rgba(6,17,21,0.92));
+}
+body.page-characters .material-item.jjk-row:last-child { margin-bottom: 0; }
+body.page-characters .material-icon {
+  width: 32px; height: 32px; object-fit: contain; display: block;
+  filter: drop-shadow(0 2px 3px rgba(0,0,0,0.7));
+}
+body.page-characters .material-name {
+  font-family: var(--jjk-font); font-weight: 700; font-size: 15px;
+  color: var(--jjk-text);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+body.page-characters .material-amount,
+body.page-characters .material-amount.sufficient,
+body.page-characters .material-amount.insufficient {
+  display: inline-flex; align-items: baseline; gap: 5px;
+  padding: 0; border: 0; border-radius: 0; background: none; box-shadow: none;
+  font-family: var(--jjk-font); font-size: 15px; font-weight: 700;
+  font-variant-numeric: tabular-nums; letter-spacing: 0.3px;
+  color: var(--jjk-text);
+  text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+}
+body.page-characters .material-amount b { font-size: 17px; font-weight: 800; }
+body.page-characters .material-amount.sufficient b { color: var(--jjk-good); }
+body.page-characters .material-amount.insufficient b { color: #ef7a6a; }
+body.page-characters .material-amount i { font-style: normal; color: var(--jjk-muted); }
+body.page-characters .material-amount span { color: var(--jjk-muted); }
+body.page-characters .no-requirements {
+  font-family: var(--jjk-font); font-size: 14px; font-style: normal; color: var(--jjk-muted);
+}
+
+/* Close: teal ticket plate, same size as the growth buttons */
+body.page-characters .char-close-btn.jjk-btn {
+  width: auto; min-width: 170px; height: 46px; padding: 0 34px;
+  font-size: 17px;
+  filter: drop-shadow(0 3px 5px rgba(0,0,0,0.5));
+}
+body.page-characters .char-close-btn.jjk-btn:hover { filter: brightness(1.12) drop-shadow(0 3px 5px rgba(0,0,0,0.5)); }
+
+/* ── Detail modal: compact mobile landscape ───────────────────────────── */
+html.is-mobile.is-landscape.is-compact body.page-characters .nameplate {
+  width: auto !important;
+  max-width: none !important;
+  min-height: 0 !important;
+  margin: 0 4px !important;
+  padding: 2px 4px 6px 12px !important;
+  gap: 10px;
+}
+html.is-mobile.is-landscape.is-compact body.page-characters .nameplate::before { width: 3px; top: 4px; bottom: 8px; }
+html.is-mobile.is-landscape.is-compact body.page-characters .nameplate-name { font-size: 17px !important; }
+html.is-mobile.is-landscape.is-compact body.page-characters .nameplate-version { font-size: 10px !important; margin-top: 1px; }
+html.is-mobile.is-landscape.is-compact body.page-characters .nameplate-stars { --bz-star-size: 14px; margin-bottom: 1px; }
+
+html.is-mobile.is-landscape.is-compact body.page-characters .char-modal-art { margin: 3px; outline-offset: 2px; }
+html.is-mobile.is-landscape.is-compact body.page-characters .char-modal-art .passive-icons-right { top: 6px; right: 6px; gap: 4px; }
+html.is-mobile.is-landscape.is-compact body.page-characters .char-modal-art .passive-icon { width: 26px; height: 26px; padding: 2px; }
+html.is-mobile.is-landscape.is-compact body.page-characters #char-power-holder-container { left: 6px; right: 6px; bottom: 6px; }
+html.is-mobile.is-landscape.is-compact .cm-power { gap: 6px; padding: 3px 18px 3px 3px; clip-path: polygon(0 0, 100% 0, calc(100% - 10px) 100%, 0 100%); }
+html.is-mobile.is-landscape.is-compact .cm-power-grade { width: 30px; height: 30px; }
+html.is-mobile.is-landscape.is-compact .cm-power-grade .power-grade-img { width: 60px; height: 60px; margin: -15px; }
+html.is-mobile.is-landscape.is-compact .cm-power-grade .power-grade-animated { width: 28px !important; height: 28px !important; font-size: 11px !important; }
+html.is-mobile.is-landscape.is-compact .cm-power-txt small { font-size: 7px; letter-spacing: 2px; margin-bottom: 2px; }
+html.is-mobile.is-landscape.is-compact .cm-power-txt b { font-size: 15px; }
+
+html.is-mobile.is-landscape.is-compact body.page-characters .growth-ops { gap: 7px; padding-top: 0; }
+html.is-mobile.is-landscape.is-compact body.page-characters .level-strip { gap: 10px; }
+html.is-mobile.is-landscape.is-compact body.page-characters .level-badge { padding: 3px 20px 3px 10px; gap: 4px; clip-path: polygon(0 0, 100% 0, calc(100% - 9px) 100%, 0 100%); }
+html.is-mobile.is-landscape.is-compact body.page-characters .level-badge .lv { font-size: 9px; letter-spacing: 1px; }
+html.is-mobile.is-landscape.is-compact body.page-characters #status-level { font-size: 16px; }
+html.is-mobile.is-landscape.is-compact body.page-characters .level-badge .cap-sep,
+html.is-mobile.is-landscape.is-compact body.page-characters #status-cap { font-size: 11px; }
+html.is-mobile.is-landscape.is-compact body.page-characters .tip-line { font-size: 10px; gap: 5px; }
+html.is-mobile.is-landscape.is-compact body.page-characters .tip-line:not(:empty)::before { width: 5px; height: 5px; }
+html.is-mobile.is-landscape.is-compact body.page-characters .growth-buttons { gap: 5px 8px; }
+html.is-mobile.is-landscape.is-compact body.page-characters .growth-btn { height: 28px; padding: 0 18px; font-size: 12px; border-image-width: var(--jjk-tkt-w-sm, 8px); }
+html.is-mobile.is-landscape.is-compact body.page-characters .char-close-btn.jjk-btn { min-width: 120px; padding: 0 20px; }
+html.is-mobile.is-landscape.is-compact body.page-characters .limitbreak-info { padding: 5px 8px; font-size: 11px; }
+html.is-mobile.is-landscape.is-compact body.page-characters .lb-bonus { font-size: 10px; }
+html.is-mobile.is-landscape.is-compact body.page-characters .materials-display.jjk-panel { margin-top: 2px; padding: 8px 8px 8px; }
+html.is-mobile.is-landscape.is-compact body.page-characters .materials-display.jjk-panel::before,
+html.is-mobile.is-landscape.is-compact body.page-characters .materials-display.jjk-panel::after { width: 10px; height: 10px; }
+html.is-mobile.is-landscape.is-compact body.page-characters .materials-title { font-size: 9px; letter-spacing: 2px; margin-bottom: 5px; }
+html.is-mobile.is-landscape.is-compact body.page-characters .material-item.jjk-row {
+  grid-template-columns: 22px minmax(0, 1fr) auto; gap: 8px;
+  min-height: 28px; padding: 2px 12px 2px 6px; margin-bottom: 3px;
+}
+html.is-mobile.is-landscape.is-compact body.page-characters .material-icon { width: 22px; height: 22px; }
+html.is-mobile.is-landscape.is-compact body.page-characters .material-name { font-size: 11px; }
+html.is-mobile.is-landscape.is-compact body.page-characters .material-amount { font-size: 11px; gap: 3px; }
+html.is-mobile.is-landscape.is-compact body.page-characters .material-amount b { font-size: 12px; }
+
+/* Stacked (narrow desktop) layout: the art is absolutely filled, so give the
+   frame its own height when it sits above the info column */
+@media (max-width: 900px) {
+  html:not(.is-mobile) body.page-characters .char-modal-panel { grid-template-rows: 28vh minmax(0, 1fr); }
+  html:not(.is-mobile) body.page-characters .char-modal-art { min-height: 0; }
 }

@@ -139,9 +139,9 @@ body {
 }
 
 /* === Center Section - Username Nameplate ===
-   Gunmetal parallelogram plate (assets/ui/jjk/tab.webp, 600x137) drawn with
-   border-image so the gold corner brackets and slanted ends keep their shape
-   (90px of 137px per side) while only the middle stretches to fit the name. */
+   Ink-teal washi ticket plate (assets/ui/jjk/btn_ticket.webp, 387x150) drawn
+   as a 9-slice border-image (slice 36) so the chamfered corners and gold
+   lattice frets keep their shape while only the middle stretches. */
 .username-container {
   display: flex;
   justify-content: center;
@@ -161,12 +161,9 @@ body {
   height: var(--np-h);
   min-width: 220px;
   max-width: 360px;
-  padding: 0 calc(var(--np-h) * 0.7);
+  padding: 0 calc(var(--np-h) * 0.5);
   border: 0 solid transparent;
-  border-image-source: url("../assets/ui/jjk/tab.webp");
-  border-image-slice: 0 90 0 90 fill;
-  border-image-width: 0 calc(var(--np-h) * 0.657);
-  border-image-repeat: stretch;
+  border-image: url("../assets/ui/jjk/btn_ticket.webp") 36 fill / calc(var(--np-h) * 0.32) stretch;
   filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.7));
   cursor: default;
 }

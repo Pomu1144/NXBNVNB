@@ -13,6 +13,10 @@
   const GRID          = document.querySelector(".char-grid");
   const MODAL         = document.getElementById("char-modal");
   const MODAL_IMG     = document.getElementById("char-modal-img");
+  // Blurred backdrop behind the (uncropped) modal art — see .char-modal-art::before
+  MODAL_IMG?.addEventListener("load", () => {
+    MODAL_IMG.closest(".char-modal-art")?.style.setProperty("--art", `url("${MODAL_IMG.currentSrc || MODAL_IMG.src}")`);
+  });
   const MODAL_CLOSE   = document.getElementById("char-modal-close");
 
   const NP_NAME       = document.getElementById("nameplate-name");
@@ -567,11 +571,9 @@
       const powerHolderContainer = document.getElementById('char-power-holder-container');
       if (powerHolderContainer) {
         powerHolderContainer.innerHTML = `
-          <div class="power-holder-container">
-            <div class="power-holder-content">
-              <div class="power-grade">${getPowerGradeElement(powerGrade)}</div>
-              <div class="power-value">${totalPower.toLocaleString()}</div>
-            </div>
+          <div class="cm-power" title="Power grade ${powerGrade}">
+            <div class="cm-power-grade">${getPowerGradeElement(powerGrade)}</div>
+            <div class="cm-power-txt"><small>Power</small><b>${totalPower.toLocaleString()}</b></div>
           </div>`;
       }
     } else {
@@ -682,11 +684,9 @@
       const powerHolderContainer = document.getElementById('char-power-holder-container');
       if (powerHolderContainer) {
         powerHolderContainer.innerHTML = `
-          <div class="power-holder-container">
-            <div class="power-holder-content">
-              <div class="power-grade">${getPowerGradeElement(powerGrade)}</div>
-              <div class="power-value">${totalPower.toLocaleString()}</div>
-            </div>
+          <div class="cm-power" title="Power grade ${powerGrade}">
+            <div class="cm-power-grade">${getPowerGradeElement(powerGrade)}</div>
+            <div class="cm-power-txt"><small>Power</small><b>${totalPower.toLocaleString()}</b></div>
           </div>`;
       }
     }
@@ -1172,18 +1172,25 @@
       return;
     }
 
-    let html = '<div class="materials-title">Awakening Materials Required</div>';
+    const fmt = (n) => safeNum(n, 0).toLocaleString();
+    let html = '<div class="materials-title">Awakening Materials</div>';
 
     for (const [matId, required] of Object.entries(reqs.materials)) {
       const owned = window.Resources.get(matId);
       const matInfo = window.Resources.getMaterialInfo(matId);
       const sufficient = owned >= required;
       const className = sufficient ? "sufficient" : "insufficient";
+      const icon = (window.RewardFormat && typeof window.RewardFormat.icon === "function")
+        ? window.RewardFormat.icon(matId) : matInfo.icon;
+      const iconHTML = icon
+        ? `<img class="material-icon" src="${icon}" alt="" onerror="this.style.visibility='hidden'">`
+        : `<span class="material-icon"></span>`;
 
       html += `
-        <div class="material-item">
+        <div class="material-item jjk-row ${className}">
+          ${iconHTML}
           <span class="material-name">${matInfo.name}</span>
-          <span class="material-amount ${className}">${owned}/${required}</span>
+          <span class="material-amount ${className}"><b>${fmt(owned)}</b><i>/</i><span>${fmt(required)}</span></span>
         </div>
       `;
     }
