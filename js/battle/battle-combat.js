@@ -1168,13 +1168,17 @@
     resolveSkillTargets(attacker, data, given, core) {
       const opponents = this.getOpponents(attacker, core);
       const alive = (given || []).filter(t => t && t.stats?.hp > 0 && opponents.includes(t));
+      // A drag drop already resolved its targets with the range preview
+      // (BattleDrag.predictRange, which applies skillTargetLimit): hit exactly
+      // those, never enemies outside the range the player saw.
+      if (given?.fromRange) return alive;
       const dist = t => Math.hypot((t.pos?.x || 0) - (attacker.pos?.x || 0), (t.pos?.y || 0) - (attacker.pos?.y || 0));
       const desc = String(data?.description || "").toLowerCase();
       if (/all enemies/.test(desc)) {
         const first = alive[0] || [...opponents].sort((a, b) => dist(a) - dist(b))[0];
         return first ? [first, ...opponents.filter(t => t !== first)] : [];
       }
-      const n = Number(data?.effects?.targets) || Number(desc.match(/(\d+)\s*enem/)?.[1]) || alive.length || 1;
+      const n = this.skillTargetLimit(data) || alive.length || 1;
       const pool = alive.length ? [...alive].sort((a, b) => dist(a) - dist(b)) : [];
       for (const t of [...opponents].sort((a, b) => dist(a) - dist(b))) if (!pool.includes(t)) pool.push(t);
       // A single chosen target (tap/drag) stays first even if another is closer.
@@ -1183,6 +1187,18 @@
         pool.unshift(alive[0]);
       }
       return pool.slice(0, n);
+    },
+
+    /**
+     * Max number of enemies a skill hits (effects.targets or "N enemy(s)" in
+     * the description), or null when it hits everything in its area.
+     * "All enemies" skills are unlimited.
+     */
+    skillTargetLimit(data) {
+      const desc = String(data?.description || "").toLowerCase();
+      if (/all enemies/.test(desc)) return null;
+      const n = Number(data?.effects?.targets) || Number(desc.match(/(\d+)\s*enem/)?.[1]) || 0;
+      return n > 0 ? n : null;
     },
 
     /**

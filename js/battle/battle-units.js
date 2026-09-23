@@ -327,11 +327,11 @@
     /** Mount an idle-looping sprite in the unit's sprite slot. */
     attachSprite(unit, unitEl) {
       const slot = unitEl.querySelector('.unit-sprite');
-      // On-field sprite height comes from CSS (--sprite-h: 88px desktop,
+      // On-field sprite height comes from CSS (--sprite-h: 101px desktop,
       // smaller on phones) so it scales with the layout.
       const cssH = parseFloat(getComputedStyle(unitEl).getPropertyValue('--sprite-h'));
       const player = window.SpritePlayer.create(slot, window.SpritePlayer.pathFor(unit.charId), {
-        height: Number.isFinite(cssH) && cssH > 0 ? Math.round(cssH) : 88,
+        height: Number.isFinite(cssH) && cssH > 0 ? Math.round(cssH) : 101,
         flip: !unit.isPlayer, // art faces right; enemies face left
       });
       unit._sprite = player;

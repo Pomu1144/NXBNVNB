@@ -160,6 +160,9 @@
   // one-shot attack sheets (jutsu / ultimate) whose JSON lists hit frames.
   const REGISTRY = {
     minato_2101: 'assets/sprites/minato_2101',
+    naruto_2115: 'assets/sprites/naruto_2115',
+    kakashi_705: 'assets/sprites/kakashi_705',
+    kakashi_706: 'assets/sprites/kakashi_705', // 6★ Blazing Burst form of the same unit (maxing awakens 705 into it)
   };
 
   window.SpritePlayer = {

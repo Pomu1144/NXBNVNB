@@ -1,5 +1,5 @@
 {
-  "frameWidth": 308,
+  "frameWidth": 309,
   "frameHeight": 300,
   "frames": 34,
   "columns": 13,
@@ -25,6 +25,6 @@
     22,
     23
   ],
-  "heightScale": 1.0561,
-  "anchorX": 0.4888
+  "heightScale": 1.037,
+  "anchorX": 0.495
 }

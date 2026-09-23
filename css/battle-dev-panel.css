@@ -1,0 +1,184 @@
+/* css/battle-dev-panel.css
+   Collapsible dev panel on the mission battle screen (js/battle/battle-dev-panel.js).
+   Collapsed: a small gold-trimmed tab on the right edge, below the speed bar.
+   Open: a .jjk-panel sheet sliding in from the right, clear of the action
+   panel (left) and the team HUD (bottom centre). */
+
+#battle-dev-panel {
+  position: fixed;
+  top: 150px;
+  right: 0;
+  z-index: 5000;               /* above battle UI, below result modals (10000) */
+  display: flex;
+  align-items: flex-start;
+  font-family: var(--jjk-font, 'Kaisei Tokumin', serif);
+  color: var(--jjk-text, #ece6d6);
+  pointer-events: none;
+}
+#battle-dev-panel > * { pointer-events: auto; }
+
+/* ── Collapsed handle ── */
+.bdev-tab {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: 30px;
+  padding: 10px 0;
+  border: 1px solid rgba(201, 162, 78, 0.6);
+  border-right: 0;
+  border-radius: 8px 0 0 8px;
+  background: linear-gradient(180deg, rgba(14, 38, 45, 0.95), rgba(6, 17, 21, 0.96));
+  box-shadow: -4px 4px 16px rgba(0, 0, 0, 0.5);
+  color: var(--jjk-gold-hi, #f1d98a);
+  cursor: pointer;
+  font: inherit;
+}
+.bdev-tab:hover { filter: brightness(1.15); }
+.bdev-tab-ico { font-size: 14px; line-height: 1; }
+.bdev-tab-txt {
+  writing-mode: vertical-rl;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+}
+#battle-dev-panel.is-collapsed .bdev-tab { display: flex; }
+#battle-dev-panel.is-collapsed .bdev-body { display: none; }
+
+/* ── Open sheet ── */
+.bdev-body {
+  width: 236px;
+  max-height: calc(100vh - 170px);
+  max-height: calc(100dvh - 170px);
+  margin-right: 10px;
+  padding: 10px 10px 8px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  animation: bdevIn 0.18s var(--jjk-ease, ease-out);
+}
+@keyframes bdevIn { from { opacity: 0; transform: translateX(16px); } to { opacity: 1; transform: none; } }
+
+.bdev-head { display: flex; align-items: center; justify-content: space-between; }
+.bdev-title {
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: var(--jjk-gold-hi, #f1d98a);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
+}
+.bdev-close {
+  width: 26px; height: 26px;
+  border: 1px solid rgba(201, 162, 78, 0.5);
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.35);
+  color: var(--jjk-gold-hi, #f1d98a);
+  font-size: 18px; line-height: 1;
+  cursor: pointer;
+}
+.bdev-close:hover { filter: brightness(1.25); }
+
+.bdev-maxall.jjk-btn { width: 100%; min-width: 0; height: 38px; padding: 0 12px; font-size: 14px; }
+
+.bdev-sub {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--jjk-gold, #c9a24e);
+  border-top: 1px solid rgba(201, 162, 78, 0.25);
+  padding-top: 6px;
+}
+.bdev-sub small { font-weight: 400; color: var(--jjk-muted, #93a3a3); margin-left: 4px; }
+
+.bdev-list {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-right: 2px;
+  scrollbar-width: thin;
+}
+.bdev-group {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #7fb7bf;
+  margin: 2px 0 0;
+}
+.bdev-group.is-enemy { color: #d98a8a; }
+
+.bdev-unit {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 6px 4px 4px;
+  border: 1px solid rgba(45, 107, 115, 0.55);
+  background: rgba(7, 20, 24, 0.7);
+  cursor: pointer;
+  transition: background 0.12s, border-color 0.12s;
+}
+.bdev-unit:hover, .bdev-unit:focus-visible { background: rgba(19, 48, 57, 0.95); border-color: var(--jjk-gold, #c9a24e); outline: none; }
+.bdev-unit.is-enemy { border-color: rgba(142, 28, 28, 0.6); }
+.bdev-unit.is-acting { border-color: var(--jjk-gold-hi, #f1d98a); box-shadow: inset 0 0 0 1px rgba(241, 217, 138, 0.35); background: rgba(60, 48, 18, 0.55); }
+.bdev-unit.is-pending { border-style: dashed; border-color: var(--jjk-gold, #c9a24e); }
+.bdev-unit.is-dead { opacity: 0.4; cursor: not-allowed; }
+
+/* face crop from the full card art (frame / badges cropped out) */
+.bdev-face {
+  flex: 0 0 32px;
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 1px solid rgba(201, 162, 78, 0.6);
+  background: #0c1a1c;
+}
+.bdev-face img {
+  width: 100%; height: 100%;
+  display: block;
+  object-fit: cover;
+  transform: scale(1.55);
+  transform-origin: 56% 32%;
+}
+.bdev-meta { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; line-height: 1.2; }
+.bdev-meta b { font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.bdev-meta small { font-size: 10px; color: var(--jjk-muted, #93a3a3); }
+.bdev-meta em { font-style: normal; font-weight: 800; color: var(--jjk-gold-hi, #f1d98a); }
+.bdev-unit.is-enemy .bdev-meta em { color: #ff9a9a; }
+
+.bdev-max1 {
+  flex: 0 0 auto;
+  width: 26px; height: 26px;
+  border: 1px solid rgba(201, 162, 78, 0.5);
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.35);
+  color: #9fe3ff;
+  font-size: 13px;
+  cursor: pointer;
+}
+.bdev-max1:hover { border-color: var(--jjk-gold-hi, #f1d98a); filter: brightness(1.2); }
+
+.bdev-status {
+  min-height: 14px;
+  font-size: 11px;
+  color: var(--jjk-good, #8fd49a);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.bdev-status.show { opacity: 1; }
+
+/* ── Phone landscape ── */
+html.is-mobile #battle-dev-panel { top: 64px; }
+html.is-mobile .bdev-tab { width: 24px; padding: 6px 0; }
+html.is-mobile .bdev-body {
+  width: 200px;
+  max-height: calc(100dvh - 76px);
+  margin-right: 6px;
+  padding: 6px 7px;
+  gap: 5px;
+}
+html.is-mobile .bdev-maxall.jjk-btn { height: 30px; font-size: 12px; }
+html.is-mobile .bdev-unit { padding: 2px 4px 2px 2px; gap: 6px; }
+html.is-mobile .bdev-face { flex-basis: 26px; width: 26px; height: 26px; }
+html.is-mobile .bdev-max1 { width: 24px; height: 24px; }

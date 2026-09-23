@@ -2,8 +2,8 @@
   {
     "id": "mizuki_enemy",
     "name": "Mizuki",
-    "characterId": "mizuki_030",
-    "sprite": "assets/characters/mizuki_030/portrait_3S.png",
+    "characterId": "mizuki_098",
+    "sprite": "assets/characters/mizuki_098/portrait_3S.webp",
     "stats": { "hp": 2200, "atk": 180, "def": 10, "speed": 110 },
     "tier": "3S"
   },
@@ -18,40 +18,40 @@
   {
     "id": "haku_enemy",
     "name": "Haku",
-    "characterId": "haku_137",
-    "sprite": "assets/characters/haku_137/portrait_5S.png",
+    "characterId": "haku_138",
+    "sprite": "assets/characters/haku_138/portrait_5S.webp",
     "stats": { "hp": 6517, "atk": 412, "def": 25, "speed": 95 },
     "tier": "5S"
   },
   {
     "id": "orochimaru_enemy",
     "name": "Orochimaru",
-    "characterId": "orochimaru_074",
-    "sprite": "assets/characters/orochimaru_074/portrait_5S.png",
+    "characterId": "orochimaru_075",
+    "sprite": "assets/characters/orochimaru_075/portrait_5S.webp",
     "stats": { "hp": 9800, "atk": 720, "def": 35, "speed": 131 },
     "tier": "5S"
   },
   {
     "id": "kabuto_enemy",
     "name": "Kabuto Yakushi",
-    "characterId": "kabuto_076",
-    "sprite": "assets/characters/kabuto_076/portrait_5S.png",
+    "characterId": "kabuto_077",
+    "sprite": "assets/characters/kabuto_077/portrait_5S.webp",
     "stats": { "hp": 6821, "atk": 405, "def": 20, "speed": 92 },
     "tier": "5S"
   },
   {
     "id": "itachi_enemy",
     "name": "Itachi Uchiha",
-    "characterId": "itachi_088",
-    "sprite": "assets/characters/itachi_088/portrait_5S.png",
+    "characterId": "itachi_089",
+    "sprite": "assets/characters/itachi_089/portrait_5S.webp",
     "stats": { "hp": 12000, "atk": 980, "def": 50, "speed": 83 },
     "tier": "5S"
   },
   {
     "id": "kisame_enemy",
     "name": "Kisame Hoshigaki",
-    "characterId": "kisame_090",
-    "sprite": "assets/characters/kisame_090/portrait_5S.png",
+    "characterId": "kisame_091",
+    "sprite": "assets/characters/kisame_091/portrait_5S.webp",
     "stats": { "hp": 14000, "atk": 850, "def": 60, "speed": 104 },
     "tier": "5S"
   },
