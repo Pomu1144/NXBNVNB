@@ -81,6 +81,75 @@
       return level >= 50;
     },
 
+    /* ===== Chakra costs (single source of truth) ===== */
+
+    /**
+     * Max level of the unit at its current tier (Progression tier cap,
+     * e.g. 6S → 100). Limit breaks raise the level beyond this; a unit at or
+     * above the tier cap counts as maxed.
+     */
+    getUnitMaxLevel(unit) {
+      const tier = this.getTierForUnit(unit);
+      const P = window.Progression;
+      if (P?.levelCapForCode) return Number(P.levelCapForCode(tier)) || 40;
+      const caps = { "1S": 20, "2S": 30, "3S": 40, "4S": 55, "5S": 70 };
+      return caps[tier] ?? 100;
+    },
+
+    /** True when the unit is at the max level for its tier. */
+    isUnitMaxed(unit) {
+      if (!unit) return false;
+      if (unit._ref?.inst?.level == null && unit.level == null) return false;
+      const level = Number(unit._ref?.inst?.level ?? unit.level) || 1;
+      return level >= this.getUnitMaxLevel(unit);
+    },
+
+    /**
+     * Effective chakra cost of a skill for a unit.
+     *  - `skill` may be the { meta, data } entry from getUnitSkills, the
+     *    byTier data object itself, or a skill type string
+     *    ('jutsu' | 'ultimate' | 'secret').
+     *  - Uses chakraCostMax when the unit is maxed (and the skill has one),
+     *    otherwise chakraCost; then applies the Chakra Gauge Reduction
+     *    passive (unit.passives.chakraReduction, %), min 1.
+     * Exposed as window.getSkillChakraCost(unit, skill).
+     */
+    getSkillChakraCost(unit, skill, fallback) {
+      const DEFAULTS = { jutsu: 4, ultimate: 8, secret: 12 };
+      let data = skill;
+      if (typeof skill === 'string') {
+        if (fallback == null) fallback = DEFAULTS[skill];
+        data = this.getUnitSkills(unit)?.[skill] || null;
+      }
+      if (data && data.data && typeof data.data === 'object') data = data.data;
+      if (!data) return Number(fallback ?? 0);
+
+      const base = Number(data.chakraCost ?? fallback ?? 0);
+      const max = Number(data.chakraCostMax);
+      let cost = (Number.isFinite(max) && data.chakraCostMax != null && this.isUnitMaxed(unit)) ? max : base;
+      if (!Number.isFinite(cost)) cost = Number(fallback ?? 0);
+
+      const red = Number(unit?.passives?.chakraReduction) || 0;
+      if (red > 0 && cost > 0) {
+        cost = Math.max(1, cost - Math.floor(cost * (red / 100)));
+      }
+      return cost;
+    },
+
+    /**
+     * Effective jutsu / ultimate / secret costs for a unit (null when the
+     * unit has no such skill). Exposed as window.getUnitSkillCosts(unit).
+     */
+    getUnitSkillCosts(unit) {
+      const s = this.getUnitSkills(unit);
+      return {
+        jutsu: s.jutsu ? this.getSkillChakraCost(unit, s.jutsu, 4) : null,
+        ultimate: s.ultimate ? this.getSkillChakraCost(unit, s.ultimate, 8) : null,
+        secret: s.secret ? this.getSkillChakraCost(unit, s.secret, 12) : null,
+        maxed: this.isUnitMaxed(unit)
+      };
+    },
+
     /**
      * Check if secret technique is unlocked (requires tier 6S+)
      */
@@ -451,14 +520,8 @@
         return false;
       }
 
-      let cost = Number(j.data.chakraCost ?? 4);
-
-      // Apply Chakra Gauge Reduction passive
-      if (attacker.passives?.chakraReduction > 0) {
-        const reduction = Math.floor(cost * (attacker.passives.chakraReduction / 100));
-        cost = Math.max(1, cost - reduction);
-        console.log(`[Combat] ⚡ ${attacker.name}'s jutsu cost reduced: ${j.data.chakraCost} → ${cost}`);
-      }
+      // Effective cost: chakraCostMax when maxed, minus Chakra Gauge Reduction
+      const cost = this.getSkillChakraCost(attacker, j, 4);
 
       // Check and spend chakra
       if (core.chakra) {
@@ -659,14 +722,8 @@
         return false;
       }
 
-      let cost = Number(u.data.chakraCost ?? 8);
-
-      // Apply Chakra Gauge Reduction passive
-      if (attacker.passives?.chakraReduction > 0) {
-        const reduction = Math.floor(cost * (attacker.passives.chakraReduction / 100));
-        cost = Math.max(1, cost - reduction);
-        console.log(`[Combat] ⚡ ${attacker.name}'s ultimate cost reduced: ${u.data.chakraCost} → ${cost}`);
-      }
+      // Effective cost: chakraCostMax when maxed, minus Chakra Gauge Reduction
+      const cost = this.getSkillChakraCost(attacker, u, 8);
 
       // Check and spend chakra
       if (core.chakra) {
@@ -980,8 +1037,16 @@
       const j = skills.jutsu;
 
       if (!j) return false;
+      if (!this.isJutsuUnlocked(attacker)) {
+        window.BattleNarrator?.narrate(`${attacker.name}'s jutsu is locked! Requires Level 20.`, core);
+        return false;
+      }
+      if (attacker.statusEffects?.some(e => e.prevent_jutsu && e.turnsRemaining > 0)) {
+        window.BattleNarrator?.narrate(`${attacker.name}'s jutsu is sealed!`, core);
+        return false;
+      }
 
-      const cost = Number(j.data.chakraCost ?? 4);
+      const cost = this.getSkillChakraCost(attacker, j, 4);
 
       // Check and spend chakra
       if (core.chakra) {
@@ -1417,14 +1482,8 @@
         return false;
       }
 
-      let cost = Number(secret.data.chakraCost ?? 12);
-
-      // Apply Chakra Gauge Reduction passive
-      if (caster.passives?.chakraReduction > 0) {
-        const reduction = Math.floor(cost * (caster.passives.chakraReduction / 100));
-        cost = Math.max(1, cost - reduction);
-        console.log(`[Combat] ⚡ ${caster.name}'s secret cost reduced: ${secret.data.chakraCost} → ${cost}`);
-      }
+      // Effective cost: chakraCostMax when maxed, minus Chakra Gauge Reduction
+      const cost = this.getSkillChakraCost(caster, secret, 12);
 
       // Check and spend chakra
       if (core.chakra) {
@@ -1564,12 +1623,14 @@
 
       // Check if ultimate is available and random chance
       const preferUlt = skills.ultimate &&
-                       unit.chakra >= Number(skills.ultimate.data.chakraCost ?? 8) &&
+                       this.isUltimateUnlocked(unit) &&
+                       unit.chakra >= this.getSkillChakraCost(unit, skills.ultimate, 8) &&
                        Math.random() > 0.7;
 
       // Check if jutsu is available and random chance
       const preferJut = skills.jutsu &&
-                       unit.chakra >= Number(skills.jutsu.data.chakraCost ?? 4) &&
+                       this.isJutsuUnlocked(unit) &&
+                       unit.chakra >= this.getSkillChakraCost(unit, skills.jutsu, 4) &&
                        Math.random() > 0.5;
 
       // Execute chosen action — onDone fires when combat fully resolves
@@ -1601,9 +1662,9 @@
       const skills = this.getUnitSkills(unit);
 
       if (skillType === "jutsu" && skills.jutsu) {
-        return Number(skills.jutsu.data.chakraCost ?? 4);
+        return this.getSkillChakraCost(unit, skills.jutsu, 4);
       } else if (skillType === "ultimate" && skills.ultimate) {
-        return Number(skills.ultimate.data.chakraCost ?? 8);
+        return this.getSkillChakraCost(unit, skills.ultimate, 8);
       }
 
       return 0;
@@ -1804,6 +1865,9 @@
 
   // Export to window
   window.BattleCombat = BattleCombat;
+  // Shared cost helpers (HUD / chakra bar / input read these)
+  window.getSkillChakraCost = (unit, skill, fallback) => BattleCombat.getSkillChakraCost(unit, skill, fallback);
+  window.getUnitSkillCosts = (unit) => BattleCombat.getUnitSkillCosts(unit);
 
   console.log("[BattleCombat] Module loaded ✅");
 })();

@@ -158,6 +158,22 @@
     },
 
     /**
+     * Short system notice ("Not enough chakra", "Jutsu is locked", ...).
+     * Several modules call BattleNarrator.narrate(text, core); it did not
+     * exist, so those calls threw instead of informing the player.
+     */
+    narrate(text, core) {
+      const dom = core?.dom || { scene: document.getElementById('battle-scene') };
+      this.showAction(text, 'notice', dom);
+      const el = dom.scene?.querySelector('.battle-narration');
+      if (el) {
+        el.style.fontSize = 'clamp(0.95rem, 2.4vw, 1.35rem)';
+        el.style.whiteSpace = 'nowrap';
+      }
+      console.log(`[Narrator] ${text}`);
+    },
+
+    /**
      * Narrate guard action
      */
     narrateGuard(unit, core) {

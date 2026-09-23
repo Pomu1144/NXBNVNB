@@ -33,9 +33,9 @@
       try { skills = C?.getUnitSkills?.(unit) || null; } catch (_) { skills = null; }
       const safe = (fn, fallback) => { try { const v = fn(); return v ?? fallback; } catch (_) { return fallback; } };
       return {
-        jutsu: Number(skills?.jutsu?.data?.chakraCost ?? 4),
-        ult: Number(skills?.ultimate?.data?.chakraCost ?? 8),
-        secret: Number(skills?.secret?.data?.chakraCost ?? 12),
+        jutsu: this.skillCost(unit, skills?.jutsu, 4),
+        ult: this.skillCost(unit, skills?.ultimate, 8),
+        secret: this.skillCost(unit, skills?.secret, 12),
         hasJutsu: !!skills?.jutsu,
         hasUlt: !!skills?.ultimate,
         hasSecret: !!skills?.secret,
@@ -43,6 +43,39 @@
         ultUnlocked: safe(() => C?.isUltimateUnlocked?.(unit), true),
         secretUnlocked: safe(() => C?.isSecretUnlocked?.(unit), false)
       };
+    },
+
+    /**
+     * Effective chakra cost of one skill entry ({ meta, data } from
+     * BattleCombat.getUnitSkills). Prefers the shared helper
+     * window.getSkillChakraCost(unit, skillData) (handles chakraCostMax on
+     * maxed units); falls back to the entry's raw chakraCost.
+     */
+    skillCost(unit, entry, fallback) {
+      if (!entry) return fallback;
+      const helper = window.getSkillChakraCost;
+      if (typeof helper === 'function') {
+        try {
+          const v = Number(helper(unit, entry, fallback));
+          if (Number.isFinite(v)) return v;
+        } catch (_) { /* fall back */ }
+      }
+      const v = Number(entry.data?.chakraCost ?? fallback);
+      return Number.isFinite(v) ? v : fallback;
+    },
+
+    /**
+     * Single readiness verdict for a unit's holder card:
+     *   'ult'   — chakra covers the (unlocked) ultimate
+     *   'jutsu' — chakra covers the (unlocked) jutsu
+     *   null    — neither (or the unit is down)
+     * Drives the card's lightning border (BattleTeamHolder.updateVolt).
+     */
+    readinessFor(unit) {
+      if (!unit) return null;
+      let r;
+      try { r = this.getReadiness(unit); } catch (_) { return null; }
+      return r.ult ? 'ult' : r.jutsu ? 'jutsu' : null;
     },
 
     getReadiness(unit, costs = this.getCosts(unit)) {
@@ -154,6 +187,7 @@
       document.querySelectorAll(`#team-holder .unit-card[data-unit-id="${String(unit.id).replace(/["\\]/g, '\\$&')}"]`).forEach(card => {
         card.classList.toggle('jutsu-ready', ready.jutsu);
         card.classList.toggle('ult-ready', ready.ult);
+        window.BattleTeamHolder?.updateVolt?.(card, this.readinessFor(unit));
       });
 
       const wheel = this.wheelCache.get(unit.id);

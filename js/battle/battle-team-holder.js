@@ -122,6 +122,7 @@
       const isDead = activeUnit.stats.hp <= 0;
       const W = window.BattleChakraWheel;
       const ready = W ? W.getReadiness(activeUnit) : { jutsu: false, ult: false };
+      const volt = W?.readinessFor ? W.readinessFor(activeUnit) : null;
       const gauge = W ? W.gaugeHTML(activeUnit) : '';
       const silhouette = `this.onerror=null;this.src='assets/characters/common/silhouette.png';`;
       const pos = activeUnit.positionId || index + 1;
@@ -146,7 +147,7 @@
 
       return `
         <div class="unit-card${benchUnit ? ' has-backup' : ''}${isDead ? ' is-dead' : ''}${acting ? ' is-acting' : ''}${ready.jutsu ? ' jutsu-ready' : ''}${ready.ult ? ' ult-ready' : ''}"
-             data-card-index="${index}" data-unit-id="${e(activeUnit.id)}" data-pos="${e(pos)}">
+             data-card-index="${index}" data-unit-id="${e(activeUnit.id)}" data-pos="${e(pos)}" data-volt="${volt || ''}">
           <div class="uc-body">
             <div class="active-portrait-container" data-unit-id="${e(activeUnit.id)}" data-unit-type="active" data-drop-zone="true">
               <img src="${e(activeUnit.portrait)}" alt="${e(activeUnit.name)}" draggable="false" onerror="${silhouette}">
@@ -163,9 +164,125 @@
             </div>
             <div class="uc-strip">${gauge}</div>
           </div>
+          ${volt ? this.voltHTML(volt) : ''}
           ${miniHTML}
         </div>
       `;
+    },
+
+    /* ===== Lightning border (chakra readiness) =====
+       Blue crackle = jutsu affordable, red = ultimate affordable (red wins).
+       Readiness comes from BattleChakraWheel.readinessFor(unit); the SVGs
+       are only in the DOM while a card is charged. Strokes follow the card
+       art's outer outline (360×515 art space) and are bent by shared
+       feTurbulence + feDisplacementMap filters (#ucv-*).
+       Two layers per card:
+         .uc-volt-glow  static blurred halo (painted once, only its opacity
+                        breathes — composited)
+         .uc-volt       crackling rim + two arcs running around the edge,
+                        own compositor layer, repainted by ONE shared
+                        ~14 fps ticker (new noise seed, arc offsets,
+                        random bright discharges) — lightning reads fine at
+                        that rate and it keeps paint cost flat. */
+
+    // unit_card.webp outer outline (chamfered TL / TR / BR corners)
+    VOLT_PATH: 'M60 20L78 2L346 27L358 42L309 499L295 504L10 514L1 501Z',
+    VOLT_TICK_MS: 70,
+
+    voltHTML(state) {
+      this.ensureVoltDefs();
+      const d = this.VOLT_PATH;
+      const p = (cls) => `<path class="${cls}" d="${d}" pathLength="1000"/>`;
+      const svg = (cls, inner) =>
+        `<svg class="${cls} is-${state}" viewBox="-36 -36 432 587" preserveAspectRatio="none" aria-hidden="true" focusable="false">${inner}</svg>`;
+      return `
+          ${svg('uc-volt-glow', `<g filter="url(#ucv-soft)">${p('ucv-glow')}</g>`)}
+          ${svg('uc-volt', `
+            <g filter="url(#ucv-crackle)">${p('ucv-rim')}</g>
+            <g class="ucv-arcs" filter="url(#ucv-arc)">
+              ${p('ucv-arc a1 c')}${p('ucv-arc a1 h')}
+              ${p('ucv-arc a2 c')}${p('ucv-arc a2 h')}
+              ${p('ucv-flash')}
+            </g>`)}`;
+    },
+
+    /** Shared filter defs (one hidden <svg> on body, built once). */
+    ensureVoltDefs() {
+      if (document.getElementById('ucv-defs')) return;
+      const box = 'filterUnits="userSpaceOnUse" x="-36" y="-36" width="432" height="587"';
+      const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      svg.id = 'ucv-defs';
+      svg.setAttribute('aria-hidden', 'true');
+      svg.style.cssText = 'position:absolute;width:0;height:0;overflow:hidden;pointer-events:none';
+      svg.innerHTML = `
+        <defs>
+          <filter id="ucv-soft" ${box}>
+            <feGaussianBlur stdDeviation="9"/>
+          </filter>
+          <filter id="ucv-crackle" ${box}>
+            <feTurbulence type="fractalNoise" baseFrequency="0.07" numOctaves="2" seed="2" result="n"/>
+            <feDisplacementMap in="SourceGraphic" in2="n" scale="26" xChannelSelector="R" yChannelSelector="G" result="d"/>
+            <feGaussianBlur in="d" stdDeviation="3" result="b"/>
+            <feMerge><feMergeNode in="b"/><feMergeNode in="d"/></feMerge>
+          </filter>
+          <filter id="ucv-arc" ${box}>
+            <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="3" seed="5" result="n"/>
+            <feDisplacementMap in="SourceGraphic" in2="n" scale="52" xChannelSelector="G" yChannelSelector="R" result="d"/>
+            <feGaussianBlur in="d" stdDeviation="6" result="b"/>
+            <feMerge><feMergeNode in="b"/><feMergeNode in="d"/></feMerge>
+          </filter>
+        </defs>`;
+      document.body.appendChild(svg);
+      this._voltNoise = [...svg.querySelectorAll('feTurbulence')];
+    },
+
+    /**
+     * Show / swap / remove the lightning on a card. `state` is
+     * 'ult' | 'jutsu' | null (BattleChakraWheel.readinessFor). No-op when
+     * unchanged, so it is safe to call on every chakra repaint.
+     */
+    updateVolt(card, state) {
+      if (!card) return;
+      const want = state === 'ult' || state === 'jutsu' ? state : '';
+      const cur = card.querySelectorAll(':scope > .uc-volt, :scope > .uc-volt-glow');
+      if (card.dataset.volt === want && (cur.length > 0) === !!want) return;
+      card.dataset.volt = want;
+      cur.forEach(el => el.remove());
+      if (!want) return;
+      const body = card.querySelector(':scope > .uc-body');
+      if (body) body.insertAdjacentHTML('afterend', this.voltHTML(want));
+      else card.insertAdjacentHTML('beforeend', this.voltHTML(want));
+      this.startVoltTicker();
+    },
+
+    /** One shared animation clock for every charged card. */
+    startVoltTicker() {
+      if (this._voltTimer) return;
+      if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return;
+      const t0 = performance.now();
+      this._voltTimer = setInterval(() => {
+        const volts = document.querySelectorAll('#team-holder .uc-volt');
+        if (!volts.length) {
+          clearInterval(this._voltTimer);
+          this._voltTimer = null;
+          return;
+        }
+        if (document.hidden) return;
+        // fresh noise = the whole rim re-crackles
+        this._voltNoise?.forEach(n => n.setAttribute('seed', 1 + Math.floor(Math.random() * 997)));
+        const t = (performance.now() - t0) / 1000;
+        volts.forEach((v, i) => {
+          const ult = v.classList.contains('is-ult');
+          const run = (ult ? 740 : 520) * t + i * 263;      // path units / s
+          v.style.setProperty('--ucv-o1', `${-(run % 1000)}`);
+          v.style.setProperty('--ucv-o2', `${(run * 0.7) % 1000}`);
+          // random bright discharge, decaying over a few ticks
+          let f = Number(v._flash || 0) * 0.45;
+          if (Math.random() < (ult ? 0.07 : 0.045)) f = 0.75 + Math.random() * 0.25;
+          v._flash = f < 0.05 ? 0 : f;
+          v.style.setProperty('--ucv-f', v._flash.toFixed(2));
+        });
+      }, this.VOLT_TICK_MS);
     },
 
     /**

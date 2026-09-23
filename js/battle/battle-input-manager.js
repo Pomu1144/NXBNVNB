@@ -7,7 +7,7 @@
    * Implements proper 2-stage input system for Naruto Blazing battle mechanics
    *
    * STAGE 1 (Click): Select attack type
-   * - Single click → Normal Attack
+   * - Single click → Jutsu (when unlocked + enough chakra, else Normal Attack)
    * - Double click → Ultimate
    * - Triple click → Secret Technique
    *
@@ -30,6 +30,7 @@
     // Attack types
     ATTACK_TYPES: {
       NORMAL: 'normal',
+      JUTSU: 'jutsu',
       ULTIMATE: 'ultimate',
       SECRET: 'secret'
     },
@@ -66,11 +67,49 @@
     },
 
     /**
-     * Handle single click - select normal attack
+     * Why `unit` cannot use a skill right now ('jutsu' | 'ultimate' |
+     * 'secret'), or null when it can. Uses the shared effective-cost helper.
+     */
+    skillBlockReason(unit, type) {
+      const C = window.BattleCombat;
+      if (!C) return 'Combat not ready';
+      const skills = C.getUnitSkills(unit);
+      const entry = skills?.[type];
+      const label = type === 'jutsu' ? 'Jutsu' : type === 'ultimate' ? 'Ultimate' : 'Secret technique';
+      if (!entry) return `${unit.name} has no ${label.toLowerCase()}`;
+      if (type === 'jutsu' && !C.isJutsuUnlocked(unit)) return `${label} is locked! Requires Level 20.`;
+      if (type === 'ultimate' && !C.isUltimateUnlocked(unit)) return `${label} is locked! Requires Level 50.`;
+      if (type === 'secret' && !C.isSecretUnlocked(unit)) return `${label} is locked! Requires 6★ or higher.`;
+      const cd = type === 'jutsu' ? unit.jutsuCooldown : type === 'ultimate' ? unit.ultimateCooldown : 0;
+      if ((cd || 0) > 0) return `${label} on cooldown! (${cd} turn${cd > 1 ? 's' : ''} left)`;
+      const cost = C.getSkillChakraCost(unit, entry);
+      if ((Number(unit.chakra) || 0) < cost) return `Not enough chakra for ${label.toLowerCase()} (need ${cost}, have ${unit.chakra}).`;
+      return null;
+    },
+
+    armSkill(unit, type) {
+      this.selectedAttackType = type;
+      this.selectedUnit = unit;
+      this.currentState = this.STATES.READY_TO_DRAG;
+      // Keep the button / sprite-drag / enemy-click paths in sync
+      if (this.core && (type === 'jutsu' || type === 'ultimate')) this.core.queuedAction = type;
+      window.BattleNarrator?.narrate?.(
+        `${type === 'jutsu' ? 'Jutsu' : type === 'ultimate' ? 'Ultimate' : 'Secret technique'} ready — drag or tap an enemy`, this.core);
+    },
+
+    /**
+     * Handle single click - select jutsu (falls back to a normal attack)
      */
     handleSingleClick(unit) {
       if (this.currentState !== this.STATES.IDLE) return;
       if (!this.canArmAttack(unit)) return;
+
+      if (!this.skillBlockReason(unit, 'jutsu')) {
+        console.log(`[InputManager] Single click: Jutsu selected for ${unit.name}`);
+        this.armSkill(unit, this.ATTACK_TYPES.JUTSU);
+        this.showAttackTypeSelected(unit, 'jutsu');
+        return;
+      }
 
       console.log(`[InputManager] Single click: Normal attack selected for ${unit.name}`);
       this.selectedAttackType = this.ATTACK_TYPES.NORMAL;
@@ -88,23 +127,16 @@
       if (this.currentState !== this.STATES.IDLE) return;
       if (!this.canArmAttack(unit)) return;
 
-      // Check if unit has ultimate and enough chakra
-      const skills = window.BattleCombat?.getUnitSkills(unit);
-      if (!skills?.ultimate) {
-        console.log(`[InputManager] ${unit.name} has no ultimate skill`);
-        return;
-      }
-
-      const ultCost = Number(skills.ultimate.data?.chakraCost ?? 8);
-      if (unit.chakra < ultCost) {
-        console.log(`[InputManager] Not enough chakra for ultimate (need ${ultCost}, have ${unit.chakra})`);
+      // Check unlock / cooldown / chakra (effective cost)
+      const why = this.skillBlockReason(unit, 'ultimate');
+      if (why) {
+        console.log(`[InputManager] ${why}`);
+        window.BattleNarrator?.narrate?.(why, this.core);
         return;
       }
 
       console.log(`[InputManager] Double click: Ultimate selected for ${unit.name}`);
-      this.selectedAttackType = this.ATTACK_TYPES.ULTIMATE;
-      this.selectedUnit = unit;
-      this.currentState = this.STATES.READY_TO_DRAG;
+      this.armSkill(unit, this.ATTACK_TYPES.ULTIMATE);
 
       // Visual feedback - red lightning (non-blocking)
       if (window.BattleChakraWheel) {
@@ -122,29 +154,15 @@
       if (this.currentState !== this.STATES.IDLE) return;
       if (!this.canArmAttack(unit)) return;
 
-      // Check if unit has secret and enough chakra
-      const skills = window.BattleCombat?.getUnitSkills(unit);
-      if (!skills?.secret) {
-        console.log(`[InputManager] ${unit.name} has no secret technique`);
-        return;
-      }
-
-      const secretCost = Number(skills.secret.data?.chakraCost ?? 12);
-      if (unit.chakra < secretCost) {
-        console.log(`[InputManager] Not enough chakra for secret (need ${secretCost}, have ${unit.chakra})`);
-        return;
-      }
-
-      const secretUnlocked = window.BattleCombat?.isSecretUnlocked(unit) ?? false;
-      if (!secretUnlocked) {
-        console.log(`[InputManager] Secret technique is locked for ${unit.name}`);
+      const why = this.skillBlockReason(unit, 'secret');
+      if (why) {
+        console.log(`[InputManager] ${why}`);
+        window.BattleNarrator?.narrate?.(why, this.core);
         return;
       }
 
       console.log(`[InputManager] Triple click: Secret Technique selected for ${unit.name}`);
-      this.selectedAttackType = this.ATTACK_TYPES.SECRET;
-      this.selectedUnit = unit;
-      this.currentState = this.STATES.READY_TO_DRAG;
+      this.armSkill(unit, this.ATTACK_TYPES.SECRET);
 
       // Visual feedback - gold lightning (non-blocking)
       if (window.BattleChakraWheel) {
@@ -191,12 +209,21 @@
       // Check if drag started from the battle field area (not UI elements)
       const targetElement = e.target;
       if (targetElement.closest('.team-holder') ||
-          targetElement.closest('.battle-ui-top')) {
+          targetElement.closest('.battle-ui-top') ||
+          targetElement.closest('#action-panel') ||
+          targetElement.closest('button')) {
         return; // Don't drag from UI elements
+      }
+      // Pressing the armed unit's own sprite: battle-drag's sprite drag
+      // takes over (it reads the armed skill from core.queuedAction).
+      if (this.selectedUnit && targetElement.closest(`.battle-unit[data-unit-id="${this.selectedUnit.id}"]`)) {
+        return;
       }
 
       this.currentState = this.STATES.DRAGGING;
       this.dragStartPos = { x: e.clientX, y: e.clientY };
+      // A plain tap on an enemy (no drag movement) should still target it
+      this.currentTarget = this.findTargetAtPosition(this.dragStartPos);
 
       console.log(`[InputManager] Drag started - targeting mode active`);
       this.showTargetingUI();
@@ -226,6 +253,12 @@
       if (this.currentState !== this.STATES.DRAGGING) return;
 
       console.log(`[InputManager] Drag released - executing ${this.selectedAttackType} attack`);
+
+      const endTarget = this.findTargetAtPosition({ x: e.clientX, y: e.clientY });
+      if (endTarget) this.currentTarget = endTarget;
+
+      // The armed skill is consumed by this release
+      if (this.core && this.core.queuedAction === this.selectedAttackType) this.core.queuedAction = null;
 
       // Execute the attack
       if (this.currentTarget && this.selectedUnit) {
@@ -428,18 +461,27 @@
       };
 
       if (window.BattleCombat) {
+        let ok = true;
         switch (attackType) {
           case this.ATTACK_TYPES.NORMAL:
             window.BattleCombat.performAttack(attacker, target, core, doEndTurn);
             break;
+          case this.ATTACK_TYPES.JUTSU:
+            ok = window.BattleCombat.performJutsu(attacker, target, core, doEndTurn) !== false;
+            break;
           case this.ATTACK_TYPES.ULTIMATE:
-            window.BattleCombat.performUltimate(attacker, [target], core, doEndTurn);
+            ok = window.BattleCombat.performUltimate(attacker, [target], core, doEndTurn) !== false;
             break;
           case this.ATTACK_TYPES.SECRET: {
-            const success = window.BattleCombat.performSecret(attacker, core);
-            if (success) doEndTurn();
+            ok = window.BattleCombat.performSecret(attacker, core);
+            if (ok) doEndTurn();
             break;
           }
+        }
+        // Skill refused (sealed / locked / chakra): the turn stays open
+        if (!ok) {
+          console.warn(`[InputManager] ${attackType} could not be used by ${attacker.name}`);
+          return;
         }
 
         // Watchdog: if the combat callback never fires (mirrors the AI
