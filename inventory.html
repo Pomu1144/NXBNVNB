@@ -13,6 +13,8 @@
   <link rel="apple-touch-icon" href="assets/icons/achievement_icon.png" />
   <script src="js/pwa-register.js"></script>
   <title>Inventory</title>
+  <link rel="stylesheet" href="css/fonts.css" />
+  <link rel="stylesheet" href="css/theme-jjk.css" />
   <link rel="stylesheet" href="css/inventory.css">
   <link rel="stylesheet" href="css/bottombar.css">
   <link rel="stylesheet" href="css/background.css">
@@ -34,18 +36,21 @@
   </style>
   <link rel="stylesheet" href="css/mobile.css" />
 </head>
-<body>
+<body class="page-inventory">
+  <header class="jjk-page-header">
+    <a class="jjk-icon-btn jjk-back" href="village.html" aria-label="Back to Village"><img src="assets/ui/jjk/back_arrow.webp" alt="" /></a>
+    <h1 class="jjk-title-plate">Items</h1>
+  </header>
   <div id="full-bg" aria-hidden="true"></div>
 
   <div class="inventory-page-container">
-    <h1 class="page-title">Item Inventory</h1>
 
     <!-- Tabs for different item categories -->
     <div class="inventory-tabs">
-      <button class="tab-btn active" data-tab="awakening">Awakening Materials</button>
-      <button class="tab-btn" data-tab="enhancement">Enhancement Items</button>
-      <button class="tab-btn" data-tab="ramen">Ramen</button>
-      <button class="tab-btn" data-tab="scrolls">Scrolls</button>
+      <button class="tab-btn jjk-tab active" data-tab="awakening">Awakening Materials</button>
+      <button class="tab-btn jjk-tab" data-tab="enhancement">Enhancement Items</button>
+      <button class="tab-btn jjk-tab" data-tab="ramen">Ramen</button>
+      <button class="tab-btn jjk-tab" data-tab="scrolls">Scrolls</button>
     </div>
 
     <!-- Tab Content -->

@@ -1,5 +1,5 @@
 /* css/jutsu-summon.css — Jutsu Cards summon tab: panel, showcase, results.
-   Shares the gold-bezel / lacquer vocabulary defined in css/summon-premium.css
+   Ink-teal JJK panels (css/theme-jjk.css tokens) + gold bezel from css/summon-premium.css
    (tab bar + plate buttons live there). */
 
 /* ---- Jutsu panel: rates rail | framed showcase | draw panel ---- */
@@ -21,54 +21,58 @@
   display: flex;
   flex-direction: column;
   min-height: 0;
-  border-radius: 14px;
-  border: 2px solid transparent;
+  position: relative;
+  border-radius: 0;
+  border: 1px solid rgba(201,162,78,0.55);
   background:
-    linear-gradient(180deg, rgba(28,17,8,0.94), rgba(10,6,3,0.96)) padding-box,
-    var(--gold-bezel, linear-gradient(135deg,#5c4012,#f7e08a,#b8862b,#fff3b0,#7a5418)) border-box;
-  box-shadow:
-    0 12px 30px rgba(0,0,0,0.6),
-    inset 0 0 0 1px rgba(0,0,0,0.65),
-    inset 0 1px 0 rgba(255,230,160,0.14),
-    inset 0 0 30px rgba(0,0,0,0.55);
+    url('../assets/ui/jjk/ink_bg.webp') center / cover no-repeat,
+    var(--jjk-ink-2, #0c2229);
+  background-blend-mode: soft-light, normal;
+  box-shadow: 0 10px 32px rgba(0,0,0,0.6), inset 0 0 0 1px rgba(0,0,0,0.55), inset 0 0 40px rgba(0,0,0,0.45);
 }
+.jutsu-rail::before, .jutsu-rail::after,
+.jutsu-draw-col::before, .jutsu-draw-col::after {
+  content: ''; position: absolute; width: 16px; height: 16px; pointer-events: none; z-index: 2;
+  border: 2px solid var(--jjk-gold, #c9a24e);
+}
+.jutsu-rail::before, .jutsu-draw-col::before { top: 3px; left: 3px; border-right: 0; border-bottom: 0; }
+.jutsu-rail::after, .jutsu-draw-col::after { bottom: 3px; right: 3px; border-left: 0; border-top: 0; }
 .jutsu-rail { padding: 10px 10px 12px; gap: 6px; overflow: hidden; }
 .jutsu-rates { display: flex; flex-direction: column; gap: 6px; }
 .jutsu-rate-row {
   display: flex; align-items: center; justify-content: space-between; gap: 6px;
   padding: 7px 10px;
-  border-radius: 8px;
-  background: linear-gradient(180deg, rgba(40,26,12,0.8), rgba(16,10,5,0.85));
-  border: 1px solid rgba(201,165,90,0.28);
-  box-shadow: inset 0 1px 0 rgba(255,230,160,0.07);
+  border-radius: 0;
+  background: linear-gradient(90deg, rgba(19,48,57,0.85), rgba(7,20,24,0.85));
+  border: 1px solid rgba(201,162,78,0.28);
+  clip-path: polygon(6px 0, 100% 0, calc(100% - 6px) 100%, 0 100%);
 }
-.jutsu-rate-star { color: #c9a55a; font-size: 10px; letter-spacing: -0.5px; white-space: nowrap; overflow: hidden; }
+.jutsu-rate-star { color: var(--jjk-gold, #c9a24e); font-size: 10px; letter-spacing: -0.5px; white-space: nowrap; overflow: hidden; }
 .jutsu-rate-pct {
-  font-family: 'Rowdies', 'Oswald', sans-serif; font-weight: 700; font-size: 13px;
+  font-family: var(--jjk-font); font-weight: 700; font-size: 13px;
   color: #f1e3bf; text-shadow: 0 1px 2px rgba(0,0,0,0.9);
 }
-.jutsu-rate-row.r7 .jutsu-rate-star, .jutsu-rate-row.r6 .jutsu-rate-star { color: #ffd75e; text-shadow: 0 0 6px rgba(255,200,80,0.6); }
+.jutsu-rate-row.r7 .jutsu-rate-star, .jutsu-rate-row.r6 .jutsu-rate-star { color: var(--jjk-gold-hi, #f1d98a); }
 .jutsu-rate-row.r7 .jutsu-rate-pct, .jutsu-rate-row.r6 .jutsu-rate-pct { color: #ffe08a; }
-.jutsu-rate-row.r7 { border-color: rgba(255,215,120,0.6); }
+.jutsu-rate-row.r7 { border-color: rgba(241,217,138,0.7); background: linear-gradient(90deg, rgba(110,83,32,0.55), rgba(7,20,24,0.85)); }
 
 .jutsu-rail-foot { margin-top: auto; padding-top: 10px; text-align: center; }
 .jutsu-rail-label {
-  font-family: 'Shojumaru', 'Cinzel', serif; font-size: 12px; letter-spacing: 1.5px;
-  color: #f6dc8c; text-shadow: 0 2px 3px rgba(0,0,0,0.9);
+  font-family: var(--jjk-font); font-weight: 800; font-size: 13px; letter-spacing: 2px;
+  color: var(--jjk-gold-hi, #f1d98a); text-shadow: 0 2px 3px rgba(0,0,0,0.9);
 }
 .jutsu-collection {
   margin-top: 4px;
-  font-family: 'Rowdies', 'Oswald', sans-serif; font-weight: 700; font-size: 15px; color: #fff3d2;
+  font-family: var(--jjk-font); font-weight: 700; font-size: 15px; color: #fff3d2;
   text-shadow: 0 1px 2px rgba(0,0,0,0.9);
 }
 .jutsu-progress {
-  margin-top: 6px; height: 7px; border-radius: 99px; overflow: hidden;
-  background: rgba(0,0,0,0.6); border: 1px solid rgba(201,165,90,0.45);
+  margin-top: 6px; height: 7px; border-radius: 0; overflow: hidden;
+  background: rgba(0,0,0,0.6); border: 1px solid rgba(201,162,78,0.45);
 }
 .jutsu-progress-fill {
   height: 100%; width: 0;
-  background: linear-gradient(90deg, #7a5418, #f7e08a 60%, #fff3b0);
-  box-shadow: 0 0 8px rgba(255,210,100,0.6);
+  background: linear-gradient(90deg, var(--jjk-gold-lo, #6e5320), var(--jjk-gold-hi, #f1d98a));
   transition: width .4s ease;
 }
 
@@ -78,29 +82,29 @@
   display: flex; align-items: center; justify-content: center;
   min-height: 0;
   overflow: hidden;
-  border: 4px solid transparent;
-  border-radius: 18px;
-  background: linear-gradient(#0a0603, #0a0603) padding-box,
+  border: 3px solid transparent;
+  border-radius: 4px;
+  background: linear-gradient(#071418, #071418) padding-box,
     var(--gold-bezel, linear-gradient(135deg,#5c4012,#f7e08a,#b8862b,#fff3b0,#7a5418)) border-box;
-  box-shadow: 0 0 0 1px rgba(46,26,4,0.95), 0 16px 44px rgba(0,0,0,0.72), 0 0 26px rgba(255,196,80,0.14);
+  box-shadow: 0 0 0 1px rgba(10,6,2,0.95), 0 16px 44px rgba(0,0,0,0.72);
 }
 .jutsu-stage::before {
   content: ''; position: absolute; inset: 0;
   background:
-    radial-gradient(ellipse at 50% 55%, rgba(0,0,0,0) 30%, rgba(0,0,0,0.78) 100%),
+    radial-gradient(ellipse at 50% 55%, rgba(0,0,0,0) 30%, rgba(2,8,10,0.82) 100%),
     url('../assets/ui/summon_hall_bg.webp') center / cover no-repeat;
-  filter: sepia(0.85) saturate(0.9) hue-rotate(-12deg) brightness(0.62) contrast(1.05);
+  filter: grayscale(0.7) sepia(0.35) hue-rotate(140deg) saturate(1.1) brightness(0.55) contrast(1.05);
   pointer-events: none;
 }
 .jutsu-stage::after {
-  content: ''; position: absolute; inset: 5px; border-radius: 12px;
-  border: 1px solid rgba(247,224,138,0.30);
+  content: ''; position: absolute; inset: 6px; border-radius: 0;
+  border: 1px solid rgba(201,162,78,0.35);
   box-shadow: inset 0 0 0 1px rgba(0,0,0,0.6), inset 0 0 36px rgba(0,0,0,0.75);
   pointer-events: none; z-index: 3;
 }
 .jutsu-stage-glow {
   position: absolute; width: 80%; aspect-ratio: 1; border-radius: 50%;
-  background: radial-gradient(circle, rgba(255,196,80,0.26), rgba(200,120,30,0.10) 45%, transparent 68%);
+  background: radial-gradient(circle, rgba(90,170,170,0.18), rgba(30,90,95,0.10) 45%, transparent 68%);
   filter: blur(6px);
   animation: featPulse 3.4s ease-in-out infinite;
 }
@@ -109,23 +113,23 @@
   width: min(calc(100% - 128px), calc((100% - 64px) * 1.333));
   max-height: calc(100% - 64px);
   aspect-ratio: 4 / 3;
-  padding: 4px;
-  border-radius: 12px;
+  padding: 3px;
+  border-radius: 2px;
   background: var(--gold-bezel, linear-gradient(135deg,#5c4012,#f7e08a,#b8862b,#fff3b0,#7a5418));
-  box-shadow: 0 0 0 1px rgba(46,26,4,0.95), 0 14px 34px rgba(0,0,0,0.75), 0 0 30px rgba(255,200,90,0.22);
+  box-shadow: 0 0 0 1px rgba(10,6,2,0.95), 0 14px 34px rgba(0,0,0,0.75);
   z-index: 1;
 }
 .jutsu-show-clip {
-  position: absolute; inset: 4px;
+  position: absolute; inset: 3px;
   overflow: hidden;
-  border-radius: 9px;
-  background: #0a0603;
+  border-radius: 0;
+  background: #071418;
 }
 .jutsu-show-img {
   position: absolute; inset: 0;
   width: 100%; height: 100%;
   object-fit: cover;
-  border-radius: 9px;
+  border-radius: 0;
   opacity: 0;
   transform: scale(1.04);
   transition: opacity .8s ease, transform 5.5s ease-out;
@@ -134,23 +138,23 @@
 .jutsu-show-img.on { opacity: 1; transform: scale(1); }
 .jutsu-show-img:not([src]) { visibility: hidden; }
 .jutsu-show-caption {
-  position: absolute; left: 4px; right: 4px; bottom: 4px;
+  position: absolute; left: 3px; right: 3px; bottom: 3px;
   display: flex; flex-direction: column; align-items: center; gap: 2px;
   padding: 26px 16px 12px;
-  border-radius: 0 0 9px 9px;
-  background: linear-gradient(0deg, rgba(8,4,2,0.92), rgba(8,4,2,0.55) 60%, transparent);
+  border-radius: 0;
+  background: linear-gradient(0deg, rgba(4,10,12,0.94), rgba(4,10,12,0.55) 60%, transparent);
   text-align: center;
   pointer-events: none;
 }
-.jutsu-show-stars { color: #ffd75e; font-size: 14px; letter-spacing: 1px; text-shadow: 0 0 8px rgba(255,190,60,0.8), 0 1px 2px #000; }
+.jutsu-show-stars { color: var(--jjk-gold-hi, #f1d98a); font-size: 14px; letter-spacing: 1px; text-shadow: 0 1px 2px #000; }
 .jutsu-show-name {
-  font-family: 'Shojumaru', 'Cinzel', serif; font-size: clamp(16px, 2vw, 24px); letter-spacing: 1px;
-  color: #fff3d2; text-shadow: 0 2px 0 rgba(20,6,2,0.95), 0 0 12px rgba(255,190,70,0.35);
+  font-family: var(--jjk-font); font-weight: 800; font-size: clamp(16px, 2vw, 24px); letter-spacing: 1px;
+  color: var(--jjk-text, #ece6d6); text-shadow: 0 2px 3px rgba(0,0,0,0.95);
   line-height: 1.15;
 }
 .jutsu-show-type {
-  font-family: 'Rowdies', 'Oswald', sans-serif; font-size: 11px; letter-spacing: 1.5px;
-  text-transform: uppercase; color: #d9bf85;
+  font-family: var(--jjk-font); font-size: 11px; letter-spacing: 1.5px;
+  text-transform: uppercase; color: var(--jjk-khaki, #b9ad72);
 }
 
 /* Right draw panel */
@@ -158,32 +162,35 @@
 .jutsu-banner { text-align: center; padding: 4px 4px 0; }
 .jutsu-banner-kicker {
   display: inline-block;
-  font-family: 'Rowdies', 'Oswald', sans-serif; font-weight: 700; font-size: 10px; letter-spacing: 2px;
-  text-transform: uppercase; color: #2b1603;
-  padding: 3px 12px; border-radius: 99px;
-  background: linear-gradient(180deg, #fff1a8, #f2cf6a 35%, #c8922e 70%, #8f5f17);
-  box-shadow: 0 0 10px rgba(255,200,80,0.35), inset 0 1px 0 rgba(255,255,255,0.6);
+  font-family: var(--jjk-font); font-weight: 700; font-size: 10px; letter-spacing: 2px;
+  text-transform: uppercase; color: #fff;
+  padding: 4px 22px 4px 14px; border-radius: 0;
+  background: url('../assets/ui/jjk/title_plate.webp') left center / 100% 100% no-repeat;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.8);
 }
 .jutsu-banner-title {
   margin-top: 10px;
-  font-family: 'Shojumaru', 'Cinzel', serif; font-size: 26px; letter-spacing: 1px; line-height: 1.1;
-  color: #f6dc8c;
-  text-shadow: 0 2px 0 rgba(20,6,2,0.95), 0 0 16px rgba(255,190,70,0.35);
+  font-family: var(--jjk-font); font-weight: 800; font-size: 26px; letter-spacing: 1px; line-height: 1.1;
+  color: var(--jjk-gold-hi, #f1d98a);
+  text-shadow: 0 2px 3px rgba(0,0,0,0.9);
 }
-.jutsu-banner-sub { font-family: 'Cinzel', serif; font-size: 12px; color: #cdb690; margin-top: 6px; line-height: 1.4; }
+.jutsu-banner-sub { font-family: var(--jjk-font); font-size: 12px; color: var(--jjk-muted, #93a3a3); margin-top: 6px; line-height: 1.4; }
 
 .jutsu-balance {
   display: flex; align-items: center; justify-content: center; gap: 8px;
   margin: 0 auto;
   padding: 6px 16px 6px 8px;
-  border-radius: 99px;
-  border: 1px solid rgba(247,224,138,0.45);
-  background: linear-gradient(180deg, rgba(0,0,0,0.55), rgba(10,4,2,0.75));
-  font-family: 'Rowdies', 'Oswald', sans-serif; font-size: 12px; letter-spacing: 1px; text-transform: uppercase;
-  color: #d9bf85;
+  border-radius: 0;
+  border: 0;
+  box-shadow: inset 0 0 0 1px rgba(201,162,78,0.5);
+  clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
+  background: linear-gradient(180deg, rgba(12,34,41,0.95), rgba(5,14,17,0.95));
+  padding-right: 22px;
+  font-family: var(--jjk-font); font-size: 12px; letter-spacing: 1px; text-transform: uppercase;
+  color: var(--jjk-muted, #93a3a3);
 }
 .jutsu-balance img { width: 20px; height: 20px; object-fit: contain; }
-.jutsu-balance b { font-weight: 700; font-size: 15px; color: #fff3d2; letter-spacing: 0; }
+.jutsu-balance b { font-weight: 800; font-size: 15px; color: var(--jjk-text, #ece6d6); letter-spacing: 0; }
 
 .jutsu-draw-row { margin-top: auto; }
 .jutsu-draw-btn.plate-btn { color: inherit; }
@@ -215,30 +222,31 @@
 .jutsu-result-modal {
   position: fixed; inset: 0; z-index: 6000;
   display: none; align-items: center; justify-content: center;
-  background: rgba(4, 2, 1, 0.85);
+  background: rgba(3, 9, 11, 0.86);
   backdrop-filter: blur(6px);
 }
 .jutsu-result-modal.open { display: flex; }
 .jutsu-result-box {
   width: min(92vw, 760px); max-height: 86vh; overflow: auto;
-  border: 3px solid transparent;
-  border-radius: 18px; padding: 20px;
+  position: relative;
+  border: 1px solid rgba(201,162,78,0.6);
+  border-radius: 0; padding: 20px;
   background:
-    linear-gradient(180deg, rgba(28,17,8,0.98), rgba(10,6,3,0.99)) padding-box,
-    var(--gold-bezel, linear-gradient(135deg,#5c4012,#f7e08a,#b8862b,#fff3b0,#7a5418)) border-box;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.75), 0 0 30px rgba(255,196,80,0.18), inset 0 0 40px rgba(0,0,0,0.6);
+    linear-gradient(180deg, rgba(14,38,45,0.97), rgba(6,17,21,0.98));
+  box-shadow: 0 20px 60px rgba(0,0,0,0.75), inset 0 0 0 1px rgba(0,0,0,0.5), inset 0 0 40px rgba(0,0,0,0.5);
+  background-clip: padding-box;
 }
 .jutsu-result-title {
   text-align: center; margin-bottom: 16px;
-  font-family: 'Shojumaru', 'Cinzel', serif; font-size: 22px; letter-spacing: 1.5px;
-  color: #f6dc8c; text-shadow: 0 2px 0 rgba(20,6,2,0.95), 0 0 14px rgba(255,190,70,0.4);
+  font-family: var(--jjk-font); font-weight: 800; font-size: 22px; letter-spacing: 1.5px;
+  color: var(--jjk-gold-hi, #f1d98a); text-shadow: 0 2px 3px rgba(0,0,0,0.9);
 }
 .jutsu-result-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
 @media (max-width: 560px) { .jutsu-result-grid { grid-template-columns: repeat(3, 1fr); } }
 .jutsu-result-card {
-  position: relative; border-radius: 10px; overflow: hidden;
+  position: relative; border-radius: 2px; overflow: hidden;
   border: 2px solid transparent;
-  background: linear-gradient(180deg, #1c1108, #0b0603) padding-box,
+  background: linear-gradient(180deg, #102a31, #061114) padding-box,
     linear-gradient(135deg, #4a4a4f, #b9b9c0 45%, #5e5e66) border-box;
   text-align: center;
   animation: jutsuCardIn .35s ease backwards;
@@ -250,51 +258,47 @@
 .jutsu-result-card:nth-child(10) { animation-delay: .36s; }
 @keyframes jutsuCardIn { from { opacity: 0; transform: translateY(10px) scale(.92); } to { opacity: 1; transform: none; } }
 .jutsu-result-card img { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; }
-.jutsu-result-card.r5 { background: linear-gradient(180deg, #1c1108, #0b0603) padding-box, linear-gradient(135deg, #6e4c16, #e0b964 45%, #7a5418) border-box; }
+.jutsu-result-card.r5 { background: linear-gradient(180deg, #102a31, #061114) padding-box, linear-gradient(135deg, #6e4c16, #e0b964 45%, #7a5418) border-box; }
 .jutsu-result-card.r6 {
-  background: linear-gradient(180deg, #1c1108, #0b0603) padding-box,
+  background: linear-gradient(180deg, #102a31, #061114) padding-box,
     var(--gold-bezel, linear-gradient(135deg,#5c4012,#f7e08a,#b8862b,#fff3b0,#7a5418)) border-box;
-  box-shadow: 0 0 12px rgba(255,200,80,0.45);
+  box-shadow: 0 0 8px rgba(241,217,138,0.3);
 }
 .jutsu-result-card.r7 {
-  background: linear-gradient(180deg, #1c1108, #0b0603) padding-box,
+  background: linear-gradient(180deg, #102a31, #061114) padding-box,
     linear-gradient(135deg, #8a1c10, #ffb347 25%, #fff3b0 50%, #ff7a3d 75%, #8a1c10) border-box;
   box-shadow: 0 0 16px rgba(255,140,60,0.65);
 }
-.jutsu-result-rarity { color: #ffd873; font-size: 12px; padding: 3px 0 1px; text-shadow: 0 0 6px rgba(255,190,60,0.6); }
-.jutsu-result-name { font-family: 'Cinzel', serif; font-size: 10px; color: #f1e3bf; padding: 0 4px 7px; line-height: 1.2; }
+.jutsu-result-rarity { color: var(--jjk-gold-hi, #f1d98a); font-size: 12px; padding: 3px 0 1px; text-shadow: 0 1px 2px #000; }
+.jutsu-result-name { font-family: var(--jjk-font); font-weight: 700; font-size: 11px; color: var(--jjk-text, #ece6d6); padding: 0 4px 7px; line-height: 1.2; }
 .jutsu-new-badge {
   position: absolute; top: 5px; left: 5px; z-index: 2;
-  font-family: 'Rowdies', 'Oswald', sans-serif; font-weight: 700; font-size: 9px; letter-spacing: 1px;
-  color: #fff; padding: 2px 6px; border-radius: 99px;
-  background: linear-gradient(180deg, #ff5a3a, #b3170a);
-  border: 1px solid rgba(255,220,150,0.7);
+  font-family: var(--jjk-font); font-weight: 700; font-size: 9px; letter-spacing: 1px;
+  color: #fff; padding: 2px 8px; border-radius: 0;
+  background: var(--jjk-crimson, #8e1c1c);
+  border: 1px solid rgba(241,217,138,0.7);
   box-shadow: 0 1px 3px rgba(0,0,0,0.6);
 }
 .jutsu-result-close {
   display: block; margin: 18px auto 4px;
-  min-width: 170px; height: 40px; padding: 0 30px;
-  border-radius: 999px; border: 1.5px solid transparent;
-  background:
-    linear-gradient(180deg, rgba(255,236,180,0.10), rgba(255,236,180,0) 50%) padding-box,
-    linear-gradient(180deg, #2e1b0b, #140a04) padding-box,
-    var(--gold-bezel, linear-gradient(135deg,#5c4012,#f7e08a,#b8862b,#fff3b0,#7a5418)) border-box;
-  color: #f6dc8c;
-  font-family: 'Shojumaru', 'Cinzel', serif; font-size: 16px; letter-spacing: 2px;
-  text-shadow: 0 2px 2px rgba(0,0,0,0.9);
-  box-shadow: 0 4px 10px rgba(0,0,0,0.6);
+  min-width: 170px; height: 44px; padding: 0 34px;
+  border: 0; border-radius: 0;
+  background: url('../assets/ui/jjk/action_btn.webp') center / 100% 100% no-repeat;
+  color: #231c08;
+  font-family: var(--jjk-font); font-weight: 800; font-size: 17px; letter-spacing: 2px;
+  text-shadow: 0 1px 0 rgba(255,240,190,0.55);
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.6));
   cursor: pointer; transition: filter .15s ease, transform .12s ease;
 }
-.jutsu-result-close:hover { filter: brightness(1.2); transform: translateY(-1px); }
+.jutsu-result-close:hover { filter: brightness(1.12) drop-shadow(0 4px 8px rgba(0,0,0,0.6)); transform: translateY(-1px); }
 
 .jutsu-toast {
   position: fixed; left: 50%; bottom: 110px; transform: translateX(-50%) translateY(12px);
   z-index: 6500;
-  border: 1.5px solid transparent; border-radius: 999px;
-  background: linear-gradient(180deg, rgba(40,20,8,0.97), rgba(16,8,3,0.97)) padding-box,
-    var(--gold-bezel, linear-gradient(135deg,#5c4012,#f7e08a,#b8862b,#fff3b0,#7a5418)) border-box;
-  color: #fff0c8;
-  font-family: 'Rowdies', 'Oswald', sans-serif; font-size: 14px; letter-spacing: 0.5px;
+  border: 1px solid rgba(201,162,78,0.6); border-radius: 0;
+  background: linear-gradient(180deg, rgba(14,38,45,0.97), rgba(6,17,21,0.97));
+  color: var(--jjk-text, #ece6d6);
+  font-family: var(--jjk-font); font-size: 14px; letter-spacing: 0.5px;
   padding: 10px 20px; box-shadow: 0 8px 20px rgba(0,0,0,0.6);
   opacity: 0; transition: opacity .25s ease, transform .25s ease; pointer-events: none;
 }

@@ -217,25 +217,31 @@ html.is-mobile #rotate-device-overlay .rdo-text {
 /* --------------------------------------------------------------------------
    3. Landscape: bottom dock (css/bottombar.css reads these tokens)
    -------------------------------------------------------------------------- */
+/* Mirrors the village dock compact rules below (.bottom-icon-bar) */
 html.is-mobile.is-landscape.is-compact {
-  --dock-h: var(--m-dock-h);
-  --dock-rail-h: 16px;
-  --dock-tile-w: clamp(50px, 8.4vw, 74px);
-  --dock-socket: 28px;
-  --dock-icon: 18px;
+  --dock-h: calc(var(--m-dock-h) - 6px);
+  --dock-plate-h: 46px;
+  --dock-icon: 26px;
   --dock-label: 8px;
-  --dock-gap: clamp(0px, 0.6vw, 6px);
-  --dock-lift: 3px;
   --dock-safe-b: calc(var(--safe-b) * 0.45);
 }
 html.is-mobile.is-landscape.is-compact body .bottom-bar .bottom-bar-content {
-  padding-left: max(10px, var(--safe-l)) !important;
-  padding-right: max(10px, var(--safe-r)) !important;
+  padding-left: max(8px, var(--safe-x)) !important;
+  padding-right: max(8px, var(--safe-x)) !important;
+  gap: clamp(2px, 1.2vw, 14px) !important;
   justify-content: center !important;
-  overflow: visible !important;
+  overflow: hidden !important;
+}
+html.is-mobile.is-landscape.is-compact body .bottom-bar .hud-button {
+  flex: 1 1 0 !important;
+  max-width: 96px !important;
+  flex-direction: column !important;
+  gap: 2px !important;
+  padding: 0 calc(var(--plate-h) * 0.3) !important;
+  margin: 0 -2px !important;
 }
 html.is-mobile.is-landscape.is-compact body .bottom-bar .hud-button::after {
-  letter-spacing: 0.03em;
+  letter-spacing: 0 !important;
 }
 
 /* Village's own dock (.bottom-icon-bar) */

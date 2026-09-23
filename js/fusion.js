@@ -284,7 +284,7 @@
 
       // Check requirements
       const reqs = fusion.requirements;
-      const resources = window.Resources?.get() || {};
+      const resources = window.Resources?.getAll?.() || {};
       const requirements = [];
 
       // Check tier requirements - units must be at max awakening
@@ -340,7 +340,7 @@
           if (material.toLowerCase().includes('scroll')) {
             return;
           }
-          const have = resources[material] || 0;
+          const have = window.Resources?.get?.(material) ?? (resources[material] || 0);
           const met = have >= amount;
           requirements.push({
             label: material,

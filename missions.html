@@ -13,19 +13,24 @@
   <meta name="theme-color" content="#000000" />
   <link rel="apple-touch-icon" href="assets/icons/achievement_icon.png" />
   <script src="js/pwa-register.js"></script>
+  <link rel="stylesheet" href="css/fonts.css" />
+  <link rel="stylesheet" href="css/theme-jjk.css" />
   <link rel="stylesheet" href="css/missions.css" />
   <link rel="stylesheet" href="css/background.css" />
   <link rel="stylesheet" href="css/bottombar.css" />
   <link rel="stylesheet" href="css/mobile.css" />
 </head>
 <body class="page-missions">
+  <header class="jjk-page-header">
+    <a class="jjk-icon-btn jjk-back" href="village.html" aria-label="Back to Village"><img src="assets/ui/jjk/back_arrow.webp" alt="" /></a>
+    <h1 class="jjk-title-plate">Missions</h1>
+  </header>
   <!-- mission_bg.gif is actually an MP4 — use <video> for playback -->
   <video id="full-bg" autoplay muted loop playsinline
     style="position:fixed;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;filter:brightness(0.7);z-index:0;pointer-events:none;">
     <source src="assets/mission_bg.gif" type="video/mp4">
   </video>
   <div class="mission-page-container">
-    <h1 class="page-title">MISSIONS</h1>
     <div class="mission-tabs"></div>
     <div class="mission-list-container">
       <div class="mission-list"></div>

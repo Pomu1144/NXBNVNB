@@ -829,3 +829,94 @@ body.page-tools {
 @media (max-width: 900px) {
   .tools-skin-stage { height: auto; width: 100%; }
 }
+
+/* ==========================================================================
+   JJK ink-teal theme pass (header = .jjk-page-header in tools.html)
+   ========================================================================== */
+body.page-tools {
+  font-family: var(--jjk-font);
+  background:
+    radial-gradient(ellipse at 50% 35%, rgba(24, 70, 78, 0.28), rgba(3, 9, 11, 0.86) 78%),
+    url('../assets/ui/jjk/ink_bg.webp') center / cover no-repeat fixed,
+    var(--jjk-ink, #071418);
+}
+body.page-tools #tools-bg { background: none; }
+body.page-tools .tools-content { padding-top: calc(var(--jjk-header-h) - 6px); }
+/* Pull the painted blue frame toward the ink-teal palette without touching
+   the character art: the frame is drawn on a filtered pseudo-layer. */
+body.page-tools .tools-skin-stage { background: none; }
+body.page-tools .tools-skin-stage::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("../assets/ui/generated/tools_frame.webp") center / 100% 100% no-repeat;
+  filter: hue-rotate(-28deg) saturate(0.75) brightness(0.95);
+  pointer-events: none;
+}
+body.page-tools .zone-roster .tools-search-wrap {
+  border-radius: 0;
+  border-color: rgba(201, 162, 78, 0.4);
+  background: rgba(3, 10, 12, 0.8);
+  clip-path: polygon(6px 0, 100% 0, calc(100% - 6px) 100%, 0 100%);
+}
+body.page-tools .zone-roster .tools-roster-search,
+body.page-tools .tools-roster-name,
+body.page-tools .zone-nameplate .character-name,
+body.page-tools .zone-nameplate .character-version,
+body.page-tools .zone-art .tools-empty-hint,
+body.page-tools .zone-stats .stat-label,
+body.page-tools .zone-stats .stat-value,
+body.page-tools .zone-power .tools-grade,
+body.page-tools .zone-power .tools-power-txt { font-family: var(--jjk-font); }
+body.page-tools .tools-roster-item { border-radius: 0; border-color: rgba(201, 162, 78, 0.2); background: rgba(4, 14, 17, 0.6); }
+body.page-tools .tools-roster-item:hover { border-color: rgba(241, 217, 138, 0.6); }
+body.page-tools .tools-roster-item.active {
+  border-color: var(--jjk-gold);
+  background: linear-gradient(90deg, rgba(185, 173, 114, 0.35), rgba(4, 14, 17, 0.6));
+  box-shadow: none;
+}
+body.page-tools .tools-roster-item img { border-radius: 0; border-color: rgba(201, 162, 78, 0.35); }
+body.page-tools .zone-stats .stat-item { border-radius: 0; border-color: rgba(201, 162, 78, 0.25); background: rgba(4, 14, 17, 0.55); }
+body.page-tools .zone-stats .stat-value,
+body.page-tools .zone-power .power-value { color: var(--jjk-text); text-shadow: 0 1px 2px #000; }
+body.page-tools .zone-equip .equipment-slot { border-radius: 0; border-color: rgba(201, 162, 78, 0.18); }
+body.page-tools .zone-equip .equipment-slot:hover { border-color: rgba(241, 217, 138, 0.6); box-shadow: none; }
+
+/* Fit the stage so the frame's working band (~19%-61% of the tall 896x1200
+   mockup) fills the space between the header and the dock; the decorative
+   top rows slide up out of view (same approach as the mobile rule). */
+body.page-tools {
+  height: 100vh;
+  overflow: hidden;
+  padding-bottom: 0;
+}
+body.page-tools .tools-content {
+  height: 100vh;
+  box-sizing: border-box;
+  overflow: hidden;
+  padding: 0 16px;
+}
+body.page-tools .tools-skin-stage {
+  --tools-avail: calc(100vh - var(--jjk-header-h) - var(--dock-h, 66px) - 14px);
+  --tools-H: min(calc(var(--tools-avail) / 0.42), calc((100vw - 32px) * 1.3393));
+  height: var(--tools-H);
+  width: auto;
+  max-width: none;
+  margin: calc(var(--jjk-header-h) - var(--tools-H) * 0.19) auto 0;
+}
+@media (max-width: 900px) {
+  body.page-tools .tools-skin-stage { height: var(--tools-H); width: auto; }
+}
+/* keep the portrait clear of the stats band painted at ~49% */
+body.page-tools .zone-art { top: 29.5%; height: 19%; }
+
+/* Mobile (compact landscape): same fit, measured against the compact header */
+html.is-mobile.is-landscape.is-compact body.page-tools .tools-content {
+  padding: 0 !important;
+}
+html.is-mobile.is-landscape.is-compact body.page-tools .tools-skin-stage {
+  --tools-avail: calc(var(--app-vh, 100vh) - var(--m-dock-h, 58px) - var(--jjk-header-h) - 4px - var(--safe-t, 0px));
+  --tools-H: calc(var(--tools-avail) / 0.42);
+  height: var(--tools-H) !important;
+  margin: calc(var(--jjk-header-h) + var(--safe-t, 0px) - var(--tools-H) * 0.19) auto 0 !important;
+}

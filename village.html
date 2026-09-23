@@ -20,6 +20,8 @@
   <link rel="prefetch" href="data/characters.json" as="fetch" crossorigin="anonymous" />
   <link rel="prefetch" href="data/cards.json" as="fetch" crossorigin="anonymous" />
   <!-- 16:9 Game Canvas Architecture -->
+  <link rel="stylesheet" href="css/fonts.css" />
+  <link rel="stylesheet" href="css/theme-jjk.css" />
   <link rel="stylesheet" href="css/game-canvas.css" />
   <!-- Game UI Styles -->
   <link rel="stylesheet" href="css/background.css?v=2" />
@@ -31,7 +33,9 @@
   <link rel="stylesheet" href="css/settings-modal.css?v=2" />
   <link rel="stylesheet" href="css/modal-system.css?v=1" />
   <link rel="stylesheet" href="css/fonts.css" />
-  <link rel="stylesheet" id="present-box-css" href="css/present-box.css?v=1" />
+  <link rel="stylesheet" id="present-box-css" href="css/present-box.css?v=2" />
+  <link rel="stylesheet" href="css/achievements.css?v=2" />
+  <link rel="stylesheet" href="css/panel-missions.css?v=2" />
   <!-- Hide scrollbar but keep functionality -->
   <style>
     /* Hide scrollbar for Chrome, Safari and Opera */
@@ -79,7 +83,7 @@
         <div class="level-progress-bar">
           <div class="level-progress-fill" id="level-progress-fill"></div>
         </div>
-        <div id="rank-progress-text" style="font-size:10px;color:#b8985f;text-align:right;margin-top:2px;letter-spacing:0.3px;"></div>
+        <div id="rank-progress-text"></div>
       </div>
     </div>
 
@@ -96,23 +100,28 @@
         <img src="assets/icons/currency/ninjapearl.png" alt="Ninja Pearls" class="currency-icon"
              onerror="this.style.display='none';">
         <span class="currency-amount" id="currency-ninja-pearls">0</span>
+        <a class="currency-add" href="shop.html" aria-label="Get more Ninja Pearls" title="Shop">+</a>
       </div>
       <div class="currency-item shinobites">
         <img src="assets/icons/currency/shinobite.png" alt="Shinobites" class="currency-icon"
              onerror="this.style.display='none';">
         <span class="currency-amount" id="currency-shinobites">0</span>
+        <a class="currency-add" href="shop.html" aria-label="Get more Shinobites" title="Shop">+</a>
       </div>
       <div class="currency-item ryo">
         <img src="assets/icons/currency/ryo.png" alt="Ryo" class="currency-icon"
              onerror="this.style.display='none';">
         <span class="currency-amount" id="currency-ryo">0</span>
+        <a class="currency-add" href="shop.html" aria-label="Get more Ryo" title="Shop">+</a>
       </div>
     </div>
   </div>
 
   <!-- Summon Banner Carousel (Left Side) -->
-  <div class="summon-banner-carousel">
-    <!-- Dynamically populated by navigation.js -->
+  <div class="summon-banner-frame">
+    <div class="summon-banner-carousel">
+      <!-- Dynamically populated by navigation.js -->
+    </div>
   </div>
 
   <!-- Announcement Slideshow (Top Right, above banner panel) -->

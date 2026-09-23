@@ -2649,3 +2649,135 @@ body.page-characters::-webkit-scrollbar {
     padding-top: 12px;
   }
 }
+
+/* ==========================================================================
+   JJK ink-teal theme pass (header lives in .jjk-page-header, see theme-jjk.css)
+   ========================================================================== */
+body.page-characters {
+  background: var(--jjk-ink, #071418);
+  font-family: var(--jjk-font);
+}
+body.page-characters #char-bg {
+  background:
+    radial-gradient(ellipse at 50% 35%, rgba(24, 70, 78, 0.28), rgba(3, 9, 11, 0.86) 78%),
+    url('../assets/ui/jjk/ink_bg.webp') center / cover no-repeat,
+    var(--jjk-ink, #071418);
+  filter: none;
+}
+body.page-characters .char-content {
+  padding-top: var(--jjk-header-h);
+}
+body.page-characters .char-grid {
+  padding-top: 8px;
+}
+
+/* Roster cards: angular ink plate, thin gold rule, corner bracket on hover */
+body.page-characters .char-grid .char-slot {
+  border-radius: 2px;
+  background: linear-gradient(180deg, rgba(14, 38, 45, 0.9), rgba(6, 17, 21, 0.94));
+  border: 1px solid rgba(201, 162, 78, 0.28);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.45);
+}
+body.page-characters .char-grid .char-slot:hover {
+  border-color: rgba(241, 217, 138, 0.7);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(201, 162, 78, 0.35);
+}
+body.page-characters .char-portrait-img { border-radius: 2px; }
+body.page-characters .char-grid .char-card-level {
+  border-radius: 0;
+  background: rgba(4, 12, 14, 0.92);
+  border: 1px solid rgba(201, 162, 78, 0.35);
+  clip-path: polygon(7px 0, 100% 0, calc(100% - 7px) 100%, 0 100%);
+  font-family: var(--jjk-font);
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--jjk-text);
+}
+body.page-characters .empty-msg { font-family: var(--jjk-font); color: var(--jjk-muted); }
+
+/* Detail modal: ink panel instead of the brown info frame */
+body.page-characters #char-modal {
+  background: rgba(3, 9, 11, 0.8);
+}
+body.page-characters .char-modal-panel {
+  position: relative;
+  /* the tabs used to be fixed 140px wide, which (by accident) forced the info
+     column to ~740px; the status/equip layout is tuned for that width */
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2.05fr);
+  border-radius: 0;
+  background:
+    radial-gradient(ellipse at 70% 20%, rgba(28, 74, 82, 0.35), transparent 60%),
+    linear-gradient(180deg, rgba(14, 38, 45, 0.97), rgba(6, 17, 21, 0.98));
+  border: 1px solid rgba(201, 162, 78, 0.55);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7), inset 0 0 0 1px rgba(0, 0, 0, 0.5);
+}
+body.page-characters .char-modal-panel::before,
+body.page-characters .char-modal-panel::after {
+  content: ''; position: absolute; width: 22px; height: 22px; pointer-events: none;
+  border: 2px solid var(--jjk-gold);
+}
+body.page-characters .char-modal-panel::before { top: -3px; left: -3px; border-right: 0; border-bottom: 0; }
+body.page-characters .char-modal-panel::after  { bottom: -3px; right: -3px; border-left: 0; border-top: 0; }
+body.page-characters .char-modal-art {
+  border-radius: 0;
+  background: rgba(3, 10, 12, 0.85);
+  border: 1px solid rgba(201, 162, 78, 0.22);
+}
+
+/* Modal tabs -> slanted JJK plates */
+body.page-characters .char-tabs { gap: 2px; padding: 10px 0 6px; }
+body.page-characters .char-tabs .tab-btn {
+  flex: 0 1 140px;
+  width: auto;
+  min-width: 0;
+  height: 40px;
+  padding: 0 14px;
+  background: url('../assets/ui/jjk/tab.webp') center / 100% 100% no-repeat;
+  font-family: var(--jjk-font);
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--jjk-text);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
+  white-space: nowrap;
+}
+body.page-characters .char-tabs .tab-btn:hover { filter: brightness(1.18); }
+body.page-characters .char-tabs .tab-btn.is-active {
+  background-image: url('../assets/ui/jjk/tab_active.webp');
+  background-size: 106% 128%;
+  color: #2a220c;
+  font-weight: 800;
+  text-shadow: 0 1px 0 rgba(255, 245, 200, 0.6);
+}
+
+/* Close -> khaki action plate */
+body.page-characters .char-close-btn {
+  width: 170px;
+  height: 46px;
+  background: url('../assets/ui/jjk/action_btn.webp') center / 100% 100% no-repeat;
+  font-family: var(--jjk-font);
+  font-weight: 800;
+  font-size: 17px;
+  color: #231c08;
+  text-shadow: 0 1px 0 rgba(255, 240, 190, 0.55);
+}
+body.page-characters .char-close-btn:hover { transform: none; filter: brightness(1.12); }
+body.page-characters .char-close-btn:active { transform: translateY(1px) scale(0.98); }
+
+@media (max-width: 900px) {
+  body.page-characters .char-modal-panel { grid-template-columns: 1fr; }
+}
+
+/* Mobile (compact landscape) */
+html.is-mobile.is-landscape.is-compact body.page-characters .char-content {
+  padding-top: calc(var(--jjk-header-h) + env(safe-area-inset-top, 0px)) !important;
+}
+html.is-mobile.is-landscape.is-compact body.page-characters .char-tabs .tab-btn {
+  height: 30px !important;
+  font-size: 11px !important;
+  padding: 0 10px !important;
+}
+html.is-mobile.is-landscape.is-compact body.page-characters .char-close-btn {
+  width: 120px !important;
+  height: 34px !important;
+  font-size: 14px !important;
+}

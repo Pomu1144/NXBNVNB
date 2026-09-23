@@ -1,0 +1,155 @@
+/* ─────────────────────────────────────────────────────────────
+   Shared UI theme — ink-teal + antique gold, angular plates
+   (art direction modelled on JJK Phantom Parade menus).
+   Load after css/fonts.css. Components are opt-in via .jjk-* classes.
+   ───────────────────────────────────────────────────────────── */
+:root {
+  --jjk-ink:        #071418;   /* deepest background */
+  --jjk-ink-2:      #0c2229;   /* panel face */
+  --jjk-ink-3:      #133039;   /* raised face / hover */
+  --jjk-teal:       #2d6b73;   /* accent line */
+  --jjk-gold:       #c9a24e;   /* antique gold trim */
+  --jjk-gold-hi:    #f1d98a;   /* highlight gold */
+  --jjk-gold-lo:    #6e5320;   /* dark bronze */
+  --jjk-khaki:      #b9ad72;   /* active tab face */
+  --jjk-crimson:    #8e1c1c;   /* title plate / alerts */
+  --jjk-text:       #ece6d6;   /* primary text */
+  --jjk-muted:      #93a3a3;   /* secondary text */
+  --jjk-good:       #8fd49a;   /* reward / success */
+
+  --jjk-font:        'Kaisei Tokumin', 'Times New Roman', serif; /* UI labels, body */
+  --jjk-font-script: 'Shojumaru', 'Kaisei Tokumin', serif;       /* big section words */
+
+  --jjk-slant: 14px;  /* parallelogram cut size */
+  --jjk-ease: cubic-bezier(.2,.8,.2,1);
+}
+
+/* Parallelogram clip used by plates, tabs, currency bars */
+.jjk-slant {
+  clip-path: polygon(var(--jjk-slant) 0, 100% 0, calc(100% - var(--jjk-slant)) 100%, 0 100%);
+}
+
+/* ── Screen background ───────────────────────────────────────── */
+.jjk-screen-bg {
+  background:
+    radial-gradient(ellipse at 50% 40%, rgba(20,60,68,0.25), rgba(4,10,12,0.85) 75%),
+    url('../assets/ui/jjk/ink_bg.webp') center / cover no-repeat,
+    var(--jjk-ink);
+}
+
+/* ── Title plate: crimson brush banner with serif title ──────── */
+.jjk-title-plate {
+  display: inline-flex; align-items: center;
+  min-height: 46px; padding: 6px 64px 6px 22px;
+  background: url('../assets/ui/jjk/title_plate.webp') left center / 100% 100% no-repeat;
+  font-family: var(--jjk-font); font-weight: 800; font-size: 24px;
+  color: var(--jjk-text); letter-spacing: 0.5px;
+  text-shadow: 0 2px 0 rgba(0,0,0,0.6);
+}
+
+/* ── Square icon button (back, help, menu) ───────────────────── */
+.jjk-icon-btn {
+  width: 52px; height: 52px; flex: 0 0 auto;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: url('../assets/ui/jjk/icon_btn.webp') center / 100% 100% no-repeat;
+  border: 0; cursor: pointer; color: var(--jjk-text);
+  font-size: 22px; line-height: 1;
+  transition: transform .15s var(--jjk-ease), filter .15s;
+}
+.jjk-icon-btn:hover { filter: brightness(1.2); }
+.jjk-icon-btn:active { transform: scale(0.94); }
+
+/* ── Panel: ink face, thin gold rule, angular corner brackets ── */
+.jjk-panel {
+  position: relative;
+  background: linear-gradient(180deg, rgba(14,38,45,0.94), rgba(6,17,21,0.96));
+  border: 1px solid rgba(201,162,78,0.55);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.6), inset 0 0 0 1px rgba(0,0,0,0.5);
+}
+.jjk-panel::before, .jjk-panel::after {
+  content: ''; position: absolute; width: 18px; height: 18px; pointer-events: none;
+  border: 2px solid var(--jjk-gold);
+}
+.jjk-panel::before { top: -3px; left: -3px; border-right: 0; border-bottom: 0; }
+.jjk-panel::after  { bottom: -3px; right: -3px; border-left: 0; border-top: 0; }
+
+/* ── Row card (missions, achievements, lists) ────────────────── */
+.jjk-row {
+  position: relative;
+  background: url('../assets/ui/jjk/row_card.webp') center / 100% 100% no-repeat;
+  padding: 14px 20px;
+}
+
+/* ── Tabs (segmented) ────────────────────────────────────────── */
+.jjk-tab {
+  position: relative; border: 0; cursor: pointer;
+  min-width: 120px; height: 40px; padding: 0 22px;
+  background: url('../assets/ui/jjk/tab.webp') center / 100% 100% no-repeat;
+  font-family: var(--jjk-font); font-weight: 700; font-size: 15px;
+  color: var(--jjk-text); text-shadow: 0 1px 2px rgba(0,0,0,0.9);
+  transition: filter .15s, transform .15s var(--jjk-ease);
+}
+.jjk-tab:hover { filter: brightness(1.15); }
+.jjk-tab.active, .jjk-tab[aria-selected="true"] {
+  background-image: url('../assets/ui/jjk/tab_active.webp');
+  color: #2a220c; text-shadow: 0 1px 0 rgba(255,245,200,0.6);
+}
+
+/* ── Action button (khaki metal parallelogram) ───────────────── */
+.jjk-btn {
+  border: 0; cursor: pointer; min-width: 120px; height: 44px; padding: 0 26px;
+  background: url('../assets/ui/jjk/action_btn.webp') center / 100% 100% no-repeat;
+  font-family: var(--jjk-font); font-weight: 800; font-size: 16px;
+  color: #231c08; text-shadow: 0 1px 0 rgba(255,240,190,0.55);
+  transition: filter .15s, transform .12s var(--jjk-ease);
+}
+.jjk-btn:hover:not(:disabled) { filter: brightness(1.12); }
+.jjk-btn:active:not(:disabled) { transform: translateY(1px) scale(0.98); }
+.jjk-btn:disabled { filter: grayscale(0.85) brightness(0.6); cursor: not-allowed; }
+
+/* ── Chip / badge ────────────────────────────────────────────── */
+.jjk-chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 2px 12px; font-family: var(--jjk-font); font-weight: 700; font-size: 13px;
+  color: var(--jjk-text); background: rgba(5,14,17,0.85);
+  border: 1px solid rgba(201,162,78,0.5);
+  clip-path: polygon(6px 0, 100% 0, calc(100% - 6px) 100%, 0 100%);
+}
+
+/* ── Progress bar ────────────────────────────────────────────── */
+.jjk-progress { height: 8px; background: rgba(0,0,0,0.6); border: 1px solid rgba(201,162,78,0.4); }
+.jjk-progress > i { display: block; height: 100%; background: linear-gradient(90deg, var(--jjk-gold-lo), var(--jjk-gold-hi)); }
+
+/* ── Page header: square back button + crimson title plate, top-left ──
+   <header class="jjk-page-header">
+     <a class="jjk-icon-btn jjk-back" href="village.html" aria-label="Back"><img src="assets/ui/jjk/back_arrow.webp" alt=""></a>
+     <h1 class="jjk-title-plate">Page Name</h1>
+   </header>
+   Absolutely placed at the top-left of the document (scrolls with the page,
+   takes no layout space) — pages reserve ~--jjk-header-h of top padding. */
+:root { --jjk-header-h: 78px; }
+.jjk-page-header {
+  position: absolute; top: 12px; left: 16px; z-index: 900;
+  display: flex; align-items: center; gap: 6px;
+  margin: 0; padding: 0; pointer-events: none;
+}
+.jjk-page-header > * { pointer-events: auto; }
+.jjk-page-header .jjk-title-plate {
+  margin: 0; min-width: 230px; min-height: 44px;
+  text-transform: none; text-align: left; line-height: 1.1;
+}
+.jjk-back { text-decoration: none; }
+.jjk-back img {
+  width: 58%; height: auto; display: block; pointer-events: none;
+  filter: drop-shadow(0 1px 1px rgba(0,0,0,0.8));
+}
+html.is-mobile.is-landscape.is-compact { --jjk-header-h: 50px; }
+html.is-mobile.is-landscape.is-compact .jjk-page-header {
+  top: calc(6px + env(safe-area-inset-top, 0px));
+  left: max(10px, env(safe-area-inset-left, 0px));
+  gap: 4px;
+}
+html.is-mobile.is-landscape.is-compact .jjk-page-header .jjk-icon-btn { width: 36px; height: 36px; }
+html.is-mobile.is-landscape.is-compact .jjk-page-header .jjk-title-plate {
+  min-width: 150px; min-height: 32px; padding: 3px 40px 3px 14px; font-size: 17px;
+}
