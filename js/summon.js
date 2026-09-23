@@ -99,15 +99,22 @@
         window.SummonAnimator.init();
 
       // Build the banner preview strip, then load the first banner
+      // Honour ?banner=<id> (e.g. from the village featured-banner slideshow)
+      // so the page opens on the banner the player tapped.
+      const startIndex = resolveRequestedBannerIndex();
+      currentBannerIndex = startIndex;
+
       _injectBannerArtStyles();
       buildPreviewStrip();
 
       // Wire up the carousel controller (arrows + swipe)
       if (window.BannerCarousel) {
         window.BannerCarousel.init('banner-preview-scroll', 'main-carousel');
+        window.BannerCarousel.currentIndex = startIndex;
       }
 
-      loadBanner(0);
+      loadBanner(startIndex);
+      scrollRailToActive();
 
       // Setup event listeners
       setupUIEvents();
@@ -143,6 +150,45 @@
         </div>`;
     } else {
       carousel.innerHTML = fallback;
+    }
+  }
+
+  // Resolve the banner requested via the URL (?banner=<stable id>). Falls
+  // back to a legacy numeric index, then to the first banner when unknown.
+  function resolveRequestedBannerIndex() {
+    let requested = null;
+    try { requested = new URLSearchParams(window.location.search).get('banner'); } catch (e) {}
+    if (!requested) return 0;
+    const banners = summonData.getBanners() || [];
+    const byId = banners.findIndex(b => b && String(b.id) === requested);
+    if (byId >= 0) return byId;
+    if (/^\d+$/.test(requested)) {
+      const n = parseInt(requested, 10);
+      if (n >= 0 && n < banners.length) return n;
+    }
+    console.warn(`⚠ Requested banner "${requested}" not found — showing the first banner`);
+    return 0;
+  }
+
+  function syncRailActive() {
+    const strip = document.getElementById('banner-preview-scroll');
+    if (!strip) return;
+    strip.querySelectorAll('.preview-item').forEach(item => {
+      item.classList.toggle('active', parseInt(item.dataset.index, 10) === currentBannerIndex);
+    });
+  }
+
+  function scrollRailToActive() {
+    const strip = document.getElementById('banner-preview-scroll');
+    const active = strip && strip.querySelector('.preview-item.active');
+    if (!active) return;
+    // Scroll only the rail itself (never the page) so the tapped banner is visible.
+    const sr = strip.getBoundingClientRect(), ar = active.getBoundingClientRect();
+    if (strip.scrollHeight > strip.clientHeight) {
+      strip.scrollTop += (ar.top - sr.top) - (strip.clientHeight - ar.height) / 2;
+    }
+    if (strip.scrollWidth > strip.clientWidth) {
+      strip.scrollLeft += (ar.left - sr.left) - (strip.clientWidth - ar.width) / 2;
     }
   }
 
@@ -229,6 +275,7 @@
     }
 
     currentBannerIndex = index;
+    syncRailActive();
 
     // Render banner artwork in the carousel
     _injectBannerArtStyles();

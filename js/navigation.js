@@ -431,7 +431,7 @@
       // gradient placeholder. They stay in the data (pocketed for later); we
       // just don't display them until their banner image exists.
       const banners = (await Promise.all(allBanners.map(b => new Promise(resolve => {
-        if (!b || !b.image) return resolve(null);
+        if (!b || !b.image || b.hidden) return resolve(null);
         const probe = new Image();
         probe.onload = () => resolve(b);
         probe.onerror = () => resolve(null);
@@ -483,9 +483,12 @@
         subtitle.textContent = banner.description || banner.subtitle || '';
         card.appendChild(subtitle);
 
-        // Click handler - navigate to summon.html with banner ID
-        card.addEventListener('click', () => {
-          console.log(`[Summon] Banner clicked: ${banner.name}`);
+        // Click handler - open summon.html on THIS banner via its stable id
+        // (?banner=<id>; summon.js resolves it and falls back to the first
+        // banner when unknown). A drag/swipe on the slideshow is not a click.
+        card.addEventListener('click', (e) => {
+          if (carousel._swipeMoved) { e.preventDefault(); e.stopPropagation(); return; }
+          console.log(`[Summon] Banner clicked: ${banner.name} (${banner.id})`);
           navigateTo('summon.html', { banner: banner.id });
         });
 
@@ -519,7 +522,7 @@
       // Initialize carousel functionality
       initCarouselControls(carousel, track, banners.length);
 
-      console.log(`[Navigation] Loaded ${summonsData.banners.length} summon banners`);
+      console.log(`[Navigation] Loaded ${banners.length} summon banners`);
     } catch (err) {
       console.error("[Navigation] Failed to load summon banners:", err);
     }
@@ -597,6 +600,38 @@
       stopAutoAdvance();
       startAutoAdvance();
     }
+
+    // Swipe / drag between banners. Movement past a small threshold marks the
+    // gesture as a drag so the card's click handler ignores it.
+    let swipeStartX = null, swipeStartY = 0;
+    carousel.style.touchAction = 'pan-y';
+    carousel.addEventListener('pointerdown', (e) => {
+      if (e.target.closest('.summon-carousel-arrow, .summon-carousel-dot')) return;
+      swipeStartX = e.clientX; swipeStartY = e.clientY;
+      carousel._swipeMoved = false;
+    });
+    carousel.addEventListener('pointermove', (e) => {
+      if (swipeStartX === null) return;
+      if (Math.abs(e.clientX - swipeStartX) > 8 || Math.abs(e.clientY - swipeStartY) > 8) {
+        carousel._swipeMoved = true;
+      }
+    });
+    const endSwipe = (e) => {
+      if (swipeStartX === null) return;
+      const dx = e.clientX - swipeStartX;
+      swipeStartX = null;
+      if (carousel._swipeMoved) {
+        if (Math.abs(dx) > 40) { dx < 0 ? nextSlide() : prevSlide(); resetAutoAdvance(); }
+        // Clear after the click that follows this pointerup has been swallowed.
+        setTimeout(() => { carousel._swipeMoved = false; }, 0);
+      }
+    };
+    carousel.addEventListener('pointerup', endSwipe);
+    carousel.addEventListener('pointercancel', () => { swipeStartX = null; carousel._swipeMoved = false; });
+    carousel.addEventListener('dragstart', (e) => e.preventDefault());
+
+    // Expose a tiny API (used for testing / other widgets)
+    carousel._slideshow = { goToSlide, nextSlide, prevSlide, get index() { return currentIndex; } };
 
     // Pause on hover
     carousel.addEventListener('mouseenter', stopAutoAdvance);

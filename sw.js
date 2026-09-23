@@ -1,4 +1,4 @@
-const CACHE = 'blazing-shell-v6';
+const CACHE = 'blazing-shell-v7';
 const BASE = new URL('./', self.location.href).pathname;
 const SHELL = [
   'index.html',
@@ -31,19 +31,19 @@ self.addEventListener('activate', e => {
   );
 });
 
-// Serve `cached` immediately (if present) and refresh the cache from the
-// network in the background. Repeat visits become app-instant instead of
-// waiting on a full re-download.
-function staleWhileRevalidate(request, cacheKey) {
+// Try the network (bounded wait); on failure or timeout use the cached copy.
+function networkFirst(request, timeoutMs = 3000) {
   return caches.open(CACHE).then(async cache => {
-    const key = cacheKey || request;
-    const cached = await cache.match(key);
     const network = fetch(request).then(res => {
-      if (res && res.ok) cache.put(key, res.clone());
+      if (res && res.ok) cache.put(request, res.clone());
       return res;
-    }).catch(() => cached);
-    // If we have a cached copy, return it now and let the network update run
-    // in the background; otherwise wait for the network.
+    });
+    const timeout = new Promise(resolve => setTimeout(resolve, timeoutMs));
+    try {
+      const res = await Promise.race([network, timeout]);
+      if (res) return res;
+    } catch (_) { /* offline — fall through to cache */ }
+    const cached = await cache.match(request);
     return cached || network;
   });
 }
@@ -80,15 +80,8 @@ self.addEventListener('fetch', e => {
     return;
   }
 
-  // HTML documents — stale-while-revalidate so a new tab opens instantly from
-  // cache, then updates in the background (was network-first, which always
-  // blocked on the network round-trip).
-  if (e.request.destination === 'document') {
-    e.respondWith(staleWhileRevalidate(e.request));
-    return;
-  }
-
-  // CSS / JS — cache-first with background refresh. The `?v=` version tags on
-  // these are meaningful, so match on the exact URL (do not strip the query).
-  e.respondWith(staleWhileRevalidate(e.request));
+  // HTML / CSS / JS — network-first with a short timeout, falling back to
+  // cache. Stale-while-revalidate served the previous deploy's HTML with the
+  // new deploy's CSS on the first visit after an update (mixed, broken pages).
+  e.respondWith(networkFirst(e.request));
 });
