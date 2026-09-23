@@ -123,6 +123,8 @@
         </label>
         <button class="chardev-btn" id="chardev-maxall">Max ALL Owned</button>
         <div class="chardev-note">Maxes evolution, awakening, dupes &amp; limit break (Lv 150).</div>
+        <button class="chardev-btn" id="chardev-add-minato">Add Minato (animated sprite)</button>
+        <div class="chardev-note">Adds Minato Namikaze 6★ (minato_2101), the unit with the idle/run battle spritesheet.</div>
       </div>`;
     document.body.appendChild(panel);
 
@@ -142,11 +144,23 @@
       document.body.classList.toggle("chardev-maxmode-on", maxMode);
     });
 
+    panel.querySelector("#chardev-add-minato").addEventListener("click", addSpriteMinato);
+
     panel.querySelector("#chardev-maxall").addEventListener("click", () => {
       const n = maxAllOwned();
       refreshGrid();
       toast(`Maxed out ${n} character${n === 1 ? "" : "s"} ✓`);
     });
+  }
+
+  // Add a copy of the animated-sprite test unit (Minato Namikaze, minato_2101).
+  function addSpriteMinato() {
+    const IC = global.InventoryChar;
+    if (!IC) { toast("Inventory not ready"); return null; }
+    const inst = IC.addCopy("minato_2101", 1, "6S");
+    refreshGrid();
+    toast("Added Minato Namikaze (animated sprite) ✓");
+    return inst;
   }
 
   async function init() {
@@ -163,5 +177,5 @@
     init();
   }
 
-  global.CharDevTools = { maxOutInstance, maxAllOwned };
+  global.CharDevTools = { maxOutInstance, maxAllOwned, addSpriteMinato };
 })(window);

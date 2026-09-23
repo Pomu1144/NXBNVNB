@@ -549,9 +549,9 @@
    JJK ink-teal theme pass (header = .jjk-page-header in shop.html)
    ========================================================================== */
 .page-shop {
-  font-family: var(--jjk-font);
+  font-family: var(--jjk-font, 'Kaisei Tokumin', 'Times New Roman', serif);
   background: var(--jjk-ink, #071418);
-  color: var(--jjk-text);
+  color: var(--jjk-text, #ece6d6);
 }
 .page-shop #shop-bg {
   background:
@@ -597,15 +597,15 @@
 .page-shop .resource-value {
   flex: 1;
   min-width: 0;
-  font-family: var(--jjk-font);
+  font-family: var(--jjk-font, 'Kaisei Tokumin', 'Times New Roman', serif);
   font-weight: 800;
   font-size: 16px;
-  color: var(--jjk-text);
+  color: var(--jjk-text, #ece6d6);
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
 }
 
 .page-shop .shop-content {
-  padding: calc(var(--jjk-header-h) + 4px) 32px 110px;
+  padding: calc(var(--jjk-header-h, 78px) + 4px) 32px 110px;
 }
 
 /* Tabs -> JJK plates */
@@ -616,17 +616,17 @@
   padding: 0 20px;
   background: url('../assets/ui/jjk/tab.webp') center / 100% 100% no-repeat;
   filter: none;
-  font-family: var(--jjk-font);
+  font-family: var(--jjk-font, 'Kaisei Tokumin', 'Times New Roman', serif);
   font-weight: 700;
   font-size: 15px;
   letter-spacing: 0.02em;
-  color: var(--jjk-text);
+  color: var(--jjk-text, #ece6d6);
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
 }
 .page-shop .shop-tab:hover {
   transform: none;
   filter: brightness(1.18);
-  color: var(--jjk-text);
+  color: var(--jjk-text, #ece6d6);
 }
 .page-shop .shop-tab.active {
   background: url('../assets/ui/jjk/tab_active.webp') center / 106% 128% no-repeat;
@@ -649,7 +649,7 @@
 .page-shop .shop-item::before,
 .page-shop .shop-item::after {
   content: ''; position: absolute; width: 14px; height: 14px; pointer-events: none;
-  border: 2px solid var(--jjk-gold);
+  border: 2px solid var(--jjk-gold, #c9a24e);
 }
 .page-shop .shop-item::before { top: -3px; left: -3px; border-right: 0; border-bottom: 0; }
 .page-shop .shop-item::after  { bottom: -3px; right: -3px; border-left: 0; border-top: 0; }
@@ -666,16 +666,16 @@
   padding: 14px 16px 12px;
 }
 .page-shop .item-name {
-  font-family: var(--jjk-font);
+  font-family: var(--jjk-font, 'Kaisei Tokumin', 'Times New Roman', serif);
   font-weight: 800;
   font-size: 18px;
-  color: var(--jjk-text);
+  color: var(--jjk-text, #ece6d6);
   letter-spacing: 0.01em;
 }
 .page-shop .item-tier {
-  font-family: var(--jjk-font);
+  font-family: var(--jjk-font, 'Kaisei Tokumin', 'Times New Roman', serif);
   border-radius: 0;
-  color: var(--jjk-gold-hi);
+  color: var(--jjk-gold-hi, #f1d98a);
   background: rgba(3, 10, 12, 0.9);
   border: 1px solid rgba(201, 162, 78, 0.55);
   box-shadow: none;
@@ -687,21 +687,21 @@
   background: url('../assets/ui/jjk/icon_btn.webp') center / 100% 100% no-repeat;
 }
 .page-shop .item-description {
-  font-family: var(--jjk-font);
+  font-family: var(--jjk-font, 'Kaisei Tokumin', 'Times New Roman', serif);
   font-size: 14px;
-  color: var(--jjk-muted);
+  color: var(--jjk-muted, #93a3a3);
 }
 .page-shop .item-footer { border-top-color: rgba(201, 162, 78, 0.25); }
 .page-shop .item-cost {
-  font-family: var(--jjk-font);
+  font-family: var(--jjk-font, 'Kaisei Tokumin', 'Times New Roman', serif);
   font-weight: 800;
-  color: var(--jjk-gold-hi);
+  color: var(--jjk-gold-hi, #f1d98a);
 }
 .page-shop .btn-buy {
   width: 120px;
   height: 40px;
   background: url('../assets/ui/jjk/action_btn.webp') center / 100% 100% no-repeat;
-  font-family: var(--jjk-font);
+  font-family: var(--jjk-font, 'Kaisei Tokumin', 'Times New Roman', serif);
   font-weight: 800;
   font-size: 15px;
   letter-spacing: 0.02em;
@@ -721,25 +721,25 @@
   border: 1px solid rgba(201, 162, 78, 0.55);
 }
 .page-shop .modal-title,
-.page-shop .purchase-item-name { font-family: var(--jjk-font); font-weight: 800; color: var(--jjk-gold-hi); }
+.page-shop .purchase-item-name { font-family: var(--jjk-font, 'Kaisei Tokumin', 'Times New Roman', serif); font-weight: 800; color: var(--jjk-gold-hi, #f1d98a); }
 .page-shop .purchase-item-desc,
-.page-shop .success-message { font-family: var(--jjk-font); color: var(--jjk-muted); }
+.page-shop .success-message { font-family: var(--jjk-font, 'Kaisei Tokumin', 'Times New Roman', serif); color: var(--jjk-muted, #93a3a3); }
 .page-shop .purchase-preview,
 .page-shop .purchase-cost {
   border-radius: 0;
   background: rgba(3, 10, 12, 0.6);
   border: 1px solid rgba(201, 162, 78, 0.25);
-  color: var(--jjk-gold-hi);
+  color: var(--jjk-gold-hi, #f1d98a);
 }
 .page-shop .purchase-preview img { border-radius: 0; border-color: rgba(201, 162, 78, 0.45); }
-.page-shop .quantity-selector label { font-family: var(--jjk-font); color: var(--jjk-muted); }
+.page-shop .quantity-selector label { font-family: var(--jjk-font, 'Kaisei Tokumin', 'Times New Roman', serif); color: var(--jjk-muted, #93a3a3); }
 .page-shop .qty-btn,
 .page-shop #qty-input {
   border-radius: 0;
   background: rgba(3, 10, 12, 0.85);
   border: 1px solid rgba(201, 162, 78, 0.55);
-  color: var(--jjk-text);
-  font-family: var(--jjk-font);
+  color: var(--jjk-text, #ece6d6);
+  font-family: var(--jjk-font, 'Kaisei Tokumin', 'Times New Roman', serif);
 }
 .page-shop .btn-confirm,
 .page-shop .btn-cancel {
@@ -747,7 +747,7 @@
   padding: 0 20px;
   border: 0;
   border-radius: 0;
-  font-family: var(--jjk-font);
+  font-family: var(--jjk-font, 'Kaisei Tokumin', 'Times New Roman', serif);
   font-weight: 800;
   font-size: 16px;
 }
@@ -758,17 +758,17 @@
 }
 .page-shop .btn-cancel {
   background: url('../assets/ui/jjk/tab.webp') center / 100% 100% no-repeat;
-  color: var(--jjk-text);
+  color: var(--jjk-text, #ece6d6);
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
 }
 .page-shop .btn-confirm:hover,
 .page-shop .btn-cancel:hover { transform: none; box-shadow: none; filter: brightness(1.14); background-color: transparent; }
-.page-shop .success-title { font-family: var(--jjk-font); color: var(--jjk-good); text-shadow: none; }
+.page-shop .success-title { font-family: var(--jjk-font, 'Kaisei Tokumin', 'Times New Roman', serif); color: var(--jjk-good, #8fd49a); text-shadow: none; }
 
 /* Narrow desktop windows: currency row drops under the header */
 @media (max-width: 1100px) {
   .page-shop .resource-bar { position: absolute; top: 70px; }
-  .page-shop .shop-content { padding-top: calc(var(--jjk-header-h) + 48px); }
+  .page-shop .shop-content { padding-top: calc(var(--jjk-header-h, 78px) + 48px); }
 }
 @media (max-width: 768px) {
   .page-shop .resource-item { width: 130px; }
@@ -790,7 +790,7 @@ html.is-mobile.is-landscape.is-compact body.page-shop .resource-item {
   padding: 0 18px 0 3px;
 }
 html.is-mobile.is-landscape.is-compact body.page-shop .shop-content {
-  padding-top: calc(var(--jjk-header-h) + var(--safe-t, 0px)) !important;
+  padding-top: calc(var(--jjk-header-h, 78px) + var(--safe-t, 0px)) !important;
 }
 html.is-mobile.is-landscape.is-compact body.page-shop .shop-tab {
   width: auto !important;
@@ -805,3 +805,42 @@ html.is-mobile.is-landscape.is-compact body.page-shop .btn-buy {
   height: 32px;
   font-size: 13px;
 }
+
+/* ==========================================================================
+   Robustness pass: legacy title removed, light text guaranteed on dark cards
+   (every colour has a literal fallback so a missing/stale theme-jjk.css can
+   never collapse text to the UA default black).
+   ========================================================================== */
+.page-shop .page-title { display: none !important; } /* legacy centred "NINJA SHOP" */
+
+body.page-shop .shop-item .item-name,
+body.page-shop .shop-item .item-name-text { color: var(--jjk-text, #ece6d6) !important; }
+body.page-shop .shop-item .item-tier { color: var(--jjk-gold-hi, #f1d98a) !important; }
+body.page-shop .shop-item .item-description { color: #b7c4c2 !important; }
+body.page-shop .shop-item .item-cost,
+body.page-shop .shop-item .item-cost span { color: var(--jjk-gold-hi, #f1d98a) !important; }
+body.page-shop .resource-bar .resource-value { color: var(--jjk-text, #ece6d6) !important; }
+body.page-shop .purchase-cost span,
+body.page-shop #purchase-total-cost { color: var(--jjk-gold-hi, #f1d98a); }
+
+/* Currency row can never slide under the header: it starts right of the
+   header's footprint (~330px) and wraps below it when there is no room. */
+body.page-shop .resource-bar { left: auto; max-width: calc(100vw - 350px); flex-wrap: nowrap; }
+@media (max-width: 1100px) {
+  body.page-shop .resource-bar { max-width: calc(100vw - 32px); }
+}
+
+/* CSS-drawn Granny Cat coin (no bitmap asset exists) */
+.granny-coin-icon {
+  display: inline-block;
+  flex: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cg fill='%235a3a10'%3E%3Cellipse cx='12' cy='15.2' rx='4.2' ry='3.4'/%3E%3Ccircle cx='7' cy='10.4' r='1.7'/%3E%3Ccircle cx='10.2' cy='7.6' r='1.8'/%3E%3Ccircle cx='13.8' cy='7.6' r='1.8'/%3E%3Ccircle cx='17' cy='10.4' r='1.7'/%3E%3C/g%3E%3C/svg%3E") center / 72% 72% no-repeat,
+    radial-gradient(circle at 35% 30%, #fff2c0 0%, #f0c768 32%, #c48a2c 68%, #7a5216 100%);
+  box-shadow: inset 0 0 0 1.5px #8a5e1c, inset 0 0 0 3px rgba(255, 236, 170, 0.55), 0 1px 3px rgba(0, 0, 0, 0.7);
+}
+.page-shop .resource-item .granny-coin-icon { width: 24px; height: 24px; }
+html.is-mobile.is-landscape.is-compact .page-shop .resource-item .granny-coin-icon { width: 16px; height: 16px; }

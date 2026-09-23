@@ -187,7 +187,7 @@
         } else if (item.cost.granny_coin) {
           costHTML = `
             <div class="item-cost">
-              <img src="assets/items/granny_coin.png" alt="Granny Coins" class="cost-icon" onerror="this.style.display='none'">
+              <span class="cost-icon granny-coin-icon" role="img" aria-label="Granny Coins"></span>
               <span>${item.cost.granny_coin.toLocaleString()}</span>
             </div>
           `;
@@ -285,7 +285,7 @@
       } else if (item.cost.granny_coin) {
         const total = item.cost.granny_coin * quantity;
         costHTML = `<span style="display: flex; align-items: center; gap: 8px;">
-          <img src="assets/items/granny_coin.png" alt="Granny Coins" style="width: 20px; height: 20px;" onerror="this.style.display='none'">
+          <span class="granny-coin-icon" role="img" aria-label="Granny Coins" style="width: 20px; height: 20px;"></span>
           ${total.toLocaleString()}
         </span>`;
       }

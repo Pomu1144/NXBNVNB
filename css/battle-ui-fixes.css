@@ -467,3 +467,30 @@
     font-size: 0.9rem;
   }
 }
+
+/* Animated spritesheet units: full-body sprite standing on the unit's
+   position instead of a square portrait tile. */
+.battle-unit .unit-sprite.unit-sprite--anim {
+  width: auto !important;
+  height: 120px !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  overflow: visible !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: none !important;
+  box-shadow: none !important;
+  display: flex !important;
+  align-items: flex-end;
+  justify-content: center;
+}
+.unit-sprite--anim::after {
+  /* soft ground shadow under the feet */
+  content: '';
+  position: absolute; left: 50%; bottom: -4px; z-index: -1;
+  width: 70%; height: 12px; transform: translateX(-50%);
+  background: radial-gradient(ellipse, rgba(0,0,0,0.55), transparent 70%);
+}
+.unit-sprite--anim .sprite-player { filter: drop-shadow(0 2px 3px rgba(0,0,0,0.6)); }

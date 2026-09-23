@@ -90,6 +90,9 @@
       const unit = {
         id: data.uid || `unit-${Date.now()}-${Math.random()}`,
         name: data.name || "Unknown",
+        // Character id (e.g. "minato_2101"); for player units data.id is the
+        // character id and data.uid the owned-instance id.
+        charId: data.charId || (data.uid ? data.id : null) || null,
         portrait: data.portrait || "assets/characters/common/silhouette.png",
         isPlayer: isPlayer,
         positionId: data.positionId || 0,
@@ -167,11 +170,13 @@
       const positionLabel = unit.isPlayer ?
         `<div class="unit-position-label">${unit.positionId}</div>` : '';
 
+      const animated = !!(unit.charId && window.SpritePlayer?.has(unit.charId));
+
       unitEl.innerHTML = `
         ${positionLabel}
-        <div class="unit-sprite">
-          <img src="${unit.portrait}" alt="${unit.name}"
-               onerror="this.src='assets/characters/common/silhouette.png';">
+        <div class="unit-sprite${animated ? ' unit-sprite--anim' : ''}">
+          ${animated ? '' : `<img src="${unit.portrait}" alt="${unit.name}"
+               onerror="this.src='assets/characters/common/silhouette.png';">`}
         </div>
         <div class="unit-hp-bar">
           <div class="unit-hp-fill" style="width:${hpPercent}%"></div>
@@ -182,6 +187,8 @@
       `;
 
       core.dom.grid.appendChild(unitEl);
+
+      if (animated) this.attachSprite(unit, unitEl);
 
       // Add event listeners for player units
       if (unit.isPlayer && core.drag) {
@@ -287,11 +294,70 @@
      * Update unit position on battlefield
      */
     updateUnitPosition(unit, core) {
-      const unitEl = core.dom.scene?.querySelector(`[data-unit-id="${unit.id}"]`);
+      // Match the battlefield element specifically: the turn-order marker and
+      // team-holder portraits carry the same data-unit-id.
+      const unitEl = core.dom.scene?.querySelector(`.battle-unit[data-unit-id="${unit.id}"]`);
       if (!unitEl) return;
 
+      if (unit._sprite) {
+        this.runTo(unit, unitEl);
+        return;
+      }
       unitEl.style.left = `${unit.pos.x}%`;
       unitEl.style.top = `${unit.pos.y}%`;
+    },
+
+    /* ===== Animated spritesheets (units listed in SpritePlayer's registry) ===== */
+
+    /** Mount an idle-looping sprite in the unit's sprite slot. */
+    attachSprite(unit, unitEl) {
+      const slot = unitEl.querySelector('.unit-sprite');
+      const player = window.SpritePlayer.create(slot, window.SpritePlayer.pathFor(unit.charId), {
+        height: 120,
+        flip: !unit.isPlayer, // art faces right; enemies face left
+      });
+      unit._sprite = player;
+      player.play('idle').catch(err => {
+        // Sheet missing: fall back to the static portrait.
+        console.warn('[BattleUnits] sprite load failed, using portrait', err);
+        player.destroy();
+        unit._sprite = null;
+        slot.classList.remove('unit-sprite--anim');
+        slot.innerHTML = `<img src="${unit.portrait}" alt="${unit.name}">`;
+      });
+    },
+
+    /** Run from the element's current position to unit.pos, then idle. */
+    runTo(unit, unitEl) {
+      const fromX = parseFloat(unitEl.style.left) || unit.pos.x;
+      const fromY = parseFloat(unitEl.style.top) || unit.pos.y;
+      const toX = unit.pos.x, toY = unit.pos.y;
+      const dist = Math.hypot(toX - fromX, toY - fromY);
+      if (dist < 0.5) return;
+
+      // Face the direction of travel.
+      const facingLeft = toX < fromX;
+      unit._sprite.el.style.transform = facingLeft ? 'scaleX(-1)' : '';
+
+      const duration = Math.min(900, 250 + dist * 12); // ms, scales with distance
+      const start = performance.now();
+      const token = (unit._runToken = (unit._runToken || 0) + 1);
+      unit._sprite.play('run');
+
+      const step = now => {
+        if (unit._runToken !== token) return; // superseded by a newer move
+        const t = Math.min(1, (now - start) / duration);
+        const e = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2; // ease in-out
+        unitEl.style.left = `${fromX + (toX - fromX) * e}%`;
+        unitEl.style.top = `${fromY + (toY - fromY) * e}%`;
+        if (t < 1) {
+          requestAnimationFrame(step);
+        } else {
+          unit._sprite.el.style.transform = unit.isPlayer ? '' : 'scaleX(-1)';
+          unit._sprite.play('idle');
+        }
+      };
+      requestAnimationFrame(step);
     },
 
     /* ===== Bench System ===== */
