@@ -18,7 +18,7 @@
 
       // Render initial tab (deep link: shop.html?tab=recipes)
       const startTab = new URLSearchParams(location.search).get('tab');
-      if (startTab && this.shopData[startTab]) this.switchTab(startTab);
+      if (startTab && (this.shopData[startTab] || startTab === 'limitbreak')) this.switchTab(startTab);
       else this.renderTab('ramen');
 
       // Recipe ownership / fragments can change from other pages or tabs
@@ -148,6 +148,9 @@
     },
 
     renderTab(tabName) {
+      // Limit Break tab is data-driven from data/lb-crystals.json (js/lb-shop.js)
+      if (tabName === 'limitbreak') { window.LBShop?.render(); return; }
+
       const items = this.shopData[tabName] || [];
       const gridId = `${tabName}-grid`;
       const grid = document.getElementById(gridId);
@@ -325,9 +328,9 @@
       return card;
     },
 
-    openPurchaseModal(item, category) {
+    openPurchaseModal(item, category, quantity = 1) {
       this.currentItem = { ...item, category };
-      this.currentQuantity = 1;
+      this.currentQuantity = quantity;
 
       // Populate modal
       const modal = document.getElementById('purchase-modal');
@@ -339,7 +342,7 @@
       if (icon) icon.src = item.icon;
       if (name) name.textContent = item.name;
       if (desc) desc.textContent = item.description;
-      if (qtyInput) qtyInput.value = 1;
+      if (qtyInput) qtyInput.value = quantity;
       // Recipe scrolls are unsealed one at a time
       const qtyRow = document.querySelector('#purchase-modal .quantity-selector');
       if (qtyRow) qtyRow.style.display = item.recipe ? 'none' : '';
@@ -450,6 +453,7 @@
 
       // Show success modal
       this.showSuccessModal(item, quantity);
+      if (item.category === 'limitbreak') window.LBShop?.refreshOwned(item.id);
 
       console.log(`[Shop] Purchased ${quantity}x ${item.name} for ${totalCost} ${costLabel}`);
     },
