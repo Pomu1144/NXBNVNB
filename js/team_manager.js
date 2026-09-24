@@ -925,6 +925,9 @@
     if (renameBtn) renameBtn.addEventListener("click", renameCurrentTeam);
 
     renderTeam();
+    // Saved tiers corrected by the inventory migration (js/character_inv.js)
+    // after the first render: redraw so stars / 7★ frames / cost match.
+    window.addEventListener("inventory:tiers-migrated", () => renderTeam());
     console.log("[Team Manager] Ready!");
   })();
 
