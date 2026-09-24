@@ -1,0 +1,895 @@
+{
+ "name": "itachi_2031",
+ "folder": "assets/sprites/itachi_2031",
+ "index_base": 7000,
+ "ids": [
+  "itachi_2031",
+  "itachi_2032"
+ ],
+ "primary": {
+  "id": "itachi_2032",
+  "tier": "6S"
+ },
+ "dev": {
+  "id": "itachi_2032",
+  "tier": "6S",
+  "label": "Itachi (The Promised Day)",
+  "note": "Itachi Uchiha \"The Promised Day\" (itachi_2031 5★ / itachi_2032 6★): own sprite set from the card art; jutsu Yasaka Beads (ranged Susano'o, body layer shared with itachi_2096), 6★ ultimate Amaterasu: Dual Layer."
+ },
+ "reference_art": "assets/characters/itachi_2031/full_5S.png",
+ "character": "Itachi Uchiha from Naruto Shippuden as in his final battle with Sasuke (\"The Promised Day\"): slim young man, long black hair tied in a low ponytail with long bangs framing his face, red Mangekyo Sharingan eyes, tear-trough lines under his eyes, pale tired but resolute face with a thin trickle of blood at the corner of his mouth, Konoha forehead protector with a scratch through the symbol, black Akatsuki cloak with red clouds worn OPEN and loose (collar folded down) over a dark grey mesh-armour shirt, dark trousers, a ring on his finger, dark purple nail polish, dark sandals",
+ "short": "Itachi Uchiha (The Promised Day): long black ponytail, red Mangekyo Sharingan, scratched Konoha headband, black Akatsuki cloak worn OPEN over a dark mesh-armour shirt, a thin trickle of blood at his mouth",
+ "pronouns": [
+  "he",
+  "him"
+ ],
+ "fx_style": "Anime film still, painted cel-shaded, matching the Naruto Shippuden anime and Naruto Blazing style: clean lines, soft painted shading, smooth clean high-resolution rendering that fits hand-painted anime characters and backgrounds. NOT pixel art, NOT low-res game VFX, no glitter or particle noise. Colours: Itachi's Susano'o is translucent RED-ORANGE chakra with a soft cloudy texture, thin light-orange line-art swirls and flickering flame-shaped edges; fire and the Totsuka Blade are bright yellow-orange flame; light bursts are golden white; rocks and dust are natural browns. NO purple, NO blue, NO green.",
+ "fx_refs": [
+  "9c8aca07-958b-4a29-a618-ddea0727fdd8"
+ ],
+ "recolors": {
+  "fx_no_green": {
+   "hue": [
+    62,
+    165
+   ],
+   "min_s": 0.1,
+   "min_v": 0.15,
+   "to_hue": 44,
+   "sat_mul": 1.0,
+   "val_add": 0
+  },
+  "fx_no_violet": {
+   "hue": [
+    235,
+    320
+   ],
+   "min_s": 0.15,
+   "min_v": 0.3,
+   "to_hue": 15,
+   "sat_mul": 1.0,
+   "val_add": 0
+  }
+ },
+ "state": {
+  "media": {
+   "ref_art": "e7cd0888-e114-483b-ac34-9e58fa129ebb"
+  },
+  "poses": {
+   "base": {
+    "pending_index": 7000,
+    "job_id": "5ec17305-d029-4086-be07-09e2ac92c7ec",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_170453_5ec17305-d029-4086-be07-09e2ac92c7ec.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_170453_5ec17305-d029-4086-be07-09e2ac92c7ec.png"
+   },
+   "y1": {
+    "pending_index": 7001,
+    "job_id": "e025adc6-d208-4d7a-9e1b-6d86438ec293",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_170453_e025adc6-d208-4d7a-9e1b-6d86438ec293.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_170453_e025adc6-d208-4d7a-9e1b-6d86438ec293.png"
+   },
+   "a1": {
+    "pending_index": 7003,
+    "job_id": "c3570cc2-9649-4711-99af-4ada1bf793ea",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_170452_c3570cc2-9649-4711-99af-4ada1bf793ea.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_170452_c3570cc2-9649-4711-99af-4ada1bf793ea.png"
+   },
+   "idle_in": {
+    "pending_index": 7004,
+    "job_id": "de956113-500b-4d0b-85d7-e6e41ba3146c",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_170654_de956113-500b-4d0b-85d7-e6e41ba3146c.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_170654_de956113-500b-4d0b-85d7-e6e41ba3146c.png"
+   },
+   "idle_out": {
+    "pending_index": 7005,
+    "job_id": "cd14dfdb-42b3-434c-add2-6daf7b0cff19",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_170654_cd14dfdb-42b3-434c-add2-6daf7b0cff19.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_170654_cd14dfdb-42b3-434c-add2-6daf7b0cff19.png"
+   },
+   "run1": {
+    "pending_index": 7006,
+    "job_id": "3aa8648c-064d-455a-bd57-6d24ed4fb0a2",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_170654_3aa8648c-064d-455a-bd57-6d24ed4fb0a2.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_170654_3aa8648c-064d-455a-bd57-6d24ed4fb0a2.png"
+   },
+   "run2": {
+    "pending_index": 7007,
+    "job_id": "be6a0394-968a-43bb-a345-626a7efdc35f",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_170654_be6a0394-968a-43bb-a345-626a7efdc35f.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_170654_be6a0394-968a-43bb-a345-626a7efdc35f.png"
+   },
+   "run3": {
+    "pending_index": 7008,
+    "job_id": "4fff0b8a-9793-467e-bd27-1f05c321983c",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_170655_4fff0b8a-9793-467e-bd27-1f05c321983c.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_170655_4fff0b8a-9793-467e-bd27-1f05c321983c.png"
+   },
+   "run4": {
+    "pending_index": 7009,
+    "job_id": "93e88215-4588-4511-aea1-f5f9679e3c2e",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_170655_93e88215-4588-4511-aea1-f5f9679e3c2e.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_170655_93e88215-4588-4511-aea1-f5f9679e3c2e.png"
+   },
+   "run5": {
+    "pending_index": 7010,
+    "job_id": "e6ed14aa-080e-4795-9cf9-9c4d5cdb56cf",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_170654_e6ed14aa-080e-4795-9cf9-9c4d5cdb56cf.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_170654_e6ed14aa-080e-4795-9cf9-9c4d5cdb56cf.png"
+   },
+   "run6": {
+    "pending_index": 7011,
+    "job_id": "5f3a5fd8-73ca-4b3a-8331-377aac4a6c13",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_170654_5f3a5fd8-73ca-4b3a-8331-377aac4a6c13.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_170654_5f3a5fd8-73ca-4b3a-8331-377aac4a6c13.png"
+   },
+   "at1": {
+    "pending_index": 7012,
+    "job_id": "9c587220-15b0-4183-a64d-d166c23035ca",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_170654_9c587220-15b0-4183-a64d-d166c23035ca.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_170654_9c587220-15b0-4183-a64d-d166c23035ca.png"
+   },
+   "at3": {
+    "pending_index": 7013,
+    "job_id": "6c20d46d-7b49-4639-ae2c-ad17235920cf",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_170655_6c20d46d-7b49-4639-ae2c-ad17235920cf.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_170655_6c20d46d-7b49-4639-ae2c-ad17235920cf.png"
+   },
+   "at4": {
+    "pending_index": 7014,
+    "job_id": "6c6f0c7e-f8ed-4c2f-8206-fd0e5eb72eb2",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_170654_6c6f0c7e-f8ed-4c2f-8206-fd0e5eb72eb2.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_170654_6c6f0c7e-f8ed-4c2f-8206-fd0e5eb72eb2.png"
+   },
+   "at5": {
+    "pending_index": 7015,
+    "job_id": "0a2de2e8-2823-46cf-9997-0a5b7dac7db9",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_170656_0a2de2e8-2823-46cf-9997-0a5b7dac7db9.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_170656_0a2de2e8-2823-46cf-9997-0a5b7dac7db9.png"
+   },
+   "h1": {
+    "pending_index": 7016,
+    "job_id": "321bc92c-b8c8-42c1-81c9-cae5f1686abd",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_171621_321bc92c-b8c8-42c1-81c9-cae5f1686abd.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_171621_321bc92c-b8c8-42c1-81c9-cae5f1686abd.png"
+   },
+   "h2": {
+    "pending_index": 7017,
+    "job_id": "11ea07d8-51e1-4769-87f1-b27edccae977",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_171621_11ea07d8-51e1-4769-87f1-b27edccae977.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_171621_11ea07d8-51e1-4769-87f1-b27edccae977.png"
+   },
+   "h3": {
+    "pending_index": 7018,
+    "job_id": "04a84d4b-1398-4869-9ecf-930220802ff0",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_171622_04a84d4b-1398-4869-9ecf-930220802ff0.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_171622_04a84d4b-1398-4869-9ecf-930220802ff0.png"
+   },
+   "k1": {
+    "pending_index": 7019,
+    "job_id": "dee284f7-cd1a-43cc-995f-5d2a5ad5383e",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_171621_dee284f7-cd1a-43cc-995f-5d2a5ad5383e.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_171621_dee284f7-cd1a-43cc-995f-5d2a5ad5383e.png"
+   },
+   "k2": {
+    "pending_index": 7020,
+    "job_id": "d9c2ddf4-d0ad-4472-9fd6-8aafc5ccb86b",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_171622_d9c2ddf4-d0ad-4472-9fd6-8aafc5ccb86b.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_171622_d9c2ddf4-d0ad-4472-9fd6-8aafc5ccb86b.png"
+   },
+   "cp_seal": {
+    "pending_index": 7021,
+    "job_id": "70b64c82-96d0-441c-bd77-8c722f908e71",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_171622_70b64c82-96d0-441c-bd77-8c722f908e71.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_171622_70b64c82-96d0-441c-bd77-8c722f908e71.png"
+   },
+   "cp_throw": {
+    "pending_index": 7022,
+    "job_id": "e206f517-b91f-4c46-aad1-66f78d6235a8",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_171622_e206f517-b91f-4c46-aad1-66f78d6235a8.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_171622_e206f517-b91f-4c46-aad1-66f78d6235a8.png"
+   },
+   "cp_eye": {
+    "pending_index": 7023,
+    "job_id": "acdae173-28e9-4cd5-8503-45877298c768",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_171621_acdae173-28e9-4cd5-8503-45877298c768.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_171621_acdae173-28e9-4cd5-8503-45877298c768.png"
+   },
+   "cp_gaze": {
+    "pending_index": 7024,
+    "job_id": "9975d577-2b25-4116-bd8f-767a0224c269",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_171623_9975d577-2b25-4116-bd8f-767a0224c269.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_171623_9975d577-2b25-4116-bd8f-767a0224c269.png"
+   },
+   "y2": {
+    "pending_index": 7025,
+    "job_id": "d66c2342-0627-4c49-b572-502b61d89a17",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_170739_d66c2342-0627-4c49-b572-502b61d89a17.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_170739_d66c2342-0627-4c49-b572-502b61d89a17.png"
+   },
+   "a2": {
+    "pending_index": 7026,
+    "job_id": "0be9f8e9-6f96-4776-9932-e20e4b288b05",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_171622_0be9f8e9-6f96-4776-9932-e20e4b288b05.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_171622_0be9f8e9-6f96-4776-9932-e20e4b288b05.png"
+   },
+   "y3": {
+    "pending_index": 7027,
+    "job_id": "746cbb27-e5a2-41c9-98bb-f0c8d96539e9",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_170916_746cbb27-e5a2-41c9-98bb-f0c8d96539e9.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_170916_746cbb27-e5a2-41c9-98bb-f0c8d96539e9.png"
+   },
+   "y4": {
+    "pending_index": 7028,
+    "job_id": "f98cc3e6-099a-414a-ac5b-ae63ec110567",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_170959_f98cc3e6-099a-414a-ac5b-ae63ec110567.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_170959_f98cc3e6-099a-414a-ac5b-ae63ec110567.png"
+   },
+   "y5": {
+    "pending_index": 7029,
+    "job_id": "afab5bec-668b-40e0-b798-7f2778f8e3de",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_171050_afab5bec-668b-40e0-b798-7f2778f8e3de.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_171050_afab5bec-668b-40e0-b798-7f2778f8e3de.png"
+   },
+   "idle_m": {
+    "pending_index": 7030,
+    "job_id": "a0398041-9276-4c33-a4d5-0666414b84b8",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_171749_a0398041-9276-4c33-a4d5-0666414b84b8.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_171749_a0398041-9276-4c33-a4d5-0666414b84b8.png"
+   },
+   "at2": {
+    "pending_index": 7031,
+    "job_id": "83a379f0-b3cb-472a-aac3-5d581d4f4e02",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_171749_83a379f0-b3cb-472a-aac3-5d581d4f4e02.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_171749_83a379f0-b3cb-472a-aac3-5d581d4f4e02.png"
+   },
+   "h0": {
+    "pending_index": 7032,
+    "job_id": "400ada4c-69c4-4234-8ecb-ac8800f6e571",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_171749_400ada4c-69c4-4234-8ecb-ac8800f6e571.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_171749_400ada4c-69c4-4234-8ecb-ac8800f6e571.png"
+   },
+   "h12": {
+    "pending_index": 7033,
+    "job_id": "b0af5c59-446c-4f95-916e-f90bd58f08fc",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_171749_b0af5c59-446c-4f95-916e-f90bd58f08fc.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_171749_b0af5c59-446c-4f95-916e-f90bd58f08fc.png"
+   },
+   "kf": {
+    "pending_index": 7034,
+    "job_id": "76a56921-3c31-40a4-807b-7d55ff7f06bc",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_171749_76a56921-3c31-40a4-807b-7d55ff7f06bc.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_171749_76a56921-3c31-40a4-807b-7d55ff7f06bc.png"
+   },
+   "a3": {
+    "pending_index": 7035,
+    "job_id": "509bc43f-c66f-4835-904f-0f901fc27bb5",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_171749_509bc43f-c66f-4835-904f-0f901fc27bb5.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_171749_509bc43f-c66f-4835-904f-0f901fc27bb5.png"
+   },
+   "a4": {
+    "pending_index": 7036,
+    "job_id": "85f2df09-f72b-4f18-9ae8-f1c902bedca0",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_171842_85f2df09-f72b-4f18-9ae8-f1c902bedca0.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_171842_85f2df09-f72b-4f18-9ae8-f1c902bedca0.png"
+   },
+   "a5": {
+    "pending_index": 7037,
+    "job_id": "3ee324ef-88d6-4218-b5f6-6be426110631",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_171918_3ee324ef-88d6-4218-b5f6-6be426110631.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_171918_3ee324ef-88d6-4218-b5f6-6be426110631.png"
+   }
+  },
+  "next_index": 7038
+ },
+ "poses": {
+  "idle_in": {
+   "type": "edit",
+   "prompt": "a tiny breathing change: inhaling, chest very slightly expanded, shoulders raised by a few pixels, cloak hem and ponytail swaying slightly. Everything else identical.",
+   "quality": "medium"
+  },
+  "idle_m": {
+   "type": "tween",
+   "from": [
+    "idle_in",
+    "idle_out"
+   ],
+   "prompt": "shoulders halfway between the two, cloak hem between the two positions. Everything else identical.",
+   "quality": "medium"
+  },
+  "idle_out": {
+   "type": "edit",
+   "prompt": "a tiny breathing change: exhaling, shoulders lowered by a few pixels, head dipped very slightly, cloak hem swaying the other way. Everything else identical.",
+   "quality": "medium"
+  },
+  "run1": {
+   "type": "pose",
+   "prompt": "full body side-view RUN CYCLE frame 1 of 6, running fast to the RIGHT in a ninja run (torso leaning forward, both arms swept straight back behind him): CONTACT - right leg extended forward heel touching down, left leg behind pushing off, cloak flapping behind him, ponytail streaming back.",
+   "quality": "medium"
+  },
+  "run2": {
+   "type": "pose",
+   "prompt": "full body side-view RUN CYCLE frame 2 of 6, ninja run to the RIGHT (torso leaning forward, arms swept back): DOWN - right foot planted under the body, knee bent, left leg swinging forward, cloak flapping behind him, ponytail streaming back.",
+   "quality": "medium"
+  },
+  "run3": {
+   "type": "pose",
+   "prompt": "full body side-view RUN CYCLE frame 3 of 6, ninja run to the RIGHT (torso leaning forward, arms swept back): PASSING - right leg straight pushing off, left knee lifted high in front, cloak flapping behind him, ponytail streaming back.",
+   "quality": "medium"
+  },
+  "run4": {
+   "type": "pose",
+   "prompt": "full body side-view RUN CYCLE frame 4 of 6, ninja run to the RIGHT (torso leaning forward, arms swept back): CONTACT - left leg extended forward heel touching down, right leg behind pushing off, cloak flapping behind him, ponytail streaming back.",
+   "quality": "medium"
+  },
+  "run5": {
+   "type": "pose",
+   "prompt": "full body side-view RUN CYCLE frame 5 of 6, ninja run to the RIGHT (torso leaning forward, arms swept back): DOWN - left foot planted under the body, knee bent, right leg swinging forward, cloak flapping behind him, ponytail streaming back.",
+   "quality": "medium"
+  },
+  "run6": {
+   "type": "pose",
+   "prompt": "full body side-view RUN CYCLE frame 6 of 6, ninja run to the RIGHT (torso leaning forward, arms swept back): PASSING - left leg straight pushing off, right knee lifted high in front, cloak flapping behind him, ponytail streaming back.",
+   "quality": "medium"
+  },
+  "at1": {
+   "type": "pose",
+   "prompt": "NORMAL ATTACK (kunai taijutsu) - a clearly DIFFERENT pose from the reference with big visible motion. WIND-UP: dashing forward to the right in a low crouch, a kunai drawn in his right hand held back at his hip, cloak flaring behind him.",
+   "quality": "medium"
+  },
+  "at2": {
+   "type": "tween",
+   "from": [
+    "at1",
+    "at3"
+   ],
+   "prompt": "the arm is halfway through the swing forward, body turning into the strike, no effect yet.",
+   "quality": "medium"
+  },
+  "at3": {
+   "type": "pose",
+   "prompt": "NORMAL ATTACK - a clearly DIFFERENT pose from the reference. STRIKE 1: lunging forward to the right, right arm fully extended slashing the kunai forward at chest height, a thin short white slash trail, cloak flaring.",
+   "quality": "medium"
+  },
+  "at4": {
+   "type": "pose",
+   "prompt": "NORMAL ATTACK - a clearly DIFFERENT pose from the reference. TRANSITION: spinning his body around, cloak swirling in a circle, kunai arm pulled in, one knee raised for a kick.",
+   "quality": "medium"
+  },
+  "at5": {
+   "type": "pose",
+   "prompt": "NORMAL ATTACK - a clearly DIFFERENT pose from the reference. STRIKE 2: high roundhouse kick to the right at chest height with his leg fully extended, cloak flaring open, a thin white impact streak at his foot.",
+   "quality": "medium"
+  },
+  "h0": {
+   "type": "tween",
+   "from": [
+    "base",
+    "h1"
+   ],
+   "prompt": "the character is just starting to recoil from a blow from the right, torso tilting back a little.",
+   "quality": "medium"
+  },
+  "h1": {
+   "type": "edit",
+   "prompt": "the pose only: HIT REACTION at the moment of impact - struck hard by a blow coming from the RIGHT: torso and head snapped backward, leaning back toward the LEFT side of the canvas, eyes squeezed shut, pained grimace, arms flung loosely outward and back. No blood, no sparks, no effects.",
+   "quality": "medium"
+  },
+  "h2": {
+   "type": "edit",
+   "prompt": "the pose only: STAGGER after being hit - knocked back half a step: body hunched forward in pain, one hand clutching his stomach, head lowered with a pained grimace. No blood, no effects.",
+   "quality": "medium"
+  },
+  "h12": {
+   "type": "tween",
+   "from": [
+    "h1",
+    "h2"
+   ],
+   "prompt": "the character goes from leaning back to hunching forward.",
+   "quality": "medium"
+  },
+  "h3": {
+   "type": "edit",
+   "prompt": "the pose only: RECOVERING from a hit - straightening back up toward his fighting stance: almost upright but slightly hunched, one arm raised in guard, hurt but determined expression. No blood, no effects.",
+   "quality": "medium"
+  },
+  "k1": {
+   "type": "edit",
+   "prompt": "the pose only: KNOCKED OUT and collapsing - dropped onto both knees, torso slumped forward, arms hanging limp, head hanging down, eyes closed. No blood, no effects.",
+   "quality": "medium"
+  },
+  "k2": {
+   "type": "edit",
+   "prompt": "the pose only: KNOCKED OUT lying on the ground - collapsed face down on his side, fully horizontal, body lying along the bottom of the canvas, head toward the LEFT, arms limp, eyes closed, hair spread out. No blood, no effects.",
+   "quality": "medium"
+  },
+  "kf": {
+   "type": "tween",
+   "from": [
+    "k1",
+    "k2"
+   ],
+   "prompt": "the character falls forward from kneeling toward lying on the ground, body at about 45 degrees.",
+   "quality": "medium"
+  },
+  "base": {
+   "type": "base",
+   "quality": "high",
+   "prompt": "tired but resolute battle stance, facing his opponent: standing with feet apart, weight slightly forward, his left arm raised and stretched out toward the right with the palm open and fingers slightly curled (as if reaching toward his brother), right arm relaxed at his side, the open cloak hanging loose and showing the mesh-armour shirt, Mangekyo Sharingan glowing red. Clean sprite: NO aura, NO chakra ribbons, NO particles or effects around him."
+  },
+  "cp_seal": {
+   "type": "pose",
+   "from": "base",
+   "quality": "medium",
+   "prompt": "CASTER POSE: standing firm, right hand raised in front of his face in a one-handed seal, Mangekyo Sharingan blazing, open cloak stirring. Keep it CLEAN: no chakra, no flames, no effects at all."
+  },
+  "cp_throw": {
+   "type": "pose",
+   "from": "base",
+   "quality": "medium",
+   "prompt": "CASTER POSE: hurling motion - his right arm swung forward toward the far right at shoulder height with the fingers spread as if flinging something far away, body turned into the throw, open cloak swinging. Keep it CLEAN: no chakra, no flames, no effects at all."
+  },
+  "cp_eye": {
+   "type": "pose",
+   "from": "base",
+   "quality": "medium",
+   "prompt": "CASTER POSE for Amaterasu: standing, head slightly lowered, left hand raised to his left eye, the Mangekyo Sharingan blazing, a thin line of blood running down from his left eye like a tear. Keep it CLEAN: no chakra, no flames, no effects at all besides the blood tear."
+  },
+  "cp_gaze": {
+   "type": "pose",
+   "from": "base",
+   "quality": "medium",
+   "prompt": "CASTER POSE for Amaterasu: standing tall, staring hard at a target far to the right, Mangekyo Sharingan wide open, a thin line of blood running down from his left eye, right hand held out toward the right with the palm open. Keep it CLEAN: no chakra, no flames, no effects at all besides the blood tear."
+  },
+  "y1": {
+   "type": "fx",
+   "prompt": "YASAKA BEADS: a volley of five large magatama beads (comma-shaped tomoe beads of glowing orange-red chakra, each with a bright yellow core and a short flame tail) flying in horizontally from the LEFT in a curved line toward the centre, the leading bead about to hit. Only the attack arriving at the target: NO Susano'o body, NO red chakra giant, NO shield in this frame. The point of impact is at the CENTRE of the canvas, 60% down from the top.",
+   "quality": "high",
+   "fx_refs": false
+  },
+  "y2": {
+   "type": "fx",
+   "prompt": "the magatama beads strike the centre: the first beads burst into orange-red chakra explosions with white-gold flashes, more beads still flying in from the left, rocks and dust kicked up. Only the attack arriving at the target: NO Susano'o body, NO red chakra giant, NO shield in this frame. The point of impact is at the CENTRE of the canvas, 60% down from the top.",
+   "quality": "medium",
+   "fx_refs": false,
+   "from": "y1"
+  },
+  "y3": {
+   "type": "fx",
+   "prompt": "a second volley: several more comma-shaped orange-red magatama beads slam into the centre one after another, each bursting in a round orange explosion with a white core, debris flying. Only the attack arriving at the target: NO Susano'o body, NO red chakra giant, NO shield in this frame. The point of impact is at the CENTRE of the canvas, 60% down from the top.",
+   "quality": "medium",
+   "fx_refs": false,
+   "from": "y2"
+  },
+  "y4": {
+   "type": "fx",
+   "prompt": "all the beads detonate together: a big round orange-red chakra explosion at the centre with a white-gold core, rocks and dust blasting outward. Only the attack arriving at the target: NO Susano'o body, NO red chakra giant, NO shield in this frame. The point of impact is at the CENTRE of the canvas, 60% down from the top.",
+   "quality": "high",
+   "fx_refs": false,
+   "from": "y3"
+  },
+  "y5": {
+   "type": "fx",
+   "prompt": "aftermath: a brown dust cloud along the ground line, orange embers and small rocks falling, fading out. Only the attack arriving at the target: NO Susano'o body, NO red chakra giant, NO shield in this frame. The point of impact is at the CENTRE of the canvas, 60% down from the top.",
+   "quality": "medium",
+   "fx_refs": false,
+   "from": "y4"
+  },
+  "a1": {
+   "type": "fx",
+   "prompt": "AMATERASU ignites: a small burst of black flames suddenly bursting into existence on the ground at the centre, a few black flame tongues and wisps of dark smoke. Amaterasu flames are PITCH-BLACK fire with a thin dark-crimson inner glow at the base, thick and heavy, licking upward; NO orange fire, NO purple. The flames are centred on the CENTRE of the canvas, burning on the ground line.",
+   "quality": "high",
+   "fx_refs": false,
+   "fx_style": "Anime film still, painted cel-shaded, matching the Naruto Shippuden anime and Naruto Blazing style: clean lines, soft painted shading, smooth clean high-resolution rendering that fits hand-painted anime characters and backgrounds. NOT pixel art, NOT low-res game VFX, no glitter or particle noise. Colours: Amaterasu is PITCH-BLACK fire (solid inky black flames with soft dark-grey highlights and a thin dark-crimson glow only at the very base), dark grey smoke; NO orange or yellow fire, NO purple, NO blue, NO green."
+  },
+  "a2": {
+   "type": "fx",
+   "prompt": "the first layer: black flames engulfing the centre in a column about 45% of the canvas tall, heavy black fire roaring upward, dark smoke. Amaterasu flames are PITCH-BLACK fire with a thin dark-crimson inner glow at the base, thick and heavy, licking upward; NO orange fire, NO purple. The flames are centred on the CENTRE of the canvas, burning on the ground line.",
+   "quality": "medium",
+   "fx_refs": false,
+   "from": "a1",
+   "fx_style": "Anime film still, painted cel-shaded, matching the Naruto Shippuden anime and Naruto Blazing style: clean lines, soft painted shading, smooth clean high-resolution rendering that fits hand-painted anime characters and backgrounds. NOT pixel art, NOT low-res game VFX, no glitter or particle noise. Colours: Amaterasu is PITCH-BLACK fire (solid inky black flames with soft dark-grey highlights and a thin dark-crimson glow only at the very base), dark grey smoke; NO orange or yellow fire, NO purple, NO blue, NO green."
+  },
+  "a3": {
+   "type": "fx",
+   "prompt": "the SECOND layer: a second, larger wave of black flames erupts around the first in a wide ring, the black fire now about 70% of the canvas tall, embers of black fire flying. Amaterasu flames are PITCH-BLACK fire with a thin dark-crimson inner glow at the base, thick and heavy, licking upward; NO orange fire, NO purple. The flames are centred on the CENTRE of the canvas, burning on the ground line.",
+   "quality": "high",
+   "fx_refs": false,
+   "from": "a2",
+   "fx_style": "Anime film still, painted cel-shaded, matching the Naruto Shippuden anime and Naruto Blazing style: clean lines, soft painted shading, smooth clean high-resolution rendering that fits hand-painted anime characters and backgrounds. NOT pixel art, NOT low-res game VFX, no glitter or particle noise. Colours: Amaterasu is PITCH-BLACK fire (solid inky black flames with soft dark-grey highlights and a thin dark-crimson glow only at the very base), dark grey smoke; NO orange or yellow fire, NO purple, NO blue, NO green."
+  },
+  "a4": {
+   "type": "fx",
+   "prompt": "the double wall of black flames at its peak, raging and twisting upward, dark smoke rolling, a few black embers falling. Amaterasu flames are PITCH-BLACK fire with a thin dark-crimson inner glow at the base, thick and heavy, licking upward; NO orange fire, NO purple. The flames are centred on the CENTRE of the canvas, burning on the ground line.",
+   "quality": "medium",
+   "fx_refs": false,
+   "from": "a3",
+   "fx_style": "Anime film still, painted cel-shaded, matching the Naruto Shippuden anime and Naruto Blazing style: clean lines, soft painted shading, smooth clean high-resolution rendering that fits hand-painted anime characters and backgrounds. NOT pixel art, NOT low-res game VFX, no glitter or particle noise. Colours: Amaterasu is PITCH-BLACK fire (solid inky black flames with soft dark-grey highlights and a thin dark-crimson glow only at the very base), dark grey smoke; NO orange or yellow fire, NO purple, NO blue, NO green."
+  },
+  "a5": {
+   "type": "fx",
+   "prompt": "the black flames dying down into low flickering black fire and drifting dark smoke on the ground, fading out. Amaterasu flames are PITCH-BLACK fire with a thin dark-crimson inner glow at the base, thick and heavy, licking upward; NO orange fire, NO purple. The flames are centred on the CENTRE of the canvas, burning on the ground line.",
+   "quality": "medium",
+   "fx_refs": false,
+   "from": "a4",
+   "fx_style": "Anime film still, painted cel-shaded, matching the Naruto Shippuden anime and Naruto Blazing style: clean lines, soft painted shading, smooth clean high-resolution rendering that fits hand-painted anime characters and backgrounds. NOT pixel art, NOT low-res game VFX, no glitter or particle noise. Colours: Amaterasu is PITCH-BLACK fire (solid inky black flames with soft dark-grey highlights and a thin dark-crimson glow only at the very base), dark grey smoke; NO orange or yellow fire, NO purple, NO blue, NO green."
+  }
+ },
+ "sheets": {
+  "idle": {
+   "fps": 8,
+   "loop": true,
+   "height": 256,
+   "timeline": [
+    [
+     "base",
+     2
+    ],
+    [
+     "idle_m",
+     1
+    ],
+    [
+     "idle_in",
+     3
+    ],
+    [
+     "idle_m",
+     1
+    ],
+    [
+     "base",
+     2
+    ],
+    [
+     "idle_out",
+     3
+    ]
+   ]
+  },
+  "run": {
+   "fps": 12,
+   "loop": true,
+   "height": 256,
+   "body_px": 256,
+   "timeline": [
+    [
+     "run1",
+     1
+    ],
+    [
+     "run2",
+     1
+    ],
+    [
+     "run3",
+     1
+    ],
+    [
+     "run4",
+     1
+    ],
+    [
+     "run5",
+     1
+    ],
+    [
+     "run6",
+     1
+    ]
+   ]
+  },
+  "hit": {
+   "fps": 12,
+   "height": 256,
+   "anchor_x_from_ref": true,
+   "timeline": [
+    [
+     "h1",
+     1
+    ],
+    [
+     "h0",
+     1
+    ],
+    [
+     "h12",
+     1
+    ],
+    [
+     "h2",
+     2
+    ],
+    [
+     "h3",
+     1
+    ]
+   ]
+  },
+  "ko": {
+   "fps": 10,
+   "height": 256,
+   "anchor_x_from_ref": true,
+   "timeline": [
+    [
+     "h1",
+     1
+    ],
+    [
+     "h12",
+     1
+    ],
+    [
+     "k1",
+     2
+    ],
+    [
+     "kf",
+     1
+    ],
+    [
+     "k2",
+     3
+    ]
+   ]
+  },
+  "attack": {
+   "fps": 14,
+   "height": 256,
+   "body_px": 256,
+   "hits": 2,
+   "timeline": [
+    [
+     "at1",
+     1
+    ],
+    [
+     "at2",
+     1
+    ],
+    [
+     "at3",
+     2,
+     "hit"
+    ],
+    [
+     "at4",
+     1
+    ],
+    [
+     "at5",
+     2,
+     "hit"
+    ],
+    [
+     "base",
+     2
+    ]
+   ]
+  },
+  "jutsu_fx": {
+   "type": "fx",
+   "key": "unmix",
+   "quality": 88,
+   "ground_y": 0.88,
+   "size_by": "bbox",
+   "recolor": [
+    "fx_no_green",
+    "fx_no_violet"
+   ],
+   "fps": 12,
+   "height": 420,
+   "skill": "jutsu",
+   "sphere_key": "y4",
+   "sphere_units": 2.4,
+   "timeline": [
+    [
+     "y1",
+     2
+    ],
+    [
+     "y2",
+     1,
+     "hit"
+    ],
+    [
+     "@hits",
+     [
+      "y3",
+      "y2",
+      "y3b",
+      "y2b"
+     ],
+     1
+    ],
+    [
+     "y4",
+     3,
+     "hit"
+    ],
+    [
+     "y5",
+     3
+    ]
+   ],
+   "variants": {
+    "y2b": {
+     "from": "y2",
+     "scale": 1.04
+    },
+    "y3b": {
+     "from": "y3",
+     "scale": 0.97
+    }
+   }
+  },
+  "ultimate_fx": {
+   "type": "fx",
+   "key": "unmix",
+   "quality": 88,
+   "ground_y": 0.88,
+   "size_by": "bbox",
+   "recolor": [],
+   "fps": 12,
+   "height": 420,
+   "skill": "ultimate",
+   "sphere_key": "a4",
+   "sphere_units": 2.2,
+   "timeline": [
+    [
+     "a1",
+     2,
+     "hit"
+    ],
+    [
+     "a2",
+     2
+    ],
+    [
+     "@hits",
+     [
+      "a2",
+      "a2b",
+      "a3",
+      "a3b"
+     ],
+     1
+    ],
+    [
+     "a4",
+     3,
+     "hit"
+    ],
+    [
+     "a5",
+     4
+    ]
+   ],
+   "variants": {
+    "a2b": {
+     "from": "a2",
+     "scale": 1.05
+    },
+    "a3b": {
+     "from": "a3",
+     "scale": 1.04
+    }
+   }
+  },
+  "jutsu": {
+   "fps": 12,
+   "height": 300,
+   "body_px": 296,
+   "fx": [
+    {
+     "sheet": "jutsu_body",
+     "base": "assets/sprites/itachi_2096",
+     "at": "caster",
+     "layer": "behind",
+     "start_key": "cp_seal"
+    },
+    {
+     "sheet": "jutsu_fx",
+     "at": "targets",
+     "start_key": "cp_seal",
+     "delay": 9
+    }
+   ],
+   "timeline": [
+    [
+     "base",
+     2
+    ],
+    [
+     "cp_seal",
+     4
+    ],
+    [
+     "cp_throw",
+     18
+    ],
+    [
+     "cp_seal",
+     2
+    ],
+    [
+     "base",
+     2
+    ]
+   ]
+  },
+  "ultimate": {
+   "fps": 12,
+   "height": 300,
+   "body_px": 296,
+   "fx": [
+    {
+     "sheet": "ultimate_fx",
+     "at": "targets",
+     "start_key": "cp_gaze",
+     "delay": 2
+    }
+   ],
+   "timeline": [
+    [
+     "base",
+     2
+    ],
+    [
+     "cp_eye",
+     5
+    ],
+    [
+     "cp_gaze",
+     24
+    ],
+    [
+     "cp_eye",
+     2
+    ],
+    [
+     "base",
+     2
+    ]
+   ]
+  }
+ },
+ "_fx_style_note": "a1-a5 (Amaterasu) override fx_style per pose: black fire instead of the Susano'o palette"
+}

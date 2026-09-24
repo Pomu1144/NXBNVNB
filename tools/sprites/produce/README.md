@@ -130,7 +130,107 @@ Pose options: `scale` (manual scale about the feet; overrides the automatic
 correction), `auto_scale: false`, `dx`/`dy` (px on the 1024 canvas),
 `feet: false` (don't snap the feet to the idle feet line), `edge_ok: true`
 (accept an edge touch after checking the feathered result), `helper: true`
-(generated but unused, e.g. a reference for other poses).
+(generated but unused, e.g. a reference for other poses), `size_check: false`
+(skip the ±5 % gate when the body is hidden, e.g. a silhouette in smoke),
+`free_scale: true` (drop the "same scale as the reference" rule from the
+prompt — for summons/giant scenes where the character is drawn small on
+purpose; the packer still scales him back to idle size, see Jiraiya's
+Gamabunta ultimate with `max_height_scale` on the sheet).
+
+Sheet options: `unit` (take the hit count from another id, e.g. when the
+primary id has no ultimate in the data), `max_height_scale` (raise the 1.35
+heightScale limit for deliberately tall sheets such as summons), `quality`
+(webp quality, default 86; lower it for very large sheets — Jiraiya ultimate uses 74).
+
+## Two-layer techniques (caster sheet + effect-only FX sheet)
+
+For techniques that happen *at the enemies* (e.g. Pain's Chibaku Tensei) the
+unit does not dash in. The skill is split in two sheets:
+
+* **caster sheet** (e.g. `ultimate`): the unit in place — raise arm, launch,
+  hold, clench, recover. Clean poses (no big effects); body-size and edge checks
+  apply as usual. Its sheet spec carries an `fx` block:
+  `"fx": {"sheet": "ultimate_fx", "at": "targets", "start_key": "c_launch"}`.
+  `pack` writes `"fx": {"sheet", "at", "startFrame"}` into the caster json
+  (`startFrame` = first frame of `start_key`). The caster sheet has no hits.
+* **FX sheet** (e.g. `ultimate_fx`): `"type": "fx"` sheet of poses with
+  `"type": "fx"` (effect only, green screen, no character). Chain the frames
+  with `"from": "<previous frame>"` so each one continues the last (same camera
+  and centre); MEDIUM quality is enough (`"quality": "medium"`, 0.5 credits).
+  Sheet options: `ground_y` (ground line in the generated canvas, 0.88),
+  `sphere_key` + `sphere_units` (the largest blob of that key is sized to this
+  many unit heights in battle), `variants` (`{"f5b": {"from": "f5", "scale": 1.03}}`,
+  cheap scaled pulses about the effect centre), `crossfade` (default on: the
+  last frame of each hold >= 2 is blended with the next key). The skill hits go
+  on the FX timeline (`@hits` works as usual). The json gets `fxOnly`,
+  `groundY`, `centerX` and `heightUnits` (frame height in unit heights).
+
+Look of the FX frames (lessons from the first Chibaku Tensei take, which read
+as purple "pixel game FX"):
+
+* Prompt wording: the default `FX_STYLE` asks for an *anime film still,
+  painted cel-shaded, Naruto Shippuden style*, no pixel art / game VFX /
+  sparkles. A spec can override it with `fx_style` (put the colour rules there,
+  e.g. "core pure matte black, light white / pale blue, rocks earth tones,
+  NO purple").
+* `fx_refs`: media ids added as extra references to every FX request (e.g. an
+  uploaded anime still of the technique, via `media_upload` + curl PUT +
+  `media_confirm`); the prompt says it is a style / colour reference only.
+* `"key": "unmix"` on the FX sheet: soft key with colour unmixing
+  (`spritelib.key_unmix`: the least-transparent alpha for which the art has no
+  green of its own, then the green is removed exactly). The default green key is a hard cut, which cut soft
+  glows into jagged stickers with teal fringes (only ~6% of the old frames'
+  pixels had partial alpha); unmix keeps coronas, rays and dust translucent and
+  removes the green spill.
+* `recolors` + `"recolor"` (pose or FX sheet; a name, a rule or a list): hue
+  band shifts applied at pack time (`spritelib.recolor`), e.g. a left-over
+  violet tint -> pale blue, salmon rock -> khaki, or a purple glow on a caster
+  hand -> white. Raw generations stay untouched.
+* Pack at `height` 420 and webp `quality` 88 so the element is always
+  downscaled in battle.
+
+In battle (`BattleCombat.performSpriteSkill` / `playTechniqueFx`) a caster sheet
+with a `fx` block: no dash, the unit faces the targets and plays in place; at
+`startFrame` a small projectile leaves its hand and the FX sheet is drawn in the
+scene centred on the targets with its `groundY` row on their feet line,
+`heightUnits x --sprite-h` tall, above the units and under the damage numbers
+(scene z 30: above #battlefield-grid, under #damage-numbers and the HUD), mirrored when the caster is on the right. If it would reach under the
+top HUD it slides down (<= 35% of its height) and then shrinks. Damage numbers
+follow the FX hit frames; the turn ends when both layers have finished.
+Sheets without `fx` behave exactly as before.
+
+Checks: `validate` (FX hits == data, caster fx block, edge checks on FX frames),
+`preview.fx_gif(spec, "ultimate", out, alone=out2)` (caster + FX at battle
+scale, and the FX alone), and `node verify_fx.js <charId> <outDir>` (in-battle:
+caster never moves, FX centred on the target and under the HUD, damage numbers
+== FX hits, no page errors; saves screencast frames for a GIF).
+
+**Several layers (e.g. Itachi's Susano'o).** `fx` may be a list. Each entry:
+`sheet`, `at` (`"targets"`: centred on the targets, feet on their feet line;
+`"caster"`: centred on the caster), `start_key` + optional `delay` (frames),
+optional `layer: "behind"` (scene z 4, under the unit grid, so a Susano'o
+stands behind Itachi) and `projectile: true` (the small black core flying from
+the hand, Chibaku Tensei). Only the layer whose sheet has hit frames carries the
+hits (normally the one at the targets); the turn ends when the caster and every
+layer have finished. A tall caster layer slides the caster down under the HUD
+for the cast (sheetSafeY with heightUnits x groundY) and back afterwards.
+Example (`specs/itachi_2096.json`):
+`"fx": [{"sheet": "jutsu_body", "at": "caster", "layer": "behind", "start_key": "cs_seal"},
+        {"sheet": "jutsu_fx", "at": "targets", "start_key": "cs_seal", "delay": 9}]`.
+FX sheets whose sphere_key effect is not one solid blob (a translucent
+Susano'o) use `"size_by": "bbox"`. A pose can opt out of the spec's `fx_refs`
+with `"fx_refs": false` (e.g. strike frames that must not copy the Susano'o
+figure from the style reference). Pose names must not reuse existing ones
+(`h1..h3` are hit-reaction poses, `c1..c5` Itachi's clone jutsu) - the FX frames
+use `s*`, `b*`, `x*`, `t*`.
+
+A layer can use another unit's FX sheet with `"base": "assets/sprites/<folder>"`
+(Itachi "The Promised Day" `itachi_2031` reuses the Susano'o body `jutsu_body`
+of `itachi_2096` for Yasaka Beads and only has its own strike sheet). A pose can
+override the spec's `fx_style` with its own (`itachi_2031` a1-a5: black
+Amaterasu flames instead of the Susano'o palette).
+
+Sheet names starting with `_` are parked (not packed or validated).
 
 ## What the scripts do
 

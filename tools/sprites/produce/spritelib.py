@@ -42,6 +42,48 @@ def keyed(path, size=None):
     return _KEY_CACHE[k]
 
 
+def key_unmix(img, border=8):
+    """Soft chroma key for effects (glows, light rays, dust, fire) with colour unmixing.
+
+    The default key maps "a bit green" -> transparent over a narrow ramp, which
+    turns soft glows into hard-edged cut-outs with a tinted fringe. Here every
+    pixel is  obs = a*F + (1-a)*G  (G = measured background green). Red and
+    blue come only from the art, so with m = max(R, B):
+        a = 1 - (obs_g - obs_m) / (G_g - G_m)     (pixels with G <= m are opaque)
+        F = (obs - (1-a)*G) / a
+    i.e. the least-transparent alpha for which the art has no green of its own
+    (g <= max(r, b)), which holds for fire, rock, dust, white and blue light.
+    Afterwards cool light (B > R: coronas, rays) is held to g <= (r+b)/2 so pale
+    blue does not come out teal. (An earlier version measured the art's g/r
+    ratio per image; that under-keyed yellow fire next to red chakra.)"""
+    a = np.asarray(img.convert("RGB")).astype(np.float32)
+    edge = np.concatenate([a[:border].reshape(-1, 3), a[-border:].reshape(-1, 3),
+                           a[:, :border].reshape(-1, 3), a[:, -border:].reshape(-1, 3)])
+    G = np.median(edge, axis=0)
+    m = np.maximum(a[..., 0], a[..., 2])
+    al = np.clip(1.0 - (a[..., 1] - m) / max(1.0, G[1] - max(G[0], G[2])), 0.0, 1.0)
+    al = np.clip((al - 0.03) / 0.97, 0.0, 1.0)  # background noise -> 0
+    safe = np.maximum(al, 1e-3)[..., None]
+    F = np.clip((a - (1.0 - al)[..., None] * G) / safe, 0, 255)
+    cool = F[..., 2] > F[..., 0]
+    F[..., 1] = np.minimum(F[..., 1], np.where(cool, (F[..., 0] + F[..., 2]) / 2, np.maximum(F[..., 0], F[..., 2])))
+    F[al < 0.02] = 0
+    out = np.dstack([F, al[..., None] * 255.0]).astype(np.uint8)
+    return Image.fromarray(out, "RGBA")
+
+
+def keyed_unmix(path, size=None):
+    k = ("unmix", path, size)
+    if k not in _KEY_CACHE:
+        im = key_unmix(Image.open(path))
+        if size and im.size != tuple(size):
+            im = im.resize(tuple(size), Image.LANCZOS)
+        a = np.asarray(im).copy()
+        a[..., 3][a[..., 3] < 4] = 0
+        _KEY_CACHE[k] = Image.fromarray(a, "RGBA")
+    return _KEY_CACHE[k]
+
+
 def remove_specks(a, min_px=40):
     """Drop tiny isolated opaque blobs (keying noise) without touching art."""
     if cv2 is None:
@@ -127,9 +169,50 @@ def body_scale(ref_path, path, min_matches=15):
 
 
 # -------------------------------------------------------------- packing ---
-def _place(path, size, ref_feet, scale, dx, dy, align_feet, edge_fade):
+def recolor(a, rule):
+    """Shift one hue band of an RGBA array (e.g. a purple hand glow -> pale white-blue).
+
+    rule: {"hue": [lo, hi] degrees (lo > hi wraps through 0), "min_s": 0.35, "min_v": 0.45,
+           "x_min": 0..1 (only right of this), "to_hue": 205 | "hue_shift": +deg, "sat_mul": 0.3,
+           "val_add": 0.1}; a list of rules is applied in order."""
+    if isinstance(rule, list):
+        for r_ in rule:
+            a = recolor(a, r_)
+        return a
+    rgb = a[..., :3].astype(np.float32) / 255
+    mx, mn = rgb.max(-1), rgb.min(-1)
+    d = mx - mn + 1e-6
+    r, g, b = rgb[..., 0], rgb[..., 1], rgb[..., 2]
+    h = np.where(mx == r, ((g - b) / d) % 6, np.where(mx == g, (b - r) / d + 2, (r - g) / d + 4)) * 60
+    s = np.where(mx > 0, d / (mx + 1e-6), 0)
+    v = mx
+    lo, hi = rule.get("hue", [250, 300])
+    band = ((h >= lo) & (h <= hi)) if lo <= hi else ((h >= lo) | (h <= hi))
+    m = band & (s >= rule.get("min_s", 0.35)) & (v >= rule.get("min_v", 0.45))
+    m &= (np.arange(a.shape[1])[None, :] >= rule.get("x_min", 0) * a.shape[1])
+    if not m.any():
+        return a
+    h2 = (h + rule["hue_shift"]) % 360 if "hue_shift" in rule else np.full_like(h, rule.get("to_hue", 205))
+    s2 = s * rule.get("sat_mul", 0.3)
+    v2 = np.clip(v + rule.get("val_add", 0.1 if "to_hue" in rule or "hue_shift" not in rule else 0), 0, 1)
+    c = v2 * s2
+    x = c * (1 - np.abs((h2 / 60) % 2 - 1))
+    z = np.zeros_like(c)
+    k = (h2 // 60).astype(int) % 6
+    rr = np.select([k == 0, k == 1, k == 2, k == 3, k == 4, k == 5], [c, x, z, z, x, c])
+    gg = np.select([k == 0, k == 1, k == 2, k == 3, k == 4, k == 5], [x, c, c, x, z, z])
+    bb = np.select([k == 0, k == 1, k == 2, k == 3, k == 4, k == 5], [z, z, x, c, c, x])
+    new = (np.dstack([rr, gg, bb]) + (v2 - c)[..., None]) * 255
+    out = a.copy()
+    out[..., :3][m] = np.clip(new[m], 0, 255).astype(np.uint8)
+    return out
+
+
+def _place(path, size, ref_feet, scale, dx, dy, align_feet, edge_fade, pad=PAD, recolor_rule=None):
     im = keyed(path, size)
     a = np.asarray(im).copy()
+    if recolor_rule:
+        a = recolor(a, recolor_rule)
     h, w = a.shape[:2]
     if edge_fade:
         yy, xx = np.mgrid[0:h, 0:w]
@@ -140,15 +223,15 @@ def _place(path, size, ref_feet, scale, dx, dy, align_feet, edge_fade):
     im = Image.fromarray(a, "RGBA")
     if scale != 1.0:
         im = im.resize((round(w * scale), round(h * scale)), Image.LANCZOS)
-    big = Image.new("RGBA", (w + 2 * PAD, h + 2 * PAD), (0, 0, 0, 0))
-    ox = PAD + fx - fx * scale + dx
-    oy = PAD + fy - fy * scale + dy + extra_dy
+    big = Image.new("RGBA", (w + 2 * pad, h + 2 * pad), (0, 0, 0, 0))
+    ox = pad + fx - fx * scale + dx
+    oy = pad + fy - fy * scale + dy + extra_dy
     big.alpha_composite(im, (round(ox), round(oy)))
     return big
 
 
 def pack_sheet(out, reference, keys, timeline, fps=12, height=256, body_px=None, loop=False,
-               edge_fade=10, anchor_x_from_ref=False, write_scale=True, max_width=4096):
+               edge_fade=10, anchor_x_from_ref=False, write_scale=True, max_width=4096, quality=86):
     """Pack keyed poses into <out>.webp + <out>.json.
 
     keys: {name: {"path", "scale", "dx", "dy", "feet"}} — scale is applied about
@@ -160,13 +243,15 @@ def pack_sheet(out, reference, keys, timeline, fps=12, height=256, body_px=None,
     size = Image.open(reference).size
     ref_a = np.asarray(keyed(reference))
     ref_feet = feet_of(ref_a)
+    # working canvas big enough for the largest upscaled pose (summon scenes are drawn small)
+    pad = max(PAD, int(max(size) * (max(float(k.get("scale", 1.0)) for k in keys.values()) - 1)) + 200)
     placed = {n: _place(k["path"], size, ref_feet, float(k.get("scale", 1.0)), k.get("dx", 0),
-                        k.get("dy", 0), k.get("feet", True), edge_fade) for n, k in keys.items()}
+                        k.get("dy", 0), k.get("feet", True), edge_fade, pad, k.get("recolor")) for n, k in keys.items()}
     used = {e[0] for e in timeline}
     boxes = [alpha_box(placed[n]) for n in used]
     box = (min(b[0] for b in boxes) - 4, min(b[1] for b in boxes) - 4,
            max(b[2] for b in boxes) + 4, max(b[3] for b in boxes) + 2)
-    ref_placed = _place(reference, size, ref_feet, 1.0, 0, 0, False, 0)
+    ref_placed = _place(reference, size, ref_feet, 1.0, 0, 0, False, 0, pad)
     rb = alpha_box(ref_placed, 40)
     ref_h = rb[3] - rb[1]
     fh = int(height)
@@ -193,7 +278,7 @@ def pack_sheet(out, reference, keys, timeline, fps=12, height=256, body_px=None,
     for i, f in enumerate(frames):
         sheet.paste(f, ((i % cols) * fw, (i // cols) * fh))
     os.makedirs(os.path.dirname(out), exist_ok=True)
-    sheet.save(out + ".webp", quality=86, method=6)
+    sheet.save(out + ".webp", quality=quality, method=6)
     meta = {"frameWidth": fw, "frameHeight": fh, "frames": len(frames), "columns": cols,
             "fps": int(fps), "loop": bool(loop)}
     if not loop:
@@ -216,3 +301,98 @@ def sheet_frames(base, name):
     out = [sh.crop(((i % c) * fw, (i // c) * fh, (i % c) * fw + fw, (i // c) * fh + fh))
            for i in range(m["frames"])]
     return out, m
+
+
+def pack_fx(out, keys, timeline, fps=14, height=360, ground_y=0.88, sphere_key=None, sphere_units=1.75,
+            crossfade=True, max_width=4096, quality=80, edge_fade=10, key="green", size_by="blob"):
+    """Pack an effect-only sheet (no character) into <out>.webp + <out>.json.
+
+    Every key shares one canvas (the generated frames were chained with the same
+    camera); keys[n]["scale"] scales that key about the effect centre (canvas
+    centre, 45% down), used for cheap pulse variants. The crop is the union of
+    all keys plus the ground line. With crossfade, the last frame of each hold
+    (hold >= 2) is a 50/50 blend with the next key for smoother continuity.
+
+    Placement metadata for the battle code:
+      groundY     — fraction of the frame height where the targets' feet go
+      centerX     — fraction of the frame width at the effect centre
+      heightUnits — frame height in unit heights, so that the sphere_key effect is
+                    `sphere_units` unit heights tall."""
+    size = Image.open(keys[timeline[0][0]]["path"]).size
+    W, H = size
+    cx, cy = W / 2, H * 0.45
+    placed = {}
+    for n, k in keys.items():
+        a = np.asarray((keyed_unmix if key == "unmix" else keyed)(k["path"], size)).copy()
+        if k.get("recolor"):
+            a = recolor(a, k["recolor"])
+        if edge_fade:
+            yy, xx = np.mgrid[0:H, 0:W]
+            dist = np.minimum.reduce([xx, W - 1 - xx, yy, H - 1 - yy])
+            a[..., 3] = (a[..., 3] * np.clip(dist / edge_fade, 0, 1)).astype(np.uint8)
+        im = Image.fromarray(a, "RGBA")
+        s = float(k.get("scale", 1.0))
+        if s != 1.0:
+            im2 = im.resize((round(W * s), round(H * s)), Image.LANCZOS)
+            c = Image.new("RGBA", (W * 2, H * 2), (0, 0, 0, 0))
+            c.alpha_composite(im2, (round(W / 2 + cx - cx * s), round(H / 2 + cy - cy * s)))
+            im = c.crop((W // 2, H // 2, W // 2 + W, H // 2 + H))
+        placed[n] = im
+    used = {e[0] for e in timeline}
+    boxes = [alpha_box(placed[n], 24) for n in used]
+    boxes = [b for b in boxes if b]
+    gy = ground_y * H
+    # symmetric about the effect centre so centerX stays near 0.5 (mirroring is then cheap)
+    half = max(max(cx - b[0], b[2] - cx) for b in boxes) + 6
+    box = (int(max(0, cx - half)), int(max(0, min(b[1] for b in boxes) - 6)),
+           int(min(W, cx + half)), int(min(H, max(max(b[3] for b in boxes) + 4, gy + 8))))
+    bh = box[3] - box[1]
+    fh = int(height)
+    sc = fh / bh
+    fw = round((box[2] - box[0]) * sc)
+    cropped = {n: placed[n].crop(box).resize((fw, fh), Image.LANCZOS) for n in used}
+    frames, hits = [], []
+    for i, e in enumerate(timeline):
+        n, hold = e[0], int(e[1])
+        nxt = timeline[i + 1][0] if i + 1 < len(timeline) else None
+        for j in range(hold):
+            if len(e) > 2 and e[2] == "hit" and j == 0:
+                hits.append(len(frames))
+            f = cropped[n]
+            if crossfade and hold >= 2 and j == hold - 1 and nxt and nxt != n:
+                f = Image.blend(f, cropped[nxt], 0.5)
+            frames.append(f)
+    # the effect fades out on the last hold
+    last = timeline[-1]
+    for j in range(int(last[1])):
+        idx = len(frames) - int(last[1]) + j
+        f = np.asarray(frames[idx]).copy()
+        f[..., 3] = (f[..., 3] * (1 - (j + 1) / (int(last[1]) + 1))).astype(np.uint8)
+        frames[idx] = Image.fromarray(f, "RGBA")
+    cols = min(len(frames), max(1, max_width // fw))
+    rows = -(-len(frames) // cols)
+    sheet = Image.new("RGBA", (cols * fw, rows * fh), (0, 0, 0, 0))
+    for i, f in enumerate(frames):
+        sheet.paste(f, ((i % cols) * fw, (i // cols) * fh))
+    os.makedirs(os.path.dirname(out), exist_ok=True)
+    sheet.save(out + ".webp", quality=quality, method=6)
+    # the sphere = the largest opaque blob of sphere_key (flying rocks and ground dust are separate blobs)
+    sa = (np.asarray(placed[sphere_key or timeline[0][0]])[..., 3] > 100).astype(np.uint8)
+    if size_by == "bbox":  # whole visible effect of sphere_key (translucent bodies are not one solid blob)
+        sb = alpha_box(placed[sphere_key or timeline[0][0]], 40)
+        sph_h = sb[3] - sb[1]
+    elif cv2 is not None:
+        n_, lab, stats, _ = cv2.connectedComponentsWithStats(sa, 8)
+        big = 1 + int(np.argmax(stats[1:, cv2.CC_STAT_AREA]))
+        sph_h = int(stats[big, cv2.CC_STAT_HEIGHT])
+    else:
+        sb = alpha_box(placed[sphere_key or timeline[0][0]], 100)
+        sph_h = sb[3] - sb[1]
+    sphere_frac = sph_h / bh
+    meta = {"frameWidth": fw, "frameHeight": fh, "frames": len(frames), "columns": cols,
+            "fps": int(fps), "loop": False, "hits": hits, "fxOnly": True,
+            "groundY": round((gy - box[1]) / bh, 4), "centerX": round((cx - box[0]) / (box[2] - box[0]), 4),
+            "heightUnits": round(sphere_units / sphere_frac, 3)}
+    with open(out + ".json", "w") as f:
+        json.dump(meta, f, indent=2)
+    return {**meta, "box": box, "sphereFrac": round(sphere_frac, 3)}

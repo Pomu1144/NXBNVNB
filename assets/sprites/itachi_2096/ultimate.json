@@ -1,22 +1,24 @@
 {
-  "frameWidth": 329,
-  "frameHeight": 368,
-  "frames": 22,
-  "columns": 12,
-  "fps": 14,
+  "frameWidth": 161,
+  "frameHeight": 301,
+  "frames": 34,
+  "columns": 25,
+  "fps": 12,
   "loop": false,
-  "hits": [
-    6,
-    7,
-    8,
-    9,
-    10,
-    11,
-    12,
-    13,
-    14,
-    15
-  ],
-  "heightScale": 1.2432,
-  "anchorX": 0.473
+  "hits": [],
+  "heightScale": 1.0164,
+  "anchorX": 0.35,
+  "fx": [
+    {
+      "sheet": "ultimate_body",
+      "at": "caster",
+      "startFrame": 2,
+      "layer": "behind"
+    },
+    {
+      "sheet": "ultimate_fx",
+      "at": "targets",
+      "startFrame": 14
+    }
+  ]
 }
