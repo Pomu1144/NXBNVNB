@@ -151,6 +151,9 @@
 
       this.enemiesData = enemies;
       this.charactersData = Array.isArray(characters) ? characters : (characters?.characters || []);
+      // Repair saved tiers outside the unit's min..max (e.g. itachi_2199/2200
+      // saved at 7S, now 6SB) before any unit is built from them.
+      try { window.InventoryChar?.clampTiersToData?.(this.charactersData); } catch (e) { console.warn('[BattleCore] tier clamp failed', e); }
       this.jutsuCardsData = jutsuCards?.cards || [];
 
       // ── Arena battle mode ──────────────────────────────────────────────
