@@ -77,6 +77,20 @@
     return n;
   }
 
+  // Dev: +GRANT_QTY of every catalog awakening material (data/materials.json)
+  // plus Ryo, so awakening can be tested end to end.
+  const GRANT_QTY = 99;
+  async function grantAllMaterials(qty = GRANT_QTY) {
+    const R = global.Resources;
+    if (!R) return 0;
+    if (R.ready) await R.ready;
+    const list = typeof R.getCatalog === "function" ? R.getCatalog() : [];
+    list.forEach(m => R.add(m.id, qty));
+    R.add("ryo", 1000000);
+    global.dispatchEvent(new CustomEvent("resources:changed"));
+    return list.length;
+  }
+
   function refreshGrid() {
     if (typeof global.refreshCharacterGrid === "function") global.refreshCharacterGrid();
   }
@@ -131,6 +145,8 @@
           <input type="checkbox" id="chardev-maxmode">
           <span>Max-Out Mode <small>(click a character to max it)</small></span>
         </label>
+        <button class="chardev-btn" id="chardev-grantmats">Grant All Materials</button>
+        <div class="chardev-note">+99 of every Naruto Blazing awakening material (scrolls, beads, special beads, tools) and +1,000,000 Ryo.</div>
         <button class="chardev-btn" id="chardev-maxall">Max ALL Owned</button>
         <div class="chardev-note">Maxes evolution, awakening, dupes &amp; limit break (Lv 150).</div>
         <button class="chardev-btn" id="chardev-add-minato">Add Minato (animated sprite)</button>
@@ -168,6 +184,11 @@
     panel.querySelector("#chardev-add-kakashi-ewh").addEventListener("click", addSpriteKakashiEWH);
     PRODUCED_UNITS.forEach(u => panel.querySelector(`#chardev-add-${u.id}`)
       .addEventListener("click", () => addSpriteUnit(u.id, u.tier, u.label)));
+
+    panel.querySelector("#chardev-grantmats").addEventListener("click", async () => {
+      const n = await grantAllMaterials();
+      toast(`Granted ${n} awakening materials ×${GRANT_QTY} + Ryo ✓`);
+    });
 
     panel.querySelector("#chardev-maxall").addEventListener("click", () => {
       const n = maxAllOwned();
@@ -212,6 +233,6 @@
     init();
   }
 
-  global.CharDevTools = { maxOutInstance, maxAllOwned, addSpriteMinato, addSpriteNaruto, addSpriteKakashi, addSpriteKakashiEWH,
+  global.CharDevTools = { maxOutInstance, maxAllOwned, grantAllMaterials, addSpriteMinato, addSpriteNaruto, addSpriteKakashi, addSpriteKakashiEWH,
     addSpriteUnit, producedUnits: PRODUCED_UNITS };
 })(window);

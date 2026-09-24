@@ -1,36 +1,47 @@
 {
   "tierRequirements": {
+    "1S": {
+      "nextTier": "2S",
+      "materials": {
+        "book_{el}_1": 2,
+        "ryo": 1000
+      }
+    },
+    "2S": {
+      "nextTier": "3S",
+      "materials": {
+        "book_{el}_1": 3,
+        "ryo": 2500
+      }
+    },
     "3S": {
       "nextTier": "4S",
       "materials": {
-        "awakening_stone_3": 5,
-        "scroll_body": 3,
+        "book_{el}_1": 3,
         "ryo": 5000
       }
     },
     "4S": {
       "nextTier": "5S",
       "materials": {
-        "awakening_stone_4": 8,
-        "scroll_skill": 5,
+        "book_{el}_2": 2,
+        "book_{el}_1": 2,
         "ryo": 10000
       }
     },
     "5S": {
       "nextTier": "6S",
       "materials": {
-        "awakening_stone_5": 10,
-        "scroll_bravery": 8,
-        "character_stone": 3,
+        "book_{el}_4": 2,
+        "book_{el}_3": 2,
         "ryo": 20000
       }
     },
     "6S": {
       "nextTier": "6SB",
       "materials": {
-        "awakening_stone_6": 15,
-        "scroll_wisdom": 10,
-        "character_stone": 5,
+        "beads_{el}_5": 2,
+        "beads_{el}_4": 3,
         "ryo": 35000
       }
     },
@@ -111,7 +122,15 @@
   },
   "notes": {
     "description": "Awakening requirements for tier promotion",
+    "materials": "Material ids come from data/materials.json (Naruto Blazing wiki awakening materials). '{el}' is replaced with the unit's element (heart/skill/body/bravery/wisdom).",
+    "perUnit": "data/awakening-materials-per-unit.json overrides the materials (not the ryo) for steps up to 6SB where the wiki lists them; these tier entries are the element-matched fallback.",
+    "noElement": "Units without an element use noElementSubstitutes for '{el}' materials.",
+    "legacy": "6SB and above still use the original generic materials (open question, unchanged).",
     "resetMode": "Level resets to 1 on awakening (default behavior)",
     "limitBreak": "Limit Break is available at max tier only"
+  },
+  "noElementSubstitutes": {
+    "book": "book_victor_5",
+    "beads": "book_victor_6"
   }
 }

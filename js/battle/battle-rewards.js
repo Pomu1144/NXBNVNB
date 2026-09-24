@@ -170,14 +170,16 @@
       const multipliers = { D: 0.5, C: 1, B: 1.5, A: 2.5, S: 4, SS: 6 };
       const mult = multipliers[difficulty] || 1;
 
-      // Materials get rarer with difficulty (ids from resources.js)
+      // Materials get rarer with difficulty (ids from resources.js /
+      // data/materials.json). "*" is replaced with a random element, so every
+      // element's Naruto Blazing awakening scrolls / beads drop.
       const materialsByDifficulty = {
-        D:  ['scroll_basic', 'scroll_body', 'scroll_skill'],
-        C:  ['scroll_basic', 'awakening_stone_3', 'scroll_bravery', 'scroll_wisdom', 'scroll_heart'],
-        B:  ['scroll_advanced', 'awakening_stone_3', 'awakening_stone_4', 'crystal_body', 'crystal_skill'],
-        A:  ['awakening_stone_4', 'awakening_stone_5', 'crystal_heart', 'crystal_bravery', 'crystal_wisdom', 'character_stone'],
-        S:  ['awakening_stone_5', 'awakening_stone_6', 'limit_break_crystal', 'book_victor_5', 'dupe_crystal'],
-        SS: ['awakening_stone_6', 'limit_break_crystal', 'book_victor_5', 'book_victor_6', 'awakening_charm']
+        D:  ['book_*_1', 'book_*_1', 'book_*_2'],
+        C:  ['book_*_1', 'book_*_2', 'book_*_2', 'scroll_*'],
+        B:  ['book_*_2', 'book_*_3', 'book_*_3', 'crystal_body', 'crystal_skill'],
+        A:  ['book_*_3', 'book_*_4', 'beads_*_4', 'crystal_heart', 'crystal_bravery', 'crystal_wisdom', 'character_stone'],
+        S:  ['book_*_4', 'beads_*_4', 'beads_*_5', 'awakening_stone_6', 'limit_break_crystal', 'book_victor_5', 'dupe_crystal'],
+        SS: ['beads_*_5', 'awakening_stone_6', 'limit_break_crystal', 'book_victor_5', 'book_victor_6', 'awakening_charm']
       };
       const ramenTierByDifficulty = { D: 1, C: 1, B: 2, A: 3, S: 4, SS: 5 };
       const ramenElements = ['heart', 'skill', 'body', 'bravery', 'wisdom'];
@@ -188,7 +190,8 @@
       // Random material every 2 stages
       if ((stageIndex + 1) % 2 === 0) {
         const materials = materialsByDifficulty[difficulty] || materialsByDifficulty.C;
-        const randomMat = materials[Math.floor(Math.random() * materials.length)];
+        const pick = materials[Math.floor(Math.random() * materials.length)];
+        const randomMat = pick.replace('*', ramenElements[Math.floor(Math.random() * ramenElements.length)]);
         rewards[randomMat] = 1;
       }
 
