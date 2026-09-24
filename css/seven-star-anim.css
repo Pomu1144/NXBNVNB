@@ -1,0 +1,122 @@
+/* ============================================================
+   css/seven-star-anim.css: animated 7-star art (units with `fx7`)
+   ------------------------------------------------------------
+   Two tiers, both compositor-only (transform + opacity; no <video>,
+   no canvas, no per-frame JS):
+
+   1. .a7: full layered animation for ONE big card at a time
+      (character detail modal, summon result reveal). Built and torn
+      down by js/seven-star-anim.js:
+        base art · aura ring (sway/pulse) · breathing masked copy ·
+        glow pulse · 2 rising "licks" · particles · light sweep
+   2. .anim7-fx: cheap grid overlay injected by js/seven-star-fx.js
+      only while the card is on screen: 1 light sweep masked to the
+      portrait + 1 element-coloured pulse.
+   prefers-reduced-motion: everything static.
+   ============================================================ */
+
+/* ---------- 1. Full layered animation ---------- */
+.a7 {
+  --loop: 5s;
+  position: relative;
+  aspect-ratio: 1;
+  overflow: hidden;
+  contain: strict;
+  isolation: isolate;
+  pointer-events: none;
+}
+.a7 > * { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.a7 > img { display: block; object-fit: cover; max-width: none; max-height: none; margin: 0; padding: 0; border: 0; filter: none; background: none; }
+.a7 .a7-aura {
+  inset: -6%; width: 112%; height: 112%; opacity: 0;
+  -webkit-mask-image: radial-gradient(circle at 50% 50%, transparent 43%, #000 56%);
+          mask-image: radial-gradient(circle at 50% 50%, transparent 43%, #000 56%);
+  animation: a7-aura var(--loop) ease-in-out infinite;
+}
+.a7 .a7-breath {
+  -webkit-mask-image: radial-gradient(ellipse 34% 40% at 50% 46%, #000 55%, transparent 100%);
+          mask-image: radial-gradient(ellipse 34% 40% at 50% 46%, #000 55%, transparent 100%);
+  transform-origin: 50% 60%;
+  animation: a7-breath var(--loop) ease-in-out infinite;
+}
+.a7 .a7-glow { mix-blend-mode: screen; opacity: .05; animation: a7-glow calc(var(--loop) / 2) ease-in-out infinite; }
+.a7 .a7-lick { mix-blend-mode: screen; opacity: 0; transform-origin: 50% 70%; animation: a7-lick calc(var(--loop) / 2) ease-out infinite; }
+.a7 .a7-lick.b { animation-delay: calc(var(--loop) / -4); }
+.a7 .a7-sweep {
+  background: linear-gradient(105deg, transparent 38%, rgba(255,244,214,0) 42%, rgba(255,244,214,.32) 50%, rgba(255,244,214,0) 58%, transparent 62%);
+  transform: translateX(-120%);
+  animation: a7-sweep var(--loop) cubic-bezier(.45,0,.3,1) infinite;
+}
+.a7 .a7-pp i {
+  position: absolute; left: var(--x); top: var(--y); width: var(--s); height: var(--s);
+  background: var(--a7-sheet) no-repeat; background-size: 800% 100%;
+  background-position: calc(var(--k) * 100% / 7) 0;
+  opacity: 0;
+  animation: a7-rise var(--d) linear var(--dl) infinite;
+}
+@keyframes a7-breath { 0%, 100% { transform: scale(1) translateY(0); } 50% { transform: scale(1.022) translateY(-.6%); } }
+@keyframes a7-aura { 0%, 100% { transform: rotate(-3deg) scale(.98); opacity: .12; } 50% { transform: rotate(3deg) scale(1.03); opacity: .32; } }
+@keyframes a7-glow { 0%, 100% { opacity: .05; transform: scale(1); } 50% { opacity: .5; transform: scale(1.01); } }
+@keyframes a7-lick { 0% { opacity: 0; transform: translateY(0) scale(1); } 35% { opacity: .26; } 100% { opacity: 0; transform: translateY(-2.5%) scale(1.03); } }
+@keyframes a7-sweep { 0%, 55% { transform: translateX(-120%); } 85%, 100% { transform: translateX(120%); } }
+@keyframes a7-rise {
+  0%   { opacity: 0; transform: translate(0, 0) rotate(0) scale(.6); }
+  15%  { opacity: 1; }
+  70%  { opacity: .9; }
+  100% { opacity: 0; transform: translate(var(--dx), var(--dy)) rotate(var(--r)) scale(1); }
+}
+/* A paused host (e.g. modal closing) stops every layer at once */
+.a7.a7-paused, .a7.a7-paused * { animation-play-state: paused !important; }
+
+/* Character detail modal: sits exactly over #char-modal-img (square art,
+   contained, centred at 44%) and reuses its feathered edge mask. */
+.char-modal-art > .a7 {
+  position: absolute; left: 50%; top: 44%;
+  width: var(--a7-side, 100%); height: auto;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 9%, #000 91%, transparent 100%);
+          mask-image: linear-gradient(180deg, transparent 0, #000 9%, #000 91%, transparent 100%);
+}
+.char-modal-art.has-a7 > #char-modal-img { visibility: hidden; }
+
+/* Summon result card: the animated full art replaces the portrait image */
+.result-card-inner > .a7 { width: 100%; }
+.summon-modal .result-card-inner > .a7 { width: calc(100% - 20px); margin: 10px 10px 0; }
+/* single pull: give the animated reveal room to breathe */
+.result-grid.single .result-card.has-a7 { width: min(380px, 80vw); max-width: none; justify-self: center; }
+.result-card.has-a7 { box-shadow: 0 0 0 1px rgba(0,0,0,.8), 0 0 18px var(--fx7c, rgba(241,217,138,.45)), 0 6px 16px rgba(0,0,0,.6); }
+
+/* ---------- 2. Grid card overlay (cheap) ---------- */
+.anim7-fx {
+  position: absolute; inset: 0;
+  z-index: 4;
+  border-radius: inherit;
+  pointer-events: none;
+}
+/* element-coloured pulse (opacity only) */
+.anim7-fx::before {
+  content: ""; position: absolute; inset: 6%;
+  border-radius: 6px;
+  box-shadow: 0 0 14px 3px var(--fx7c, #c9b6ff), inset 0 0 18px 2px var(--fx7c, #c9b6ff);
+  opacity: .2;
+  animation: anim7-pulse 2.5s ease-in-out infinite;
+}
+/* light sweep, clipped to the portrait card shape */
+.anim7-fx > b {
+  position: absolute; inset: 0;
+  background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,.5) 50%, transparent 60%);
+  transform: translateX(-130%);
+  animation: a7-sweep 5s cubic-bezier(.45,0,.3,1) infinite;
+  -webkit-mask: var(--fx7m) center / contain no-repeat;
+          mask: var(--fx7m) center / contain no-repeat;
+}
+.anim7-fx.aura-fx { overflow: hidden; }
+@keyframes anim7-pulse { 0%, 100% { opacity: .15; } 50% { opacity: .6; } }
+/* off-screen cards: stop ticking (seven-star-fx.js also removes the node) */
+.fx-off .anim7-fx::before, .fx-off .anim7-fx > b { animation-play-state: paused; }
+
+@media (prefers-reduced-motion: reduce) {
+  .a7 *, .anim7-fx::before, .anim7-fx > b { animation: none !important; }
+  .a7 .a7-pp, .a7 .a7-lick, .a7 .a7-sweep, .anim7-fx > b { display: none; }
+}

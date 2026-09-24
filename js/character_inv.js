@@ -423,3 +423,34 @@ window.addCharacterById = async function (charId) {
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", migrateTierBounds);
   else migrateTierBounds();
 })(window);
+
+// ---------- Removed units ----------
+// Units taken out of the game: drop saved copies (and their team slots) so
+// old saves never point at a character that no longer exists.
+(function (global) {
+  const REMOVED = ["itachi_2203"];
+  function purgeRemoved() {
+    const inv = global.InventoryChar;
+    if (!inv) return;
+    const gone = inv.allInstances().filter((i) => REMOVED.includes(i.charId));
+    if (!gone.length) return;
+    const uids = new Set(gone.map((i) => i.uid));
+    gone.forEach((i) => inv.removeOneByUid(i.uid));
+    try {
+      const teams = JSON.parse(localStorage.getItem("blazing_teams_v1") || "null");
+      if (teams && typeof teams === "object") {
+        Object.values(teams).forEach((team) => {
+          if (!team || typeof team !== "object") return;
+          Object.keys(team).forEach((slot) => {
+            const s = team[slot];
+            if (s && (uids.has(s.uid) || REMOVED.includes(s.charId))) team[slot] = null;
+          });
+        });
+        localStorage.setItem("blazing_teams_v1", JSON.stringify(teams));
+      }
+    } catch (e) { /* storage blocked or malformed teams */ }
+    console.log(`[Inventory] Removed ${gone.length} copy(ies) of units no longer in the game`);
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", purgeRemoved);
+  else purgeRemoved();
+})(window);

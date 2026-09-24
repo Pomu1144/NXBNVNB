@@ -11,13 +11,26 @@
           {"characterId": "obito_2201", "quantity": 1, "tierCode": "7S"},
           {"characterId": "sakura_2202", "quantity": 1, "tierCode": "6S"},
           {"characterId": "sakura_2202", "quantity": 1, "tierCode": "7S"},
-          {"characterId": "itachi_2203", "quantity": 1, "tierCode": "6S"},
-          {"characterId": "itachi_2203", "quantity": 1, "tierCode": "7S"},
           {"characterId": "minato_2204", "quantity": 1, "tierCode": "6S"},
           {"characterId": "minato_2204", "quantity": 1, "tierCode": "7S"}
         ],
         "resources": [],
         "message": "You've received Obito, Sakura, Itachi and Minato at both 6S and 7S! Check your present box to claim them."
+      }
+    },
+    {
+      "code": "LEGENDS7",
+      "description": "Developer Gift - Legends Unleashed 7-Star Units (Kaguya, Pain, Jiraiya) at 7S",
+      "expiryDate": null,
+      "maxRedemptions": null,
+      "rewards": {
+        "characters": [
+          {"characterId": "kaguya_9003", "quantity": 1, "tierCode": "7S"},
+          {"characterId": "pain_9004", "quantity": 1, "tierCode": "7S"},
+          {"characterId": "jiraiya_9001", "quantity": 1, "tierCode": "7S"}
+        ],
+        "resources": [],
+        "message": "You've received Kaguya, Pain and Jiraiya (7S)! Check your present box to claim them."
       }
     },
     {

@@ -130111,6 +130111,437 @@
   }
  },
  {
+  "id": "jiraiya_9001",
+  "name": "Jiraiya",
+  "version": "Gallant Sage of Mount Myoboku",
+  "element": "Bravery",
+  "rarity": 7,
+  "starMinCode": "7S",
+  "starMaxCode": "7S",
+  "lbEligible": false,
+  "portrait": "assets/characters/jiraiya_9001/portrait_7S.webp",
+  "full": "assets/characters/jiraiya_9001/full_7S.webp",
+  "ultimateAnimation": null,
+  "secretAnimation": null,
+  "artByTier": {
+   "7S": {
+    "portrait": "assets/characters/jiraiya_9001/portrait_7S.webp",
+    "full": "assets/characters/jiraiya_9001/full_7S.webp"
+   }
+  },
+  "statsBase": {
+   "hp": 26500,
+   "atk": 2550,
+   "speed": 178
+  },
+  "statsMax": {
+   "hp": 54000,
+   "atk": 5150,
+   "speed": 360
+  },
+  "growthCurve": {
+   "hp": 1,
+   "atk": 1,
+   "def": 1,
+   "speed": 1,
+   "chakra": 1
+  },
+  "powerRank": 16350,
+  "powerWeights": {
+   "hp": 0.3,
+   "atk": 0.4,
+   "def": 0.1,
+   "speed": 0.15,
+   "chakra": 0.05
+  },
+  "range": "Mid",
+  "luck": {
+   "base": 10,
+   "max": 99
+  },
+  "cost": {
+   "base": 120,
+   "max": 36
+  },
+  "affiliation": [
+   "Hidden Leaf",
+   "Mount Myoboku"
+  ],
+  "passiveIcons": {},
+  "skills": {
+   "fieldSkill": {
+    "name": "Field Skill",
+    "type": "Field",
+    "description": "Boosts Bravery attacks by 15-750."
+   },
+   "buddySkill": {
+    "name": "Buddy Skill",
+    "type": "Buddy",
+    "description": "Reduces the chance of receiving immobilization by 50% (Not Field Skills)."
+   },
+   "jutsu": {
+    "name": "Sage Art: Toad Oil Flame Bullet",
+    "type": "Jutsu",
+    "byTier": {
+     "7S": {
+      "chakraCost": 5,
+      "hits": 10,
+      "shape": "Cone",
+      "range": "Mid",
+      "position": "Center",
+      "description": "Ignores Barrier with 8x attack toward all enemies in range, with a 100% chance of slip damage for 3 turn(s).",
+      "nwusDescription": "Ignores Barrier with 8x attack toward all enemies in range, with a 100% chance of slip damage for 3 second(s).",
+      "chakraCostMax": 4
+     }
+    }
+   },
+   "ultimate": {
+    "name": "Sage Art: Gamabunta Great Rasengan",
+    "type": "Ultimate",
+    "byTier": {
+     "7S": {
+      "chakraCost": 10,
+      "chakraCostMax": 8,
+      "hits": 15,
+      "shape": "H. Rectangle (Fat)",
+      "range": "Vast",
+      "position": "Center",
+      "description": "Removes Barrier with 21x attack toward all enemies in range, knocking them back, with a 100% chance of slip damage for 3 turn(s) and a 50% chance of attack reduction for 2 turn(s).",
+      "nwusDescription": "Removes Barrier with 18x attack toward all enemies in range, knocking them back, with a 100% chance of slip damage for 3 second(s) and a 50% chance of attack reduction for 2 second(s).",
+      "effects": {
+       "multiplier": 21
+      }
+     }
+    }
+   }
+  },
+  "abilities": [
+   {
+    "name": "Slip Damage Rate Boost",
+    "description": "Increases the chance of inflicting slip damage by 20%."
+   },
+   {
+    "name": "Nullifies Immobilization",
+    "description": "Nullifies immobilization (Not F Skills)."
+   },
+   {
+    "name": "Reduce Damage",
+    "description": "Reduces damage taken by 20%."
+   },
+   {
+    "name": "Damage Boost Against Wisdom",
+    "description": "Increases damage dealt to Wisdom Elementals by 40%."
+   },
+   {
+    "name": "Damage Boost Against Body",
+    "description": "Increases damage dealt to Body Elementals by 40%."
+   },
+   {
+    "name": "Chakra Gauge Reduction",
+    "description": "Reduces chakra consumed by 1."
+   }
+  ],
+  "metadata": {
+   "cardNumber": 9001,
+   "maxLevel": 100,
+   "hitCount": 15
+  },
+  "fx7": {
+   "aura": "assets/characters/jiraiya_9001/fx_aura.webp",
+   "glow": "assets/characters/jiraiya_9001/fx_glow.webp",
+   "particles": "assets/characters/jiraiya_9001/fx_particles.webp",
+   "color": "#ffae3b",
+   "color2": "#ff5a1f"
+  }
+ },
+ {
+  "id": "kaguya_9003",
+  "name": "Kaguya Otsutsuki",
+  "version": "Progenitor of All Chakra",
+  "element": "Body",
+  "rarity": 7,
+  "starMinCode": "7S",
+  "starMaxCode": "7S",
+  "lbEligible": false,
+  "portrait": "assets/characters/kaguya_9003/portrait_7S.webp",
+  "full": "assets/characters/kaguya_9003/full_7S.webp",
+  "ultimateAnimation": null,
+  "secretAnimation": null,
+  "artByTier": {
+   "7S": {
+    "portrait": "assets/characters/kaguya_9003/portrait_7S.webp",
+    "full": "assets/characters/kaguya_9003/full_7S.webp"
+   }
+  },
+  "statsBase": {
+   "hp": 28000,
+   "atk": 2450,
+   "speed": 170
+  },
+  "statsMax": {
+   "hp": 58000,
+   "atk": 4900,
+   "speed": 340
+  },
+  "growthCurve": {
+   "hp": 1,
+   "atk": 1,
+   "def": 1,
+   "speed": 1,
+   "chakra": 1
+  },
+  "powerRank": 16400,
+  "powerWeights": {
+   "hp": 0.3,
+   "atk": 0.4,
+   "def": 0.1,
+   "speed": 0.15,
+   "chakra": 0.05
+  },
+  "range": "Long",
+  "luck": {
+   "base": 10,
+   "max": 99
+  },
+  "cost": {
+   "base": 120,
+   "max": 36
+  },
+  "affiliation": [
+   "Otsutsuki Clan"
+  ],
+  "passiveIcons": {},
+  "skills": {
+   "fieldSkill": {
+    "name": "Field Skill",
+    "type": "Field",
+    "description": "Boosts Body attacks by 15-750."
+   },
+   "buddySkill": {
+    "name": "Buddy Skill",
+    "type": "Buddy",
+    "description": "Reduces the chance of receiving immobilization by 50% (Not Field Skills)."
+   },
+   "jutsu": {
+    "name": "All-Killing Ash Bones",
+    "type": "Jutsu",
+    "byTier": {
+     "7S": {
+      "chakraCost": 5,
+      "hits": 9,
+      "shape": "H. Rectangle (Thin)",
+      "range": "Long",
+      "position": "Center",
+      "description": "Ignores Substitution with 7x attack toward 1 enemy(s) in range, with a 100% chance of slip damage for 3 turn(s).",
+      "nwusDescription": "Ignores Substitution with 7x attack toward 1 enemy(s) in range, with a 100% chance of slip damage for 3 second(s).",
+      "chakraCostMax": 4
+     }
+    }
+   },
+   "ultimate": {
+    "name": "Expansive Truth-Seeking Ball: Dimension Rift",
+    "type": "Ultimate",
+    "byTier": {
+     "7S": {
+      "chakraCost": 10,
+      "chakraCostMax": 8,
+      "hits": 16,
+      "shape": "Circle",
+      "range": "Vast",
+      "position": "Center",
+      "description": "Removes Perfect Dodge and Barrier and ignores Substitution with 22x attack toward all enemies in range, with a 100% chance of slip damage for 3 turn(s) and a 50% chance of immobilization for 1 turn(s).",
+      "nwusDescription": "Removes Perfect Dodge and Barrier and ignores Substitution with 19x attack toward all enemies in range, with a 100% chance of slip damage for 3 second(s) and a 50% chance of immobilization for 1 second(s).",
+      "effects": {
+       "multiplier": 22
+      }
+     }
+    }
+   }
+  },
+  "abilities": [
+   {
+    "name": "Health Boost",
+    "description": "Boosts max health by 10%."
+   },
+   {
+    "name": "Nullifies Immobilization",
+    "description": "Nullifies immobilization (Not F Skills)."
+   },
+   {
+    "name": "Ignore Substitution",
+    "description": "Attacks ignore the enemy's Substitution Jutsu."
+   },
+   {
+    "name": "Damage Boost Against Wisdom",
+    "description": "Increases damage dealt to Wisdom Elementals by 40%."
+   },
+   {
+    "name": "Damage Boost Against Skill",
+    "description": "Increases damage dealt to Skill Elementals by 40%."
+   },
+   {
+    "name": "Chakra Gauge Reduction",
+    "description": "Reduces chakra consumed by 1."
+   }
+  ],
+  "metadata": {
+   "cardNumber": 9003,
+   "maxLevel": 100,
+   "hitCount": 16
+  },
+  "fx7": {
+   "aura": "assets/characters/kaguya_9003/fx_aura.webp",
+   "glow": "assets/characters/kaguya_9003/fx_glow.webp",
+   "particles": "assets/characters/kaguya_9003/fx_particles.webp",
+   "color": "#c9b6ff",
+   "color2": "#7a4dff"
+  }
+ },
+ {
+  "id": "pain_9004",
+  "name": "Pain",
+  "version": "God of Amegakure",
+  "element": "Wisdom",
+  "rarity": 7,
+  "starMinCode": "7S",
+  "starMaxCode": "7S",
+  "lbEligible": false,
+  "portrait": "assets/characters/pain_9004/portrait_7S.webp",
+  "full": "assets/characters/pain_9004/full_7S.webp",
+  "ultimateAnimation": null,
+  "secretAnimation": null,
+  "artByTier": {
+   "7S": {
+    "portrait": "assets/characters/pain_9004/portrait_7S.webp",
+    "full": "assets/characters/pain_9004/full_7S.webp"
+   }
+  },
+  "statsBase": {
+   "hp": 26000,
+   "atk": 2500,
+   "speed": 182
+  },
+  "statsMax": {
+   "hp": 53000,
+   "atk": 5000,
+   "speed": 365
+  },
+  "growthCurve": {
+   "hp": 1,
+   "atk": 1,
+   "def": 1,
+   "speed": 1,
+   "chakra": 1
+  },
+  "powerRank": 16300,
+  "powerWeights": {
+   "hp": 0.3,
+   "atk": 0.4,
+   "def": 0.1,
+   "speed": 0.15,
+   "chakra": 0.05
+  },
+  "range": "Mid",
+  "luck": {
+   "base": 10,
+   "max": 99
+  },
+  "cost": {
+   "base": 120,
+   "max": 36
+  },
+  "affiliation": [
+   "Akatsuki",
+   "Hidden Rain"
+  ],
+  "passiveIcons": {},
+  "skills": {
+   "fieldSkill": {
+    "name": "Field Skill",
+    "type": "Field",
+    "description": "Boosts Wisdom attacks by 15-750."
+   },
+   "buddySkill": {
+    "name": "Buddy Skill",
+    "type": "Buddy",
+    "description": "Reduces the chance of receiving jutsu sealing by 50% (Not Field Skills)."
+   },
+   "jutsu": {
+    "name": "Almighty Push: Shinra Tensei",
+    "type": "Jutsu",
+    "byTier": {
+     "7S": {
+      "chakraCost": 5,
+      "hits": 8,
+      "shape": "Circle",
+      "range": "Mid",
+      "position": "Center",
+      "description": "Removes Barrier with 8x attack toward all enemies in range, knocking them back, with a 60% chance of immobilization for 1 turn(s).",
+      "nwusDescription": "Removes Barrier with 8x attack toward all enemies in range, knocking them back, with a 60% chance of immobilization for 1 second(s).",
+      "chakraCostMax": 4
+     }
+    }
+   },
+   "ultimate": {
+    "name": "Planetary Devastation: Chibaku Tensei",
+    "type": "Ultimate",
+    "byTier": {
+     "7S": {
+      "chakraCost": 10,
+      "chakraCostMax": 8,
+      "hits": 14,
+      "shape": "H. Rectangle (2/3)",
+      "range": "Vast",
+      "position": "Center",
+      "description": "20x attack toward all enemies in range, knocking them back, with a 100% chance of immobilization for 2 turn(s) and a 80% chance of jutsu sealing for 3 turn(s).",
+      "nwusDescription": "17x attack toward all enemies in range, knocking them back, with a 100% chance of immobilization for 2 second(s) and a 80% chance of jutsu sealing for 3 second(s).",
+      "effects": {
+       "multiplier": 20
+      }
+     }
+    }
+   }
+  },
+  "abilities": [
+   {
+    "name": "Immobilization Rate Boost",
+    "description": "Increases the chance of immobilizing by 20%."
+   },
+   {
+    "name": "Nullifies Knock Back",
+    "description": "Nullifies knock back."
+   },
+   {
+    "name": "Nullifies Jutsu Sealing",
+    "description": "Nullifies jutsu sealing (Not F Skills)."
+   },
+   {
+    "name": "Damage Boost Against Heart",
+    "description": "Increases damage dealt to Heart Elementals by 40%."
+   },
+   {
+    "name": "Damage Boost Against Body",
+    "description": "Increases damage dealt to Body Elementals by 40%."
+   },
+   {
+    "name": "Chakra Gauge Reduction",
+    "description": "Reduces chakra consumed by 1."
+   }
+  ],
+  "metadata": {
+   "cardNumber": 9004,
+   "maxLevel": 100,
+   "hitCount": 14
+  },
+  "fx7": {
+   "aura": "assets/characters/pain_9004/fx_aura.webp",
+   "glow": "assets/characters/pain_9004/fx_glow.webp",
+   "particles": "assets/characters/pain_9004/fx_particles.webp",
+   "color": "#9b6bff",
+   "color2": "#4a2bd0"
+  }
+ },
+ {
   "id": "obito_2201",
   "name": "Obito Uchiha",
   "version": "Shattered Illusion",
@@ -130359,133 +130790,6 @@
   ],
   "metadata": {
    "cardNumber": 2202,
-   "maxLevel": null,
-   "hitCount": 0
-  }
- },
- {
-  "id": "itachi_2203",
-  "name": "Itachi Uchiha",
-  "version": "Crimson Susano'o",
-  "element": "Heart",
-  "rarity": 7,
-  "starMinCode": "6S",
-  "starMaxCode": "7S",
-  "lbEligible": true,
-  "portrait": "assets/characters/itachi_2203/portrait_7S.webp",
-  "full": "assets/characters/itachi_2203/full_7S.webp",
-  "ultimateAnimation": "assets/effects/ultimates/itachi_2203.mp4",
-  "secretAnimation": null,
-  "artByTier": {
-   "6S": {
-    "portrait": "assets/characters/itachi_2203/portrait_7S.webp",
-    "full": "assets/characters/itachi_2203/full_7S.webp"
-   },
-   "7S": {
-    "portrait": "assets/characters/itachi_2203/portrait_7S.webp",
-    "full": "assets/characters/itachi_2203/full_7S.webp"
-   }
-  },
-  "statsBase": {
-   "hp": 26000,
-   "atk": 2600,
-   "speed": 180
-  },
-  "statsMax": {
-   "hp": 52000,
-   "atk": 5200,
-   "speed": 360
-  },
-  "growthCurve": {
-   "hp": 1,
-   "atk": 1,
-   "def": 1,
-   "speed": 1,
-   "chakra": 1
-  },
-  "powerRank": 16000,
-  "powerWeights": {
-   "hp": 0.3,
-   "atk": 0.4,
-   "def": 0.1,
-   "speed": 0.15,
-   "chakra": 0.05
-  },
-  "range": "Short",
-  "luck": {
-   "base": 0,
-   "max": 0
-  },
-  "cost": {
-   "base": 0,
-   "max": 0
-  },
-  "affiliation": [
-   "Hidden Leaf",
-   "Uchiha Clan",
-   "Akatsuki"
-  ],
-  "passiveIcons": {},
-  "skills": {
-   "fieldSkill": {
-    "name": "Field Skill",
-    "type": "Field",
-    "description": "Boosts Heart attacks by 15-750."
-   },
-   "buddySkill": {
-    "name": "Buddy Skill",
-    "type": "Buddy",
-    "description": "Reduces the chance of receiving immobilization by 50% (Not Field Skills)."
-   },
-   "jutsu": {
-    "name": "Susano'o: Yata Mirror",
-    "type": "Jutsu",
-    "byTier": {
-     "6S": {
-      "chakraCost": 4,
-      "hits": 6,
-      "shape": "Circle",
-      "range": "Vast",
-      "position": "Center",
-      "description": "Guards with the Yata Mirror then strikes all enemies in range, removing Barrier and ignoring Substitution with 3.5x attack toward them.",
-      "nwusDescription": "Guards with the Yata Mirror then strikes all enemies in range, removing Perfect Dodge and Barrier and ignoring Substitution, sealing their Ninjutsu for 3 turn(s) with 4x attack toward them. 50% chance of immobilization for 1 second(s)."
-     },
-     "7S": {
-      "chakraCost": 4,
-      "hits": 6,
-      "shape": "Circle",
-      "range": "Vast",
-      "position": "Center",
-      "description": "Guards with the Yata Mirror then strikes all enemies in range, removing Barrier and ignoring Substitution with 3.5x attack toward them.",
-      "nwusDescription": "Guards with the Yata Mirror then strikes all enemies in range, removing Perfect Dodge and Barrier and ignoring Substitution, sealing their Ninjutsu for 3 turn(s) with 4x attack toward them. 50% chance of immobilization for 1 second(s)."
-     }
-    }
-   }
-  },
-  "abilities": [
-   {
-    "name": "0 Chakra Required for Ninjutsu",
-    "description": "35% chance to reduce chakra consumed by Ninjutsu to 0."
-   },
-   {
-    "name": "Speed Boost",
-    "description": "Boosts speed by 40."
-   },
-   {
-    "name": "0 Chakra Required for Ninjutsu",
-    "description": "Another 35% chance to reduce chakra consumed by Ninjutsu to 0."
-   },
-   {
-    "name": "Reduce Damage/Substitution Jutsu",
-    "description": "Reduces damage taken by 30% and gives a 30% chance to dodge a physical attack (not slip damage)."
-   },
-   {
-    "name": "Speed Boost When Health Drops",
-    "description": "Boosts speed by 1.5x when health reaches 50% or less."
-   }
-  ],
-  "metadata": {
-   "cardNumber": 2203,
    "maxLevel": null,
    "hitCount": 0
   }

@@ -330,7 +330,10 @@
       let fxClass = "", fxData = [];
       if (is7Star) { fxClass += " is-7star"; fxData.push("7star"); }
       if (maxed)   { fxClass += " is-maxed"; fxData.push("maxed"); }
-      const fxAttr = fxData.length ? ` data-fx="${fxData.join(" ")}"` : "";
+      // Units with animated 7-star art (fx7): cheap sweep + pulse overlay in the grid
+      const fx7Style = (is7Star && c.fx7) ? ` style="--fx7c:${c.fx7.color || "#c9b6ff"};--fx7m:url('${safeStr(art.portrait, c.portrait)}')"` : "";
+      if (fx7Style) fxData.push("anim7");
+      const fxAttr = (fxData.length ? ` data-fx="${fxData.join(" ")}"` : "") + fx7Style;
       return `
         <button class="char-slot${fxClass}"${fxAttr} type="button" data-uid="${inst.uid}">
           <img class="char-portrait-img" src="${safeStr(art.portrait, c.portrait)}" alt="${c.name} portrait"
@@ -387,6 +390,7 @@
 
     MODAL_IMG.src = safeStr(art.full, art.portrait);
     MODAL_IMG.alt = `${c.name} full artwork`;
+    mountModalAnim(c, tier, art);
 
     renderStatusTab(c, inst, tier);
     renderSkillsTab(c, inst, tier);
@@ -410,7 +414,33 @@
     MODAL.setAttribute("aria-hidden", "false");
     document.body.style.overflow = "hidden";
   }
+  // Animated 7-star art (units with fx7): full layered animation over the
+  // modal art while the modal is open; torn down on close / next unit.
+  const MODAL_ART = MODAL_IMG?.closest(".char-modal-art");
+  let modalArtRO = null;
+  function sizeModalAnim() {
+    if (!MODAL_ART) return;
+    const r = MODAL_ART.getBoundingClientRect();
+    MODAL_ART.style.setProperty("--a7-side", Math.max(0, Math.min(r.width, r.height)) + "px");
+  }
+  function mountModalAnim(c, tier, art) {
+    if (!MODAL_ART || !window.SevenStarAnim) return;
+    if ((starsFromTier(tier) || 0) >= 7 && window.SevenStarAnim.has(c)) {
+      window.SevenStarAnim.mount(MODAL_ART, c, { full: safeStr(art.full, c.full) });
+      sizeModalAnim();
+      if (!modalArtRO && "ResizeObserver" in window) { modalArtRO = new ResizeObserver(sizeModalAnim); modalArtRO.observe(MODAL_ART); }
+    } else {
+      unmountModalAnim();
+    }
+  }
+  function unmountModalAnim() {
+    if (!MODAL_ART || !window.SevenStarAnim) return;
+    window.SevenStarAnim.unmount(MODAL_ART);
+    if (modalArtRO) { modalArtRO.disconnect(); modalArtRO = null; }
+  }
+
   function closeModal() {
+    unmountModalAnim();
     MODAL.classList.remove("open");
     MODAL.setAttribute("aria-hidden", "true");
     document.body.style.overflow = "";

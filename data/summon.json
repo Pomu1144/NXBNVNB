@@ -37,6 +37,42 @@
  },
  "pools": [
   {
+   "id": "feat_kaguya_9003",
+   "name": "Progenitor of All Chakra: Kaguya",
+   "type": "featured",
+   "characters": [],
+   "featured": [
+    "kaguya_9003"
+   ],
+   "description": "The progenitor descends. Featured ★7 Kaguya Otsutsuki — Progenitor of All Chakra.",
+   "image": "assets/banners/generated/banner_kaguya_9003.webp",
+   "includeStandardPool": true
+  },
+  {
+   "id": "feat_pain_9004",
+   "name": "God of Amegakure: Pain",
+   "type": "featured",
+   "characters": [],
+   "featured": [
+    "pain_9004"
+   ],
+   "description": "Know pain. Featured ★7 Pain — God of Amegakure.",
+   "image": "assets/banners/generated/banner_pain_9004.webp",
+   "includeStandardPool": true
+  },
+  {
+   "id": "feat_jiraiya_9001",
+   "name": "Gallant Sage of Mount Myoboku: Jiraiya",
+   "type": "featured",
+   "characters": [],
+   "featured": [
+    "jiraiya_9001"
+   ],
+   "description": "The Gallant Sage arrives. Featured ★7 Jiraiya — Gallant Sage of Mount Myoboku.",
+   "image": "assets/banners/generated/banner_jiraiya_9001.webp",
+   "includeStandardPool": true
+  },
+  {
    "id": "feat_hinata_ceaseless",
    "name": "Beyond the Ceaseless: Hinata",
    "type": "featured",
