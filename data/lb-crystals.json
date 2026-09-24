@@ -1,0 +1,1839 @@
+{
+ "version": 1,
+ "source": "Naruto Blazing asset archive, Drive folder \"LB Crystals\" (extracted game assets)",
+ "rules": {
+  "match": "A crystal counts only for units whose name is in its appliesTo list (same character, any version).",
+  "variants": "Blue (5-star) crystals work at tiers 6S and 6SB; gold (6-star) crystals work at every limit-break tier.",
+  "spendOrder": "Character crystals are spent before generic Limit Break Crystals; blue before gold when both fit.",
+  "element": "Most common element across the character's units in data/characters.json (ties: Heart, Skill, Body, Bravery, Wisdom)."
+ },
+ "variants": {
+  "blue": {
+   "label": "Blue",
+   "grade": 5,
+   "tiers": [
+    "6S",
+    "6SB"
+   ]
+  },
+  "gold": {
+   "label": "Gold",
+   "grade": 6,
+   "tiers": [
+    "6S",
+    "6SB",
+    "7S",
+    "7SL",
+    "8S",
+    "8SM",
+    "9S",
+    "9ST",
+    "10SO"
+   ]
+  }
+ },
+ "prices": {
+  "blue": {
+   "ryo": 25000
+  },
+  "gold": {
+   "ryo": 60000
+  }
+ },
+ "crystals": [
+  {
+   "id": "lb_crystal_naruto_uzumaki_1",
+   "character": "Naruto Uzumaki",
+   "appliesTo": [
+    "Naruto Uzumaki"
+   ],
+   "element": "Heart",
+   "archive": {
+    "blue": 15058,
+    "gold": 15059
+   },
+   "units": 74,
+   "blue": "assets/items/lb_crystals/lb_crystal_naruto_uzumaki_1_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_naruto_uzumaki_1_gold.webp"
+  },
+  {
+   "id": "lb_crystal_sasuke_uchiha_1",
+   "character": "Sasuke Uchiha",
+   "appliesTo": [
+    "Sasuke Uchiha"
+   ],
+   "element": "Skill",
+   "archive": {
+    "blue": 15060,
+    "gold": 15061
+   },
+   "units": 63,
+   "blue": "assets/items/lb_crystals/lb_crystal_sasuke_uchiha_1_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_sasuke_uchiha_1_gold.webp"
+  },
+  {
+   "id": "lb_crystal_kakashi_hatake_1",
+   "character": "Kakashi Hatake",
+   "appliesTo": [
+    "Kakashi Hatake"
+   ],
+   "element": "Body",
+   "archive": {
+    "blue": 15062,
+    "gold": 15063
+   },
+   "units": 35,
+   "blue": "assets/items/lb_crystals/lb_crystal_kakashi_hatake_1_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_kakashi_hatake_1_gold.webp"
+  },
+  {
+   "id": "lb_crystal_gaara_1",
+   "character": "Gaara",
+   "appliesTo": [
+    "Gaara"
+   ],
+   "element": "Bravery",
+   "archive": {
+    "blue": 15064,
+    "gold": 15065
+   },
+   "units": 21,
+   "blue": "assets/items/lb_crystals/lb_crystal_gaara_1_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_gaara_1_gold.webp"
+  },
+  {
+   "id": "lb_crystal_haku_1",
+   "character": "Haku",
+   "appliesTo": [
+    "Haku"
+   ],
+   "element": "Skill",
+   "archive": {
+    "blue": 15071,
+    "gold": 15072
+   },
+   "units": 10,
+   "blue": "assets/items/lb_crystals/lb_crystal_haku_1_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_haku_1_gold.webp"
+  },
+  {
+   "id": "lb_crystal_zabuza_momochi_1",
+   "character": "Zabuza Momochi",
+   "appliesTo": [
+    "Zabuza Momochi"
+   ],
+   "element": "Wisdom",
+   "archive": {
+    "blue": 15073,
+    "gold": 15074
+   },
+   "units": 10,
+   "blue": "assets/items/lb_crystals/lb_crystal_zabuza_momochi_1_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_zabuza_momochi_1_gold.webp"
+  },
+  {
+   "id": "lb_crystal_sakura_haruno_1",
+   "character": "Sakura Haruno",
+   "appliesTo": [
+    "Sakura Haruno"
+   ],
+   "element": "Wisdom",
+   "archive": {
+    "blue": 15075,
+    "gold": 15076
+   },
+   "units": 35,
+   "blue": "assets/items/lb_crystals/lb_crystal_sakura_haruno_1_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_sakura_haruno_1_gold.webp"
+  },
+  {
+   "id": "lb_crystal_kakashi_hatake_2",
+   "character": "Kakashi Hatake",
+   "appliesTo": [
+    "Kakashi Hatake"
+   ],
+   "element": "Body",
+   "archive": {
+    "blue": 15077,
+    "gold": 15078
+   },
+   "units": 35,
+   "blue": "assets/items/lb_crystals/lb_crystal_kakashi_hatake_2_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_kakashi_hatake_2_gold.webp"
+  },
+  {
+   "id": "lb_crystal_neji_hyuga_1",
+   "character": "Neji Hyuga",
+   "appliesTo": [
+    "Neji Hyuga"
+   ],
+   "element": "Body",
+   "archive": {
+    "blue": 15082,
+    "gold": 15083
+   },
+   "units": 10,
+   "blue": "assets/items/lb_crystals/lb_crystal_neji_hyuga_1_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_neji_hyuga_1_gold.webp"
+  },
+  {
+   "id": "lb_crystal_kakashi_hatake_3",
+   "character": "Kakashi Hatake",
+   "appliesTo": [
+    "Kakashi Hatake"
+   ],
+   "element": "Body",
+   "archive": {
+    "blue": 15084,
+    "gold": 15085
+   },
+   "units": 35,
+   "blue": "assets/items/lb_crystals/lb_crystal_kakashi_hatake_3_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_kakashi_hatake_3_gold.webp"
+  },
+  {
+   "id": "lb_crystal_rock_lee_1",
+   "character": "Rock Lee",
+   "appliesTo": [
+    "Rock Lee"
+   ],
+   "element": "Body",
+   "archive": {
+    "blue": 15086,
+    "gold": 15087
+   },
+   "units": 11,
+   "blue": "assets/items/lb_crystals/lb_crystal_rock_lee_1_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_rock_lee_1_gold.webp"
+  },
+  {
+   "id": "lb_crystal_sasuke_uchiha_2",
+   "character": "Sasuke Uchiha",
+   "appliesTo": [
+    "Sasuke Uchiha"
+   ],
+   "element": "Skill",
+   "archive": {
+    "blue": 15088,
+    "gold": 15089
+   },
+   "units": 63,
+   "blue": "assets/items/lb_crystals/lb_crystal_sasuke_uchiha_2_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_sasuke_uchiha_2_gold.webp"
+  },
+  {
+   "id": "lb_crystal_naruto_uzumaki_2",
+   "character": "Naruto Uzumaki",
+   "appliesTo": [
+    "Naruto Uzumaki"
+   ],
+   "element": "Heart",
+   "archive": {
+    "blue": 15090,
+    "gold": 15091
+   },
+   "units": 74,
+   "blue": "assets/items/lb_crystals/lb_crystal_naruto_uzumaki_2_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_naruto_uzumaki_2_gold.webp"
+  },
+  {
+   "id": "lb_crystal_jirobo_1",
+   "character": "Jirobo",
+   "appliesTo": [
+    "Jirobo"
+   ],
+   "element": "Heart",
+   "archive": {
+    "blue": 15092,
+    "gold": 15093
+   },
+   "units": 6,
+   "blue": "assets/items/lb_crystals/lb_crystal_jirobo_1_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_jirobo_1_gold.webp"
+  },
+  {
+   "id": "lb_crystal_kidomaru_1",
+   "character": "Kidomaru",
+   "appliesTo": [
+    "Kidomaru"
+   ],
+   "element": "Heart",
+   "archive": {
+    "blue": 15094,
+    "gold": 15095
+   },
+   "units": 6,
+   "blue": "assets/items/lb_crystals/lb_crystal_kidomaru_1_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_kidomaru_1_gold.webp"
+  },
+  {
+   "id": "lb_crystal_tsunade_1",
+   "character": "Tsunade",
+   "appliesTo": [
+    "Tsunade"
+   ],
+   "element": "Skill",
+   "archive": {
+    "blue": 15096,
+    "gold": 15097
+   },
+   "units": 17,
+   "blue": "assets/items/lb_crystals/lb_crystal_tsunade_1_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_tsunade_1_gold.webp"
+  },
+  {
+   "id": "lb_crystal_sai_1",
+   "character": "Sai",
+   "appliesTo": [
+    "Sai"
+   ],
+   "element": "Heart",
+   "archive": {
+    "blue": 15098,
+    "gold": 15099
+   },
+   "units": 6,
+   "blue": "assets/items/lb_crystals/lb_crystal_sai_1_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_sai_1_gold.webp"
+  },
+  {
+   "id": "lb_crystal_sakon_1",
+   "character": "Sakon",
+   "appliesTo": [
+    "Sakon",
+    "Ukon/Sakon"
+   ],
+   "element": "Skill",
+   "archive": {
+    "blue": 15100,
+    "gold": 15101
+   },
+   "units": 6,
+   "blue": "assets/items/lb_crystals/lb_crystal_sakon_1_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_sakon_1_gold.webp"
+  },
+  {
+   "id": "lb_crystal_orochimaru_1",
+   "character": "Orochimaru",
+   "appliesTo": [
+    "Orochimaru"
+   ],
+   "element": "Skill",
+   "archive": {
+    "blue": 15102,
+    "gold": 15103
+   },
+   "units": 16,
+   "blue": "assets/items/lb_crystals/lb_crystal_orochimaru_1_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_orochimaru_1_gold.webp"
+  },
+  {
+   "id": "lb_crystal_sasuke_uchiha_3",
+   "character": "Sasuke Uchiha",
+   "appliesTo": [
+    "Sasuke Uchiha"
+   ],
+   "element": "Skill",
+   "archive": {
+    "blue": 15104,
+    "gold": 15105
+   },
+   "units": 63,
+   "blue": "assets/items/lb_crystals/lb_crystal_sasuke_uchiha_3_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_sasuke_uchiha_3_gold.webp"
+  },
+  {
+   "id": "lb_crystal_gaara_2",
+   "character": "Gaara",
+   "appliesTo": [
+    "Gaara"
+   ],
+   "element": "Bravery",
+   "archive": {
+    "blue": 15106,
+    "gold": 15107
+   },
+   "units": 21,
+   "blue": "assets/items/lb_crystals/lb_crystal_gaara_2_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_gaara_2_gold.webp"
+  },
+  {
+   "id": "lb_crystal_hiruzen_sarutobi_1",
+   "character": "Hiruzen Sarutobi",
+   "appliesTo": [
+    "Hiruzen Sarutobi"
+   ],
+   "element": "Heart",
+   "archive": {
+    "blue": 15110,
+    "gold": 15111
+   },
+   "units": 7,
+   "blue": "assets/items/lb_crystals/lb_crystal_hiruzen_sarutobi_1_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_hiruzen_sarutobi_1_gold.webp"
+  },
+  {
+   "id": "lb_crystal_sasuke_uchiha_4",
+   "character": "Sasuke Uchiha",
+   "appliesTo": [
+    "Sasuke Uchiha"
+   ],
+   "element": "Skill",
+   "archive": {
+    "blue": 15112,
+    "gold": 15113
+   },
+   "units": 63,
+   "blue": "assets/items/lb_crystals/lb_crystal_sasuke_uchiha_4_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_sasuke_uchiha_4_gold.webp"
+  },
+  {
+   "id": "lb_crystal_hinata_hyuga_1",
+   "character": "Hinata Hyuga",
+   "appliesTo": [
+    "Hinata Hyuga"
+   ],
+   "element": "Wisdom",
+   "archive": {
+    "blue": 15114,
+    "gold": 15115
+   },
+   "units": 25,
+   "blue": "assets/items/lb_crystals/lb_crystal_hinata_hyuga_1_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_hinata_hyuga_1_gold.webp"
+  },
+  {
+   "id": "lb_crystal_itachi_uchiha_1",
+   "character": "Itachi Uchiha",
+   "appliesTo": [
+    "Itachi Uchiha"
+   ],
+   "element": "Heart",
+   "archive": {
+    "blue": 15116,
+    "gold": 15117
+   },
+   "units": 31,
+   "blue": "assets/items/lb_crystals/lb_crystal_itachi_uchiha_1_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_itachi_uchiha_1_gold.webp"
+  },
+  {
+   "id": "lb_crystal_might_guy_1",
+   "character": "Might Guy",
+   "appliesTo": [
+    "Might Guy"
+   ],
+   "element": "Bravery",
+   "archive": {
+    "blue": 15118,
+    "gold": 15119
+   },
+   "units": 14,
+   "blue": "assets/items/lb_crystals/lb_crystal_might_guy_1_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_might_guy_1_gold.webp"
+  },
+  {
+   "id": "lb_crystal_choji_akimichi_1",
+   "character": "Choji Akimichi",
+   "appliesTo": [
+    "Choji Akimichi"
+   ],
+   "element": "Body",
+   "archive": {
+    "blue": 15122,
+    "gold": 15123
+   },
+   "units": 12,
+   "blue": "assets/items/lb_crystals/lb_crystal_choji_akimichi_1_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_choji_akimichi_1_gold.webp"
+  },
+  {
+   "id": "lb_crystal_kimimaro_1",
+   "character": "Kimimaro",
+   "appliesTo": [
+    "Kimimaro"
+   ],
+   "element": "Skill",
+   "archive": {
+    "blue": 15134,
+    "gold": 15135
+   },
+   "units": 9,
+   "identification": "medium",
+   "blue": "assets/items/lb_crystals/lb_crystal_kimimaro_1_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_kimimaro_1_gold.webp"
+  },
+  {
+   "id": "lb_crystal_kakashi_hatake_4",
+   "character": "Kakashi Hatake",
+   "appliesTo": [
+    "Kakashi Hatake"
+   ],
+   "element": "Body",
+   "archive": {
+    "blue": 15136,
+    "gold": 15137
+   },
+   "units": 35,
+   "blue": "assets/items/lb_crystals/lb_crystal_kakashi_hatake_4_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_kakashi_hatake_4_gold.webp"
+  },
+  {
+   "id": "lb_crystal_obito_uchiha_1",
+   "character": "Obito Uchiha",
+   "appliesTo": [
+    "Obito Uchiha",
+    "Tobi",
+    "Masked Man"
+   ],
+   "element": "Skill",
+   "archive": {
+    "blue": 15138,
+    "gold": 15139
+   },
+   "units": 36,
+   "blue": "assets/items/lb_crystals/lb_crystal_obito_uchiha_1_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_obito_uchiha_1_gold.webp"
+  },
+  {
+   "id": "lb_crystal_rin_nohara_1",
+   "character": "Rin Nohara",
+   "appliesTo": [
+    "Rin Nohara"
+   ],
+   "element": "Body",
+   "archive": {
+    "blue": 15140,
+    "gold": 15141
+   },
+   "units": 6,
+   "blue": "assets/items/lb_crystals/lb_crystal_rin_nohara_1_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_rin_nohara_1_gold.webp"
+  },
+  {
+   "id": "lb_crystal_deidara_1",
+   "character": "Deidara",
+   "appliesTo": [
+    "Deidara"
+   ],
+   "element": "Wisdom",
+   "archive": {
+    "blue": 15144,
+    "gold": 15145
+   },
+   "units": 15,
+   "blue": "assets/items/lb_crystals/lb_crystal_deidara_1_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_deidara_1_gold.webp"
+  },
+  {
+   "id": "lb_crystal_sasori_1",
+   "character": "Sasori",
+   "appliesTo": [
+    "Sasori"
+   ],
+   "element": "Bravery",
+   "archive": {
+    "blue": 15146,
+    "gold": 15147
+   },
+   "units": 12,
+   "blue": "assets/items/lb_crystals/lb_crystal_sasori_1_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_sasori_1_gold.webp"
+  },
+  {
+   "id": "lb_crystal_naruto_uzumaki_3",
+   "character": "Naruto Uzumaki",
+   "appliesTo": [
+    "Naruto Uzumaki"
+   ],
+   "element": "Heart",
+   "archive": {
+    "blue": 15152,
+    "gold": 15153
+   },
+   "units": 74,
+   "blue": "assets/items/lb_crystals/lb_crystal_naruto_uzumaki_3_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_naruto_uzumaki_3_gold.webp"
+  },
+  {
+   "id": "lb_crystal_sakura_haruno_2",
+   "character": "Sakura Haruno",
+   "appliesTo": [
+    "Sakura Haruno"
+   ],
+   "element": "Wisdom",
+   "archive": {
+    "blue": 15154,
+    "gold": 15155
+   },
+   "units": 35,
+   "blue": "assets/items/lb_crystals/lb_crystal_sakura_haruno_2_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_sakura_haruno_2_gold.webp"
+  },
+  {
+   "id": "lb_crystal_hashirama_senju_1",
+   "character": "Hashirama Senju",
+   "appliesTo": [
+    "Hashirama Senju"
+   ],
+   "element": "Heart",
+   "archive": {
+    "blue": 15156,
+    "gold": 15157
+   },
+   "units": 15,
+   "blue": "assets/items/lb_crystals/lb_crystal_hashirama_senju_1_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_hashirama_senju_1_gold.webp"
+  },
+  {
+   "id": "lb_crystal_tobirama_senju_1",
+   "character": "Tobirama Senju",
+   "appliesTo": [
+    "Tobirama Senju"
+   ],
+   "element": "Bravery",
+   "archive": {
+    "blue": 15158,
+    "gold": 15159
+   },
+   "units": 12,
+   "blue": "assets/items/lb_crystals/lb_crystal_tobirama_senju_1_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_tobirama_senju_1_gold.webp"
+  },
+  {
+   "id": "lb_crystal_ino_yamanaka_1",
+   "character": "Ino Yamanaka",
+   "appliesTo": [
+    "Ino Yamanaka"
+   ],
+   "element": "Heart",
+   "archive": {
+    "blue": 15160,
+    "gold": 15161
+   },
+   "units": 16,
+   "blue": "assets/items/lb_crystals/lb_crystal_ino_yamanaka_1_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_ino_yamanaka_1_gold.webp"
+  },
+  {
+   "id": "lb_crystal_sasuke_uchiha_5",
+   "character": "Sasuke Uchiha",
+   "appliesTo": [
+    "Sasuke Uchiha"
+   ],
+   "element": "Skill",
+   "archive": {
+    "blue": 15162,
+    "gold": 15163
+   },
+   "units": 63,
+   "identification": "medium",
+   "blue": "assets/items/lb_crystals/lb_crystal_sasuke_uchiha_5_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_sasuke_uchiha_5_gold.webp"
+  },
+  {
+   "id": "lb_crystal_yamato_1",
+   "character": "Yamato",
+   "appliesTo": [
+    "Yamato",
+    "Tenzo"
+   ],
+   "element": "Heart",
+   "archive": {
+    "blue": 15166,
+    "gold": 15167
+   },
+   "units": 6,
+   "blue": "assets/items/lb_crystals/lb_crystal_yamato_1_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_yamato_1_gold.webp"
+  },
+  {
+   "id": "lb_crystal_shikamaru_nara_1",
+   "character": "Shikamaru Nara",
+   "appliesTo": [
+    "Shikamaru Nara"
+   ],
+   "element": "Skill",
+   "archive": {
+    "blue": 15168,
+    "gold": 15169
+   },
+   "units": 18,
+   "blue": "assets/items/lb_crystals/lb_crystal_shikamaru_nara_1_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_shikamaru_nara_1_gold.webp"
+  },
+  {
+   "id": "lb_crystal_naruto_uzumaki_4",
+   "character": "Naruto Uzumaki",
+   "appliesTo": [
+    "Naruto Uzumaki"
+   ],
+   "element": "Heart",
+   "archive": {
+    "blue": 15174,
+    "gold": 15175
+   },
+   "units": 74,
+   "blue": "assets/items/lb_crystals/lb_crystal_naruto_uzumaki_4_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_naruto_uzumaki_4_gold.webp"
+  },
+  {
+   "id": "lb_crystal_gengo_1",
+   "character": "Gengo",
+   "appliesTo": [
+    "Gengo"
+   ],
+   "element": "Bravery",
+   "archive": {
+    "blue": 15180,
+    "gold": 15181
+   },
+   "units": 2,
+   "blue": "assets/items/lb_crystals/lb_crystal_gengo_1_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_gengo_1_gold.webp"
+  },
+  {
+   "id": "lb_crystal_itachi_uchiha_2",
+   "character": "Itachi Uchiha",
+   "appliesTo": [
+    "Itachi Uchiha"
+   ],
+   "element": "Heart",
+   "archive": {
+    "blue": 15193,
+    "gold": 15194
+   },
+   "units": 31,
+   "blue": "assets/items/lb_crystals/lb_crystal_itachi_uchiha_2_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_itachi_uchiha_2_gold.webp"
+  },
+  {
+   "id": "lb_crystal_kisame_hoshigaki_1",
+   "character": "Kisame Hoshigaki",
+   "appliesTo": [
+    "Kisame Hoshigaki"
+   ],
+   "element": "Body",
+   "archive": {
+    "blue": 15195,
+    "gold": 15196
+   },
+   "units": 10,
+   "blue": "assets/items/lb_crystals/lb_crystal_kisame_hoshigaki_1_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_kisame_hoshigaki_1_gold.webp"
+  },
+  {
+   "id": "lb_crystal_yugito_ni_i_1",
+   "character": "Yugito Ni'i",
+   "appliesTo": [
+    "Yugito Ni'i"
+   ],
+   "element": "Heart",
+   "archive": {
+    "blue": 15197,
+    "gold": 15198
+   },
+   "units": 4,
+   "blue": "assets/items/lb_crystals/lb_crystal_yugito_ni_i_1_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_yugito_ni_i_1_gold.webp"
+  },
+  {
+   "id": "lb_crystal_pain_1",
+   "character": "Pain",
+   "appliesTo": [
+    "Pain"
+   ],
+   "element": "Heart",
+   "archive": {
+    "blue": 15199,
+    "gold": 15200
+   },
+   "units": 24,
+   "blue": "assets/items/lb_crystals/lb_crystal_pain_1_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_pain_1_gold.webp"
+  },
+  {
+   "id": "lb_crystal_obito_uchiha_2",
+   "character": "Obito Uchiha",
+   "appliesTo": [
+    "Obito Uchiha",
+    "Tobi",
+    "Masked Man"
+   ],
+   "element": "Skill",
+   "archive": {
+    "blue": 15201,
+    "gold": 15202
+   },
+   "units": 36,
+   "blue": "assets/items/lb_crystals/lb_crystal_obito_uchiha_2_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_obito_uchiha_2_gold.webp"
+  },
+  {
+   "id": "lb_crystal_kabuto_yakushi_1",
+   "character": "Kabuto Yakushi",
+   "appliesTo": [
+    "Kabuto Yakushi"
+   ],
+   "element": "Skill",
+   "archive": {
+    "blue": 15203,
+    "gold": 15204
+   },
+   "units": 13,
+   "blue": "assets/items/lb_crystals/lb_crystal_kabuto_yakushi_1_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_kabuto_yakushi_1_gold.webp"
+  },
+  {
+   "id": "lb_crystal_obito_uchiha_3",
+   "character": "Obito Uchiha",
+   "appliesTo": [
+    "Obito Uchiha",
+    "Tobi",
+    "Masked Man"
+   ],
+   "element": "Skill",
+   "archive": {
+    "blue": 15205,
+    "gold": 15206
+   },
+   "units": 36,
+   "blue": "assets/items/lb_crystals/lb_crystal_obito_uchiha_3_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_obito_uchiha_3_gold.webp"
+  },
+  {
+   "id": "lb_crystal_haku_2",
+   "character": "Haku",
+   "appliesTo": [
+    "Haku"
+   ],
+   "element": "Skill",
+   "archive": {
+    "blue": 15207,
+    "gold": 15208
+   },
+   "units": 10,
+   "blue": "assets/items/lb_crystals/lb_crystal_haku_2_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_haku_2_gold.webp"
+  },
+  {
+   "id": "lb_crystal_madara_uchiha_1",
+   "character": "Madara Uchiha",
+   "appliesTo": [
+    "Madara Uchiha"
+   ],
+   "element": "Bravery",
+   "archive": {
+    "blue": 15209,
+    "gold": 15210
+   },
+   "units": 32,
+   "blue": "assets/items/lb_crystals/lb_crystal_madara_uchiha_1_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_madara_uchiha_1_gold.webp"
+  },
+  {
+   "id": "lb_crystal_sasuke_uchiha_6",
+   "character": "Sasuke Uchiha",
+   "appliesTo": [
+    "Sasuke Uchiha"
+   ],
+   "element": "Skill",
+   "archive": {
+    "blue": 15211,
+    "gold": 15212
+   },
+   "units": 63,
+   "blue": "assets/items/lb_crystals/lb_crystal_sasuke_uchiha_6_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_sasuke_uchiha_6_gold.webp"
+  },
+  {
+   "id": "lb_crystal_karin_1",
+   "character": "Karin",
+   "appliesTo": [
+    "Karin"
+   ],
+   "element": "Skill",
+   "archive": {
+    "blue": 15213,
+    "gold": 15214
+   },
+   "units": 5,
+   "blue": "assets/items/lb_crystals/lb_crystal_karin_1_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_karin_1_gold.webp"
+  },
+  {
+   "id": "lb_crystal_hidan_1",
+   "character": "Hidan",
+   "appliesTo": [
+    "Hidan"
+   ],
+   "element": "Skill",
+   "archive": {
+    "blue": 15215,
+    "gold": 15216
+   },
+   "units": 4,
+   "blue": "assets/items/lb_crystals/lb_crystal_hidan_1_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_hidan_1_gold.webp"
+  },
+  {
+   "id": "lb_crystal_kakuzu_1",
+   "character": "Kakuzu",
+   "appliesTo": [
+    "Kakuzu"
+   ],
+   "element": "Skill",
+   "archive": {
+    "blue": 15217,
+    "gold": 15218
+   },
+   "units": 5,
+   "blue": "assets/items/lb_crystals/lb_crystal_kakuzu_1_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_kakuzu_1_gold.webp"
+  },
+  {
+   "id": "lb_crystal_kakashi_hatake_5",
+   "character": "Kakashi Hatake",
+   "appliesTo": [
+    "Kakashi Hatake"
+   ],
+   "element": "Body",
+   "archive": {
+    "blue": 15219,
+    "gold": 15220
+   },
+   "units": 35,
+   "blue": "assets/items/lb_crystals/lb_crystal_kakashi_hatake_5_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_kakashi_hatake_5_gold.webp"
+  },
+  {
+   "id": "lb_crystal_might_guy_2",
+   "character": "Might Guy",
+   "appliesTo": [
+    "Might Guy"
+   ],
+   "element": "Bravery",
+   "archive": {
+    "blue": 15221,
+    "gold": 15222
+   },
+   "units": 14,
+   "blue": "assets/items/lb_crystals/lb_crystal_might_guy_2_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_might_guy_2_gold.webp"
+  },
+  {
+   "id": "lb_crystal_hanzo_1",
+   "character": "Hanzo",
+   "appliesTo": [
+    "Hanzo"
+   ],
+   "element": "Skill",
+   "archive": {
+    "blue": 15223,
+    "gold": 15224
+   },
+   "units": 4,
+   "blue": "assets/items/lb_crystals/lb_crystal_hanzo_1_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_hanzo_1_gold.webp"
+  },
+  {
+   "id": "lb_crystal_third_raikage_ay_1",
+   "character": "Third Raikage: Ay",
+   "appliesTo": [
+    "Third Raikage: Ay"
+   ],
+   "element": "Body",
+   "archive": {
+    "blue": 15225,
+    "gold": 15226
+   },
+   "units": 2,
+   "blue": "assets/items/lb_crystals/lb_crystal_third_raikage_ay_1_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_third_raikage_ay_1_gold.webp"
+  },
+  {
+   "id": "lb_crystal_jiraiya_1",
+   "character": "Jiraiya",
+   "appliesTo": [
+    "Jiraiya"
+   ],
+   "element": "Heart",
+   "archive": {
+    "blue": 15227,
+    "gold": 15228
+   },
+   "units": 15,
+   "blue": "assets/items/lb_crystals/lb_crystal_jiraiya_1_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_jiraiya_1_gold.webp"
+  },
+  {
+   "id": "lb_crystal_konan_1",
+   "character": "Konan",
+   "appliesTo": [
+    "Konan"
+   ],
+   "element": "Wisdom",
+   "archive": {
+    "blue": 15229,
+    "gold": 15230
+   },
+   "units": 12,
+   "blue": "assets/items/lb_crystals/lb_crystal_konan_1_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_konan_1_gold.webp"
+  },
+  {
+   "id": "lb_crystal_sasuke_uchiha_7",
+   "character": "Sasuke Uchiha",
+   "appliesTo": [
+    "Sasuke Uchiha"
+   ],
+   "element": "Skill",
+   "archive": {
+    "blue": 15231,
+    "gold": 15232
+   },
+   "units": 63,
+   "blue": "assets/items/lb_crystals/lb_crystal_sasuke_uchiha_7_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_sasuke_uchiha_7_gold.webp"
+  },
+  {
+   "id": "lb_crystal_gengetsu_hozuki_1",
+   "character": "Gengetsu Hozuki",
+   "appliesTo": [
+    "Gengetsu Hozuki"
+   ],
+   "element": "Heart",
+   "archive": {
+    "blue": 15233,
+    "gold": 15234
+   },
+   "units": 2,
+   "blue": "assets/items/lb_crystals/lb_crystal_gengetsu_hozuki_1_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_gengetsu_hozuki_1_gold.webp"
+  },
+  {
+   "id": "lb_crystal_naruto_uzumaki_5",
+   "character": "Naruto Uzumaki",
+   "appliesTo": [
+    "Naruto Uzumaki"
+   ],
+   "element": "Heart",
+   "archive": {
+    "blue": 15235,
+    "gold": 15236
+   },
+   "units": 74,
+   "blue": "assets/items/lb_crystals/lb_crystal_naruto_uzumaki_5_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_naruto_uzumaki_5_gold.webp"
+  },
+  {
+   "id": "lb_crystal_konohamaru_sarutobi_1",
+   "character": "Konohamaru Sarutobi",
+   "appliesTo": [
+    "Konohamaru Sarutobi"
+   ],
+   "element": "Bravery",
+   "archive": {
+    "blue": 15237,
+    "gold": 15238
+   },
+   "units": 4,
+   "blue": "assets/items/lb_crystals/lb_crystal_konohamaru_sarutobi_1_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_konohamaru_sarutobi_1_gold.webp"
+  },
+  {
+   "id": "lb_crystal_fourth_raikage_ay_1",
+   "character": "Fourth Raikage: Ay",
+   "appliesTo": [
+    "Fourth Raikage: Ay"
+   ],
+   "element": "Heart",
+   "archive": {
+    "blue": 15239,
+    "gold": 15240
+   },
+   "units": 4,
+   "blue": "assets/items/lb_crystals/lb_crystal_fourth_raikage_ay_1_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_fourth_raikage_ay_1_gold.webp"
+  },
+  {
+   "id": "lb_crystal_mei_terumi_1",
+   "character": "Mei Terumi",
+   "appliesTo": [
+    "Mei Terumi"
+   ],
+   "element": "Bravery",
+   "archive": {
+    "blue": 15241,
+    "gold": 15242
+   },
+   "units": 3,
+   "blue": "assets/items/lb_crystals/lb_crystal_mei_terumi_1_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_mei_terumi_1_gold.webp"
+  },
+  {
+   "id": "lb_crystal_kaguya_otsutsuki_1",
+   "character": "Kaguya Otsutsuki",
+   "appliesTo": [
+    "Kaguya Otsutsuki"
+   ],
+   "element": "Bravery",
+   "archive": {
+    "blue": 15243,
+    "gold": 15244
+   },
+   "units": 12,
+   "blue": "assets/items/lb_crystals/lb_crystal_kaguya_otsutsuki_1_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_kaguya_otsutsuki_1_gold.webp"
+  },
+  {
+   "id": "lb_crystal_tsunade_2",
+   "character": "Tsunade",
+   "appliesTo": [
+    "Tsunade"
+   ],
+   "element": "Skill",
+   "archive": {
+    "blue": 15245,
+    "gold": 15246
+   },
+   "units": 17,
+   "blue": "assets/items/lb_crystals/lb_crystal_tsunade_2_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_tsunade_2_gold.webp"
+  },
+  {
+   "id": "lb_crystal_sasuke_uchiha_8",
+   "character": "Sasuke Uchiha",
+   "appliesTo": [
+    "Sasuke Uchiha"
+   ],
+   "element": "Skill",
+   "archive": {
+    "blue": 15247,
+    "gold": 15248
+   },
+   "units": 63,
+   "blue": "assets/items/lb_crystals/lb_crystal_sasuke_uchiha_8_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_sasuke_uchiha_8_gold.webp"
+  },
+  {
+   "id": "lb_crystal_ohnoki_1",
+   "character": "Ohnoki",
+   "appliesTo": [
+    "Ohnoki"
+   ],
+   "element": "Skill",
+   "archive": {
+    "blue": 15249,
+    "gold": 15250
+   },
+   "units": 2,
+   "blue": "assets/items/lb_crystals/lb_crystal_ohnoki_1_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_ohnoki_1_gold.webp"
+  },
+  {
+   "id": "lb_crystal_naruto_uzumaki_6",
+   "character": "Naruto Uzumaki",
+   "appliesTo": [
+    "Naruto Uzumaki"
+   ],
+   "element": "Heart",
+   "archive": {
+    "blue": 15251,
+    "gold": 15252
+   },
+   "units": 74,
+   "blue": "assets/items/lb_crystals/lb_crystal_naruto_uzumaki_6_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_naruto_uzumaki_6_gold.webp"
+  },
+  {
+   "id": "lb_crystal_darui_1",
+   "character": "Darui",
+   "appliesTo": [
+    "Darui"
+   ],
+   "element": "Skill",
+   "archive": {
+    "blue": 15253,
+    "gold": 15254
+   },
+   "units": 7,
+   "blue": "assets/items/lb_crystals/lb_crystal_darui_1_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_darui_1_gold.webp"
+  },
+  {
+   "id": "lb_crystal_roshi_1",
+   "character": "Roshi",
+   "appliesTo": [
+    "Roshi"
+   ],
+   "element": "Body",
+   "archive": {
+    "blue": 15255,
+    "gold": 15256
+   },
+   "units": 4,
+   "blue": "assets/items/lb_crystals/lb_crystal_roshi_1_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_roshi_1_gold.webp"
+  },
+  {
+   "id": "lb_crystal_sasuke_uchiha_9",
+   "character": "Sasuke Uchiha",
+   "appliesTo": [
+    "Sasuke Uchiha"
+   ],
+   "element": "Skill",
+   "archive": {
+    "blue": 15257,
+    "gold": 15258
+   },
+   "units": 63,
+   "blue": "assets/items/lb_crystals/lb_crystal_sasuke_uchiha_9_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_sasuke_uchiha_9_gold.webp"
+  },
+  {
+   "id": "lb_crystal_itachi_uchiha_3",
+   "character": "Itachi Uchiha",
+   "appliesTo": [
+    "Itachi Uchiha"
+   ],
+   "element": "Heart",
+   "archive": {
+    "blue": 15259,
+    "gold": 15260
+   },
+   "units": 31,
+   "blue": "assets/items/lb_crystals/lb_crystal_itachi_uchiha_3_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_itachi_uchiha_3_gold.webp"
+  },
+  {
+   "id": "lb_crystal_naruto_uzumaki_7",
+   "character": "Naruto Uzumaki",
+   "appliesTo": [
+    "Naruto Uzumaki"
+   ],
+   "element": "Heart",
+   "archive": {
+    "blue": 15261,
+    "gold": 15262
+   },
+   "units": 74,
+   "blue": "assets/items/lb_crystals/lb_crystal_naruto_uzumaki_7_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_naruto_uzumaki_7_gold.webp"
+  },
+  {
+   "id": "lb_crystal_sakura_haruno_3",
+   "character": "Sakura Haruno",
+   "appliesTo": [
+    "Sakura Haruno"
+   ],
+   "element": "Wisdom",
+   "archive": {
+    "blue": 15263,
+    "gold": 15264
+   },
+   "units": 35,
+   "blue": "assets/items/lb_crystals/lb_crystal_sakura_haruno_3_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_sakura_haruno_3_gold.webp"
+  },
+  {
+   "id": "lb_crystal_tayuya_1",
+   "character": "Tayuya",
+   "appliesTo": [
+    "Tayuya"
+   ],
+   "element": "Wisdom",
+   "archive": {
+    "blue": 15265,
+    "gold": 15266
+   },
+   "units": 7,
+   "blue": "assets/items/lb_crystals/lb_crystal_tayuya_1_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_tayuya_1_gold.webp"
+  },
+  {
+   "id": "lb_crystal_might_guy_3",
+   "character": "Might Guy",
+   "appliesTo": [
+    "Might Guy"
+   ],
+   "element": "Bravery",
+   "archive": {
+    "blue": 15272,
+    "gold": 15273
+   },
+   "units": 14,
+   "blue": "assets/items/lb_crystals/lb_crystal_might_guy_3_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_might_guy_3_gold.webp"
+  },
+  {
+   "id": "lb_crystal_tobirama_senju_2",
+   "character": "Tobirama Senju",
+   "appliesTo": [
+    "Tobirama Senju"
+   ],
+   "element": "Bravery",
+   "archive": {
+    "blue": 15274,
+    "gold": 15275
+   },
+   "units": 12,
+   "blue": "assets/items/lb_crystals/lb_crystal_tobirama_senju_2_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_tobirama_senju_2_gold.webp"
+  },
+  {
+   "id": "lb_crystal_naruto_uzumaki_8",
+   "character": "Naruto Uzumaki",
+   "appliesTo": [
+    "Naruto Uzumaki"
+   ],
+   "element": "Heart",
+   "archive": {
+    "blue": 15276,
+    "gold": 15277
+   },
+   "units": 74,
+   "blue": "assets/items/lb_crystals/lb_crystal_naruto_uzumaki_8_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_naruto_uzumaki_8_gold.webp"
+  },
+  {
+   "id": "lb_crystal_might_guy_4",
+   "character": "Might Guy",
+   "appliesTo": [
+    "Might Guy"
+   ],
+   "element": "Bravery",
+   "archive": {
+    "blue": 15278,
+    "gold": 15279
+   },
+   "units": 14,
+   "blue": "assets/items/lb_crystals/lb_crystal_might_guy_4_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_might_guy_4_gold.webp"
+  },
+  {
+   "id": "lb_crystal_pain_2",
+   "character": "Pain",
+   "appliesTo": [
+    "Pain"
+   ],
+   "element": "Heart",
+   "archive": {
+    "blue": 15280,
+    "gold": 15281
+   },
+   "units": 24,
+   "blue": "assets/items/lb_crystals/lb_crystal_pain_2_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_pain_2_gold.webp"
+  },
+  {
+   "id": "lb_crystal_tobi_1",
+   "character": "Tobi",
+   "appliesTo": [
+    "Obito Uchiha",
+    "Tobi",
+    "Masked Man"
+   ],
+   "element": "Skill",
+   "archive": {
+    "blue": 15283,
+    "gold": 15284
+   },
+   "units": 36,
+   "blue": "assets/items/lb_crystals/lb_crystal_tobi_1_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_tobi_1_gold.webp"
+  },
+  {
+   "id": "lb_crystal_obito_uchiha_4",
+   "character": "Obito Uchiha",
+   "appliesTo": [
+    "Obito Uchiha",
+    "Tobi",
+    "Masked Man"
+   ],
+   "element": "Skill",
+   "archive": {
+    "blue": 15285,
+    "gold": 15286
+   },
+   "units": 36,
+   "blue": "assets/items/lb_crystals/lb_crystal_obito_uchiha_4_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_obito_uchiha_4_gold.webp"
+  },
+  {
+   "id": "lb_crystal_naruto_uzumaki_9",
+   "character": "Naruto Uzumaki",
+   "appliesTo": [
+    "Naruto Uzumaki"
+   ],
+   "element": "Heart",
+   "archive": {
+    "blue": 15291,
+    "gold": 15292
+   },
+   "units": 74,
+   "blue": "assets/items/lb_crystals/lb_crystal_naruto_uzumaki_9_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_naruto_uzumaki_9_gold.webp"
+  },
+  {
+   "id": "lb_crystal_sasuke_uchiha_10",
+   "character": "Sasuke Uchiha",
+   "appliesTo": [
+    "Sasuke Uchiha"
+   ],
+   "element": "Skill",
+   "archive": {
+    "blue": 15293,
+    "gold": 15294
+   },
+   "units": 63,
+   "blue": "assets/items/lb_crystals/lb_crystal_sasuke_uchiha_10_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_sasuke_uchiha_10_gold.webp"
+  },
+  {
+   "id": "lb_crystal_killer_bee_1",
+   "character": "Killer Bee",
+   "appliesTo": [
+    "Killer Bee"
+   ],
+   "element": "Bravery",
+   "archive": {
+    "blue": 15295,
+    "gold": 15296
+   },
+   "units": 10,
+   "blue": "assets/items/lb_crystals/lb_crystal_killer_bee_1_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_killer_bee_1_gold.webp"
+  },
+  {
+   "id": "lb_crystal_sasuke_uchiha_11",
+   "character": "Sasuke Uchiha",
+   "appliesTo": [
+    "Sasuke Uchiha"
+   ],
+   "element": "Skill",
+   "archive": {
+    "blue": 15300,
+    "gold": 15301
+   },
+   "units": 63,
+   "blue": "assets/items/lb_crystals/lb_crystal_sasuke_uchiha_11_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_sasuke_uchiha_11_gold.webp"
+  },
+  {
+   "id": "lb_crystal_kisame_hoshigaki_2",
+   "character": "Kisame Hoshigaki",
+   "appliesTo": [
+    "Kisame Hoshigaki"
+   ],
+   "element": "Body",
+   "archive": {
+    "blue": 15304,
+    "gold": 15305
+   },
+   "units": 10,
+   "blue": "assets/items/lb_crystals/lb_crystal_kisame_hoshigaki_2_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_kisame_hoshigaki_2_gold.webp"
+  },
+  {
+   "id": "lb_crystal_obito_uchiha_5",
+   "character": "Obito Uchiha",
+   "appliesTo": [
+    "Obito Uchiha",
+    "Tobi",
+    "Masked Man"
+   ],
+   "element": "Skill",
+   "archive": {
+    "blue": 15308,
+    "gold": 15309
+   },
+   "units": 36,
+   "blue": "assets/items/lb_crystals/lb_crystal_obito_uchiha_5_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_obito_uchiha_5_gold.webp"
+  },
+  {
+   "id": "lb_crystal_kaguya_otsutsuki_2",
+   "character": "Kaguya Otsutsuki",
+   "appliesTo": [
+    "Kaguya Otsutsuki"
+   ],
+   "element": "Bravery",
+   "archive": {
+    "blue": 15312,
+    "gold": 15313
+   },
+   "units": 12,
+   "blue": "assets/items/lb_crystals/lb_crystal_kaguya_otsutsuki_2_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_kaguya_otsutsuki_2_gold.webp"
+  },
+  {
+   "id": "lb_crystal_killer_bee_2",
+   "character": "Killer Bee",
+   "appliesTo": [
+    "Killer Bee"
+   ],
+   "element": "Bravery",
+   "archive": {
+    "blue": 15317,
+    "gold": 15318
+   },
+   "units": 10,
+   "blue": "assets/items/lb_crystals/lb_crystal_killer_bee_2_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_killer_bee_2_gold.webp"
+  },
+  {
+   "id": "lb_crystal_chojuro_1",
+   "character": "Chojuro",
+   "appliesTo": [
+    "Chojuro"
+   ],
+   "element": "Heart",
+   "archive": {
+    "blue": 15319,
+    "gold": 15320
+   },
+   "units": 4,
+   "blue": "assets/items/lb_crystals/lb_crystal_chojuro_1_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_chojuro_1_gold.webp"
+  },
+  {
+   "id": "lb_crystal_suigetsu_hozuki_1",
+   "character": "Suigetsu Hozuki",
+   "appliesTo": [
+    "Suigetsu Hozuki"
+   ],
+   "element": "Wisdom",
+   "archive": {
+    "blue": 15321,
+    "gold": 15322
+   },
+   "units": 2,
+   "blue": "assets/items/lb_crystals/lb_crystal_suigetsu_hozuki_1_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_suigetsu_hozuki_1_gold.webp"
+  },
+  {
+   "id": "lb_crystal_tobirama_senju_3",
+   "character": "Tobirama Senju",
+   "appliesTo": [
+    "Tobirama Senju"
+   ],
+   "element": "Bravery",
+   "archive": {
+    "blue": 15323,
+    "gold": 15324
+   },
+   "units": 12,
+   "blue": "assets/items/lb_crystals/lb_crystal_tobirama_senju_3_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_tobirama_senju_3_gold.webp"
+  },
+  {
+   "id": "lb_crystal_ashura_1",
+   "character": "Ashura",
+   "appliesTo": [
+    "Ashura"
+   ],
+   "element": "Bravery",
+   "archive": {
+    "blue": 15328,
+    "gold": 15329
+   },
+   "units": 9,
+   "blue": "assets/items/lb_crystals/lb_crystal_ashura_1_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_ashura_1_gold.webp"
+  },
+  {
+   "id": "lb_crystal_obito_uchiha_6",
+   "character": "Obito Uchiha",
+   "appliesTo": [
+    "Obito Uchiha",
+    "Tobi",
+    "Masked Man"
+   ],
+   "element": "Skill",
+   "archive": {
+    "blue": 15333,
+    "gold": 15334
+   },
+   "units": 36,
+   "blue": "assets/items/lb_crystals/lb_crystal_obito_uchiha_6_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_obito_uchiha_6_gold.webp"
+  },
+  {
+   "id": "lb_crystal_han_1",
+   "character": "Han",
+   "appliesTo": [
+    "Han"
+   ],
+   "element": "Skill",
+   "archive": {
+    "blue": 15337,
+    "gold": 15338
+   },
+   "units": 2,
+   "identification": "medium",
+   "blue": "assets/items/lb_crystals/lb_crystal_han_1_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_han_1_gold.webp"
+  },
+  {
+   "id": "lb_crystal_deidara_2",
+   "character": "Deidara",
+   "appliesTo": [
+    "Deidara"
+   ],
+   "element": "Wisdom",
+   "archive": {
+    "blue": 15341,
+    "gold": 15342
+   },
+   "units": 15,
+   "blue": "assets/items/lb_crystals/lb_crystal_deidara_2_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_deidara_2_gold.webp"
+  },
+  {
+   "id": "lb_crystal_gaara_3",
+   "character": "Gaara",
+   "appliesTo": [
+    "Gaara"
+   ],
+   "element": "Bravery",
+   "archive": {
+    "blue": 15345,
+    "gold": 15346
+   },
+   "units": 21,
+   "blue": "assets/items/lb_crystals/lb_crystal_gaara_3_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_gaara_3_gold.webp"
+  },
+  {
+   "id": "lb_crystal_kankuro_1",
+   "character": "Kankuro",
+   "appliesTo": [
+    "Kankuro"
+   ],
+   "element": "Heart",
+   "archive": {
+    "blue": 15347,
+    "gold": 15348
+   },
+   "units": 8,
+   "blue": "assets/items/lb_crystals/lb_crystal_kankuro_1_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_kankuro_1_gold.webp"
+  },
+  {
+   "id": "lb_crystal_jiraiya_2",
+   "character": "Jiraiya",
+   "appliesTo": [
+    "Jiraiya"
+   ],
+   "element": "Heart",
+   "archive": {
+    "blue": 15349,
+    "gold": 15350
+   },
+   "units": 15,
+   "blue": "assets/items/lb_crystals/lb_crystal_jiraiya_2_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_jiraiya_2_gold.webp"
+  },
+  {
+   "id": "lb_crystal_orochimaru_2",
+   "character": "Orochimaru",
+   "appliesTo": [
+    "Orochimaru"
+   ],
+   "element": "Skill",
+   "archive": {
+    "blue": 15351,
+    "gold": 15352
+   },
+   "units": 16,
+   "blue": "assets/items/lb_crystals/lb_crystal_orochimaru_2_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_orochimaru_2_gold.webp"
+  },
+  {
+   "id": "lb_crystal_danzo_shimura_1",
+   "character": "Danzo Shimura",
+   "appliesTo": [
+    "Danzo Shimura"
+   ],
+   "element": "Heart",
+   "archive": {
+    "blue": 15353,
+    "gold": 15354
+   },
+   "units": 4,
+   "identification": "medium",
+   "blue": "assets/items/lb_crystals/lb_crystal_danzo_shimura_1_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_danzo_shimura_1_gold.webp"
+  },
+  {
+   "id": "lb_crystal_hagoromo_otsutsuki_1",
+   "character": "Hagoromo Otsutsuki",
+   "appliesTo": [
+    "Hagoromo Otsutsuki"
+   ],
+   "element": "Wisdom",
+   "archive": {
+    "blue": 15357,
+    "gold": 15358
+   },
+   "units": 3,
+   "blue": "assets/items/lb_crystals/lb_crystal_hagoromo_otsutsuki_1_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_hagoromo_otsutsuki_1_gold.webp"
+  },
+  {
+   "id": "lb_crystal_orochimaru_3",
+   "character": "Orochimaru",
+   "appliesTo": [
+    "Orochimaru"
+   ],
+   "element": "Skill",
+   "archive": {
+    "blue": 15361,
+    "gold": 15362
+   },
+   "units": 16,
+   "blue": "assets/items/lb_crystals/lb_crystal_orochimaru_3_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_orochimaru_3_gold.webp"
+  },
+  {
+   "id": "lb_crystal_neji_hyuga_2",
+   "character": "Neji Hyuga",
+   "appliesTo": [
+    "Neji Hyuga"
+   ],
+   "element": "Body",
+   "archive": {
+    "blue": 15365,
+    "gold": 15366
+   },
+   "units": 10,
+   "blue": "assets/items/lb_crystals/lb_crystal_neji_hyuga_2_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_neji_hyuga_2_gold.webp"
+  },
+  {
+   "id": "lb_crystal_hashirama_senju_2",
+   "character": "Hashirama Senju",
+   "appliesTo": [
+    "Hashirama Senju"
+   ],
+   "element": "Heart",
+   "archive": {
+    "blue": 15369,
+    "gold": 15370
+   },
+   "units": 15,
+   "blue": "assets/items/lb_crystals/lb_crystal_hashirama_senju_2_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_hashirama_senju_2_gold.webp"
+  },
+  {
+   "id": "lb_crystal_danzo_shimura_2",
+   "character": "Danzo Shimura",
+   "appliesTo": [
+    "Danzo Shimura"
+   ],
+   "element": "Heart",
+   "archive": {
+    "blue": 15373,
+    "gold": 15374
+   },
+   "units": 4,
+   "blue": "assets/items/lb_crystals/lb_crystal_danzo_shimura_2_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_danzo_shimura_2_gold.webp"
+  },
+  {
+   "id": "lb_crystal_madara_uchiha_2",
+   "character": "Madara Uchiha",
+   "appliesTo": [
+    "Madara Uchiha"
+   ],
+   "element": "Bravery",
+   "archive": {
+    "blue": 15377,
+    "gold": 15378
+   },
+   "units": 32,
+   "blue": "assets/items/lb_crystals/lb_crystal_madara_uchiha_2_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_madara_uchiha_2_gold.webp"
+  },
+  {
+   "id": "lb_crystal_madara_uchiha_3",
+   "character": "Madara Uchiha",
+   "appliesTo": [
+    "Madara Uchiha"
+   ],
+   "element": "Bravery",
+   "archive": {
+    "blue": 15381,
+    "gold": 15382
+   },
+   "units": 32,
+   "blue": "assets/items/lb_crystals/lb_crystal_madara_uchiha_3_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_madara_uchiha_3_gold.webp"
+  },
+  {
+   "id": "lb_crystal_obito_uchiha_7",
+   "character": "Obito Uchiha",
+   "appliesTo": [
+    "Obito Uchiha",
+    "Tobi",
+    "Masked Man"
+   ],
+   "element": "Skill",
+   "archive": {
+    "blue": 15385,
+    "gold": 15386
+   },
+   "units": 36,
+   "blue": "assets/items/lb_crystals/lb_crystal_obito_uchiha_7_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_obito_uchiha_7_gold.webp"
+  },
+  {
+   "id": "lb_crystal_kinkaku_ginkaku_1",
+   "character": "Kinkaku/Ginkaku",
+   "appliesTo": [
+    "Kinkaku/Ginkaku"
+   ],
+   "element": "Bravery",
+   "archive": {
+    "blue": 15389,
+    "gold": 15390
+   },
+   "units": 2,
+   "blue": "assets/items/lb_crystals/lb_crystal_kinkaku_ginkaku_1_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_kinkaku_ginkaku_1_gold.webp"
+  },
+  {
+   "id": "lb_crystal_masked_man_1",
+   "character": "Masked Man",
+   "appliesTo": [
+    "Obito Uchiha",
+    "Tobi",
+    "Masked Man"
+   ],
+   "element": "Skill",
+   "archive": {
+    "blue": 15393,
+    "gold": 15394
+   },
+   "units": 36,
+   "blue": "assets/items/lb_crystals/lb_crystal_masked_man_1_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_masked_man_1_gold.webp"
+  },
+  {
+   "id": "lb_crystal_indra_1",
+   "character": "Indra",
+   "appliesTo": [
+    "Indra"
+   ],
+   "element": "Body",
+   "archive": {
+    "blue": 15397,
+    "gold": 15398
+   },
+   "units": 7,
+   "blue": "assets/items/lb_crystals/lb_crystal_indra_1_blue.webp",
+   "gold": "assets/items/lb_crystals/lb_crystal_indra_1_gold.webp"
+  }
+ ]
+}
