@@ -1,0 +1,3 @@
+# raw generated poses / requests (large; re-downloadable from the job URLs in specs/*.json)
+work/
+__pycache__/

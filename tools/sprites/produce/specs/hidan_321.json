@@ -1,0 +1,771 @@
+{
+ "name": "hidan_321",
+ "folder": "assets/sprites/hidan_321",
+ "ids": [
+  "hidan_321",
+  "hidan_322"
+ ],
+ "primary": {
+  "id": "hidan_322",
+  "tier": "6S"
+ },
+ "dev": {
+  "id": "hidan_321",
+  "tier": "5S",
+  "label": "Hidan (Worshiping a Mad God)",
+  "note": "Hidan \"Worshiping a Mad God\" (hidan_321 5★ → hidan_322 6★ share one sprite set: Soul Hunt / Death Possession Blood)."
+ },
+ "reference_art": "assets/characters/hidan_321/full_5S.png",
+ "character": "Hidan of the Akatsuki from Naruto Shippuden: tall lean man, slicked-back silver-grey hair, violet-magenta eyes, pale skin, a manic cocky grin, black Akatsuki cloak with red clouds and white lining worn open showing his bare chest, a silver Jashin pendant (circle with inverted triangle) on a chain, a scratched Yugakure forehead protector worn around his neck, dark trousers and sandals, holding his huge red three-bladed scythe with a long black cable attached to its handle",
+ "short": "Hidan: slicked-back silver hair, violet eyes, open black Akatsuki cloak with red clouds, bare chest, Jashin pendant, huge red triple-bladed scythe on a cable",
+ "pronouns": [
+  "he",
+  "him"
+ ],
+ "sheets": {
+  "idle": {
+   "fps": 8,
+   "loop": true,
+   "height": 256,
+   "timeline": [
+    [
+     "base",
+     2
+    ],
+    [
+     "idle_m",
+     1
+    ],
+    [
+     "idle_in",
+     3
+    ],
+    [
+     "idle_m",
+     1
+    ],
+    [
+     "base",
+     2
+    ],
+    [
+     "idle_out",
+     3
+    ]
+   ]
+  },
+  "run": {
+   "fps": 12,
+   "loop": true,
+   "height": 256,
+   "body_px": 256,
+   "timeline": [
+    [
+     "run1",
+     1
+    ],
+    [
+     "run2",
+     1
+    ],
+    [
+     "run3",
+     1
+    ],
+    [
+     "run4",
+     1
+    ],
+    [
+     "run5",
+     1
+    ],
+    [
+     "run6",
+     1
+    ]
+   ]
+  },
+  "hit": {
+   "fps": 12,
+   "height": 256,
+   "anchor_x_from_ref": true,
+   "timeline": [
+    [
+     "h1",
+     1
+    ],
+    [
+     "h0",
+     1
+    ],
+    [
+     "h12",
+     1
+    ],
+    [
+     "h2",
+     2
+    ],
+    [
+     "h3",
+     1
+    ]
+   ]
+  },
+  "ko": {
+   "fps": 10,
+   "height": 256,
+   "anchor_x_from_ref": true,
+   "timeline": [
+    [
+     "h1",
+     1
+    ],
+    [
+     "h12",
+     1
+    ],
+    [
+     "k1",
+     2
+    ],
+    [
+     "kf",
+     1
+    ],
+    [
+     "k2",
+     3
+    ]
+   ]
+  },
+  "jutsu": {
+   "fps": 12,
+   "height": 300,
+   "body_px": 296,
+   "skill": "jutsu",
+   "timeline": [
+    [
+     "j1",
+     2
+    ],
+    [
+     "j2",
+     2
+    ],
+    [
+     "j3",
+     1
+    ],
+    [
+     "@hits",
+     [
+      "j4",
+      "j5",
+      "j6",
+      "j7",
+      "j8",
+      "j9"
+     ],
+     1
+    ],
+    [
+     "j10",
+     2
+    ],
+    [
+     "base",
+     1
+    ]
+   ]
+  },
+  "ultimate": {
+   "fps": 12,
+   "height": 300,
+   "body_px": 296,
+   "skill": "ultimate",
+   "timeline": [
+    [
+     "base",
+     2
+    ],
+    [
+     "u2",
+     3
+    ],
+    [
+     "u3",
+     3
+    ],
+    [
+     "u4",
+     2
+    ],
+    [
+     "u5",
+     1,
+     "hit"
+    ],
+    [
+     "u6",
+     2,
+     "hit"
+    ],
+    [
+     "u7",
+     2,
+     "hit"
+    ],
+    [
+     "u6",
+     2,
+     "hit"
+    ],
+    [
+     "u7",
+     2,
+     "hit"
+    ],
+    [
+     "u8",
+     3
+    ],
+    [
+     "u9",
+     2
+    ],
+    [
+     "base",
+     1
+    ]
+   ]
+  },
+  "attack": {
+   "fps": 14,
+   "height": 256,
+   "body_px": 256,
+   "hits": 2,
+   "timeline": [
+    [
+     "at1",
+     1
+    ],
+    [
+     "at2",
+     1
+    ],
+    [
+     "at3",
+     2,
+     "hit"
+    ],
+    [
+     "at4",
+     1
+    ],
+    [
+     "at5",
+     2,
+     "hit"
+    ],
+    [
+     "base",
+     2
+    ]
+   ]
+  }
+ },
+ "poses": {
+  "base": {
+   "type": "base",
+   "prompt": "cocky battle-ready stance: feet apart, knees slightly bent, holding the huge red three-bladed scythe in his right hand with the shaft resting diagonally across his body and the blades up behind his shoulder, left hand open at his side, the cable hanging loosely, mad grin. The whole scythe stays inside the canvas."
+  },
+  "idle_in": {
+   "type": "edit",
+   "prompt": "a tiny breathing change: inhaling, chest very slightly expanded, shoulders raised by a few pixels, cloak hem swaying slightly. Everything else identical, scythe unchanged."
+  },
+  "idle_out": {
+   "type": "edit",
+   "prompt": "a tiny breathing change: exhaling, shoulders lowered by a few pixels, head dipped very slightly, cloak hem swaying the other way. Everything else identical, scythe unchanged."
+  },
+  "idle_m": {
+   "type": "tween",
+   "from": [
+    "idle_in",
+    "idle_out"
+   ],
+   "prompt": "shoulders halfway between the two, cloak hem between the two positions. Everything else identical."
+  },
+  "run1": {
+   "type": "pose",
+   "prompt": "full body side-view RUN CYCLE frame 1 of 6, running fast to the RIGHT in a ninja run (torso leaning forward, both arms swept straight back behind him): CONTACT - right leg extended forward heel touching down, left leg behind pushing off, cloak flapping behind him, scythe held low behind him in his right hand, blades trailing."
+  },
+  "run2": {
+   "type": "pose",
+   "prompt": "full body side-view RUN CYCLE frame 2 of 6, ninja run to the RIGHT (torso leaning forward, arms swept back): DOWN - right foot planted under the body, knee bent, left leg swinging forward, cloak flapping behind him, scythe held low behind him in his right hand, blades trailing."
+  },
+  "run3": {
+   "type": "pose",
+   "prompt": "full body side-view RUN CYCLE frame 3 of 6, ninja run to the RIGHT (torso leaning forward, arms swept back): PASSING - right leg straight pushing off, left knee lifted high in front, cloak flapping behind him, scythe held low behind him in his right hand, blades trailing."
+  },
+  "run4": {
+   "type": "pose",
+   "prompt": "full body side-view RUN CYCLE frame 4 of 6, ninja run to the RIGHT (torso leaning forward, arms swept back): CONTACT - left leg extended forward heel touching down, right leg behind pushing off, cloak flapping behind him, scythe held low behind him in his right hand, blades trailing."
+  },
+  "run5": {
+   "type": "pose",
+   "prompt": "full body side-view RUN CYCLE frame 5 of 6, ninja run to the RIGHT (torso leaning forward, arms swept back): DOWN - left foot planted under the body, knee bent, right leg swinging forward, cloak flapping behind him, scythe held low behind him in his right hand, blades trailing."
+  },
+  "run6": {
+   "type": "pose",
+   "prompt": "full body side-view RUN CYCLE frame 6 of 6, ninja run to the RIGHT (torso leaning forward, arms swept back): PASSING - left leg straight pushing off, right knee lifted high in front, cloak flapping behind him, scythe held low behind him in his right hand, blades trailing."
+  },
+  "j1": {
+   "type": "pose",
+   "prompt": "SOUL HUNT, step 1: maniacal grin, he swings the red three-bladed scythe up over his head with both hands, the black cable coiling behind him."
+  },
+  "j2": {
+   "type": "pose",
+   "prompt": "step 2: wind-up for a throw - leaning far back, the scythe pulled back behind his head in his right hand, left arm pointing forward to the right at the target."
+  },
+  "j3": {
+   "type": "pose",
+   "prompt": "step 3 THROW: whipping his arm forward, the scythe flying away to the RIGHT spinning horizontally on its black cable, a curved red slash trail behind it; the scythe stays inside the canvas about one body-length in front of him."
+  },
+  "j4": {
+   "type": "pose",
+   "prompt": "step 4 STRIKE: the spinning scythe at full reach one body-length to his right, cable pulled taut from his right hand, a red crescent slash arc where the blades cut."
+  },
+  "j5": {
+   "type": "pose",
+   "prompt": "step 5 STRIKE: yanking the cable back with both hands, the scythe whirling back toward him in a big circular red slash arc to his right."
+  },
+  "j6": {
+   "type": "pose",
+   "prompt": "step 6 STRIKE: scythe caught again, he lunges forward and slashes downward to the right with it, a bright red diagonal slash trail."
+  },
+  "j7": {
+   "type": "pose",
+   "prompt": "step 7 STRIKE: backhand horizontal sweep of the scythe to the right at waist height, a wide red horizontal slash trail."
+  },
+  "j8": {
+   "type": "pose",
+   "prompt": "step 8 STRIKE: rising upward slash with the scythe in front of him to the right, a red crescent slash trail going up."
+  },
+  "j9": {
+   "type": "pose",
+   "prompt": "step 9 STRIKE: spinning on one foot swinging the scythe around him in a full circle, a ring of red slash trails around his waist."
+  },
+  "j10": {
+   "type": "pose",
+   "prompt": "step 10 RECOVER: standing up with the scythe resting on his shoulder, head tilted, cocky grin, cable dangling."
+  },
+  "u1": {
+   "type": "pose",
+   "prompt": "ULTIMATE DEATH POSSESSION BLOOD, step 1: he raises the scythe blade to his face and licks the edge with his tongue out, wild excited eyes.",
+   "refused": "nsfw filter (job f0929c82, 'licks the scythe blade'); pose dropped from the ultimate timeline",
+   "helper": true
+  },
+  "u2": {
+   "type": "pose",
+   "prompt": "step 2: he plants the scythe beside him and spreads his arms wide, a large glowing red Jashin symbol (a circle containing an inverted triangle) appears as a vertical glowing sigil behind his back, about as tall as his torso."
+  },
+  "u3": {
+   "type": "pose",
+   "prompt": "step 3: his skin turns black with white skeleton markings painted over his body and a skull pattern on his face (his curse ritual form), red sigil glowing behind him, head thrown back laughing, arms wide."
+  },
+  "u4": {
+   "type": "pose",
+   "prompt": "step 4: in the black-and-white skeleton curse form he draws a long thin black retractable spike and raises it high overhead with both hands, grinning, red sigil behind him."
+  },
+  "u5": {
+   "type": "pose",
+   "prompt": "step 5 CURSE STRIKE: in the skeleton curse form he drives the black spike down toward his own thigh, a burst of dark red curse energy shockwave exploding outward from the spike, head thrown back in ecstasy. No blood or gore."
+  },
+  "u6": {
+   "type": "pose",
+   "prompt": "step 6 CURSE STRIKE: skeleton curse form, hunched over the spike, a second pulse of dark red curse energy ring expanding around him, crazed laugh."
+  },
+  "u7": {
+   "type": "pose",
+   "prompt": "step 7 CURSE STRIKE: skeleton curse form, arching backward with the spike held against his leg, a third burst of crimson curse energy spiralling around him, different shape from a ring."
+  },
+  "u8": {
+   "type": "pose",
+   "prompt": "step 8: skeleton curse form, standing up and pulling the spike free, the red energy fading into dark smoke, satisfied grin."
+  },
+  "u9": {
+   "type": "pose",
+   "prompt": "step 9 RECOVER: skin back to normal (pale skin, no markings), picking the scythe back up onto his shoulder, cocky grin, last red wisps fading."
+  },
+  "h1": {
+   "type": "edit",
+   "prompt": "the pose only: HIT REACTION at the moment of impact - struck hard by a blow coming from the RIGHT: torso and head snapped backward, leaning back toward the LEFT side of the canvas, eyes squeezed shut, pained grimace, arms flung loosely outward and back, knees slightly bent, both feet still planted. No blood, no sparks, no effects."
+  },
+  "h2": {
+   "type": "edit",
+   "prompt": "the pose only: STAGGER after being hit - knocked back half a step: body hunched forward in pain, one hand clutching his stomach, head lowered with a pained grimace, knees bent low, left foot slid back behind his with his weight on it. No blood, no effects."
+  },
+  "h3": {
+   "type": "edit",
+   "prompt": "the pose only: RECOVERING from a hit - straightening back up toward his fighting stance: almost upright but slightly hunched, one arm raised in guard, hurt but determined expression. No blood, no effects."
+  },
+  "h0": {
+   "type": "tween",
+   "from": [
+    "base",
+    "h1"
+   ],
+   "prompt": "the character is just starting to recoil from a blow from the right, torso tilting back a little."
+  },
+  "h12": {
+   "type": "tween",
+   "from": [
+    "h1",
+    "h2"
+   ],
+   "prompt": "the character goes from leaning back to hunching forward."
+  },
+  "k1": {
+   "type": "edit",
+   "prompt": "the pose only: KNOCKED OUT and collapsing - dropped onto both knees, torso slumped forward, arms hanging limp, head hanging down, eyes closed. No blood, no effects."
+  },
+  "k2": {
+   "type": "edit",
+   "prompt": "the pose only: KNOCKED OUT lying on the ground - collapsed face down on his side, fully horizontal, body lying along the bottom of the canvas, head toward the LEFT, arms limp, eyes closed, hair spread out. No blood, no effects."
+  },
+  "kf": {
+   "type": "tween",
+   "from": [
+    "k1",
+    "k2"
+   ],
+   "prompt": "the character falls forward from kneeling toward lying on the ground, body at about 45 degrees."
+  },
+  "at1": {
+   "type": "pose",
+   "prompt": "NORMAL ATTACK (scythe) - a clearly DIFFERENT pose from the reference with big visible motion. WIND-UP: both hands on the scythe shaft, the red three-bladed scythe raised high above and behind his head, body leaning back, front foot stepping forward to the right, manic grin."
+  },
+  "at2": {
+   "type": "tween",
+   "from": [
+    "at1",
+    "at3"
+   ],
+   "prompt": "the arm is halfway through the swing forward, body turning into the strike, no effect yet."
+  },
+  "at3": {
+   "type": "pose",
+   "prompt": "NORMAL ATTACK - a clearly DIFFERENT pose from the reference. STRIKE 1: deep lunge to the right, the scythe swung down diagonally in front of him with the three blades low at his front, a short red crescent slash trail near the blades."
+  },
+  "at4": {
+   "type": "pose",
+   "prompt": "NORMAL ATTACK - a clearly DIFFERENT pose from the reference. TRANSITION: body twisted with the scythe pulled back low behind his right hip, cloak swirling, preparing a horizontal swing."
+  },
+  "at5": {
+   "type": "pose",
+   "prompt": "NORMAL ATTACK - a clearly DIFFERENT pose from the reference. STRIKE 2: horizontal swing, the scythe blades sweeping across in front of him to the right at waist height, arms extended, a short red horizontal slash trail."
+  }
+ },
+ "state": {
+  "media": {
+   "ref_art": "fb1cd7fb-da85-4007-82e5-278028a6207d"
+  },
+  "poses": {
+   "base": {
+    "pending_index": 2000,
+    "job_id": "2af19536-f450-4b04-8718-630843046e7a",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_003423_2af19536-f450-4b04-8718-630843046e7a.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_003423_2af19536-f450-4b04-8718-630843046e7a.png"
+   },
+   "idle_in": {
+    "pending_index": 2001,
+    "job_id": "32517424-d499-4be7-a8db-bed1fdab2f51",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004217_32517424-d499-4be7-a8db-bed1fdab2f51.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004217_32517424-d499-4be7-a8db-bed1fdab2f51.png"
+   },
+   "idle_out": {
+    "pending_index": 2002,
+    "job_id": "389be1c7-afbe-4a48-9c91-4ea22863285b",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004217_389be1c7-afbe-4a48-9c91-4ea22863285b.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004217_389be1c7-afbe-4a48-9c91-4ea22863285b.png"
+   },
+   "run1": {
+    "pending_index": 2003,
+    "job_id": "3cc37905-82ff-4c15-8316-1cba1128f016",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004218_3cc37905-82ff-4c15-8316-1cba1128f016.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004218_3cc37905-82ff-4c15-8316-1cba1128f016.png"
+   },
+   "run2": {
+    "pending_index": 2004,
+    "job_id": "e9da4225-89d5-4d7d-a95a-676d55da8f74",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004348_e9da4225-89d5-4d7d-a95a-676d55da8f74.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004348_e9da4225-89d5-4d7d-a95a-676d55da8f74.png"
+   },
+   "run3": {
+    "pending_index": 2005,
+    "job_id": "170fcaa3-85cd-4946-93b1-844445963e0c",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004218_170fcaa3-85cd-4946-93b1-844445963e0c.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004218_170fcaa3-85cd-4946-93b1-844445963e0c.png"
+   },
+   "run4": {
+    "pending_index": 2006,
+    "job_id": "62af1aca-5af8-4036-b0d7-130ef8c66d6a",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004218_62af1aca-5af8-4036-b0d7-130ef8c66d6a.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004218_62af1aca-5af8-4036-b0d7-130ef8c66d6a.png"
+   },
+   "run5": {
+    "pending_index": 2007,
+    "job_id": "04a60b04-fe1f-49f5-90de-eccea1dedc8c",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004217_04a60b04-fe1f-49f5-90de-eccea1dedc8c.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004217_04a60b04-fe1f-49f5-90de-eccea1dedc8c.png"
+   },
+   "run6": {
+    "pending_index": 2008,
+    "job_id": "8a791eb0-788b-4ea4-bbfe-04f0b3f8cecd",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004217_8a791eb0-788b-4ea4-bbfe-04f0b3f8cecd.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004217_8a791eb0-788b-4ea4-bbfe-04f0b3f8cecd.png"
+   },
+   "j1": {
+    "pending_index": 2009,
+    "job_id": "eeacc40b-a419-41a8-861a-d75aa4202a0f",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004218_eeacc40b-a419-41a8-861a-d75aa4202a0f.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004218_eeacc40b-a419-41a8-861a-d75aa4202a0f.png"
+   },
+   "j2": {
+    "pending_index": 2010,
+    "job_id": "7587f369-e2b2-4ad1-900a-625c833b653d",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004217_7587f369-e2b2-4ad1-900a-625c833b653d.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004217_7587f369-e2b2-4ad1-900a-625c833b653d.png"
+   },
+   "j3": {
+    "pending_index": 2011,
+    "job_id": "ccaf936d-d4a5-4c64-ba89-33a94baa8a62",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004217_ccaf936d-d4a5-4c64-ba89-33a94baa8a62.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004217_ccaf936d-d4a5-4c64-ba89-33a94baa8a62.png"
+   },
+   "j4": {
+    "pending_index": 2012,
+    "job_id": "aa3a3a64-7a8f-49c8-a653-caf60f5abef6",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004217_aa3a3a64-7a8f-49c8-a653-caf60f5abef6.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004217_aa3a3a64-7a8f-49c8-a653-caf60f5abef6.png"
+   },
+   "j5": {
+    "pending_index": 2013,
+    "job_id": "6739cb6a-b9de-4e72-ae02-9e40a56bd1cf",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004348_6739cb6a-b9de-4e72-ae02-9e40a56bd1cf.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004348_6739cb6a-b9de-4e72-ae02-9e40a56bd1cf.png"
+   },
+   "j6": {
+    "pending_index": 2014,
+    "job_id": "48c56678-248c-473b-8f97-ae66c9fa12f9",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004348_48c56678-248c-473b-8f97-ae66c9fa12f9.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004348_48c56678-248c-473b-8f97-ae66c9fa12f9.png"
+   },
+   "j7": {
+    "pending_index": 2015,
+    "job_id": "a315bb79-46e4-49c0-add9-644f11ad29ef",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004348_a315bb79-46e4-49c0-add9-644f11ad29ef.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004348_a315bb79-46e4-49c0-add9-644f11ad29ef.png"
+   },
+   "j8": {
+    "pending_index": 2016,
+    "job_id": "355cf966-bffb-49e0-ad3b-24c3373376ac",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004348_355cf966-bffb-49e0-ad3b-24c3373376ac.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004348_355cf966-bffb-49e0-ad3b-24c3373376ac.png"
+   },
+   "j9": {
+    "pending_index": 2017,
+    "job_id": "0d1aa6c6-0509-43e8-8b34-ef883d182932",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004348_0d1aa6c6-0509-43e8-8b34-ef883d182932.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004348_0d1aa6c6-0509-43e8-8b34-ef883d182932.png"
+   },
+   "j10": {
+    "pending_index": 2018,
+    "job_id": "b07b60a2-edb0-4b0f-b18d-fa240be97077",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004348_b07b60a2-edb0-4b0f-b18d-fa240be97077.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004348_b07b60a2-edb0-4b0f-b18d-fa240be97077.png"
+   },
+   "u1": {
+    "pending_index": 2019,
+    "job_id": "f0929c82-8a9c-4b16-8af1-bfd046e87482",
+    "status": "failed"
+   },
+   "u2": {
+    "pending_index": 2020,
+    "job_id": "42f29168-e47f-469a-a4ee-fe372d47b00c",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004348_42f29168-e47f-469a-a4ee-fe372d47b00c.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004348_42f29168-e47f-469a-a4ee-fe372d47b00c.png"
+   },
+   "u3": {
+    "pending_index": 2021,
+    "job_id": "5924cd4f-f2ce-4b23-8dd6-7f74d0a940d9",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004347_5924cd4f-f2ce-4b23-8dd6-7f74d0a940d9.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004347_5924cd4f-f2ce-4b23-8dd6-7f74d0a940d9.png"
+   },
+   "u4": {
+    "pending_index": 2022,
+    "job_id": "d1bd292a-1bf9-47aa-bed5-aafbf11d2e5f",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004348_d1bd292a-1bf9-47aa-bed5-aafbf11d2e5f.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004348_d1bd292a-1bf9-47aa-bed5-aafbf11d2e5f.png"
+   },
+   "u5": {
+    "pending_index": 2023,
+    "job_id": "089ac47b-6ef8-4690-8472-439263d24728",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004348_089ac47b-6ef8-4690-8472-439263d24728.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004348_089ac47b-6ef8-4690-8472-439263d24728.png"
+   },
+   "u6": {
+    "pending_index": 2039,
+    "job_id": "ac58be50-b329-4978-a1c6-d17bd73edf68",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004907_ac58be50-b329-4978-a1c6-d17bd73edf68.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004907_ac58be50-b329-4978-a1c6-d17bd73edf68.png"
+   },
+   "u7": {
+    "pending_index": 2040,
+    "job_id": "9756f16a-312f-4832-baac-4cc80eff90bd",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004907_9756f16a-312f-4832-baac-4cc80eff90bd.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004907_9756f16a-312f-4832-baac-4cc80eff90bd.png"
+   },
+   "u8": {
+    "pending_index": 2041,
+    "job_id": "fe5988b2-aa43-4619-b8c2-e7f536fd8c98",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004907_fe5988b2-aa43-4619-b8c2-e7f536fd8c98.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004907_fe5988b2-aa43-4619-b8c2-e7f536fd8c98.png"
+   },
+   "u9": {
+    "pending_index": 2042,
+    "job_id": "9dd9facf-0242-4684-871d-87113733434f",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004907_9dd9facf-0242-4684-871d-87113733434f.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004907_9dd9facf-0242-4684-871d-87113733434f.png"
+   },
+   "h1": {
+    "pending_index": 2043,
+    "job_id": "6880bc3b-fd3e-4c0c-8591-f1bf586b9fdb",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004907_6880bc3b-fd3e-4c0c-8591-f1bf586b9fdb.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004907_6880bc3b-fd3e-4c0c-8591-f1bf586b9fdb.png"
+   },
+   "h2": {
+    "pending_index": 2044,
+    "job_id": "70aec2a6-b281-4129-bf54-21e3d05aa79b",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004907_70aec2a6-b281-4129-bf54-21e3d05aa79b.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004907_70aec2a6-b281-4129-bf54-21e3d05aa79b.png"
+   },
+   "h3": {
+    "pending_index": 2045,
+    "job_id": "111a8ecb-1cac-4f9b-8b76-2669758a208d",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004906_111a8ecb-1cac-4f9b-8b76-2669758a208d.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004906_111a8ecb-1cac-4f9b-8b76-2669758a208d.png"
+   },
+   "k1": {
+    "pending_index": 2046,
+    "job_id": "d25831dd-a5eb-4a98-9333-f38be0874ca7",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004907_d25831dd-a5eb-4a98-9333-f38be0874ca7.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004907_d25831dd-a5eb-4a98-9333-f38be0874ca7.png"
+   },
+   "k2": {
+    "pending_index": 2047,
+    "job_id": "9c578d49-5f77-4248-9c94-73028fd03ff5",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004906_9c578d49-5f77-4248-9c94-73028fd03ff5.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004906_9c578d49-5f77-4248-9c94-73028fd03ff5.png"
+   },
+   "at1": {
+    "pending_index": 2048,
+    "job_id": "852f179c-149e-4ecf-94a1-ca859a5aca83",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004907_852f179c-149e-4ecf-94a1-ca859a5aca83.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004907_852f179c-149e-4ecf-94a1-ca859a5aca83.png"
+   },
+   "at3": {
+    "pending_index": 2049,
+    "job_id": "7147da11-6acb-4df5-8eea-7ca294c0d7d0",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004907_7147da11-6acb-4df5-8eea-7ca294c0d7d0.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004907_7147da11-6acb-4df5-8eea-7ca294c0d7d0.png"
+   },
+   "at4": {
+    "pending_index": 2050,
+    "job_id": "764572cf-3f2b-44fa-8903-535af569293c",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_005137_764572cf-3f2b-44fa-8903-535af569293c.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_005137_764572cf-3f2b-44fa-8903-535af569293c.png"
+   },
+   "at5": {
+    "pending_index": 2051,
+    "job_id": "bf29545f-2a5e-4e09-9119-9c97936982cf",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_005137_bf29545f-2a5e-4e09-9119-9c97936982cf.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_005137_bf29545f-2a5e-4e09-9119-9c97936982cf.png"
+   },
+   "idle_m": {
+    "pending_index": 2038,
+    "job_id": "75678662-3673-4c11-b379-55e13ff7d426",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004907_75678662-3673-4c11-b379-55e13ff7d426.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004907_75678662-3673-4c11-b379-55e13ff7d426.png"
+   },
+   "h0": {
+    "pending_index": 2052,
+    "job_id": "60c356f8-1310-41c7-a5c4-4622cc9a2307",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_005644_60c356f8-1310-41c7-a5c4-4622cc9a2307.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_005644_60c356f8-1310-41c7-a5c4-4622cc9a2307.png"
+   },
+   "h12": {
+    "pending_index": 2053,
+    "job_id": "88a34a1d-6e31-4f50-a59d-22153a81b6b6",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_005644_88a34a1d-6e31-4f50-a59d-22153a81b6b6.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_005644_88a34a1d-6e31-4f50-a59d-22153a81b6b6.png"
+   },
+   "kf": {
+    "pending_index": 2054,
+    "job_id": "351b05fb-9181-4b0d-a403-119df075dbb2",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_005905_351b05fb-9181-4b0d-a403-119df075dbb2.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_005905_351b05fb-9181-4b0d-a403-119df075dbb2.png"
+   },
+   "at2": {
+    "pending_index": 2055,
+    "job_id": "170c78d0-3a7b-41f2-b19a-294017e15b5c",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_005905_170c78d0-3a7b-41f2-b19a-294017e15b5c.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_005905_170c78d0-3a7b-41f2-b19a-294017e15b5c.png"
+   }
+  },
+  "next_index": 2056
+ }
+}

@@ -1,0 +1,19 @@
+{
+  "frameWidth": 326,
+  "frameHeight": 306,
+  "frames": 18,
+  "columns": 12,
+  "fps": 12,
+  "loop": false,
+  "hits": [
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12
+  ],
+  "heightScale": 1.0306,
+  "anchorX": 0.4303
+}
