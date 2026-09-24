@@ -1,113 +1,340 @@
-class StatusEffectUI {
-  // Create status effect badge HTML
-  static createBadge(effect, stacks = 1) {
-    const type = effect.type || 'neutral';
-    const turnsLeft = effect.turnsRemaining || effect.duration;
-    const showStack = stacks > 1 && effect.stackable;
-    
-    return `
-      <div class="status-effect ${type} active" data-effect="${effect.id}" title="${effect.description}">
-        <span class="status-icon">${effect.icon}</span>
-        <span class="status-duration">${turnsLeft}</span>
-        ${showStack ? `<span class="status-stack">×${stacks}</span>` : ''}
-        <div class="status-tooltip">
-          <div class="status-tooltip-name">${effect.name}</div>
-          <div class="status-tooltip-desc">${effect.description}</div>
-        </div>
-      </div>
-    `;
-  }
-  
-  // Render all status effects for a character
-  static renderEffects(characterId, containerId) {
-    const container = document.getElementById(containerId);
-    if (!container) return;
-    
-    const effects = statusManager.getEffects(characterId);
-    
-    if (effects.length === 0) {
-      container.innerHTML = '<span class="status-effects-empty">No active effects</span>';
-      return;
-    }
-    
-    // Group stacks
-    const grouped = {};
-    effects.forEach(effect => {
-      if (!grouped[effect.id]) {
-        grouped[effect.id] = { effect, count: 0 };
-      }
-      grouped[effect.id].count++;
-    });
-    
-    // Render badges
-    container.innerHTML = Object.values(grouped)
-      .map(({ effect, count }) => this.createBadge(effect, count))
-      .join('');
-  }
-  
-  // Show status effect applied animation
-  static showEffectApplied(characterElement, effectId) {
-    const effect = Object.values(STATUS_EFFECTS).find(e => e.id === effectId);
-    if (!effect) return;
-    
-    const popup = document.createElement('div');
-    popup.className = 'status-popup';
-    popup.innerHTML = `
-      <span class="status-popup-icon">${effect.icon}</span>
-      <span class="status-popup-text">${effect.name}</span>
-    `;
-    popup.style.cssText = `
-      position: absolute;
-      top: -30px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: ${effect.type === 'buff' ? 'rgba(0, 200, 100, 0.9)' : 'rgba(200, 0, 0, 0.9)'};
-      color: white;
-      padding: 6px 12px;
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: 700;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
-      animation: statusPopup 2s ease forwards;
-      z-index: 1000;
-      pointer-events: none;
-    `;
-    
-    characterElement.style.position = 'relative';
-    characterElement.appendChild(popup);
-    
-    setTimeout(() => popup.remove(), 2000);
-  }
-}
+/* ============================================================
+   js/status_ui.js — Blazing-style status effect bubbles
+   ------------------------------------------------------------
+   - Field: small round "thought bubble" icons floating above each
+     affected unit (sprite units and portrait tiles), one per effect,
+     white rim + effect colour, turn counter badge, gentle bob, laid
+     out on a shallow arc (max 5 + "+n"). Hover / long-press → tooltip.
+   - Team HUD card: compact row of mini icons for player units.
+   - Speed bar markers: padlock for immobilized, seal for jutsu sealed.
+   - Action panel (#action-status-effects): list for the acting unit.
+   - Popups: "Jutsu Sealing!", "Dodge!", "Resisted", "Slip Damage" ...
+   Reads unit.statusEffects through window.BattleBuffs; icons from
+   window.StatusCatalog (assets/ui/status/*.png, Naruto Blazing wiki).
+   ============================================================ */
+(() => {
+  "use strict";
 
-// Add CSS for popup animation
-if (!document.getElementById('status-popup-styles')) {
-  const style = document.createElement('style');
-  style.id = 'status-popup-styles';
-  style.textContent = `
-    @keyframes statusPopup {
-      0% {
-        opacity: 0;
-        transform: translateX(-50%) translateY(0) scale(0.5);
-      }
-      20% {
-        opacity: 1;
-        transform: translateX(-50%) translateY(-10px) scale(1.2);
-      }
-      80% {
-        opacity: 1;
-        transform: translateX(-50%) translateY(-20px) scale(1);
-      }
-      100% {
-        opacity: 0;
-        transform: translateX(-50%) translateY(-30px) scale(0.8);
-      }
-    }
-  `;
-  document.head.appendChild(style);
-}
+  const MAX_VISIBLE = 5;
+  const esc = v => String(v ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const Cat = () => window.StatusCatalog || {};
+  const B = () => window.BattleBuffs || null;
+  const core = () => window.BattleManager || null;
+  const iconUrl = id => {
+    const def = Cat().STATUS_EFFECT_BY_ID?.[id];
+    if (def) return def.iconPath;
+    const inst = Cat().INSTANT_ICONS?.[id];
+    return inst ? (Cat().ICON_DIR || "assets/ui/status/") + inst + ".png" : null;
+  };
+  const reduceMotion = () => { try { return matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e) { return false; } };
 
-// Export
-if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { StatusEffectUI };
-}
+  function describe(se) {
+    const def = Cat().STATUS_EFFECT_BY_ID?.[se.id] || {};
+    const bits = [];
+    const v = Number(se.value);
+    switch (se.id) {
+      case "attack_up": bits.push(`Attack +${v}%`); break;
+      case "attack_down": bits.push(`Attack -${v}%`); break;
+      case "damage_reduction": bits.push(`Damage taken -${v}%`); break;
+      case "dodge_up": bits.push(`Dodge chance +${v}%`); break;
+      case "crit_up": bits.push(`Critical rate +${v}%`); break;
+      case "vulnerability": bits.push(`Damage taken +${v}%`); break;
+      case "barrier": bits.push(`Blocks ${Number(se.barrierHP ?? v) || 0} more damage`); break;
+      case "perfect_dodge": if (se.charges != null) bits.push(`${se.charges} dodge(s) left`); break;
+      case "slip": case "damage_region": bits.push(`${se.dmg || v || 0} damage per turn`); break;
+      case "regen": bits.push(`+${v} health per turn`); break;
+      case "element_change": bits.push(`Element: ${se.element}`); break;
+      case "range_up": bits.push(`Range: ${se.element}`); break;
+      case "dmg_boost": bits.push(`+${v}% damage${se.element ? ` vs ${se.element}` : ""}`); break;
+      default: if (/_res$/.test(se.id) && v) bits.push(`-${v}% chance`);
+    }
+    return { name: def.name || se.name || se.id, desc: def.description || "", extra: bits.join(" · "), kind: def.kind || se.kind };
+  }
+
+  const StatusEffectUI = {
+    _timer: null,
+    _tip: null,
+    _pending: new Set(),
+    _raf: 0,
+
+    /* ---------- field bubbles ---------- */
+
+    render(unit) {
+      if (!unit) return;
+      this._pending.add(unit);
+      if (this._raf) return;
+      this._raf = requestAnimationFrame(() => {
+        this._raf = 0;
+        const list = [...this._pending];
+        this._pending.clear();
+        list.forEach(u => { this.renderField(u); this.renderHud(u); this.renderMarker(u); });
+        const cu = core()?.turns?.currentUnit;
+        if (cu && list.includes(cu)) this.renderPanel(cu);
+      });
+    },
+
+    statuses(unit) {
+      const b = B();
+      if (!b || !unit || !(unit.stats?.hp > 0)) return [];
+      return b.list(unit).map(se => ({ ...se, id: se.id || Cat().resolveStatusId?.(se.type || se.tag) }))
+        .filter(se => Cat().STATUS_EFFECT_BY_ID?.[se.id])
+        // ailments first (like Blazing), then boosts
+        .sort((a, b2) => (a.kind === b2.kind ? 0 : a.kind === "debuff" ? -1 : 1));
+    },
+
+    signature(list) {
+      return list.map(se => `${se.id}:${se.turnsRemaining}:${se.charges ?? ""}:${se.value ?? ""}:${se.barrierHP ?? ""}`).join("|");
+    },
+
+    unitEl(unit) {
+      return core()?.dom?.scene?.querySelector(`.battle-unit[data-unit-id="${CSS.escape(String(unit.id))}"]`) || null;
+    },
+
+    renderField(unit) {
+      const el = this.unitEl(unit);
+      if (!el) return;
+      const list = this.statuses(unit);
+      let box = el.querySelector(":scope > .st-bubbles");
+      if (!list.length) { if (box) box.remove(); return; }
+      if (!box) {
+        box = document.createElement("div");
+        box.className = "st-bubbles";
+        box.setAttribute("aria-label", "Status effects");
+        el.appendChild(box);
+      }
+      box.classList.toggle("st-bubbles--sprite", !!el.querySelector(".unit-sprite--anim"));
+      box.classList.toggle("st-bubbles--enemy", !unit.isPlayer);
+      // Too close to the top edge (speed bar): float the bubbles below instead
+      const sc = core()?.dom?.scene?.getBoundingClientRect();
+      const bar = document.getElementById("speed-gauge-track")?.getBoundingClientRect();
+      const ceiling = Math.max(sc?.top || 0, bar?.bottom || 0) + 6;
+      const room = el.getBoundingClientRect().top - (el.querySelector(".unit-sprite--anim") ? 70 : 44);
+      box.classList.toggle("st-bubbles--below", room < ceiling);
+      const sig = this.signature(list);
+      if (box.dataset.sig === sig) return;
+      const prevIds = new Set((box.dataset.ids || "").split(",").filter(Boolean));
+      box.dataset.sig = sig;
+      box.dataset.ids = list.map(s => s.id).join(",");
+      const shown = list.slice(0, list.length > MAX_VISIBLE ? MAX_VISIBLE - 1 : MAX_VISIBLE);
+      const n = shown.length + (list.length > shown.length ? 1 : 0);
+      const mid = (n - 1) / 2;
+      box.innerHTML = shown.map((se, i) => {
+        const d = describe(se);
+        const arc = Math.round(Math.pow(Math.abs(i - mid), 1.6) * 3); // shallow arc: ends droop
+        const badge = se.id === "perfect_dodge" && se.charges != null ? `<b class="st-count">×${se.charges}</b>` : "";
+        return `<div class="st-bubble st-${d.kind}${prevIds.has(se.id) ? "" : " st-new"}" data-st-id="${esc(se.id)}"
+            style="--st-c:${esc(se.color || "#888")};--arc:${arc}px;--i:${i}"
+            title="${esc(`${d.name} — ${se.turnsRemaining} turn(s) left${d.extra ? ` (${d.extra})` : ""}`)}">
+          <img src="${esc(iconUrl(se.id))}" alt="${esc(d.name)}" draggable="false">
+          <b class="st-turns">${se.turnsRemaining >= 99 ? "∞" : esc(se.turnsRemaining)}</b>${badge}
+        </div>`;
+      }).join("") + (list.length > shown.length
+        ? `<div class="st-bubble st-more" style="--arc:${Math.round(Math.pow(Math.abs(n - 1 - mid), 1.6) * 3)}px;--i:${n - 1}" title="${esc(list.slice(shown.length).map(s => describe(s).name).join(", "))}">+${list.length - shown.length}</div>` : "")
+        + `<i class="st-tail st-tail-a"></i><i class="st-tail st-tail-b"></i>`;
+      box.querySelectorAll(".st-bubble").forEach(b => this.bindTip(b, unit));
+    },
+
+    /* ---------- team HUD card ---------- */
+
+    renderHud(unit) {
+      if (!unit?.isPlayer) return;
+      const holder = core()?.dom?.teamHolder || document.getElementById("team-holder");
+      const port = holder?.querySelector(`.active-portrait-container[data-unit-id="${CSS.escape(String(unit.id))}"]`);
+      const card = port?.closest(".unit-card") || port;
+      if (!card) return;
+      const list = this.statuses(unit);
+      let row = card.querySelector(":scope .st-hud");
+      if (!list.length) { row?.remove(); return; }
+      if (!row) {
+        row = document.createElement("div");
+        row.className = "st-hud";
+        (card.querySelector(".uc-body") || card).appendChild(row);
+      }
+      const sig = this.signature(list);
+      if (row.dataset.sig === sig) return;
+      row.dataset.sig = sig;
+      const shown = list.slice(0, 4);
+      row.innerHTML = shown.map(se => {
+        const d = describe(se);
+        return `<span class="st-mini st-${d.kind}" style="--st-c:${esc(se.color)}" title="${esc(`${d.name} — ${se.turnsRemaining} turn(s)`)}">
+          <img src="${esc(iconUrl(se.id))}" alt="" draggable="false"><b>${esc(se.turnsRemaining)}</b></span>`;
+      }).join("") + (list.length > 4 ? `<span class="st-mini st-mini-more">+${list.length - 4}</span>` : "");
+    },
+
+    /* ---------- speed bar marker ---------- */
+
+    renderMarker(unit) {
+      const m = document.querySelector(`#speed-gauge-track .speed-marker[data-unit-id="${CSS.escape(String(unit.id))}"]`);
+      if (!m) return;
+      const b = B();
+      const stun = !!b?.cannotAct(unit), seal = !!b?.isSealed(unit, "jutsu");
+      m.classList.toggle("st-stunned", stun);
+      m.classList.toggle("st-sealed", seal);
+      let tag = m.querySelector(":scope > .sm-st");
+      if (!stun && !seal) { tag?.remove(); return; }
+      if (!tag) { tag = document.createElement("i"); tag.className = "sm-st"; m.appendChild(tag); }
+      tag.style.backgroundImage = `url("${iconUrl(stun ? "immobilize" : "jutsu_seal")}")`;
+    },
+
+    /* ---------- action panel list ---------- */
+
+    renderPanel(unit) {
+      const box = document.getElementById("action-status-effects");
+      if (!box) return;
+      const list = this.statuses(unit);
+      if (!list.length) { box.innerHTML = ""; box.classList.add("st-empty"); return; }
+      box.classList.remove("st-empty");
+      box.innerHTML = list.map(se => {
+        const d = describe(se);
+        return `<span class="st-chip st-${d.kind}" style="--st-c:${esc(se.color)}" title="${esc(d.desc)}">
+          <img src="${esc(iconUrl(se.id))}" alt="" draggable="false">${esc(d.name)}<b>${esc(se.turnsRemaining)}T</b></span>`;
+      }).join("");
+    },
+
+    /* ---------- tooltip ---------- */
+
+    bindTip(el, unit) {
+      const show = () => this.showTip(el, unit);
+      el.addEventListener("pointerenter", e => { if (e.pointerType === "mouse") show(); });
+      el.addEventListener("pointerleave", () => this.hideTip());
+      let lp = null;
+      el.addEventListener("pointerdown", e => {
+        e.stopPropagation(); // do not start a unit drag from a bubble
+        if (e.pointerType !== "mouse") { clearTimeout(lp); lp = setTimeout(show, 280); }
+      });
+      el.addEventListener("pointerup", () => { clearTimeout(lp); setTimeout(() => this.hideTip(), 1600); });
+      el.addEventListener("click", e => { e.stopPropagation(); show(); });
+    },
+
+    showTip(el, unit) {
+      const id = el.dataset.stId;
+      const se = this.statuses(unit).find(s => s.id === id);
+      if (!se) return;
+      const d = describe(se);
+      if (!this._tip) {
+        this._tip = document.createElement("div");
+        this._tip.className = "st-tip";
+        this._tip.setAttribute("role", "tooltip");
+        document.body.appendChild(this._tip);
+      }
+      const t = this._tip;
+      t.style.setProperty("--st-c", se.color);
+      t.innerHTML = `<div class="st-tip-head"><img src="${esc(iconUrl(id))}" alt=""><span>${esc(d.name)}</span><em class="st-${d.kind}">${d.kind === "debuff" ? "Ailment" : "Boost"}</em></div>
+        <div class="st-tip-turns">${se.turnsRemaining >= 99 ? "Permanent" : `${esc(se.turnsRemaining)} turn${se.turnsRemaining === 1 ? "" : "s"} left`}${d.extra ? ` · ${esc(d.extra)}` : ""}</div>
+        <div class="st-tip-desc">${esc(d.desc)}</div>`;
+      const r = el.getBoundingClientRect();
+      t.classList.add("show");
+      const tw = t.offsetWidth, th = t.offsetHeight;
+      let x = r.left + r.width / 2 - tw / 2;
+      x = Math.max(8, Math.min(window.innerWidth - tw - 8, x));
+      let y = r.top - th - 8;
+      if (y < 8) y = r.bottom + 8;
+      t.style.left = `${x}px`; t.style.top = `${y}px`;
+    },
+    hideTip() { this._tip?.classList.remove("show"); },
+
+    /* ---------- popups ---------- */
+
+    popup(unit, text, color = "#fff", iconId = null) {
+      const c = core();
+      const el = this.unitEl(unit);
+      const layer = c?.dom?.damageLayer;
+      const scene = c?.dom?.scene;
+      if (!el || !scene) return;
+      const r = el.getBoundingClientRect(), sr = scene.getBoundingClientRect();
+      const p = document.createElement("div");
+      p.className = "st-popup";
+      const icon = iconId ? iconUrl(iconId) : null;
+      p.innerHTML = `${icon ? `<img src="${esc(icon)}" alt="">` : ""}<span>${esc(text)}</span>`;
+      p.style.setProperty("--st-c", color);
+      // stack concurrent popups on the same unit
+      const key = String(unit.id);
+      const now = Date.now();
+      this._stack = this._stack || {};
+      const s = this._stack[key] && now - this._stack[key].t < 700 ? this._stack[key].n + 1 : 0;
+      this._stack[key] = { t: now, n: s };
+      const host = layer || scene;
+      const hr = host.getBoundingClientRect();
+      p.style.left = `${r.left - hr.left + r.width / 2}px`;
+      p.style.top = `${r.top - hr.top - 18 - s * 24}px`;
+      host.appendChild(p);
+      setTimeout(() => p.remove(), reduceMotion() ? 1400 : 1700);
+      void sr;
+    },
+
+    /** Floating number for status damage / healing (slip ticks, regen, heals). */
+    number(unit, amount, type = "slip") {
+      const c = core();
+      const el = this.unitEl(unit);
+      const host = c?.dom?.damageLayer || c?.dom?.scene;
+      if (!el || !host) return;
+      const r = el.getBoundingClientRect(), hr = host.getBoundingClientRect();
+      const n = document.createElement("div");
+      n.className = `st-num st-num-${type}`;
+      n.textContent = `${type === "heal" ? "+" : "-"}${Math.round(amount).toLocaleString()}`;
+      n.style.left = `${r.left - hr.left + r.width / 2 + (Math.random() * 16 - 8)}px`;
+      n.style.top = `${r.top - hr.top + r.height * 0.35}px`;
+      host.appendChild(n);
+      setTimeout(() => n.remove(), 1500);
+    },
+
+    /** A status just landed: popup with its icon + name. */
+    announce(unit, rec) {
+      const def = Cat().STATUS_EFFECT_BY_ID?.[rec.id];
+      if (!def) return;
+      const extra = rec.id === "perfect_dodge" && rec.charges ? ` ×${rec.charges}` : "";
+      this.popup(unit, `${def.name}${extra}`, def.kind === "debuff" ? "#ffb3c7" : "#b8ffcf", rec.id);
+      this.render(unit);
+    },
+
+    expired(unit, recs) {
+      if (!recs?.length) return;
+      const names = recs.map(r => Cat().STATUS_EFFECT_BY_ID?.[r.id]?.name || r.name).filter(Boolean);
+      if (names.length) this.popup(unit, `${names.join(", ")} wore off`, "#dddddd", null);
+      this.render(unit);
+    },
+
+    /* ---------- periodic sync (DOM re-renders, deaths, swaps) ---------- */
+
+    sync() {
+      const c = core();
+      if (!c || !Array.isArray(c.combatants)) return;
+      c.combatants.forEach(u => this.render(u));
+      // Units that died / left: clear stale HUD rows
+      document.querySelectorAll("#team-holder .st-hud").forEach(row => {
+        const id = row.closest(".unit-card")?.querySelector(".active-portrait-container")?.dataset.unitId;
+        const u = c.combatants.find(x => String(x.id) === id);
+        if (!u || !this.statuses(u).length) row.remove();
+      });
+    },
+
+    start() {
+      if (this._timer) return;
+      this._timer = setInterval(() => this.sync(), 500);
+      document.addEventListener("scroll", () => this.hideTip(), true);
+    },
+
+    /* ---------- legacy badge API (teams page) ---------- */
+    createBadge(effect) {
+      const id = effect.id;
+      return `<div class="status-effect ${effect.type || effect.kind || ""} active" data-effect="${esc(id)}" title="${esc(effect.description || "")}">
+        <img class="status-icon" src="${esc(iconUrl(id) || "")}" alt=""><span class="status-duration">${esc(effect.turnsRemaining ?? effect.duration ?? "")}</span></div>`;
+    },
+    showEffectApplied(characterElement, effectId) {
+      const def = Cat().STATUS_EFFECT_BY_ID?.[effectId];
+      if (!def || !characterElement) return;
+      const p = document.createElement("div");
+      p.className = "st-popup";
+      p.innerHTML = `<img src="${esc(def.iconPath)}" alt=""><span>${esc(def.name)}</span>`;
+      p.style.left = "50%"; p.style.top = "-10px";
+      characterElement.appendChild(p);
+      setTimeout(() => p.remove(), 1700);
+    }
+  };
+
+  window.StatusEffectUI = StatusEffectUI;
+  if (typeof document !== "undefined" && /battle|arena/i.test(location.pathname)) {
+    const go = () => StatusEffectUI.start();
+    if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", go); else go();
+  }
+})();

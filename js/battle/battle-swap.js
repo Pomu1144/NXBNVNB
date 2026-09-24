@@ -32,6 +32,13 @@
         return;
       }
 
+      // Switch Sealing: the unit cannot leave the field
+      if (window.BattleBuffs?.has?.(activeUnit, 'switch_seal')) {
+        window.StatusEffectUI?.popup?.(activeUnit, 'Switch Sealed!', '#ffb09a', 'switch_seal');
+        window.BattleNarrator?.narrate?.(`${activeUnit.name} is switch sealed!`, core);
+        return;
+      }
+
       // CRITICAL: Check if position IDs match
       if (activeUnit.positionId !== benchUnit.positionId) {
         console.warn(`[Swap] Position mismatch! P${activeUnit.positionId} cannot swap with P${benchUnit.positionId}`);
@@ -151,7 +158,7 @@
      * Check if unit can be swapped
      */
     canSwap(unit) {
-      return !this.isSwapping && unit.stats.hp > 0;
+      return !this.isSwapping && unit.stats.hp > 0 && !window.BattleBuffs?.has?.(unit, 'switch_seal');
     },
 
     /**

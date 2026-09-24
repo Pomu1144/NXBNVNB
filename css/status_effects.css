@@ -177,3 +177,263 @@
   font-size: 9px;
   font-style: italic;
 }
+
+/* ==========================================================
+   Blazing-style status bubbles (js/status_ui.js)
+   ========================================================== */
+.st-bubbles {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 8px);
+  transform: translateX(-50%);
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  z-index: 40;
+  pointer-events: none;
+  white-space: nowrap;
+}
+.st-bubbles--sprite { bottom: calc(100% + 30px); }
+html.is-mobile .st-bubbles--sprite { bottom: calc(100% + 16px); }
+.st-bubbles--enemy:not(.st-bubbles--sprite) { bottom: calc(100% + 6px); }
+
+.st-bubble {
+  --st-size: 30px;
+  position: relative;
+  width: var(--st-size);
+  height: var(--st-size);
+  border-radius: 50%;
+  border: 2px solid #fff;
+  background:
+    radial-gradient(circle at 35% 30%, rgba(255,255,255,0.55), transparent 45%),
+    radial-gradient(circle, color-mix(in srgb, var(--st-c) 70%, #fff 0%) 0%, color-mix(in srgb, var(--st-c) 80%, #000) 100%);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.55), 0 0 0 1px rgba(0,0,0,0.35), inset 0 -2px 3px rgba(0,0,0,0.3);
+  display: grid;
+  place-items: center;
+  transform: translateY(var(--arc, 0px));
+  animation: stBob 2.4s ease-in-out infinite;
+  animation-delay: calc(var(--i, 0) * -0.35s);
+  pointer-events: auto;
+  cursor: help;
+  touch-action: none;
+}
+html.is-mobile .st-bubble { --st-size: 24px; }
+.st-bubble img {
+  width: 84%;
+  height: 84%;
+  object-fit: contain;
+  filter: drop-shadow(0 1px 1px rgba(0,0,0,0.5));
+  pointer-events: none;
+  -webkit-user-drag: none;
+}
+.st-bubble.st-debuff { border-color: #fff; }
+.st-bubble.st-buff { border-color: #fffbe6; }
+.st-bubble .st-turns {
+  position: absolute;
+  right: -5px;
+  bottom: -4px;
+  min-width: 13px;
+  height: 13px;
+  padding: 0 2px;
+  border-radius: 7px;
+  background: #1b1b24;
+  border: 1px solid #fff;
+  color: #fff;
+  font: 800 9px/11px system-ui, sans-serif;
+  text-align: center;
+}
+.st-bubble.st-debuff .st-turns { background: #6a1426; }
+.st-bubble.st-buff .st-turns { background: #134a2c; }
+.st-bubble .st-count {
+  position: absolute;
+  left: -5px;
+  top: -5px;
+  font: 800 9px/11px system-ui, sans-serif;
+  color: #fff;
+  background: #7a5a1a;
+  border: 1px solid #fff;
+  border-radius: 6px;
+  padding: 0 2px;
+}
+.st-bubble.st-more {
+  --st-c: #444;
+  font: 800 10px system-ui, sans-serif;
+  color: #fff;
+}
+.st-bubble.st-new { animation: stPop 0.45s cubic-bezier(.2,1.6,.4,1) both, stBob 2.4s ease-in-out 0.45s infinite; }
+
+/* thought-bubble tail: two little dots trailing to the head */
+.st-tail {
+  position: absolute;
+  left: 50%;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.5);
+  pointer-events: none;
+}
+.st-tail-a { width: 7px; height: 7px; bottom: -9px; margin-left: -2px; }
+.st-tail-b { width: 4px; height: 4px; bottom: -15px; margin-left: 2px; }
+
+@keyframes stBob {
+  0%, 100% { transform: translateY(var(--arc, 0px)); }
+  50% { transform: translateY(calc(var(--arc, 0px) - 3px)); }
+}
+@keyframes stPop {
+  0% { transform: translateY(var(--arc, 0px)) scale(0.2); opacity: 0; }
+  100% { transform: translateY(var(--arc, 0px)) scale(1); opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .st-bubble, .st-bubble.st-new { animation: none; }
+}
+
+/* Team HUD card summary */
+.st-hud {
+  position: absolute;
+  left: 4px;
+  top: 4px;
+  display: flex;
+  gap: 2px;
+  z-index: 6;
+  pointer-events: none;
+}
+.st-mini {
+  position: relative;
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  border: 1.5px solid #fff;
+  background: radial-gradient(circle, var(--st-c), color-mix(in srgb, var(--st-c) 70%, #000));
+  display: grid;
+  place-items: center;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.6);
+  pointer-events: auto;
+}
+.st-mini img { width: 86%; height: 86%; object-fit: contain; }
+.st-mini b {
+  position: absolute; right: -4px; bottom: -4px;
+  font: 800 8px/9px system-ui, sans-serif; color: #fff;
+  background: #111; border-radius: 5px; padding: 0 2px;
+}
+.st-mini-more { --st-c: #333; font: 800 8px system-ui, sans-serif; color: #fff; }
+
+/* Speed bar marker states */
+#speed-gauge-track .speed-marker.st-stunned .sm-portrait img { filter: grayscale(0.85) brightness(0.8); }
+#speed-gauge-track .speed-marker .sm-st {
+  position: absolute;
+  right: -6px;
+  top: -6px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 1.5px solid #fff;
+  background: #333 center / 85% no-repeat;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.6);
+  z-index: 5;
+  pointer-events: none;
+}
+#speed-gauge-track .speed-marker.st-stunned .sm-st { background-color: #c07a10; }
+#speed-gauge-track .speed-marker.st-sealed:not(.st-stunned) .sm-st { background-color: #5a3a8a; }
+
+/* Sealed skill buttons */
+#action-panel button.st-sealed,
+.action-btn.st-sealed { filter: grayscale(0.7); position: relative; }
+#action-panel button.st-sealed::after,
+.action-btn.st-sealed::after {
+  content: '';
+  position: absolute; right: 2px; top: 2px; width: 18px; height: 18px;
+  background: url("../assets/ui/status/jutsu_seal.png") center / contain no-repeat;
+}
+
+/* Action panel list */
+#action-status-effects.st-empty { display: none; }
+.st-chip {
+  display: inline-flex; align-items: center; gap: 3px;
+  padding: 1px 6px 1px 1px; border-radius: 12px;
+  background: color-mix(in srgb, var(--st-c) 55%, #111);
+  border: 1px solid rgba(255,255,255,0.6);
+  color: #fff; font: 700 10px system-ui, sans-serif;
+}
+.st-chip img { width: 18px; height: 18px; border-radius: 50%; background: rgba(0,0,0,0.25); }
+.st-chip b { opacity: 0.85; margin-left: 2px; }
+
+/* Tooltip */
+.st-tip {
+  position: fixed;
+  z-index: 100000;
+  max-width: 230px;
+  padding: 7px 9px;
+  border-radius: 10px;
+  background: rgba(14, 16, 26, 0.95);
+  border: 1.5px solid var(--st-c, #fff);
+  color: #fff;
+  font: 500 11px/1.35 system-ui, sans-serif;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.6);
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.12s, transform 0.12s;
+}
+.st-tip.show { opacity: 1; transform: none; }
+.st-tip-head { display: flex; align-items: center; gap: 6px; font-weight: 800; font-size: 12px; }
+.st-tip-head img { width: 22px; height: 22px; }
+.st-tip-head em { margin-left: auto; font-style: normal; font-size: 9px; padding: 1px 5px; border-radius: 6px; }
+.st-tip-head em.st-debuff { background: #8a1c34; }
+.st-tip-head em.st-buff { background: #1c6a3c; }
+.st-tip-turns { margin-top: 3px; color: #ffe08a; font-weight: 700; }
+.st-tip-desc { margin-top: 2px; color: #cfd3e6; }
+
+/* Popups */
+.st-popup {
+  position: absolute;
+  transform: translate(-50%, -100%);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px 2px 3px;
+  border-radius: 14px;
+  background: rgba(10, 10, 18, 0.72);
+  border: 1px solid color-mix(in srgb, var(--st-c, #fff) 70%, transparent);
+  color: var(--st-c, #fff);
+  font: 800 12px system-ui, sans-serif;
+  text-shadow: 0 1px 2px #000;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 520;
+  animation: stPopup 1.7s ease-out forwards;
+}
+.st-popup img { width: 20px; height: 20px; object-fit: contain; }
+@keyframes stPopup {
+  0% { opacity: 0; transform: translate(-50%, -80%) scale(0.6); }
+  12% { opacity: 1; transform: translate(-50%, -100%) scale(1.08); }
+  25% { transform: translate(-50%, -100%) scale(1); }
+  80% { opacity: 1; }
+  100% { opacity: 0; transform: translate(-50%, -150%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .st-popup { animation: stPopupRM 1.4s linear forwards; }
+  @keyframes stPopupRM { 0%, 80% { opacity: 1; } 100% { opacity: 0; } }
+}
+
+/* Status damage / heal numbers */
+.st-num {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  font: 900 26px/1 'Cinzel', Georgia, serif;
+  letter-spacing: 1px;
+  pointer-events: none;
+  z-index: 515;
+  text-shadow: 0 2px 0 #000, 0 0 6px rgba(0,0,0,0.9);
+  animation: stNum 1.5s ease-out forwards;
+}
+.st-num-slip, .st-num-region { color: #d58bff; }
+.st-num-self { color: #ff9a9a; }
+.st-num-heal { color: #66f59a; }
+@keyframes stNum {
+  0% { opacity: 0; transform: translate(-50%, -30%) scale(0.7); }
+  15% { opacity: 1; transform: translate(-50%, -60%) scale(1.15); }
+  30% { transform: translate(-50%, -70%) scale(1); }
+  100% { opacity: 0; transform: translate(-50%, -160%); }
+}
+.st-bubbles.st-bubbles--below { bottom: auto; top: calc(100% + 16px); }
+.st-bubbles--below .st-tail-a { bottom: auto; top: -9px; }
+.st-bubbles--below .st-tail-b { bottom: auto; top: -15px; }

@@ -1732,7 +1732,7 @@
   {
     "fromId": "ashura_789",
     "toId": "ashura_790",
-    "tier": "6S"
+    "tier": "6SB"
   },
   {
     "fromId": "ashura_841",
@@ -1747,7 +1747,7 @@
   {
     "fromId": "asuma_848",
     "toId": "asuma_849",
-    "tier": "6S"
+    "tier": "6SB"
   },
   {
     "fromId": "choji_618",
@@ -1762,7 +1762,7 @@
   {
     "fromId": "danzo_2034",
     "toId": "danzo_2035",
-    "tier": "6S"
+    "tier": "6SB"
   },
   {
     "fromId": "darui_2128",
@@ -1777,7 +1777,7 @@
   {
     "fromId": "deidara_836",
     "toId": "deidara_837",
-    "tier": "6S"
+    "tier": "6SB"
   },
   {
     "fromId": "deidara_654",
@@ -1802,7 +1802,7 @@
   {
     "fromId": "hagoromo_2044",
     "toId": "hagoromo_2045",
-    "tier": "6S"
+    "tier": "6SB"
   },
   {
     "fromId": "haku_537",
@@ -1827,7 +1827,7 @@
   {
     "fromId": "hashirama_2017",
     "toId": "hashirama_2018",
-    "tier": "6S"
+    "tier": "6SB"
   },
   {
     "fromId": "hinata_811",
@@ -1852,7 +1852,7 @@
   {
     "fromId": "indra_2111",
     "toId": "indra_2112",
-    "tier": "6S"
+    "tier": "6SB"
   },
   {
     "fromId": "ino_559",
@@ -1917,7 +1917,7 @@
   {
     "fromId": "kaguya_749",
     "toId": "kaguya_750",
-    "tier": "6S"
+    "tier": "6SB"
   },
   {
     "fromId": "kaguya_2019",
@@ -1962,7 +1962,7 @@
   {
     "fromId": "killer_1155",
     "toId": "killer_1156",
-    "tier": "6S"
+    "tier": "6SB"
   },
   {
     "fromId": "killer_876",
@@ -2002,7 +2002,7 @@
   {
     "fromId": "kisame_719",
     "toId": "kisame_720",
-    "tier": "6S"
+    "tier": "6SB"
   },
   {
     "fromId": "konan_688",
@@ -2017,12 +2017,12 @@
   {
     "fromId": "madara_2059",
     "toId": "madara_2060",
-    "tier": "6S"
+    "tier": "6SB"
   },
   {
     "fromId": "madara_859",
     "toId": "madara_860",
-    "tier": "6S"
+    "tier": "6SB"
   },
   {
     "fromId": "madara_523",
@@ -2062,7 +2062,7 @@
   {
     "fromId": "masked_2102",
     "toId": "masked_2103",
-    "tier": "6S"
+    "tier": "6SB"
   },
   {
     "fromId": "might_707",
@@ -2097,7 +2097,7 @@
   {
     "fromId": "naruto_819",
     "toId": "naruto_820",
-    "tier": "6S"
+    "tier": "6SB"
   },
   {
     "fromId": "naruto_453",
@@ -2142,7 +2142,7 @@
   {
     "fromId": "naruto_665",
     "toId": "naruto_666",
-    "tier": "6S"
+    "tier": "6SB"
   },
   {
     "fromId": "naruto_2036",
@@ -2167,17 +2167,17 @@
   {
     "fromId": "neji_2004",
     "toId": "neji_2005",
-    "tier": "6S"
+    "tier": "6SB"
   },
   {
     "fromId": "obito_736",
     "toId": "obito_737",
-    "tier": "6S"
+    "tier": "6SB"
   },
   {
     "fromId": "obito_2071",
     "toId": "obito_2072",
-    "tier": "6S"
+    "tier": "6SB"
   },
   {
     "fromId": "obito_669",
@@ -2202,12 +2202,12 @@
   {
     "fromId": "obito_804",
     "toId": "obito_805",
-    "tier": "6S"
+    "tier": "6SB"
   },
   {
     "fromId": "orochimaru_888",
     "toId": "orochimaru_889",
-    "tier": "6S"
+    "tier": "6SB"
   },
   {
     "fromId": "orochimaru_598",
@@ -2282,7 +2282,7 @@
   {
     "fromId": "sasuke_702",
     "toId": "sasuke_703",
-    "tier": "6S"
+    "tier": "6SB"
   },
   {
     "fromId": "sasuke_865",
@@ -2307,7 +2307,7 @@
   {
     "fromId": "sasuke_667",
     "toId": "sasuke_668",
-    "tier": "6S"
+    "tier": "6SB"
   },
   {
     "fromId": "sasuke_456",
@@ -2321,8 +2321,13 @@
   },
   {
     "fromId": "sasuke_721",
-    "toId": "sasuke_723",
+    "toId": "sasuke_722",
     "tier": "6S"
+  },
+  {
+    "fromId": "sasuke_722",
+    "toId": "sasuke_723",
+    "tier": "6SB"
   },
   {
     "fromId": "shikamaru_615",
@@ -2377,7 +2382,7 @@
   {
     "fromId": "tobirama_762",
     "toId": "tobirama_763",
-    "tier": "6S"
+    "tier": "6SB"
   },
   {
     "fromId": "tsunade_637",

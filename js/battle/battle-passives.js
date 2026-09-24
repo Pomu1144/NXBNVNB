@@ -201,18 +201,20 @@
 
           if (effect.healFlat) {
             const heal = effect.healFlat;
-            unit.stats.hp = Math.min(unit.stats.maxHP, unit.stats.hp + heal);
-            window.BattleAnimations?.showDamageNumber?.(unit, heal, true, false);
+            if (window.BattleBuffs?.heal) { window.BattleBuffs.heal(core, unit, heal, { source: 'passive' }); }
+            else unit.stats.hp = Math.min(unit.stats.maxHP, unit.stats.hp + heal);
             console.log(`[Passives] ${unit.name} healed ${heal} from "${hook.ability}"`);
           }
 
           if (effect.healPercent) {
             const heal = Math.floor((effect.healPercent / 100) * unit.stats.maxHP);
-            unit.stats.hp = Math.min(unit.stats.maxHP, unit.stats.hp + heal);
-            window.BattleAnimations?.showDamageNumber?.(unit, heal, true, false);
+            if (window.BattleBuffs?.heal) window.BattleBuffs.heal(core, unit, heal, { source: 'passive' });
+            else unit.stats.hp = Math.min(unit.stats.maxHP, unit.stats.hp + heal);
           }
 
-          if (effect.chakraRegen) {
+          if (effect.chakraRegen && window.BattleBuffs && !window.BattleBuffs.canGainChakra(unit)) {
+            window.StatusEffectUI?.popup?.(unit, 'Chakra Sealed', '#7fb8ff', 'chakra_seal');
+          } else if (effect.chakraRegen) {
             const oldChakra = unit.chakra || 0;
             unit.chakra = Math.min(unit.maxChakra || 10, oldChakra + effect.chakraRegen);
             if (window.BattleBuffs && unit.chakra > oldChakra) {

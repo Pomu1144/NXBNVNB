@@ -1,7 +1,7 @@
 /* ============================================
    js/characters.js  — CLEAN, FINAL VERSION
    - Characters grid + Blazing-style modal
-   - Tabs: Status • Ninjutsu • Passives
+   - Tabs: Status • Awakening • Ninjutsu • Passives (Tools has its own page)
    - Level Up / Add / Remove / Awaken wired
    - Stars moved BELOW the name tube
    - Uses InventoryChar + (optional) Progression
@@ -22,6 +22,7 @@
   const NP_NAME       = document.getElementById("nameplate-name");
   const NP_VERSION    = document.getElementById("nameplate-version");
   const NP_STARS      = document.getElementById("nameplate-stars");
+  const NP_ELEMENT    = document.getElementById("nameplate-element");
 
   const STATS_WRAP    = document.getElementById("char-stats");
   const LV_VALUE_EL   = document.getElementById("status-level");
@@ -356,6 +357,7 @@
       NP_NAME.textContent = "Unknown Character";
       NP_VERSION.textContent = "Unlinked copy";
       NP_STARS.innerHTML = "";
+      if (NP_ELEMENT) NP_ELEMENT.hidden = true;
       MODAL_IMG.src = "assets/characters/_common/silhouette.png";
       STATS_WRAP.innerHTML = `<div class="stat-row"><span class="stat-label">Note</span><span class="stat-value">Base '${safeStr(inst.charId,'unknown')}' not found in characters.json.</span></div>`;
       wireStatusButtons(null, inst, null);
@@ -369,6 +371,12 @@
     NP_NAME.textContent    = safeStr(c.name, "Unknown");
     NP_VERSION.textContent = safeStr(c.version, "");
     NP_STARS.innerHTML     = renderStars(starsFromTier(tier));
+    if (NP_ELEMENT) {
+      const el = safeStr(c.element, "");
+      NP_ELEMENT.textContent = el;
+      NP_ELEMENT.dataset.el = el.toLowerCase();
+      NP_ELEMENT.hidden = !el;
+    }
 
     MODAL_IMG.src = safeStr(art.full, art.portrait);
     MODAL_IMG.alt = `${c.name} full artwork`;
@@ -377,7 +385,6 @@
     renderSkillsTab(c, inst, tier);
     renderSupportTab(c, inst, tier);
     renderAbilitiesTab(c, inst);
-    renderToolsTab(c, inst, tier);
     setActiveTab("status");
 
     // Render jutsu/ultimate slots
@@ -406,12 +413,24 @@
   window.addEventListener("keydown", (e) => { if (e.key === "Escape" && MODAL.classList.contains("open")) closeModal(); });
 
   /* ---------- Tabs ---------- */
+  // Only tabs that have a button are reachable (Status, Awakening, Ninjutsu,
+  // Passives). Anything else (e.g. the removed "tools" tab from an old link
+  // or caller) falls back to Status instead of leaving a blank panel.
   function setActiveTab(tab) {
-    document.querySelectorAll(".tab-btn").forEach(b => b.classList.toggle("is-active", b.dataset.tab === tab));
-    document.querySelectorAll(".tab-panel").forEach(p => p.classList.toggle("is-active", p.id === `tab-${tab}`));
+    const btns = MODAL.querySelectorAll(".char-tabs .tab-btn");
+    if (![...btns].some(b => b.dataset.tab === tab)) tab = "status";
+    btns.forEach(b => {
+      const on = b.dataset.tab === tab;
+      b.classList.toggle("is-active", on);
+      b.setAttribute("aria-selected", on ? "true" : "false");
+    });
+    MODAL.querySelectorAll(".tab-panel").forEach(p => p.classList.toggle("is-active", p.id === `tab-${tab}`));
+    const panels = MODAL.querySelector(".tab-panels");
+    if (panels) panels.scrollTop = 0;
   }
+  window.setCharModalTab = setActiveTab;
   function wireTabs() {
-    document.querySelectorAll(".tab-btn").forEach(btn => btn.onclick = () => setActiveTab(btn.dataset.tab));
+    MODAL.querySelectorAll(".char-tabs .tab-btn").forEach(btn => btn.onclick = () => setActiveTab(btn.dataset.tab));
   }
   wireTabs();
 
@@ -442,6 +461,64 @@
       console.error('[characters] getEquippedCardBonuses error:', e);
     }
     return out;
+  }
+
+  /* Status tab markup: a ruled stat list (icon · label · big number) and the
+     equip slots. The slot buttons keep their classes / data-slot so the jutsu
+     equipment code (renderJutsuSlots, slot bindings, tooltips) finds them. */
+  const STAT_ICONS = {
+    hp:  '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.5-9.3C1.1 8.3 3.3 4.5 7 4.5c2.1 0 3.6 1.2 5 3 1.4-1.8 2.9-3 5-3 3.7 0 5.9 3.8 4.5 7.2C19.5 16.4 12 21 12 21z"/></svg>',
+    atk: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 2.5 9.8 13.2l-1.9-.6-1.4 1.4 1.6 1.6-3.6 3.6-1-1-1.2 1.2 3.3 3.3 1.2-1.2-1-1 3.6-3.6 1.6 1.6 1.4-1.4-.6-1.9L21.5 3.5l-1-1z"/></svg>',
+    spd: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.5 2 5 13.5h6L9.5 22 19 9.5h-6.2L13.5 2z"/></svg>'
+  };
+  const fmtInt = (n) => Math.round(safeNum(n, 0)).toLocaleString();
+  const slotBtn = (slot, label, ult) => ult
+    ? `<button class="ultimate-slot" data-slot="${slot}" aria-label="${label}">
+         <img src="assets/ui/ultimateslotemtpy.png" class="ultimate-slot-bg" alt="">
+         <img src="" class="ultimate-slot-icon" style="display:none" alt="">
+       </button>`
+    : `<button class="jutsu-slot" data-slot="${slot}" aria-label="${label}">
+         <img src="assets/ui/jutsuslotempty.png" class="jutsu-slot-bg" alt="">
+         <img src="" class="jutsu-slot-icon" style="display:none" alt="">
+       </button>`;
+  function statusPanelHTML(hp, atk, spd, b) {
+    const major = (key, label, val) => `
+      <div class="cx-stat cx-stat--${key}">
+        <span class="cx-stat-ico">${STAT_ICONS[key]}</span>
+        <span class="cx-stat-label">${label}</span>
+        <span class="cx-stat-val">${fmtInt(val)}</span>
+      </div>`;
+    const minor = (label, val) => `
+      <div class="cx-minor"><span>${label}</span><b>${val}</b></div>`;
+    return `
+      <h4 class="cx-kicker">Stats</h4>
+      <div class="cx-stats">
+        ${major("hp", "Health", hp)}
+        ${major("atk", "Attack", atk)}
+        ${major("spd", "Speed", spd)}
+      </div>
+      <div class="cx-minors">
+        ${minor("Crit Rate", `${(+b.critRate || 0).toFixed(2)}%`)}
+        ${minor("Crit Damage", `${(+b.critDmg || 0).toFixed(1)}%`)}
+        ${minor("Evasion", `${(+b.evaRate || 0).toFixed(2)}%`)}
+      </div>
+      <h4 class="cx-kicker">Equipment</h4>
+      <div class="stat-equip-rows cx-equip">
+        <div class="stat-equip-row">
+          <span class="cx-equip-tag">Jutsu</span>
+          ${slotBtn("jutsu1", "Jutsu Slot 1")}
+          ${slotBtn("jutsu2", "Jutsu Slot 2")}
+          ${slotBtn("jutsu3", "Jutsu Slot 3")}
+          ${slotBtn("ultimate", "Ultimate Slot", true)}
+        </div>
+        <div class="stat-equip-row">
+          <span class="cx-equip-tag">Gear</span>
+          ${slotBtn("equipment1", "Equipment Slot 1")}
+          ${slotBtn("equipment2", "Equipment Slot 2")}
+          ${slotBtn("equipment3", "Equipment Slot 3")}
+          ${slotBtn("equipment4", "Equipment Slot 4")}
+        </div>
+      </div>`;
   }
 
   async function renderStatusTab(c, inst, tier) {
@@ -494,78 +571,7 @@
       const totalPower = power + (unlockedAbilities * 30000);
 
       // Render stats
-      STATS_WRAP.innerHTML = `
-        <div class="stats-divider">
-          <img src="assets/Stats/statsdiv.png" alt="" onerror="this.style.display='none';" />
-        </div>
-        <div class="stat-row">
-          <img src="assets/ui/healthstat.png" alt="Health" />
-          <span class="stat-label">Health</span>
-          <span class="stat-value">${displayHp}</span>
-        </div>
-        <div class="stat-row">
-          <img src="assets/ui/strengthstat.png" alt="Attack" />
-          <span class="stat-label">Attack</span>
-          <span class="stat-value">${displayAtk}</span>
-        </div>
-        <div class="stat-row">
-          <img src="assets/ui/speedstat.png" alt="Speed" />
-          <span class="stat-label">Speed</span>
-          <span class="stat-value">${displaySpd}</span>
-        </div>
-        <div class="stat-row">
-          <span class="stat-label">Critical Rate</span>
-          <span class="stat-value">${(+cardBonuses.critRate || 0).toFixed(2)}%</span>
-        </div>
-        <div class="stat-row">
-          <span class="stat-label">Critical Damage</span>
-          <span class="stat-value">${(+cardBonuses.critDmg || 0).toFixed(1)}%</span>
-        </div>
-        <div class="stat-row">
-          <span class="stat-label">Evasion Rate</span>
-          <span class="stat-value">${(+cardBonuses.evaRate || 0).toFixed(2)}%</span>
-        </div>
-        <div class="equip-divider">
-          <img src="assets/Stats/equipdiv.png" alt="" onerror="this.style.display='none';" />
-        </div>
-        <div class="stat-equip-rows">
-          <div class="stat-equip-row">
-            <button class="jutsu-slot" data-slot="jutsu1" aria-label="Jutsu Slot 1">
-              <img src="assets/ui/jutsuslotempty.png" class="jutsu-slot-bg" alt="">
-              <img src="" class="jutsu-slot-icon" style="display:none" alt="">
-            </button>
-            <button class="jutsu-slot" data-slot="jutsu2" aria-label="Jutsu Slot 2">
-              <img src="assets/ui/jutsuslotempty.png" class="jutsu-slot-bg" alt="">
-              <img src="" class="jutsu-slot-icon" style="display:none" alt="">
-            </button>
-            <button class="jutsu-slot" data-slot="jutsu3" aria-label="Jutsu Slot 3">
-              <img src="assets/ui/jutsuslotempty.png" class="jutsu-slot-bg" alt="">
-              <img src="" class="jutsu-slot-icon" style="display:none" alt="">
-            </button>
-            <button class="ultimate-slot" data-slot="ultimate" aria-label="Ultimate Slot">
-              <img src="assets/ui/ultimateslotemtpy.png" class="ultimate-slot-bg" alt="">
-              <img src="" class="ultimate-slot-icon" style="display:none" alt="">
-            </button>
-          </div>
-          <div class="stat-equip-row">
-            <button class="jutsu-slot" data-slot="equipment1" aria-label="Equipment Slot 1">
-              <img src="assets/ui/jutsuslotempty.png" class="jutsu-slot-bg" alt="">
-              <img src="" class="jutsu-slot-icon" style="display:none" alt="">
-            </button>
-            <button class="jutsu-slot" data-slot="equipment2" aria-label="Equipment Slot 2">
-              <img src="assets/ui/jutsuslotempty.png" class="jutsu-slot-bg" alt="">
-              <img src="" class="jutsu-slot-icon" style="display:none" alt="">
-            </button>
-            <button class="jutsu-slot" data-slot="equipment3" aria-label="Equipment Slot 3">
-              <img src="assets/ui/jutsuslotempty.png" class="jutsu-slot-bg" alt="">
-              <img src="" class="jutsu-slot-icon" style="display:none" alt="">
-            </button>
-            <button class="jutsu-slot" data-slot="equipment4" aria-label="Equipment Slot 4">
-              <img src="assets/ui/jutsuslotempty.png" class="jutsu-slot-bg" alt="">
-              <img src="" class="jutsu-slot-icon" style="display:none" alt="">
-            </button>
-          </div>
-        </div>`;
+      STATS_WRAP.innerHTML = statusPanelHTML(displayHp, displayAtk, displaySpd, cardBonuses);
 
       // Render power holder under character art
       const powerHolderContainer = document.getElementById('char-power-holder-container');
@@ -607,78 +613,7 @@
       const totalPower = power + (unlockedAbilities * 30000);
 
       // Render stats
-      STATS_WRAP.innerHTML = `
-        <div class="stats-divider">
-          <img src="assets/Stats/statsdiv.png" alt="" onerror="this.style.display='none';" />
-        </div>
-        <div class="stat-row">
-          <img src="assets/ui/healthstat.png" alt="Health" />
-          <span class="stat-label">Health</span>
-          <span class="stat-value">${displayHp2}</span>
-        </div>
-        <div class="stat-row">
-          <img src="assets/ui/strengthstat.png" alt="Attack" />
-          <span class="stat-label">Attack</span>
-          <span class="stat-value">${displayAtk2}</span>
-        </div>
-        <div class="stat-row">
-          <img src="assets/ui/speedstat.png" alt="Speed" />
-          <span class="stat-label">Speed</span>
-          <span class="stat-value">${displaySpd2}</span>
-        </div>
-        <div class="stat-row">
-          <span class="stat-label">Critical Rate</span>
-          <span class="stat-value">${(+cardBonuses2.critRate || 0).toFixed(2)}%</span>
-        </div>
-        <div class="stat-row">
-          <span class="stat-label">Critical Damage</span>
-          <span class="stat-value">${(+cardBonuses2.critDmg || 0).toFixed(1)}%</span>
-        </div>
-        <div class="stat-row">
-          <span class="stat-label">Evasion Rate</span>
-          <span class="stat-value">${(+cardBonuses2.evaRate || 0).toFixed(2)}%</span>
-        </div>
-        <div class="equip-divider">
-          <img src="assets/Stats/equipdiv.png" alt="" onerror="this.style.display='none';" />
-        </div>
-        <div class="stat-equip-rows">
-          <div class="stat-equip-row">
-            <button class="jutsu-slot" data-slot="jutsu1" aria-label="Jutsu Slot 1">
-              <img src="assets/ui/jutsuslotempty.png" class="jutsu-slot-bg" alt="">
-              <img src="" class="jutsu-slot-icon" style="display:none" alt="">
-            </button>
-            <button class="jutsu-slot" data-slot="jutsu2" aria-label="Jutsu Slot 2">
-              <img src="assets/ui/jutsuslotempty.png" class="jutsu-slot-bg" alt="">
-              <img src="" class="jutsu-slot-icon" style="display:none" alt="">
-            </button>
-            <button class="jutsu-slot" data-slot="jutsu3" aria-label="Jutsu Slot 3">
-              <img src="assets/ui/jutsuslotempty.png" class="jutsu-slot-bg" alt="">
-              <img src="" class="jutsu-slot-icon" style="display:none" alt="">
-            </button>
-            <button class="ultimate-slot" data-slot="ultimate" aria-label="Ultimate Slot">
-              <img src="assets/ui/ultimateslotemtpy.png" class="ultimate-slot-bg" alt="">
-              <img src="" class="ultimate-slot-icon" style="display:none" alt="">
-            </button>
-          </div>
-          <div class="stat-equip-row">
-            <button class="jutsu-slot" data-slot="equipment1" aria-label="Equipment Slot 1">
-              <img src="assets/ui/jutsuslotempty.png" class="jutsu-slot-bg" alt="">
-              <img src="" class="jutsu-slot-icon" style="display:none" alt="">
-            </button>
-            <button class="jutsu-slot" data-slot="equipment2" aria-label="Equipment Slot 2">
-              <img src="assets/ui/jutsuslotempty.png" class="jutsu-slot-bg" alt="">
-              <img src="" class="jutsu-slot-icon" style="display:none" alt="">
-            </button>
-            <button class="jutsu-slot" data-slot="equipment3" aria-label="Equipment Slot 3">
-              <img src="assets/ui/jutsuslotempty.png" class="jutsu-slot-bg" alt="">
-              <img src="" class="jutsu-slot-icon" style="display:none" alt="">
-            </button>
-            <button class="jutsu-slot" data-slot="equipment4" aria-label="Equipment Slot 4">
-              <img src="assets/ui/jutsuslotempty.png" class="jutsu-slot-bg" alt="">
-              <img src="" class="jutsu-slot-icon" style="display:none" alt="">
-            </button>
-          </div>
-        </div>`;
+      STATS_WRAP.innerHTML = statusPanelHTML(displayHp2, displayAtk2, displaySpd2, cardBonuses2);
 
       // Render power holder under character art
       const powerHolderContainer = document.getElementById('char-power-holder-container');
@@ -855,6 +790,7 @@
 
     renderGrid();
     renderAbilitiesTab(character, freshInst);
+    renderSupportTab(character, freshInst, tier);   // Passives tab lists the latent abilities
 
     // Refresh passive icons to show newly unlocked icon
     if (window.characterAbilities) {
@@ -1668,170 +1604,156 @@
     return match ? match[1] : "-";
   }
 
-  function renderSkillsTab(c, inst, tier) {
-    SKILLS_WRAP.innerHTML = "";
-    const minT = minTier(c);
-    const { jutsu=null, ultimate=null, secret=null, latent=null } = c.skills || {};
-    const cards = [];
+  const esc = (v) => String(v ?? "").replace(/[&<>"']/g, ch => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[ch]));
+  const hasVal = (v) => v !== undefined && v !== null && String(v).trim() !== "" && !/^[—–-]+$/.test(String(v).trim());
 
-    // Get character level for unlock checks
+  // Chakra cost as a pip row. Pips beyond the max-level cost (chakraCostMax)
+  // are drawn hollow: they are shaved off once the jutsu is fully levelled.
+  function chakraPipsHTML(cost, costMax) {
+    const n = Math.max(0, Math.min(12, Math.round(safeNum(cost, 0))));
+    if (!n) return "";
+    const hasMax = Number.isFinite(Number(costMax)) && costMax !== null && Number(costMax) < n;
+    const m = hasMax ? Math.max(0, Math.round(Number(costMax))) : n;
+    let pips = "";
+    for (let i = 0; i < n; i++) pips += `<i class="cx-pip${i >= m ? " is-cut" : ""}"></i>`;
+    const title = hasMax ? `Chakra ${n} (${m} at max level)` : `Chakra ${n}`;
+    return `<span class="cx-chakra" title="${title}">
+        <span class="cx-pips">${pips}</span>
+        <b>${n}</b>${hasMax ? `<em>${m} at max Lv</em>` : ""}
+      </span>`;
+  }
+
+  // One Ninjutsu "stub": type chip + name, chakra pips, hits / range / shape,
+  // description. Stubs are separated by perforations, not boxed.
+  function skillStubHTML({ kind, chip, name, e, lockNote }) {
+    const facts = [];
+    if (e) {
+      if (hasVal(e.hits)) facts.push(`<span>Hits <b>${esc(e.hits)}</b></span>`);
+      const range = hasVal(e.range) ? e.range : (hasVal(e.position) ? e.position : "");
+      if (range) facts.push(`<span>Range <b>${esc(range)}</b></span>`);
+      if (hasVal(e.shape)) facts.push(`<span>Shape <b>${esc(e.shape)}</b></span>`);
+      if (hasVal(e.cooldown)) facts.push(`<span>CD <b>${esc(e.cooldown)}</b></span>`);
+    }
+    const pips = e ? chakraPipsHTML(e.chakraCost, e.chakraCostMax) : "";
+    const desc = e ? safeStr(e.description, "") : "";
+    return `
+      <article class="cx-stub is-${kind}${lockNote ? " is-locked" : ""}">
+        <header class="cx-stub-head">
+          <span class="cx-chip cx-chip--${kind}">${chip}</span>
+          <h5 class="cx-stub-name">${esc(name)}</h5>
+          ${lockNote ? `<span class="cx-lock">${esc(lockNote)}</span>` : ""}
+        </header>
+        ${(pips || facts.length) ? `<div class="cx-stub-meta">${pips}${facts.length ? `<span class="cx-facts">${facts.join("")}</span>` : ""}</div>` : ""}
+        ${desc ? `<p class="cx-stub-desc">${esc(desc)}</p>` : ""}
+      </article>`;
+  }
+
+  function renderSkillsTab(c, inst, tier) {
+    const minT = minTier(c);
+    const { jutsu = null, ultimate = null, secret = null, latent = null } = c.skills || {};
+    const stubs = [];
+
+    // Level gates (unchanged): jutsu at Lv 20, ultimate at Lv 50
     const charLevel = Number(inst?.level || 1);
     const jutsuUnlocked = charLevel >= 20;
     const ultimateUnlocked = charLevel >= 50;
 
     if (jutsu) {
       const e = pickTierSkillEntry(jutsu, tier, minT);
-      if (e) {
-        // Check if jutsu is unlocked by level
-        const lockOverlay = jutsuUnlocked ? '' : `<div class="lock-overlay"><img src="assets/icons/locked.png" alt="Locked" onerror="this.style.display='none';" /></div>`;
-        const lockStatus = jutsuUnlocked ? '' : ` <span style="color:#d8b86a">(Requires Lv 20)</span>`;
-        const cardClass = jutsuUnlocked ? '' : ' locked';
-        const multiplier = extractMultiplier(e);
-        cards.push(`
-          <div class="skill-card${cardClass}">
-            ${lockOverlay}
-            <div class="skill-header"><span class="skill-type">Ninjutsu</span><span class="skill-name">${safeStr(jutsu.name,"Ninjutsu")}${lockStatus}</span></div>
-            <div class="skill-meta">
-              <span>Chakra: <strong>${safeNum(e.chakraCost,"-")}</strong></span>
-              <span>CD: <strong>${safeNum(e.cooldown,"-")}</strong></span>
-              <span>Range: <strong>${safeStr(e.range,"-")}</strong></span>
-              <span>Hits: <strong>${safeNum(e.hits,"-")}</strong></span>
-              <span>Mult: <strong>${multiplier}</strong></span>
-            </div>
-            <div class="skill-desc">${safeStr(e.description,"")}</div>
-          </div>
-        `);
-      }
+      if (e) stubs.push(skillStubHTML({ kind: "jutsu", chip: "Jutsu", name: safeStr(jutsu.name, "Ninjutsu"), e,
+        lockNote: jutsuUnlocked ? "" : "Unlocks at Lv 20" }));
     }
 
     if (ultimate) {
       const e = pickTierSkillEntry(ultimate, tier, null);
-      if (e) {
-        // Check if ultimate is unlocked by level
-        const lockOverlay = ultimateUnlocked ? '' : `<div class="lock-overlay"><img src="assets/icons/locked.png" alt="Locked" onerror="this.style.display='none';" /></div>`;
-        const lockStatus = ultimateUnlocked ? '' : ` <span style="color:#d8b86a">(Requires Lv 50)</span>`;
-        const cardClass = ultimateUnlocked ? '' : ' locked';
-        const multiplier = extractMultiplier(e);
-        cards.push(`
-          <div class="skill-card ultimate${cardClass}">
-            ${lockOverlay}
-            <div class="skill-header"><span class="skill-type">Ultimate</span><span class="skill-name">${safeStr(ultimate.name,"Ultimate")}${lockStatus}</span></div>
-            <div class="skill-meta">
-              <span>Chakra: <strong>${safeNum(e.chakraCost,"-")}</strong></span>
-              <span>CD: <strong>${safeNum(e.cooldown,"-")}</strong></span>
-              <span>Range: <strong>${safeStr(e.range,"-")}</strong></span>
-              <span>Hits: <strong>${safeNum(e.hits,"-")}</strong></span>
-              <span>Mult: <strong>${multiplier}</strong></span>
-            </div>
-            <div class="skill-desc">${safeStr(e.description,"")}</div>
-          </div>
-        `);
-      } else {
-        cards.push(`
-          <div class="skill-card ultimate locked">
-            <div class="lock-overlay"><img src="assets/icons/locked.png" alt="Locked" onerror="this.style.display='none';" /></div>
-            <div class="skill-header"><span class="skill-type">Ultimate</span><span class="skill-name">${safeStr(ultimate.name,"Ultimate")} <span style="color:#d8b86a">(Tier Locked)</span></span></div>
-            <div class="skill-desc">Unlocks upon awakening to a higher star tier.</div>
-          </div>
-        `);
-      }
+      stubs.push(e
+        ? skillStubHTML({ kind: "ultimate", chip: "Ultimate", name: safeStr(ultimate.name, "Ultimate"), e,
+            lockNote: ultimateUnlocked ? "" : "Unlocks at Lv 50" })
+        : skillStubHTML({ kind: "ultimate", chip: "Ultimate", name: safeStr(ultimate.name, "Ultimate"),
+            e: { description: "Unlocks upon awakening to a higher star tier." }, lockNote: "Tier locked" }));
     }
 
-    /* === Secret Technique support (added without altering other logic) === */
     if (secret) {
       const e = pickTierSkillEntry(secret, tier, null);
-      if (e) {
-        cards.push(`
-          <div class="skill-card secret">
-            <div class="skill-header"><span class="skill-type">Secret</span><span class="skill-name">${safeStr(secret.name,"Secret Technique")}</span></div>
-            <div class="skill-meta">
-              <span>Chakra: <strong>${safeNum(e.chakraCost,"-")}</strong></span>
-              <span>CD: <strong>${safeNum(e.cooldown,"-")}</strong></span>
-              <span>Range: <strong>${safeStr(e.range,"-")}</strong></span>
-            </div>
-            <div class="skill-desc">${safeStr(e.description,"")}</div>
-          </div>
-        `);
-      }
+      if (e) stubs.push(skillStubHTML({ kind: "secret", chip: "Secret", name: safeStr(secret.name, "Secret Technique"), e }));
     }
 
-    /* === Latent Skill support — only appears at its unlock tier (e.g. 7S) === */
+    // Latent skill: exact-tier match only, so it stays locked until the unit
+    // reaches the required star tier.
     if (latent) {
-      // Exact-tier match only (no fallback) so latent skills stay locked until
-      // the unit reaches the required star tier.
       const e = latent.byTier?.[tier];
-      if (e) {
-        const multiplier = extractMultiplier(e);
-        cards.push(`
-          <div class="skill-card latent">
-            <div class="skill-header"><span class="skill-type">Latent</span><span class="skill-name">${safeStr(latent.name,"Latent Skill")}</span></div>
-            <div class="skill-meta">
-              <span>Chakra: <strong>${safeNum(e.chakraCost,"-")}</strong></span>
-              <span>Range: <strong>${safeStr(e.range,"-")}</strong></span>
-              <span>Mult: <strong>${multiplier}</strong></span>
-            </div>
-            <div class="skill-desc">${safeStr(e.description,"")}</div>
-          </div>
-        `);
-      } else if (latent.unlockTier) {
-        cards.push(`
-          <div class="skill-card latent locked">
-            <div class="lock-overlay"><img src="assets/icons/locked.png" alt="Locked" onerror="this.style.display='none';" /></div>
-            <div class="skill-header"><span class="skill-type">Latent</span><span class="skill-name">${safeStr(latent.name,"Latent Skill")} <span style="color:#d8b86a">(Unlocks at ${safeStr(latent.unlockTier,"7S")})</span></span></div>
-            <div class="skill-desc">A latent skill awakened at a higher star tier.</div>
-          </div>
-        `);
-      }
+      if (e) stubs.push(skillStubHTML({ kind: "latent", chip: "Latent", name: safeStr(latent.name, "Latent Skill"), e }));
+      else if (latent.unlockTier) stubs.push(skillStubHTML({ kind: "latent", chip: "Latent", name: safeStr(latent.name, "Latent Skill"),
+        e: { description: "A latent skill awakened at a higher star tier." }, lockNote: `Unlocks at ${safeStr(latent.unlockTier, "7S")}` }));
     }
 
-    SKILLS_WRAP.innerHTML = cards.length ? cards.join("") : `<div class="skill-card">No skills available.</div>`;
+    SKILLS_WRAP.innerHTML = stubs.length ? stubs.join("") : `<p class="cx-empty">No ninjutsu recorded for this unit.</p>`;
   }
   window.renderSkillsTab = renderSkillsTab;
 
-  /* ---------- F/B SKILLS tab ---------- */
-  function renderSupportTab(c, inst, tier) {
-    const blocks = [];
+  /* ---------- PASSIVES tab: Field / Buddy skills + latent abilities ---------- */
+  const abilityIconId = (name) => (window.characterAbilities?.abilityNameToIconId
+    ? window.characterAbilities.abilityNameToIconId(name || "")
+    : String(name || "").toLowerCase().replace(/'/g, "").replace(/[/\\()\[\]]/g, " ").replace(/[-–—]/g, "_")
+        .replace(/[^a-z0-9_ ]/g, "").trim().replace(/\s+/g, "_"));
 
-    // Handle field skill (can be string or nested object)
-    const fieldSkill = c.fieldSkill || c.skills?.fieldSkill;
-    if (fieldSkill) {
-      let fieldText = '';
-      if (typeof fieldSkill === 'string') {
-        fieldText = fieldSkill;
-      } else if (fieldSkill.byTier) {
-        // Extract from byTier structure
-        const entry = pickTierSkillEntry(fieldSkill, tier, null);
-        fieldText = entry?.description || fieldSkill.description || fieldSkill.name || '';
-      } else {
-        fieldText = fieldSkill.description || fieldSkill.name || '';
-      }
-      if (fieldText) {
-        blocks.push(`<div class="support-box"><strong>Field Skill</strong><div>${fieldText}</div></div>`);
-      }
+  function supportText(skill, tier) {
+    if (!skill) return "";
+    if (typeof skill === "string") return skill;
+    if (skill.byTier) {
+      const entry = pickTierSkillEntry(skill, tier, null);
+      return entry?.description || skill.description || skill.name || "";
+    }
+    return skill.description || skill.name || "";
+  }
+
+  function renderSupportTab(c, inst, tier) {
+    const out = [];
+    const passRow = (ico, name, desc, cls = "", aside = "") => `
+      <div class="cx-pas${cls}">
+        ${ico}
+        <div class="cx-pas-body">
+          <div class="cx-pas-name">${name}${aside}</div>
+          <p class="cx-pas-desc">${desc}</p>
+        </div>
+      </div>`;
+
+    const field = supportText(c.fieldSkill || c.skills?.fieldSkill, tier);
+    const buddy = supportText(c.buddySkill || c.skills?.buddySkill, tier);
+    if (field || buddy) {
+      out.push(`<h4 class="cx-kicker">Field &amp; Buddy</h4><div class="cx-pas-list">`);
+      if (field) out.push(passRow(`<span class="cx-seal cx-seal--field" aria-hidden="true">F</span>`, "Field Skill", esc(field)));
+      if (buddy) out.push(passRow(`<span class="cx-seal cx-seal--buddy" aria-hidden="true">B</span>`, "Buddy Skill", esc(buddy)));
+      out.push(`</div>`);
     }
 
-    // Handle buddy skill (can be string or nested object)
-    const buddySkill = c.buddySkill || c.skills?.buddySkill;
-    if (buddySkill) {
-      let buddyText = '';
-      if (typeof buddySkill === 'string') {
-        buddyText = buddySkill;
-      } else if (buddySkill.byTier) {
-        // Extract from byTier structure
-        const entry = pickTierSkillEntry(buddySkill, tier, null);
-        buddyText = entry?.description || buddySkill.description || buddySkill.name || '';
-      } else {
-        buddyText = buddySkill.description || buddySkill.name || '';
-      }
-      if (buddyText) {
-        blocks.push(`<div class="support-box"><strong>Buddy Skill</strong><div>${buddyText}</div></div>`);
-      }
+    const abilities = Array.isArray(c.abilities) ? c.abilities : [];
+    if (abilities.length) {
+      const unlocked = inst?.unlockedAbilities || [];
+      // Same rule as the art-column icons: abilities unlock in order.
+      const isOn = (i) => unlocked.includes(i) || i < unlocked.length;
+      const nOn = abilities.filter((_, i) => isOn(i)).length;
+      out.push(`<h4 class="cx-kicker">Latent Abilities <span class="cx-count">${nOn} / ${abilities.length}</span></h4><div class="cx-pas-list">`);
+      abilities.forEach((ab, i) => {
+        const name = (ab && ab.name) || `Ability ${i + 1}`;
+        const desc = (ab && (ab.description || (typeof ab === "string" ? ab : ""))) || "";
+        const on = isOn(i);
+        const ico = `<img class="cx-pas-ico" src="assets/passive_icons/${abilityIconId(name)}.png" alt="" loading="lazy"
+            onerror="this.onerror=null;this.src='assets/passive_icons/self_healing.png';this.classList.add('is-fallback');">`;
+        out.push(passRow(ico, esc(name), esc(desc), on ? " is-on" : " is-locked",
+          on ? "" : `<span class="cx-lock">Locked</span>`));
+      });
+      out.push(`</div>`);
     }
 
     if (Array.isArray(c.syncSkills) && c.syncSkills.length) {
-      blocks.push(`<div class="support-box"><strong>Sync Skills</strong><ul>${c.syncSkills.map(s => `<li>${s.type ? `<em>${s.type}:</em> ` : ""}${s.effect || s}</li>`).join("")}</ul></div>`);
+      out.push(`<h4 class="cx-kicker">Sync Skills</h4><div class="cx-pas-list">`);
+      c.syncSkills.forEach(sk => out.push(passRow(`<span class="cx-seal" aria-hidden="true">S</span>`,
+        esc(sk.type || "Sync"), esc(sk.effect || sk))));
+      out.push(`</div>`);
     }
-    SUPPORT_WRAP.innerHTML = blocks.length ? blocks.join("") : `<div class="support-box">No support skills.</div>`;
+
+    SUPPORT_WRAP.innerHTML = out.length ? out.join("") : `<p class="cx-empty">No passive skills.</p>`;
   }
 
   /* ---------- ABILITIES tab ---------- */
@@ -1866,44 +1788,6 @@
     });
 
     ABILITIES_WRAP.innerHTML = html;
-  }
-
-  /* ---------- TOOLS tab ---------- */
-  function renderToolsTab(c, inst, tier) {
-    // Get stats for power calculation
-    let stats = {};
-    if (hasProg && window.Progression.computeEffectiveStatsLoreTier) {
-      // Calculate extended cap if limit breaks are present
-      let extendedCap = null;
-      if (hasLimitBreak && inst.limitBreakLevel && inst.limitBreakLevel > 0) {
-        extendedCap = window.LimitBreak.getExtendedLevelCap(tier, inst.limitBreakLevel);
-      }
-
-      const comp = window.Progression.computeEffectiveStatsLoreTier(c, safeNum(inst.level,1), tier, {
-        normalize: true,
-        extendedCap: extendedCap
-      });
-      stats = comp?.stats || {};
-
-      // Apply limit break bonuses if present
-      if (hasLimitBreak && inst.limitBreakLevel && inst.limitBreakLevel > 0) {
-        stats = window.LimitBreak.applyLimitBreakToStats(stats, inst.limitBreakLevel);
-      }
-    } else {
-      stats = c.statsBase || {};
-    }
-
-    // Calculate power: Health + Attack + Speed
-    const power = (stats.hp || 0) + (stats.atk || 0) + (stats.speed || 0);
-
-    // Update power display
-    const powerValueEl = document.getElementById('tools-power-value');
-    if (powerValueEl) {
-      powerValueEl.textContent = power.toLocaleString();
-    }
-
-    // TODO: Load and display equipment when equipment system is implemented
-    console.log('[Tools] Tools tab rendered for character:', c.name, 'Power:', power);
   }
 
   /* ---------- Grid clicks ---------- */

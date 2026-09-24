@@ -39,9 +39,10 @@
         hasJutsu: !!skills?.jutsu,
         hasUlt: !!skills?.ultimate,
         hasSecret: !!skills?.secret,
-        jutsuUnlocked: safe(() => C?.isJutsuUnlocked?.(unit), true),
-        ultUnlocked: safe(() => C?.isUltimateUnlocked?.(unit), true),
-        secretUnlocked: safe(() => C?.isSecretUnlocked?.(unit), false)
+        // Jutsu Sealing makes the skills unusable (same as locked for readiness)
+        jutsuUnlocked: safe(() => C?.isJutsuUnlocked?.(unit) && !C?.isSkillSealed?.(unit, 'jutsu'), true),
+        ultUnlocked: safe(() => C?.isUltimateUnlocked?.(unit) && !C?.isSkillSealed?.(unit, 'ultimate'), true),
+        secretUnlocked: safe(() => C?.isSecretUnlocked?.(unit) && !C?.isSkillSealed?.(unit, 'secret'), false)
       };
     },
 

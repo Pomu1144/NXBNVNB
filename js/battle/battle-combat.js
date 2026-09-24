@@ -69,6 +69,7 @@
      * Check if jutsu is unlocked (requires level 20)
      */
     isJutsuUnlocked(unit) {
+      if (unit && !unit.isPlayer && !unit._ref?.inst) return true; // enemies: skills from data
       const level = this.getUnitLevel(unit);
       return level >= 20;
     },
@@ -77,6 +78,7 @@
      * Check if ultimate is unlocked (requires level 50)
      */
     isUltimateUnlocked(unit) {
+      if (unit && !unit.isPlayer && !unit._ref?.inst) return true;
       const level = this.getUnitLevel(unit);
       return level >= 50;
     },
@@ -182,25 +184,19 @@
      * @param {number} multiplier - Skill multiplier (1.0 = basic attack)
      * @returns {Object} {damage, isCritical}
      */
-    calculateDamage(attacker, defender, multiplier = 1) {
+    calculateDamage(attacker, defender, multiplier = 1, ctx = null) {
       // Validate inputs
       if (!attacker?.stats || !defender?.stats) {
         console.warn("[Combat] Invalid attacker or defender stats", { attacker, defender });
         return { damage: 0, isCritical: false };
       }
+      const S = window.BattleBuffs;
+      ctx = ctx || S?.attackCtx?.(attacker, null, 'attack') || { kind: 'attack' };
 
-      // Check for dodge/immunity (unless attacker has Ignore Substitution)
-      if (window.BattleEffects?.hasDamageImmunity(defender)) {
-        if (!attacker.passives?.ignoreSubstitution) {
-          console.log(`[Combat] 👻 ${defender.name} DODGED the attack!`);
-          if (window.BattleEffects) {
-            window.BattleEffects.showEffectIndicator(defender, 'DODGE', '#aaffff', { dom: window.BattleManager?.dom || {} });
-          }
-          return { damage: 0, isCritical: false, dodged: true };
-        } else {
-          console.log(`[Combat] ⚠️ ${attacker.name} IGNORES ${defender.name}'s dodge with Ignore Substitution!`);
-        }
-      }
+      // Evasion: Perfect Dodge / dodge boost / Substitution / nullify
+      // (skills that ignore Substitution / Perfect Dodge pass ctx flags)
+      const evade = S?.checkEvade?.(attacker, defender, ctx);
+      if (evade) return { damage: 0, isCritical: false, dodged: true, evadeReason: evade.reason };
 
       // Validate and parse multiplier
       let mult = 1;
@@ -253,9 +249,14 @@
       const baseAtk = Math.max(0, Number(attacker.stats.atk) || 100);
       const baseDef = Math.max(0, Number(defender.stats.def) || 0);
 
+      // Status effects (attack up / weakened, damage reduction, ...)
+      const sm = S?.damageMods?.(attacker, defender, ctx) || { atkPct: 0, drPct: 0, vulnPct: 0, critRate: 0, dmgPct: 0, ignoreDef: false };
+
       // Apply buff and passive modifiers to stats
-      const effectiveAtk = baseAtk + attackerBuffs.atkFlat + attackerPassives.atkFlat;
-      const effectiveDef = baseDef + defenderBuffs.defFlat + defenderPassives.defFlat;
+      const effectiveAtk = (baseAtk + attackerBuffs.atkFlat + attackerPassives.atkFlat) * Math.max(0.1, 1 + sm.atkPct / 100);
+      let effectiveDef = baseDef + defenderBuffs.defFlat + defenderPassives.defFlat;
+      if (sm.ignoreDef) effectiveDef = 0;
+      else if (ctx.ignoreDefensePct) effectiveDef *= (1 - ctx.ignoreDefensePct / 100);
 
       // Base damage from ATK stat and multiplier
       let damage = effectiveAtk * mult;
@@ -269,7 +270,7 @@
       }
 
       // Apply damage reduction from buffs and passives (unless attacker has Nullifies Damage Reduction)
-      let totalDamageReduction = defenderBuffs.damageReductionPercent + defenderPassives.damageReductionPercent;
+      let totalDamageReduction = defenderBuffs.damageReductionPercent + defenderPassives.damageReductionPercent + sm.drPct;
 
       // Add defender's Reduce Damage by XX% passive
       if (defender.passives?.damageReduction > 0) {
@@ -287,12 +288,16 @@
 
       // Apply total damage reduction (unless attacker nullifies it)
       if (totalDamageReduction > 0) {
-        if (!attacker.passives?.nullifiesDamageReduction) {
-          damage *= (1 - totalDamageReduction / 100);
+        if (!attacker.passives?.nullifiesDamageReduction && !ctx.ignoreDamageReduction) {
+          damage *= Math.max(0, 1 - Math.min(95, totalDamageReduction) / 100);
         } else {
           console.log(`[Combat] ⚠️ ${attacker.name} NULLIFIES damage reduction!`);
         }
       }
+
+      // Receives increased damage / damage boost statuses
+      if (sm.vulnPct) damage *= (1 + sm.vulnPct / 100);
+      if (sm.dmgPct) damage *= (1 + sm.dmgPct / 100);
 
       // Random variance (90% - 110%)
       damage *= (0.9 + Math.random() * 0.2);
@@ -302,7 +307,7 @@
       //   ≥100% → always crit; overflow converts to bonus crit damage at 1:0.25
       //   critMultiplier = totalCritDmg / 100  (e.g. 360% → 3.6×)
       const cardCritRate = attacker.stats?.critRate || 0;  // raw % (e.g. 268.0)
-      const totalCritRate = 15 + cardCritRate + attackerBuffs.critRatePercent + attackerPassives.critRatePercent;
+      const totalCritRate = 15 + cardCritRate + attackerBuffs.critRatePercent + attackerPassives.critRatePercent + sm.critRate;
       const overflowRate  = Math.max(0, totalCritRate - 100);
       const bonusCritDmg  = overflowRate * 0.25;  // 1% overflow → +0.25% crit dmg
 
@@ -316,25 +321,11 @@
         console.log(`[Combat] ⚡ CRIT! rate=${totalCritRate.toFixed(1)}% overflow=${overflowRate.toFixed(1)}% dmg=${totalCritDmg.toFixed(1)}% mult=${critMultiplier.toFixed(2)}×`);
       }
 
-      // Apply barrier absorption
-      if (defenderBuffs.barrierHP > 0) {
-        // Find barrier buff in defender's status effects
-        const barrierBuff = defender.statusEffects?.find(se =>
-          se.kind === 'buff' && se.payload?.barrierHP > 0
-        );
+      // "Deals N% of target's remaining health as damage"
+      if (ctx.percentHp > 0) damage = defender.stats.hp * ctx.percentHp / 100;
 
-        // Bug #9: Validate payload exists before accessing
-        if (barrierBuff && barrierBuff.payload && barrierBuff.payload.barrierHP > 0) {
-          const absorbed = Math.min(damage, barrierBuff.payload.barrierHP);
-          barrierBuff.payload.barrierHP -= absorbed;
-          damage -= absorbed;
-
-          // Remove barrier if depleted
-          if (barrierBuff.payload.barrierHP <= 0) {
-            defender.statusEffects = defender.statusEffects.filter(se => se !== barrierBuff);
-          }
-        }
-      }
+      // Barrier absorbs what it can
+      if (S?.absorbBarrier) damage = S.absorbBarrier(window.BattleManager, defender, damage, ctx);
 
       // Ensure minimum damage of 1 (unless fully blocked)
       const finalDamage = Math.max(0, Math.floor(damage));
@@ -378,7 +369,7 @@
       console.log(`[Combat] ${attacker.name} attacks ${target.name}`);
 
       // Calculate damage first
-      const {damage, isCritical, breakdown} = this.calculateDamage(attacker, target, 1.0);
+      const {damage, isCritical, breakdown, dodged} = this.calculateDamage(attacker, target, 1.0);
 
       // Create GSAP timeline for smooth sequencing
       if (window.gsap) {
@@ -398,6 +389,7 @@
           console.log(`[Combat] 🎯 BEFORE DAMAGE: ${target.name} HP = ${target.stats.hp}`);
           target.stats.hp = Math.max(0, target.stats.hp - damage);
           console.log(`[Combat] 💥 AFTER DAMAGE: ${target.name} HP = ${target.stats.hp} (took ${damage} damage)`);
+          if (!dodged) window.BattleBuffs?.onNormalHit?.(core, attacker, target, damage);
 
           // Apply knockback
           if (window.BattlePhysics) {
@@ -417,7 +409,7 @@
           }
 
           // Show damage animation
-          if (window.BattleAnimations) {
+          if (window.BattleAnimations && !dodged) {
             window.BattleAnimations.showDamage(target, damage, isCritical, core.dom, false, breakdown);
           }
 
@@ -443,6 +435,7 @@
         }
 
         target.stats.hp = Math.max(0, target.stats.hp - damage);
+        if (!dodged) window.BattleBuffs?.onNormalHit?.(core, attacker, target, damage);
 
         if (window.BattlePhysics) {
           window.BattlePhysics.applyKnockback(target, attacker, 30, core);
@@ -495,20 +488,8 @@
         return false;
       }
 
-      // Check if unit is sealed (cannot use jutsu)
-      const isSealed = attacker.statusEffects?.some(e =>
-        e.prevent_jutsu && e.turnsRemaining > 0
-      );
-      if (isSealed) {
-        console.warn(`[Combat] 🔒 ${attacker.name}'s jutsu is sealed!`);
-        if (window.BattleNarrator) {
-          window.BattleNarrator.narrate(`${attacker.name}'s jutsu is sealed!`, core);
-        }
-        if (window.BattleEffects) {
-          window.BattleEffects.showEffectIndicator(attacker, 'SEALED', '#666666', core);
-        }
-        return false;
-      }
+      // Jutsu Sealing: cannot use jutsu
+      if (this.refuseIfSealed(attacker, 'jutsu', core)) return false;
 
       // Check if jutsu is unlocked
       if (!this.isJutsuUnlocked(attacker)) {
@@ -538,6 +519,13 @@
         window.BattleEquippedUltimate.onNinjutsuUse(attacker.id);
       }
 
+      // Pure support jutsu (buffs / heals, no damage)
+      const jfx = window.BattleBuffs?.skillFx?.(j.data);
+      if (jfx && !jfx.hasDamage && jfx.ops.length) {
+        this.performSupportSkill(attacker, 'jutsu', j, core, onDone);
+        return true;
+      }
+
       // Animated sprite units play their own jutsu sheet, one damage number per hit.
       if (this.usesSpriteSkill(attacker)) {
         this.performSpriteSkill(attacker, 'jutsu', j, [target], core, onDone);
@@ -545,10 +533,11 @@
       }
 
       // Get multiplier from skill data (extract from description like "2.2x attack...")
-      let mult = 2.0;
-      const m = String(j.data.description || "").match(/([\d.]+)x/i);
-      // Bug #2: Check if match exists and has captured group
-      if (m && m[1]) mult = Number(m[1]) || 2.0;
+      let mult = this.getSkillMultiplier(j.data, 2.0);
+      // Status hooks: removals before the hit, ignore flags, conditional multiplier
+      window.BattleBuffs?.preHit?.(core, attacker, [target], jfx);
+      const jctx = window.BattleBuffs?.attackCtx?.(attacker, jfx, 'jutsu') || { kind: 'jutsu' };
+      mult = window.BattleBuffs?.conditionalMult?.(jfx, target, mult) ?? mult;
 
       // Hits: full damage divided across N hits (each hit = totalDmg / hits)
       const hitCount = Math.max(1, Number(j.data.hits || 1));
@@ -556,7 +545,7 @@
       console.log(`[Combat] ${attacker.name} uses ${j.meta.name} (${mult}x, ${hitCount} hit${hitCount > 1 ? 's' : ''}) on ${target.name}`);
 
       // Calculate total damage first (full damage, then split by hits)
-      const {damage: totalDamage, isCritical, breakdown} = this.calculateDamage(attacker, target, mult);
+      const {damage: totalDamage, isCritical, breakdown, dodged: jDodged} = this.calculateDamage(attacker, target, mult, jctx);
       const perHitDamage = Math.max(1, Math.floor(totalDamage / hitCount));
       const damage = perHitDamage * hitCount;  // re-assembled total (avoids rounding loss)
 
@@ -599,9 +588,9 @@
 
         // Step 4: Apply damage (split across hits) and show damage numbers at 0.4s
         tl.call(() => {
-          target.stats.hp = Math.max(0, target.stats.hp - damage);
+          target.stats.hp = Math.max(0, target.stats.hp - (jDodged ? 0 : damage));
 
-          if (window.BattleAnimations) {
+          if (window.BattleAnimations && !jDodged) {
             // Show each hit separately with a small stagger, or show total if 1 hit
             if (hitCount <= 1) {
               window.BattleAnimations.showDamage(target, damage, isCritical, core.dom, false, breakdown);
@@ -614,8 +603,8 @@
             }
           }
 
-          // Apply description-based skill effects (immobilize, seal, heal, etc.)
-          this.applyDescriptionEffects(j.data.description, attacker, [target], core);
+          // Skill status effects (ailments, buffs, heals, knockback ...)
+          window.BattleBuffs?.postSkill?.(core, attacker, jDodged ? [] : [target], jfx, { kind: 'jutsu', dealt: jDodged ? 0 : damage });
 
           // Update displays
           if (core.units) {
@@ -647,10 +636,10 @@
           }
         }, 700);
 
-        target.stats.hp = Math.max(0, target.stats.hp - damage);
+        target.stats.hp = Math.max(0, target.stats.hp - (jDodged ? 0 : damage));
 
-        // Apply description-based skill effects
-        this.applyDescriptionEffects(j.data.description, attacker, [target], core);
+        // Skill status effects
+        window.BattleBuffs?.postSkill?.(core, attacker, jDodged ? [] : [target], jfx, { kind: 'jutsu', dealt: jDodged ? 0 : damage });
 
         setTimeout(() => {
           if (window.BattlePhysics) {
@@ -699,20 +688,8 @@
         return false;
       }
 
-      // Check if unit is sealed (cannot use ultimate)
-      const isSealed = attacker.statusEffects?.some(e =>
-        e.prevent_ultimate && e.turnsRemaining > 0
-      );
-      if (isSealed) {
-        console.warn(`[Combat] 🔒 ${attacker.name}'s ultimate is sealed!`);
-        if (window.BattleNarrator) {
-          window.BattleNarrator.narrate(`${attacker.name}'s ultimate is sealed!`, core);
-        }
-        if (window.BattleEffects) {
-          window.BattleEffects.showEffectIndicator(attacker, 'SEALED', '#666666', core);
-        }
-        return false;
-      }
+      // Jutsu Sealing also blocks the ultimate
+      if (this.refuseIfSealed(attacker, 'ultimate', core)) return false;
 
       // Check if ultimate is unlocked
       if (!this.isUltimateUnlocked(attacker)) {
@@ -737,6 +714,12 @@
         attacker.chakra -= cost;
       }
 
+      const ufx = window.BattleBuffs?.skillFx?.(u.data);
+      if (ufx && !ufx.hasDamage && ufx.ops.length) {
+        this.performSupportSkill(attacker, 'ultimate', u, core, onDone);
+        return true;
+      }
+
       // Animated sprite units play their own ultimate sheet, one damage number per hit.
       if (this.usesSpriteSkill(attacker)) {
         this.performSpriteSkill(attacker, 'ultimate', u, targets, core, onDone);
@@ -744,10 +727,9 @@
       }
 
       // Get multiplier (extract from description like "1.5x attack...")
-      let mult = 1.5;
-      const m = String(u.data.description || "").match(/([\d.]+)x/i);
-      // Bug #2: Check if match exists and has captured group
-      if (m && m[1]) mult = Number(m[1]) || 1.5;
+      const mult = this.getSkillMultiplier(u.data, 1.5);
+      window.BattleBuffs?.preHit?.(core, attacker, targets, ufx);
+      const uctx = window.BattleBuffs?.attackCtx?.(attacker, ufx, 'ultimate') || { kind: 'ultimate' };
 
       console.log(`[Combat] ${attacker.name} uses ${u.meta.name} (${mult}x) on ${targets.length} targets`);
 
@@ -791,7 +773,8 @@
         // Step 3: Hit each target with 0.2s stagger
         targets.forEach((target, i) => {
           tl.call(() => {
-            const {damage, isCritical, breakdown} = this.calculateDamage(attacker, target, mult);
+            const tMult = window.BattleBuffs?.conditionalMult?.(ufx, target, mult) ?? mult;
+            const {damage, isCritical, breakdown, dodged} = this.calculateDamage(attacker, target, tMult, uctx);
             target.stats.hp = Math.max(0, target.stats.hp - damage);
 
             // Check if this defeats the final enemy
@@ -805,7 +788,7 @@
 
             // Show damage after 0.15s
             window.gsap.delayedCall(0.15, () => {
-              if (window.BattleAnimations) {
+              if (window.BattleAnimations && !dodged) {
                 window.BattleAnimations.showDamage(target, damage, isCritical, core.dom, false, breakdown);
               }
             });
@@ -819,8 +802,10 @@
               });
             }
 
-            // Apply description-based skill effects to this target
-            this.applyDescriptionEffects(u.data.description, attacker, [target], core);
+            // Skill status effects on this target; self / ally effects once
+            window.BattleBuffs?.postSkill?.(core, attacker, dodged ? [] : [target],
+              i === 0 ? ufx : { ops: (ufx?.ops || []).filter(o => o.target === 'enemies' || o.op === 'knockback' || o.op === 'pull' || o.op === 'chakraDrain' || o.op === 'speedRollback') },
+              { kind: 'ultimate', dealt: damage });
 
             // Update target display
             if (core.units) {
@@ -853,7 +838,7 @@
 
         targets.forEach((target, i) => {
           setTimeout(() => {
-            const {damage, isCritical, breakdown} = this.calculateDamage(attacker, target, mult);
+            const {damage, isCritical, breakdown} = this.calculateDamage(attacker, target, window.BattleBuffs?.conditionalMult?.(ufx, target, mult) ?? mult, uctx);
             target.stats.hp = Math.max(0, target.stats.hp - damage);
 
             const remainingEnemies = core.enemyTeam.filter(e => e.stats.hp > 0).length;
@@ -1045,10 +1030,7 @@
         window.BattleNarrator?.narrate(`${attacker.name}'s jutsu is locked! Requires Level 20.`, core);
         return false;
       }
-      if (attacker.statusEffects?.some(e => e.prevent_jutsu && e.turnsRemaining > 0)) {
-        window.BattleNarrator?.narrate(`${attacker.name}'s jutsu is sealed!`, core);
-        return false;
-      }
+      if (this.refuseIfSealed(attacker, 'jutsu', core)) return false;
 
       const cost = this.getSkillChakraCost(attacker, j, 4);
 
@@ -1067,6 +1049,12 @@
         window.BattleEquippedUltimate.onNinjutsuUse(attacker.id);
       }
 
+      const mfx = window.BattleBuffs?.skillFx?.(j.data);
+      if (mfx && !mfx.hasDamage && mfx.ops.length) {
+        this.performSupportSkill(attacker, 'jutsu', j, core, onDone);
+        return true;
+      }
+
       // Animated sprite units play their own jutsu sheet, one damage number per hit.
       if (this.usesSpriteSkill(attacker)) {
         this.performSpriteSkill(attacker, 'jutsu', j, targets, core, onDone);
@@ -1074,10 +1062,9 @@
       }
 
       // Get multiplier (extract from description like "2.0x attack...")
-      let mult = 2.0;
-      const m = String(j.data.description || "").match(/([\d.]+)x/i);
-      // Bug #2: Check if match exists and has captured group
-      if (m && m[1]) mult = Number(m[1]) || 2.0;
+      const mult = this.getSkillMultiplier(j.data, 2.0);
+      window.BattleBuffs?.preHit?.(core, attacker, targets, mfx);
+      const mctx = window.BattleBuffs?.attackCtx?.(attacker, mfx, 'jutsu') || { kind: 'jutsu' };
 
       console.log(`[Combat] ${attacker.name} multi-jutsu ${targets.length} enemies`);
 
@@ -1093,8 +1080,11 @@
         // Hit all targets
         targets.forEach((target, i) => {
           setTimeout(() => {
-            const {damage, isCritical, breakdown} = this.calculateDamage(attacker, target, mult);
+            const {damage, isCritical, breakdown, dodged} = this.calculateDamage(attacker, target, window.BattleBuffs?.conditionalMult?.(mfx, target, mult) ?? mult, mctx);
             target.stats.hp = Math.max(0, target.stats.hp - damage);
+            window.BattleBuffs?.postSkill?.(core, attacker, dodged ? [] : [target],
+              i === 0 ? mfx : { ops: (mfx?.ops || []).filter(o => o.target === 'enemies' || o.op === 'knockback' || o.op === 'pull' || o.op === 'chakraDrain' || o.op === 'speedRollback') },
+              { kind: 'jutsu', dealt: damage });
 
             // Apply knockback for multi-jutsu
             if (window.BattlePhysics) {
@@ -1131,6 +1121,44 @@
       return true;
     },
 
+    /* ===== Status gates ===== */
+
+    /** True if Jutsu Sealing blocks `kind` for this unit (and says so). */
+    isSkillSealed(unit, kind) {
+      return !!window.BattleBuffs?.isSealed?.(unit, kind);
+    },
+    refuseIfSealed(unit, kind, core) {
+      if (!this.isSkillSealed(unit, kind)) return false;
+      const label = kind === 'ultimate' ? 'ultimate' : kind === 'secret' ? 'secret technique' : 'jutsu';
+      const turns = window.BattleBuffs?.sealTurns?.(unit) || 0;
+      console.warn(`[Combat] 🔒 ${unit.name}'s ${label} is sealed (${turns} turn(s) left)`);
+      window.BattleNarrator?.narrate?.(`${unit.name}'s ${label} is sealed!${turns ? ` (${turns} turn${turns > 1 ? 's' : ''})` : ''}`, core);
+      window.StatusEffectUI?.popup?.(unit, 'Jutsu Sealed!', '#d6b8ff', 'jutsu_seal');
+      return true;
+    },
+
+    /**
+     * Support skill without damage ("Gives you 6 perfect dodge(s)...",
+     * "Gives you an attack boost of 50%..."): name callout, cut-in, then
+     * apply the effects to self / allies and end.
+     */
+    performSupportSkill(attacker, kind, skill, core, onDone) {
+      const data = skill.data || {};
+      const name = data.name || data.skillName || skill.meta?.name || kind;
+      attacker._actionBusy = true;
+      const finish = () => {
+        window.BattleBuffs?.postSkill?.(core, attacker, [], window.BattleBuffs.skillFx(data), { kind });
+        window.BattleChakraWheel?.updateChakraWheel?.(attacker, core);
+        if (core.units) core.units.updateUnitDisplay(attacker, core); else core.updateUnitDisplay?.(attacker);
+        setTimeout(() => { attacker._actionBusy = false; core.checkBattleEnd?.(); onDone?.(); }, 700);
+      };
+      this.afterCutin(attacker, kind, name, () => {
+        window.BattleAttackNames?.showAttackName?.(name, kind);
+        if (attacker._sprite) attacker._sprite.play(kind, { onEnd: () => core.units?.settleSprite?.(attacker) });
+        setTimeout(finish, 450);
+      });
+    },
+
     /* ===== Spritesheet Skills (units with animated battle sprites) ===== */
 
     /**
@@ -1159,6 +1187,7 @@
 
     /** True if the unit currently has an attack-weakening debuff. */
     isAttackWeakened(unit) {
+      if (window.BattleBuffs?.has) return window.BattleBuffs.has(unit, 'attack_down');
       return !!unit?.statusEffects?.some(e =>
         (e.type === 'attack_weakened' || e.type === 'atk_reduction' || e.tag === 'atkDown' || e.kind === 'ATTACK_DEBUFF') &&
         (typeof e.turnsRemaining !== 'number' || e.turnsRemaining > 0)
@@ -1167,6 +1196,8 @@
 
     /** Per-target multiplier, e.g. "4.5x attack (6x attack if they are Attack Weakened)". */
     getTargetMultiplier(data, target, base) {
+      const fx = window.BattleBuffs?.skillFx?.(data);
+      if (fx?.cond?.length) return window.BattleBuffs.conditionalMult(fx, target, base);
       const m = String(data?.description || "").match(/\(\s*([\d.]+)x[^)]*if\s+(?:they\s+are|the\s+target\s+is|target\s+is)\s+attack\s+weakened/i);
       if (m && this.isAttackWeakened(target)) return Number(m[1]) || base;
       return base;
@@ -1227,6 +1258,7 @@
     /** Attack Weakened: -30% ATK for N turns (same buff/debuff shape as ATK reduction). */
     applyAttackWeakened(target, turns, core) {
       if (!target || target.stats.hp <= 0) return;
+      if (window.BattleBuffs?.addStatus) { window.BattleBuffs.addStatus(core, target, 'attack_down', { turns, chance: 1 }); return; }
       target.statusEffects = target.statusEffects || [];
       const existing = target.statusEffects.find(e => e.type === 'attack_weakened');
       if (existing) {
@@ -1246,8 +1278,13 @@
     },
 
     /** Structured skill debuffs ({type, chance, turns}). */
-    applySkillDebuff(target, debuff, core) {
+    applySkillDebuff(target, debuff, core, caster = null) {
       if (!debuff || !target || target.stats.hp <= 0) return;
+      const sid = window.StatusCatalog?.resolveStatusId?.(debuff.type || debuff.id);
+      if (sid && window.BattleBuffs?.addStatus) {
+        window.BattleBuffs.addStatus(core, target, sid, { turns: Number(debuff.turns) || 1, chance: debuff.chance == null ? 1 : Number(debuff.chance), value: debuff.value, caster });
+        return;
+      }
       const chance = debuff.chance == null ? 1 : Number(debuff.chance);
       if (Math.random() >= chance) return;
       if (debuff.type === 'attack_weakened') this.applyAttackWeakened(target, Number(debuff.turns) || 1, core);
@@ -1335,11 +1372,18 @@
       const hideCallout = () => window.BattleAttackNames?.hideAttackName?.(callout);
       if (core.units) core.units.updateUnitDisplay(attacker, core); else core.updateUnitDisplay?.(attacker);
 
+      // Status hooks: "removes Perfect Dodge / Barrier" happen before the
+      // roll; ignore-Substitution etc. travel in the attack context.
+      const S = window.BattleBuffs;
+      const fx = S?.skillFx?.(data) || null;
+      S?.preHit?.(core, attacker, targets, fx);
+      const ctx = S?.attackCtx?.(attacker, fx, kind) || { kind };
+
       // One damage roll per target (crit / variance / element, as the generic
       // path does), then split across the hit frames.
       const plans = targets.map(target => {
         const mult = this.getTargetMultiplier(data, target, baseMult);
-        const r = this.calculateDamage(attacker, target, mult);
+        const r = this.calculateDamage(attacker, target, mult, ctx);
         return { target, mult, total: r.damage, isCritical: r.isCritical, dodged: !!r.dodged, dealt: 0, slices: [] };
       });
 
@@ -1403,14 +1447,9 @@
 
         // End-of-skill effects on the survivors.
         const survivors = plans.filter(p => !p.dodged && p.target.stats.hp > 0).map(p => p.target);
-        const fx = data.effects;
-        if (fx) {
-          if (fx.debuff) survivors.forEach(t => this.applySkillDebuff(t, fx.debuff, core));
-          if (Number(fx.selfChakra) > 0) {
-            if (core.chakra) core.chakra.addChakra(attacker, Number(fx.selfChakra), core);
-            else attacker.chakra = Math.min(attacker.maxChakra || 10, (attacker.chakra || 0) + Number(fx.selfChakra));
-            window.BattleChakraWheel?.updateChakraWheel?.(attacker, core);
-          }
+        if (S?.postSkill) {
+          S.postSkill(core, attacker, survivors, fx, { kind, dealt: plans.reduce((a, p) => a + p.dealt, 0) });
+          window.BattleChakraWheel?.updateChakraWheel?.(attacker, core);
         } else {
           this.applyDescriptionEffects(data.description, attacker, survivors, core);
         }
@@ -1492,7 +1531,7 @@
      * @param {Object} core - BattleCore reference
      * @returns {boolean} Success status
      */
-    performSecret(caster, core) {
+    performSecret(caster, core, onDone) {
       const skills = this.getUnitSkills(caster);
       const secret = skills.secret;
 
@@ -1501,20 +1540,8 @@
         return false;
       }
 
-      // Check if unit is sealed (cannot use secret)
-      const isSealed = caster.statusEffects?.some(e =>
-        e.prevent_secret && e.turnsRemaining > 0
-      );
-      if (isSealed) {
-        console.warn(`[Combat] 🔒 ${caster.name}'s secret technique is sealed!`);
-        if (window.BattleNarrator) {
-          window.BattleNarrator.narrate(`${caster.name}'s secret technique is sealed!`, core);
-        }
-        if (window.BattleEffects) {
-          window.BattleEffects.showEffectIndicator(caster, 'SEALED', '#666666', core);
-        }
-        return false;
-      }
+      // Jutsu Sealing blocks secret techniques too
+      if (this.refuseIfSealed(caster, 'secret', core)) return false;
 
       // Check if secret is unlocked (6S+ tier)
       if (!this.isSecretUnlocked(caster)) {
@@ -1543,6 +1570,15 @@
       }
 
       console.log(`[Combat] ${caster.name} uses SECRET: ${secret.meta.name}`);
+
+      // Secrets described in text only (damage and/or status effects):
+      // same pipeline as jutsu / ultimates.
+      const sfx = window.BattleBuffs?.skillFx?.(secret.data);
+      if (!secret.data.effects && sfx && (sfx.hasDamage || sfx.ops.length)) {
+        if (sfx.hasDamage) this.performSpriteSkill(caster, 'secret', secret, this.getOpponents(caster, core), core, onDone);
+        else this.performSupportSkill(caster, 'secret', secret, core, onDone);
+        return true;
+      }
 
       // Display attack name BEFORE effects apply (Storm 4 style)
       {
@@ -1624,6 +1660,7 @@
         core.updateUnitDisplay(caster);
       }
 
+      onDone?.();
       return true;
     },
 
@@ -1669,19 +1706,21 @@
       // Check if ultimate is available and random chance
       const preferUlt = skills.ultimate &&
                        this.isUltimateUnlocked(unit) &&
+                       !this.isSkillSealed(unit, 'ultimate') &&
                        unit.chakra >= this.getSkillChakraCost(unit, skills.ultimate, 8) &&
                        Math.random() > 0.7;
 
       // Check if jutsu is available and random chance
       const preferJut = skills.jutsu &&
                        this.isJutsuUnlocked(unit) &&
+                       !this.isSkillSealed(unit, 'jutsu') &&
                        unit.chakra >= this.getSkillChakraCost(unit, skills.jutsu, 4) &&
                        Math.random() > 0.5;
 
       // Execute chosen action — onDone fires when combat fully resolves
       if (preferUlt) {
         console.log("[Combat] AI using ultimate");
-        this.performUltimate(unit, targets, core, onDone);
+        if (this.performUltimate(unit, targets, core, onDone) === false) this.performAttack(unit, target, core, onDone);
       } else if (preferJut) {
         console.log("[Combat] AI using jutsu");
         const ok = this.performJutsu(unit, target, core, onDone);
@@ -1736,7 +1775,13 @@
      * to the given targets.  Probability checks are rolled here.
      */
     applyDescriptionEffects(description, attacker, targets, core) {
-      if (!description || !targets?.length) return;
+      if (!description) return;
+      const S = window.BattleBuffs;
+      if (S?.postSkill && window.StatusCatalog?.parseSkillEffects) {
+        S.postSkill(core, attacker, (targets || []).filter(t => t && t.stats.hp > 0), S.skillFx({ description }), { kind: 'jutsu' });
+        return;
+      }
+      if (!targets?.length) return;
       const desc = description.toLowerCase();
 
       targets.forEach(target => {

@@ -23,7 +23,7 @@
         hasScene: !!dom.scene
       });
 
-      const unitEl = dom.scene?.querySelector(`[data-unit-id="${unit.id}"]`);
+      const unitEl = dom.scene?.querySelector(`.battle-unit[data-unit-id="${unit.id}"]`);
       if (!unitEl) {
         console.warn(`[Animations] Unit element not found for ${unit?.name} (id: ${unit?.id})`);
         return;
@@ -387,7 +387,7 @@
         animEl.style.zIndex = "9999";
       } else {
         // NORMAL OVERLAY MODE (for jutsu or GIFs)
-        const unitEl = dom.scene?.querySelector(`[data-unit-id="${unit.id}"]`);
+        const unitEl = dom.scene?.querySelector(`.battle-unit[data-unit-id="${unit.id}"]`);
         if (!unitEl) return;
 
         const rect = unitEl.getBoundingClientRect();
@@ -476,7 +476,7 @@
      * @param {Object} dom - DOM references from BattleManager
      */
     showGuardEffect(unit, dom) {
-      const unitEl = dom.scene?.querySelector(`[data-unit-id="${unit.id}"]`);
+      const unitEl = dom.scene?.querySelector(`.battle-unit[data-unit-id="${unit.id}"]`);
       if (!unitEl || !dom.effectsLayer) return;
 
       const rect = unitEl.getBoundingClientRect();
@@ -507,7 +507,7 @@
      * @param {Object} dom - DOM references from BattleManager
      */
     animateKnockout(unit, dom) {
-      const unitEl = dom.scene?.querySelector(`[data-unit-id="${unit.id}"]`);
+      const unitEl = dom.scene?.querySelector(`.battle-unit[data-unit-id="${unit.id}"]`);
       if (!unitEl) return;
 
       unitEl.style.transition = "all 0.5s ease-out";
@@ -529,7 +529,7 @@
      * @param {Object} dom - DOM references from BattleManager
      */
     showStatusEffect(unit, statusType, dom) {
-      const unitEl = dom.scene?.querySelector(`[data-unit-id="${unit.id}"]`);
+      const unitEl = dom.scene?.querySelector(`.battle-unit[data-unit-id="${unit.id}"]`);
       if (!unitEl) return;
 
       const statusContainer = unitEl.querySelector('.status-effects') || (() => {
@@ -582,7 +582,7 @@
      * @param {Object} dom - DOM references from BattleManager
      */
     animateTurnStart(unit, dom) {
-      const unitEl = dom.scene?.querySelector(`[data-unit-id="${unit.id}"]`);
+      const unitEl = dom.scene?.querySelector(`.battle-unit[data-unit-id="${unit.id}"]`);
       if (!unitEl) return;
 
       unitEl.style.animation = 'turnPulse 0.5s ease-out';
@@ -681,7 +681,7 @@
      * @param {Object} dom - DOM references from BattleManager
      */
     animateChakraGain(unit, amount, dom) {
-      const unitEl = dom.scene?.querySelector(`[data-unit-id="${unit.id}"]`);
+      const unitEl = dom.scene?.querySelector(`.battle-unit[data-unit-id="${unit.id}"]`);
       if (!unitEl) return;
 
       const chakraContainer = unitEl.querySelector('.unit-chakra');

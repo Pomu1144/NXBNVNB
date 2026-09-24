@@ -114,6 +114,67 @@
     return { minCode, maxCode: TIER_ORDER[iMax] };
   }
 
+  /* ==========================================================
+   * Card top tier for stats (awakening transforms)
+   * In Blazing a card at max level of its own top tier has its full stats;
+   * awakening past it turns it into a different card (awakening-transforms.json).
+   * So when a unit transforms into another card at tier T (T within its own
+   * min..max range), the tier just below T is where it reaches statsMax.
+   * ========================================================== */
+  let _transformTiers = null; // { fromId: [{ tier, toId }, ...] }
+  function _indexTransforms(list) {
+    const map = {};
+    (Array.isArray(list) ? list : []).forEach(t => {
+      if (t && t.fromId && t.toId && t.tier) (map[t.fromId] = map[t.fromId] || []).push({ tier: t.tier, toId: t.toId });
+    });
+    return map;
+  }
+  const TRANSFORMS_URL = "data/awakening-transforms.json";
+  try {
+    if (typeof fetch === "function") {
+      fetch(TRANSFORMS_URL).then(r => r.ok ? r.json() : []).then(list => {
+        if (!_transformTiers) _transformTiers = _indexTransforms(list);
+      }).catch(() => {});
+    }
+  } catch (_) { /* ignore */ }
+  function transformsFrom(id) {
+    if (!_transformTiers) {
+      // First stat computation happened before the async load finished:
+      // load synchronously once so stats never depend on timing.
+      try {
+        const xhr = new XMLHttpRequest();
+        xhr.open("GET", TRANSFORMS_URL, false);
+        xhr.send(null);
+        _transformTiers = _indexTransforms(xhr.status === 200 ? JSON.parse(xhr.responseText) : []);
+      } catch (_) {
+        _transformTiers = {};
+      }
+    }
+    return (id && _transformTiers[id]) || [];
+  }
+
+  // The card a character turns into when awakened past its stat top tier
+  // ({ tier, toId }), or null when it never transforms within its own range.
+  function transformAtTop(c) {
+    const { minCode, maxCode } = getTierBounds(c);
+    const iTop = idxOf(statTopTier(c, minCode, maxCode));
+    if (iTop >= idxOf(maxCode)) return null;
+    return transformsFrom(c && c.id).find(t => TIER_ORDER.indexOf(t.tier) === iTop + 1) || null;
+  }
+
+  // Tier at which a character reaches statsMax: its max tier, or the tier just
+  // below the lowest tier (within its range) at which it transforms into another card.
+  function statTopTier(c, minCode, maxCode) {
+    if (!minCode || !maxCode) ({ minCode, maxCode } = getTierBounds(c));
+    const iMin = idxOf(minCode), iMax = idxOf(maxCode);
+    let top = iMax;
+    transformsFrom(c && c.id).forEach(({ tier }) => {
+      const i = TIER_ORDER.indexOf(tier);
+      if (i > iMin && i <= iMax && i - 1 < top) top = i - 1;
+    });
+    return TIER_ORDER[top];
+  }
+
   // Convert absolute progress (0..1 across all tiers) into relative 0..1 within min↔max
   function relativeProgress(code, minCode, maxCode) {
     const pMin = TIER_PROGRESS_ABS[minCode] ?? 0.0;
@@ -157,7 +218,8 @@
     }
 
     // Determine how far this tier should be toward the character-specific max
-    const fracToMax = relativeProgress(clampedTier, minCode, maxCode); // 0..1
+    // (statsMax is reached at the card's own top tier — see statTopTier)
+    const fracToMax = relativeProgress(clampedTier, minCode, statTopTier(c, minCode, maxCode)); // 0..1
 
     // Star target at this tier: Base → Max lerp by fracToMax
     const target = {
@@ -348,7 +410,7 @@ const Progression = {
   TIER_ORDER, TIER_CAPS, TIER_PROGRESS_ABS,
 
   // utilities
-  validCode, idxOf, levelCapForCode, getTierBounds,
+  validCode, idxOf, levelCapForCode, getTierBounds, statTopTier, transformAtTop, transformsFrom,
 
   // power
   computePower,

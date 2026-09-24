@@ -38,9 +38,9 @@
         jutsu: cost(skills.jutsu, 4),
         ultimate: cost(skills.ultimate, 8),
         secret: cost(skills.secret, 12),
-        jutsuOk: !!skills.jutsu && (C?.isJutsuUnlocked?.(unit) ?? true) && !((unit.jutsuCooldown || 0) > 0),
-        ultOk: !!skills.ultimate && (C?.isUltimateUnlocked?.(unit) ?? true) && !((unit.ultimateCooldown || 0) > 0),
-        secretOk: !!skills.secret && (C?.isSecretUnlocked?.(unit) ?? false)
+        jutsuOk: !!skills.jutsu && (C?.isJutsuUnlocked?.(unit) ?? true) && !((unit.jutsuCooldown || 0) > 0) && !C?.isSkillSealed?.(unit, 'jutsu'),
+        ultOk: !!skills.ultimate && (C?.isUltimateUnlocked?.(unit) ?? true) && !((unit.ultimateCooldown || 0) > 0) && !C?.isSkillSealed?.(unit, 'ultimate'),
+        secretOk: !!skills.secret && (C?.isSecretUnlocked?.(unit) ?? false) && !C?.isSkillSealed?.(unit, 'secret')
       };
     },
 
@@ -129,9 +129,8 @@
       } else if (action === "ultimate") {
         this.executeUltimate(core, currentUnit);
       } else if (action === "secret") {
-        if (window.BattleCombat?.performSecret(currentUnit, core)) {
-          if (core.turns?.currentUnit === currentUnit) core.turns.endTurn(core);
-        } else {
+        const endIt = () => { if (core.turns?.currentUnit === currentUnit) core.turns.endTurn(core); };
+        if (!window.BattleCombat?.performSecret(currentUnit, core, endIt)) {
           this.resetChakraMode(currentUnit, core);
         }
       }
@@ -406,6 +405,12 @@
      * @param {Object} core - Reference to BattleManager
      */
     addChakra(unit, amount, core) {
+      // Chakra Recovery Sealing: no chakra gain
+      if (amount > 0 && window.BattleBuffs && !window.BattleBuffs.canGainChakra(unit)) {
+        console.log(`[Chakra] 🔒 ${unit.name} is chakra recovery sealed (+${amount} blocked)`);
+        window.StatusEffectUI?.popup?.(unit, 'Chakra Sealed', '#7fb8ff', 'chakra_seal');
+        return 0;
+      }
       const before = unit.chakra;
       unit.chakra = Math.min(unit.maxChakra, unit.chakra + amount);
       const gained = unit.chakra - before;

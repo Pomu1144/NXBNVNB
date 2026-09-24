@@ -67,7 +67,8 @@
           // turn after turn in a blur ("stuck attacking"). This paces a
           // turn at roughly 2.5-4s and caps how much more often a fast
           // unit acts (~1.5x) while keeping speed meaningful.
-          const speedGain = (10 + (unit.stats.speed || 90) / 12) * core.speedMultiplier;
+          const speedGain = (10 + (unit.stats.speed || 90) / 12) * core.speedMultiplier
+            * (window.BattleBuffs?.speedMult?.(unit) ?? 1);
           unit.speedGauge = Math.min(core.GAUGE_MAX, unit.speedGauge + speedGain);
         });
 
@@ -148,8 +149,10 @@
           + `${unit.isPaused ? ' paused' : ''}`
           + `${unit === this.currentUnit ? ' acting' : ''}`
           + `${unit === next ? ' next' : ''}`
+          + `${window.BattleBuffs?.cannotAct?.(unit) ? ' st-stunned' : ''}`
+          + `${window.BattleBuffs?.isSealed?.(unit, 'jutsu') ? ' st-sealed' : ''}`
           + `${marker.classList.contains('sm-return') ? ' sm-return' : ''}`;
-        marker.title = `${unit.name} · SPD ${unit.stats.speed}`;
+        marker.title = `${unit.name} · SPD ${unit.stats.speed}${window.BattleBuffs?.cannotAct?.(unit) ? ' · Immobilized (turn skipped)' : ''}`;
       });
 
       lane.querySelectorAll(':scope > .speed-marker').forEach(m => {
@@ -253,9 +256,17 @@
       this.updateSpeedGaugeDisplay(core);
       core.teamHolder?.highlightActingUnit?.(unit);
 
-      // Apply turn start effects (buffs, regen, etc.)
-      if (window.BattleBuffs) {
-        window.BattleBuffs.onTurnStart(core, unit);
+      // Turn start status effects: slip damage / damage regions / regen
+      // tick, immobilization check (BattleBuffs)
+      const st = window.BattleBuffs?.onTurnStart?.(core, unit) || {};
+      window.StatusEffectUI?.renderPanel?.(unit);
+      if (st.died) {
+        console.log(`[Turns] ☠️ ${unit.name} was defeated by status damage`);
+        setTimeout(() => {
+          if (this.currentUnit === unit) this.endTurn(core);
+          core.checkBattleEnd?.();
+        }, 900);
+        return;
       }
 
       // Apply passive ability turn start effects (HP regen, chakra boost, etc.)
@@ -263,18 +274,18 @@
         window.BattlePassives.onTurnStart(core, unit);
       }
 
-      // Check if unit cannot act (stunned, immobilized, paralyzed)
-      const cannotAct = unit.statusEffects?.some(e =>
+      // Check if unit cannot act (immobilized): the turn is skipped
+      const cannotAct = st.skip || window.BattleBuffs?.cannotAct?.(unit) || unit.statusEffects?.some(e =>
         e.prevent_action && e.turnsRemaining > 0
       );
       if (cannotAct) {
-        const effect = unit.statusEffects.find(e => e.prevent_action && e.turnsRemaining > 0);
-        console.log(`[Turns] ⛓️ ${unit.name} cannot act (${effect.name})!`);
-        if (window.BattleEffects) {
-          window.BattleEffects.showEffectIndicator(unit, effect.name.toUpperCase(), effect.color || '#888888', core);
-        }
-        // Skip turn - end immediately
-        setTimeout(() => this.endTurn(core), 800);
+        const effect = st.effect || unit.statusEffects.find(e => e.prevent_action && e.turnsRemaining > 0);
+        console.log(`[Turns] ⛓️ ${unit.name} cannot act (${effect?.name || 'Immobilized'}) — turn skipped`);
+        window.StatusEffectUI?.popup?.(unit, 'Immobilized!', '#ffd27a', 'immobilize');
+        window.BattleNarrator?.narrate?.(`${unit.name} is immobilized and cannot move!`, core);
+        unit.isGuarding = false;
+        // Skip turn - end after the notice
+        setTimeout(() => { if (this.currentUnit === unit) this.endTurn(core); }, 1000);
         return;
       }
 
@@ -430,9 +441,14 @@
       const ultOnCd    = (unit.ultimateCooldown  || 0) > 0;
 
       // Check if skills are usable (unlocked, enough chakra, not on cooldown)
-      const canJutsu  = !!skills.jutsu   && jutsuUnlocked  && unit.chakra >= jCost && !jutsuOnCd;
-      const canUlt    = !!skills.ultimate && ultUnlocked    && unit.chakra >= uCost && !ultOnCd;
-      const canSecret = !!skills.secret  && secretUnlocked && unit.chakra >= sCost;
+      // Jutsu Sealing blocks jutsu, ultimate and secret techniques
+      const B = window.BattleBuffs;
+      const sealed = !!B?.isSealed?.(unit, 'jutsu');
+      const sealTxt = sealed ? `SEALED (${B.sealTurns(unit)})` : '';
+      const canJutsu  = !!skills.jutsu   && jutsuUnlocked  && unit.chakra >= jCost && !jutsuOnCd && !sealed;
+      const canUlt    = !!skills.ultimate && ultUnlocked    && unit.chakra >= uCost && !ultOnCd && !B?.isSealed?.(unit, 'ultimate');
+      const canSecret = !!skills.secret  && secretUnlocked && unit.chakra >= sCost && !B?.isSealed?.(unit, 'secret');
+      [core.dom.btnJutsu, core.dom.btnUltimate, core.dom.btnSecret].forEach(b => b?.classList.toggle('st-sealed', sealed));
 
       // Update button states
       core.dom.btnJutsu?.classList.toggle("disabled", !canJutsu);
@@ -445,6 +461,8 @@
           core.dom.actionSkillName.textContent = "—";
         } else if (!jutsuUnlocked) {
           core.dom.actionSkillName.textContent = `LOCKED (Lv ${unitLevel}/20)`;
+        } else if (sealed) {
+          core.dom.actionSkillName.textContent = `${skills.jutsu.meta.name} — ${sealTxt}`;
         } else if (jutsuOnCd) {
           core.dom.actionSkillName.textContent = `${skills.jutsu.meta.name} — CD ${unit.jutsuCooldown}`;
         } else {
@@ -456,6 +474,8 @@
           core.dom.actionUltName.textContent = "—";
         } else if (!ultUnlocked) {
           core.dom.actionUltName.textContent = `LOCKED (Lv ${unitLevel}/50)`;
+        } else if (sealed) {
+          core.dom.actionUltName.textContent = `${skills.ultimate.meta.name} — ${sealTxt}`;
         } else if (ultOnCd) {
           core.dom.actionUltName.textContent = `${skills.ultimate.meta.name} — CD ${unit.ultimateCooldown}`;
         } else {
@@ -467,6 +487,8 @@
           core.dom.actionSecretName.textContent = "—";
         } else if (!secretUnlocked) {
           core.dom.actionSecretName.textContent = `LOCKED (${unitTier}, needs 6S+)`;
+        } else if (sealed) {
+          core.dom.actionSecretName.textContent = `${skills.secret.meta.name} — ${sealTxt}`;
         } else {
           core.dom.actionSecretName.textContent = `${skills.secret.meta.name} (${sCost})`;
         }
@@ -474,6 +496,7 @@
 
       // Render equipped jutsu card icons
       this.renderEquippedJutsuIcons(unit, core);
+      window.StatusEffectUI?.renderPanel?.(unit);
 
       core.dom.actionPanel.classList.remove("hidden");
       this.keepUnitClearOfPanel(unit, core);
@@ -489,6 +512,7 @@
       const panel = core.dom.actionPanel;
       const scene = core.dom.scene;
       if (!panel || !scene || !unit?.pos) return;
+      if (panel.classList.contains('ap-collapsed')) return; // slid away: nothing covered
       const unitEl = scene.querySelector(`.battle-unit[data-unit-id="${unit.id}"]`);
       if (!unitEl) return;
       const pr = panel.getBoundingClientRect();
@@ -613,6 +637,7 @@
      */
     handleJutsuButton(core) {
       if (!this.currentUnit) return;
+      if (window.BattleCombat?.refuseIfSealed?.(this.currentUnit, 'jutsu', core)) return;
 
       const skills = window.BattleCombat?.getUnitSkills(this.currentUnit);
       const cost = window.BattleCombat?.getSkillChakraCost(this.currentUnit, skills?.jutsu, 4) ?? 4;
@@ -661,6 +686,7 @@
      */
     handleUltimateButton(core) {
       if (!this.currentUnit) return;
+      if (window.BattleCombat?.refuseIfSealed?.(this.currentUnit, 'ultimate', core)) return;
 
       const skills = window.BattleCombat?.getUnitSkills(this.currentUnit);
 
@@ -709,6 +735,7 @@
      */
     handleSecretButton(core) {
       if (!this.currentUnit) return;
+      if (window.BattleCombat?.refuseIfSealed?.(this.currentUnit, 'secret', core)) return;
 
       const skills = window.BattleCombat?.getUnitSkills(this.currentUnit);
 
@@ -742,10 +769,10 @@
       // Perform secret technique (buffs allies)
       console.log("[Turns] Executing secret technique");
       if (window.BattleCombat) {
-        const success = window.BattleCombat.performSecret(this.currentUnit, core);
-        if (success) {
-          this.endTurn(core);
-        }
+        const unit = this.currentUnit;
+        window.BattleCombat.performSecret(unit, core, () => {
+          if (this.currentUnit === unit) this.endTurn(core);
+        });
       }
     },
 
