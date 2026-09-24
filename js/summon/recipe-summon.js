@@ -48,6 +48,52 @@
     if (frag && global.RecipeBook) frag.textContent = global.RecipeBook.fragments();
   }
 
+  // ---------------------------------------------------------------- banner art
+  // Composed from game assets (no painted key art): ink-teal washi + cut-in ink
+  // strokes, the hero recipe's RESULT unit full art in an ink-brush mask, a faint
+  // calligraphy watermark, and a mini open-scroll strip (ingredients → result seal).
+  const TIER_ORDER = ["1S", "2S", "3S", "4S", "5S", "6S", "6SB", "7S", "7SL"];
+  function heroArt(ch) {
+    if (!ch) return "";
+    const tiers = Object.keys(ch.artByTier || {}).sort((a, b) => TIER_ORDER.indexOf(a) - TIER_ORDER.indexOf(b));
+    for (let i = tiers.length - 1; i >= 0; i--) {
+      const f = ch.artByTier[tiers[i]]?.full;
+      if (f) return f.replace(/\.gif$/i, ".webp");
+    }
+    return ch.full || "";
+  }
+  function heroFusion(b) { return byId(b?.hero) || byId((b?.featured || [])[0]) || poolFor(b)[0]; }
+
+  function bannerHTML(b, thumb) {
+    const f = heroFusion(b);
+    const d = state.data, RS = global.RecipeScroll;
+    const r = f && d.chars[f.result?.characterId];
+    const art = heroArt(r);
+    const u = id => { const c = d.chars[id]; return `<img class="rcb-unit" src="${RS.portrait(c, c?.starMinCode)}" alt="" draggable="false">`; };
+    return `
+      <div class="rcb${thumb ? " is-thumb" : ""}">
+        <div class="rcb-bg"></div>
+        <div class="rcb-stroke rcb-stroke--teal"></div>
+        <div class="rcb-stroke rcb-stroke--gold"></div>
+        <div class="rcb-art" role="img" aria-label="${esc(r?.name || "")}" style="background-image:url('${esc(art)}')"></div>
+        <div class="rcb-splatter"></div>
+        <div class="rcb-mark" aria-hidden="true">${esc(b.mark || "秘伝")}</div>
+        ${thumb ? "" : `
+        <div class="rcb-text">
+          <span class="banner-kicker rcb-kicker">Recipe Summon</span>
+          <span class="rcb-title">${esc(b.name)}</span>
+          <span class="rcb-sub">${esc(b.subtitle || "")}</span>
+        </div>
+        ${f ? `<div class="rcb-strip" title="${esc(f.name)}">
+          <span class="rcb-strip-name">${esc(f.name)}</span>
+          <span class="rcb-strip-row">
+            ${u(f.requirements?.unit1)}<i>+</i>${u(f.requirements?.unit2)}<i class="rcb-arrow">→</i>${RS.seal(f, d, "rc-seal-sm rcb-seal")}
+          </span>
+        </div>` : ""}
+        <div class="rcb-hero-name"><b>${esc(r?.name || "")}</b><small>${esc(r?.version || "")}</small></div>`}
+      </div>`;
+  }
+
   // ---------------------------------------------------------------- pulls
   /** Roll + pay + grant. Returns [{ fusion, isNew }] or null when unaffordable. */
   function pull(n) {
@@ -75,11 +121,7 @@
     if (!b) return;
     const panel = document.getElementById("recipe-summon-panel");
     panel.querySelectorAll(".rc-rail-item").forEach((it, i) => it.classList.toggle("active", i === state.index));
-    const img = panel.querySelector(".rc-banner img");
-    img.src = b.image || "assets/ui/recipes/recipe_banner.webp";
-    img.style.objectPosition = b.imagePosition || "50% 50%";
-    panel.querySelector(".rc-banner-title").textContent = b.name;
-    panel.querySelector(".rc-banner-sub").textContent = b.subtitle || "";
+    panel.querySelector(".rc-banner").innerHTML = bannerHTML(b, false);
     panel.querySelector(".rc-name").textContent = b.name;
     panel.querySelector(".rc-desc").textContent = b.description || "";
     const list = panel.querySelector(".rc-pickup-list");
@@ -154,8 +196,8 @@
         <div class="rc-rail">
           ${state.banners.map((b, i) => `
             <button class="rc-rail-item" type="button" data-index="${i}" aria-label="${esc(b.name)}">
-              <img src="${esc(b.image || "assets/ui/recipes/recipe_banner.webp")}" alt="" style="object-position:${esc(b.imagePosition || "50% 50%")}" draggable="false">
-              <span>${esc(b.name)}</span>
+              ${bannerHTML(b, true)}
+              <span class="rc-rail-label">${esc(b.name)}</span>
             </button>`).join("")}
         </div>
         <div class="rc-rail-foot">
@@ -167,14 +209,7 @@
       <div class="featured-stage rc-hero" data-view="banner">
         <div class="featured-glow"></div>
         <div class="stage-view stage-view-banner">
-          <figure class="rc-banner">
-            <img src="" alt="" draggable="false">
-            <figcaption>
-              <span class="rc-banner-kicker">Recipe Summon</span>
-              <span class="rc-banner-title"></span>
-              <span class="rc-banner-sub"></span>
-            </figcaption>
-          </figure>
+          <figure class="rc-banner"></figure>
         </div>
       </div>
 

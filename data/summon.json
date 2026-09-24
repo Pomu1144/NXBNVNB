@@ -1276,14 +1276,13 @@
    "type": "recipe",
    "pool": "all",
    "featured": [
-    "kakashi_step1",
     "naruto_step1",
+    "kakashi_step1",
     "sasuke_step1"
    ],
    "description": "Every pull unseals one fusion recipe scroll. A recipe you already own becomes a Recipe Fragment — trade 5 for any recipe in the Shop.",
    "subtitle": "Unseal fusion recipes · Rate up: Step 1 scrolls",
-   "image": "assets/ui/recipes/recipe_banner.webp",
-   "imagePosition": "50% 50%"
+   "mark": "秘伝"
   },
   {
    "id": "recipe_kakashi_legacy",
@@ -1295,13 +1294,13 @@
     ]
    },
    "featured": [
+    "kakashi_step6",
     "kakashi_step1",
     "kakashi_step2"
    ],
-   "description": "Only the six scrolls of Kakashi's Legacy fusion path. Rate up: Steps 1 and 2.",
-   "subtitle": "Kakashi's Legacy scrolls only · Rate up: Steps 1–2",
-   "image": "assets/ui/recipes/recipe_banner.webp",
-   "imagePosition": "20% 50%"
+   "description": "Only the six scrolls of Kakashi's Legacy fusion path. Rate up: Entrusted Hope and Steps 1–2.",
+   "subtitle": "Kakashi's Legacy scrolls only · Rate up: Entrusted Hope",
+   "mark": "写輪"
   },
   {
    "id": "recipe_rivals",
@@ -1317,14 +1316,13 @@
     ]
    },
    "featured": [
+    "sasuke_step4",
     "team7_rivalry",
-    "naruto_step1",
-    "sasuke_step1"
+    "naruto_step1"
    ],
-   "description": "Naruto's and Sasuke's legacy scrolls, plus the Ultimate Rivalry recipe.",
-   "subtitle": "Naruto & Sasuke scrolls · Rate up: Ultimate Rivalry",
-   "image": "assets/ui/recipes/recipe_banner.webp",
-   "imagePosition": "85% 40%"
+   "description": "Naruto's and Sasuke's legacy scrolls, plus the Ultimate Rivalry recipe. Rate up: Sole Friend and Ultimate Rivalry.",
+   "subtitle": "Naruto & Sasuke scrolls · Rate up: Sole Friend, Ultimate Rivalry",
+   "mark": "宿敵"
   }
  ]
 }

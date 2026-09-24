@@ -917,13 +917,14 @@ button.pickup-unit:focus-visible { outline: none; box-shadow: inset 0 0 0 1px va
   border: 1px solid rgba(201,162,78,0.35); background: var(--jjk-ink);
   box-shadow: 0 3px 8px rgba(0,0,0,0.6);
 }
-.rc-rail-item img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.55) saturate(0.7); }
-.rc-rail-item span {
-  position: absolute; left: 8px; bottom: 6px; font-family: var(--jjk-font); font-weight: 800; font-size: 13px; line-height: 1.1;
+.rc-rail-item .rcb { position: absolute; inset: 0; filter: brightness(0.6) saturate(0.75); transition: filter .18s ease; }
+.rc-rail-item:hover .rcb { filter: brightness(0.85) saturate(0.95); }
+.rc-rail-label {
+  position: absolute; z-index: 2; left: 8px; bottom: 6px; text-align: left; font-family: var(--jjk-font); font-weight: 800; font-size: 13px; line-height: 1.1;
   color: #f4ecd6; text-shadow: 0 1px 3px #000, 0 0 8px rgba(0,0,0,0.9);
 }
 .rc-rail-item.active { border: 2px solid var(--jjk-khaki); }
-.rc-rail-item.active img { filter: none; }
+.rc-rail-item.active .rcb { filter: none; }
 .rc-rail-item.active::before, .rc-rail-item.active::after {
   content: ''; position: absolute; width: 10px; height: 10px; z-index: 1; border: 2px solid var(--jjk-gold-hi);
 }
@@ -931,22 +932,6 @@ button.pickup-unit:focus-visible { outline: none; box-shadow: inset 0 0 0 1px va
 .rc-rail-item.active::after { bottom: 2px; right: 2px; border-left: 0; border-top: 0; }
 
 .rc-hero .stage-view-banner { display: flex; }
-.rc-banner {
-  position: relative; margin: 0;
-  width: calc(100% - 128px); max-height: calc(100% - 64px); aspect-ratio: 16 / 9;
-  padding: 3px; background: var(--gold-bezel, linear-gradient(#c9a24e, #6e5320));
-  box-shadow: 0 0 0 1px rgba(10,6,2,0.95), 0 14px 34px rgba(0,0,0,0.75);
-}
-.rc-banner img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.rc-banner figcaption {
-  position: absolute; left: 3px; right: 3px; bottom: 3px; padding: 40px 28px 20px;
-  display: flex; flex-direction: column; gap: 4px;
-  background: linear-gradient(0deg, rgba(3,10,12,0.92), rgba(3,10,12,0.55) 60%, transparent);
-}
-.rc-banner-kicker { font-family: var(--jjk-font); font-size: 12px; letter-spacing: 0.32em; text-transform: uppercase; color: var(--jjk-gold); }
-.rc-banner-title { font-family: 'Kaisei Tokumin', serif; font-weight: 800; font-size: clamp(26px, 3vw, 42px); color: #f6efdc; text-shadow: 0 2px 6px #000; line-height: 1.05; }
-.rc-banner-sub { font-family: var(--jjk-font); font-size: 13px; color: rgba(236,230,214,0.8); }
-
 .rc-name { font-family: var(--jjk-font); font-weight: 800; font-size: 20px; color: var(--jjk-gold-hi); margin: 6px 0 6px; line-height: 1.2; }
 .rc-desc { font-family: var(--jjk-font); font-size: 12px; line-height: 1.5; color: rgba(236,230,214,0.78); padding: 0 6px; }
 .rc-pick { padding-right: 8px; }
@@ -956,15 +941,10 @@ button.pickup-unit:focus-visible { outline: none; box-shadow: inset 0 0 0 1px va
 .rc-draw .tkt-seal b { font-family: 'Kaisei Tokumin', serif; }
 
 html.is-mobile.is-landscape.is-compact .summon-tab.jjk-tab { min-width: 0; padding: 0 14px; font-size: 13px; }
-html.is-mobile.is-landscape.is-compact .rc-stage .banner-kicker,
+html.is-mobile.is-landscape.is-compact .rc-stage .draw-col .banner-kicker,
 html.is-mobile.is-landscape.is-compact .rc-desc,
 html.is-mobile.is-landscape.is-compact .rc-stage .pickup { display: none; }
 html.is-mobile.is-landscape.is-compact .rc-name { font-size: 15px; margin: 2px 0; }
-html.is-mobile.is-landscape.is-compact .rc-banner { width: calc(100% - 60px); }
-html.is-mobile.is-landscape.is-compact .rc-banner figcaption { padding: 18px 14px 10px; }
-html.is-mobile.is-landscape.is-compact .rc-banner-title { font-size: 20px; }
-html.is-mobile.is-landscape.is-compact .rc-banner-kicker { font-size: 9px; }
-html.is-mobile.is-landscape.is-compact .rc-banner-sub { font-size: 10px; }
 .rc-rail-item:focus-visible { outline: 2px solid var(--jjk-gold-hi); outline-offset: 2px; }
 .rc-rail-foot {
   display: grid; gap: 4px; padding: 10px 6px 4px; margin-top: 6px;
@@ -980,3 +960,112 @@ html.is-mobile.is-landscape.is-compact .rc-banner-sub { font-size: 10px; }
 .rc-info-text small { color: var(--jjk-muted); font-size: 11px; }
 .rc-info-owned { color: var(--jjk-good, #8fd49a); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; }
 html.is-mobile.is-landscape.is-compact .rc-rail-foot { display: none; }
+
+/* ── Recipe banner: composed from game assets (no painted key art) ──
+   ink-teal washi · cut-in ink strokes tinted teal/gold · hero RESULT unit full art
+   in an ink-brush mask · faint gold calligraphy · mini open-scroll recipe strip.
+   Sized in cqw so the rail thumbnails reuse the same markup. */
+.rc-banner {
+  position: relative; margin: 0;
+  width: calc(100% - 128px); max-height: calc(100% - 64px); aspect-ratio: 16 / 9;
+  padding: 3px; background: var(--gold-bezel, linear-gradient(#c9a24e, #6e5320));
+  box-shadow: 0 0 0 1px rgba(10,6,2,0.95), 0 14px 34px rgba(0,0,0,0.75);
+}
+.rcb {
+  position: relative; width: 100%; height: 100%; overflow: hidden; isolation: isolate;
+  container-type: inline-size; background: #06161a;
+}
+.rcb > * { position: absolute; }
+.rcb-bg {
+  inset: 0; z-index: 0;
+  background:
+    radial-gradient(ellipse 75% 90% at 72% 50%, rgba(45,107,115,0.28), transparent 70%),
+    linear-gradient(90deg, rgba(3,10,12,0.92) 0%, rgba(3,10,12,0.55) 38%, rgba(3,10,12,0) 60%),
+    radial-gradient(ellipse at 50% 50%, transparent 55%, rgba(0,0,0,0.75) 100%),
+    url('../assets/ui/jjk/ink_bg.webp') center / cover no-repeat;
+}
+/* long brush strokes behind the art (cut-in ink_band, tinted via mask) */
+.rcb-stroke {
+  z-index: 1; top: -30%; height: 160%; width: 16%;
+  -webkit-mask: url('../assets/ui/cutin/ink_band.webp') center / 100% 100% no-repeat;
+          mask: url('../assets/ui/cutin/ink_band.webp') center / 100% 100% no-repeat;
+}
+.rcb-stroke--teal { left: 52%; transform: rotate(24deg); background: linear-gradient(180deg, rgba(58,138,146,0.85), rgba(19,62,70,0.6)); }
+.rcb-stroke--gold { left: 44%; width: 5%; transform: rotate(24deg) scaleX(-1); background: linear-gradient(180deg, #f1d98a, #c9a24e 50%, #6e5320); opacity: 0.9; }
+/* hero art revealed through the ink splash */
+.rcb-art {
+  z-index: 2; top: -8%; right: -4%; width: 62%; height: 116%;
+  background-position: 52% 30%; background-size: cover; background-repeat: no-repeat;
+  /* ink splash ∪ soft oval around the unit: brushy edges, face never clipped */
+  -webkit-mask:
+    url('../assets/ui/cutin/ink_splash.webp') center / 100% 100% no-repeat,
+    radial-gradient(ellipse 36% 40% at 54% 40%, #000 55%, transparent 100%);
+          mask:
+    url('../assets/ui/cutin/ink_splash.webp') center / 100% 100% no-repeat,
+    radial-gradient(ellipse 36% 40% at 54% 40%, #000 55%, transparent 100%);
+  -webkit-mask-composite: source-over;
+          mask-composite: add;
+  filter: saturate(1.05) contrast(1.05);
+}
+.rcb-splatter {
+  z-index: 3; top: -6%; right: -6%; width: 44%; aspect-ratio: 1;
+  background: linear-gradient(135deg, #f1d98a, #c9a24e);
+  -webkit-mask: url('../assets/ui/cutin/ink_splatter.webp') center / contain no-repeat;
+          mask: url('../assets/ui/cutin/ink_splatter.webp') center / contain no-repeat;
+  opacity: 0.35;
+}
+.rcb-mark {
+  z-index: 1; left: 33%; top: 50%; transform: translateY(-50%);
+  writing-mode: vertical-rl; font-family: 'Kaisei Tokumin', serif; font-weight: 800;
+  font-size: 19cqw; line-height: 1; letter-spacing: -0.05em;
+  color: var(--jjk-gold, #c9a24e); opacity: 0.13; pointer-events: none; white-space: nowrap;
+}
+.rcb-text {
+  z-index: 4; left: 5.5%; top: 11%; width: 50%;
+  display: flex; flex-direction: column; align-items: flex-start; gap: 1.1cqw;
+}
+.rcb-kicker.banner-kicker { font-size: max(8px, 1.25cqw); padding: 0.6cqw 3cqw 0.6cqw 1.8cqw; margin: 0; letter-spacing: 0.22em; }
+.rcb-title {
+  font-family: 'Kaisei Tokumin', serif; font-weight: 800; font-size: 5.6cqw; line-height: 1.05;
+  color: #f6efdc; text-shadow: 0 2px 6px #000, 0 0 18px rgba(0,0,0,0.7);
+}
+.rcb-title::after {
+  content: ''; display: block; width: 62%; height: 0.35cqw; margin-top: 1.1cqw;
+  background: linear-gradient(90deg, var(--jjk-gold-hi, #f1d98a), rgba(201,162,78,0.5) 60%, transparent);
+}
+.rcb-sub { font-family: var(--jjk-font); font-size: max(9px, 1.55cqw); color: rgba(236,230,214,0.82); text-shadow: 0 1px 3px #000; }
+
+/* mini open scroll: ingredients → result seal */
+.rcb-strip {
+  z-index: 4; left: 4%; bottom: 7%; width: 38%; aspect-ratio: 975 / 502;
+  background: url('../assets/ui/recipes/scroll_open.webp') center / 100% 100% no-repeat;
+  filter: drop-shadow(0 1cqw 1.4cqw rgba(0,0,0,0.6));
+  display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 0.6cqw;
+  padding: 1.6cqw 4.5cqw 3cqw; box-sizing: border-box; color: #221a12;
+}
+.rcb-strip-name { font-family: 'Kaisei Tokumin', serif; font-weight: 800; font-size: max(8px, 1.6cqw); letter-spacing: 0.04em; white-space: nowrap; }
+.rcb-strip-row { display: flex; align-items: center; gap: 0.7cqw; }
+.rcb-strip-row i { font-style: normal; font-family: 'Kaisei Tokumin', serif; font-weight: 800; font-size: 2cqw; color: rgba(34,26,18,0.7); }
+.rcb-strip-row .rcb-arrow { color: #b3261e; }
+.rcb-unit { width: 6.2cqw; height: 6.2cqw; object-fit: contain; filter: drop-shadow(0 0.3cqw 0.4cqw rgba(40,25,10,0.35)); }
+.rcb .rcb-seal { position: relative; width: 6cqw; height: 6cqw; border-width: 0.35cqw; border-radius: 0.6cqw; }
+
+.rcb-hero-name {
+  z-index: 4; right: 3.5%; bottom: 6%; display: flex; flex-direction: column; align-items: flex-end;
+  font-family: var(--jjk-font); text-shadow: 0 1px 3px #000, 0 0 10px rgba(0,0,0,0.8);
+}
+.rcb-hero-name b { font-size: max(9px, 1.7cqw); color: #f6efdc; font-weight: 800; }
+.rcb-hero-name small { font-size: max(8px, 1.2cqw); color: var(--jjk-gold-hi, #f1d98a); letter-spacing: 0.08em; }
+
+/* rail thumbnail: art + strokes only, text comes from the label */
+.rcb.is-thumb .rcb-art { right: -10%; width: 80%; }
+.rcb.is-thumb .rcb-mark { display: none; }
+
+html.is-mobile.is-landscape.is-compact .rc-banner { width: calc(100% - 60px); }
+/* narrow banner (phones): single-line title/subtitle, smaller recipe strip */
+@container (max-width: 620px) {
+  .rcb-text { width: 58%; top: 9%; gap: 0.8cqw; }
+  .rcb-title { font-size: 4.8cqw; white-space: nowrap; }
+  .rcb-sub { max-width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .rcb-strip { width: 33%; bottom: 5%; }
+}
