@@ -303,12 +303,17 @@ class SummonUIController {
       this.elements.resultGrid.classList.remove('single');
     }
 
-    // Create result cards
+    // Create result cards. Star tier drives the frame (4★ plain, 5★ gold glint,
+    // 6★/7★ stronger); --i staggers the reveal in grid order.
+    const frag = document.createDocumentFragment();
+    let shown = 0;
     results.forEach(({character, summonData}) => {
       if (!character) return;
 
+      const stars = Math.max(1, Math.min(7, Number(character.rarity) || 4));
       const card = document.createElement('div');
-      card.className = `result-card rarity-${summonData.rarity}`;
+      card.className = `result-card rarity-${summonData.rarity} stars-${stars}`;
+      card.style.setProperty('--i', shown++);
 
       if (summonData.isFeatured) {
         card.classList.add('featured');
@@ -316,18 +321,35 @@ class SummonUIController {
 
       card.innerHTML = `
         <div class="result-card-inner">
-          <img src="${character.portrait || character.full}" alt="${character.name}"
-               onerror="this.src='assets/characters/common/silhouette.png'">
+          <div class="result-card-art">
+            <img src="${character.portrait || character.full}" alt="${character.name}" decoding="async"
+                 onerror="this.onerror=null;this.src='assets/characters/common/silhouette.png'">
+          </div>
           <div class="result-card-info">
             <div class="result-card-name">${character.name}</div>
-            <div class="result-card-rarity">${'★'.repeat(character.rarity || 4)}</div>
-            ${summonData.isFeatured ? '<div class="result-card-featured">FEATURED</div>' : ''}
+            <div class="result-card-rarity" aria-label="${stars} stars">${'★'.repeat(stars)}</div>
           </div>
+          ${summonData.isFeatured ? '<div class="result-card-featured">Featured</div>' : ''}
         </div>
       `;
 
-      this.elements.resultGrid.appendChild(card);
+      frag.appendChild(card);
     });
+    this.elements.resultGrid.appendChild(frag);
+
+    // Header summary + the Continue ticket's stub count
+    const summary = document.getElementById('sr-summary');
+    if (summary) {
+      summary.innerHTML =
+        `<span><b>${shown}</b> Summoned</span>` +
+        (stats.gold ? `<span><b>${stats.gold}</b> Gold</span>` : '') +
+        (stats.featured ? `<span class="is-featured"><b>${stats.featured}</b> Featured</span>` : '');
+    }
+    const count = document.getElementById('sr-count');
+    if (count) count.innerHTML = `<i>×</i>${shown}`;
+    this.elements.modal?.style.setProperty('--sr-n', shown);
+    const unit = document.getElementById('sr-unit');
+    if (unit) unit.textContent = shown === 1 ? 'Unit' : 'Units';
 
     // Show results
     this.showResults();
