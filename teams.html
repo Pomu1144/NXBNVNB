@@ -88,6 +88,7 @@
       <button id="btn-rename-team" class="btn-rename-team">Rename Team</button>
     </div>
 
+    <div class="team-workspace">
     <section class="team-formation">
       <div class="formation-header">
         <h2>Formation</h2>
@@ -168,13 +169,19 @@
       </div>
     </section>
 
-    <section class="char-selection">
+    <section class="char-selection" id="char-selection" aria-label="Character roster">
       <div class="selection-header">
-        <h2>Select Character</h2>
+        <h2>Roster <span class="roster-count" id="roster-count"></span></h2>
         <div class="selection-tools">
-          <input type="text" id="char-filter" placeholder="Search by name..." />
+          <label class="search-box">
+            <img src="assets/ui/jjk/glyph_search.webp" alt="" aria-hidden="true" draggable="false" />
+            <input type="search" id="char-filter" placeholder="Search name..." autocomplete="off" spellcheck="false" aria-label="Search by name" />
+          </label>
           <div class="sort-wrap">
-            <button class="sort-btn" id="btn-sort" type="button" aria-label="Sort & filter" title="Sort & filter"></button>
+            <button class="sort-btn" id="btn-sort" type="button" aria-haspopup="true" aria-label="Sort" title="Sort">
+              <img src="assets/ui/jjk/glyph_sort.webp" alt="" aria-hidden="true" draggable="false" />
+              <span id="sort-label">Rarity</span>
+            </button>
             <div class="sort-menu" id="sort-menu" hidden>
               <div class="sort-menu-title">Sort by</div>
               <button class="sort-opt active" data-sort="rarity">Rarity</button>
@@ -187,10 +194,32 @@
               <button class="sort-opt" data-sort="name">Name</button>
             </div>
           </div>
+          <button class="filter-reset" id="btn-filter-reset" type="button" aria-label="Reset search and filters" title="Reset filters" hidden>
+            <img src="assets/ui/jjk/glyph_reset.webp" alt="" aria-hidden="true" draggable="false" />
+          </button>
+        </div>
+      </div>
+      <div class="filter-bar">
+        <div class="chip-group" id="filter-elements" role="group" aria-label="Filter by element">
+          <button type="button" class="f-chip f-orb" data-el="heart" aria-pressed="false" title="Heart"><img src="assets/ui/jjk/orb_heart.webp" alt="Heart" draggable="false" /></button>
+          <button type="button" class="f-chip f-orb" data-el="skill" aria-pressed="false" title="Skill"><img src="assets/ui/jjk/orb_skill.webp" alt="Skill" draggable="false" /></button>
+          <button type="button" class="f-chip f-orb" data-el="body" aria-pressed="false" title="Body"><img src="assets/ui/jjk/orb_body.webp" alt="Body" draggable="false" /></button>
+          <button type="button" class="f-chip f-orb" data-el="bravery" aria-pressed="false" title="Bravery"><img src="assets/ui/jjk/orb_bravery.webp" alt="Bravery" draggable="false" /></button>
+          <button type="button" class="f-chip f-orb" data-el="wisdom" aria-pressed="false" title="Wisdom"><img src="assets/ui/jjk/orb_wisdom.webp" alt="Wisdom" draggable="false" /></button>
+        </div>
+        <div class="chip-group" id="filter-stars" role="group" aria-label="Filter by star tier">
+          <button type="button" class="f-chip f-star" data-stars="3" aria-pressed="false" title="3 stars and below">&le;3<img src="assets/ui/jjk/star_gold.webp" alt="" draggable="false" /></button>
+          <button type="button" class="f-chip f-star" data-stars="4" aria-pressed="false" title="4 stars">4<img src="assets/ui/jjk/star_gold.webp" alt="" draggable="false" /></button>
+          <button type="button" class="f-chip f-star" data-stars="5" aria-pressed="false" title="5 stars">5<img src="assets/ui/jjk/star_gold.webp" alt="" draggable="false" /></button>
+          <button type="button" class="f-chip f-star" data-stars="6" aria-pressed="false" title="6 stars">6<img src="assets/ui/jjk/star_gold.webp" alt="" draggable="false" /></button>
+          <button type="button" class="f-chip f-star" data-stars="7" aria-pressed="false" title="7 stars">7<img src="assets/ui/jjk/star_gold.webp" alt="" draggable="false" /></button>
         </div>
       </div>
       <div class="char-grid" id="team-char-grid"></div>
+      <div class="remove-drop-badge" aria-hidden="true">Remove from team</div>
+      <p class="drag-hint">Drag a unit onto a slot. Drop on a filled slot to swap. Drag a slotted unit here to remove it.</p>
     </section>
+    </div>
   </main>
 
   <div id="char-preview-modal" aria-hidden="true">
