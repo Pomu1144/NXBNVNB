@@ -1,0 +1,142 @@
+/* css/awakening-materials.css
+   Awakening tab: the wiki's "Required (Blazing) Awakening Materials →
+   (Blazing) Awaken to" table, drawn with the real Naruto Blazing framed
+   material cards (assets/awakening-materials/wiki/) in the JJK ink/gold theme. */
+
+body.page-characters .materials-title .awk-src {
+  margin-left: auto;
+  font-size: 9.5px; letter-spacing: 0.14em; font-weight: 700;
+  color: var(--jjk-muted); text-transform: none; white-space: nowrap;
+}
+
+.awk-table {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 10px 2px 10px;
+  border-bottom: 1px solid var(--cx-line, rgba(201,162,78,0.18));
+}
+
+.awk-mats {
+  display: flex; flex-wrap: wrap; gap: 8px 10px;
+  align-items: flex-start; justify-content: center;
+  min-width: 0; flex: 0 1 auto;
+}
+
+.awk-mat {
+  width: 72px;
+  display: flex; flex-direction: column; align-items: center; gap: 3px;
+  font-family: var(--jjk-font);
+}
+.awk-mat-card {
+  position: relative;
+  width: 64px; height: 64px;
+  filter: drop-shadow(0 3px 5px rgba(0,0,0,0.6));
+}
+.awk-mat-card img {
+  width: 100%; height: 100%; display: block; object-fit: contain;
+}
+.awk-mat.is-short .awk-mat-card img { filter: saturate(0.55) brightness(0.72); }
+.awk-mat-need {
+  position: absolute; right: -4px; bottom: -3px;
+  min-width: 24px; padding: 1px 5px;
+  font-size: 12px; font-weight: 800; line-height: 1.25; text-align: center;
+  color: var(--jjk-gold-hi);
+  background: linear-gradient(180deg, #16343b, #071418);
+  border: 1px solid var(--jjk-gold);
+  clip-path: polygon(5px 0, 100% 0, 100% 100%, 0 100%, 0 5px);
+}
+.awk-mat-count {
+  display: inline-flex; align-items: baseline; gap: 3px;
+  font-size: 13px; font-weight: 700; font-variant-numeric: tabular-nums;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+}
+.awk-mat-count b { font-weight: 800; }
+.awk-mat.is-ok .awk-mat-count b { color: var(--jjk-good); }
+.awk-mat.is-short .awk-mat-count b { color: #ef7a6a; }
+.awk-mat-count i { font-style: normal; color: var(--jjk-muted); }
+.awk-mat-count span { color: var(--jjk-muted); }
+.awk-mat-name {
+  max-width: 100%;
+  font-size: 10.5px; line-height: 1.2; text-align: center;
+  color: rgba(236,230,214,0.82);
+  overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+}
+
+/* Arrow: gold brush chevron */
+.awk-arrow {
+  flex: 0 0 auto;
+  width: 22px; height: 30px;
+  background: linear-gradient(90deg, var(--jjk-gold-lo), var(--jjk-gold-hi));
+  clip-path: polygon(0 0, 45% 0, 100% 50%, 45% 100%, 0 100%, 55% 50%);
+  opacity: 0.9;
+}
+
+.awk-target {
+  flex: 0 0 auto;
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  font-family: var(--jjk-font);
+}
+.awk-target-label {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--jjk-gold); white-space: nowrap;
+}
+/* Unit portraits are already framed cards (element orb + star badge) */
+.awk-target-card {
+  width: 76px; height: 76px;
+  filter: drop-shadow(0 3px 5px rgba(0,0,0,0.65));
+}
+.awk-target-card.is-blazing {
+  filter: drop-shadow(0 0 6px rgba(217,107,255,0.75)) drop-shadow(0 3px 5px rgba(0,0,0,0.65));
+}
+.awk-target-card img { width: 100%; height: 100%; object-fit: contain; display: block; }
+.awk-target-stars { --bz-star-size: 11px; line-height: 0; }
+
+body.page-characters .material-item.jjk-row.awk-ryo { border-bottom: 0; }
+
+/* Phones / compact landscape */
+html.is-mobile.is-landscape.is-compact .awk-table { gap: 6px; padding: 6px 0; }
+html.is-mobile.is-landscape.is-compact .awk-mat { width: 50px; }
+html.is-mobile.is-landscape.is-compact body.page-characters .materials-title .awk-src { display: none; }
+html.is-mobile.is-landscape.is-compact .awk-mat-card { width: 44px; height: 44px; }
+html.is-mobile.is-landscape.is-compact .awk-mat-name { display: none; }
+html.is-mobile.is-landscape.is-compact .awk-mat-count { font-size: 11px; }
+html.is-mobile.is-landscape.is-compact .awk-target-card { width: 52px; height: 52px; }
+html.is-mobile.is-landscape.is-compact .awk-target-label { font-size: 8px; letter-spacing: 0.08em; }
+@media (max-width: 520px) {
+  .awk-table { gap: 8px; }
+  .awk-mat { width: 58px; }
+  .awk-mat-card { width: 52px; height: 52px; }
+  .awk-target-card { width: 60px; height: 60px; }
+}
+
+/* ---------- Items page: framed wiki material cards ---------- */
+body.page-inventory .items-group-title {
+  grid-column: 1 / -1;
+  display: flex; align-items: center; gap: 10px;
+  margin: 6px 0 -2px;
+  font-family: var(--jjk-font);
+  font-size: 12px; font-weight: 700; letter-spacing: 0.28em; text-transform: uppercase;
+  color: var(--jjk-gold);
+}
+body.page-inventory .items-group-title::after {
+  content: ''; flex: 1; height: 1px;
+  background: linear-gradient(90deg, rgba(201,162,78,0.55), transparent);
+}
+body.page-inventory .item-card.is-material {
+  padding: 10px 6px 8px;
+  justify-content: flex-start;
+}
+body.page-inventory .item-card.is-material .item-icon {
+  width: 72px; height: 72px; object-fit: contain;
+  filter: drop-shadow(0 3px 5px rgba(0,0,0,0.6));
+}
+body.page-inventory .item-card.is-material.is-empty .item-icon { filter: grayscale(0.7) brightness(0.6); }
+body.page-inventory .item-card.is-material .item-name { font-size: 12px; line-height: 1.25; }
+body.page-inventory .item-rarity { color: var(--jjk-gold-hi); font-size: 12px; letter-spacing: 1px; }
+body.page-inventory .item-obtain {
+  margin: 6px 0 0; font-family: var(--jjk-font); font-size: 12.5px; line-height: 1.45;
+  color: var(--jjk-muted);
+}
+body.page-inventory .item-obtain b { color: var(--jjk-gold); font-weight: 700; }

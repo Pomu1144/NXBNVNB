@@ -1,0 +1,5433 @@
+{
+ "source": "Unit infobox material-N / awaken-thum / b-awaken-thum fields on https://naruto-blazing.fandom.com; built by tools/wiki-sync/materials.py. Keyed by unit id, then the tier the unit awakens FROM. Steps up to 6SB only.",
+ "units": {
+  "naruto_001": {
+   "3S": {
+    "to": "4S",
+    "materials": {
+     "book_heart_1": 3
+    },
+    "wikiCard": 1,
+    "wikiTitle": "Naruto Uzumaki \"The Worst Loser\" (★3)"
+   },
+   "4S": {
+    "to": "5S",
+    "materials": {
+     "book_heart_2": 2,
+     "book_heart_1": 2
+    },
+    "wikiCard": 2,
+    "wikiTitle": "Naruto Uzumaki \"The Worst Loser\" (★4)"
+   }
+  },
+  "sasuke_004": {
+   "3S": {
+    "to": "4S",
+    "materials": {
+     "book_skill_1": 3
+    },
+    "wikiCard": 4,
+    "wikiTitle": "Sasuke Uchiha \"A Lone Heart\" (★3)"
+   }
+  },
+  "sakura_006": {
+   "3S": {
+    "to": "4S",
+    "materials": {
+     "book_wisdom_1": 3
+    },
+    "wikiCard": 6,
+    "wikiTitle": "Sakura Haruno \"The Indomitable Maiden\" (★3)"
+   }
+  },
+  "kakashi_008": {
+   "4S": {
+    "to": "5S",
+    "materials": {
+     "book_bravery_2": 2,
+     "book_bravery_1": 2
+    },
+    "wikiCard": 8,
+    "wikiTitle": "Kakashi Hatake \"The Best Teacher\" (★4)"
+   }
+  },
+  "shikamaru_010": {
+   "3S": {
+    "to": "4S",
+    "materials": {
+     "book_skill_1": 3
+    },
+    "wikiCard": 10,
+    "wikiTitle": "Shikamaru Nara \"Lucid Talent\" (★3)"
+   }
+  },
+  "ino_012": {
+   "3S": {
+    "to": "4S",
+    "materials": {
+     "book_heart_1": 3
+    },
+    "wikiCard": 12,
+    "wikiTitle": "Ino Yamanaka \"Ever-Changing Movements\" (★3)"
+   }
+  },
+  "choji_014": {
+   "3S": {
+    "to": "4S",
+    "materials": {
+     "book_body_1": 3
+    },
+    "wikiCard": 14,
+    "wikiTitle": "Choji Akimichi \"Insatiable Appetite\" (★3)"
+   }
+  },
+  "hinata_016": {
+   "3S": {
+    "to": "4S",
+    "materials": {
+     "book_heart_1": 3
+    },
+    "wikiCard": 16,
+    "wikiTitle": "Hinata Hyuga \"Loyal Emotions\" (★3)"
+   }
+  },
+  "kiba_018": {
+   "3S": {
+    "to": "4S",
+    "materials": {
+     "book_skill_1": 3
+    },
+    "wikiCard": 18,
+    "wikiTitle": "Kiba Inuzuka \"Sharp Claws and Fangs\" (★3)"
+   }
+  },
+  "shino_020": {
+   "3S": {
+    "to": "4S",
+    "materials": {
+     "book_wisdom_1": 3
+    },
+    "wikiCard": 20,
+    "wikiTitle": "Shino Aburame \"Unflinching Heart\" (★3)"
+   }
+  },
+  "iruka_022": {
+   "3S": {
+    "to": "4S",
+    "materials": {
+     "book_body_1": 3
+    },
+    "wikiCard": 22,
+    "wikiTitle": "Iruka Umino \"Sympathizer\" (★3)"
+   }
+  },
+  "naruto_044": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_heart_3": 2,
+     "book_heart_2": 2
+    },
+    "wikiCard": 44,
+    "wikiTitle": "Naruto Uzumaki \"No. 1 Maverick\" (★5)"
+   }
+  },
+  "sasuke_046": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_skill_3": 2,
+     "book_skill_2": 2
+    },
+    "wikiCard": 46,
+    "wikiTitle": "Sasuke Uchiha \"Lone Survivor\" (★5)"
+   }
+  },
+  "kakashi_048": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_bravery_3": 2,
+     "book_bravery_2": 2
+    },
+    "wikiCard": 48,
+    "wikiTitle": "Kakashi Hatake \"Copier of 1K Techniques\" (★5)"
+   }
+  },
+  "gaara_050": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_bravery_3": 2,
+     "book_bravery_2": 2
+    },
+    "wikiCard": 50,
+    "wikiTitle": "Gaara \"Sand Defense\" (★5)"
+   }
+  },
+  "sakura_052": {
+   "4S": {
+    "to": "5S",
+    "materials": {
+     "book_body_2": 2,
+     "book_body_1": 2
+    },
+    "wikiCard": 52,
+    "wikiTitle": "Sakura Haruno \"Maiden in Love\" (★4)"
+   }
+  },
+  "shikamaru_054": {
+   "4S": {
+    "to": "5S",
+    "materials": {
+     "book_wisdom_2": 2,
+     "book_wisdom_1": 2
+    },
+    "wikiCard": 54,
+    "wikiTitle": "Shikamaru Nara \"Lazy Guy\" (★4)"
+   }
+  },
+  "ino_056": {
+   "4S": {
+    "to": "5S",
+    "materials": {
+     "book_skill_2": 2,
+     "book_skill_1": 2
+    },
+    "wikiCard": 56,
+    "wikiTitle": "Ino Yamanaka \"Truly Wise\" (★4)"
+   }
+  },
+  "choji_058": {
+   "4S": {
+    "to": "5S",
+    "materials": {
+     "book_body_2": 2,
+     "book_body_1": 2
+    },
+    "wikiCard": 58,
+    "wikiTitle": "Choji Akimichi \"Glutton\" (★4)"
+   }
+  },
+  "hinata_060": {
+   "4S": {
+    "to": "5S",
+    "materials": {
+     "book_heart_2": 2,
+     "book_heart_1": 2
+    },
+    "wikiCard": 60,
+    "wikiTitle": "Hinata Hyuga \"Nice Girl\" (★4)"
+   }
+  },
+  "kiba_062": {
+   "4S": {
+    "to": "5S",
+    "materials": {
+     "book_bravery_2": 2,
+     "book_bravery_1": 2
+    },
+    "wikiCard": 62,
+    "wikiTitle": "Kiba Inuzuka \"Wild Partners\" (★4)"
+   }
+  },
+  "shino_064": {
+   "4S": {
+    "to": "5S",
+    "materials": {
+     "book_wisdom_2": 2,
+     "book_wisdom_1": 2
+    },
+    "wikiCard": 64,
+    "wikiTitle": "Shino Aburame \"Cold Beetle User\" (★4)"
+   }
+  },
+  "neji_066": {
+   "4S": {
+    "to": "5S",
+    "materials": {
+     "book_wisdom_2": 2,
+     "book_wisdom_1": 2
+    },
+    "wikiCard": 66,
+    "wikiTitle": "Neji Hyuga \"An Unchangeable Destiny\" (★4)"
+   }
+  },
+  "tenten_068": {
+   "4S": {
+    "to": "5S",
+    "materials": {
+     "book_skill_2": 2,
+     "book_skill_1": 2
+    },
+    "wikiCard": 68,
+    "wikiTitle": "Tenten \"Ninja Tool Specialist\" (★4)"
+   }
+  },
+  "hiruzen_070": {
+   "4S": {
+    "to": "5S",
+    "materials": {
+     "book_heart_2": 2,
+     "book_heart_1": 2
+    },
+    "wikiCard": 70,
+    "wikiTitle": "Hiruzen Sarutobi \"The Third Hokage\" (★4)"
+   }
+  },
+  "jiraiya_072": {
+   "4S": {
+    "to": "5S",
+    "materials": {
+     "book_heart_2": 2,
+     "book_heart_1": 2
+    },
+    "wikiCard": 72,
+    "wikiTitle": "Jiraiya \"Enter the Sage\" (★4)"
+   }
+  },
+  "orochimaru_074": {
+   "4S": {
+    "to": "5S",
+    "materials": {
+     "book_skill_2": 2,
+     "book_skill_1": 2
+    },
+    "wikiCard": 74,
+    "wikiTitle": "Orochimaru \"The Horror Returns\" (★4)"
+   }
+  },
+  "kabuto_076": {
+   "4S": {
+    "to": "5S",
+    "materials": {
+     "book_wisdom_2": 2,
+     "book_wisdom_1": 2
+    },
+    "wikiCard": 76,
+    "wikiTitle": "Kabuto Yakushi \"The Sound's Spy\" (★4)"
+   }
+  },
+  "tayuya_078": {
+   "4S": {
+    "to": "5S",
+    "materials": {
+     "book_heart_2": 2,
+     "book_heart_1": 2
+    },
+    "wikiCard": 78,
+    "wikiTitle": "Tayuya \"Tayuya of the North Gate\" (★4)"
+   }
+  },
+  "kidomaru_080": {
+   "4S": {
+    "to": "5S",
+    "materials": {
+     "book_skill_2": 2,
+     "book_skill_1": 2
+    },
+    "wikiCard": 80,
+    "wikiTitle": "Kidomaru \"Kidomaru of the East Gate\" (★4)"
+   }
+  },
+  "sakon_082": {
+   "4S": {
+    "to": "5S",
+    "materials": {
+     "book_wisdom_2": 2,
+     "book_wisdom_1": 2
+    },
+    "wikiCard": 82,
+    "wikiTitle": "Sakon \"Sakon of the West Gate\" (★4)"
+   }
+  },
+  "jirobo_084": {
+   "4S": {
+    "to": "5S",
+    "materials": {
+     "book_body_2": 2,
+     "book_body_1": 2
+    },
+    "wikiCard": 84,
+    "wikiTitle": "Jirobo \"Jirobo of the South Gate\" (★4)"
+   }
+  },
+  "kimimaro_086": {
+   "4S": {
+    "to": "5S",
+    "materials": {
+     "book_heart_2": 2,
+     "book_heart_1": 2
+    },
+    "wikiCard": 86,
+    "wikiTitle": "Kimimaro \"Kimimaro of the Earth\" (★4)"
+   }
+  },
+  "itachi_088": {
+   "4S": {
+    "to": "5S",
+    "materials": {
+     "book_wisdom_2": 2,
+     "book_wisdom_1": 2
+    },
+    "wikiCard": 88,
+    "wikiTitle": "Itachi Uchiha \"A Cold-Hearted Criminal\" (★4)"
+   }
+  },
+  "kisame_090": {
+   "4S": {
+    "to": "5S",
+    "materials": {
+     "book_body_2": 2,
+     "book_body_1": 2
+    },
+    "wikiCard": 90,
+    "wikiTitle": "Kisame Hoshigaki \"Monster of the Mist\" (★4)"
+   }
+  },
+  "ibiki_092": {
+   "3S": {
+    "to": "4S",
+    "materials": {
+     "book_bravery_1": 3
+    },
+    "wikiCard": 92,
+    "wikiTitle": "Ibiki Morino \"Sadist\" (★3)"
+   }
+  },
+  "anko_094": {
+   "3S": {
+    "to": "4S",
+    "materials": {
+     "book_wisdom_1": 3
+    },
+    "wikiCard": 94,
+    "wikiTitle": "Anko Mitarashi \"Dangerous Dumpling Lover\" (★3)"
+   }
+  },
+  "hayate_096": {
+   "3S": {
+    "to": "4S",
+    "materials": {
+     "book_bravery_1": 3
+    },
+    "wikiCard": 96,
+    "wikiTitle": "Hayate Gekko \"Third Round Prelim Judge\" (★3)"
+   }
+  },
+  "mizuki_098": {
+   "3S": {
+    "to": "4S",
+    "materials": {
+     "book_skill_1": 3
+    },
+    "wikiCard": 98,
+    "wikiTitle": "Mizuki \"Hidden Treachery\" (★3)"
+   }
+  },
+  "konohamaru_100": {
+   "3S": {
+    "to": "4S",
+    "materials": {
+     "book_bravery_1": 3
+    },
+    "wikiCard": 100,
+    "wikiTitle": "Konohamaru Sarutobi \"The Third's Last Stand\" (★3)"
+   }
+  },
+  "shizune_102": {
+   "3S": {
+    "to": "4S",
+    "materials": {
+     "book_heart_1": 3
+    },
+    "wikiCard": 102,
+    "wikiTitle": "Shizune \"Tsunade's Attendant\" (★3)"
+   }
+  },
+  "baki_104": {
+   "3S": {
+    "to": "4S",
+    "materials": {
+     "book_skill_1": 3
+    },
+    "wikiCard": 104,
+    "wikiTitle": "Baki \"Protector of the Village\" (★3)"
+   }
+  },
+  "kakkou_106": {
+   "3S": {
+    "to": "4S",
+    "materials": {
+     "book_body_1": 3
+    },
+    "wikiCard": 106,
+    "wikiTitle": "Kakkou \"Powerful and Aggressive\" (★3)"
+   }
+  },
+  "shibi_108": {
+   "3S": {
+    "to": "4S",
+    "materials": {
+     "book_skill_1": 3
+    },
+    "wikiCard": 108,
+    "wikiTitle": "Shibi Aburame \"A Reticent Man\" (★3)"
+   }
+  },
+  "shikaku_110": {
+   "3S": {
+    "to": "4S",
+    "materials": {
+     "book_wisdom_1": 3
+    },
+    "wikiCard": 110,
+    "wikiTitle": "Shikaku Nara \"The Ino-\"Shika\"-Cho Trio\" (★3)"
+   }
+  },
+  "inoichi_112": {
+   "3S": {
+    "to": "4S",
+    "materials": {
+     "book_heart_1": 3
+    },
+    "wikiCard": 112,
+    "wikiTitle": "Inoichi Yamanaka \"The \"Ino\"-Shika-Cho Trio\" (★3)"
+   }
+  },
+  "choza_114": {
+   "3S": {
+    "to": "4S",
+    "materials": {
+     "book_bravery_1": 3
+    },
+    "wikiCard": 114,
+    "wikiTitle": "Choza Akimichi \"The Ino-Shika-\"Cho\" Trio\" (★3)"
+   }
+  },
+  "hiashi_116": {
+   "3S": {
+    "to": "4S",
+    "materials": {
+     "book_heart_1": 3
+    },
+    "wikiCard": 116,
+    "wikiTitle": "Hiashi Hyuga \"A Strict Leader\" (★3)"
+   }
+  },
+  "hizashi_118": {
+   "3S": {
+    "to": "4S",
+    "materials": {
+     "book_bravery_1": 3
+    },
+    "wikiCard": 118,
+    "wikiTitle": "Hizashi Hyuga \"Brotherly Fate\" (★3)"
+   }
+  },
+  "tsume_120": {
+   "3S": {
+    "to": "4S",
+    "materials": {
+     "book_body_1": 3
+    },
+    "wikiCard": 120,
+    "wikiTitle": "Tsume Inuzuka \"A Brave Mother\" (★3)"
+   }
+  },
+  "naruto_135": {
+   "3S": {
+    "to": "4S",
+    "materials": {
+     "book_bravery_1": 3
+    },
+    "wikiCard": 135,
+    "wikiTitle": "Naruto Uzumaki \"Boy Who Aims to be Hokage\" (★3)"
+   }
+  },
+  "haku_137": {
+   "4S": {
+    "to": "5S",
+    "materials": {
+     "book_heart_2": 2,
+     "book_heart_1": 2
+    },
+    "wikiCard": 137,
+    "wikiTitle": "Haku \"The Icy Mask's Blades\" (★4)"
+   }
+  },
+  "haku_139": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_body_3": 2,
+     "book_body_2": 2
+    },
+    "wikiCard": 139,
+    "wikiTitle": "Haku \"A Frozen Heart\" (★5)"
+   }
+  },
+  "zabuza_142": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "tool_executioners_blade": 5
+    },
+    "wikiCard": 142,
+    "wikiTitle": "Zabuza Momochi \"Silent Madness\" (★5)"
+   }
+  },
+  "zabuza_144": {
+   "4S": {
+    "to": "5S",
+    "materials": {
+     "book_wisdom_2": 2,
+     "book_wisdom_1": 2
+    },
+    "wikiCard": 144,
+    "wikiTitle": "Zabuza Momochi \"The Demon Returns\" (★4)"
+   }
+  },
+  "kakashi_146": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_skill_3": 2,
+     "book_skill_2": 2
+    },
+    "wikiCard": 146,
+    "wikiTitle": "Kakashi Hatake \"Hidden Left Eye\" (★5)"
+   }
+  },
+  "rock_148": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "tool_training_weights": 5
+    },
+    "wikiCard": 148,
+    "wikiTitle": "Rock Lee \"The Eight Gates\" (★5)"
+   }
+  },
+  "neji_150": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_skill_3": 2,
+     "book_skill_2": 2
+    },
+    "wikiCard": 150,
+    "wikiTitle": "Neji Hyuga \"A Caged Bird\" (★5)"
+   }
+  },
+  "sakura_152": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_wisdom_3": 2,
+     "book_wisdom_2": 2
+    },
+    "wikiCard": 152,
+    "wikiTitle": "Sakura Haruno \"Hardened Resolve\" (★5)"
+   }
+  },
+  "ino_154": {
+   "4S": {
+    "to": "5S",
+    "materials": {
+     "book_heart_3": 2,
+     "book_heart_2": 2
+    },
+    "wikiCard": 154,
+    "wikiTitle": "Ino Yamanaka \"I Don't Want to Lose\" (★4)"
+   }
+  },
+  "hinata_156": {
+   "4S": {
+    "to": "5S",
+    "materials": {
+     "book_bravery_2": 2,
+     "book_bravery_1": 2
+    },
+    "wikiCard": 156,
+    "wikiTitle": "Hinata Hyuga \"Proof of Resolution\" (★4)"
+   }
+  },
+  "rock_158": {
+   "4S": {
+    "to": "5S",
+    "materials": {
+     "book_body_2": 2,
+     "book_body_1": 2
+    },
+    "wikiCard": 158,
+    "wikiTitle": "Rock Lee \"Never Gives Up\" (★4)"
+   }
+  },
+  "naruto_161": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_body_3": 2,
+     "book_body_2": 2
+    },
+    "wikiCard": 161,
+    "wikiTitle": "Naruto Uzumaki \"Rasengan Mastered\" (★5)"
+   }
+  },
+  "temari_163": {
+   "4S": {
+    "to": "5S",
+    "materials": {
+     "book_skill_2": 2,
+     "book_skill_1": 2
+    },
+    "wikiCard": 163,
+    "wikiTitle": "Temari \"Sand Hurricane\" (★4)"
+   }
+  },
+  "kankuro_165": {
+   "4S": {
+    "to": "5S",
+    "materials": {
+     "book_bravery_2": 2,
+     "book_bravery_1": 2
+    },
+    "wikiCard": 165,
+    "wikiTitle": "Kankuro \"Orchestrator of Tragedy\" (★4)"
+   }
+  },
+  "tsunade_167": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_heart_3": 2,
+     "book_heart_2": 2
+    },
+    "wikiCard": 167,
+    "wikiTitle": "Tsunade \"The Slug Ninja\" (★5)"
+   }
+  },
+  "kabuto_169": {
+   "4S": {
+    "to": "5S",
+    "materials": {
+     "book_skill_2": 2,
+     "book_skill_1": 2
+    },
+    "wikiCard": 169,
+    "wikiTitle": "Kabuto Yakushi \"Surprising Regeneration\" (★4)"
+   }
+  },
+  "orochimaru_171": {
+   "4S": {
+    "to": "5S",
+    "materials": {
+     "book_skill_2": 2,
+     "book_skill_1": 2
+    },
+    "wikiCard": 171,
+    "wikiTitle": "Orochimaru \"The Snake Ninja\" (★4)"
+   }
+  },
+  "gaara_173": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "tool_sand_gourd": 5
+    },
+    "wikiCard": 173,
+    "wikiTitle": "Gaara \"The Sand's Final Weapon\" (★5)"
+   }
+  },
+  "sasuke_175": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_bravery_3": 2,
+     "book_bravery_2": 2
+    },
+    "wikiCard": 175,
+    "wikiTitle": "Sasuke Uchiha \"Chidori: A New Skill\" (★5)"
+   }
+  },
+  "sasuke_177": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_heart_3": 2,
+     "book_heart_2": 2
+    },
+    "wikiCard": 177,
+    "wikiTitle": "Sasuke Uchiha \"Ready for the Curse Mark\" (★5)"
+   }
+  },
+  "naruto_179": {
+   "4S": {
+    "to": "5S",
+    "materials": {
+     "book_skill_2": 2,
+     "book_skill_1": 2
+    },
+    "wikiCard": 179,
+    "wikiTitle": "Naruto Uzumaki \"Nine Tails Power-Up\" (★4)"
+   }
+  },
+  "shikamaru_181": {
+   "4S": {
+    "to": "5S",
+    "materials": {
+     "book_body_2": 2,
+     "book_body_1": 2
+    },
+    "wikiCard": 181,
+    "wikiTitle": "Shikamaru Nara \"The Decoy\" (★4)"
+   }
+  },
+  "hayate_183": {
+   "4S": {
+    "to": "5S",
+    "materials": {
+     "book_body_2": 2,
+     "book_body_1": 2
+    },
+    "wikiCard": 183,
+    "wikiTitle": "Hayate Gekko \"Crystal Clear Mind\" (★4)"
+   }
+  },
+  "gaara_185": {
+   "4S": {
+    "to": "5S",
+    "materials": {
+     "book_wisdom_2": 2,
+     "book_wisdom_1": 2
+    },
+    "wikiCard": 185,
+    "wikiTitle": "Gaara \"Sand Clad Demon\" (★4)"
+   }
+  },
+  "temari_187": {
+   "4S": {
+    "to": "5S",
+    "materials": {
+     "book_wisdom_2": 2,
+     "book_wisdom_1": 2
+    },
+    "wikiCard": 187,
+    "wikiTitle": "Temari \"A Bold Analyzer\" (★4)"
+   }
+  },
+  "kankuro_189": {
+   "4S": {
+    "to": "5S",
+    "materials": {
+     "book_skill_2": 2,
+     "book_skill_1": 2
+    },
+    "wikiCard": 189,
+    "wikiTitle": "Kankuro \"Mechanical Puppeteer\" (★4)"
+   }
+  },
+  "tayuya_192": {
+   "4S": {
+    "to": "5S",
+    "materials": {
+     "book_skill_2": 2,
+     "book_skill_1": 2
+    },
+    "wikiCard": 192,
+    "wikiTitle": "Tayuya \"Aggressive Strategist\" (★4)"
+   }
+  },
+  "kidomaru_194": {
+   "4S": {
+    "to": "5S",
+    "materials": {
+     "book_heart_2": 2,
+     "book_heart_1": 2
+    },
+    "wikiCard": 194,
+    "wikiTitle": "Kidomaru \"Solid Flexible Threads\" (★4)"
+   }
+  },
+  "sakon_196": {
+   "4S": {
+    "to": "5S",
+    "materials": {
+     "book_skill_2": 2,
+     "book_skill_1": 2
+    },
+    "wikiCard": 196,
+    "wikiTitle": "Sakon \"Grotesque Ninja\" (★4)"
+   }
+  },
+  "jirobo_198": {
+   "4S": {
+    "to": "5S",
+    "materials": {
+     "book_heart_2": 2,
+     "book_heart_1": 2
+    },
+    "wikiCard": 198,
+    "wikiTitle": "Jirobo \"Herculean Appetite\" (★4)"
+   }
+  },
+  "hiruzen_200": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_heart_3": 2,
+     "book_heart_2": 2
+    },
+    "wikiCard": 200,
+    "wikiTitle": "Hiruzen Sarutobi \"Ninja Clothes\" (★5)"
+   }
+  },
+  "itachi_208": {
+   "4S": {
+    "to": "5S",
+    "materials": {
+     "book_heart_2": 2,
+     "book_heart_1": 2
+    },
+    "wikiCard": 208,
+    "wikiTitle": "Itachi Uchiha \"Limits of his Ability\" (★4)"
+   }
+  },
+  "itachi_210": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "tool_red_ring": 5
+    },
+    "wikiCard": 210,
+    "wikiTitle": "Itachi Uchiha \"Beyond the Sharingan\" (★5)"
+   }
+  },
+  "might_212": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_body_3": 2,
+     "book_body_2": 2
+    },
+    "wikiCard": 212,
+    "wikiTitle": "Might Guy \"Hot-Blooded Youth\" (★5)"
+   }
+  },
+  "asuma_214": {
+   "4S": {
+    "to": "5S",
+    "materials": {
+     "book_bravery_3": 2,
+     "book_bravery_2": 2
+    },
+    "wikiCard": 214,
+    "wikiTitle": "Asuma Sarutobi \"All-Powerful Infighter\" (★4)"
+   }
+  },
+  "kurenai_216": {
+   "4S": {
+    "to": "5S",
+    "materials": {
+     "book_wisdom_3": 2,
+     "book_wisdom_2": 2
+    },
+    "wikiCard": 216,
+    "wikiTitle": "Kurenai Yuhi \"Illusionary Expert\" (★4)"
+   }
+  },
+  "deidara_219": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_heart_3": 2,
+     "book_heart_2": 2
+    },
+    "wikiCard": 219,
+    "wikiTitle": "Deidara \"Ephemeral Art\" (★5)"
+   }
+  },
+  "sasori_221": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_skill_3": 2,
+     "book_skill_2": 2
+    },
+    "wikiCard": 221,
+    "wikiTitle": "Sasori \"Eternal Art\" (★5)"
+   }
+  },
+  "kiba_223": {
+   "4S": {
+    "to": "5S",
+    "materials": {
+     "book_bravery_3": 2,
+     "book_bravery_2": 2
+    },
+    "wikiCard": 223,
+    "wikiTitle": "Kiba Inuzuka \"Two-Headed Fangs\" (★4)"
+   }
+  },
+  "choji_225": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_bravery_3": 2,
+     "book_bravery_2": 2
+    },
+    "wikiCard": 225,
+    "wikiTitle": "Choji Akimichi \"A Life Bet on Two Wings\" (★5)"
+   }
+  },
+  "jirobo_227": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_wisdom_4": 2,
+     "book_wisdom_3": 2
+    },
+    "wikiCard": 227,
+    "wikiTitle": "Jirobo \"Brute Strength\" (★5)"
+   }
+  },
+  "minato_229": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_bravery_4": 2,
+     "book_bravery_3": 2
+    },
+    "wikiCard": 229,
+    "wikiTitle": "Minato Namikaze \"Rapid Lightning\" (★5)"
+   }
+  },
+  "kushina_231": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_wisdom_4": 2,
+     "book_wisdom_3": 2
+    },
+    "wikiCard": 231,
+    "wikiTitle": "Kushina Uzumaki \"The Red-Hot Habanero\" (★5)"
+   }
+  },
+  "kidomaru_233": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_heart_4": 2,
+     "book_heart_3": 2
+    },
+    "wikiCard": 233,
+    "wikiTitle": "Kidomaru \"A Cruel Game\" (★5)"
+   }
+  },
+  "sakura_235": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_skill_3": 2,
+     "book_skill_2": 2
+    },
+    "wikiCard": 235,
+    "wikiTitle": "Sakura Haruno \"Unrelenting Commitment\" (★5)"
+   }
+  },
+  "naruto_237": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_wisdom_3": 2,
+     "book_wisdom_2": 2
+    },
+    "wikiCard": 237,
+    "wikiTitle": "Naruto Uzumaki \"Unshakeable Will\" (★5)"
+   }
+  },
+  "sai_239": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_body_4": 2,
+     "book_body_3": 2
+    },
+    "wikiCard": 239,
+    "wikiTitle": "Sai \"Mask-like Smile\" (★5)"
+   }
+  },
+  "hinata_242": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_heart_3": 2,
+     "book_heart_2": 2
+    },
+    "wikiCard": 242,
+    "wikiTitle": "Hinata Hyuga \"Blooming Talent\" (★5)"
+   }
+  },
+  "sasuke_244": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_skill_3": 2,
+     "book_skill_2": 2
+    },
+    "wikiCard": 244,
+    "wikiTitle": "Sasuke Uchiha \"Soul Shrouded in Sorrow\" (★5)"
+   }
+  },
+  "jiraiya_246": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_bravery_4": 2,
+     "book_bravery_3": 2
+    },
+    "wikiCard": 246,
+    "wikiTitle": "Jiraiya \"The Toad Ninja\" (★5)"
+   }
+  },
+  "ukonsakon_248": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_skill_4": 2,
+     "book_skill_3": 2
+    },
+    "wikiCard": 248,
+    "wikiTitle": "Ukon/Sakon \"Brimming with Brutality\" (★5)"
+   }
+  },
+  "rin_251": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_body_3": 2,
+     "book_body_2": 2
+    },
+    "wikiCard": 251,
+    "wikiTitle": "Rin Nohara \"Overflowing Kindness\" (★5)"
+   }
+  },
+  "obito_253": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_skill_3": 2,
+     "book_skill_2": 2
+    },
+    "wikiCard": 253,
+    "wikiTitle": "Obito Uchiha \"To Protect His Allies\" (★5)"
+   }
+  },
+  "kakashi_255": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_heart_3": 2,
+     "book_heart_2": 2
+    },
+    "wikiCard": 255,
+    "wikiTitle": "Kakashi Hatake \"A Father's Blade\" (★5)"
+   }
+  },
+  "tayuya_257": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_wisdom_4": 2,
+     "book_wisdom_3": 2
+    },
+    "wikiCard": 257,
+    "wikiTitle": "Tayuya \"A Bewitching Flute\" (★5)"
+   }
+  },
+  "naruto_259": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_bravery_4": 2,
+     "book_bravery_3": 2
+    },
+    "wikiCard": 259,
+    "wikiTitle": "Naruto Uzumaki \"Nine Tails' Shroud\" (★5)"
+   }
+  },
+  "sasuke_261": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_wisdom_4": 2,
+     "book_wisdom_3": 2
+    },
+    "wikiCard": 261,
+    "wikiTitle": "Sasuke Uchiha \"Curse Mark 2nd State\" (★5)"
+   }
+  },
+  "ino_263": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_body_3": 2,
+     "book_body_2": 2
+    },
+    "wikiCard": 263,
+    "wikiTitle": "Ino Yamanaka \"Like a Peony\" (★5)"
+   }
+  },
+  "tenten_265": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_body_3": 2,
+     "book_body_2": 2
+    },
+    "wikiCard": 265,
+    "wikiTitle": "Tenten \"Valiant Warrior\" (★5)"
+   }
+  },
+  "gaara_267": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_heart_4": 2,
+     "book_heart_3": 2
+    },
+    "wikiCard": 267,
+    "wikiTitle": "Gaara \"The Strongest Shield\" (★5)"
+   }
+  },
+  "orochimaru_269": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_heart_4": 2,
+     "book_heart_3": 2
+    },
+    "wikiCard": 269,
+    "wikiTitle": "Orochimaru \"Corrupt Rebirth\" (★5)"
+   }
+  },
+  "yamato_271": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_skill_3": 2,
+     "book_skill_2": 2
+    },
+    "wikiCard": 271,
+    "wikiTitle": "Yamato \"Heartless Thought\" (★5)"
+   }
+  },
+  "kimimaro_273": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_body_4": 2,
+     "book_body_3": 2
+    },
+    "wikiCard": 273,
+    "wikiTitle": "Kimimaro \"The Strongest Spear\" (★5)"
+   }
+  },
+  "hinata_275": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_wisdom_4": 2,
+     "book_wisdom_3": 2
+    },
+    "wikiCard": 275,
+    "wikiTitle": "Hinata Hyuga \"Elegant Attire\" (★5)"
+   }
+  },
+  "sakura_277": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_bravery_4": 2,
+     "book_bravery_3": 2
+    },
+    "wikiCard": 277,
+    "wikiTitle": "Sakura Haruno \"Beautiful Attire\" (★5)"
+   }
+  },
+  "tsunade_279": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_skill_3": 2,
+     "book_skill_2": 2
+    },
+    "wikiCard": 279,
+    "wikiTitle": "Tsunade \"Gorgeous Attire\" (★5)"
+   }
+  },
+  "naruto_281": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_body_4": 2,
+     "book_body_3": 2
+    },
+    "wikiCard": 281,
+    "wikiTitle": "Naruto Uzumaki \"Power of the Fourth Tail\" (★5)"
+   }
+  },
+  "gaara_283": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_wisdom_4": 2,
+     "book_wisdom_3": 2
+    },
+    "wikiCard": 283,
+    "wikiTitle": "Gaara \"Protector of the Sands\" (★5)"
+   }
+  },
+  "rou_285": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_bravery_4": 2,
+     "book_bravery_3": 2
+    },
+    "wikiCard": 285,
+    "wikiTitle": "Rou \"Melting Presence\" (★5)"
+   }
+  },
+  "soku_287": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_skill_4": 2,
+     "book_skill_3": 2
+    },
+    "wikiCard": 287,
+    "wikiTitle": "Soku \"Stubborn Will\" (★5)"
+   }
+  },
+  "temari_289": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_heart_3": 2,
+     "book_heart_2": 2
+    },
+    "wikiCard": 289,
+    "wikiTitle": "Temari \"High Winds\" (★5)"
+   }
+  },
+  "shikamaru_291": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_wisdom_3": 2,
+     "book_wisdom_2": 2
+    },
+    "wikiCard": 291,
+    "wikiTitle": "Shikamaru Nara \"Beyond Silence\" (★5)"
+   }
+  },
+  "rin_294": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_bravery_4": 2,
+     "book_bravery_3": 2
+    },
+    "wikiCard": 294,
+    "wikiTitle": "Rin Nohara \"Loving Gift\" (★5)"
+   }
+  },
+  "kushina_296": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_body_4": 2,
+     "book_body_3": 2
+    },
+    "wikiCard": 296,
+    "wikiTitle": "Kushina Uzumaki \"Enveloping Kindness\" (★5)"
+   }
+  },
+  "gengo_298": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_bravery_4": 2,
+     "book_bravery_3": 2
+    },
+    "wikiCard": 298,
+    "wikiTitle": "Gengo \"Master of Silence\" (★5)"
+   }
+  },
+  "karin_300": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_wisdom_3": 2,
+     "book_wisdom_2": 2
+    },
+    "wikiCard": 300,
+    "wikiTitle": "Karin \"Acute Perception\" (★5)"
+   }
+  },
+  "sasuke_302": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_heart_3": 2,
+     "book_heart_2": 2
+    },
+    "wikiCard": 302,
+    "wikiTitle": "Sasuke Uchiha \"Avenger\" (★5)"
+   }
+  },
+  "suigetsu_304": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_bravery_4": 2,
+     "book_bravery_3": 2
+    },
+    "wikiCard": 304,
+    "wikiTitle": "Suigetsu Hozuki \"The Demon Lives On\" (★5)"
+   }
+  },
+  "jugo_306": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_wisdom_4": 2,
+     "book_wisdom_3": 2
+    },
+    "wikiCard": 306,
+    "wikiTitle": "Jugo \"Scales of Ruin and Peace\" (★5)"
+   }
+  },
+  "itachi_308": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_skill_4": 2,
+     "book_skill_3": 2
+    },
+    "wikiCard": 308,
+    "wikiTitle": "Itachi Uchiha \"Shura's Truth\" (★5)"
+   }
+  },
+  "utakata_310": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_skill_4": 2,
+     "book_skill_3": 2
+    },
+    "wikiCard": 310,
+    "wikiTitle": "Utakata \"Fleeting Tranquility\" (★5)"
+   }
+  },
+  "kakashi_313": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_wisdom_3": 2,
+     "book_wisdom_2": 2
+    },
+    "wikiCard": 313,
+    "wikiTitle": "Kakashi Hatake \"Unique Eyes Blooming\" (★5)"
+   }
+  },
+  "might_315": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_skill_3": 2,
+     "book_skill_2": 2
+    },
+    "wikiCard": 315,
+    "wikiTitle": "Might Guy \"Exploding Fists\" (★5)"
+   }
+  },
+  "tobi_317": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_bravery_4": 2,
+     "book_bravery_3": 2
+    },
+    "wikiCard": 317,
+    "wikiTitle": "Tobi \"Evil Eyes Behind the Mask\" (★5)"
+   }
+  },
+  "kisame_319": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_body_4": 2,
+     "book_body_3": 2
+    },
+    "wikiCard": 319,
+    "wikiTitle": "Kisame Hoshigaki \"Ruler of the Torrent\" (★5)"
+   }
+  },
+  "hidan_321": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_body_3": 2,
+     "book_body_2": 2
+    },
+    "wikiCard": 321,
+    "wikiTitle": "Hidan \"Worshiping a Mad God\" (★5)"
+   }
+  },
+  "kakuzu_323": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_bravery_3": 2,
+     "book_bravery_2": 2
+    },
+    "wikiCard": 323,
+    "wikiTitle": "Kakuzu \"Life Reavers\" (★5)"
+   }
+  },
+  "chiriku_325": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_heart_4": 2,
+     "book_heart_3": 2
+    },
+    "wikiCard": 325,
+    "wikiTitle": "Chiriku \"Ultimate Training\" (★5)"
+   }
+  },
+  "naruto_327": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_heart_3": 2,
+     "book_heart_2": 2
+    },
+    "wikiCard": 327,
+    "wikiTitle": "Naruto Uzumaki \"Day of Vows\" (★5)"
+   }
+  },
+  "hinata_329": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_skill_3": 2,
+     "book_skill_2": 2
+    },
+    "wikiCard": 329,
+    "wikiTitle": "Hinata Hyuga \"Day of Happiness\" (★5)"
+   }
+  },
+  "yugito_331": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_heart_4": 2,
+     "book_heart_3": 2
+    },
+    "wikiCard": 331,
+    "wikiTitle": "Yugito Ni'i \"Unbreakable Will\" (★5)"
+   }
+  },
+  "madara_333": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_heart_4": 2,
+     "book_heart_3": 2
+    },
+    "wikiCard": 333,
+    "wikiTitle": "Madara Uchiha \"The Vilest Name\" (★5)"
+   }
+  },
+  "jiraiya_335": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_wisdom_3": 2,
+     "book_wisdom_2": 2
+    },
+    "wikiCard": 335,
+    "wikiTitle": "Jiraiya \"Way of the Ninja\" (★5)"
+   }
+  },
+  "konan_337": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_bravery_3": 2,
+     "book_bravery_2": 2
+    },
+    "wikiCard": 337,
+    "wikiTitle": "Konan \"A God's Messenger\" (★5)"
+   }
+  },
+  "chiyo_339": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_bravery_4": 2,
+     "book_bravery_3": 2
+    },
+    "wikiCard": 339,
+    "wikiTitle": "Chiyo \"Joint Puppet Performance\" (★5)"
+   }
+  },
+  "hanzo_341": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_skill_4": 2,
+     "book_skill_3": 2
+    },
+    "wikiCard": 341,
+    "wikiTitle": "Hanzo \"Hero of Purple Poison\" (★5)"
+   }
+  },
+  "sasuke_343": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_body_3": 2,
+     "book_body_2": 2
+    },
+    "wikiCard": 343,
+    "wikiTitle": "Sasuke Uchiha \"World Within a Kaleidoscope\" (★5)"
+   }
+  },
+  "konohamaru_346": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_wisdom_3": 2,
+     "book_wisdom_2": 2
+    },
+    "wikiCard": 346,
+    "wikiTitle": "Konohamaru Sarutobi \"The Will of Budding Flames\" (★5)"
+   }
+  },
+  "naruto_348": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_bravery_3": 2,
+     "book_bravery_2": 2
+    },
+    "wikiCard": 348,
+    "wikiTitle": "Naruto Uzumaki \"Child of the Prophecy\" (★5)"
+   }
+  },
+  "deidara_350": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_heart_4": 2,
+     "book_heart_3": 2
+    },
+    "wikiCard": 350,
+    "wikiTitle": "Deidara \"True Arts\" (★5)"
+   }
+  },
+  "pain_352": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_wisdom_4": 2,
+     "book_wisdom_3": 2
+    },
+    "wikiCard": 352,
+    "wikiTitle": "Pain (Tendo) \"Hammer of Pain\" (★5)"
+   }
+  },
+  "killer_354": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_body_4": 2,
+     "book_body_3": 2
+    },
+    "wikiCard": 354,
+    "wikiTitle": "Killer Bee \"Completed Jinchuriki\" (★5)"
+   }
+  },
+  "fourth_356": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_heart_3": 2,
+     "book_heart_2": 2
+    },
+    "wikiCard": 356,
+    "wikiTitle": "Fourth Raikage: Ay \"Savage Lightning\" (★5)"
+   }
+  },
+  "mei_358": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_bravery_3": 2,
+     "book_bravery_2": 2
+    },
+    "wikiCard": 358,
+    "wikiTitle": "Mei Terumi \"The Mist That Melts All\" (★5)"
+   }
+  },
+  "nagato_360": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_wisdom_4": 2,
+     "book_wisdom_3": 2
+    },
+    "wikiCard": 360,
+    "wikiTitle": "Nagato \"Proclaimed Ideals\" (★5)"
+   }
+  },
+  "karin_362": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_skill_4": 2,
+     "book_skill_3": 2
+    },
+    "wikiCard": 362,
+    "wikiTitle": "Karin \"Thousand-Mile Perception\" (★5)"
+   }
+  },
+  "sakura_364": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_wisdom_4": 2,
+     "book_wisdom_3": 2
+    },
+    "wikiCard": 364,
+    "wikiTitle": "Sakura Haruno \"Heroine of the Battlefield\" (★5)"
+   }
+  },
+  "chojuro_366": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_body_4": 2,
+     "book_body_3": 2
+    },
+    "wikiCard": 366,
+    "wikiTitle": "Chojuro \"Successor of the Ninja Sword\" (★5)"
+   }
+  },
+  "ohnoki_368": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_skill_3": 2,
+     "book_skill_2": 2
+    },
+    "wikiCard": 368,
+    "wikiTitle": "Ohnoki \"Between a Rock and a Hard Place\" (★5)"
+   }
+  },
+  "sasuke_370": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_wisdom_3": 2,
+     "book_wisdom_2": 2
+    },
+    "wikiCard": 370,
+    "wikiTitle": "Sasuke Uchiha \"Darkness of Deep Hatred\" (★5)"
+   }
+  },
+  "danzo_373": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_bravery_4": 2,
+     "book_bravery_3": 2
+    },
+    "wikiCard": 373,
+    "wikiTitle": "Danzo Shimura \"Root of the Great Tree\" (★5)"
+   }
+  },
+  "tsunade_375": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_skill_4": 2,
+     "book_skill_3": 2
+    },
+    "wikiCard": 375,
+    "wikiTitle": "Tsunade \"The Will of Blooming Flames\" (★5)"
+   }
+  },
+  "konan_377": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_heart_4": 2,
+     "book_heart_3": 2
+    },
+    "wikiCard": 377,
+    "wikiTitle": "Konan \"A Bridge to Hope\" (★5)"
+   }
+  },
+  "sakura_379": {
+   "4S": {
+    "to": "5S",
+    "materials": {
+     "book_body_2": 2,
+     "book_body_1": 2
+    },
+    "wikiCard": 379,
+    "wikiTitle": "Sakura Haruno \"Dancing Cherry Blossoms\" (★4)"
+   }
+  },
+  "zetsu_381": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_wisdom_4": 2,
+     "book_wisdom_3": 2
+    },
+    "wikiCard": 381,
+    "wikiTitle": "Zetsu \"Black & White Shadow\" (★5)"
+   }
+  },
+  "naruto_383": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_skill_3": 2,
+     "book_skill_2": 2
+    },
+    "wikiCard": 383,
+    "wikiTitle": "Naruto Uzumaki \"Two Suns\" (★5)"
+   }
+  },
+  "darui_385": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_heart_3": 2,
+     "book_heart_2": 2
+    },
+    "wikiCard": 385,
+    "wikiTitle": "Darui \"Words of Conviction\" (★5)"
+   }
+  },
+  "itachi_387": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_body_3": 2,
+     "book_body_2": 2
+    },
+    "wikiCard": 387,
+    "wikiTitle": "Itachi Uchiha \"Proof of Will\" (★5)"
+   }
+  },
+  "sasuke_389": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_bravery_3": 2,
+     "book_bravery_2": 2
+    },
+    "wikiCard": 389,
+    "wikiTitle": "Sasuke Uchiha \"Hints Leading to the Truth\" (★5)"
+   }
+  },
+  "kabuto_392": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_heart_4": 2,
+     "book_heart_3": 2
+    },
+    "wikiCard": 392,
+    "wikiTitle": "Kabuto Yakushi \"Craving for Wisdom\" (★5)"
+   }
+  },
+  "obito_394": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_wisdom_4": 2,
+     "book_wisdom_3": 2
+    },
+    "wikiCard": 394,
+    "wikiTitle": "Obito Uchiha \"Despair of Loneliness\" (★5)"
+   }
+  },
+  "shisui_396": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_body_4": 2,
+     "book_body_3": 2
+    },
+    "wikiCard": 396,
+    "wikiTitle": "Shisui Uchiha \"Hero Without Glory\" (★5)"
+   }
+  },
+  "sakura_398": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_wisdom_3": 2,
+     "book_wisdom_2": 2
+    },
+    "wikiCard": 398,
+    "wikiTitle": "Sakura Haruno \"Standing Equal\" (★5)"
+   }
+  },
+  "naruto_400": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_heart_3": 2,
+     "book_heart_2": 2
+    },
+    "wikiCard": 400,
+    "wikiTitle": "Naruto Uzumaki \"Proof of Bonds\" (★5)"
+   }
+  },
+  "tobirama_407": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_bravery_3": 2,
+     "book_bravery_2": 2
+    },
+    "wikiCard": 407,
+    "wikiTitle": "Tobirama Senju \"Enlightened Brilliance\" (★5)"
+   }
+  },
+  "minato_409": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_skill_3": 2,
+     "book_skill_2": 2
+    },
+    "wikiCard": 409,
+    "wikiTitle": "Minato Namikaze \"Confronting Karma\" (★5)"
+   }
+  },
+  "obito_411": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_body_4": 2,
+     "book_body_3": 2
+    },
+    "wikiCard": 411,
+    "wikiTitle": "Obito Uchiha \"Faraway Dream\" (★5)"
+   }
+  },
+  "fuu_413": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_skill_4": 2,
+     "book_skill_3": 2
+    },
+    "wikiCard": 413,
+    "wikiTitle": "Fuu \"Wild and Free\" (★5)"
+   }
+  },
+  "zabuza_415": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_heart_4": 2,
+     "book_heart_3": 2
+    },
+    "wikiCard": 415,
+    "wikiTitle": "Zabuza Momochi \"The Measure of a Demon\" (★5)"
+   }
+  },
+  "hashirama_417": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_body_4": 2,
+     "book_body_3": 2
+    },
+    "wikiCard": 417,
+    "wikiTitle": "Hashirama Senju \"Bravery Unrivalled\" (★5)"
+   }
+  },
+  "sasuke_419": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_skill_3": 2,
+     "book_skill_2": 2
+    },
+    "wikiCard": 419,
+    "wikiTitle": "Sasuke Uchiha \"Thunder of Retaliation\" (★5)"
+   }
+  },
+  "naruto_421": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_wisdom_4": 2,
+     "book_wisdom_3": 2
+    },
+    "wikiCard": 421,
+    "wikiTitle": "Naruto Uzumaki \"Indomitable Ninja Way\" (★5)"
+   }
+  },
+  "haku_423": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_skill_4": 2,
+     "book_skill_3": 2
+    },
+    "wikiCard": 423,
+    "wikiTitle": "Haku \"Tears of the Ice Mirror\" (★5)"
+   }
+  },
+  "kakashi_425": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_body_4": 3,
+     "book_body_3": 2
+    },
+    "wikiCard": 425,
+    "wikiTitle": "Kakashi Hatake \"Severing Lightning\" (★5)"
+   }
+  },
+  "naruto_427": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_bravery_4": 5
+    },
+    "wikiCard": 427,
+    "wikiTitle": "Naruto Uzumaki \"Seal of Light\" (★5)"
+   }
+  },
+  "sasuke_429": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_wisdom_4": 5
+    },
+    "wikiCard": 429,
+    "wikiTitle": "Sasuke Uchiha \"Seal of Shadow\" (★5)"
+   }
+  },
+  "might_432": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_bravery_3": 2,
+     "book_bravery_2": 2
+    },
+    "wikiCard": 432,
+    "wikiTitle": "Might Guy \"Azure Roar\" (★5)"
+   }
+  },
+  "madara_434": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_wisdom_4": 2,
+     "book_wisdom_3": 2
+    },
+    "wikiCard": 434,
+    "wikiTitle": "Madara Uchiha \"Eyes of the Moon\" (★5)"
+   }
+  },
+  "gaara_436": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_skill_3": 2,
+     "book_skill_2": 2
+    },
+    "wikiCard": 436,
+    "wikiTitle": "Gaara \"Many Bonds\" (★5)"
+   }
+  },
+  "kankuro_438": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_heart_3": 2,
+     "book_heart_2": 2
+    },
+    "wikiCard": 438,
+    "wikiTitle": "Kankuro \"Pride In His Work\" (★5)"
+   }
+  },
+  "deidara_440": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_bravery_4": 2,
+     "book_bravery_3": 2
+    },
+    "wikiCard": 440,
+    "wikiTitle": "Deidara \"Explosive Fury\" (★5)"
+   }
+  },
+  "rasa_442": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_skill_4": 2,
+     "book_skill_3": 2
+    },
+    "wikiCard": 442,
+    "wikiTitle": "Rasa \"Family Values\" (★5)"
+   }
+  },
+  "jiraiya_444": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_body_3": 2,
+     "book_body_2": 2
+    },
+    "wikiCard": 444,
+    "wikiTitle": "Jiraiya \"Chance Encounter Under Fire\" (★5)"
+   }
+  },
+  "orochimaru_446": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_wisdom_3": 2,
+     "book_wisdom_2": 2
+    },
+    "wikiCard": 446,
+    "wikiTitle": "Orochimaru \"Hidden Ambitions\" (★5)"
+   }
+  },
+  "hanzo_449": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_skill_4": 2,
+     "book_skill_3": 2
+    },
+    "wikiCard": 449,
+    "wikiTitle": "Hanzo \"Steadfast Veteran\" (★5)"
+   }
+  },
+  "pain_451": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_heart_4": 2,
+     "book_heart_3": 2
+    },
+    "wikiCard": 451,
+    "wikiTitle": "Pain (Tendo) \"Signal Flare of Revolution\" (★5)"
+   }
+  },
+  "naruto_453": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_skill_4": 3,
+     "book_skill_3": 2
+    },
+    "wikiCard": 453,
+    "wikiTitle": "Naruto Uzumaki \"Power of Determination\" (★5)"
+   }
+  },
+  "naruto_454": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "beads_skill_5": 2,
+     "beads_skill_4": 3
+    },
+    "wikiCard": 454,
+    "wikiTitle": "Naruto Uzumaki \"Power of Determination\" (★6)"
+   }
+  },
+  "sasuke_456": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_body_4": 3,
+     "book_body_3": 2
+    },
+    "wikiCard": 456,
+    "wikiTitle": "Sasuke Uchiha \"Parting Wings\" (★5)"
+   }
+  },
+  "sasuke_457": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "beads_body_5": 2,
+     "beads_body_4": 3
+    },
+    "wikiCard": 457,
+    "wikiTitle": "Sasuke Uchiha \"Parting Wings\" (★6)"
+   }
+  },
+  "tsunade_460": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_bravery_4": 2,
+     "book_bravery_3": 2
+    },
+    "wikiCard": 460,
+    "wikiTitle": "Tsunade \"Brilliant Bravery\" (★5)"
+   }
+  },
+  "killer_462": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_bravery_3": 2,
+     "book_bravery_2": 2
+    },
+    "wikiCard": 462,
+    "wikiTitle": "Killer Bee \"Engraved Words\" (★5)"
+   }
+  },
+  "yagura_464": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_wisdom_4": 2,
+     "book_wisdom_3": 2
+    },
+    "wikiCard": 464,
+    "wikiTitle": "Yagura \"Shadow of the Mist\" (★5)"
+   }
+  },
+  "fourth_466": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_body_4": 2,
+     "book_body_3": 2
+    },
+    "wikiCard": 466,
+    "wikiTitle": "Fourth Raikage: Ay \"Solid Lightning\" (★5)"
+   }
+  },
+  "obito_468": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_skill_4": 2,
+     "book_skill_3": 2
+    },
+    "wikiCard": 468,
+    "wikiTitle": "Obito Uchiha \"Drawn to Life\" (★5)"
+   }
+  },
+  "third_470": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_body_4": 2,
+     "book_body_3": 2
+    },
+    "wikiCard": 470,
+    "wikiTitle": "Third Raikage: Ay \"One-Man Army\" (★5)"
+   }
+  },
+  "rock_473": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_heart_4": 3,
+     "book_heart_3": 2
+    },
+    "wikiCard": 473,
+    "wikiTitle": "Rock Lee \"A Genius of Hard Work\" (★5)"
+   }
+  },
+  "rock_474": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "beads_heart_5": 2,
+     "beads_heart_4": 3
+    },
+    "wikiCard": 474,
+    "wikiTitle": "Rock Lee \"A Genius of Hard Work\" (★6)"
+   }
+  },
+  "gaara_476": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_bravery_4": 3,
+     "book_bravery_3": 2
+    },
+    "wikiCard": 476,
+    "wikiTitle": "Gaara \"Solid Sandstorm\" (★5)"
+   }
+  },
+  "gaara_477": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "beads_bravery_5": 2,
+     "beads_bravery_4": 3
+    },
+    "wikiCard": 477,
+    "wikiTitle": "Gaara \"Solid Sandstorm\" (★6)"
+   }
+  },
+  "sakura_480": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_heart_4": 2,
+     "book_heart_3": 2
+    },
+    "wikiCard": 480,
+    "wikiTitle": "Sakura Haruno \"Sandy Beach Dreams\" (★5)"
+   }
+  },
+  "naruto_482": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_body_4": 2,
+     "book_body_3": 2
+    },
+    "wikiCard": 482,
+    "wikiTitle": "Naruto Uzumaki \"Sea Spray Blast\" (★5)"
+   }
+  },
+  "ameyuri_484": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_skill_4": 2,
+     "book_skill_3": 2
+    },
+    "wikiCard": 484,
+    "wikiTitle": "Ameyuri Ringo \"Furious Full-Tilt Lightning Blade\" (★5)"
+   }
+  },
+  "might_486": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_body_4": 2,
+     "book_body_3": 2
+    },
+    "wikiCard": 486,
+    "wikiTitle": "Might Guy \"Deep Crimson Youth\" (★5)"
+   }
+  },
+  "gengetsu_488": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_heart_4": 2,
+     "book_heart_3": 2
+    },
+    "wikiCard": 488,
+    "wikiTitle": "Gengetsu Hozuki \"Mists Over the Darkness\" (★5)"
+   }
+  },
+  "sasuke_490": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_skill_4": 2,
+     "book_skill_3": 2
+    },
+    "wikiCard": 490,
+    "wikiTitle": "Sasuke Uchiha \"A Break from the Waves\" (★5)"
+   }
+  },
+  "neji_493": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_body_4": 3,
+     "book_body_3": 2
+    },
+    "wikiCard": 493,
+    "wikiTitle": "Neji Hyuga \"Burden of Fate\" (★5)"
+   }
+  },
+  "neji_494": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "beads_body_4": 3,
+     "beads_body_5": 2
+    },
+    "wikiCard": 494,
+    "wikiTitle": "Neji Hyuga \"Burden of Fate\" (★6)"
+   }
+  },
+  "hinata_496": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_wisdom_4": 3,
+     "book_wisdom_3": 2
+    },
+    "wikiCard": 496,
+    "wikiTitle": "Hinata Hyuga \"Unwavering Courage\" (★5)"
+   }
+  },
+  "hinata_497": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "beads_wisdom_4": 3,
+     "beads_wisdom_5": 2
+    },
+    "wikiCard": 497,
+    "wikiTitle": "Hinata Hyuga \"Unwavering Courage\" (★6)"
+   }
+  },
+  "sai_500": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_heart_4": 2,
+     "book_heart_3": 2
+    },
+    "wikiCard": 500,
+    "wikiTitle": "Sai \"Ink Drawn from the Heart\" (★5)"
+   }
+  },
+  "sasuke_502": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_bravery_4": 2,
+     "book_bravery_3": 2
+    },
+    "wikiCard": 502,
+    "wikiTitle": "Sasuke Uchiha \"Heart-Warming Gift\" (★5)"
+   }
+  },
+  "itachi_504": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_wisdom_4": 2,
+     "book_wisdom_3": 2
+    },
+    "wikiCard": 504,
+    "wikiTitle": "Itachi Uchiha \"Silent Night Visitor\" (★5)"
+   }
+  },
+  "rock_506": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_bravery_4": 2,
+     "book_bravery_3": 2
+    },
+    "wikiCard": 506,
+    "wikiTitle": "Rock Lee \"Fighting Spirit Overflowing\" (★5)"
+   }
+  },
+  "sakura_510": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_bravery_4": 5
+    },
+    "wikiCard": 510,
+    "wikiTitle": "Sakura Haruno \"Sheer Diligence\" (★5)"
+   }
+  },
+  "kaguya_512": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_skill_4": 2,
+     "book_skill_3": 2
+    },
+    "wikiCard": 512,
+    "wikiTitle": "Kaguya Otsutsuki \"Founding Goddess\" (★5)"
+   }
+  },
+  "indra_515": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_body_4": 2,
+     "book_body_3": 2
+    },
+    "wikiCard": 515,
+    "wikiTitle": "Indra \"Lone War God\" (★5)"
+   }
+  },
+  "ashura_517": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_wisdom_4": 2,
+     "book_wisdom_3": 2
+    },
+    "wikiCard": 517,
+    "wikiTitle": "Ashura \"Heir to the Ninja Creed\" (★5)"
+   }
+  },
+  "hashirama_520": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_heart_4": 5
+    },
+    "wikiCard": 520,
+    "wikiTitle": "Hashirama Senju \"Long-Held Dream\" (★5)"
+   }
+  },
+  "hashirama_521": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "beads_heart_4": 3,
+     "beads_heart_5": 2
+    },
+    "wikiCard": 521,
+    "wikiTitle": "Hashirama Senju \"Long-Held Dream\" (★6)"
+   }
+  },
+  "madara_523": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_skill_4": 5
+    },
+    "wikiCard": 523,
+    "wikiTitle": "Madara Uchiha \"Path of Dreams\" (★5)"
+   }
+  },
+  "madara_524": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "beads_skill_4": 3,
+     "beads_skill_5": 2
+    },
+    "wikiCard": 524,
+    "wikiTitle": "Madara Uchiha \"Path of Dreams\" (★6)"
+   }
+  },
+  "kurotsuchi_526": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_wisdom_4": 2,
+     "book_wisdom_3": 2
+    },
+    "wikiCard": 526,
+    "wikiTitle": "Kurotsuchi \"The Fence-Sitter's Granddaughter\" (★5)"
+   }
+  },
+  "minato_528": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_wisdom_4": 2,
+     "book_wisdom_3": 2
+    },
+    "wikiCard": 528,
+    "wikiTitle": "Minato Namikaze \"Flash of Dawn\" (★5)"
+   }
+  },
+  "kushina_530": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_bravery_4": 2,
+     "book_bravery_3": 2
+    },
+    "wikiCard": 530,
+    "wikiTitle": "Kushina Uzumaki \"Vermillion Prayer\" (★5)"
+   }
+  },
+  "tsunade_532": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_bravery_4": 2,
+     "book_bravery_3": 2
+    },
+    "wikiCard": 532,
+    "wikiTitle": "Tsunade \"Unbreakable Tree-Flower\" (★5)"
+   }
+  },
+  "nagato_534": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_wisdom_4": 2,
+     "book_wisdom_3": 2
+    },
+    "wikiCard": 534,
+    "wikiTitle": "Nagato \"Reunion with Hope\" (★5)"
+   }
+  },
+  "haku_537": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_bravery_4": 3,
+     "book_bravery_3": 2
+    },
+    "wikiCard": 537,
+    "wikiTitle": "Haku \"Chilling Edge\" (★5)"
+   }
+  },
+  "haku_538": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "beads_bravery_4": 3,
+     "beads_bravery_5": 2
+    },
+    "wikiCard": 538,
+    "wikiTitle": "Haku \"Chilling Edge\" (★6)"
+   }
+  },
+  "zabuza_540": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_body_4": 3,
+     "book_body_3": 2
+    },
+    "wikiCard": 540,
+    "wikiTitle": "Zabuza Momochi \"Demonic Presence\" (★5)"
+   }
+  },
+  "zabuza_541": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "beads_body_4": 3,
+     "beads_body_5": 2
+    },
+    "wikiCard": 541,
+    "wikiTitle": "Zabuza Momochi \"Demonic Presence\" (★6)"
+   }
+  },
+  "han_543": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_skill_4": 2,
+     "book_skill_3": 2
+    },
+    "wikiCard": 543,
+    "wikiTitle": "Han \"Sprint Barrage\" (★5)"
+   }
+  },
+  "kushimaru_545": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_heart_4": 2,
+     "book_heart_3": 2
+    },
+    "wikiCard": 545,
+    "wikiTitle": "Kushimaru Kuriarare \"Needle Blade\" (★5)"
+   }
+  },
+  "konan_547": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_body_4": 2,
+     "book_body_3": 2
+    },
+    "wikiCard": 547,
+    "wikiTitle": "Konan \"Wrapped in Sweetness\" (★5)"
+   }
+  },
+  "ino_549": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_heart_4": 2,
+     "book_heart_3": 2
+    },
+    "wikiCard": 549,
+    "wikiTitle": "Ino Yamanaka \"Bittersweet Gift\" (★5)"
+   }
+  },
+  "naruto_551": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_skill_4": 2,
+     "book_skill_3": 2
+    },
+    "wikiCard": 551,
+    "wikiTitle": "Naruto Uzumaki \"Proof of Ties That Bind\" (★5)"
+   }
+  },
+  "roshi_553": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_body_4": 2,
+     "book_body_3": 2
+    },
+    "wikiCard": 553,
+    "wikiTitle": "Roshi \"Magma Veteran\" (★5)"
+   }
+  },
+  "sakura_556": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_heart_4": 3,
+     "book_heart_3": 2
+    },
+    "wikiCard": 556,
+    "wikiTitle": "Sakura Haruno \"Unwavering Feelings\" (★5)"
+   }
+  },
+  "sakura_557": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "beads_heart_5": 2,
+     "beads_heart_4": 3
+    },
+    "wikiCard": 557,
+    "wikiTitle": "Sakura Haruno \"Unwavering Feelings\" (★6)"
+   }
+  },
+  "ino_559": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_wisdom_4": 3,
+     "book_wisdom_3": 2
+    },
+    "wikiCard": 559,
+    "wikiTitle": "Ino Yamanaka \"Promise Upheld\" (★5)"
+   }
+  },
+  "ino_560": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "beads_wisdom_5": 2,
+     "beads_wisdom_4": 3
+    },
+    "wikiCard": 560,
+    "wikiTitle": "Ino Yamanaka \"Promise Upheld\" (★6)"
+   }
+  },
+  "jinpachi_562": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_skill_4": 2,
+     "book_skill_3": 2
+    },
+    "wikiCard": 562,
+    "wikiTitle": "Jinpachi Munashi \"Volatile Explosive Blade\" (★5)"
+   }
+  },
+  "chojuro_564": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_heart_3": 2,
+     "book_heart_2": 2
+    },
+    "wikiCard": 564,
+    "wikiTitle": "Chojuro \"Slashing Twinsword\" (★5)"
+   }
+  },
+  "kiba_566": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_heart_4": 2,
+     "book_heart_3": 2
+    },
+    "wikiCard": 566,
+    "wikiTitle": "Kiba Inuzuka \"Well-Honed Fangs\" (★5)"
+   }
+  },
+  "sasuke_568": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_body_4": 2,
+     "book_body_3": 2
+    },
+    "wikiCard": 568,
+    "wikiTitle": "Sasuke Uchiha \"Long Road to Atonement\" (★5)"
+   }
+  },
+  "chino_570": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_heart_4": 2,
+     "book_heart_3": 2
+    },
+    "wikiCard": 570,
+    "wikiTitle": "Chino \"Ill-Omened Red Eyes\" (★5)"
+   }
+  },
+  "itachi_573": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_body_4": 3,
+     "book_body_3": 2
+    },
+    "wikiCard": 573,
+    "wikiTitle": "Itachi Uchiha \"Eyes Gazing Over the Future\" (★5)"
+   }
+  },
+  "itachi_574": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "beads_body_5": 2,
+     "beads_body_4": 3
+    },
+    "wikiCard": 574,
+    "wikiTitle": "Itachi Uchiha \"Eyes Gazing Over the Future\" (★6)"
+   }
+  },
+  "shisui_576": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_bravery_4": 3,
+     "book_bravery_3": 2
+    },
+    "wikiCard": 576,
+    "wikiTitle": "Shisui Uchiha \"Guiding Light\" (★5)"
+   }
+  },
+  "shisui_577": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "beads_bravery_5": 2,
+     "beads_bravery_4": 3
+    },
+    "wikiCard": 577,
+    "wikiTitle": "Shisui Uchiha \"Guiding Light\" (★6)"
+   }
+  },
+  "tenten_579": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_body_4": 2,
+     "book_body_3": 2
+    },
+    "wikiCard": 579,
+    "wikiTitle": "Tenten \"Ninja Tool Maestro\" (★5)"
+   }
+  },
+  "jinin_581": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_wisdom_4": 2,
+     "book_wisdom_3": 2
+    },
+    "wikiCard": 581,
+    "wikiTitle": "Jinin Akebino \"Crushing Bluntsword\" (★5)"
+   }
+  },
+  "naruto_583": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_heart_4": 2,
+     "book_heart_3": 2
+    },
+    "wikiCard": 583,
+    "wikiTitle": "Naruto Uzumaki \"Shining Warrior of Bonds\" (★5)"
+   }
+  },
+  "sasuke_585": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_skill_4": 2,
+     "book_skill_3": 2
+    },
+    "wikiCard": 585,
+    "wikiTitle": "Sasuke Uchiha \"Violet Flame Hunter\" (★5)"
+   }
+  },
+  "kakashi_587": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_body_4": 2,
+     "book_body_3": 2
+    },
+    "wikiCard": 587,
+    "wikiTitle": "Kakashi Hatake \"Silent Sorcery\" (★5)"
+   }
+  },
+  "madara_589": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_bravery_4": 5
+    },
+    "wikiCard": 589,
+    "wikiTitle": "Madara Uchiha \"Endless Moonlight\" (★5)"
+   }
+  },
+  "might_591": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_wisdom_4": 2,
+     "book_wisdom_3": 2
+    },
+    "wikiCard": 591,
+    "wikiTitle": "Might Guy \"Surging Blood\" (★5)"
+   }
+  },
+  "kaguya_593": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_heart_4": 5
+    },
+    "wikiCard": 593,
+    "wikiTitle": "Kaguya Otsutsuki \"Divine Madness\" (★5)"
+   }
+  },
+  "orochimaru_598": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_heart_4": 3,
+     "book_heart_3": 2
+    },
+    "wikiCard": 598,
+    "wikiTitle": "Orochimaru \"Winds of Chaos\" (★5)"
+   }
+  },
+  "orochimaru_599": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "beads_heart_5": 2,
+     "beads_heart_4": 3
+    },
+    "wikiCard": 599,
+    "wikiTitle": "Orochimaru \"Winds of Chaos\" (★6)"
+   }
+  },
+  "kimimaro_601": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_skill_4": 3,
+     "book_skill_3": 2
+    },
+    "wikiCard": 601,
+    "wikiTitle": "Kimimaro \"Dance of Death\" (★5)"
+   }
+  },
+  "kimimaro_602": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "beads_skill_4": 3,
+     "beads_skill_5": 2
+    },
+    "wikiCard": 602,
+    "wikiTitle": "Kimimaro \"Dance of Death\" (★6)"
+   }
+  },
+  "pain_604": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_heart_4": 2,
+     "book_heart_3": 2
+    },
+    "wikiCard": 604,
+    "wikiTitle": "Pain (Shurado) \"Vessel of Madness\" (★5)"
+   }
+  },
+  "yagura_606": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_body_3": 2,
+     "book_body_2": 2
+    },
+    "wikiCard": 606,
+    "wikiTitle": "Yagura \"Child of the Blood Mist\" (★5)"
+   }
+  },
+  "yugito_608": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_skill_4": 2,
+     "book_skill_3": 2
+    },
+    "wikiCard": 608,
+    "wikiTitle": "Yugito Ni'i \"Unclouded Mind\" (★5)"
+   }
+  },
+  "jiraiya_610": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_body_4": 2,
+     "book_body_3": 2
+    },
+    "wikiCard": 610,
+    "wikiTitle": "Jiraiya \"Moment of Choice\" (★5)"
+   }
+  },
+  "pain_612": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_heart_4": 2,
+     "book_heart_3": 2
+    },
+    "wikiCard": 612,
+    "wikiTitle": "Pain (Chikushodo) \"Glimpse of the Divine\" (★5)"
+   }
+  },
+  "shikamaru_615": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_skill_4": 3,
+     "book_skill_3": 2
+    },
+    "wikiCard": 615,
+    "wikiTitle": "Shikamaru Nara \"Crucial Decision\" (★5)"
+   }
+  },
+  "shikamaru_616": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "beads_skill_4": 3,
+     "beads_skill_5": 2
+    },
+    "wikiCard": 616,
+    "wikiTitle": "Shikamaru Nara \"Crucial Decision\" (★6)"
+   }
+  },
+  "choji_618": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_wisdom_4": 3,
+     "book_wisdom_3": 2
+    },
+    "wikiCard": 618,
+    "wikiTitle": "Choji Akimichi \"Fluttering Butterfly\" (★5)"
+   }
+  },
+  "choji_619": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "beads_wisdom_5": 2,
+     "beads_wisdom_4": 3
+    },
+    "wikiCard": 619,
+    "wikiTitle": "Choji Akimichi \"Fluttering Butterfly\" (★6)"
+   }
+  },
+  "suigetsu_621": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_wisdom_3": 2,
+     "book_wisdom_2": 2
+    },
+    "wikiCard": 621,
+    "wikiTitle": "Suigetsu Hozuki \"Liquid Cruelty\" (★5)"
+   }
+  },
+  "jugo_623": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_body_3": 2,
+     "book_body_2": 2
+    },
+    "wikiCard": 623,
+    "wikiTitle": "Jugo \"All-Consuming Fury\" (★5)"
+   }
+  },
+  "torune_625": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_heart_4": 3,
+     "book_heart_3": 2
+    },
+    "wikiCard": 625,
+    "wikiTitle": "Torune Aburame \"Lurking Poison\" (★5)"
+   }
+  },
+  "minato_627": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_wisdom_4": 5
+    },
+    "wikiCard": 627,
+    "wikiTitle": "Minato Namikaze \"Swift Flash\" (★5)"
+   }
+  },
+  "mangetsu_629": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_bravery_4": 2,
+     "book_bravery_3": 2
+    },
+    "wikiCard": 629,
+    "wikiTitle": "Mangetsu Hozuki \"Wielder of the Seven Swords\" (★5)"
+   }
+  },
+  "masked_631": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_bravery_4": 2,
+     "book_bravery_3": 2
+    },
+    "wikiCard": 631,
+    "wikiTitle": "Masked Man \"Mad Dreamer\" (★5)"
+   }
+  },
+  "jiraiya_634": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_heart_4": 3,
+     "book_heart_3": 2
+    },
+    "wikiCard": 634,
+    "wikiTitle": "Jiraiya \"Hidden Heart\" (★5)"
+   }
+  },
+  "jiraiya_635": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "beads_heart_5": 2,
+     "beads_heart_4": 3
+    },
+    "wikiCard": 635,
+    "wikiTitle": "Jiraiya \"Hidden Heart\" (★6)"
+   }
+  },
+  "tsunade_637": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_body_4": 3,
+     "book_body_3": 2
+    },
+    "wikiCard": 637,
+    "wikiTitle": "Tsunade \"Daring Courage\" (★5)"
+   }
+  },
+  "tsunade_638": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "beads_body_5": 2,
+     "beads_body_4": 3
+    },
+    "wikiCard": 638,
+    "wikiTitle": "Tsunade \"Daring Courage\" (★6)"
+   }
+  },
+  "pain_640": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_skill_4": 2,
+     "book_skill_3": 2
+    },
+    "wikiCard": 640,
+    "wikiTitle": "Pain (Gakido) \"Limitless Maelstrom\" (★5)"
+   }
+  },
+  "kabuto_642": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_skill_4": 5
+    },
+    "wikiCard": 642,
+    "wikiTitle": "Kabuto Yakushi \"Dragon Transformation\" (★5)"
+   }
+  },
+  "sasori_644": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_body_4": 2,
+     "book_body_3": 2
+    },
+    "wikiCard": 644,
+    "wikiTitle": "Sasori \"Everlasting Being\" (★5)"
+   }
+  },
+  "madara_646": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_body_4": 2,
+     "book_body_3": 2
+    },
+    "wikiCard": 646,
+    "wikiTitle": "Madara Uchiha \"Falling Into Place\" (★5)"
+   }
+  },
+  "utakata_648": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_bravery_3": 2,
+     "book_bravery_2": 2
+    },
+    "wikiCard": 648,
+    "wikiTitle": "Utakata \"Floating Bubble\" (★5)"
+   }
+  },
+  "sasori_651": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_bravery_4": 3,
+     "book_bravery_3": 2
+    },
+    "wikiCard": 651,
+    "wikiTitle": "Sasori \"The Ultimate Puppet\" (★5)"
+   }
+  },
+  "sasori_652": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "beads_bravery_5": 2,
+     "beads_bravery_4": 3
+    },
+    "wikiCard": 652,
+    "wikiTitle": "Sasori \"The Ultimate Puppet\" (★6)"
+   }
+  },
+  "deidara_654": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_wisdom_4": 3,
+     "book_wisdom_3": 2
+    },
+    "wikiCard": 654,
+    "wikiTitle": "Deidara \"Pursued Aesthetic\" (★5)"
+   }
+  },
+  "deidara_655": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "beads_wisdom_5": 2,
+     "beads_wisdom_4": 3
+    },
+    "wikiCard": 655,
+    "wikiTitle": "Deidara \"Pursued Aesthetic\" (★6)"
+   }
+  },
+  "might_657": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_heart_4": 3,
+     "book_heart_3": 2
+    },
+    "wikiCard": 657,
+    "wikiTitle": "Might Dai \"Something to Protect\" (★5)"
+   }
+  },
+  "naruto_659": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_heart_4": 5
+    },
+    "wikiCard": 659,
+    "wikiTitle": "Naruto Uzumaki \"As a Friend\" (★5)"
+   }
+  },
+  "sasuke_661": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_body_4": 5
+    },
+    "wikiCard": 661,
+    "wikiTitle": "Sasuke Uchiha \"To Eternal Loneliness\" (★5)"
+   }
+  },
+  "naruto_665": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "deadly_beads_the_inheritor": 3,
+     "ferocious_beads_the_inheritor": 2
+    },
+    "wikiCard": 665,
+    "wikiTitle": "Naruto Uzumaki \"The Inheritor\" (★6)"
+   }
+  },
+  "naruto_666": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "deadly_beads_the_inheritor": 3,
+     "ferocious_beads_the_inheritor": 2
+    },
+    "wikiCard": 666,
+    "wikiTitle": "Naruto Uzumaki \"The Inheritor\" (★6) (Blazing Awakened)"
+   }
+  },
+  "sasuke_667": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "deadly_beads_one_step_to_hokage": 3,
+     "ferocious_beads_one_step_to_hokage": 2
+    },
+    "wikiCard": 667,
+    "wikiTitle": "Sasuke Uchiha \"One Step to Hokage\" (★6)"
+   }
+  },
+  "sasuke_668": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "deadly_beads_one_step_to_hokage": 3,
+     "ferocious_beads_one_step_to_hokage": 2
+    },
+    "wikiCard": 668,
+    "wikiTitle": "Sasuke Uchiha \"One Step to Hokage\" (★6) (Blazing Awakened)"
+   }
+  },
+  "obito_669": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_heart_4": 3,
+     "book_heart_3": 2
+    },
+    "wikiCard": 669,
+    "wikiTitle": "Obito Uchiha \"Into Total Darkness\" (★5)"
+   }
+  },
+  "obito_670": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "beads_heart_5": 2,
+     "beads_heart_4": 3
+    },
+    "wikiCard": 670,
+    "wikiTitle": "Obito Uchiha \"Into Total Darkness\" (★6)"
+   }
+  },
+  "kakashi_672": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_body_4": 3,
+     "book_body_3": 2
+    },
+    "wikiCard": 672,
+    "wikiTitle": "Kakashi Hatake \"The Bitterness of Fate\" (★5)"
+   }
+  },
+  "kakashi_673": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "beads_body_5": 2,
+     "beads_body_4": 3
+    },
+    "wikiCard": 673,
+    "wikiTitle": "Kakashi Hatake \"The Bitterness of Fate\" (★6)"
+   }
+  },
+  "pain_676": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_bravery_4": 2,
+     "book_bravery_3": 2
+    },
+    "wikiCard": 676,
+    "wikiTitle": "Pain (Jigokudo) \"The Judge of Truth\" (★5)"
+   }
+  },
+  "minato_678": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_body_3": 2,
+     "book_body_2": 2
+    },
+    "wikiCard": 678,
+    "wikiTitle": "Minato Namikaze \"The Silent Hero\" (★5)"
+   }
+  },
+  "madara_680": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_wisdom_4": 5
+    },
+    "wikiCard": 680,
+    "wikiTitle": "Madara Uchiha \"Power of Life or Death\" (★5)"
+   }
+  },
+  "anko_682": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_heart_4": 2,
+     "book_heart_3": 2
+    },
+    "wikiCard": 682,
+    "wikiTitle": "Anko Mitarashi \"A Smile That Could Kill\" (★5)"
+   }
+  },
+  "pain_685": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_bravery_4": 3,
+     "book_bravery_3": 2
+    },
+    "wikiCard": 685,
+    "wikiTitle": "Pain (Tendo) \"Endless Cycle of Battle\" (★5)"
+   }
+  },
+  "pain_686": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "beads_bravery_5": 2,
+     "beads_bravery_4": 3
+    },
+    "wikiCard": 686,
+    "wikiTitle": "Pain (Tendo) \"Endless Cycle of Battle\" (★6)"
+   }
+  },
+  "konan_688": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_wisdom_4": 3,
+     "book_wisdom_3": 2
+    },
+    "wikiCard": 688,
+    "wikiTitle": "Konan \"Sign of Destruction\" (★5)"
+   }
+  },
+  "konan_689": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "beads_wisdom_5": 2,
+     "beads_wisdom_4": 3
+    },
+    "wikiCard": 689,
+    "wikiTitle": "Konan \"Sign of Destruction\" (★6)"
+   }
+  },
+  "ino_691": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_bravery_4": 2,
+     "book_bravery_3": 2
+    },
+    "wikiCard": 691,
+    "wikiTitle": "Ino Yamanaka \"Flowers in Full Bloom\" (★5)"
+   }
+  },
+  "kakuzu_693": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_skill_4": 3,
+     "book_skill_3": 2
+    },
+    "wikiCard": 693,
+    "wikiTitle": "Kakuzu \"Powerhouse of Old\" (★5)"
+   }
+  },
+  "madara_695": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_body_4": 2,
+     "book_body_3": 2
+    },
+    "wikiCard": 695,
+    "wikiTitle": "Madara Uchiha \"The Eyes that Shook Heaven and Earth\" (★5)"
+   }
+  },
+  "hashirama_697": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_bravery_4": 2,
+     "book_bravery_3": 2
+    },
+    "wikiCard": 697,
+    "wikiTitle": "Hashirama Senju \"Bravery Known Throughout the War\" (★5)"
+   }
+  },
+  "itachi_699": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_bravery_4": 5
+    },
+    "wikiCard": 699,
+    "wikiTitle": "Itachi Uchiha \"Brotherly Pledge\" (★5)"
+   }
+  },
+  "sasuke_702": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "deadly_beads_all_ending_thunderbolt": 3,
+     "ferocious_beads_all_ending_thunderbolt": 2
+    },
+    "wikiCard": 702,
+    "wikiTitle": "Sasuke Uchiha \"All-Ending Thunderbolt\" (★6)"
+   }
+  },
+  "sasuke_703": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "deadly_beads_all_ending_thunderbolt": 3,
+     "ferocious_beads_all_ending_thunderbolt": 2
+    },
+    "wikiCard": 703,
+    "wikiTitle": "Sasuke Uchiha \"All-Ending Thunderbolt\" (★6) (Blazing Awakened)"
+   }
+  },
+  "kakashi_704": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_skill_4": 3,
+     "book_skill_3": 2
+    },
+    "wikiCard": 704,
+    "wikiTitle": "Kakashi Hatake \"Unshakeable Calm\" (★5)"
+   }
+  },
+  "kakashi_705": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "beads_skill_4": 3,
+     "beads_skill_5": 2
+    },
+    "wikiCard": 705,
+    "wikiTitle": "Kakashi Hatake \"Unshakeable Calm\" (★6)"
+   }
+  },
+  "might_707": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_bravery_4": 3,
+     "book_bravery_3": 2
+    },
+    "wikiCard": 707,
+    "wikiTitle": "Might Guy \"Passionate Fist\" (★5)"
+   }
+  },
+  "might_708": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "beads_bravery_5": 2,
+     "beads_bravery_4": 3
+    },
+    "wikiCard": 708,
+    "wikiTitle": "Might Guy \"Passionate Fist\" (★6)"
+   }
+  },
+  "obito_710": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_heart_3": 2,
+     "book_heart_2": 2
+    },
+    "wikiCard": 710,
+    "wikiTitle": "Obito Uchiha \"Remnants of Despair\" (★5)"
+   }
+  },
+  "shizune_712": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_wisdom_4": 2,
+     "book_wisdom_3": 2
+    },
+    "wikiCard": 712,
+    "wikiTitle": "Shizune \"Benevolent Heart\" (★5)"
+   }
+  },
+  "shisui_714": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_skill_4": 5
+    },
+    "wikiCard": 714,
+    "wikiTitle": "Shisui Uchiha \"Eyes Inviting Illusion\" (★5)"
+   }
+  },
+  "juzo_716": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_body_4": 2,
+     "book_body_3": 2
+    },
+    "wikiCard": 716,
+    "wikiTitle": "Juzo Biwa \"Bloody Existence\" (★5)"
+   }
+  },
+  "kisame_719": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "deadly_beads_the_tailless_tailed_beast": 3,
+     "ferocious_beads_the_tailless_tailed_beast": 2
+    },
+    "wikiCard": 719,
+    "wikiTitle": "Kisame Hoshigaki \"The Tailless Tailed Beast\" (★6)"
+   }
+  },
+  "kisame_720": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "deadly_beads_the_tailless_tailed_beast": 3,
+     "ferocious_beads_the_tailless_tailed_beast": 2
+    },
+    "wikiCard": 720,
+    "wikiTitle": "Kisame Hoshigaki \"The Tailless Tailed Beast\" (★6) (Blazing Awakened)"
+   }
+  },
+  "sasuke_721": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_body_4": 3,
+     "book_body_3": 2
+    },
+    "wikiCard": 721,
+    "wikiTitle": "Sasuke Uchiha \"Pure Hatred\" (★5)"
+   }
+  },
+  "sasuke_722": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "beads_body_5": 2,
+     "beads_body_4": 3
+    },
+    "wikiCard": 722,
+    "wikiTitle": "Sasuke Uchiha \"Pure Hatred\" (★6)"
+   }
+  },
+  "sasuke_723": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "beads_body_5": 2,
+     "beads_body_4": 3
+    },
+    "wikiCard": 723,
+    "wikiTitle": "Sasuke Uchiha \"Pure Hatred\" (★6) (Blazing Awakened)"
+   }
+  },
+  "itachi_724": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_heart_4": 3,
+     "book_heart_3": 2
+    },
+    "wikiCard": 724,
+    "wikiTitle": "Itachi Uchiha \"Eyes Which Weave Truth and Lies\" (★5)"
+   }
+  },
+  "itachi_725": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "beads_heart_5": 2,
+     "beads_heart_4": 3
+    },
+    "wikiCard": 725,
+    "wikiTitle": "Itachi Uchiha \"Eyes Which Weave Truth and Lies\" (★6)"
+   }
+  },
+  "pain_727": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_wisdom_4": 3,
+     "book_wisdom_3": 1
+    },
+    "wikiCard": 727,
+    "wikiTitle": "Pain (Ningendo) \"Palm that Touches the Soul\" (★5)"
+   }
+  },
+  "gaara_729": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_body_3": 2,
+     "book_body_2": 2
+    },
+    "wikiCard": 729,
+    "wikiTitle": "Gaara \"Sandstorm-Commanding Kage\" (★5)"
+   }
+  },
+  "deidara_731": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_skill_3": 2,
+     "book_skill_2": 2
+    },
+    "wikiCard": 731,
+    "wikiTitle": "Deidara \"Glimmering Art\" (★5)"
+   }
+  },
+  "kakashi_734": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_bravery_4": 5
+    },
+    "wikiCard": 734,
+    "wikiTitle": "Kakashi Hatake \"Iron Resolve\" (★5)"
+   }
+  },
+  "obito_736": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "deadly_beads_hollow_heart": 3,
+     "ferocious_beads_hollow_heart": 2
+    },
+    "wikiCard": 736,
+    "wikiTitle": "Obito Uchiha \"Hollow Heart\" (★6)"
+   }
+  },
+  "obito_737": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "deadly_beads_hollow_heart": 3,
+     "ferocious_beads_hollow_heart": 2
+    },
+    "wikiCard": 737,
+    "wikiTitle": "Obito Uchiha \"Hollow Heart\" (★6) (Blazing Awakened)"
+   }
+  },
+  "minato_739": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_wisdom_4": 3,
+     "book_wisdom_3": 2
+    },
+    "wikiCard": 739,
+    "wikiTitle": "Minato Namikaze \"Dazzling Bravery\" (★5)"
+   }
+  },
+  "minato_740": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "beads_wisdom_5": 2,
+     "beads_wisdom_4": 3
+    },
+    "wikiCard": 740,
+    "wikiTitle": "Minato Namikaze \"Dazzling Bravery\" (★6)"
+   }
+  },
+  "hashirama_745": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_wisdom_4": 5
+    },
+    "wikiCard": 745,
+    "wikiTitle": "Hashirama Senju \"Amongst the Strongest\" (★5)"
+   }
+  },
+  "madara_747": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_skill_4": 5
+    },
+    "wikiCard": 747,
+    "wikiTitle": "Madara Uchiha \"Phantasy's Beckoning Light\" (★5)"
+   }
+  },
+  "kaguya_749": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "deadly_beads_between_love_and_madness": 3,
+     "ferocious_beads_between_love_and_madness": 2
+    },
+    "wikiCard": 749,
+    "wikiTitle": "Kaguya Otsutsuki \"Between Love and Madness\" (★6)"
+   }
+  },
+  "kaguya_750": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "deadly_beads_between_love_and_madness": 3,
+     "ferocious_beads_between_love_and_madness": 2
+    },
+    "wikiCard": 750,
+    "wikiTitle": "Kaguya Otsutsuki \"Between Love and Madness\" (★6) (Blazing Awakened)"
+   }
+  },
+  "izuna_751": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_wisdom_4": 2,
+     "book_wisdom_3": 2
+    },
+    "wikiCard": 751,
+    "wikiTitle": "Izuna Uchiha \"Wishing for Peace\" (★5)"
+   }
+  },
+  "sakura_754": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_wisdom_4": 2,
+     "book_wisdom_3": 2
+    },
+    "wikiCard": 754,
+    "wikiTitle": "Sakura Haruno \"Rich Aroma\" (★5)"
+   }
+  },
+  "hinata_756": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_heart_4": 2,
+     "book_heart_3": 2
+    },
+    "wikiCard": 756,
+    "wikiTitle": "Hinata Hyuga \"Tug of the Heart Strings\" (★5)"
+   }
+  },
+  "darui_758": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_body_4": 2,
+     "book_body_3": 2
+    },
+    "wikiCard": 758,
+    "wikiTitle": "Darui \"Carved Seal of Lightning\" (★5)"
+   }
+  },
+  "minato_760": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_heart_4": 5
+    },
+    "wikiCard": 760,
+    "wikiTitle": "Minato Namikaze \"Unfading Courage\" (★5)"
+   }
+  },
+  "tobirama_762": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "deadly_beads_judicious_master": 3,
+     "ferocious_beads_judicious_master": 2
+    },
+    "wikiCard": 762,
+    "wikiTitle": "Tobirama Senju \"Judicious Master\" (★6)"
+   }
+  },
+  "tobirama_763": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "deadly_beads_judicious_master": 3,
+     "ferocious_beads_judicious_master": 2
+    },
+    "wikiCard": 763,
+    "wikiTitle": "Tobirama Senju \"Judicious Master\" (★6) (Blazing Awakened)"
+   }
+  },
+  "ao_765": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_bravery_4": 2,
+     "book_bravery_3": 2
+    },
+    "wikiCard": 765,
+    "wikiTitle": "Ao \"An Eye of Mist\" (★5)"
+   }
+  },
+  "obito_767": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_skill_4": 3,
+     "book_skill_3": 2
+    },
+    "wikiCard": 767,
+    "wikiTitle": "Obito Uchiha \"State of Carnage\" (★5)"
+   }
+  },
+  "obito_768": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "beads_skill_4": 3,
+     "beads_skill_5": 2
+    },
+    "wikiCard": 768,
+    "wikiTitle": "Obito Uchiha \"State of Carnage\" (★6)"
+   }
+  },
+  "madara_770": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_bravery_4": 3,
+     "book_bravery_3": 2
+    },
+    "wikiCard": 770,
+    "wikiTitle": "Madara Uchiha \"Solitary Devastation\" (★5)"
+   }
+  },
+  "madara_771": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "beads_bravery_5": 2,
+     "beads_bravery_4": 3
+    },
+    "wikiCard": 771,
+    "wikiTitle": "Madara Uchiha \"Solitary Devastation\" (★6)"
+   }
+  },
+  "hanabi_773": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_body_4": 2,
+     "book_body_3": 2
+    },
+    "wikiCard": 773,
+    "wikiTitle": "Hanabi Hyuga \"Daughter of the Byakugan\" (★5)"
+   }
+  },
+  "izuna_775": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_wisdom_3": 2,
+     "book_wisdom_2": 2
+    },
+    "wikiCard": 775,
+    "wikiTitle": "Izuna Uchiha \"Intelligent Blade\" (★5)"
+   }
+  },
+  "hayate_778": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_bravery_4": 2,
+     "book_bravery_3": 2
+    },
+    "wikiCard": 778,
+    "wikiTitle": "Hayate Gekko \"Composed Dexterity\" (★5)"
+   }
+  },
+  "naruto_780": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_heart_4": 3,
+     "book_heart_3": 2
+    },
+    "wikiCard": 780,
+    "wikiTitle": "Naruto Uzumaki \"Taboo-Breaking Frustration\" (★5)"
+   }
+  },
+  "naruto_781": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "beads_heart_5": 2,
+     "beads_heart_4": 3
+    },
+    "wikiCard": 781,
+    "wikiTitle": "Naruto Uzumaki \"Taboo-Breaking Frustration\" (★6)"
+   }
+  },
+  "sasori_784": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_bravery_3": 2,
+     "book_bravery_2": 2
+    },
+    "wikiCard": 784,
+    "wikiTitle": "Sasori \"Puppet Mastery\" (★5)"
+   }
+  },
+  "indra_787": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_body_4": 5
+    },
+    "wikiCard": 787,
+    "wikiTitle": "Indra \"Unparalleled Genius\" (★5)"
+   }
+  },
+  "ashura_789": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "deadly_beads_devoted_to_studies": 3,
+     "ferocious_beads_devoted_to_studies": 2
+    },
+    "wikiCard": 789,
+    "wikiTitle": "Ashura \"Devoted to Studies\" (★6)"
+   }
+  },
+  "ashura_790": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "deadly_beads_devoted_to_studies": 3,
+     "ferocious_beads_devoted_to_studies": 2
+    },
+    "wikiCard": 790,
+    "wikiTitle": "Ashura \"Devoted to Studies\" (★6) (Blazing Awakened)"
+   }
+  },
+  "sakura_792": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_body_4": 3,
+     "book_body_3": 2
+    },
+    "wikiCard": 792,
+    "wikiTitle": "Sakura Haruno \"Stunning Spring Breeze\" (★5)"
+   }
+  },
+  "sakura_793": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "beads_body_5": 2,
+     "beads_body_4": 3
+    },
+    "wikiCard": 793,
+    "wikiTitle": "Sakura Haruno \"Stunning Spring Breeze\" (★6)"
+   }
+  },
+  "tenten_795": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_heart_4": 2,
+     "book_heart_3": 2
+    },
+    "wikiCard": 795,
+    "wikiTitle": "Tenten \"Battle Blade Dance\" (★5)"
+   }
+  },
+  "hiruzen_798": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_body_4": 2,
+     "book_body_3": 2
+    },
+    "wikiCard": 798,
+    "wikiTitle": "Hiruzen Sarutobi \"Looking into the Future\" (★5)"
+   }
+  },
+  "naruto_800": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_wisdom_4": 5
+    },
+    "wikiCard": 800,
+    "wikiTitle": "Naruto Uzumaki \"Pervading Feelings\" (★5)"
+   }
+  },
+  "sasuke_802": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_skill_4": 5
+    },
+    "wikiCard": 802,
+    "wikiTitle": "Sasuke Uchiha \"Judging the Conventional\" (★5)"
+   }
+  },
+  "obito_804": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "deadly_beads_wrapped_in_mysteries": 3,
+     "ferocious_beads_wrapped_in_mysteries": 2
+    },
+    "wikiCard": 804,
+    "wikiTitle": "Obito Uchiha \"Wrapped in Mysteries\" (★6)"
+   }
+  },
+  "obito_805": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "deadly_beads_wrapped_in_mysteries": 3,
+     "ferocious_beads_wrapped_in_mysteries": 2
+    },
+    "wikiCard": 805,
+    "wikiTitle": "Obito Uchiha \"Wrapped in Mysteries\" (★6) (Blazing Awakened)"
+   }
+  },
+  "shikamaru_807": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_heart_3": 2,
+     "book_heart_2": 2
+    },
+    "wikiCard": 807,
+    "wikiTitle": "Shikamaru Nara \"New Resolve\" (★5)"
+   }
+  },
+  "rock_809": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_bravery_3": 2,
+     "book_bravery_2": 2
+    },
+    "wikiCard": 809,
+    "wikiTitle": "Rock Lee \"The Path of Trust\" (★5)"
+   }
+  },
+  "hinata_811": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_wisdom_4": 3,
+     "book_wisdom_3": 2
+    },
+    "wikiCard": 811,
+    "wikiTitle": "Hinata Hyuga \"Beyond the Ceaseless\" (★5)"
+   }
+  },
+  "hinata_812": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "beads_wisdom_4": 3,
+     "beads_wisdom_5": 2
+    },
+    "wikiCard": 812,
+    "wikiTitle": "Hinata Hyuga \"Beyond the Ceaseless\" (★6)"
+   }
+  },
+  "pakura_815": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_heart_4": 2,
+     "book_heart_3": 2
+    },
+    "wikiCard": 815,
+    "wikiTitle": "Pakura \"Scorching Red\" (★5)"
+   }
+  },
+  "pain_817": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_heart_4": 5
+    },
+    "wikiCard": 817,
+    "wikiTitle": "Pain (Tendo) \"Visage of Justice\" (★5)"
+   }
+  },
+  "naruto_819": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "deadly_beads_blind_rage": 3,
+     "ferocious_beads_blind_rage": 2
+    },
+    "wikiCard": 819,
+    "wikiTitle": "Naruto Uzumaki \"Blind Rage\" (★6)"
+   }
+  },
+  "naruto_820": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "deadly_beads_blind_rage": 3,
+     "ferocious_beads_blind_rage": 2
+    },
+    "wikiCard": 820,
+    "wikiTitle": "Naruto Uzumaki \"Blind Rage\" (★6) (Blazing Awakened)"
+   }
+  },
+  "omoi_821": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_skill_4": 2,
+     "book_skill_3": 2
+    },
+    "wikiCard": 821,
+    "wikiTitle": "Omoi \"Intense Conviction\" (★5)"
+   }
+  },
+  "nagato_823": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_body_3": 2,
+     "book_body_2": 2
+    },
+    "wikiCard": 823,
+    "wikiTitle": "Nagato \"Hope for Peace\" (★5)"
+   }
+  },
+  "kisame_826": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_skill_4": 3,
+     "book_skill_3": 2
+    },
+    "wikiCard": 826,
+    "wikiTitle": "Kisame Hoshigaki \"Body and Blade as One\" (★5)"
+   }
+  },
+  "kisame_827": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "beads_skill_4": 3,
+     "beads_skill_5": 2
+    },
+    "wikiCard": 827,
+    "wikiTitle": "Kisame Hoshigaki \"Body and Blade as One\" (★6)"
+   }
+  },
+  "hidan_829": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_skill_4": 2,
+     "book_skill_3": 2
+    },
+    "wikiCard": 829,
+    "wikiTitle": "Hidan \"Pure Bloodlust\" (★5)"
+   }
+  },
+  "orochimaru_831": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_skill_4": 2,
+     "book_skill_3": 2
+    },
+    "wikiCard": 831,
+    "wikiTitle": "Orochimaru \"Aspirations of Indulgence\" (★5)"
+   }
+  },
+  "gaara_834": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_bravery_4": 5
+    },
+    "wikiCard": 834,
+    "wikiTitle": "Gaara \"Finally, Friendship\" (★5)"
+   }
+  },
+  "deidara_836": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "deadly_beads_magnum_opus": 3,
+     "ferocious_beads_magnum_opus": 2
+    },
+    "wikiCard": 836,
+    "wikiTitle": "Deidara \"Magnum Opus\" (★6)"
+   }
+  },
+  "deidara_837": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "deadly_beads_magnum_opus": 3,
+     "ferocious_beads_magnum_opus": 2
+    },
+    "wikiCard": 837,
+    "wikiTitle": "Deidara \"Magnum Opus\" (★6) (Blazing Awakened)"
+   }
+  },
+  "kushina_839": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_heart_3": 2,
+     "book_heart_2": 2
+    },
+    "wikiCard": 839,
+    "wikiTitle": "Kushina Uzumaki \"Fist of Hidden Embarrassment\" (★5)"
+   }
+  },
+  "ashura_841": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_bravery_4": 3,
+     "book_bravery_3": 2
+    },
+    "wikiCard": 841,
+    "wikiTitle": "Ashura \"Successor\" (★5)"
+   }
+  },
+  "ashura_842": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "beads_bravery_5": 2,
+     "beads_bravery_4": 3
+    },
+    "wikiCard": 842,
+    "wikiTitle": "Ashura \"Successor\" (★6)"
+   }
+  },
+  "izumo_844": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_wisdom_4": 2,
+     "book_wisdom_3": 2
+    },
+    "wikiCard": 844,
+    "wikiTitle": "Izumo Kamizuki \"Certainly Capable\" (★5)"
+   }
+  },
+  "shikamaru_846": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_body_4": 5
+    },
+    "wikiCard": 846,
+    "wikiTitle": "Shikamaru Nara \"Surpassing the Master\" (★5)"
+   }
+  },
+  "asuma_848": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "deadly_beads_final_words": 3,
+     "ferocious_beads_final_words": 2
+    },
+    "wikiCard": 848,
+    "wikiTitle": "Asuma Sarutobi \"Final Words\" (★6)"
+   }
+  },
+  "asuma_849": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "deadly_beads_final_words": 3,
+     "ferocious_beads_final_words": 2
+    },
+    "wikiCard": 849,
+    "wikiTitle": "Asuma Sarutobi \"Final Words\" (★6) (Blazing Awakened)"
+   }
+  },
+  "kotetsu_852": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_bravery_4": 2,
+     "book_bravery_3": 2
+    },
+    "wikiCard": 852,
+    "wikiTitle": "Kotetsu Hagane \"Tempered Strength\" (★5)"
+   }
+  },
+  "kakashi_854": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_wisdom_4": 5
+    },
+    "wikiCard": 854,
+    "wikiTitle": "Kakashi Hatake \"Friend's Way of Life\" (★5)"
+   }
+  },
+  "obito_856": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_heart_4": 5
+    },
+    "wikiCard": 856,
+    "wikiTitle": "Obito Uchiha \"The Final Destination\" (★5)"
+   }
+  },
+  "madara_859": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "deadly_beads_fortitude_resolution": 3,
+     "ferocious_beads_fortitude_resolution": 2
+    },
+    "wikiCard": 859,
+    "wikiTitle": "Madara Uchiha \"Fortitude & Resolution\" (★6)"
+   }
+  },
+  "madara_860": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "deadly_beads_fortitude_resolution": 3,
+     "ferocious_beads_fortitude_resolution": 2
+    },
+    "wikiCard": 860,
+    "wikiTitle": "Madara Uchiha \"Fortitude & Resolution\" (★6) (Blazing Awakened)"
+   }
+  },
+  "naruto_862": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_body_4": 3,
+     "book_body_3": 2
+    },
+    "wikiCard": 862,
+    "wikiTitle": "Naruto Uzumaki \"The Future We Want\" (★5)"
+   }
+  },
+  "naruto_863": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "beads_body_5": 2,
+     "beads_body_4": 3
+    },
+    "wikiCard": 863,
+    "wikiTitle": "Naruto Uzumaki \"The Future We Want\" (★6)"
+   }
+  },
+  "sasuke_865": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_heart_4": 3,
+     "book_heart_3": 2
+    },
+    "wikiCard": 865,
+    "wikiTitle": "Sasuke Uchiha \"Buried Past\" (★5)"
+   }
+  },
+  "sasuke_866": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "beads_heart_5": 2,
+     "beads_heart_4": 3
+    },
+    "wikiCard": 866,
+    "wikiTitle": "Sasuke Uchiha \"Buried Past\" (★6)"
+   }
+  },
+  "sakura_868": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_body_4": 3,
+     "book_body_3": 2
+    },
+    "wikiCard": 868,
+    "wikiTitle": "Sakura Haruno \"Cherry Blossoms on the Front Line\" (★5)"
+   }
+  },
+  "iruka_871": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_bravery_4": 2,
+     "book_bravery_3": 2
+    },
+    "wikiCard": 871,
+    "wikiTitle": "Iruka Umino \"Because of Trust\" (★5)"
+   }
+  },
+  "sai_873": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_skill_3": 2,
+     "book_skill_2": 2
+    },
+    "wikiCard": 873,
+    "wikiTitle": "Sai \"Drawings Unleashed\" (★5)"
+   }
+  },
+  "killer_876": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_wisdom_4": 3,
+     "book_wisdom_3": 2
+    },
+    "wikiCard": 876,
+    "wikiTitle": "Killer Bee \"Rumbling Strong Arm\" (★5)"
+   }
+  },
+  "killer_877": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "beads_wisdom_5": 2,
+     "beads_wisdom_4": 3
+    },
+    "wikiCard": 877,
+    "wikiTitle": "Killer Bee \"Rumbling Strong Arm\" (★6)"
+   }
+  },
+  "cee_880": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_body_4": 2,
+     "book_body_3": 2
+    },
+    "wikiCard": 880,
+    "wikiTitle": "Cee \"Earnest with Composure\" (★5)"
+   }
+  },
+  "sasori_882": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_bravery_4": 5
+    },
+    "wikiCard": 882,
+    "wikiTitle": "Sasori \"Eternal Creation\" (★5)"
+   }
+  },
+  "deidara_884": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_skill_4": 5
+    },
+    "wikiCard": 884,
+    "wikiTitle": "Deidara \"Creation of Light\" (★5)"
+   }
+  },
+  "kimimaro_886": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_skill_4": 2,
+     "book_skill_3": 2
+    },
+    "wikiCard": 886,
+    "wikiTitle": "Kimimaro \"Dance of Carnage\" (★5)"
+   }
+  },
+  "orochimaru_888": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "deadly_beads_endless_rebirth": 3,
+     "ferocious_beads_endless_rebirth": 2
+    },
+    "wikiCard": 888,
+    "wikiTitle": "Orochimaru \"Endless Rebirth\" (★6)"
+   }
+  },
+  "orochimaru_889": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "deadly_beads_endless_rebirth": 3,
+     "ferocious_beads_endless_rebirth": 2
+    },
+    "wikiCard": 889,
+    "wikiTitle": "Orochimaru \"Endless Rebirth\" (★6) (Blazing Awakened)"
+   }
+  },
+  "naruto_891": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_skill_4": 2,
+     "book_skill_3": 2
+    },
+    "wikiCard": 891,
+    "wikiTitle": "Naruto Uzumaki \"Gale of Vigor\" (★5)"
+   }
+  },
+  "kabuto_893": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_skill_4": 3,
+     "book_skill_3": 2
+    },
+    "wikiCard": 893,
+    "wikiTitle": "Kabuto Yakushi \"Proof of Self\" (★5)"
+   }
+  },
+  "kabuto_894": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "beads_skill_4": 3,
+     "beads_skill_5": 2
+    },
+    "wikiCard": 894,
+    "wikiTitle": "Kabuto Yakushi \"Proof of Self\" (★6)"
+   }
+  },
+  "roshi_896": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_wisdom_4": 2,
+     "book_wisdom_3": 2
+    },
+    "wikiCard": 896,
+    "wikiTitle": "Roshi \"Scorching Shroud\" (★5)"
+   }
+  },
+  "killer_1155": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "deadly_beads_lets_bee_friends": 3,
+     "ferocious_beads_lets_bee_friends": 2
+    },
+    "wikiCard": 1155,
+    "wikiTitle": "Killer Bee \"Let's \"Bee\" Friends\" (★6)"
+   }
+  },
+  "killer_1156": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "deadly_beads_lets_bee_friends": 3,
+     "ferocious_beads_lets_bee_friends": 2
+    },
+    "wikiCard": 1156,
+    "wikiTitle": "Killer Bee \"Let's \"Bee\" Friends\" (★6) (Blazing Awakened)"
+   }
+  },
+  "naruto_2000": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_heart_4": 2,
+     "book_heart_3": 2
+    },
+    "wikiCard": 2000,
+    "wikiTitle": "Naruto Uzumaki \"Beyond Rasen\" (★5)"
+   }
+  },
+  "hinata_2002": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_wisdom_4": 5
+    },
+    "wikiCard": 2002,
+    "wikiTitle": "Hinata Hyuga \"Redemptive Words\" (★5)"
+   }
+  },
+  "neji_2004": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "deadly_beads_freedom_of_choice": 3,
+     "ferocious_beads_freedom_of_choice": 2
+    },
+    "wikiCard": 2004,
+    "wikiTitle": "Neji Hyuga \"Freedom of Choice\" (★6)"
+   }
+  },
+  "neji_2005": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "deadly_beads_freedom_of_choice": 3,
+     "ferocious_beads_freedom_of_choice": 2
+    },
+    "wikiCard": 2005,
+    "wikiTitle": "Neji Hyuga \"Freedom of Choice\" (★6) (Blazing Awakened)"
+   }
+  },
+  "tobirama_2006": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_bravery_4": 3,
+     "book_bravery_3": 2
+    },
+    "wikiCard": 2006,
+    "wikiTitle": "Tobirama Senju \"Inherited Will of Fire\" (★5)"
+   }
+  },
+  "tobirama_2007": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "beads_bravery_5": 2,
+     "beads_bravery_4": 3
+    },
+    "wikiCard": 2007,
+    "wikiTitle": "Tobirama Senju \"Inherited Will of Fire\" (★6)"
+   }
+  },
+  "sakumo_2010": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_body_4": 2,
+     "book_body_3": 2
+    },
+    "wikiCard": 2010,
+    "wikiTitle": "Sakumo Hatake \"Between Duty and Comrades\" (★5)"
+   }
+  },
+  "sasuke_2012": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_body_4": 2,
+     "book_body_3": 2
+    },
+    "wikiCard": 2012,
+    "wikiTitle": "Sasuke Uchiha \"Lightning Storm Genius\" (★5)"
+   }
+  },
+  "tsunade_2014": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_skill_4": 5
+    },
+    "wikiCard": 2014,
+    "wikiTitle": "Tsunade \"Protector of the Great Tree\" (★5)"
+   }
+  },
+  "hashirama_2017": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "deadly_beads_pursuit_of_a_dream": 3,
+     "ferocious_beads_pursuit_of_a_dream": 2
+    },
+    "wikiCard": 2017,
+    "wikiTitle": "Hashirama Senju \"Pursuit of a Dream\" (★6)"
+   }
+  },
+  "hashirama_2018": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "deadly_beads_pursuit_of_a_dream": 3,
+     "ferocious_beads_pursuit_of_a_dream": 2
+    },
+    "wikiCard": 2018,
+    "wikiTitle": "Hashirama Senju \"Pursuit of a Dream\" (★6) (Blazing Awakened)"
+   }
+  },
+  "kaguya_2019": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_body_4": 3,
+     "book_body_3": 2
+    },
+    "wikiCard": 2019,
+    "wikiTitle": "Kaguya Otsutsuki \"Plot for Rebirth\" (★5)"
+   }
+  },
+  "kaguya_2020": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "beads_body_5": 2,
+     "beads_body_4": 3
+    },
+    "wikiCard": 2020,
+    "wikiTitle": "Kaguya Otsutsuki \"Plot for Rebirth\" (★6)"
+   }
+  },
+  "izuna_2026": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_bravery_4": 2,
+     "book_bravery_3": 2
+    },
+    "wikiCard": 2026,
+    "wikiTitle": "Izuna Uchiha \"Mercilessly Uncompromising\" (★5)"
+   }
+  },
+  "sasuke_2029": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_body_4": 5
+    },
+    "wikiCard": 2029,
+    "wikiTitle": "Sasuke Uchiha \"Battling with your eyes\" (★5)"
+   }
+  },
+  "itachi_2031": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_heart_4": 5
+    },
+    "wikiCard": 2031,
+    "wikiTitle": "Itachi Uchiha \"The Promised Day\" (★5)"
+   }
+  },
+  "danzo_2034": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "deadly_beads_embodiment_of_darkness": 3,
+     "ferocious_beads_embodiment_of_darkness": 2
+    },
+    "wikiCard": 2034,
+    "wikiTitle": "Danzo Shimura \"Embodiment of Darkness\" (★6)"
+   }
+  },
+  "danzo_2035": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "deadly_beads_embodiment_of_darkness": 3,
+     "ferocious_beads_embodiment_of_darkness": 2
+    },
+    "wikiCard": 2035,
+    "wikiTitle": "Danzo Shimura \"Embodiment of Darkness\" (★6) (Blazing Awakened)"
+   }
+  },
+  "naruto_2036": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_heart_4": 3,
+     "book_heart_3": 2
+    },
+    "wikiCard": 2036,
+    "wikiTitle": "Naruto Uzumaki \"True Peace\" (★5)"
+   }
+  },
+  "naruto_2037": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "beads_heart_5": 2,
+     "beads_heart_4": 3
+    },
+    "wikiCard": 2037,
+    "wikiTitle": "Naruto Uzumaki \"True Peace\" (★6)"
+   }
+  },
+  "choji_2040": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_skill_4": 2,
+     "book_skill_3": 2
+    },
+    "wikiCard": 2040,
+    "wikiTitle": "Choji Akimichi \"Gentle Resolve\" (★5)"
+   }
+  },
+  "kaguya_2042": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_bravery_4": 5
+    },
+    "wikiCard": 2042,
+    "wikiTitle": "Kaguya Otsutsuki \"Forbidden Fruit\" (★5)"
+   }
+  },
+  "hagoromo_2044": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "deadly_beads_truth_of_the_divine_tree": 3,
+     "ferocious_beads_truth_of_the_divine_tree": 2
+    },
+    "wikiCard": 2044,
+    "wikiTitle": "Hagoromo Otsutsuki \"Truth of the Divine Tree\" (★6)"
+   }
+  },
+  "hagoromo_2045": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "deadly_beads_truth_of_the_divine_tree": 3,
+     "ferocious_beads_truth_of_the_divine_tree": 2
+    },
+    "wikiCard": 2045,
+    "wikiTitle": "Hagoromo Otsutsuki \"Truth of the Divine Tree\" (★6) (Blazing Awakened)"
+   }
+  },
+  "tenzo_2046": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_heart_4": 2,
+     "book_heart_3": 2
+    },
+    "wikiCard": 2046,
+    "wikiTitle": "Tenzo (Yamato) \"Beneath the Sun\" (★5)"
+   }
+  },
+  "konan_2048": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_wisdom_3": 2,
+     "book_wisdom_2": 2
+    },
+    "wikiCard": 2048,
+    "wikiTitle": "Konan \"A New Light\" (★5)"
+   }
+  },
+  "kakashi_2051": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_wisdom_4": 3,
+     "book_wisdom_3": 2
+    },
+    "wikiCard": 2051,
+    "wikiTitle": "Kakashi Hatake \"A Bolt from the Dark\" (★5)"
+   }
+  },
+  "kakashi_2052": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "beads_wisdom_5": 2,
+     "beads_wisdom_4": 3
+    },
+    "wikiCard": 2052,
+    "wikiTitle": "Kakashi Hatake \"A Bolt from the Dark\" (★6)"
+   }
+  },
+  "kankuro_2055": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_wisdom_4": 2,
+     "book_wisdom_3": 2
+    },
+    "wikiCard": 2055,
+    "wikiTitle": "Kankuro \"A New Act\" (★5)"
+   }
+  },
+  "hashirama_2057": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_wisdom_4": 5
+    },
+    "wikiCard": 2057,
+    "wikiTitle": "Hashirama Senju \"Resolve to Protect\" (★5)"
+   }
+  },
+  "madara_2059": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "deadly_beads_at_the_battles_end": 3,
+     "ferocious_beads_at_the_battles_end": 2
+    },
+    "wikiCard": 2059,
+    "wikiTitle": "Madara Uchiha \"At the Battle's End\" (★6)"
+   }
+  },
+  "madara_2060": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "deadly_beads_at_the_battles_end": 3,
+     "ferocious_beads_at_the_battles_end": 2
+    },
+    "wikiCard": 2060,
+    "wikiTitle": "Madara Uchiha \"At the Battle's End\" (★6) (Blazing Awakened)"
+   }
+  },
+  "shisui_2062": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_body_4": 3,
+     "book_body_3": 2
+    },
+    "wikiCard": 2062,
+    "wikiTitle": "Shisui Uchiha \"The Price of Pride\" (★5)"
+   }
+  },
+  "shisui_2063": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "beads_body_5": 2,
+     "beads_body_4": 3
+    },
+    "wikiCard": 2063,
+    "wikiTitle": "Shisui Uchiha \"The Price of Pride\" (★6)"
+   }
+  },
+  "dan_2066": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_bravery_4": 2,
+     "book_bravery_3": 2
+    },
+    "wikiCard": 2066,
+    "wikiTitle": "Dan Kato \"Unfaltering Ambition\" (★5)"
+   }
+  },
+  "sakura_2069": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_heart_4": 5
+    },
+    "wikiCard": 2069,
+    "wikiTitle": "Sakura Haruno \"Back to Back\" (★5)"
+   }
+  },
+  "obito_2071": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "deadly_beads_inching_towards_perfection": 3,
+     "ferocious_beads_inching_towards_perfection": 2
+    },
+    "wikiCard": 2071,
+    "wikiTitle": "Obito Uchiha \"Inching Towards Perfection\" (★6)"
+   }
+  },
+  "obito_2072": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "deadly_beads_inching_towards_perfection": 3,
+     "ferocious_beads_inching_towards_perfection": 2
+    },
+    "wikiCard": 2072,
+    "wikiTitle": "Obito Uchiha \"Inching Towards Perfection\" (★6) (Blazing Awakened)"
+   }
+  },
+  "nagato_2074": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_skill_4": 3,
+     "book_skill_3": 2
+    },
+    "wikiCard": 2074,
+    "wikiTitle": "Nagato \"As the Older Student\" (★5)"
+   }
+  },
+  "nagato_2075": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "beads_skill_4": 3,
+     "beads_skill_5": 2
+    },
+    "wikiCard": 2075,
+    "wikiTitle": "Nagato \"As the Older Student\" (★6)"
+   }
+  },
+  "akatsuchi_2078": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_heart_4": 2,
+     "book_heart_3": 2
+    },
+    "wikiCard": 2078,
+    "wikiTitle": "Akatsuchi \"Unyielding Stone\" (★5)"
+   }
+  },
+  "obito_2080": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_wisdom_4": 5
+    },
+    "wikiCard": 2080,
+    "wikiTitle": "Obito Uchiha \"The Illusory World\" (★5)"
+   }
+  },
+  "kinkaku_ginkaku_2082": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "deadly_beads_cataclysm_eaters": 3,
+     "ferocious_beads_cataclysm_eaters": 2
+    },
+    "wikiCard": 2082,
+    "wikiTitle": "Kinkaku/Ginkaku \"Cataclysm-Eaters\" (★6)"
+   }
+  },
+  "pain_2085": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_wisdom_4": 3,
+     "book_wisdom_3": 2
+    },
+    "wikiCard": 2085,
+    "wikiTitle": "Pain (Tendo) \"Godlike Power\" (★5)"
+   }
+  },
+  "pain_2086": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "beads_wisdom_5": 2,
+     "beads_wisdom_4": 3
+    },
+    "wikiCard": 2086,
+    "wikiTitle": "Pain (Tendo) \"Godlike Power\" (★6)"
+   }
+  },
+  "itachi_2094": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_heart_4": 3,
+     "book_heart_3": 2
+    },
+    "wikiCard": 2094,
+    "wikiTitle": "Itachi Uchiha \"Talent and Burden\" (★5)"
+   }
+  },
+  "itachi_2095": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "beads_heart_5": 2,
+     "beads_heart_4": 3
+    },
+    "wikiCard": 2095,
+    "wikiTitle": "Itachi Uchiha \"Talent and Burden\" (★6)"
+   }
+  },
+  "minato_2100": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_skill_4": 5
+    },
+    "wikiCard": 2100,
+    "wikiTitle": "Minato Namikaze \"Raikosekka\" (★5)"
+   }
+  },
+  "masked_2102": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "deadly_beads_evil_heart": 3,
+     "ferocious_beads_evil_heart": 2
+    },
+    "wikiCard": 2102,
+    "wikiTitle": "Masked Man \"Evil Heart\" (★6)"
+   }
+  },
+  "masked_2103": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "deadly_beads_evil_heart": 3,
+     "ferocious_beads_evil_heart": 2
+    },
+    "wikiCard": 2103,
+    "wikiTitle": "Masked Man \"Evil Heart\" (★6) (Blazing Awakened)"
+   }
+  },
+  "shikamaru_2105": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_bravery_4": 3,
+     "book_bravery_3": 2
+    },
+    "wikiCard": 2105,
+    "wikiTitle": "Shikamaru Nara \"View to Victory\" (★5)"
+   }
+  },
+  "shikamaru_2106": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "beads_bravery_5": 2,
+     "beads_bravery_4": 3
+    },
+    "wikiCard": 2106,
+    "wikiTitle": "Shikamaru Nara \"View to Victory\" (★6)"
+   }
+  },
+  "ashura_2109": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_body_4": 5
+    },
+    "wikiCard": 2109,
+    "wikiTitle": "Ashura \"The Power of Bonds\" (★5)"
+   }
+  },
+  "indra_2111": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "deadly_beads_strength_based_leadership": 3,
+     "ferocious_beads_strength_based_leadership": 2
+    },
+    "wikiCard": 2111,
+    "wikiTitle": "Indra \"Strength-Based Leadership\" (★6)"
+   }
+  },
+  "indra_2112": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "deadly_beads_strength_based_leadership": 3,
+     "ferocious_beads_strength_based_leadership": 2
+    },
+    "wikiCard": 2112,
+    "wikiTitle": "Indra \"Strength-Based Leadership\" (★6) (Blazing Awakened)"
+   }
+  },
+  "madara_2120": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_body_4": 3,
+     "book_body_3": 2
+    },
+    "wikiCard": 2120,
+    "wikiTitle": "Madara Uchiha \"Power of Rinne\" (★5)"
+   }
+  },
+  "madara_2121": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "beads_body_5": 2,
+     "beads_body_4": 3
+    },
+    "wikiCard": 2121,
+    "wikiTitle": "Madara Uchiha \"Power of Rinne\" (★6)"
+   }
+  },
+  "kakashi_2125": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_bravery_3": 2,
+     "book_bravery_2": 2
+    },
+    "wikiCard": 2125,
+    "wikiTitle": "Kakashi Hatake \"Kage's Successor\" (★5)"
+   }
+  },
+  "darui_2128": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_skill_4": 3,
+     "book_skill_3": 2
+    },
+    "wikiCard": 2128,
+    "wikiTitle": "Darui \"From the Heart\" (★5)"
+   }
+  },
+  "darui_2129": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "beads_skill_4": 3,
+     "beads_skill_5": 2
+    },
+    "wikiCard": 2129,
+    "wikiTitle": "Darui \"From the Heart\" (★6)"
+   }
+  },
+  "sasuke_2131": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_bravery_4": 5
+    },
+    "wikiCard": 2131,
+    "wikiTitle": "Sasuke Uchiha \"Rain of Extinction\" (★5)"
+   }
+  },
+  "naruto_2134": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_wisdom_4": 3,
+     "book_wisdom_3": 2
+    },
+    "wikiCard": 2134,
+    "wikiTitle": "Naruto Uzumaki \"Precious Feelings\" (★5)"
+   }
+  },
+  "naruto_2135": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "beads_wisdom_5": 2,
+     "beads_wisdom_4": 3
+    },
+    "wikiCard": 2135,
+    "wikiTitle": "Naruto Uzumaki \"Precious Feelings\" (★6)"
+   }
+  },
+  "naruto_2137": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_heart_4": 5
+    },
+    "wikiCard": 2137,
+    "wikiTitle": "Naruto Uzumaki \"Roaring Tears\" (★5)"
+   }
+  },
+  "sasuke_2139": {
+   "5S": {
+    "to": "6S",
+    "materials": {
+     "book_heart_4": 3,
+     "book_heart_3": 2
+    },
+    "wikiCard": 2139,
+    "wikiTitle": "Sasuke Uchiha \"Desired Future\" (★5)"
+   }
+  },
+  "sasuke_2140": {
+   "6S": {
+    "to": "6SB",
+    "materials": {
+     "beads_heart_5": 2,
+     "beads_heart_4": 3
+    },
+    "wikiCard": 2140,
+    "wikiTitle": "Sasuke Uchiha \"Desired Future\" (★6)"
+   }
+  }
+ }
+}

@@ -372,9 +372,16 @@
     NP_VERSION.textContent = safeStr(c.version, "");
     NP_STARS.innerHTML     = renderStars(starsFromTier(tier));
     if (NP_ELEMENT) {
+      // Element orb (assets/ui/jjk/orb_<element>.webp); text only for unknown elements
       const el = safeStr(c.element, "");
-      NP_ELEMENT.textContent = el;
-      NP_ELEMENT.dataset.el = el.toLowerCase();
+      const key = el.toLowerCase();
+      const hasOrb = ["body", "skill", "bravery", "wisdom", "heart"].includes(key);
+      if (hasOrb) NP_ELEMENT.innerHTML = `<img class="cx-elem-orb" src="assets/ui/jjk/orb_${key}.webp" alt="" draggable="false">`;
+      else NP_ELEMENT.textContent = el;
+      NP_ELEMENT.classList.toggle("has-orb", hasOrb);
+      NP_ELEMENT.dataset.el = key;
+      NP_ELEMENT.title = el;
+      NP_ELEMENT.setAttribute("aria-label", el ? `${el} element` : "");
       NP_ELEMENT.hidden = !el;
     }
 
@@ -408,6 +415,14 @@
     MODAL.setAttribute("aria-hidden", "true");
     document.body.style.overflow = "";
   }
+  // Materials granted elsewhere (dev panel, mail…): refresh the open unit's
+  // awakening requirements + Awaken button without resetting the active tab.
+  window.addEventListener("resources:changed", () => {
+    if (!MODAL.classList.contains("open")) return;
+    const inst = window.InventoryChar.getByUid(MODAL.dataset.currentUid);
+    const c = inst && BYID[inst.charId];
+    if (c) renderStatusTab(c, inst, inst.tierCode || minTier(c));
+  });
   MODAL_CLOSE?.addEventListener("click", closeModal);
   MODAL?.addEventListener("click", (e) => { if (e.target === MODAL) closeModal(); });
   window.addEventListener("keydown", (e) => { if (e.key === "Escape" && MODAL.classList.contains("open")) closeModal(); });
@@ -660,8 +675,14 @@
     // Awakening check - use base tier cap, not extended cap
     const canAwaken = hasProg && typeof window.Progression.canAwaken === "function" && isMaxBaseTier && window.Progression.canAwaken(inst, c);
 
-    BTN_AWAKEN.disabled = !canAwaken;
-    TIP_EL.textContent = canAwaken ? "Ready to awaken." : (isMaxBaseTier ? "Max tier level reached." : `Level up to ${baseCap} to awaken.`);
+    // Awaken only when the level/tier allows it AND every material is owned
+    const hasMats = canAwaken && hasAwakening && typeof window.Awakening.hasAllMaterials === "function"
+      ? await window.Awakening.hasAllMaterials(inst, c)
+      : canAwaken;
+    BTN_AWAKEN.disabled = !(canAwaken && hasMats);
+    TIP_EL.textContent = canAwaken
+      ? (hasMats ? "Ready to awaken." : "Missing awakening materials.")
+      : (isMaxBaseTier ? "Max tier level reached." : `Level up to ${baseCap} to awaken.`);
 
     // Limit break display
     const maxLB = hasLimitBreak ? window.LimitBreak.getMaxLimitBreakLevel(tier) : 0;
@@ -1095,43 +1116,93 @@
   }
 
   /* ---------- Materials Display ---------- */
+  // Wiki-style "Required (Blazing) Awakening Materials → (Blazing) Awaken to"
+  // table: framed Naruto Blazing material cards with owned / needed counts,
+  // an arrow and the card the unit awakens into.
+  const escHTML = (v) => String(v ?? "").replace(/[&<>"']/g, ch => (
+    { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[ch]));
+
   async function renderMaterials(inst, c, tier) {
     if (!hasAwakening || !hasResources) {
       MATERIALS_DISPLAY.innerHTML = "";
       return;
     }
+    if (window.Resources.ready) await window.Resources.ready;
 
-    const reqs = await window.Awakening.getRequirements(tier);
+    const reqs = window.Awakening.getRequirementsFor
+      ? await window.Awakening.getRequirementsFor(inst, c)
+      : await window.Awakening.getRequirements(tier);
 
-    if (!reqs || !reqs.materials) {
-      MATERIALS_DISPLAY.innerHTML = '<div class="no-requirements">No awakening materials required for this tier.</div>';
+    const bounds = hasProg ? window.Progression.getTierBounds(c) : null;
+    const atTop = bounds && window.Progression.TIER_ORDER &&
+      window.Progression.TIER_ORDER.indexOf(inst.tierCode || bounds.minCode) >= window.Progression.TIER_ORDER.indexOf(bounds.maxCode);
+    if (!reqs || !reqs.materials || !reqs.nextTier || atTop) {
+      MATERIALS_DISPLAY.innerHTML = '<div class="materials-title">Awakening</div><div class="no-requirements">Fully awakened: no further awakening for this unit.</div>';
       return;
     }
 
     const fmt = (n) => safeNum(n, 0).toLocaleString();
-    let html = '<div class="materials-title">Awakening Materials</div>';
+    const blazing = !!reqs.blazing;
+    const nextTier = reqs.nextTier;
+    const iconFor = (id, info) => (window.RewardFormat && typeof window.RewardFormat.icon === "function")
+      ? window.RewardFormat.icon(id) : info.icon;
 
+    const cards = [];
+    let ryoHTML = "";
     for (const [matId, required] of Object.entries(reqs.materials)) {
       const owned = window.Resources.get(matId);
-      const matInfo = window.Resources.getMaterialInfo(matId);
-      const sufficient = owned >= required;
-      const className = sufficient ? "sufficient" : "insufficient";
-      const icon = (window.RewardFormat && typeof window.RewardFormat.icon === "function")
-        ? window.RewardFormat.icon(matId) : matInfo.icon;
-      const iconHTML = icon
-        ? `<img class="material-icon" src="${icon}" alt="" onerror="this.style.visibility='hidden'">`
-        : `<span class="material-icon"></span>`;
-
-      html += `
-        <div class="material-item jjk-row ${className}">
-          ${iconHTML}
-          <span class="material-name">${matInfo.name}</span>
-          <span class="material-amount ${className}"><b>${fmt(owned)}</b><i>/</i><span>${fmt(required)}</span></span>
-        </div>
-      `;
+      const ok = owned >= required;
+      const info = window.Resources.getMaterialInfo(matId);
+      if (matId === "ryo") {
+        ryoHTML = `
+          <div class="material-item jjk-row awk-ryo ${ok ? "sufficient" : "insufficient"}" data-mat="ryo">
+            <img class="material-icon" src="${iconFor("ryo", info)}" alt="" onerror="this.style.visibility='hidden'">
+            <span class="material-name">Ryo</span>
+            <span class="material-amount ${ok ? "sufficient" : "insufficient"}"><b>${fmt(owned)}</b><i>/</i><span>${fmt(required)}</span></span>
+          </div>`;
+        continue;
+      }
+      const title = `${info.fullName || info.name}${info.rarity ? ` (★${info.rarity})` : ""}`;
+      cards.push(`
+        <div class="awk-mat ${ok ? "is-ok" : "is-short"}" data-mat="${escHTML(matId)}" title="${escHTML(title)}">
+          <div class="awk-mat-card">
+            <img src="${iconFor(matId, info)}" alt="${escHTML(title)}" loading="lazy" onerror="this.style.visibility='hidden'">
+            <span class="awk-mat-need">×${fmt(required)}</span>
+          </div>
+          <div class="awk-mat-count"><b>${fmt(owned)}</b><i>/</i><span>${fmt(required)}</span></div>
+          <div class="awk-mat-name">${escHTML(info.name)}</div>
+        </div>`);
     }
 
-    MATERIALS_DISPLAY.innerHTML = html;
+    // Target card: the transform card if the unit becomes another card,
+    // otherwise the same unit at the next tier.
+    let target = c;
+    try {
+      const toId = await window.Awakening.getTransformForTier(inst.charId || c.id, nextTier);
+      if (toId && BYID[toId]) target = BYID[toId];
+    } catch (_) { /* keep current */ }
+    const art = resolveTierArt(target, nextTier);
+    const targetStars = starsFromTier(nextTier);
+
+    const head = blazing ? "Required Blazing Awakening Materials" : "Required Awakening Materials";
+    const toLabel = blazing ? "Blazing Awaken to" : "Awaken to";
+    const srcNote = reqs.source === "wiki" ? "Naruto Blazing wiki"
+      : reqs.source === "element" ? `${(c.element || "Element")} default` : "Tier default";
+
+    MATERIALS_DISPLAY.innerHTML = `
+      <div class="materials-title">${head}<span class="awk-src" title="Requirement source">${escHTML(srcNote)}</span></div>
+      <div class="awk-table ${blazing ? "is-blazing" : ""}">
+        <div class="awk-mats">${cards.join("") || '<div class="no-requirements">No materials.</div>'}</div>
+        <div class="awk-arrow" aria-hidden="true"></div>
+        <div class="awk-target">
+          <div class="awk-target-label">${toLabel}</div>
+          <div class="awk-target-card ${blazing ? "is-blazing" : ""}">
+            <img src="${escHTML(art.portrait)}" alt="${escHTML(target.name || "")}" loading="lazy" onerror="this.style.visibility='hidden'">
+          </div>
+          <div class="awk-target-stars">${renderStars(targetStars)}</div>
+        </div>
+      </div>
+      ${ryoHTML}`;
   }
 
   function wireStatusButtons(c, inst, tierOrNull) {
@@ -1639,6 +1710,7 @@
     return `
       <article class="cx-stub is-${kind}${lockNote ? " is-locked" : ""}">
         <header class="cx-stub-head">
+          ${PREVIEW_KINDS.has(kind) ? `<button type="button" class="cx-play" data-kind="${kind}" aria-label="Preview ${esc(name)}" title="Preview"></button>` : ""}
           <span class="cx-chip cx-chip--${kind}">${chip}</span>
           <h5 class="cx-stub-name">${esc(name)}</h5>
           ${lockNote ? `<span class="cx-lock">${esc(lockNote)}</span>` : ""}
@@ -1648,7 +1720,24 @@
       </article>`;
   }
 
+  // ▶ on Jutsu / Ultimate / Secret stubs opens an attack preview (js/skill-preview.js)
+  const PREVIEW_KINDS = new Set(["jutsu", "ultimate", "secret"]);
+  let skillPreviewCtx = null;
+  SKILLS_WRAP.addEventListener("click", (ev) => {
+    const btn = ev.target.closest(".cx-play");
+    if (!btn || !skillPreviewCtx || !window.SkillPreview) return;
+    const { c, tier } = skillPreviewCtx;
+    const kind = btn.dataset.kind;
+    const fallback = { jutsu: "Ninjutsu", ultimate: "Ultimate", secret: "Secret Technique" }[kind];
+    window.SkillPreview.open({
+      charId: c.id, kind, base: c,
+      name: safeStr(c.skills?.[kind]?.name, fallback),
+      art: resolveTierArt(c, tier),
+    });
+  });
+
   function renderSkillsTab(c, inst, tier) {
+    skillPreviewCtx = { c, tier };
     const minT = minTier(c);
     const { jutsu = null, ultimate = null, secret = null, latent = null } = c.skills || {};
     const stubs = [];

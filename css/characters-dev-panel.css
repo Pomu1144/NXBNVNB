@@ -37,6 +37,8 @@
   transition: opacity 0.18s ease, transform 0.18s ease;
 }
 .chardev-panel.open { opacity: 1; transform: translateY(0); pointer-events: auto; }
+/* Many tools: keep the panel on screen and scroll its body */
+.chardev-panel { display: flex; flex-direction: column; max-height: calc(100vh - 170px); }
 
 .chardev-header {
   display: flex;
@@ -49,7 +51,7 @@
 .chardev-close {
   background: none; border: none; color: #9fb4d8; font-size: 20px; cursor: pointer; line-height: 1;
 }
-.chardev-body { padding: 12px; display: flex; flex-direction: column; gap: 10px; }
+.chardev-body { padding: 12px; display: flex; flex-direction: column; gap: 10px; overflow-y: auto; min-height: 0; }
 .chardev-row { display: flex; gap: 8px; align-items: flex-start; font-size: 13px; cursor: pointer; }
 .chardev-row small { color: #8ea3c6; display: block; }
 .chardev-btn {
