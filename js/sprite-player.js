@@ -157,7 +157,9 @@
 
   // Characters that have animated battle spritesheets, keyed by character id.
   // Each folder holds idle.webp/.json and run.webp/.json, plus optional
-  // one-shot attack sheets (jutsu / ultimate) whose JSON lists hit frames.
+  // one-shot attack sheets (jutsu / ultimate) whose JSON lists hit frames, and
+  // one-shot reaction sheets: 'hit' (flinch, played by battle-hit-react.js)
+  // and 'ko' (knocked down; its last frame is held).
   const REGISTRY = {
     minato_2101: 'assets/sprites/minato_2101',
     naruto_2115: 'assets/sprites/naruto_2115',
