@@ -482,9 +482,9 @@
      equip slots. The slot buttons keep their classes / data-slot so the jutsu
      equipment code (renderJutsuSlots, slot bindings, tooltips) finds them. */
   const STAT_ICONS = {
-    hp:  '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.5-9.3C1.1 8.3 3.3 4.5 7 4.5c2.1 0 3.6 1.2 5 3 1.4-1.8 2.9-3 5-3 3.7 0 5.9 3.8 4.5 7.2C19.5 16.4 12 21 12 21z"/></svg>',
-    atk: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 2.5 9.8 13.2l-1.9-.6-1.4 1.4 1.6 1.6-3.6 3.6-1-1-1.2 1.2 3.3 3.3 1.2-1.2-1-1 3.6-3.6 1.6 1.6 1.4-1.4-.6-1.9L21.5 3.5l-1-1z"/></svg>',
-    spd: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.5 2 5 13.5h6L9.5 22 19 9.5h-6.2L13.5 2z"/></svg>'
+    hp:  '<img src="assets/ui/stats/health.webp" alt="" aria-hidden="true" draggable="false">',
+    atk: '<img src="assets/ui/stats/attack.webp" alt="" aria-hidden="true" draggable="false">',
+    spd: '<img src="assets/ui/stats/speed.webp" alt="" aria-hidden="true" draggable="false">'
   };
   const fmtInt = (n) => Math.round(safeNum(n, 0)).toLocaleString();
   const slotBtn = (slot, label, ult) => ult
