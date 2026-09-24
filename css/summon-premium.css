@@ -798,72 +798,294 @@ button.pickup-unit:focus-visible { outline: none; box-shadow: inset 0 0 0 1px va
   #stage-banner-img { max-width: calc(100% - 80px); max-height: calc(100% - 40px); }
 }
 
-/* ═══════════════════ Results modal → shared JJK look ═══════════════════ */
-.summon-modal .modal-overlay { background: rgba(3,9,11,0.9); }
-.summon-modal .modal-content { justify-content: center; gap: 22px; }
-.summon-modal .result-grid { max-width: 700px; gap: 10px; }
+/* ═══════════════════ Summon results — washi panel ═══════════════════
+   Ink-teal panel with antique-gold frame, Kaisei type, cards framed by star
+   tier, and the washi ticket (same art as the Summon buttons) as Continue.
+   Tiers:  ≤4★ quiet hairline · 5★ antique gold + one glint sweep
+           6★ bright gold bezel + glow · 7★ crimson-gold bezel + repeating glint
+   PERF: the reveal animates only opacity/transform; glows are static
+   box-shadows; the glint is a transform on one pseudo-element per card. */
+.summon-modal .modal-overlay {
+  background:
+    radial-gradient(ellipse 70% 60% at 50% 45%, rgba(20,60,68,0.35), rgba(3,9,11,0.94) 75%),
+    rgba(3,9,11,0.9);
+  backdrop-filter: blur(6px);
+}
+.summon-modal .modal-content {
+  justify-content: center; justify-content: safe center; /* never clip the top when it scrolls */
+  gap: 0; padding: 18px 14px;
+  box-sizing: border-box;
+}
+.summon-modal .sr-panel {
+  position: relative; box-sizing: border-box;
+  width: min(100%, 820px);
+  display: flex; flex-direction: column; align-items: center; gap: 16px;
+  padding: 18px 26px 16px;
+  background:
+    linear-gradient(180deg, rgba(14,38,45,0.93), rgba(6,17,21,0.96)),
+    url('../assets/ui/jjk/ink_bg.webp') center / cover no-repeat,
+    #0a1b20;
+  border: 1px solid rgba(201,162,78,0.6);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.75), inset 0 0 0 4px rgba(3,10,12,0.55), inset 0 0 0 5px rgba(201,162,78,0.22), inset 0 0 40px rgba(0,0,0,0.45);
+  animation: srPanelIn .28s var(--jjk-ease, ease) both;
+}
+.summon-modal .sr-panel::before, .summon-modal .sr-panel::after {
+  content: ''; position: absolute; width: 20px; height: 20px; pointer-events: none;
+  border: 2px solid var(--jjk-gold, #c9a24e);
+}
+.summon-modal .sr-panel::before { top: -3px; left: -3px; border-right: 0; border-bottom: 0; }
+.summon-modal .sr-panel::after  { bottom: -3px; right: -3px; border-left: 0; border-top: 0; }
+@keyframes srPanelIn { from { opacity: 0; transform: translateY(10px) scale(.985); } to { opacity: 1; transform: none; } }
+
+/* Header: hanko seal · kicker + title · summary chips, over a gold rule */
+.summon-modal .sr-head {
+  align-self: stretch;
+  display: flex; align-items: center; gap: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(201,162,78,0.28);
+  position: relative;
+}
+.summon-modal .sr-head::after {          /* ink-brush accent under the title */
+  content: ''; position: absolute; left: 0; bottom: -2px; width: 180px; height: 3px;
+  background: linear-gradient(90deg, var(--jjk-crimson, #8e1c1c), rgba(142,28,28,0.6) 60%, transparent);
+  clip-path: polygon(0 30%, 100% 0, 96% 100%, 0 80%);
+}
+.summon-modal .sr-hanko {
+  flex: 0 0 auto;
+  width: 40px; height: 40px; display: grid; place-items: center;
+  font-family: 'Kaisei Tokumin', serif; font-weight: 800; font-size: 24px; line-height: 1;
+  color: rgba(255,228,208,0.95);
+  background: radial-gradient(circle at 40% 35%, #b3261e, #7e1612 70%);
+  border-radius: 4px;
+  box-shadow: inset 0 0 0 2px rgba(255,220,200,0.35), 0 2px 6px rgba(0,0,0,0.6);
+  rotate: -6deg;
+}
+.summon-modal .sr-head-text { display: flex; flex-direction: column; min-width: 0; }
+.summon-modal .sr-kicker {
+  font-family: var(--jjk-font); font-weight: 700; font-size: 10px; letter-spacing: 0.34em; text-transform: uppercase;
+  color: var(--jjk-gold, #c9a24e);
+}
+.summon-modal .sr-title {
+  margin: 1px 0 0; font-family: var(--jjk-font); font-weight: 800; font-size: 22px; letter-spacing: 0.02em;
+  color: var(--jjk-gold-hi, #f1d98a); text-shadow: 0 2px 3px rgba(0,0,0,0.9);
+  white-space: nowrap;
+}
+.summon-modal .sr-summary {
+  margin-left: auto; display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 6px;
+}
+.summon-modal .sr-summary span {
+  display: inline-flex; align-items: baseline; gap: 5px;
+  padding: 3px 12px;
+  font-family: var(--jjk-font); font-weight: 700; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--jjk-muted, #93a3a3);
+  background: rgba(5,14,17,0.85);
+  box-shadow: inset 0 0 0 1px rgba(201,162,78,0.4);
+  clip-path: polygon(6px 0, 100% 0, calc(100% - 6px) 100%, 0 100%);
+}
+.summon-modal .sr-summary b { font-size: 14px; letter-spacing: 0; color: var(--jjk-gold-hi, #f1d98a); }
+.summon-modal .sr-summary .is-featured { color: #f3c9c0; box-shadow: inset 0 0 0 1px rgba(210,80,60,0.6); }
+
+.summon-modal .result-display:empty { display: none !important; }
+
+/* Grid */
+.summon-modal .result-grid {
+  width: 100%; max-width: none; margin: 0;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 12px;
+}
+.summon-modal .result-grid.single { grid-template-columns: minmax(0, 190px); justify-content: center; }
+
+/* Card: gradient-border frame (padding-box face + border-box bezel) */
 .summon-modal .result-card,
 .summon-modal .result-card.rarity-bronze,
 .summon-modal .result-card.rarity-silver,
 .summon-modal .result-card.rarity-gold,
 .summon-modal .result-card.featured {
-  position: relative;
-  border: 1px solid rgba(147,163,163,0.45);
-  border-radius: 2px;
-  background: linear-gradient(180deg, rgba(19,48,57,0.95), rgba(6,17,21,0.98));
-  box-shadow: 0 6px 16px rgba(0,0,0,0.6);
+  --bezel: linear-gradient(135deg, rgba(147,163,163,0.55), rgba(201,162,78,0.35) 50%, rgba(147,163,163,0.45));
+  --face: linear-gradient(180deg, #11303a 0%, #0a1d23 62%, #061115 100%);
+  position: relative; isolation: isolate;
+  box-sizing: border-box;
+  border: 2px solid transparent; border-radius: 2px;
+  background: var(--face) padding-box, var(--bezel) border-box;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.55);
   overflow: hidden;
+  text-align: center;
+  cursor: default;
+  transform: none;
+  transition: transform .18s var(--jjk-ease, ease);
+  animation: srCardIn .42s cubic-bezier(.2,.9,.25,1.15) backwards;
+  animation-delay: calc(0.12s + var(--i, 0) * 0.07s);
 }
-.summon-modal .result-card.rarity-gold { border-color: rgba(201,162,78,0.8); }
-.summon-modal .result-card.featured {
-  border-color: var(--jjk-gold-hi);
-  box-shadow: 0 0 0 1px rgba(0,0,0,0.8), 0 0 14px rgba(241,217,138,0.35), 0 6px 16px rgba(0,0,0,0.6);
-  animation: cardReveal 0.4s ease backwards;
+.summon-modal .result-card:hover { transform: translateY(-3px); box-shadow: 0 10px 18px rgba(0,0,0,0.6); }
+@keyframes srCardIn {
+  from { opacity: 0; transform: translateY(16px) scale(.9); }
+  to   { opacity: 1; transform: none; }
+}
+
+.summon-modal .result-card-inner { position: relative; display: flex; flex-direction: column; height: 100%; }
+.summon-modal .result-card-art {
+  position: relative; aspect-ratio: 1; padding: 9px 9px 0;
+  background: radial-gradient(circle at 50% 42%, rgba(45,107,115,0.38), transparent 68%);
 }
 .summon-modal .result-card-inner img,
 .summon-modal .result-card img {
-  height: auto;
-  aspect-ratio: 1;
-  object-fit: contain;
-  margin: 0;
-  padding: 10px 10px 0;
-  background: radial-gradient(circle at 50% 40%, rgba(45,107,115,0.35), transparent 70%);
-  filter: drop-shadow(0 2px 5px rgba(0,0,0,0.6));
-}
-.summon-modal .result-card.featured img { filter: drop-shadow(0 0 8px rgba(241,217,138,0.6)); }
-.summon-modal .result-card-info { padding: 6px 6px 10px; }
-.summon-modal .result-card-name {
-  font-family: var(--jjk-font); font-weight: 700; font-size: 12px; color: var(--jjk-text);
-  margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-}
-.summon-modal .result-card-rarity { font-size: 11px; color: var(--jjk-gold-hi); text-shadow: none; margin: 0; }
-.summon-modal .result-card-featured {
-  display: inline-block; margin-top: 5px;
-  padding: 2px 12px; border-radius: 0;
-  background: var(--jjk-crimson); box-shadow: inset 0 0 0 1px rgba(241,217,138,0.6);
-  clip-path: polygon(5px 0, 100% 0, calc(100% - 5px) 100%, 0 100%);
-  font-family: var(--jjk-font); font-weight: 800; font-size: 10px; letter-spacing: 1px; color: #fff;
-}
-.summon-modal .btn-continue {
-  width: min(260px, 70vw);
-  aspect-ratio: auto;
-  height: 52px;
-  margin-top: 0;
-  border: 0;
-  box-sizing: border-box;
+  display: block; width: 100%; height: 100%; aspect-ratio: 1;
+  object-fit: contain; margin: 0; padding: 0;
   background: none;
-  border-image: url('../assets/ui/jjk/btn_ticket_red.webp') 36 fill / 16px stretch;
-  font-family: var(--jjk-font);
-  font-weight: 800;
-  font-size: 18px;
-  letter-spacing: 3px;
-  color: var(--jjk-gold-hi, #f1d98a);
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.95), 0 0 8px rgba(60, 0, 0, 0.6);
-  box-shadow: none;
-  border-radius: 0;
-  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.6));
+  filter: drop-shadow(0 3px 5px rgba(0,0,0,0.65));
 }
-.summon-modal .btn-continue:hover { color: var(--jjk-gold-hi, #f1d98a); background: none; filter: brightness(1.12) drop-shadow(0 4px 8px rgba(0,0,0,0.6)); }
+.summon-modal .result-card-info {
+  padding: 6px 6px 9px; margin-top: auto;
+  border-top: 1px solid rgba(201,162,78,0.18);
+  background: linear-gradient(180deg, rgba(3,10,12,0), rgba(3,10,12,0.45));
+}
+.summon-modal .result-card-name {
+  font-family: var(--jjk-font); font-weight: 700; font-size: 12px; line-height: 1.25;
+  color: var(--jjk-text, #ece6d6); text-shadow: 0 1px 2px rgba(0,0,0,0.9);
+  margin: 0 0 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.summon-modal .result-card-rarity {
+  font-size: 11px; line-height: 1; letter-spacing: 1px; margin: 0;
+  color: var(--jjk-gold, #c9a24e); text-shadow: 0 1px 1px rgba(0,0,0,0.9);
+}
+.summon-modal .result-card-featured {
+  position: absolute; top: 6px; right: -2px; z-index: 3;
+  display: block; margin: 0; padding: 2px 10px 2px 12px; border-radius: 0;
+  background: var(--jjk-crimson, #8e1c1c);
+  box-shadow: inset 0 0 0 1px rgba(241,217,138,0.6), 0 2px 4px rgba(0,0,0,0.6);
+  clip-path: polygon(6px 0, 100% 0, 100% 100%, 0 100%);
+  font-family: var(--jjk-font); font-weight: 800; font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: #fff;
+}
+
+/* Glint: one diagonal highlight per card, moved by transform only */
+.summon-modal .result-card::after {
+  content: ''; position: absolute; z-index: 2; pointer-events: none;
+  top: -20%; bottom: -20%; left: 0; width: 45%;
+  background: linear-gradient(100deg, transparent 0%, rgba(255,240,200,0) 30%, rgba(255,244,214,0.38) 50%, rgba(255,240,200,0) 70%, transparent 100%);
+  transform: translateX(-160%) skewX(-12deg);
+  opacity: 0;
+}
+
+/* 5★ — antique gold frame, a single glint once it lands */
+.summon-modal .result-card.stars-5 {
+  --bezel: linear-gradient(135deg, #6e4c16, #e0b964 45%, #7a5418);
+}
+.summon-modal .result-card.stars-5 .result-card-rarity { color: var(--jjk-gold-hi, #f1d98a); }
+.summon-modal .result-card.stars-5::after {
+  animation: srGlint .9s ease-out 1 both;
+  animation-delay: calc(0.5s + var(--i, 0) * 0.07s);
+}
+
+/* 6★ — bright gold bezel, warm glow, gold-lit art well */
+.summon-modal .result-card.stars-6 {
+  --bezel: linear-gradient(135deg, #5c4012, #f7e08a 30%, #b8862b 55%, #fff3b0 75%, #7a5418);
+  --face: linear-gradient(180deg, #1a3a3f 0%, #0d2227 60%, #07130f 100%);
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.7), 0 0 14px rgba(241,200,110,0.4), 0 6px 14px rgba(0,0,0,0.55);
+}
+.summon-modal .result-card.stars-6 .result-card-art {
+  background: radial-gradient(circle at 50% 42%, rgba(241,210,130,0.28), rgba(45,107,115,0.2) 45%, transparent 70%);
+}
+.summon-modal .result-card.stars-6 .result-card-rarity { color: #ffe9a8; text-shadow: 0 0 6px rgba(241,200,110,0.6), 0 1px 1px #000; }
+.summon-modal .result-card.stars-6 .result-card-name { color: var(--jjk-gold-hi, #f1d98a); }
+.summon-modal .result-card.stars-6::after {
+  animation: srGlint 1s ease-out 2 both;
+  animation-delay: calc(0.5s + var(--i, 0) * 0.07s);
+}
+
+/* 7★ — crimson-gold bezel, strong ember glow, glint keeps sweeping */
+.summon-modal .result-card.stars-7 {
+  --bezel: linear-gradient(135deg, #8a1c10, #ffb347 25%, #fff3b0 50%, #ff7a3d 75%, #8a1c10);
+  --face: linear-gradient(180deg, #2a2a26 0%, #1a1714 55%, #0b0a08 100%);
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.7), 0 0 22px rgba(255,140,60,0.55), 0 6px 14px rgba(0,0,0,0.55);
+}
+.summon-modal .result-card.stars-7 .result-card-art {
+  background: radial-gradient(circle at 50% 42%, rgba(255,170,90,0.4), rgba(142,28,28,0.25) 45%, transparent 72%);
+}
+.summon-modal .result-card.stars-7 .result-card-rarity { color: #fff0c0; text-shadow: 0 0 8px rgba(255,150,70,0.85), 0 1px 1px #000; }
+.summon-modal .result-card.stars-7 .result-card-name { color: #ffe2a6; }
+.summon-modal .result-card.stars-7::after {
+  background: linear-gradient(100deg, transparent 0%, rgba(255,210,150,0) 28%, rgba(255,236,200,0.55) 50%, rgba(255,210,150,0) 72%, transparent 100%);
+  animation: srGlintLoop 3.2s ease-in-out infinite both;
+  animation-delay: calc(0.5s + var(--i, 0) * 0.07s);
+}
+/* 6★+ land with a brief gold flash over the art */
+.summon-modal .result-card.stars-6 .result-card-art::after,
+.summon-modal .result-card.stars-7 .result-card-art::after {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(circle at 50% 45%, rgba(255,240,190,0.85), rgba(255,210,120,0.35) 40%, transparent 70%);
+  opacity: 0;
+  animation: srFlash .6s ease-out 1 both;
+  animation-delay: calc(0.3s + var(--i, 0) * 0.07s);
+}
+
+@keyframes srGlint {
+  0%   { opacity: 0; transform: translateX(-160%) skewX(-12deg); }
+  15%  { opacity: 1; }
+  100% { opacity: 0; transform: translateX(340%) skewX(-12deg); }
+}
+@keyframes srGlintLoop {
+  0%        { opacity: 0; transform: translateX(-160%) skewX(-12deg); }
+  6%        { opacity: 1; }
+  38%, 100% { opacity: 0; transform: translateX(340%) skewX(-12deg); }
+}
+@keyframes srFlash {
+  0%   { opacity: 0; transform: scale(.7); }
+  30%  { opacity: 1; }
+  100% { opacity: 0; transform: scale(1.25); }
+}
+
+/* Footer: the washi ticket (reuses .tkt / .tkt-single from the draw buttons) */
+.summon-modal .sr-foot { display: flex; justify-content: center; padding-top: 2px; }
+.summon-modal .btn-continue.tkt {
+  width: 250px; height: auto; aspect-ratio: 900 / 348;
+  margin: 0; padding: 0;
+  border: 0; border-image: none; border-radius: 0;
+  background: none; box-shadow: none;
+  font-size: inherit; letter-spacing: normal; text-transform: none;
+  color: #f4efe2; text-shadow: none;
+  display: block;
+  animation: srCardIn .4s ease-out backwards;
+  animation-delay: calc(0.2s + var(--sr-n, 10) * 0.07s);
+}
+.summon-modal .btn-continue.tkt:hover { color: #f4efe2; background: none; box-shadow: none; }
+.summon-modal .btn-continue.tkt .tkt-label { font-size: 10.5cqw; }
+.summon-modal .btn-continue.tkt .tkt-kicker { font-size: max(8px, 3.4cqw); letter-spacing: 0.24em; }
+
+/* Narrow screens: 4 then 3 across, smaller chrome */
+@media (max-width: 720px) {
+  .summon-modal .sr-panel { padding: 14px 14px 12px; gap: 12px; }
+  .summon-modal .result-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+  .summon-modal .sr-summary span { padding: 2px 9px; font-size: 10px; }
+}
+@media (max-width: 480px) {
+  .summon-modal .result-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .summon-modal .sr-head { flex-wrap: wrap; }
+  .summon-modal .sr-summary { margin-left: 0; justify-content: flex-start; width: 100%; }
+}
+/* Short landscape phones: 5 across, compact header, cards sized to fit */
+html.is-mobile.is-landscape.is-compact .summon-modal .modal-content { padding: 6px 10px; }
+html.is-mobile.is-landscape.is-compact .summon-modal .sr-panel { width: min(100%, 470px); padding: 8px 12px 8px; gap: 6px; }
+html.is-mobile.is-landscape.is-compact .summon-modal .sr-head { padding-bottom: 6px; gap: 8px; }
+html.is-mobile.is-landscape.is-compact .summon-modal .sr-hanko { width: 28px; height: 28px; font-size: 17px; }
+html.is-mobile.is-landscape.is-compact .summon-modal .sr-kicker { display: none; }
+html.is-mobile.is-landscape.is-compact .summon-modal .sr-title { font-size: 16px; }
+html.is-mobile.is-landscape.is-compact .summon-modal .result-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; }
+html.is-mobile.is-landscape.is-compact .summon-modal .result-card-art { padding: 4px 4px 0; }
+html.is-mobile.is-landscape.is-compact .summon-modal .result-card-info { padding: 3px 4px 5px; }
+html.is-mobile.is-landscape.is-compact .summon-modal .result-card-name { font-size: 10px; }
+html.is-mobile.is-landscape.is-compact .summon-modal .result-card-rarity { font-size: 9px; }
+html.is-mobile.is-landscape.is-compact .summon-modal .btn-continue.tkt { width: 140px; }
+html.is-mobile.is-landscape.is-compact .summon-modal .sr-summary span { padding: 1px 8px; font-size: 9px; }
+html.is-mobile.is-landscape.is-compact .summon-modal .sr-summary b { font-size: 11px; }
+html.is-mobile.is-landscape.is-compact .summon-modal .result-card-featured { font-size: 7px; padding: 1px 6px 1px 8px; top: 3px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .summon-modal .sr-panel,
+  .summon-modal .result-card,
+  .summon-modal .btn-continue.tkt { animation: none !important; }
+  .summon-modal .result-card::after,
+  .summon-modal .result-card .result-card-art::after { animation: none !important; opacity: 0 !important; }
+}
 
 /* Info modal (Rates / Featured / Contents) */
 .summon-info-modal .sim-overlay { background: rgba(3,9,11,0.85); }

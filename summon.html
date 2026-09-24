@@ -337,65 +337,7 @@
       justify-content: center;
     }
 
-    /* Frameless result cards — no box, full uncropped portrait, rarity shown via glow */
-    .result-card {
-      background: transparent;
-      border: none;
-      padding: 0;
-      text-align: center;
-      transition: transform 0.2s;
-      cursor: pointer;
-      animation: cardReveal 0.4s ease backwards;
-    }
-    .result-card:hover { transform: scale(1.05); }
-
-    @keyframes cardReveal {
-      from { opacity: 0; transform: scale(0.8) translateY(10px); }
-      to   { opacity: 1; transform: scale(1) translateY(0); }
-    }
-
-    .result-card img {
-      width: 100%;
-      aspect-ratio: 3 / 4;
-      object-fit: contain;      /* never crop the portrait */
-      display: block;
-      margin-bottom: 4px;
-      filter: drop-shadow(0 2px 5px rgba(0,0,0,0.6));
-    }
-    /* Rarity now reads from a glow on the art itself, not a surrounding box */
-    .result-card.rarity-gold img { filter: drop-shadow(0 0 10px rgba(212,175,55,0.75)); }
-    .result-card.featured img    { filter: drop-shadow(0 0 14px rgba(255,107,53,0.9)); }
-    .result-card-name { font-size: 9px; color: #e8e0d0; line-height: 1.2; }
-    .result-card-rarity { font-size: 10px; color: #d4af37; margin-top: 2px; }
-    .result-card-featured { font-size: 8px; color: #ff6b35; font-weight: 700; margin-top: 2px; text-transform: uppercase; letter-spacing: 0.5px; }
-
-    .btn-continue {
-      width: min(320px, 82vw);
-      aspect-ratio: 4.34 / 1;
-      padding: 0;
-      background: url('assets/ui/continue_plate.webp') center / 100% 100% no-repeat;
-      border: none;
-      color: #fbe6c0;
-      font-family: 'Cinzel', serif;
-      font-size: 17px;
-      font-weight: 700;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      text-shadow: 0 2px 4px rgba(0,0,0,0.95), 0 0 12px rgba(0,0,0,0.7);
-      cursor: pointer;
-      transition: transform 0.15s ease, filter 0.15s ease;
-      margin-top: auto;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      -webkit-tap-highlight-color: transparent;
-    }
-    .btn-continue:hover {
-      transform: scale(1.04);
-      filter: brightness(1.12) drop-shadow(0 0 12px rgba(120,180,255,0.55));
-      color: #fff;
-    }
-    .btn-continue:active { transform: scale(0.98); }
+    /* Result cards + Continue ticket: see "Summon results" in css/summon-premium.css */
 
     /* ── Info modal (rates, featured, contents) ───────────────── */
     .summon-info-modal {
@@ -671,9 +613,6 @@
       .draw-col { order: 2; }
     }
 
-    @media (max-width: 480px) {
-      .result-grid { grid-template-columns: repeat(4, 1fr); gap: 6px; }
-    }
   </style>
   <link rel="stylesheet" href="css/summon-premium.css" />
   <link rel="stylesheet" href="css/recipe-scroll.css" />
@@ -836,9 +775,32 @@
   <div class="summon-modal" id="summon-modal">
     <div class="modal-overlay"></div>
     <div class="modal-content">
-      <div class="result-display" id="result-display"></div>
-      <div class="result-grid" id="result-grid"></div>
-      <button class="btn-continue" id="btn-continue">Continue</button>
+      <section class="sr-panel" aria-labelledby="sr-title">
+        <header class="sr-head">
+          <span class="sr-hanko" aria-hidden="true">召</span>
+          <div class="sr-head-text">
+            <span class="sr-kicker">Shinobi Summon</span>
+            <h2 class="sr-title" id="sr-title">Summon Results</h2>
+          </div>
+          <div class="sr-summary" id="sr-summary"></div>
+        </header>
+        <div class="result-display" id="result-display"></div>
+        <div class="result-grid" id="result-grid"></div>
+        <footer class="sr-foot">
+          <button class="btn-continue tkt tkt-single" id="btn-continue" type="button" aria-label="Continue">
+            <span class="tkt-body" aria-hidden="true"></span>
+            <span class="tkt-stub" aria-hidden="true">
+              <span class="tkt-count" id="sr-count"><i>×</i>10</span>
+              <span class="tkt-unit" id="sr-unit">Units</span>
+            </span>
+            <span class="tkt-main" aria-hidden="true">
+              <span class="tkt-kicker">Recruited</span>
+              <span class="tkt-label">Continue</span>
+            </span>
+            <span class="tkt-seal" aria-hidden="true"><b>召</b></span>
+          </button>
+        </footer>
+      </section>
     </div>
   </div>
 

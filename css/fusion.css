@@ -64,7 +64,10 @@ body.page-fusion {
   display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 16px;
   flex: 0 0 auto;
 }
-.fusion-titlebar { justify-self: start; display: flex; align-items: center; gap: 8px; min-width: 0; }
+/* back button + title plate: same metrics as the shared .jjk-page-header
+   (theme-jjk.css) so the plate sits tight against the button */
+.fusion-titlebar { justify-self: start; display: flex; align-items: center; gap: 6px; min-width: 0; }
+.fusion-titlebar .jjk-title-plate { box-sizing: border-box; min-width: 230px; min-height: 44px; line-height: 1.1; text-align: left; }
 .jjk-back-glyph { width: 58%; height: 58%; object-fit: contain; pointer-events: none; filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.8)); }
 .fusion-title { margin: 0; white-space: nowrap; }
 
@@ -117,7 +120,7 @@ body.page-fusion {
    --------------------------------------------------------------------- */
 .fusion-layout {
   display: grid;
-  grid-template-columns: clamp(360px, 33vw, 470px) 1fr;
+  grid-template-columns: clamp(340px, 30vw, 470px) minmax(0, 1fr);
   gap: clamp(14px, 2vw, 28px);
   flex: 1 1 auto; min-height: 0;
 }
@@ -189,7 +192,7 @@ body.page-fusion {
 }
 .fu-ticket {
   position: relative; isolation: isolate;
-  display: grid; grid-template-columns: minmax(0, 1fr) 22px clamp(250px, 26%, 310px);
+  display: grid; grid-template-columns: minmax(0, 1fr) 22px clamp(220px, 25%, 300px);
   width: 100%; max-width: 980px;
   box-sizing: border-box;
   padding: calc(var(--tkt-edge) * 0.9) calc(var(--tkt-edge) * 0.9);
@@ -478,7 +481,7 @@ body.page-fusion {
    --------------------------------------------------------------------- */
 @media (max-width: 1180px) {
   .fusion-layout { grid-template-columns: 340px 1fr; }
-  .fu-ticket { grid-template-columns: minmax(0, 1fr) 20px 230px; }
+  .fu-ticket { grid-template-columns: minmax(0, 1fr) 20px 220px; }
   :root { --slot: clamp(80px, 8vw, 104px); }
 }
 
@@ -517,8 +520,9 @@ html.is-mobile.is-landscape.is-compact .fusion-content {
   padding: calc(6px + env(safe-area-inset-top, 0px)) max(10px, env(safe-area-inset-right, 0px)) var(--nav-reserve) max(10px, env(safe-area-inset-left, 0px));
   gap: 6px;
 }
+html.is-mobile.is-landscape.is-compact .fusion-titlebar { gap: 4px; }
 html.is-mobile.is-landscape.is-compact .fusion-titlebar .jjk-icon-btn { width: 36px; height: 36px; }
-html.is-mobile.is-landscape.is-compact .fusion-title.jjk-title-plate { min-height: 32px; padding: 3px 40px 3px 14px; font-size: 17px; }
+html.is-mobile.is-landscape.is-compact .fusion-titlebar .fusion-title.jjk-title-plate { min-width: 150px; min-height: 32px; padding: 3px 40px 3px 14px; font-size: 17px; }
 html.is-mobile.is-landscape.is-compact .fusion-tab.jjk-tab { min-width: 96px; height: 32px; padding: 0 12px; font-size: 13px; }
 html.is-mobile.is-landscape.is-compact .fusion-currency { height: 28px; min-width: 104px; font-size: 13px; }
 html.is-mobile.is-landscape.is-compact .fusion-currency img { width: 16px; height: 16px; }
@@ -542,7 +546,7 @@ html.is-mobile.is-landscape.is-compact .fu-perf::before { top: 12px; bottom: 12p
 html.is-mobile.is-landscape.is-compact .fu-ticket-body { gap: 8px; padding: 2px 6px 4px; }
 html.is-mobile.is-landscape.is-compact .fu-kicker { font-size: 9px; letter-spacing: 0.24em; }
 html.is-mobile.is-landscape.is-compact .fu-ticket-title { font-size: 16px; margin-top: 0; }
-html.is-mobile.is-landscape.is-compact .fusion-slots-row { column-gap: 8px; }
+html.is-mobile.is-landscape.is-compact .fusion-slots-row { column-gap: 8px; --fu-gap: 8px; --fu-arrow: 20px; --fu-plus: 12px; --fu-cap: 8px; }
 html.is-mobile.is-landscape.is-compact .fu-op { font-size: 16px; }
 html.is-mobile.is-landscape.is-compact .fu-op--arrow { width: 20px; }
 html.is-mobile.is-landscape.is-compact .fusion-slot-wrapper { gap: 4px; }
@@ -610,3 +614,51 @@ html.is-mobile.is-landscape.is-compact .rc-empty-art { width: 84px; }
 html.is-mobile.is-landscape.is-compact .rc-empty h3 { font-size: 17px; margin: 0; }
 html.is-mobile.is-landscape.is-compact .rc-empty p { font-size: 11px; }
 html.is-mobile.is-landscape.is-compact .rc-empty-actions .jjk-btn { min-width: 92px; height: 34px; font-size: 13px; }
+
+/* ---------------------------------------------------------------------
+   Layout guards — the slot row must always fit inside the ticket body.
+   Slots size themselves from the body's own width (container units), so
+   UNIT 1 never touches the ticket's inner frame and the RESULT slot +
+   its stat line never run under the perforation. When the ticket gets
+   too narrow for body | stub side by side (narrow desktop windows), the
+   stub drops below the body with a horizontal perforation.
+   --------------------------------------------------------------------- */
+.fusion-workspace-panel { container: fu-ws / inline-size; }
+.fu-ticket-body { container-type: inline-size; --slot-cap: var(--slot); }
+.fusion-slots-row {
+  --fu-gap: clamp(6px, 1.1vw, 16px);
+  --fu-arrow: clamp(24px, 3vw, 40px);
+  /* 3 slots (result = 1.14×) + 4 gaps + two "+" glyphs + arrow + room for
+     the name/stat captions, which are wider than the slots they sit under */
+  --fu-plus: 18px;     /* width of each "+" glyph column */
+  --fu-cap: clamp(8px, 6cqi, 36px);  /* caption overhang allowance (left + right) */
+  --slot: min(var(--slot-cap), calc((100cqi - 4 * var(--fu-gap) - 2 * var(--fu-plus) - var(--fu-arrow) - var(--fu-cap)) / 3.14));
+  --slot-r: calc(var(--slot) * 1.14);
+  column-gap: var(--fu-gap);
+}
+.fu-op--arrow { width: var(--fu-arrow); }
+.fusion-slot-info { max-width: calc(var(--slot) + 24px); }
+.result-info { width: calc(var(--slot-r) + 36px); max-width: none; }
+.fusion-slot-info .unit-name, .fusion-slot-info .unit-meta { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+@container fu-ws (max-width: 700px) {
+  html:not(.is-compact) .fu-ticket { grid-template-columns: 1fr; grid-template-rows: auto 22px auto; max-width: 620px; }
+  html:not(.is-compact) .fu-perf { margin: 0 calc(var(--tkt-edge) * -0.9); }
+  html:not(.is-compact) .fu-perf::before {
+    left: 18px; right: 18px; top: 50%; bottom: auto; width: auto; height: 5px; transform: translateY(-50%);
+    background: radial-gradient(circle, rgba(3, 9, 11, 0.85) 1.6px, transparent 2.2px) left center / 10px 5px repeat-x;
+  }
+  html:not(.is-compact) .fu-perf::after { display: none; }
+  html:not(.is-compact) .fu-ticket-body { gap: 14px; padding: 12px 16px 16px; }
+  /* stub: requirements on the left, Clear / Fuse stacked on the right */
+  html:not(.is-compact) .fu-ticket-stub {
+    display: grid; grid-template-columns: minmax(0, 1fr) 150px; grid-template-rows: auto minmax(0, 1fr);
+    column-gap: 16px; row-gap: 8px; padding: 12px 16px 10px; max-height: 190px;
+  }
+  html:not(.is-compact) .fu-stub-title,
+  html:not(.is-compact) .altar-hint,
+  html:not(.is-compact) .fusion-requirements { grid-column: 1; }
+  html:not(.is-compact) .fusion-actions { grid-column: 2; grid-row: 1 / -1; flex-direction: column; justify-content: center; margin: 0; }
+  html:not(.is-compact) .fusion-actions .clear-btn,
+  html:not(.is-compact) .fusion-actions .fuse-btn { flex: 0 0 auto; height: 44px; }
+}
