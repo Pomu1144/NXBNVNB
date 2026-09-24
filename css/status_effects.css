@@ -203,11 +203,11 @@ html.is-mobile .st-bubbles--sprite { bottom: calc(100% + 16px); }
   width: var(--st-size);
   height: var(--st-size);
   border-radius: 50%;
-  border: 2px solid #fff;
+  border: 2px solid var(--jjk-gold, #c9a24e);   /* antique-gold ring (JJK theme) */
   background:
-    radial-gradient(circle at 35% 30%, rgba(255,255,255,0.55), transparent 45%),
+    radial-gradient(circle at 35% 30%, rgba(255,255,255,0.45), transparent 45%),
     radial-gradient(circle, color-mix(in srgb, var(--st-c) 70%, #fff 0%) 0%, color-mix(in srgb, var(--st-c) 80%, #000) 100%);
-  box-shadow: 0 2px 4px rgba(0,0,0,0.55), 0 0 0 1px rgba(0,0,0,0.35), inset 0 -2px 3px rgba(0,0,0,0.3);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.55), 0 0 0 1px rgba(3,10,12,0.75), inset 0 0 0 1px rgba(255,240,200,0.35), inset 0 -2px 3px rgba(0,0,0,0.3);
   display: grid;
   place-items: center;
   transform: translateY(var(--arc, 0px));
@@ -226,8 +226,10 @@ html.is-mobile .st-bubble { --st-size: 24px; }
   pointer-events: none;
   -webkit-user-drag: none;
 }
-.st-bubble.st-debuff { border-color: #fff; }
-.st-bubble.st-buff { border-color: #fffbe6; }
+.st-bubble.st-debuff { border-color: #b98a4e; }
+.st-bubble.st-buff { border-color: var(--jjk-gold, #c9a24e); }
+.st-bubble:focus { outline: none; }
+.st-bubble:focus-visible { box-shadow: 0 0 0 2px var(--jjk-gold-hi, #f1d98a), 0 2px 4px rgba(0,0,0,0.55); }
 .st-bubble .st-turns {
   position: absolute;
   right: -5px;
@@ -236,29 +238,31 @@ html.is-mobile .st-bubble { --st-size: 24px; }
   height: 13px;
   padding: 0 2px;
   border-radius: 7px;
-  background: #1b1b24;
-  border: 1px solid #fff;
-  color: #fff;
-  font: 800 9px/11px system-ui, sans-serif;
+  background: var(--jjk-ink, #071418);          /* ink badge, gold hairline */
+  border: 1px solid var(--jjk-gold, #c9a24e);
+  color: var(--jjk-gold-hi, #f1d98a);
+  font: 800 9px/11px var(--jjk-font, 'Kaisei Tokumin', serif);
+  font-variant-numeric: tabular-nums;
   text-align: center;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.6);
 }
-.st-bubble.st-debuff .st-turns { background: #6a1426; }
-.st-bubble.st-buff .st-turns { background: #134a2c; }
+.st-bubble.st-debuff .st-turns { background: #3a0c0a; color: #ffd9c8; border-color: #b0493a; }
+.st-bubble.st-buff .st-turns { background: var(--jjk-ink, #071418); }
 .st-bubble .st-count {
   position: absolute;
   left: -5px;
   top: -5px;
-  font: 800 9px/11px system-ui, sans-serif;
-  color: #fff;
-  background: #7a5a1a;
-  border: 1px solid #fff;
+  font: 800 9px/11px var(--jjk-font, 'Kaisei Tokumin', serif);
+  color: var(--jjk-gold-hi, #f1d98a);
+  background: var(--jjk-ink, #071418);
+  border: 1px solid var(--jjk-gold, #c9a24e);
   border-radius: 6px;
   padding: 0 2px;
 }
 .st-bubble.st-more {
-  --st-c: #444;
-  font: 800 10px system-ui, sans-serif;
-  color: #fff;
+  --st-c: #173a41;
+  font: 800 10px var(--jjk-font, 'Kaisei Tokumin', serif);
+  color: var(--jjk-gold-hi, #f1d98a);
 }
 .st-bubble.st-new { animation: stPop 0.45s cubic-bezier(.2,1.6,.4,1) both, stBob 2.4s ease-in-out 0.45s infinite; }
 
@@ -267,8 +271,8 @@ html.is-mobile .st-bubble { --st-size: 24px; }
   position: absolute;
   left: 50%;
   border-radius: 50%;
-  background: #fff;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.5);
+  background: var(--jjk-gold, #c9a24e);
+  box-shadow: 0 0 0 1px rgba(3,10,12,0.7), 0 1px 2px rgba(0,0,0,0.5);
   pointer-events: none;
 }
 .st-tail-a { width: 7px; height: 7px; bottom: -9px; margin-left: -2px; }
@@ -301,7 +305,7 @@ html.is-mobile .st-bubble { --st-size: 24px; }
   width: 17px;
   height: 17px;
   border-radius: 50%;
-  border: 1.5px solid #fff;
+  border: 1.5px solid var(--jjk-gold, #c9a24e);
   background: radial-gradient(circle, var(--st-c), color-mix(in srgb, var(--st-c) 70%, #000));
   display: grid;
   place-items: center;
@@ -311,10 +315,10 @@ html.is-mobile .st-bubble { --st-size: 24px; }
 .st-mini img { width: 86%; height: 86%; object-fit: contain; }
 .st-mini b {
   position: absolute; right: -4px; bottom: -4px;
-  font: 800 8px/9px system-ui, sans-serif; color: #fff;
-  background: #111; border-radius: 5px; padding: 0 2px;
+  font: 800 8px/9px var(--jjk-font, 'Kaisei Tokumin', serif); color: var(--jjk-gold-hi, #f1d98a);
+  background: var(--jjk-ink, #071418); border: 1px solid rgba(201,162,78,0.7); border-radius: 5px; padding: 0 2px;
 }
-.st-mini-more { --st-c: #333; font: 800 8px system-ui, sans-serif; color: #fff; }
+.st-mini-more { --st-c: #173a41; font: 800 8px var(--jjk-font, 'Kaisei Tokumin', serif); color: var(--jjk-gold-hi, #f1d98a); }
 
 /* Speed bar marker states */
 #speed-gauge-track .speed-marker.st-stunned .sm-portrait img { filter: grayscale(0.85) brightness(0.8); }
@@ -356,31 +360,158 @@ html.is-mobile .st-bubble { --st-size: 24px; }
 .st-chip img { width: 18px; height: 18px; border-radius: 50%; background: rgba(0,0,0,0.25); }
 .st-chip b { opacity: 0.85; margin-left: 2px; }
 
-/* Tooltip */
+/* Tooltip — small washi panel (JJK theme: css/theme-jjk.css tokens).
+   Ink-teal face over the shared ink_bg texture, antique-gold hairline with
+   corner brackets, Kaisei heading, hanko stamp for the type, a gold notch
+   pointing at the bubble (--ax = notch x, set by StatusEffectUI.showTip). */
 .st-tip {
+  --tip-face: #0b2027;
   position: fixed;
+  left: 0; top: 0;
   z-index: 100000;
-  max-width: 230px;
-  padding: 7px 9px;
-  border-radius: 10px;
-  background: rgba(14, 16, 26, 0.95);
-  border: 1.5px solid var(--st-c, #fff);
-  color: #fff;
-  font: 500 11px/1.35 system-ui, sans-serif;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.6);
+  box-sizing: border-box;
+  width: max-content;
+  min-width: 150px;
+  max-width: min(236px, calc(100vw - 16px));
+  padding: 7px 10px 8px;
+  background:
+    linear-gradient(180deg, rgba(16,42,49,0.95), rgba(6,17,21,0.97)),
+    url('../assets/ui/jjk/ink_bg.webp') center / 320px auto,
+    var(--tip-face);
+  border: 1px solid rgba(201,162,78,0.7);
+  box-shadow:
+    inset 0 0 0 2px rgba(3,10,12,0.6),
+    inset 0 0 0 3px rgba(201,162,78,0.16),
+    0 1px 0 rgba(0,0,0,0.5),
+    0 8px 22px rgba(0,0,0,0.55),
+    0 2px 5px rgba(0,0,0,0.5);
+  color: var(--jjk-text, #ece6d6);
+  font: 500 11px/1.35 var(--jjk-font, 'Kaisei Tokumin', serif);
+  text-align: left;
   pointer-events: none;
   opacity: 0;
   transform: translateY(4px);
   transition: opacity 0.12s, transform 0.12s;
 }
+.st-tip.st-tip--below { transform: translateY(-4px); }
 .st-tip.show { opacity: 1; transform: none; }
-.st-tip-head { display: flex; align-items: center; gap: 6px; font-weight: 800; font-size: 12px; }
-.st-tip-head img { width: 22px; height: 22px; }
-.st-tip-head em { margin-left: auto; font-style: normal; font-size: 9px; padding: 1px 5px; border-radius: 6px; }
-.st-tip-head em.st-debuff { background: #8a1c34; }
-.st-tip-head em.st-buff { background: #1c6a3c; }
-.st-tip-turns { margin-top: 3px; color: #ffe08a; font-weight: 700; }
-.st-tip-desc { margin-top: 2px; color: #cfd3e6; }
+/* corner brackets */
+.st-tip::before, .st-tip::after {
+  content: ''; position: absolute; width: 8px; height: 8px; pointer-events: none;
+  border: 1.5px solid var(--jjk-gold, #c9a24e);
+}
+.st-tip::before { top: -2px; left: -2px; border-right: 0; border-bottom: 0; }
+.st-tip::after  { bottom: -2px; right: -2px; border-left: 0; border-top: 0; }
+/* notch toward the bubble */
+.st-tip-notch {
+  position: absolute;
+  left: var(--ax, 50%);
+  bottom: -5px;
+  width: 8px; height: 8px;
+  margin-left: -5px;
+  background: #07161b;
+  border: 1px solid rgba(201,162,78,0.7);
+  border-top: 0; border-left: 0;
+  transform: rotate(45deg);
+}
+.st-tip--below .st-tip-notch {
+  bottom: auto; top: -5px;
+  background: #102a31;
+  border: 1px solid rgba(201,162,78,0.7);
+  border-right: 0; border-bottom: 0;
+}
+
+.st-tip-head {
+  position: relative;
+  display: flex; align-items: center; gap: 6px;
+  padding-bottom: 5px;
+  margin-bottom: 5px;
+  border-bottom: 1px solid rgba(201,162,78,0.26);
+}
+.st-tip-head::after {                      /* crimson ink-brush stroke under the name */
+  content: ''; position: absolute; left: 0; bottom: -2px; width: 64px; height: 2px;
+  background: linear-gradient(90deg, var(--jjk-crimson, #8e1c1c), rgba(142,28,28,0.55) 60%, transparent);
+  clip-path: polygon(0 30%, 100% 0, 94% 100%, 0 85%);
+}
+.st-tip--buff .st-tip-head::after { background: linear-gradient(90deg, var(--jjk-gold, #c9a24e), rgba(201,162,78,0.45) 60%, transparent); }
+.st-tip-ico {
+  flex: 0 0 auto;
+  width: 22px; height: 22px;
+  display: grid; place-items: center;
+  border-radius: 50%;
+  background: radial-gradient(circle, color-mix(in srgb, var(--st-c) 75%, #fff 0%), color-mix(in srgb, var(--st-c) 55%, #000));
+  box-shadow: 0 0 0 1px var(--jjk-gold, #c9a24e), 0 0 0 2px rgba(3,10,12,0.8);
+}
+.st-tip-ico img { width: 84%; height: 84%; object-fit: contain; filter: drop-shadow(0 1px 1px rgba(0,0,0,0.5)); }
+.st-tip-name {
+  flex: 1 1 auto; min-width: 0;
+  font-weight: 800; font-size: 12.5px; line-height: 1.15; word-spacing: 0.1em;
+  color: #f3e3b5;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.9);
+  overflow-wrap: anywhere;
+}
+/* Hanko stamp: vermilion for ailments, teal + gold for boosts */
+.st-tip-stamp {
+  flex: 0 0 auto;
+  align-self: flex-start;
+  margin: 1px 0 0 4px;
+  padding: 2px 4px 1px;
+  font: 800 8.5px/1 var(--jjk-font, 'Kaisei Tokumin', serif);
+  font-style: normal;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border-radius: 2px;
+  rotate: -5deg;
+}
+.st-tip--debuff .st-tip-stamp {
+  color: rgba(255,230,212,0.96);
+  background: radial-gradient(circle at 40% 35%, #c0301f, #82170f 75%);
+  box-shadow: inset 0 0 0 1px rgba(255,214,190,0.4), 0 1px 2px rgba(0,0,0,0.6);
+}
+.st-tip--buff .st-tip-stamp {
+  color: var(--jjk-gold-hi, #f1d98a);
+  background: radial-gradient(circle at 40% 35%, #2f6e74, #163c42 75%);
+  box-shadow: inset 0 0 0 1px rgba(241,217,138,0.55), 0 1px 2px rgba(0,0,0,0.6);
+}
+
+.st-tip-stats {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 4px 7px;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+.st-tip-turns {
+  display: inline-flex; align-items: baseline; gap: 3px;
+  padding: 1px 6px 1px 5px;
+  background: rgba(3,10,12,0.75);
+  border: 1px solid rgba(201,162,78,0.5);
+  border-radius: 2px;
+  font-weight: 700; font-size: 9.5px; letter-spacing: 0.04em;
+  color: var(--jjk-muted, #93a3a3);
+  white-space: nowrap;
+}
+.st-tip-turns b { font-weight: 800; font-size: 11.5px; color: var(--jjk-gold-hi, #f1d98a); }
+.st-tip-turns--perm { color: var(--jjk-gold-hi, #f1d98a); }
+.st-tip-val {
+  font-weight: 700; font-size: 11px;
+  color: var(--jjk-gold-hi, #f1d98a);
+  text-shadow: 0 1px 1px rgba(0,0,0,0.8);
+}
+.st-tip--debuff .st-tip-val { color: #f3b39f; }
+/* Kaisei's U+2212 is hyphen-width; borrow Cinzel's full-width minus */
+.st-tip-minus { font-family: 'Cinzel', 'Times New Roman', serif; font-weight: 600; }
+.st-tip-desc {
+  margin: 4px 0 0;
+  font-weight: 500; font-size: 10.5px; line-height: 1.35;
+  color: rgba(236,230,214,0.72);
+}
+/* "+n" overflow bubble: list of the hidden effects */
+.st-tip-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 3px; }
+.st-tip-list li { display: flex; align-items: center; gap: 5px; font-weight: 700; font-size: 10.5px; }
+.st-tip-list img { width: 16px; height: 16px; object-fit: contain; }
+.st-tip-list b { margin-left: auto; padding-left: 8px; color: var(--jjk-gold-hi, #f1d98a); font-variant-numeric: tabular-nums; }
+.st-tip-list li.st-debuff { color: #f3b39f; }
+@media (prefers-reduced-motion: reduce) {
+  .st-tip, .st-tip.st-tip--below { transition: opacity 0.12s; transform: none; }
+}
 
 /* Popups */
 .st-popup {
