@@ -4,7 +4,7 @@
  *    stagger, recover) and return to idle. During multi-hit barrages the
  *    sheet is restarted at most every HIT_RESTART_MS so the unit keeps
  *    flinching instead of stuttering on frame 0. A unit that is busy with its
- *    own run / jutsu / ultimate sheet is never interrupted.
+ *    own run / attack / jutsu / ultimate sheet is never interrupted.
  *  - When a sprite unit's HP reaches 0 its 'ko' sheet plays on a stand-in
  *    element that holds the last (knocked-down) frame and then fades out, so
  *    the regular death cleanup (BattleUnits.updateUnitDisplay removes the
@@ -23,7 +23,7 @@
   const HIT_RESTART_MS = 250;  // min gap between restarts of the hit sheet
   const PORTRAIT_GAP_MS = 200; // min gap between portrait knockbacks
   const KO_HOLD_MS = 900;      // knocked-down frame stays this long before fading
-  const BUSY = new Set(['run', 'jutsu', 'ultimate']);
+  const BUSY = new Set(['run', 'attack', 'jutsu', 'ultimate']);
 
   const reduceMotion = () => !!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
   const sceneOf = () => document.querySelector('.battle-scene, #battle-scene, #battleScene') || document;
@@ -210,6 +210,7 @@
     if (!base) return;
     window.SpritePlayer.preload(base, 'hit').catch(() => {});
     window.SpritePlayer.preload(base, 'ko').catch(() => {});
+    window.SpritePlayer.preload(base, 'attack').catch(() => {});
   });
 
   window.BattleHitReact = { react, spriteKO };

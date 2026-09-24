@@ -117,7 +117,7 @@ body.page-fusion {
    --------------------------------------------------------------------- */
 .fusion-layout {
   display: grid;
-  grid-template-columns: clamp(290px, 25vw, 350px) 1fr;
+  grid-template-columns: clamp(360px, 33vw, 470px) 1fr;
   gap: clamp(14px, 2vw, 28px);
   flex: 1 1 auto; min-height: 0;
 }
@@ -477,7 +477,7 @@ body.page-fusion {
    Responsive
    --------------------------------------------------------------------- */
 @media (max-width: 1180px) {
-  .fusion-layout { grid-template-columns: 270px 1fr; }
+  .fusion-layout { grid-template-columns: 340px 1fr; }
   .fu-ticket { grid-template-columns: minmax(0, 1fr) 20px 230px; }
   :root { --slot: clamp(80px, 8vw, 104px); }
 }
@@ -522,7 +522,7 @@ html.is-mobile.is-landscape.is-compact .fusion-title.jjk-title-plate { min-heigh
 html.is-mobile.is-landscape.is-compact .fusion-tab.jjk-tab { min-width: 96px; height: 32px; padding: 0 12px; font-size: 13px; }
 html.is-mobile.is-landscape.is-compact .fusion-currency { height: 28px; min-width: 104px; font-size: 13px; }
 html.is-mobile.is-landscape.is-compact .fusion-currency img { width: 16px; height: 16px; }
-html.is-mobile.is-landscape.is-compact .fusion-layout { grid-template-columns: minmax(200px, 30%) 1fr; gap: 10px; }
+html.is-mobile.is-landscape.is-compact .fusion-layout { grid-template-columns: minmax(250px, 40%) 1fr; gap: 10px; }
 html.is-mobile.is-landscape.is-compact .panel-title { padding: 7px 12px 6px; font-size: 11px; }
 html.is-mobile.is-landscape.is-compact .fusion-card { height: 52px; padding: 0 8px 0 12px; gap: 6px; }
 html.is-mobile.is-landscape.is-compact .fusion-card-step { display: none; }
@@ -581,3 +581,32 @@ html.is-mobile.is-landscape.is-compact .success-name { font-size: 17px; }
 @media (prefers-reduced-motion: reduce) {
   .fusion-tab-content.active, .modal-panel { animation: none !important; }
 }
+
+/* ---------------------------------------------------------------------
+   Recipe scrolls (owned recipes only — card styles in css/recipe-scroll.css)
+   --------------------------------------------------------------------- */
+.fusions-grid { display: flex; flex-direction: column; gap: 8px; padding: 12px 12px 14px; }
+.fusions-grid .rscroll { flex: none; }
+.fusion-recipes-panel.is-empty .fusions-grid { padding: 0; }
+.rc-count { float: right; font-size: 11px; letter-spacing: 0.12em; color: var(--jjk-muted, #93a3a3); font-weight: 700; }
+.rc-more { margin: 4px 0 0; text-align: center; font-family: var(--jjk-font); font-size: 12px; color: var(--jjk-muted); }
+.rc-more a { color: var(--fu-gold-hi); text-decoration: none; border-bottom: 1px dotted rgba(241,217,138,0.5); }
+
+.rc-empty {
+  height: 100%; min-height: 280px; box-sizing: border-box;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 10px; padding: 24px 22px; text-align: center; font-family: var(--jjk-font);
+}
+.rc-empty-art { width: 150px; opacity: 0.55; filter: grayscale(0.6) drop-shadow(0 8px 12px rgba(0,0,0,0.6)); transform: rotate(-8deg); }
+.rc-empty h3 { margin: 6px 0 0; font-family: 'Kaisei Tokumin', serif; font-weight: 800; font-size: 22px; color: var(--fu-gold-hi); }
+.rc-empty p { margin: 0; max-width: 290px; font-size: 13px; line-height: 1.55; color: rgba(236,230,214,0.78); }
+.rc-empty p b { color: var(--jjk-text); }
+.rc-empty-actions { display: flex; gap: 12px; margin-top: 8px; }
+.rc-empty-actions .jjk-btn { min-width: 120px; display: inline-grid; place-items: center; text-decoration: none; }
+
+html.is-mobile.is-landscape.is-compact .fusions-grid { padding: 8px; gap: 4px; }
+html.is-mobile.is-landscape.is-compact .rc-empty { min-height: 0; padding: 12px; gap: 6px; }
+html.is-mobile.is-landscape.is-compact .rc-empty-art { width: 84px; }
+html.is-mobile.is-landscape.is-compact .rc-empty h3 { font-size: 17px; margin: 0; }
+html.is-mobile.is-landscape.is-compact .rc-empty p { font-size: 11px; }
+html.is-mobile.is-landscape.is-compact .rc-empty-actions .jjk-btn { min-width: 92px; height: 34px; font-size: 13px; }

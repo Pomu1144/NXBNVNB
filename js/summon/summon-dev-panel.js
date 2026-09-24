@@ -53,6 +53,18 @@ class DevPanel {
 
         <div class="dev-divider"></div>
 
+        <!-- Recipe scrolls (js/recipe-book.js) -->
+        <div class="dev-currency-group">
+          <div class="dev-currency-label"><span>Recipe Scrolls</span></div>
+          <div class="dev-currency-buttons">
+            <button class="dev-add-btn" id="dev-recipes-all" type="button">Grant all</button>
+            <button class="dev-add-btn" id="dev-recipes-frag" type="button">+5 Frag</button>
+            <button class="dev-add-btn" id="dev-recipes-clear" type="button">Clear</button>
+          </div>
+        </div>
+
+        <div class="dev-divider"></div>
+
         <!-- Reset Button -->
         <button class="dev-reset-btn" id="dev-reset">Reset All Currency</button>
 
@@ -64,6 +76,16 @@ class DevPanel {
   }
 
   attachEventListeners() {
+    // Recipe scroll helpers
+    document.getElementById('dev-recipes-all')?.addEventListener('click', async () => {
+      if (!window.RecipeBook) return;
+      const d = await window.RecipeBook.loadData();
+      window.RecipeBook.grantAll(d.fusions.map(f => f.id));
+      console.log(`[Dev] Granted all ${d.fusions.length} recipes`);
+    });
+    document.getElementById('dev-recipes-frag')?.addEventListener('click', () => window.RecipeBook?.addFragments(5));
+    document.getElementById('dev-recipes-clear')?.addEventListener('click', () => { window.RecipeBook?.clear(); console.log('[Dev] Cleared recipes'); });
+
     // Toggle panel
     const toggleBtn = document.getElementById('dev-toggle');
     if (toggleBtn) {
@@ -71,7 +93,7 @@ class DevPanel {
     }
 
     // Add currency buttons
-    const addButtons = document.querySelectorAll('.dev-add-btn');
+    const addButtons = document.querySelectorAll('.dev-add-btn[data-currency]');
     addButtons.forEach(btn => {
       btn.addEventListener('click', () => {
         const currency = btn.dataset.currency;

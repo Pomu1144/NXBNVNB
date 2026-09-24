@@ -860,3 +860,35 @@ body.page-shop .resource-bar { left: auto; max-width: calc(100vw - 350px); flex-
 }
 .page-shop .resource-item .granny-coin-icon { width: 24px; height: 24px; }
 html.is-mobile.is-landscape.is-compact .page-shop .resource-item .granny-coin-icon { width: 16px; height: 16px; }
+
+/* ── Recipe Scrolls tab (js/recipe-book.js, js/recipe-scroll.js) ── */
+.rc-shop-status {
+  display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: center;
+  margin: 0 0 12px; font-family: var(--jjk-font); font-size: 13px; letter-spacing: 0.06em;
+  color: var(--jjk-muted, #93a3a3);
+}
+.rc-shop-status b { color: var(--jjk-gold-hi, #f1d98a); margin-left: 6px; }
+.shop-item.is-recipe .item-icon img { object-fit: contain; }
+
+.rc-picker {
+  position: fixed; inset: 0; z-index: 8000; display: grid; place-items: center;
+  background: rgba(2, 7, 9, 0.86); padding: 16px;
+}
+.rc-picker-panel {
+  width: min(980px, 100%); max-height: calc(100dvh - 32px); display: flex; flex-direction: column;
+  background: linear-gradient(180deg, rgba(12,32,38,0.97), rgba(5,14,17,0.98));
+  border: 1px solid rgba(201,162,78,0.45); box-shadow: 0 16px 40px rgba(0,0,0,0.7);
+  font-family: var(--jjk-font);
+}
+.rc-picker-head { display: flex; align-items: center; gap: 16px; padding: 12px 16px; border-bottom: 1px solid rgba(201,162,78,0.28); }
+.rc-picker-head h2 { margin: 0; font-size: 14px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--jjk-gold-hi, #f1d98a); }
+.rc-picker-bal { margin-left: auto; font-size: 13px; color: var(--jjk-muted, #93a3a3); }
+.rc-picker-bal b { color: var(--jjk-gold-hi, #f1d98a); }
+.rc-picker-close { background: none; border: 1px solid rgba(201,162,78,0.45); color: var(--jjk-text, #ece6d6); width: 32px; height: 32px; cursor: pointer; font-size: 14px; }
+.rc-picker-note { margin: 10px 16px 0; font-size: 12px; color: rgba(236,230,214,0.75); text-align: center; }
+.rc-picker-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(min(380px, 100%), 1fr)); gap: 10px;
+  padding: 14px 16px 18px; overflow-y: auto;
+}
+html.is-mobile.is-landscape.is-compact .rc-picker { padding: 6px; }
+html.is-mobile.is-landscape.is-compact .rc-picker-grid { grid-template-columns: repeat(2, 1fr); padding: 8px; gap: 6px; }

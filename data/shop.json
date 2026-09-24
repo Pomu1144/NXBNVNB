@@ -299,6 +299,30 @@
         },
         "stock": "unlimited"
       }
+    ],
+    "recipes": [
+      {
+        "id": "recipe_scroll_sealed",
+        "name": "Sealed Recipe Scroll",
+        "description": "Unseals 1 random fusion recipe (same rates as Summon \u203a Recipes). A recipe you already own becomes +1 Recipe Fragment.",
+        "icon": "assets/ui/recipes/scroll_closed.webp",
+        "cost": {
+          "ninja_pearls": 5
+        },
+        "recipe": "random",
+        "stock": "unlimited"
+      },
+      {
+        "id": "recipe_scroll_chosen",
+        "name": "Chosen Recipe",
+        "description": "Pick any fusion recipe you don't own yet.",
+        "icon": "assets/ui/recipes/scroll_closed.webp",
+        "cost": {
+          "recipe_fragments": 5
+        },
+        "recipe": "choice",
+        "stock": "unlimited"
+      }
     ]
   },
   "shopConfig": {
