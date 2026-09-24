@@ -51,25 +51,60 @@ body.page-summon { font-family: var(--jjk-font); color: var(--jjk-text); backgro
 .summon-title { margin: 0; white-space: nowrap; }
 .summon-topbar .summon-currency-hud { justify-self: end; }
 
-/* Currency: angular ink chips with gold rule */
+/* Currency: mini washi tickets — the same art as the Summon draw buttons
+   (ticket_single.webp, 900x348). border-image keeps the stub + perforation
+   (x 0..240) and the notched right edge with its hanko seal (x 760..900)
+   at their native aspect; only the cloud body in between stretches. The
+   icon sits in the stub, the amount on the body. Driven by --cur-h. */
 .summon-currency-hud { gap: 10px; }
 .summon-currency-hud .currency-chip {
-  gap: 7px;
-  min-width: 96px;
-  height: 32px;
-  padding: 0 18px 0 12px;
-  border: 0; border-radius: 0;
-  background:
-    linear-gradient(180deg, rgba(12,34,41,0.95), rgba(5,14,17,0.95)) padding-box;
-  box-shadow: inset 0 0 0 1px rgba(201,162,78,0.55);
-  clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
-  font-family: var(--jjk-font);
-  font-weight: 700;
-  font-size: 15px;
-  color: var(--jjk-text);
+  --cur-h: 38px;
+  position: relative;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
   justify-content: flex-end;
+  gap: 0;
+  min-width: calc(var(--cur-h) * 3.4);
+  height: var(--cur-h);
+  padding: 0 calc(var(--cur-h) * 0.5) 0 calc(var(--cur-h) * 0.86);
+  border: 0 solid transparent;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  clip-path: none;
+  border-image-source: url('../assets/ui/jjk/ticket_single.webp');
+  border-image-slice: 0 140 0 240 fill;
+  border-image-width: 0 calc(var(--cur-h) * 0.402) 0 calc(var(--cur-h) * 0.69);
+  border-image-repeat: stretch;
+  filter: drop-shadow(0 3px 5px rgba(0,0,0,0.6));
+  font-family: var(--jjk-font);
+  font-weight: 800;
+  font-size: calc(var(--cur-h) * 0.42);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  white-space: nowrap;
+  color: #f1d98a;
+  text-shadow: 0 1px 0 rgba(0,0,0,0.85), 0 0 6px rgba(0,0,0,0.55);
 }
-.summon-currency-hud .currency-icon { width: 20px; height: 20px; margin-right: auto; }
+/* icon centred in the stub (left of the perforation, x~108 of 900) */
+.summon-currency-hud .currency-icon {
+  position: absolute;
+  left: calc(var(--cur-h) * 0.31);
+  top: 50%;
+  width: calc(var(--cur-h) * 0.5);
+  height: calc(var(--cur-h) * 0.5);
+  margin: 0;
+  transform: translate(-50%, -50%);
+  object-fit: contain;
+  filter: drop-shadow(0 1px 1px rgba(0,0,0,0.85));
+  pointer-events: none;
+}
+@media (max-width: 640px) {
+  .summon-currency-hud { gap: 6px; }
+  .summon-currency-hud .currency-chip { --cur-h: 32px; }
+}
 
 /* Segmented Shinobi / Jutsu Cards tabs → JJK plates */
 .summon-tabs {
@@ -255,6 +290,10 @@ body.page-summon { font-family: var(--jjk-font); color: var(--jjk-text); backgro
 .stage-dots { bottom: 14px; }
 .stage-dot { width: 7px; height: 7px; border-radius: 0; transform: rotate(45deg); background: rgba(236,230,214,0.3); box-shadow: 0 0 0 1px rgba(0,0,0,0.6); }
 .stage-dot.active { background: var(--jjk-gold-hi); box-shadow: 0 0 0 1px rgba(60,34,4,0.8); }
+/* Character views: the caption spans the bottom, so park the dots at its right
+   end (clear of long titles) instead of centred on top of the text. */
+.featured-stage:not([data-view="banner"]) .stage-dots { left: auto; right: 18px; bottom: 20px; transform: none; }
+.featured-stage:not([data-view="banner"]) .featured-caption { padding-right: 76px; }
 
 /* ═══════════════════ Kunai arrows ═══════════════════ */
 .stage-arrow {

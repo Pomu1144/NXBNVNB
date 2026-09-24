@@ -10,6 +10,9 @@
    * (plus the BattleAttackNames callout band) carries on.
    *
    *   await BattleCutin.play(unit, kind, skillName)   // kind: jutsu|ultimate|secret
+   *   await BattleCutin.play(unit, kind, skillName, { force: true, host })
+   *     force: ignore the off switch / player-only rule (character-screen preview)
+   *     host:  element to mount into instead of #battle-scene
    *
    * Resolves when the cut-in is gone (≤ ~1.3s), immediately when cut-ins are
    * off or not wanted for this unit. Tap / click anywhere skips it.
@@ -76,11 +79,12 @@
       return !!unit.isPlayer || kind === 'ultimate';
     },
 
-    play(unit, kind, skillName) {
-      if (!this.wants(unit, kind)) return Promise.resolve(false);
+    play(unit, kind, skillName, opts = {}) {
+      const ok = opts.force ? !!(unit && KICKER[kind]) : this.wants(unit, kind);
+      if (!ok) return Promise.resolve(false);
       this.cancel();
 
-      const host = document.getElementById('battle-scene') || document.body;
+      const host = opts.host || document.getElementById('battle-scene') || document.body;
       const art = this.artFor(unit);
       const img = this.preload(art);
       const name = String(skillName || KICKER[kind]).trim().replace(/!+$/, '');
