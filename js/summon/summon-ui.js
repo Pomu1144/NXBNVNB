@@ -274,7 +274,8 @@ class SummonUIController {
   displayResults(results) {
     if (!this.elements.resultGrid) return;
 
-    // Clear previous results
+    // Clear previous results (and any animated 7-star art from the last reveal)
+    window.SevenStarAnim?.unmountAll(this.elements.resultGrid);
     this.elements.resultGrid.innerHTML = '';
 
     // Order the reveal best-first so the grid reads cleanly:
@@ -334,6 +335,16 @@ class SummonUIController {
       `;
 
       frag.appendChild(card);
+
+      // Animated 7-star art (units with fx7): the full layered animation
+      // replaces the static portrait in the reveal card.
+      if (window.SevenStarAnim?.has(character)) {
+        const inner = card.querySelector('.result-card-inner');
+        const img = inner?.querySelector('img');
+        const a7 = window.SevenStarAnim.mount(inner, character, { particles: results.length > 1 ? 8 : 14 });
+        if (a7 && img) { inner.insertBefore(a7, img); img.remove(); }
+        if (a7) { card.classList.add('has-a7'); card.style.setProperty('--fx7c', character.fx7.color || ''); }
+      }
     });
     this.elements.resultGrid.appendChild(frag);
 
@@ -412,6 +423,7 @@ class SummonUIController {
   }
 
   hideResults() {
+    window.SevenStarAnim?.unmountAll(this.elements.resultGrid);
     if (this.elements.modal) {
       this.elements.modal.style.display = 'none';
       this.elements.modal.classList.remove('visible');

@@ -29,6 +29,8 @@
   const SPEC = {
     "7star": "seven-star-fx",
     "maxed": "maxed-fx",
+    // animated 7-star art units (fx7): light sweep + element pulse only
+    "anim7": "anim7-fx",
   };
 
   /* ---------------- Per-card activation ---------------- */
