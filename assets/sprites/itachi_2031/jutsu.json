@@ -1,0 +1,25 @@
+{
+  "frameWidth": 248,
+  "frameHeight": 300,
+  "frames": 28,
+  "columns": 16,
+  "fps": 12,
+  "loop": false,
+  "hits": [],
+  "heightScale": 1.007,
+  "anchorX": 0.4811,
+  "fx": [
+    {
+      "sheet": "jutsu_body",
+      "at": "caster",
+      "startFrame": 2,
+      "layer": "behind",
+      "base": "assets/sprites/itachi_2096"
+    },
+    {
+      "sheet": "jutsu_fx",
+      "at": "targets",
+      "startFrame": 11
+    }
+  ]
+}

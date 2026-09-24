@@ -1454,7 +1454,26 @@
         try { meta = sprite ? await sprite.meta(kind) : null; } catch (e) {
           console.warn(`[Combat] ${attacker.name} has no '${kind}' sheet, using timed hits`, e);
         }
-        const hitCount = Math.max(1, (meta?.hits?.length) || Number(data.hits) || 1);
+        // Layered technique: the caster sheet names effect-only sheets
+        // ("fx": {sheet, at, startFrame[, layer, projectile]} or a list of
+        // them) that play in the scene, over the targets ("at": "targets") or
+        // around the caster ("at": "caster", e.g. a Susano'o behind Itachi).
+        // The layer with hit frames (normally the one at the targets) carries
+        // the hits. The caster stays in place (no dash).
+        const fxBase = meta?.fx ? window.SpritePlayer?.pathFor?.(attacker.charId) : null;
+        const fxLayers = [];
+        if (fxBase) {
+          for (const L of (Array.isArray(meta.fx) ? meta.fx : [meta.fx])) {
+            if (!L?.sheet) continue;
+            // "base": the sheet lives in another unit's folder (a shared Susano'o body)
+            try { fxLayers.push({ ...L, base: L.base || fxBase, meta: await window.SpritePlayer.preload(L.base || fxBase, L.sheet) }); } catch (e) {
+              console.warn(`[Combat] ${attacker.name} fx sheet '${L.sheet}' missing`, e);
+            }
+          }
+        }
+        const fxHitLayer = fxLayers.find(L => L.meta?.hits?.length) || null;
+        const fxMeta = fxLayers.length ? (fxHitLayer || fxLayers[0]).meta : null;
+        const hitCount = Math.max(1, (fxHitLayer?.meta.hits.length) || (meta?.hits?.length) || Number(data.hits) || 1);
         plans.forEach(p => { p.slices = this.splitDamage(p.total, hitCount); });
         console.log(`[Combat] ${attacker.name} ${kind} "${skillName}": ${hitCount} hits`,
           plans.map(p => `${p.target.name} ${p.total} (${p.mult}x${p.isCritical ? ', crit' : ''}) = [${p.slices.join(', ')}]`));
@@ -1468,7 +1487,20 @@
         try { await window.BattleCutin?.play?.(attacker, kind, skillName); } catch (e) { /* cosmetic */ }
         callout = window.BattleAttackNames?.showAttackName(skillName, kind, { hold: 'manual' });
         await wait(350); // let the skill name land
-        if (meta && unitEl) {
+        let inPlace = null; // { y0, y1 } when the caster plays where it stands
+        if (meta && unitEl && fxMeta) {
+          const avgX = targets.reduce((a, t) => a + t.pos.x, 0) / targets.length;
+          core.units?.setSpriteFacing?.(attacker, avgX < attacker.pos.x);
+          const y0 = parseFloat(unitEl.style.top);
+          // a layer drawn around the caster (Susano'o) is as tall as heightUnits x groundY above the feet
+          const tall = Math.max(Number(meta.heightScale) || 1, ...fxLayers.filter(L => L.at === 'caster')
+            .map(L => (Number(L.meta.heightUnits) || 1) * (Number(L.meta.groundY) || 1)));
+          const y1 = Number.isFinite(y0) ? this.sheetSafeY(attacker, unitEl, y0, { ...meta, heightScale: tall }, core) : y0;
+          if (Number.isFinite(y1) && Math.abs(y1 - y0) > 0.05) {
+            unitEl.style.transition = 'top 0.18s ease-out'; unitEl.style.top = `${y1}%`;
+            inPlace = { y0, y1 };
+          } else inPlace = { y0, y1: y0 };
+        } else if (meta && unitEl) {
           await this.dashUnitTo(attacker, unitEl, this.getStrikePosition(attacker, anchor, unitEl, core, meta), core);
           const curX = parseFloat(unitEl.style.left);
           core.units?.setSpriteFacing?.(attacker, anchor.pos.x < curX);
@@ -1487,7 +1519,26 @@
             doHit(hitCount - 1); // anything not yet landed (interrupted / hidden tab)
             resolve();
           };
-          if (meta && sprite) {
+          if (meta && sprite && fxMeta) {
+            let casterEnded = false, calloutTimer = false;
+            const allDone = () => { if (casterEnded && fxLayers.every(L => L.ended)) finish(); };
+            const startLayer = L => {
+              if (L.started) return; L.started = true;
+              if (!calloutTimer) { calloutTimer = true; setTimeout(hideCallout, 900); } // the name band would cover the effect
+              this.playTechniqueFx(attacker, targets, L.base, L.sheet, L.meta, core, {
+                at: L.at, layer: L.layer, projectile: L.projectile,
+                onHit: L === fxHitLayer ? (k => doHit(k)) : null,
+                onEnd: () => { L.ended = true; allDone(); }
+              });
+            };
+            fxLayers.forEach(L => { L.start = Math.max(0, Math.min(meta.frames - 1, Number(L.startFrame) || 0)); });
+            sprite.play(kind, {
+              onFrame: i => fxLayers.forEach(L => { if (i >= L.start) startLayer(L); }),
+              onEnd: () => { fxLayers.forEach(startLayer); casterEnded = true; allDone(); }
+            });
+            const longest = Math.max(...fxLayers.map(L => L.start / meta.fps + L.meta.frames / L.meta.fps));
+            guard = setTimeout(finish, (longest + meta.frames / meta.fps) * 1000 + 1500);
+          } else if (meta && sprite) {
             sprite.play(kind, { onHit: k => doHit(k), onEnd: finish });
             guard = setTimeout(finish, (meta.frames / meta.fps) * 1000 + 1500);
           } else {
@@ -1498,7 +1549,12 @@
         });
 
         hideCallout();
-        if (meta && unitEl) {
+        if (inPlace) {
+          unitEl.style.transition = 'top 0.18s ease-out';
+          unitEl.style.left = `${attacker.pos.x}%`;
+          unitEl.style.top = `${attacker.pos.y}%`;
+          if (Math.abs(inPlace.y1 - inPlace.y0) > 0.05) await wait(200);
+        } else if (meta && unitEl) {
           await wait(120);
           await this.dashUnitTo(attacker, unitEl, home, core);
           unitEl.style.left = `${attacker.pos.x}%`;
@@ -1527,6 +1583,99 @@
         core.units?.settleSprite?.(attacker);
         done();
       });
+    },
+
+    /**
+     * Effect-only sheet of a layered technique, drawn in the scene
+     * (at = 'targets', e.g. Chibaku Tensei, a Susano'o strike) or around the
+     * caster (at = 'caster', e.g. the Susano'o body): centred on them, its
+     * groundY row on their feet line, sized in unit heights
+     * (meta.heightUnits x --sprite-h), mirrored when the targets are on the
+     * caster's left (the art acts toward the right).
+     * layer 'front': scene z 30, above #battlefield-grid (5, all units) and
+     * under #damage-numbers (35) and the HUD; layer 'behind': z 4, under the
+     * grid (behind every unit). If it would reach under the top HUD it slides
+     * down (targets only), then shrinks (same HUD rule as sheetSafeY). With
+     * `projectile`, a small black core flies from the caster's hand to the
+     * effect first (Chibaku Tensei). Removed when it ends.
+     */
+    playTechniqueFx(attacker, targets, base, sheet, fxMeta, core, { onHit, onEnd, at = 'targets', layer = 'front', projectile = false } = {}) {
+      const scene = core.dom?.scene;
+      const end = () => { try { onEnd?.(); } catch (e) { console.error(e); } };
+      if (!scene || !window.SpritePlayer) { end(); return; }
+      try {
+        const sr = scene.getBoundingClientRect();
+        const slotOf = u => scene.querySelector(`.battle-unit[data-unit-id="${u.id}"] .unit-sprite`);
+        const rectsOf = list => {
+          const rs = list.filter(t => t.stats.hp > 0).map(slotOf).filter(Boolean)
+            .map(el => el.getBoundingClientRect()).filter(r => r.height > 0);
+          return rs.length ? rs : list.map(slotOf).filter(Boolean).map(el => el.getBoundingClientRect());
+        };
+        const tRects = rectsOf(targets);
+        const rects = at === 'caster' ? rectsOf([attacker]) : tRects;
+        if (!rects.length) { end(); return; }
+        const avg = (f, rs = rects) => rs.reduce((a, r) => a + f(r), 0) / rs.length;
+        const cx = avg(r => (r.left + r.right) / 2) - sr.left;
+        const feet = Math.max(...rects.map(r => r.bottom)) - sr.top;
+        const aUnit = scene.querySelector(`.battle-unit[data-unit-id="${attacker.id}"]`);
+        const unitH = (aUnit && parseFloat(getComputedStyle(aUnit).getPropertyValue('--sprite-h'))) || avg(r => r.height) || 101;
+        let usable = sr.top;
+        for (const sel of ['#speed-gauge-track', '#turn-icons']) {
+          const el = scene.querySelector(sel);
+          const r = el && getComputedStyle(el).display !== 'none' ? el.getBoundingClientRect() : null;
+          if (r && r.height > 0 && r.bottom > usable && r.top < usable + sr.height * 0.4) usable = r.bottom;
+        }
+        usable = usable + 6 - sr.top;
+        const gy = Number(fxMeta.groundY) || 0.88;
+        let h = unitH * (Number(fxMeta.heightUnits) || 2.2);
+        // Keep it under the top HUD: first slide it down (at most ~a third of its
+        // height, so the sphere still wraps the targets), then shrink if needed.
+        // (an effect around the caster stays on the caster's feet and only shrinks)
+        let top = feet - h * gy;
+        if (top < usable && at !== 'caster') top = Math.min(usable, top + h * 0.35);
+        if (top < usable) { h = Math.max(unitH, (feet + (top - (feet - h * gy)) - usable) / gy); top = usable; }
+        const w = h * fxMeta.frameWidth / fxMeta.frameHeight;
+        const aEl = scene.querySelector(`.battle-unit[data-unit-id="${attacker.id}"] .unit-sprite`);
+        const ar = aEl?.getBoundingClientRect();
+        // the art is drawn acting toward the RIGHT: mirror when the targets are on the caster's left
+        const tcx = tRects.length ? avg(r => (r.left + r.right) / 2, tRects) : cx + sr.left;
+        const flip = !!ar && (ar.left + ar.right) / 2 > tcx;
+        const cxf = Number.isFinite(Number(fxMeta.centerX)) ? Number(fxMeta.centerX) : 0.5;
+        const box = document.createElement('div');
+        box.className = 'technique-fx';
+        box.dataset.at = at;
+        box.dataset.sheet = sheet;
+        Object.assign(box.style, {
+          position: 'absolute', left: `${cx - w * (flip ? 1 - cxf : cxf)}px`, top: `${top}px`,
+          // front: above #battlefield-grid (5) and under #damage-numbers (35);
+          // behind: under the grid, i.e. behind every unit (a Susano'o behind Itachi)
+          width: `${w}px`, height: `${h}px`, zIndex: layer === 'behind' ? '4' : '30', pointerEvents: 'none',
+          display: 'flex', alignItems: 'flex-end', justifyContent: 'center'
+        });
+        scene.appendChild(box);
+        const player = window.SpritePlayer.create(box, base, { height: h, flip });
+        let done = false;
+        const cleanup = () => { if (done) return; done = true; player.destroy(); box.remove(); end(); };
+        // projectile: the core leaving the caster's palm
+        if (ar && projectile) {
+          const dot = document.createElement('div');
+          const x0 = flip ? ar.left + ar.width * 0.25 : ar.right - ar.width * 0.25, y0 = ar.top + ar.height * 0.3;
+          const x1 = cx + sr.left, y1 = top + h * 0.4 + sr.top;
+          Object.assign(dot.style, {
+            position: 'absolute', left: `${x0 - sr.left - 7}px`, top: `${y0 - sr.top - 7}px`, width: '14px', height: '14px',
+            borderRadius: '50%', background: '#000', boxShadow: '0 0 0 1.5px rgba(255,255,255,0.95), 0 0 7px 3px rgba(215,235,255,0.85)', zIndex: '31',
+            pointerEvents: 'none', transition: 'transform 0.2s ease-in, opacity 0.2s ease-in'
+          });
+          scene.appendChild(dot);
+          requestAnimationFrame(() => { dot.style.transform = `translate(${x1 - x0}px, ${y1 - y0}px) scale(0.7)`; dot.style.opacity = '0.4'; });
+          setTimeout(() => dot.remove(), 240);
+        }
+        player.play(sheet, { onHit, onEnd: cleanup }).catch(cleanup);
+        setTimeout(cleanup, (fxMeta.frames / fxMeta.fps) * 1000 + 1200); // safety net
+      } catch (e) {
+        console.error('[Combat] technique fx failed', e);
+        end();
+      }
     },
 
     /** Land hit `k` of a sprite combo on every target that is still standing. */

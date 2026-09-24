@@ -93,6 +93,11 @@ def gif(s, out, H=200, W=560):
     import produce
     base = os.path.join(produce.ROOT, s["folder"])
     seq = []
+    # canvas tall/wide enough for the tallest sheet (summon ultimates can be ~3x the body)
+    top = max([json.load(open(os.path.join(base, n + ".json"))).get("heightScale", 1)
+               for n in ("jutsu", "ultimate", "attack") if os.path.exists(os.path.join(base, n + ".json"))] + [1])
+    CH = int(H * max(1.0, top)) + 70
+    W = max(W, int(W * max(1.0, top) * 0.8))
 
     def add(name, reps=1, hold_last=0):
         if not os.path.exists(os.path.join(base, name + ".json")):
@@ -105,8 +110,8 @@ def gif(s, out, H=200, W=560):
         hits = set(m.get("hits", []))
         for _ in range(reps):
             for i, f in enumerate(frames):
-                cv = Image.new("RGBA", (W, H + 70), BG)
-                cv.alpha_composite(f.resize((w, h), Image.LANCZOS), (round(W * 0.4 - ax * w), H + 50 - h))
+                cv = Image.new("RGBA", (W, CH), BG)
+                cv.alpha_composite(f.resize((w, h), Image.LANCZOS), (round(W * 0.4 - ax * w), CH - 20 - h))
                 dr = ImageDraw.Draw(cv)
                 dr.text((8, 6), f"{s['primary']['id']} {name} {i}", fill=(230, 230, 230))
                 if i in hits:
@@ -129,6 +134,84 @@ def gif(s, out, H=200, W=560):
     seq[0][0].save(out, save_all=True, append_images=[a for a, _ in seq[1:]], duration=[b for _, b in seq],
                    loop=0, disposal=2)
     print("gif", out, len(seq), "frames")
+    return out
+
+
+def fx_gif(s, caster, out, H=160, alone=None):
+    """Layered technique preview: the caster sheet at the left, its fx layers
+    at battle scale (height = heightUnits x H) - "caster" layers on the caster
+    (drawn behind it when layer == "behind"), "targets" layers over a dummy
+    target spot at the right - each started at its startFrame, all on one
+    ground line. alone: also write the hit-carrying fx sheet by itself."""
+    import produce
+    base = os.path.join(produce.ROOT, s["folder"])
+    cf, cm = L.sheet_frames(base, caster)
+    layers = cm["fx"] if isinstance(cm["fx"], list) else [cm["fx"]]
+    for Ly in layers:
+        Ly["frames_"], Ly["meta_"] = L.sheet_frames(os.path.join(produce.ROOT, Ly["base"]) if Ly.get("base") else base,
+                                                    Ly["sheet"])
+        fm = Ly["meta_"]
+        Ly["h_"] = round(H * fm["heightUnits"])
+        Ly["w_"] = round(fm["frameWidth"] * Ly["h_"] / fm["frameHeight"])
+    ch = round(H * cm.get("heightScale", 1))
+    cw = round(cm["frameWidth"] * ch / cm["frameHeight"])
+    cx = 60 + max([Ly["w_"] // 2 for Ly in layers if Ly.get("at") == "caster"] + [cw])
+    tx = cx + max(260, max([Ly["w_"] // 2 for Ly in layers if Ly.get("at") == "caster"] + [0]) + 120)
+    W = tx + max([Ly["w_"] // 2 for Ly in layers if Ly.get("at", "targets") == "targets"] + [60]) + 40
+    CH = max([Ly["h_"] for Ly in layers] + [ch]) + 40
+    ground = CH - 20
+    step = 1000 / cm["fps"]
+    total = max([len(cf) * step] + [Ly["startFrame"] * step + len(Ly["frames_"]) * 1000 / Ly["meta_"]["fps"]
+                                    for Ly in layers]) + 400
+    seq = []
+    t = 0.0
+
+    def draw(cv, Ly, t):
+        fm = Ly["meta_"]
+        ft = t - Ly["startFrame"] * step
+        fi = int(ft * fm["fps"] / 1000) if ft >= 0 else -1
+        if 0 <= fi < len(Ly["frames_"]):
+            x = cx if Ly.get("at") == "caster" else tx
+            cv.alpha_composite(Ly["frames_"][fi].resize((Ly["w_"], Ly["h_"]), Image.LANCZOS),
+                               (round(x - fm.get("centerX", 0.5) * Ly["w_"]), round(ground - fm["groundY"] * Ly["h_"])))
+            return fi, fi in fm.get("hits", [])
+        return fi, False
+    while t < total:
+        cv = Image.new("RGBA", (W, CH), BG)
+        d = ImageDraw.Draw(cv)
+        d.line((0, ground, W, ground), fill=(60, 70, 90))
+        d.rectangle((tx - 22, ground - H, tx + 22, ground), outline=(90, 110, 140))  # dummy target
+        info, hit = [], False
+        for Ly in layers:
+            if Ly.get("layer") == "behind":
+                fi, h_ = draw(cv, Ly, t); info.append(f"{Ly['sheet']} {fi}"); hit |= h_
+        ci = min(len(cf) - 1, int(t / step))
+        cv.alpha_composite(cf[ci].resize((cw, ch), Image.LANCZOS), (round(cx - cm.get("anchorX", 0.5) * cw), ground - ch))
+        for Ly in layers:
+            if Ly.get("layer") != "behind":
+                fi, h_ = draw(cv, Ly, t); info.append(f"{Ly['sheet']} {fi}"); hit |= h_
+        d = ImageDraw.Draw(cv)
+        d.text((8, 6), f"{s['primary']['id']} {caster} {ci} + " + ", ".join(info), fill=(230, 230, 230))
+        if hit:
+            d.text((W - 60, 6), "HIT", fill=(255, 90, 90))
+        seq.append(cv.convert("P", palette=Image.ADAPTIVE, colors=255))
+        t += 1000 / 14
+    seq[0].save(out, save_all=True, append_images=seq[1:], duration=int(1000 / 14), loop=0, disposal=2)
+    print("gif", out, len(seq), "frames")
+    if alone:
+        Ly = next((x for x in layers if x["meta_"].get("hits")), layers[0])
+        ff, fm = Ly["frames_"], Ly["meta_"]
+        fr = []
+        for i, f in enumerate(ff):
+            cv = Image.new("RGBA", (fm["frameWidth"], fm["frameHeight"] + 24), BG)
+            cv.alpha_composite(f, (0, 24))
+            d = ImageDraw.Draw(cv)
+            d.text((6, 4), f"{Ly['sheet']} {i}" + ("  HIT" if i in fm.get("hits", []) else ""), fill=(230, 230, 230))
+            gy = 24 + round(fm["groundY"] * fm["frameHeight"])
+            d.line((0, gy, 12, gy), fill=(255, 200, 80))
+            fr.append(cv.convert("P", palette=Image.ADAPTIVE, colors=255))
+        fr[0].save(alone, save_all=True, append_images=fr[1:], duration=int(1000 / fm["fps"]), loop=0, disposal=2)
+        print("gif", alone, len(fr), "frames")
     return out
 
 
