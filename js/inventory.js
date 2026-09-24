@@ -6,6 +6,51 @@ document.addEventListener('DOMContentLoaded', () => {
     return;
   }
 
+  // Awakening tab groups (data/materials.json "kind"), in display order.
+  // Core scrolls/beads always show; character-specific beads and special tools
+  // only once owned, so the tab isn't 50 empty cards.
+  const AWAKENING_GROUPS = [
+    { kind: 'scroll', title: 'Awakening Scrolls', always: true },
+    { kind: 'beads', title: 'Blazing Awakening Beads', always: true },
+    { kind: 'special', title: 'Special Awakening', always: true },
+    { kind: 'tool', title: 'Special Awakening Tools', always: false },
+    { kind: 'special_beads', title: 'Special Blazing Awakening Beads', always: false },
+    { kind: null, title: '★7 Awakening Materials', always: true }
+  ];
+
+  const esc = (v) => String(v ?? '').replace(/[&<>"']/g, ch => (
+    { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
+
+  // Wiki materials have real framed card art; other items use RewardFormat's
+  // icon (real portraits/currency art, else an element-tinted emblem) because
+  // most assets/items/*.png placeholders were never shipped.
+  function iconOf(item) {
+    if (item.fullName || !window.RewardFormat) return item.icon;
+    return window.RewardFormat.icon(item.id) || item.icon;
+  }
+
+  function itemCard(item) {
+    const card = document.createElement('div');
+    const isMat = !!item.fullName || item.category === 'awakening';
+    item = { ...item, icon: iconOf(item) };
+    card.className = 'item-card' + (isMat ? ' is-material' : '') + (item.quantity > 0 ? '' : ' is-empty');
+    card.dataset.itemId = item.id;
+    card.innerHTML = `
+      <img src="${esc(item.icon)}" alt="${esc(item.name)}" class="item-icon" loading="lazy" onerror="this.onerror=null; this.style.display='none';">
+      <div class="item-name">${esc(item.name)}</div>
+      <div class="item-quantity">×${item.quantity}</div>
+    `;
+    card.addEventListener('click', () => showItemDetails(item));
+    return card;
+  }
+
+  function groupTitle(text) {
+    const h = document.createElement('div');
+    h.className = 'items-group-title';
+    h.textContent = text;
+    return h;
+  }
+
   // Render items for a specific category
   function renderItems(category) {
     const grid = document.getElementById(`${category}-grid`);
@@ -25,18 +70,18 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    items.forEach(item => {
-      const card = document.createElement('div');
-      card.className = 'item-card';
-      card.innerHTML = `
-        <img src="${item.icon}" alt="${item.name}" class="item-icon" onerror="this.onerror=null; this.style.display='none';">
-        <div class="item-name">${item.name}</div>
-        <div class="item-quantity">×${item.quantity}</div>
-      `;
+    if (category === 'awakening') {
+      AWAKENING_GROUPS.forEach(g => {
+        const list = items.filter(it => (g.kind ? it.group === g.kind : !it.group))
+          .filter(it => g.always || it.quantity > 0);
+        if (!list.length) return;
+        grid.appendChild(groupTitle(g.title));
+        list.forEach(it => grid.appendChild(itemCard(it)));
+      });
+      return;
+    }
 
-      card.addEventListener('click', () => showItemDetails(item));
-      grid.appendChild(card);
-    });
+    items.forEach(item => grid.appendChild(itemCard(item)));
   }
 
   // Show item details modal
@@ -48,10 +93,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const quantityDisplay = document.getElementById('modal-item-quantity');
     const usageNote = document.getElementById('item-usage-note');
 
+    icon.style.display = '';
     icon.src = item.icon;
     icon.onerror = () => { icon.onerror = null; icon.style.display = 'none'; };
-    name.textContent = item.name;
-    description.textContent = item.description;
+    name.textContent = item.fullName || item.name;
+    if (item.fullName) {
+      // Wiki material: rarity, description and where to get it
+      const stars = item.rarity ? `<span class="item-rarity">${'★'.repeat(item.rarity)}</span><br>` : '';
+      const obtain = item.obtain ? `<p class="item-obtain"><b>Obtain:</b> ${esc(item.obtain)}</p>` : '';
+      description.innerHTML = `${stars}${esc(item.description)}${obtain}`;
+    } else {
+      description.textContent = item.description;
+    }
     quantityDisplay.textContent = item.quantity;
 
     // Show usage note based on item category
@@ -120,8 +173,14 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Initialize with awakening materials tab
+  // Initialize with awakening materials tab (after the material catalog loads)
   renderItems('awakening');
+  if (window.Resources.ready) {
+    window.Resources.ready.then(() => {
+      const activeTab = document.querySelector('.tab-btn.active');
+      renderItems(activeTab ? activeTab.dataset.tab : 'awakening');
+    });
+  }
 
   // Public API for adding/removing items (wrapper around Resources)
   window.InventoryManager = {

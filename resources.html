@@ -279,13 +279,28 @@
   <script src="js/navigation.js"></script>
   <script>
     // Group materials by category
+    // Naruto Blazing awakening materials (data/materials.json) are grouped in
+    // by kind once the catalog loads (see addCatalogCategories)
     const categories = {
-      "Awakening Stones": ["awakening_stone_3", "awakening_stone_4", "awakening_stone_5", "awakening_stone_6", "awakening_stone_7", "awakening_stone_8", "awakening_stone_9"],
+      "★7 Awakening Stones": ["awakening_stone_6", "awakening_stone_7", "awakening_stone_8", "awakening_stone_9"],
       "Limit Break Materials": ["limit_break_crystal", "dupe_crystal"],
       "Element Scrolls": ["scroll_body", "scroll_skill", "scroll_bravery", "scroll_wisdom", "scroll_heart"],
       "Character Materials": ["character_stone"],
       "Currency": ["ryo"]
     };
+
+    const CATALOG_GROUPS = { scroll: "Awakening Scrolls", beads: "Blazing Awakening Beads", special: "Special Awakening",
+      tool: "Special Awakening Tools", special_beads: "Special Blazing Awakening Beads" };
+    function addCatalogCategories() {
+      const groups = {};
+      (window.Resources.getCatalog ? window.Resources.getCatalog() : []).forEach(m => {
+        const g = CATALOG_GROUPS[m.kind] || "Awakening Materials";
+        (groups[g] = groups[g] || []).push(m.id);
+      });
+      const rest = { ...categories };
+      Object.keys(categories).forEach(k => delete categories[k]);
+      Object.assign(categories, groups, rest);
+    }
 
     function renderResources() {
       const container = document.getElementById("resources-list");
@@ -323,7 +338,7 @@
 
       const allTypes = Object.keys(window.Resources.MATERIAL_TYPES);
       for (const matId of allTypes) {
-        if (matId !== "ryo") {
+        if (matId !== "ryo" && window.Resources.MATERIAL_TYPES[matId].category !== "legacy") {
           window.Resources.add(matId, amount);
         }
       }
@@ -349,6 +364,9 @@
     // Initial render
     window.addEventListener("DOMContentLoaded", () => {
       renderResources();
+      if (window.Resources && window.Resources.ready) {
+        window.Resources.ready.then(() => { addCatalogCategories(); renderResources(); });
+      }
 
       // Setup dev control button event listeners
       document.getElementById("btn-add-materials-100")?.addEventListener("click", () => addMaterials(100));
