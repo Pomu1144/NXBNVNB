@@ -1,0 +1,893 @@
+{
+ "name": "hinata_813",
+ "folder": "assets/sprites/hinata_813",
+ "ids": [
+  "hinata_813"
+ ],
+ "primary": {
+  "id": "hinata_813",
+  "tier": "6S"
+ },
+ "dev": {
+  "id": "hinata_813",
+  "tier": "6S",
+  "label": "Hinata (Beyond the Ceaseless)",
+  "note": "Hinata Hyuga \"Beyond the Ceaseless\" 6★ (hinata_813, featured banner) — 811/812 share the art with their own Air Palm jutsu."
+ },
+ "reference_art": "assets/characters/hinata_813/full_6S.png",
+ "character": "Hinata Hyuga from Naruto Shippuden: young woman, very long straight dark indigo-blue hair with blunt bangs and two long side locks, pale lavender pupil-less Byakugan eyes, fair skin, loose lavender-and-cream hooded zip jacket with wide sleeves, navy capri pants, blue ninja sandals, Konoha forehead protector worn around her neck, a gentle but determined expression",
+ "short": "Hinata Hyuga: long dark indigo hair, pale lavender eyes, lavender-cream jacket, navy pants, forehead protector around her neck",
+ "pronouns": [
+  "she",
+  "her"
+ ],
+ "variants": [
+  {
+   "folder": "assets/sprites/hinata_811",
+   "ids": [
+    "hinata_811",
+    "hinata_812"
+   ],
+   "primary": {
+    "id": "hinata_812",
+    "tier": "6S"
+   },
+   "note": "5★/6★ forms: same outfit and sheets, but their jutsu is 8 Trigrams Air Palm (7 hits)",
+   "sheets": {
+    "jutsu": {
+     "fps": 12,
+     "height": 300,
+     "body_px": 296,
+     "skill": "jutsu",
+     "timeline": [
+      [
+       "base",
+       1
+      ],
+      [
+       "j1",
+       2
+      ],
+      [
+       "a1",
+       2
+      ],
+      [
+       "a1",
+       1
+      ],
+      [
+       "@hits",
+       [
+        "a2",
+        "a3"
+       ],
+       1
+      ],
+      [
+       "a4",
+       2
+      ],
+      [
+       "j10",
+       2
+      ],
+      [
+       "base",
+       1
+      ]
+     ]
+    }
+   }
+  }
+ ],
+ "sheets": {
+  "idle": {
+   "fps": 8,
+   "loop": true,
+   "height": 256,
+   "timeline": [
+    [
+     "base",
+     2
+    ],
+    [
+     "idle_m",
+     1
+    ],
+    [
+     "idle_in",
+     3
+    ],
+    [
+     "idle_m",
+     1
+    ],
+    [
+     "base",
+     2
+    ],
+    [
+     "idle_out",
+     3
+    ]
+   ]
+  },
+  "run": {
+   "fps": 12,
+   "loop": true,
+   "height": 256,
+   "body_px": 256,
+   "timeline": [
+    [
+     "run1",
+     1
+    ],
+    [
+     "run2",
+     1
+    ],
+    [
+     "run3",
+     1
+    ],
+    [
+     "run4",
+     1
+    ],
+    [
+     "run5",
+     1
+    ],
+    [
+     "run6",
+     1
+    ]
+   ]
+  },
+  "jutsu": {
+   "fps": 12,
+   "height": 300,
+   "body_px": 296,
+   "skill": "jutsu",
+   "timeline": [
+    [
+     "j1",
+     2
+    ],
+    [
+     "j2",
+     2
+    ],
+    [
+     "j3",
+     1
+    ],
+    [
+     "j4",
+     2
+    ],
+    [
+     "@hits",
+     [
+      "j5",
+      "j6",
+      "j7",
+      "j8"
+     ],
+     1
+    ],
+    [
+     "j9",
+     2,
+     "hit"
+    ],
+    [
+     "j10",
+     2
+    ],
+    [
+     "base",
+     1
+    ]
+   ]
+  },
+  "ultimate": {
+   "fps": 14,
+   "height": 300,
+   "body_px": 296,
+   "skill": "ultimate",
+   "timeline": [
+    [
+     "u1",
+     2
+    ],
+    [
+     "u2",
+     2
+    ],
+    [
+     "u3",
+     2
+    ],
+    [
+     "@hits",
+     [
+      "u4",
+      "u5",
+      "u6",
+      "u7"
+     ],
+     1
+    ],
+    [
+     "u8",
+     3,
+     "hit"
+    ],
+    [
+     "u9",
+     2
+    ],
+    [
+     "u10",
+     2
+    ],
+    [
+     "base",
+     1
+    ]
+   ]
+  },
+  "hit": {
+   "fps": 12,
+   "height": 256,
+   "anchor_x_from_ref": true,
+   "timeline": [
+    [
+     "h1",
+     1
+    ],
+    [
+     "h0",
+     1
+    ],
+    [
+     "h12",
+     1
+    ],
+    [
+     "h2",
+     2
+    ],
+    [
+     "h3",
+     1
+    ]
+   ]
+  },
+  "ko": {
+   "fps": 10,
+   "height": 256,
+   "anchor_x_from_ref": true,
+   "timeline": [
+    [
+     "h1",
+     1
+    ],
+    [
+     "h12",
+     1
+    ],
+    [
+     "k1",
+     2
+    ],
+    [
+     "kf",
+     1
+    ],
+    [
+     "k2",
+     3
+    ]
+   ]
+  },
+  "attack": {
+   "fps": 14,
+   "height": 256,
+   "body_px": 256,
+   "hits": 2,
+   "timeline": [
+    [
+     "at1",
+     1
+    ],
+    [
+     "at2",
+     1
+    ],
+    [
+     "at3",
+     2,
+     "hit"
+    ],
+    [
+     "at4",
+     1
+    ],
+    [
+     "at5",
+     2,
+     "hit"
+    ],
+    [
+     "base",
+     2
+    ]
+   ]
+  }
+ },
+ "poses": {
+  "base": {
+   "type": "base",
+   "prompt": "Gentle Fist ready stance: knees slightly bent, feet apart, left palm extended forward at chest height with fingers up, right palm held back near her hip, Byakugan active with faint veins beside her eyes, a soft pale-blue chakra glow around both palms."
+  },
+  "idle_in": {
+   "type": "edit",
+   "prompt": "a tiny breathing change: inhaling, chest very slightly expanded, both shoulders raised by a few pixels, the hair tips and palm glow sway slightly. Everything else identical."
+  },
+  "idle_out": {
+   "type": "edit",
+   "prompt": "a tiny breathing change: exhaling, shoulders lowered by a few pixels, head dipped very slightly, hands slightly relaxed, the hair tips sway slightly the other way. Everything else identical."
+  },
+  "idle_m": {
+   "type": "tween",
+   "from": [
+    "idle_in",
+    "idle_out"
+   ],
+   "prompt": "shoulders halfway between the two, hair tips between the two positions. Everything else identical."
+  },
+  "run1": {
+   "type": "pose",
+   "prompt": "full body side-view RUN CYCLE frame 1 of 6, running fast to the RIGHT in a ninja run (torso leaning forward, both arms swept straight back behind her): CONTACT - right leg extended forward heel touching down, left leg behind pushing off, long hair streaming back."
+  },
+  "run2": {
+   "type": "pose",
+   "prompt": "full body side-view RUN CYCLE frame 2 of 6, ninja run to the RIGHT (torso leaning forward, arms swept back): DOWN - right foot planted under her body, knee bent, left leg swinging forward, hair streaming back."
+  },
+  "run3": {
+   "type": "pose",
+   "prompt": "full body side-view RUN CYCLE frame 3 of 6, ninja run to the RIGHT (torso leaning forward, arms swept back): PASSING - right leg straight pushing off, left knee lifted high in front, hair streaming back."
+  },
+  "run4": {
+   "type": "pose",
+   "prompt": "full body side-view RUN CYCLE frame 4 of 6, ninja run to the RIGHT (torso leaning forward, arms swept back): CONTACT - left leg extended forward heel touching down, right leg behind pushing off, hair streaming back."
+  },
+  "run5": {
+   "type": "pose",
+   "prompt": "full body side-view RUN CYCLE frame 5 of 6, ninja run to the RIGHT (torso leaning forward, arms swept back): DOWN - left foot planted under her body, knee bent, right leg swinging forward, hair streaming back."
+  },
+  "run6": {
+   "type": "pose",
+   "prompt": "full body side-view RUN CYCLE frame 6 of 6, ninja run to the RIGHT (torso leaning forward, arms swept back): PASSING - left leg straight pushing off, right knee lifted high in front, hair streaming back."
+  },
+  "j1": {
+   "type": "pose",
+   "prompt": "PROTECTIVE EIGHT TRIGRAMS SIXTY-FOUR PALMS, step 1: Byakugan flaring with bulging veins beside her eyes, she sinks into a low wide Gentle Fist stance, both palms open, bright blue chakra gathering around both hands."
+  },
+  "j2": {
+   "type": "pose",
+   "prompt": "step 2: in the low stance she sweeps both arms outward, thin glowing blue chakra threads streaming from all ten fingertips, curving close around her body."
+  },
+  "j3": {
+   "type": "pose",
+   "prompt": "step 3: arms whirling in a circle in front of her, the blue chakra threads bending into curved blades that arc around her, no higher than the top of her head."
+  },
+  "j4": {
+   "type": "pose",
+   "prompt": "step 4: a compact half-dome of many thin glowing blue chakra blades surrounds her, slightly larger than her body and no taller than 15% above her head, her palms moving at blinding speed."
+  },
+  "j5": {
+   "type": "pose",
+   "prompt": "step 5 STRIKE: right palm thrust forward to the right, a fan of glowing blue chakra blades slashing forward from the palm, the half-dome of chakra blades still around her."
+  },
+  "j6": {
+   "type": "pose",
+   "prompt": "step 6 STRIKE: left palm thrust forward to the right, a different fan of blue chakra blades slashing diagonally upward, chakra dome around her."
+  },
+  "j7": {
+   "type": "pose",
+   "prompt": "step 7 STRIKE: both arms slashing across her body, crossing arcs of blue chakra blades in front of her to the right, chakra dome around her."
+  },
+  "j8": {
+   "type": "pose",
+   "prompt": "step 8 STRIKE: body twisting, arms swept wide, a spinning ring of blue chakra blades around her at waist height, chakra dome around her."
+  },
+  "j9": {
+   "type": "pose",
+   "prompt": "step 9 FINISH: both palms pushed forward to the right, the chakra blades burst outward in a bright blue flash in front of her, still within the canvas."
+  },
+  "j10": {
+   "type": "pose",
+   "prompt": "step 10 RECOVER: rising back into her Gentle Fist ready stance, a few fading blue chakra wisps around her hands."
+  },
+  "u1": {
+   "type": "pose",
+   "prompt": "ULTIMATE TWIN LION FISTS, step 1: Byakugan flaring, she brings both fists to her sides, dense blue chakra pouring out of both hands."
+  },
+  "u2": {
+   "type": "pose",
+   "prompt": "step 2: in a strong wide stance she raises both arms, the blue chakra around each hand takes the shape of a roaring lion head (two lion-head chakra auras, each about the size of her torso, kept close to her)."
+  },
+  "u3": {
+   "type": "pose",
+   "prompt": "step 3: dashing forward to the right in a deep lunge, both glowing blue lion-head chakra fists pulled back ready to strike."
+  },
+  "u4": {
+   "type": "pose",
+   "prompt": "step 4 STRIKE: right lion fist thrust forward to the right with a palm strike, the blue lion head biting forward with a burst of chakra, left lion fist pulled back."
+  },
+  "u5": {
+   "type": "pose",
+   "prompt": "step 5 STRIKE: left lion fist thrust forward to the right, the lion head on that hand roaring forward in a burst of blue chakra, right fist pulled back."
+  },
+  "u6": {
+   "type": "pose",
+   "prompt": "step 6 STRIKE: both lion fists striking forward together at chest height, overlapping blue chakra impact flashes in front of her."
+  },
+  "u7": {
+   "type": "pose",
+   "prompt": "step 7 STRIKE: rapid upward palm strike with the right lion fist, the left lion fist at her hip, blue chakra streaks showing the speed of dozens of palm strikes."
+  },
+  "u8": {
+   "type": "pose",
+   "prompt": "step 8 FINAL BLOW: both palms slammed forward to the right, the two lion chakra heads merging into one big bright blue chakra blast in front of her, still fully inside the canvas."
+  },
+  "u9": {
+   "type": "pose",
+   "prompt": "step 9 FOLLOW-THROUGH: arms still extended forward, the lion chakra breaking up into glowing blue particles."
+  },
+  "u10": {
+   "type": "pose",
+   "prompt": "step 10 RECOVER: standing back in her Gentle Fist ready stance, last blue sparkles fading around her hands."
+  },
+  "a1": {
+   "type": "pose",
+   "prompt": "EIGHT TRIGRAMS AIR PALM, step 1: Byakugan flaring, she draws her right palm far back beside her waist, left hand forward, blue chakra condensing in the right palm."
+  },
+  "a2": {
+   "type": "pose",
+   "prompt": "step 2 STRIKE: right palm thrust straight forward to the right, a compact cone-shaped shockwave of compressed air and pale blue chakra blasting forward from the palm, about as long as her arm."
+  },
+  "a3": {
+   "type": "pose",
+   "prompt": "step 3 STRIKE: same thrust pose, the air-palm shockwave is now a compact ring-shaped burst of pale blue chakra and wind just in front of her palm, no wider than her torso, ending well before the right edge (at least 150 px of empty margin on the right)."
+  },
+  "a4": {
+   "type": "pose",
+   "prompt": "step 4 FOLLOW-THROUGH: palm still extended, the shockwave dissolving into pale blue wind wisps."
+  },
+  "h1": {
+   "type": "edit",
+   "prompt": "the pose only: HIT REACTION at the moment of impact - struck hard by a blow coming from the RIGHT: torso and head snapped backward, leaning back toward the LEFT side of the canvas, eyes squeezed shut, pained grimace, arms flung loosely outward and back, knees slightly bent, both feet still planted. No blood, no sparks, no effects."
+  },
+  "h2": {
+   "type": "edit",
+   "prompt": "the pose only: STAGGER after being hit - knocked back half a step: body hunched forward in pain, one hand clutching her stomach, head lowered with a pained grimace, knees bent low, left foot slid back behind her with her weight on it. No blood, no effects."
+  },
+  "h3": {
+   "type": "edit",
+   "prompt": "the pose only: RECOVERING from a hit - straightening back up toward her Gentle Fist stance: almost upright but slightly hunched, one palm raised in guard, hurt but determined expression. No blood, no effects."
+  },
+  "h0": {
+   "type": "tween",
+   "from": [
+    "base",
+    "h1"
+   ],
+   "prompt": "the character is just starting to recoil from a blow from the right, torso tilting back a little."
+  },
+  "h12": {
+   "type": "tween",
+   "from": [
+    "h1",
+    "h2"
+   ],
+   "prompt": "the character goes from leaning back to hunching forward."
+  },
+  "k1": {
+   "type": "edit",
+   "prompt": "the pose only: KNOCKED OUT and collapsing - dropped onto both knees, torso slumped forward, arms hanging limp, head hanging down, eyes closed. No blood, no effects."
+  },
+  "k2": {
+   "type": "edit",
+   "prompt": "the pose only: KNOCKED OUT lying on the ground - collapsed face down on her side, fully horizontal, body lying along the bottom of the canvas, head toward the LEFT, arms limp, eyes closed, hair spread out. No blood, no effects."
+  },
+  "kf": {
+   "type": "tween",
+   "from": [
+    "k1",
+    "k2"
+   ],
+   "prompt": "the character falls forward from kneeling toward lying on the ground, body at about 45 degrees."
+  },
+  "at1": {
+   "type": "pose",
+   "prompt": "NORMAL ATTACK (Gentle Fist) - a clearly DIFFERENT pose from the reference with big visible motion. WIND-UP: she steps forward into a deep lunge toward the right, torso twisted away, right arm pulled far back behind her body with the palm open, left arm stretched forward, hair swinging."
+  },
+  "at2": {
+   "type": "tween",
+   "from": [
+    "at1",
+    "at3"
+   ],
+   "prompt": "the arm is halfway through the swing forward, body turning into the strike, no effect yet."
+  },
+  "at3": {
+   "type": "pose",
+   "prompt": "NORMAL ATTACK - a clearly DIFFERENT pose from the reference. STRIKE 1: full forward lunge to the right, right arm fully extended straight forward at shoulder height with the open palm (Gentle Fist palm strike), left arm pulled back to her hip, a small burst of pale blue chakra at the right palm, hair flying back."
+  },
+  "at4": {
+   "type": "pose",
+   "prompt": "NORMAL ATTACK - a clearly DIFFERENT pose from the reference. TRANSITION: pulling the right arm back to her side while twisting her torso the other way, left palm drawn back beside her ear, weight on the front foot."
+  },
+  "at5": {
+   "type": "pose",
+   "prompt": "NORMAL ATTACK - a clearly DIFFERENT pose from the reference. STRIKE 2: left arm fully extended forward to the right at chest height with the open palm, right arm pulled back behind her, torso turned, a small burst of pale blue chakra at the left palm."
+  }
+ },
+ "state": {
+  "media": {
+   "ref_art": "3253053d-ea8b-4326-8903-ee6604f9a740"
+  },
+  "poses": {
+   "base": {
+    "pending_index": 1000,
+    "job_id": "a4e29e4a-5703-430e-aaaf-9b2954370cf6",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_003452_a4e29e4a-5703-430e-aaaf-9b2954370cf6.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_003452_a4e29e4a-5703-430e-aaaf-9b2954370cf6.png"
+   },
+   "idle_in": {
+    "pending_index": 1001,
+    "job_id": "f2a0e6f5-6771-4b33-97a8-371639fb8ac0",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_003715_f2a0e6f5-6771-4b33-97a8-371639fb8ac0.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_003715_f2a0e6f5-6771-4b33-97a8-371639fb8ac0.png"
+   },
+   "idle_out": {
+    "pending_index": 1002,
+    "job_id": "a5ba91b9-c5df-47c9-80b2-ded09fb9ec78",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_003714_a5ba91b9-c5df-47c9-80b2-ded09fb9ec78.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_003714_a5ba91b9-c5df-47c9-80b2-ded09fb9ec78.png"
+   },
+   "run1": {
+    "pending_index": 1003,
+    "job_id": "4a010c57-7610-4572-8c59-6b502e6a2fb2",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_003715_4a010c57-7610-4572-8c59-6b502e6a2fb2.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_003715_4a010c57-7610-4572-8c59-6b502e6a2fb2.png"
+   },
+   "run2": {
+    "pending_index": 1004,
+    "job_id": "0cddbc54-1870-49ee-a753-6c8626b1e3a7",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_003715_0cddbc54-1870-49ee-a753-6c8626b1e3a7.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_003715_0cddbc54-1870-49ee-a753-6c8626b1e3a7.png"
+   },
+   "run3": {
+    "pending_index": 1005,
+    "job_id": "97fe1d0e-ef54-4719-ba09-d1de001fec41",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_003715_97fe1d0e-ef54-4719-ba09-d1de001fec41.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_003715_97fe1d0e-ef54-4719-ba09-d1de001fec41.png"
+   },
+   "run4": {
+    "pending_index": 1006,
+    "job_id": "c955a971-896a-4496-b41f-8088aa222f4f",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_003715_c955a971-896a-4496-b41f-8088aa222f4f.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_003715_c955a971-896a-4496-b41f-8088aa222f4f.png"
+   },
+   "run5": {
+    "pending_index": 1007,
+    "job_id": "15088a79-f4da-4c42-9426-6c77b74d1d9d",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_003715_15088a79-f4da-4c42-9426-6c77b74d1d9d.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_003715_15088a79-f4da-4c42-9426-6c77b74d1d9d.png"
+   },
+   "run6": {
+    "pending_index": 1008,
+    "job_id": "794cccbb-34e4-4e98-8648-57411a5338a5",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_003715_794cccbb-34e4-4e98-8648-57411a5338a5.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_003715_794cccbb-34e4-4e98-8648-57411a5338a5.png"
+   },
+   "j1": {
+    "pending_index": 1009,
+    "job_id": "59e9f873-1eac-454a-8767-0cf35a593a45",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_003714_59e9f873-1eac-454a-8767-0cf35a593a45.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_003714_59e9f873-1eac-454a-8767-0cf35a593a45.png"
+   },
+   "j2": {
+    "pending_index": 1010,
+    "job_id": "7f13f057-8d56-4090-ac82-57ec0f53203f",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_003715_7f13f057-8d56-4090-ac82-57ec0f53203f.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_003715_7f13f057-8d56-4090-ac82-57ec0f53203f.png"
+   },
+   "j3": {
+    "pending_index": 1011,
+    "job_id": "62f6aa16-837d-4cc7-9951-5a48f86fdfa3",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_003714_62f6aa16-837d-4cc7-9951-5a48f86fdfa3.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_003714_62f6aa16-837d-4cc7-9951-5a48f86fdfa3.png"
+   },
+   "j4": {
+    "pending_index": 1012,
+    "job_id": "67fe9b1f-16ca-4d83-9646-464c84996594",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_003715_67fe9b1f-16ca-4d83-9646-464c84996594.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_003715_67fe9b1f-16ca-4d83-9646-464c84996594.png"
+   },
+   "j5": {
+    "pending_index": 1013,
+    "job_id": "aeb01d67-dafd-450f-b410-65084830607a",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_003921_aeb01d67-dafd-450f-b410-65084830607a.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_003921_aeb01d67-dafd-450f-b410-65084830607a.png"
+   },
+   "j6": {
+    "pending_index": 1014,
+    "job_id": "87ee4db8-4cdf-44e9-a156-dd10ab956125",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_003921_87ee4db8-4cdf-44e9-a156-dd10ab956125.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_003921_87ee4db8-4cdf-44e9-a156-dd10ab956125.png"
+   },
+   "j7": {
+    "pending_index": 1015,
+    "job_id": "e395c490-1ed1-4602-8898-f4bd1fcd6cd9",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_003921_e395c490-1ed1-4602-8898-f4bd1fcd6cd9.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_003921_e395c490-1ed1-4602-8898-f4bd1fcd6cd9.png"
+   },
+   "j8": {
+    "pending_index": 1016,
+    "job_id": "f69b028c-caff-4b26-85bb-d2b973f6129b",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_003921_f69b028c-caff-4b26-85bb-d2b973f6129b.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_003921_f69b028c-caff-4b26-85bb-d2b973f6129b.png"
+   },
+   "j9": {
+    "pending_index": 1017,
+    "job_id": "bf3a5721-efef-4745-b10d-49470c8a155f",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_003921_bf3a5721-efef-4745-b10d-49470c8a155f.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_003921_bf3a5721-efef-4745-b10d-49470c8a155f.png"
+   },
+   "j10": {
+    "pending_index": 1018,
+    "job_id": "01679b14-15ba-45ba-9cf6-11ba3027044b",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_003922_01679b14-15ba-45ba-9cf6-11ba3027044b.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_003922_01679b14-15ba-45ba-9cf6-11ba3027044b.png"
+   },
+   "u1": {
+    "pending_index": 1019,
+    "job_id": "6d8ec9ab-44e1-4db0-a1fa-79c2f8bbcdbb",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_003921_6d8ec9ab-44e1-4db0-a1fa-79c2f8bbcdbb.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_003921_6d8ec9ab-44e1-4db0-a1fa-79c2f8bbcdbb.png"
+   },
+   "u2": {
+    "pending_index": 1020,
+    "job_id": "36cbffe4-a55b-40a0-9232-2fcf9f58db90",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_003922_36cbffe4-a55b-40a0-9232-2fcf9f58db90.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_003922_36cbffe4-a55b-40a0-9232-2fcf9f58db90.png"
+   },
+   "u3": {
+    "pending_index": 1021,
+    "job_id": "b74aba42-3a2e-44ac-9c50-1f21b0f0a993",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_003921_b74aba42-3a2e-44ac-9c50-1f21b0f0a993.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_003921_b74aba42-3a2e-44ac-9c50-1f21b0f0a993.png"
+   },
+   "u4": {
+    "pending_index": 1022,
+    "job_id": "13e52260-9dd3-44c8-9fb2-720f7f214422",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_003921_13e52260-9dd3-44c8-9fb2-720f7f214422.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_003921_13e52260-9dd3-44c8-9fb2-720f7f214422.png"
+   },
+   "u5": {
+    "pending_index": 1023,
+    "job_id": "03980109-b9b3-4d35-bf80-2915c42de2d9",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_003922_03980109-b9b3-4d35-bf80-2915c42de2d9.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_003922_03980109-b9b3-4d35-bf80-2915c42de2d9.png"
+   },
+   "u6": {
+    "pending_index": 1024,
+    "job_id": "ad500d36-3734-4c27-8730-5f62e96a13a7",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_003921_ad500d36-3734-4c27-8730-5f62e96a13a7.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_003921_ad500d36-3734-4c27-8730-5f62e96a13a7.png"
+   },
+   "u7": {
+    "pending_index": 1025,
+    "job_id": "5e328cbc-ca8b-40b7-a42a-972ff9cf6d13",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004020_5e328cbc-ca8b-40b7-a42a-972ff9cf6d13.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004020_5e328cbc-ca8b-40b7-a42a-972ff9cf6d13.png"
+   },
+   "u8": {
+    "pending_index": 1026,
+    "job_id": "73b473e9-d3ba-4035-a75d-f8274105d7f3",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004020_73b473e9-d3ba-4035-a75d-f8274105d7f3.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004020_73b473e9-d3ba-4035-a75d-f8274105d7f3.png"
+   },
+   "u9": {
+    "pending_index": 1027,
+    "job_id": "ac1b614d-9695-4d2e-8878-6297e1f5b69a",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004020_ac1b614d-9695-4d2e-8878-6297e1f5b69a.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004020_ac1b614d-9695-4d2e-8878-6297e1f5b69a.png"
+   },
+   "u10": {
+    "pending_index": 1028,
+    "job_id": "3d082767-310d-4333-a180-fc2e2b422c85",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004021_3d082767-310d-4333-a180-fc2e2b422c85.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004021_3d082767-310d-4333-a180-fc2e2b422c85.png"
+   },
+   "a1": {
+    "pending_index": 1029,
+    "job_id": "0eac0707-bf3e-45b0-a25c-1da69db29c06",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004020_0eac0707-bf3e-45b0-a25c-1da69db29c06.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004020_0eac0707-bf3e-45b0-a25c-1da69db29c06.png"
+   },
+   "a2": {
+    "pending_index": 1030,
+    "job_id": "d80262c0-ed17-42f4-9350-9a6bace6f8d6",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004021_d80262c0-ed17-42f4-9350-9a6bace6f8d6.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004021_d80262c0-ed17-42f4-9350-9a6bace6f8d6.png"
+   },
+   "a3": {
+    "pending_index": 1050,
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004801_46c3cfc9-58c2-4fdb-bd1c-f7119f864904.png",
+    "previous": [
+     "b706be1d-7b07-4307-8607-758797fe29ba"
+    ],
+    "job_id": "46c3cfc9-58c2-4fdb-bd1c-f7119f864904",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004801_46c3cfc9-58c2-4fdb-bd1c-f7119f864904.png"
+   },
+   "a4": {
+    "pending_index": 1032,
+    "job_id": "a9cbe05d-e43f-4b68-81f9-2d6103076322",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004020_a9cbe05d-e43f-4b68-81f9-2d6103076322.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004020_a9cbe05d-e43f-4b68-81f9-2d6103076322.png"
+   },
+   "h1": {
+    "pending_index": 1033,
+    "job_id": "4603eaf6-56ea-4f0a-9484-a29bcc877b28",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004020_4603eaf6-56ea-4f0a-9484-a29bcc877b28.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004020_4603eaf6-56ea-4f0a-9484-a29bcc877b28.png"
+   },
+   "h2": {
+    "pending_index": 1034,
+    "job_id": "52cab35c-cd3a-4e94-846b-de9b726b51c6",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004020_52cab35c-cd3a-4e94-846b-de9b726b51c6.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004020_52cab35c-cd3a-4e94-846b-de9b726b51c6.png"
+   },
+   "h3": {
+    "pending_index": 1035,
+    "job_id": "30b13348-bc14-4c23-9dc1-130021120320",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004021_30b13348-bc14-4c23-9dc1-130021120320.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004021_30b13348-bc14-4c23-9dc1-130021120320.png"
+   },
+   "k1": {
+    "pending_index": 1036,
+    "job_id": "e310ed96-f573-4d25-9444-0939f71afa88",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004020_e310ed96-f573-4d25-9444-0939f71afa88.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004020_e310ed96-f573-4d25-9444-0939f71afa88.png"
+   },
+   "k2": {
+    "pending_index": 1037,
+    "job_id": "13a1d758-611b-4583-94f7-b70c45713e56",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004104_13a1d758-611b-4583-94f7-b70c45713e56.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004104_13a1d758-611b-4583-94f7-b70c45713e56.png"
+   },
+   "at1": {
+    "pending_index": 1054,
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_005137_c2c7aa15-62d8-4d2b-9a1b-4f0cf738a51b.png",
+    "previous": [
+     "955fbca9-b455-4b21-a55f-50685fee66d9"
+    ],
+    "job_id": "c2c7aa15-62d8-4d2b-9a1b-4f0cf738a51b",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_005137_c2c7aa15-62d8-4d2b-9a1b-4f0cf738a51b.png"
+   },
+   "at3": {
+    "pending_index": 1055,
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004801_affddd41-6e10-4646-b0ea-8d91dcdeec50.png",
+    "previous": [
+     "fd3551e7-c62b-48d1-876a-edc3a5362f19"
+    ],
+    "job_id": "affddd41-6e10-4646-b0ea-8d91dcdeec50",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004801_affddd41-6e10-4646-b0ea-8d91dcdeec50.png"
+   },
+   "at4": {
+    "pending_index": 1056,
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004801_c2969a1c-c00e-4e86-b2ce-becebdc4e20c.png",
+    "previous": [
+     "5d8d665b-0548-44ec-bec7-f7031130db84"
+    ],
+    "job_id": "c2969a1c-c00e-4e86-b2ce-becebdc4e20c",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004801_c2969a1c-c00e-4e86-b2ce-becebdc4e20c.png"
+   },
+   "at5": {
+    "pending_index": 1057,
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004801_41c40037-2464-42e7-99e5-726990e08baf.png",
+    "previous": [
+     "73c14b48-0b38-4adb-9dde-b3cbc63b1c95"
+    ],
+    "job_id": "41c40037-2464-42e7-99e5-726990e08baf",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004801_41c40037-2464-42e7-99e5-726990e08baf.png"
+   },
+   "idle_m": {
+    "pending_index": 1049,
+    "job_id": "668f62b0-5738-4fee-b509-8ccafe229b84",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004801_668f62b0-5738-4fee-b509-8ccafe229b84.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004801_668f62b0-5738-4fee-b509-8ccafe229b84.png"
+   },
+   "h0": {
+    "pending_index": 1051,
+    "job_id": "db24694e-2a0e-49a8-add2-154d15144ced",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004801_db24694e-2a0e-49a8-add2-154d15144ced.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004801_db24694e-2a0e-49a8-add2-154d15144ced.png"
+   },
+   "h12": {
+    "pending_index": 1052,
+    "job_id": "3cf8710e-6afe-434a-97fd-2467e11b196b",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004801_3cf8710e-6afe-434a-97fd-2467e11b196b.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004801_3cf8710e-6afe-434a-97fd-2467e11b196b.png"
+   },
+   "kf": {
+    "pending_index": 1053,
+    "job_id": "15d1be09-4c20-4814-a5e9-e1a1aed8a35e",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004801_15d1be09-4c20-4814-a5e9-e1a1aed8a35e.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_004801_15d1be09-4c20-4814-a5e9-e1a1aed8a35e.png"
+   },
+   "at2": {
+    "pending_index": 1058,
+    "job_id": "261bd0f5-65ec-41ba-bbd9-08de63f4302e",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_005644_261bd0f5-65ec-41ba-bbd9-08de63f4302e.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_005644_261bd0f5-65ec-41ba-bbd9-08de63f4302e.png"
+   }
+  },
+  "next_index": 1059
+ }
+}
