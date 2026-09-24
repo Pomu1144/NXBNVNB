@@ -52,46 +52,19 @@
     "speed_boost_large": { name: "Large Speed Boost \"Sprint Sphere\"", desc: "Increases Speed stat permanently by 40.", icon: "assets/items/speed_boost_large.png", category: "enhancement", statBoost: { speed: 40 } },
 
     // ========== AWAKENING MATERIALS ==========
-    // Heart Awakening Books
-    "book_heart_1": { name: "★1 Heart Book", desc: "Heart element awakening material for ★1 characters.", icon: "assets/items/book_heart_1.png", category: "awakening", element: "heart" },
-    "book_heart_2": { name: "★2 Heart Book", desc: "Heart element awakening material for ★2 characters.", icon: "assets/items/book_heart_2.png", category: "awakening", element: "heart" },
-    "book_heart_3": { name: "★3 Heart Book", desc: "Heart element awakening material for ★3 characters.", icon: "assets/items/book_heart_3.png", category: "awakening", element: "heart" },
-    "book_heart_4": { name: "★4 Heart Book", desc: "Heart element awakening material for ★4 characters.", icon: "assets/items/book_heart_4.png", category: "awakening", element: "heart" },
+    // The real Naruto Blazing awakening materials (element scrolls ★1-★4,
+    // Blazing Awakening beads ★4/★5, Book of Victor, Awakening Charm, special
+    // tools and character beads) are loaded from data/materials.json at
+    // startup (see loadCatalog) and merged in here with category "awakening".
 
-    // Skill Awakening Books
-    "book_skill_1": { name: "★1 Skill Book", desc: "Skill element awakening material for ★1 characters.", icon: "assets/items/book_skill_1.png", category: "awakening", element: "skill" },
-    "book_skill_2": { name: "★2 Skill Book", desc: "Skill element awakening material for ★2 characters.", icon: "assets/items/book_skill_2.png", category: "awakening", element: "skill" },
-    "book_skill_3": { name: "★3 Skill Book", desc: "Skill element awakening material for ★3 characters.", icon: "assets/items/book_skill_3.png", category: "awakening", element: "skill" },
-    "book_skill_4": { name: "★4 Skill Book", desc: "Skill element awakening material for ★4 characters.", icon: "assets/items/book_skill_4.png", category: "awakening", element: "skill" },
+    // 7★+ awakening materials (the 6SB→7S… tier table still uses these)
+    "awakening_stone_6": { name: "6★ Awakening Stone", desc: "Generic material for ★7 and higher awakenings.", icon: "assets/items/scroll_6star.png", category: "awakening" },
 
-    // Body Awakening Books
-    "book_body_1": { name: "★1 Body Book", desc: "Body element awakening material for ★1 characters.", icon: "assets/items/book_body_1.png", category: "awakening", element: "body" },
-    "book_body_2": { name: "★2 Body Book", desc: "Body element awakening material for ★2 characters.", icon: "assets/items/book_body_2.png", category: "awakening", element: "body" },
-    "book_body_3": { name: "★3 Body Book", desc: "Body element awakening material for ★3 characters.", icon: "assets/items/book_body_3.png", category: "awakening", element: "body" },
-    "book_body_4": { name: "★4 Body Book", desc: "Body element awakening material for ★4 characters.", icon: "assets/items/book_body_4.png", category: "awakening", element: "body" },
-
-    // Bravery Awakening Books
-    "book_bravery_1": { name: "★1 Bravery Book", desc: "Bravery element awakening material for ★1 characters.", icon: "assets/items/book_bravery_1.png", category: "awakening", element: "bravery" },
-    "book_bravery_2": { name: "★2 Bravery Book", desc: "Bravery element awakening material for ★2 characters.", icon: "assets/items/book_bravery_2.png", category: "awakening", element: "bravery" },
-    "book_bravery_3": { name: "★3 Bravery Book", desc: "Bravery element awakening material for ★3 characters.", icon: "assets/items/book_bravery_3.png", category: "awakening", element: "bravery" },
-    "book_bravery_4": { name: "★4 Bravery Book", desc: "Bravery element awakening material for ★4 characters.", icon: "assets/items/book_bravery_4.png", category: "awakening", element: "bravery" },
-
-    // Wisdom Awakening Books
-    "book_wisdom_1": { name: "★1 Wisdom Book", desc: "Wisdom element awakening material for ★1 characters.", icon: "assets/items/book_wisdom_1.png", category: "awakening", element: "wisdom" },
-    "book_wisdom_2": { name: "★2 Wisdom Book", desc: "Wisdom element awakening material for ★2 characters.", icon: "assets/items/book_wisdom_2.png", category: "awakening", element: "wisdom" },
-    "book_wisdom_3": { name: "★3 Wisdom Book", desc: "Wisdom element awakening material for ★3 characters.", icon: "assets/items/book_wisdom_3.png", category: "awakening", element: "wisdom" },
-    "book_wisdom_4": { name: "★4 Wisdom Book", desc: "Wisdom element awakening material for ★4 characters.", icon: "assets/items/book_wisdom_4.png", category: "awakening", element: "wisdom" },
-
-    // Special Awakening Materials
-    "book_victor_5": { name: "★5 Book of Victor", desc: "Rare awakening material for ★5 characters.", icon: "assets/items/book_victor_5.png", category: "awakening" },
-    "book_victor_6": { name: "★6 Book of Victor", desc: "Ultra-rare awakening material for ★6 characters.", icon: "assets/items/book_victor_6.png", category: "awakening" },
-    "awakening_charm": { name: "Awakening Charm \"Talisman of Legends\"", desc: "Legendary charm used for special awakenings.", icon: "assets/items/awakening_charm.png", category: "awakening" },
-
-    // Legacy Awakening Materials (for compatibility)
-    "awakening_stone_3": { name: "3★ Awakening Stone", desc: "Used to awaken 3★ characters", icon: "assets/items/scroll_3star.png", category: "awakening" },
-    "awakening_stone_4": { name: "4★ Awakening Stone", desc: "Used to awaken 4★ characters", icon: "assets/items/scroll_4star.png", category: "awakening" },
-    "awakening_stone_5": { name: "5★ Awakening Stone", desc: "Used to awaken 5★ characters", icon: "assets/items/scroll_5star.png", category: "awakening" },
-    "awakening_stone_6": { name: "6★ Awakening Stone", desc: "Used to awaken 6★ characters", icon: "assets/items/scroll_6star.png", category: "awakening" },
+    // Retired generic materials: saved quantities are converted to element
+    // scrolls on load and new grants are converted on add (see LEGACY_CONVERT).
+    "awakening_stone_3": { name: "3★ Awakening Stone", desc: "Retired: converted to ★2 element Awakening Scrolls.", icon: "assets/items/scroll_3star.png", category: "legacy" },
+    "awakening_stone_4": { name: "4★ Awakening Stone", desc: "Retired: converted to ★3 element Awakening Scrolls.", icon: "assets/items/scroll_4star.png", category: "legacy" },
+    "awakening_stone_5": { name: "5★ Awakening Stone", desc: "Retired: converted to ★4 element Awakening Scrolls.", icon: "assets/items/scroll_5star.png", category: "legacy" },
 
     // ========== LIMIT BREAK MATERIALS ==========
     // Element Crystals
@@ -110,13 +83,13 @@
     "scroll_bravery": { name: "Bravery Scroll", desc: "Bravery element awakening material", icon: "assets/items/scroll_bravery.png", category: "scrolls", element: "bravery" },
     "scroll_wisdom": { name: "Wisdom Scroll", desc: "Wisdom element awakening material", icon: "assets/items/scroll_wisdom.png", category: "scrolls", element: "wisdom" },
     "scroll_heart": { name: "Heart Scroll", desc: "Heart element awakening material", icon: "assets/items/scroll_heart.png", category: "scrolls", element: "heart" },
-    "scroll_basic": { name: "Basic Scroll", desc: "Common awakening material", icon: "assets/icons/materials/scroll_basic.png", category: "scrolls" },
-    "scroll_advanced": { name: "Advanced Scroll", desc: "Rare awakening material", icon: "assets/icons/materials/scroll_advanced.png", category: "scrolls" },
+    "scroll_basic": { name: "Basic Scroll", desc: "Retired: converted to ★1 element Awakening Scrolls.", icon: "assets/icons/materials/scroll_basic.png", category: "legacy" },
+    "scroll_advanced": { name: "Advanced Scroll", desc: "Retired: converted to ★2 element Awakening Scrolls.", icon: "assets/icons/materials/scroll_advanced.png", category: "legacy" },
 
     // ========== SPECIAL ITEMS ==========
     "acquisition_stone": { name: "Acquisition Stone", desc: "Can be exchanged for specific characters in the shop.", icon: "assets/items/acq_stone.png", category: "scrolls" },
     "granny_coin": { name: "Granny Cat Coin", desc: "Special currency for Granny Cat Shop.", icon: "assets/items/granny_coin.png", category: "scrolls" },
-    "character_stone": { name: "Character Stone", desc: "Character-specific awakening material", icon: "assets/items/character_stone.png", category: "awakening" },
+    "character_stone": { name: "Character Stone", desc: "Generic material for ★7 and higher awakenings.", icon: "assets/items/character_stone.png", category: "awakening" },
 
     // ========== CURRENCIES ==========
     "ryo": { name: "Ryo", desc: "Standard currency for various operations", icon: "assets/items/ryo.png", category: "currency" },
@@ -134,11 +107,57 @@
     "ramen_3star": "ramen_heart_3star",
     "scroll_3star": "awakening_stone_3",
     "scroll_4star": "awakening_stone_4",
-    "scroll_5star": "awakening_stone_5"
+    "scroll_5star": "awakening_stone_5",
+    "scroll_6star": "awakening_stone_6"
   };
+
+  // Retired generic (element-less) awakening materials → the real element
+  // Awakening Scroll of this rarity. Saved balances are split evenly across the
+  // five elements once; later grants (shop, gift codes, old mail) rotate the
+  // element so every element keeps getting scrolls.
+  const ELEMENTS = ["heart", "skill", "body", "bravery", "wisdom"];
+  const LEGACY_CONVERT = {
+    "scroll_basic": 1,
+    "scroll_1star": 1,
+    "scroll_2star": 1,
+    "scroll_advanced": 2,
+    "awakening_stone_3": 2,
+    "awakening_stone_4": 3,
+    "awakening_stone_5": 4
+  };
+  const ROTATE_KEY = "blazing_resources_legacy_rotation";
 
   function normalizeId(materialId) {
     return ID_ALIASES[materialId] || materialId;
+  }
+
+  function nextRotatedElement() {
+    let i = 0;
+    try { i = Number(localStorage.getItem(ROTATE_KEY)) || 0; } catch (_) { /* ignore */ }
+    try { localStorage.setItem(ROTATE_KEY, String(i + 1)); } catch (_) { /* ignore */ }
+    return ELEMENTS[((i % ELEMENTS.length) + ELEMENTS.length) % ELEMENTS.length];
+  }
+
+  // Split `qty` of a retired material into { book_<el>_<rarity>: n }
+  function convertLegacy(id, qty, rotate) {
+    const rarity = LEGACY_CONVERT[id];
+    const out = {};
+    if (!rarity || !(qty > 0)) return out;
+    if (rotate) {
+      for (let k = 0; k < qty; k++) {
+        const key = `book_${nextRotatedElement()}_${rarity}`;
+        out[key] = (out[key] || 0) + 1;
+      }
+      return out;
+    }
+    const each = Math.floor(qty / ELEMENTS.length);
+    let rest = qty - each * ELEMENTS.length;
+    ELEMENTS.forEach(el => {
+      const n = each + (rest > 0 ? 1 : 0);
+      if (rest > 0) rest--;
+      if (n > 0) out[`book_${el}_${rarity}`] = n;
+    });
+    return out;
   }
 
   // ---------- Persistence ----------
@@ -153,6 +172,22 @@
     // Initialize default quantities if not present
     initializeDefaults();
     migrateAliases();
+    migrateLegacyMaterials();
+  }
+
+  // Old saves: convert retired generic materials into element scrolls
+  function migrateLegacyMaterials() {
+    let changed = false;
+    for (const id of Object.keys(LEGACY_CONVERT)) {
+      if (!(id in _resources)) continue;
+      const qty = Number(_resources[id]) || 0;
+      for (const [to, n] of Object.entries(convertLegacy(id, qty, false))) {
+        _resources[to] = (Number(_resources[to]) || 0) + n;
+      }
+      delete _resources[id];
+      changed = true;
+    }
+    if (changed) save();
   }
 
   // Credit any balances stored under legacy ids to their canonical id
@@ -211,8 +246,12 @@
         // Special Awakening Materials
         "book_victor_5": 2, "book_victor_6": 1, "awakening_charm": 1,
 
-        // Legacy Awakening Materials
-        "awakening_stone_3": 20, "awakening_stone_4": 15, "awakening_stone_5": 10, "awakening_stone_6": 5,
+        // Blazing Awakening beads (★4 / ★5 roped)
+        "beads_heart_4": 3, "beads_skill_4": 3, "beads_body_4": 3, "beads_bravery_4": 3, "beads_wisdom_4": 3,
+        "beads_heart_5": 1, "beads_skill_5": 1, "beads_body_5": 1, "beads_bravery_5": 1, "beads_wisdom_5": 1,
+
+        // 7★+ awakening materials
+        "awakening_stone_6": 5,
 
         // Limit Break Crystals
         "crystal_heart": 8, "crystal_skill": 8, "crystal_body": 8, "crystal_bravery": 8, "crystal_wisdom": 8,
@@ -220,7 +259,6 @@
 
         // Scrolls
         "scroll_body": 15, "scroll_skill": 15, "scroll_bravery": 15, "scroll_wisdom": 15, "scroll_heart": 15,
-        "scroll_basic": 20, "scroll_advanced": 10,
 
         // Special Items
         "acquisition_stone": 2, "granny_coin": 10, "character_stone": 15,
@@ -257,6 +295,13 @@
   // ---------- Write ----------
   function add(materialId, amount = 1) {
     materialId = normalizeId(materialId);
+    if (LEGACY_CONVERT[materialId] && Number(amount) > 0) {
+      let last = 0;
+      for (const [to, n] of Object.entries(convertLegacy(materialId, Math.floor(Number(amount)), true))) {
+        last = add(to, n);
+      }
+      return last;
+    }
     const current = get(materialId);
     _resources[materialId] = Math.max(0, current + (Number(amount) || 0));
     save();
@@ -307,7 +352,43 @@
 
   // ---------- Material Info ----------
   function getMaterialInfo(materialId) {
-    return MATERIAL_TYPES[materialId] || { name: materialId, desc: "Unknown material" };
+    return MATERIAL_TYPES[normalizeId(materialId)] || { name: materialId, desc: "Unknown material" };
+  }
+
+  // ---------- Awakening material catalog (data/materials.json) ----------
+  const CATALOG_URL = "data/materials.json";
+  let _catalog = [];
+
+  function mergeCatalog(list) {
+    _catalog = Array.isArray(list) ? list : [];
+    _catalog.forEach((m, i) => {
+      if (!m || !m.id) return;
+      MATERIAL_TYPES[m.id] = {
+        name: m.shortName || m.name,
+        fullName: m.name,
+        desc: m.description || "",
+        obtain: m.obtain || null,
+        icon: m.icon,
+        category: "awakening",
+        group: m.kind,
+        element: m.element || null,
+        orb: m.orb || null,
+        rarity: m.rarity || null,
+        cardNo: m.cardNo || null,
+        wikiTitle: m.wikiTitle || null,
+        order: i
+      };
+    });
+  }
+
+  const ready = (typeof fetch === "function"
+    ? fetch(CATALOG_URL).then(r => (r.ok ? r.json() : { materials: [] }))
+    : Promise.resolve({ materials: [] }))
+    .then(data => { mergeCatalog((data && data.materials) || []); return _catalog; })
+    .catch(err => { console.warn("[Resources] Material catalog unavailable:", err); return _catalog; });
+
+  function getCatalog() {
+    return _catalog.slice();
   }
 
   function getAllMaterialTypes() {
@@ -328,7 +409,11 @@
         });
       }
     }
-    return items;
+    // Catalog materials first (wiki order), then the rest in definition order
+    return items
+      .map((it, i) => ({ it, k: Number.isFinite(it.order) ? it.order : 100000 + i }))
+      .sort((a, b) => a.k - b.k)
+      .map(x => x.it);
   }
 
   // Initialize on load
@@ -347,6 +432,8 @@
     getMaterialInfo,
     getAllMaterialTypes,
     getItemsByCategory,
+    getCatalog,
+    ready,
     MATERIAL_TYPES
   };
 

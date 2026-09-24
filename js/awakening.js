@@ -7,6 +7,14 @@
 
   let _awakeningRequirements = null;
   let _awakeningTransforms = null;
+  let _requirementsDoc = null;   // whole awakening-requirements.json
+  let _perUnit = null;           // data/awakening-materials-per-unit.json .units
+
+  const TIER_ORDER = ["1S","2S","3S","4S","5S","6S","6SB","7S","7SL","8S","8SM","9S","9ST","10SO"];
+  const ELEMENTS = ["heart", "skill", "body", "bravery", "wisdom"];
+  // Per-unit wiki materials and element defaults cover awakenings up to
+  // Blazing Awakening (…→6SB). 6SB→7S and above keep the generic tier table.
+  const LAST_WIKI_TARGET = "6SB";
 
   // Load awakening requirements from JSON
   async function loadRequirements() {
@@ -16,6 +24,7 @@
       const res = await fetch("data/awakening-requirements.json", { cache: "no-store" });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
+      _requirementsDoc = data || {};
       _awakeningRequirements = data.tierRequirements || {};
       return _awakeningRequirements;
     } catch (err) {
@@ -69,10 +78,85 @@
     return transforms[characterId]?.[tierCode] || null;
   }
 
-  // Get awakening requirements for a tier
+  // Per-unit awakening materials scraped from the wiki unit pages
+  async function loadPerUnit() {
+    if (_perUnit) return _perUnit;
+    try {
+      const res = await fetch("data/awakening-materials-per-unit.json");
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
+      _perUnit = (data && data.units) || {};
+    } catch (err) {
+      console.warn("[Awakening] Per-unit materials unavailable:", err);
+      _perUnit = {};
+    }
+    return _perUnit;
+  }
+
+  // Get the generic tier-table requirements for a tier (materials may still
+  // contain "{el}" placeholders; use getRequirementsFor for a real unit)
   async function getRequirements(tierCode) {
     const reqs = await loadRequirements();
     return reqs[tierCode] || null;
+  }
+
+  function elementOf(character) {
+    const el = String(character?.element || "").trim().toLowerCase();
+    return ELEMENTS.includes(el) ? el : null;
+  }
+
+  // "{el}" → the unit's element; element-less units use noElementSubstitutes
+  function resolveElementMaterials(materials, element) {
+    const subs = (_requirementsDoc && _requirementsDoc.noElementSubstitutes) || {};
+    const out = {};
+    for (const [id, n] of Object.entries(materials || {})) {
+      let key = id;
+      if (id.includes("{el}")) {
+        if (element) key = id.replace("{el}", element);
+        else key = subs[id.split("_")[0]] || id.replace("{el}", "heart");
+      }
+      out[key] = (out[key] || 0) + Number(n || 0);
+    }
+    return out;
+  }
+
+  function currentTierOf(inst, character) {
+    const bounds = global.Progression?.getTierBounds(character);
+    return inst?.tierCode || bounds?.minCode || "3S";
+  }
+
+  /**
+   * Requirements for this unit's next awakening:
+   *   { tier, nextTier, materials:{id:n, ryo:n}, source, blazing, wikiCard }
+   * source: "wiki"    per-unit materials from the unit's wiki page
+   *         "element" element-matched tier default (no wiki data)
+   *         "tier"    generic tier table (6SB→7S and above, unchanged)
+   */
+  async function getRequirementsFor(inst, character) {
+    const [reqs, perUnit] = await Promise.all([loadRequirements(), loadPerUnit()]);
+    const tier = currentTierOf(inst, character);
+    const base = reqs[tier];
+    if (!base) return null;
+    const nextTier = base.nextTier;
+    const withinWiki = TIER_ORDER.indexOf(nextTier) !== -1 &&
+      TIER_ORDER.indexOf(nextTier) <= TIER_ORDER.indexOf(LAST_WIKI_TARGET);
+    const unitId = inst?.charId || character?.id;
+    const ryo = Number(base.materials?.ryo) || 0;
+
+    if (withinWiki) {
+      const wiki = perUnit[unitId]?.[tier];
+      if (wiki && wiki.materials) {
+        const materials = { ...wiki.materials };
+        if (ryo) materials.ryo = ryo;
+        return { tier, nextTier, materials, source: "wiki", blazing: nextTier === "6SB", wikiCard: wiki.wikiCard || null };
+      }
+      return {
+        tier, nextTier,
+        materials: resolveElementMaterials(base.materials, elementOf(character)),
+        source: "element", blazing: nextTier === "6SB", wikiCard: null
+      };
+    }
+    return { tier, nextTier, materials: { ...(base.materials || {}) }, source: "tier", blazing: false, wikiCard: null };
   }
 
   // Check if character can awaken (level + tier requirements)
@@ -89,13 +173,14 @@
     if (!canAwaken(inst, character)) return false;
     if (!global.Resources) return false;
 
-    // Bug #11 fix: Validate getTierBounds result before accessing minCode
-    const bounds = global.Progression?.getTierBounds(character);
-    const tier = inst.tierCode || bounds?.minCode || "3S";
-    const reqs = await getRequirements(tier);
+    return hasAllMaterials(inst, character);
+  }
 
+  // Materials check only (no level/tier check): drives the Awaken button
+  async function hasAllMaterials(inst, character) {
+    if (!inst || !character || !global.Resources) return false;
+    const reqs = await getRequirementsFor(inst, character);
     if (!reqs || !reqs.materials) return true; // No requirements = free awakening
-
     return global.Resources.canAfford(reqs.materials);
   }
 
@@ -103,10 +188,7 @@
   async function getMissingMaterials(inst, character) {
     if (!inst || !character) return {};
 
-    // Bug #11 fix: Validate getTierBounds result before accessing minCode
-    const bounds = global.Progression?.getTierBounds(character);
-    const tier = inst.tierCode || bounds?.minCode || "3S";
-    const reqs = await getRequirements(tier);
+    const reqs = await getRequirementsFor(inst, character);
 
     if (!reqs || !reqs.materials) return {};
 
@@ -136,8 +218,7 @@
     }
 
     const oldCharacterId = inst.charId || character.id;
-    const tier = inst.tierCode || global.Progression.getTierBounds(character).minCode;
-    const reqs = await getRequirements(tier);
+    const reqs = await getRequirementsFor(inst, character);
 
     // Check and spend materials if requirements exist
     if (reqs && reqs.materials && global.Resources) {
@@ -198,9 +279,8 @@
     }
 
     // Bug #11 & #12 fix: Validate getTierBounds and computeEffectiveStatsLoreTier results
-    const bounds = global.Progression?.getTierBounds(character);
-    const currentTier = inst.tierCode || bounds?.minCode || "3S";
-    const reqs = await getRequirements(currentTier);
+    const currentTier = currentTierOf(inst, character);
+    const reqs = await getRequirementsFor(inst, character);
 
     if (!reqs) return null;
 
@@ -253,14 +333,19 @@
       currentCap: currentStats.cap || 100,
       nextCap: nextCap || 100,
       willTransform,
-      transformToId: transformToId || null
+      transformToId: transformToId || null,
+      source: reqs.source,
+      blazing: reqs.blazing
     };
   }
 
   // Public API
   global.Awakening = {
     loadRequirements,
+    loadPerUnit,
     getRequirements,
+    getRequirementsFor,
+    hasAllMaterials,
     loadTransforms,
     getTransformForTier,
     canAwaken,
