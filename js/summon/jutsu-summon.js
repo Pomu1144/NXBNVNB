@@ -195,10 +195,14 @@
       t.setAttribute("aria-selected", on ? "true" : "false");
     });
     const jutsu = which === "jutsu";
-    if (stage) stage.style.display = jutsu ? "none" : "";
+    const recipes = which === "recipes";
+    const recipePanel = document.getElementById("recipe-summon-panel");
+    if (stage) stage.style.display = (jutsu || recipes) ? "none" : "";
     if (panel) panel.style.display = jutsu ? "grid" : "none";
-    if (legacy && jutsu) legacy.style.display = "none";
+    if (recipePanel) recipePanel.style.display = recipes ? "" : "none";
+    if (legacy && (jutsu || recipes)) legacy.style.display = "none";
     if (jutsu) { updateHud(); startShowcase(); } else stopShowcase();
+    if (recipes) global.RecipeSummon?.onShow?.();
   }
 
   function injectUI() {
@@ -212,7 +216,8 @@
     tabBar.setAttribute("role", "tablist");
     tabBar.innerHTML = `
       <button class="summon-tab jjk-tab active" type="button" role="tab" aria-selected="true" data-tab="characters">Shinobi</button>
-      <button class="summon-tab jjk-tab" type="button" role="tab" aria-selected="false" data-tab="jutsu">Jutsu Cards</button>`;
+      <button class="summon-tab jjk-tab" type="button" role="tab" aria-selected="false" data-tab="jutsu">Jutsu Cards</button>
+      <button class="summon-tab jjk-tab" type="button" role="tab" aria-selected="false" data-tab="recipes">Recipes</button>`;
     const topbar = page.querySelector(".summon-topbar");
     const hud = topbar && topbar.querySelector(".summon-currency-hud");
     if (topbar && hud) topbar.insertBefore(tabBar, hud);
@@ -314,5 +319,5 @@
     init();
   }
 
-  global.JutsuSummon = { pull, loadPool, _cost: COST };
+  global.JutsuSummon = { pull, loadPool, switchTab, _cost: COST };
 })(window);

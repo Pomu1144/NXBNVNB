@@ -1154,8 +1154,36 @@
       };
       this.afterCutin(attacker, kind, name, () => {
         window.BattleAttackNames?.showAttackName?.(name, kind);
-        if (attacker._sprite) attacker._sprite.play(kind, { onEnd: () => core.units?.settleSprite?.(attacker) });
+        if (attacker._sprite) this.playSheetInPlace(attacker, kind, core);
         setTimeout(finish, 450);
+      });
+    },
+
+    /**
+     * Play a one-shot sheet where the unit stands (no dash). If the sheet is
+     * tall enough to reach under the top HUD, slide the unit down for the
+     * animation (sheetSafeY) and back afterwards; then idle.
+     */
+    playSheetInPlace(unit, kind, core) {
+      const sprite = unit._sprite;
+      const unitEl = core.dom?.scene?.querySelector(`.battle-unit[data-unit-id="${unit.id}"]`);
+      const settle = () => core.units?.settleSprite?.(unit);
+      sprite.meta(kind).catch(() => null).then(meta => {
+        if (unit._sprite !== sprite) return;
+        const y0 = parseFloat(unitEl?.style.top);
+        const y1 = meta && unitEl && Number.isFinite(y0) ? this.sheetSafeY(unit, unitEl, y0, meta, core) : y0;
+        const moved = Number.isFinite(y1) && Math.abs(y1 - y0) > 0.05;
+        const prevTransition = unitEl?.style.transition;
+        if (moved) { unitEl.style.transition = 'top 0.18s ease-out'; unitEl.style.top = `${y1}%`; }
+        sprite.play(kind, {
+          onEnd: () => {
+            if (moved && unitEl.style.top === `${y1}%`) {
+              unitEl.style.top = `${y0}%`;
+              setTimeout(() => { unitEl.style.transition = prevTransition || ''; }, 200);
+            }
+            settle();
+          }
+        }).catch(settle);
       });
     },
 
@@ -1328,7 +1356,41 @@
       const aW = meta ? meta.frameWidth * (h * (meta.heightScale || 1) / meta.frameHeight) : h * 0.8;
       const gapPx = tW * 0.45 + aW * 0.28;
       const x = Math.max(3, Math.min(97, target.pos.x - dir * (gapPx / grid.width) * 100));
-      return { x, y: target.pos.y };
+      return { x, y: this.sheetSafeY(attacker, attackerEl, target.pos.y, meta, core) };
+    },
+
+    /**
+     * Lowest-needed grid y (percent) at which a sheet of the given meta,
+     * drawn at `y`, stays below the scene's top HUD (speed bar / turn icons)
+     * instead of being clipped by #battle-scene. Tall one-shot sheets
+     * (heightScale > 1, e.g. a summon towering over the unit) grow upward
+     * from the feet, so a unit standing near the top edge is moved down just
+     * enough for the animation. Returns `y` unchanged when it already fits.
+     */
+    sheetSafeY(unit, unitEl, y, meta, core) {
+      try {
+        const hs = Number(meta?.heightScale) || 1;
+        const grid = core.dom.grid?.getBoundingClientRect();
+        const slot = unitEl?.querySelector('.unit-sprite');
+        const curTop = parseFloat(unitEl?.style.top);
+        if (!grid?.height || !slot || !Number.isFinite(curTop)) return y;
+        const spriteH = parseFloat(getComputedStyle(unitEl).getPropertyValue('--sprite-h')) || slot.offsetHeight || 101;
+        const scene = core.dom.scene;
+        let usable = scene.getBoundingClientRect().top;
+        for (const sel of ['#speed-gauge-track', '#turn-icons']) {
+          const el = scene.querySelector(sel);
+          const r = el && getComputedStyle(el).display !== 'none' ? el.getBoundingClientRect() : null;
+          if (r && r.height > 0 && r.bottom > usable && r.top < usable + grid.height * 0.4) usable = r.bottom;
+        }
+        usable += 6; // small breathing room under the bar
+        // The sheet's feet sit on the slot's bottom edge and it grows upward.
+        const bottomAtY = slot.getBoundingClientRect().bottom + ((y - curTop) / 100) * grid.height;
+        const over = usable - (bottomAtY - spriteH * hs);
+        if (over <= 0) return y;
+        return Math.min(97, y + (over / grid.height) * 100);
+      } catch (e) {
+        return y;
+      }
     },
 
     /**

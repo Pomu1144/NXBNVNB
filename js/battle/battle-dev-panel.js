@@ -3,6 +3,7 @@
 // as the Characters / Summon dev panels):
 //   - Max chakra for every player unit (field + bench) or a single unit
 //   - "Set turn": pick any living unit (ally or enemy) to act right now
+//   - Remove cooldowns now, or a persistent "No cooldowns" mode
 // Purely a dev tool; normal play is untouched unless it is used.
 (() => {
   "use strict";
@@ -62,6 +63,37 @@
       this.flash(`Chakra maxed for ${n} unit${n === 1 ? "" : "s"}`);
       this.renderList();
       return n;
+    },
+
+    /* ===== Cooldowns ===== */
+
+    // Zero the jutsu / ultimate cooldowns of every player unit (field + bench).
+    // Returns how many units had a cooldown cleared.
+    clearCooldowns(silent) {
+      const bm = this.core;
+      if (!bm) return 0;
+      let n = 0;
+      [...(bm.activeTeam || []), ...(bm.benchTeam || [])].filter(Boolean).forEach(u => {
+        if ((u.jutsuCooldown || 0) > 0 || (u.ultimateCooldown || 0) > 0) {
+          u.jutsuCooldown = 0;
+          u.ultimateCooldown = 0;
+          this.refreshChakra(u);
+          n++;
+        }
+      });
+      if (!silent) this.flash(n ? `Cooldowns cleared for ${n} unit${n === 1 ? "" : "s"}` : "No cooldowns to clear");
+      return n;
+    },
+
+    // "No cooldowns" mode: keep clearing them while it's on (persists).
+    setNoCooldowns(on) {
+      this.noCooldowns = !!on;
+      try { localStorage.setItem("battle_dev_nocd_v1", on ? "1" : "0"); } catch (e) { /* storage blocked */ }
+      clearInterval(this._nocdTimer);
+      if (on) {
+        this.clearCooldowns(true);
+        this._nocdTimer = setInterval(() => this.clearCooldowns(true), 250);
+      }
     },
 
     /* ===== Turn control ===== */
@@ -178,6 +210,8 @@
           </div>
           <button type="button" class="jjk-btn is-primary bdev-maxall" id="bdev-maxall">Max chakra</button>
           <button type="button" class="jjk-btn bdev-maxall bdev-cutins" id="bdev-cutins" aria-pressed="true">Cut-ins: On</button>
+          <button type="button" class="jjk-btn bdev-maxall" id="bdev-clearcd">Remove cooldowns</button>
+          <button type="button" class="jjk-btn bdev-maxall bdev-nocd" id="bdev-nocd" aria-pressed="false">No cooldowns: Off</button>
           <div class="bdev-sub">Set turn <small>tap a unit to act now</small></div>
           <div class="bdev-list" id="bdev-list"></div>
           <div class="bdev-status" id="bdev-status" aria-live="polite"></div>
@@ -190,6 +224,21 @@
       root.querySelector("#bdev-tab").addEventListener("click", () => this.setCollapsed(false));
       root.querySelector("#bdev-close").addEventListener("click", () => this.setCollapsed(true));
       root.querySelector("#bdev-maxall").addEventListener("click", () => this.maxAllChakra());
+      root.querySelector("#bdev-clearcd").addEventListener("click", () => this.clearCooldowns());
+      const nocdBtn = root.querySelector("#bdev-nocd");
+      const syncNocd = () => {
+        nocdBtn.textContent = `No cooldowns: ${this.noCooldowns ? "On" : "Off"}`;
+        nocdBtn.setAttribute("aria-pressed", String(!!this.noCooldowns));
+      };
+      nocdBtn.addEventListener("click", () => {
+        this.setNoCooldowns(!this.noCooldowns);
+        syncNocd();
+        this.flash(`No cooldowns ${this.noCooldowns ? "on" : "off"}`);
+      });
+      let nocdSaved = false;
+      try { nocdSaved = localStorage.getItem("battle_dev_nocd_v1") === "1"; } catch (e) { /* storage blocked */ }
+      if (nocdSaved) this.setNoCooldowns(true);
+      syncNocd();
       const cutBtn = root.querySelector("#bdev-cutins");
       const syncCut = () => {
         const on = window.BattleCutin?.isEnabled?.() !== false;

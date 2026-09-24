@@ -22,8 +22,20 @@
       // Setup event listeners
       this.setupEventListeners();
 
-      // Render available fusions
+      // Render available fusions (owned recipe scrolls only)
       this.renderAvailableFusions();
+
+      // Recipe ownership can change from another tab (Summon / Shop) or the dev panel
+      const rerender = () => { this.renderAvailableFusions(); if (this.selectedUnits.slot1 || this.selectedUnits.slot2) this.validateFusion(); };
+      window.addEventListener('recipebook:change', rerender);
+      window.addEventListener('storage', (e) => { if (e.key === window.RecipeBook?.STORAGE_KEY) rerender(); });
+
+      // Deep link from the summon reveal / shop: fusion.html?recipe=<id>
+      const deep = new URLSearchParams(location.search).get('recipe');
+      if (deep && this.isRecipeOwned(deep)) {
+        this.selectRecipeCard(deep);
+        this.autoPopulateFusion(deep);
+      }
 
       console.log("[Fusion] ✅ Fusion system initialized");
     },
@@ -281,6 +293,15 @@
       const resources = window.Resources?.getAll?.() || {};
       const requirements = [];
 
+      // The player must own this recipe's scroll (Summon › Recipes or the Shop)
+      const ownsRecipe = this.isRecipeOwned(fusion.id);
+      requirements.push({
+        label: 'Recipe scroll',
+        value: ownsRecipe ? '✓' : 'Not owned',
+        title: ownsRecipe ? '' : 'Get this recipe from Summon › Recipes or the Shop',
+        met: ownsRecipe
+      });
+
       // Check tier requirements - units must be at max awakening
       const char1Data = this.charactersData.find(c => c.id === fusion.requirements.unit1);
       const char2Data = this.charactersData.find(c => c.id === fusion.requirements.unit2);
@@ -473,6 +494,18 @@
       const fusion = this.findFusionRecipe(slot1, slot2);
       if (!fusion) return;
 
+      // Hard gate (the Fuse button can be bypassed from the console): recipe owned
+      // and every requirement met, re-checked right now.
+      if (!this.isRecipeOwned(fusion.id)) {
+        console.warn("[Fusion] Refused: recipe not owned", fusion.id);
+        return;
+      }
+      this.validateFusion();
+      if (document.getElementById('btn-fuse')?.disabled) {
+        console.warn("[Fusion] Refused: requirements not met", fusion.id);
+        return;
+      }
+
       console.log("[Fusion] Performing fusion:", fusion);
 
       // Deduct materials
@@ -576,7 +609,7 @@
     // Clear selection
     clearSelection() {
       this.selectedUnits = { slot1: null, slot2: null };
-      document.querySelectorAll('.fusion-card.selected').forEach(c => c.classList.remove('selected'));
+      document.querySelectorAll('#fusions-grid .rscroll.selected').forEach(c => c.classList.remove('selected'));
       this.updateSlotDisplay(1);
       this.updateSlotDisplay(2);
       this.clearResultSlot();
@@ -600,65 +633,63 @@
       this.renderUnitGrid(searchTerm, tier);
     },
 
-    // Render available fusions list
+    // Recipe ownership (js/recipe-book.js). No RecipeBook → nothing is owned.
+    isRecipeOwned(fusionId) {
+      return !!window.RecipeBook?.has?.(fusionId);
+    },
+
+    // Data shape js/recipe-scroll.js expects: { chars: {id: char}, paths }
+    scrollData() {
+      if (!this._scrollData) {
+        const chars = {};
+        (this.charactersData || []).forEach(c => { chars[c.id] = c; });
+        this._scrollData = { chars, paths: this.fusionsData?.fusionPaths || {} };
+      }
+      return this._scrollData;
+    },
+
+    selectRecipeCard(fusionId) {
+      document.querySelectorAll('#fusions-grid .rscroll').forEach(c => {
+        const on = c.dataset.fusionId === fusionId;
+        c.classList.toggle('selected', on);
+        if (on) c.scrollIntoView?.({ block: 'nearest' });
+      });
+    },
+
+    // Render the player's recipe scrolls (owned only) — or the empty state
     renderAvailableFusions() {
       const grid = document.getElementById('fusions-grid');
       if (!grid || !this.fusionsData?.fusions) return;
 
-      if (this.fusionsData.fusions.length === 0) {
-        grid.innerHTML = '<div class="fu-empty">No fusion recipes available</div>';
+      const all = this.fusionsData.fusions;
+      const owned = all.filter(f => this.isRecipeOwned(f.id));
+      const panel = grid.closest('.fusion-recipes-panel');
+      const count = document.getElementById('recipe-count');
+      if (count) count.textContent = `${owned.length} / ${all.length}`;
+      panel?.classList.toggle('is-empty', owned.length === 0);
+      const selected = grid.querySelector('.rscroll.selected')?.dataset.fusionId;
+
+      if (!owned.length || !window.RecipeScroll) {
+        grid.innerHTML = `
+          <div class="rc-empty">
+            <img class="rc-empty-art" src="assets/ui/recipes/scroll_closed.webp" alt="">
+            <h3>No recipes yet</h3>
+            <p>Fusion needs a recipe scroll. Get recipe scrolls from <b>Summon</b> or the <b>Shop</b>.</p>
+            <div class="rc-empty-actions">
+              <a class="jjk-btn is-primary" href="summon.html?tab=recipes">Summon</a>
+              <a class="jjk-btn" href="shop.html?tab=recipes">Shop</a>
+            </div>
+          </div>`;
         return;
       }
 
-      grid.innerHTML = this.fusionsData.fusions.map(fusion => {
-        const char1 = this.charactersData.find(c => c.id === fusion.requirements.unit1);
-        const char2 = this.charactersData.find(c => c.id === fusion.requirements.unit2);
-        const result = this.charactersData.find(c => c.id === fusion.result.characterId);
+      const data = this.scrollData();
+      grid.innerHTML = owned.map(f => window.RecipeScroll.html(f, data, { button: true })).join('') +
+        `<p class="rc-more">More recipes: <a href="summon.html?tab=recipes">Summon</a> · <a href="shop.html?tab=recipes">Shop</a></p>`;
+      if (selected) this.selectRecipeCard(selected);
 
-        // Get portraits - use base tier first, then max tier
-        const char1Portrait = this.getCharacterPortrait(char1, char1?.starMinCode || '3S');
-        const char2Portrait = this.getCharacterPortrait(char2, char2?.starMinCode || '3S');
-        const resultPortrait = this.getCharacterPortrait(result, fusion.result.tier);
-
-        const materials = Object.entries(fusion.requirements.materials || {})
-          // Scrolls are no longer required (see validateFusion) — don't advertise them
-          .filter(([mat]) => !mat.toLowerCase().includes('scroll'))
-          .map(([mat, amt]) => {
-            const icon = this.currencyIcon(mat);
-            return `<span class="material-tag" data-mat="${mat}">${icon ? `<img src="${icon}" alt="" class="material-icon">` : ''}${Number(amt).toLocaleString()}</span>`;
-          })
-          .join('');
-        const levelTag = fusion.requirements.minLevel
-          ? `<span class="material-tag level-tag">Lv ${fusion.requirements.minLevel}</span>` : '';
-        const unitHtml = (c, portrait, tier, extra = '') => `
-              <span class="fusion-preview-unit${extra}" data-tier="${this.tierRank(tier)}" title="${c?.name || 'Unknown'}">
-                <img src="${portrait}" alt="${c?.name || 'Unknown'}" class="fusion-preview-icon" loading="lazy" onerror="this.style.visibility='hidden'">
-              </span>`;
-
-        return `
-          <div class="fusion-card" data-fusion-id="${fusion.id}" role="button" tabindex="0">
-            <div class="fusion-card-text">
-              ${fusion.stepNumber ? `<span class="fusion-card-step">Step ${fusion.stepNumber}</span>` : ''}
-              <span class="fusion-card-title">${fusion.name || 'Unknown Fusion'}</span>
-              <span class="fusion-card-materials">${levelTag}${materials}</span>
-            </div>
-            <div class="fusion-preview">
-              ${unitHtml(char1, char1Portrait, char1?.starMinCode)}
-              <span class="fusion-preview-plus">+</span>
-              ${unitHtml(char2, char2Portrait, char2?.starMinCode)}
-              <span class="fusion-preview-arrow"></span>
-              ${unitHtml(result, resultPortrait, fusion.result.tier, ' result')}
-            </div>
-          </div>
-        `;
-      }).join('');
-
-      // Add click handlers to auto-populate fusion slots
-      grid.querySelectorAll('.fusion-card').forEach(card => {
-        card.addEventListener('click', () => {
-          const fusionId = card.dataset.fusionId;
-          this.autoPopulateFusion(fusionId);
-        });
+      grid.querySelectorAll('.rscroll').forEach(card => {
+        card.addEventListener('click', () => this.autoPopulateFusion(card.dataset.fusionId));
         card.addEventListener('keydown', (e) => {
           if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); card.click(); }
         });
@@ -694,7 +725,7 @@
     // Auto-populate fusion slots from recipe
     autoPopulateFusion(fusionId) {
       const fusion = this.fusionsData.fusions.find(f => f.id === fusionId);
-      if (!fusion) return;
+      if (!fusion || !this.isRecipeOwned(fusionId)) return;
 
       console.log("[Fusion] Auto-populating fusion:", fusion.name);
 
@@ -720,8 +751,7 @@
       this.clearSelection();
 
       // Highlight the chosen recipe card
-      document.querySelectorAll('.fusion-card.selected').forEach(c => c.classList.remove('selected'));
-      document.querySelector(`.fusion-card[data-fusion-id="${fusionId}"]`)?.classList.add('selected');
+      this.selectRecipeCard(fusionId);
 
       // Populate slots if units are found
       if (unit1) {
@@ -744,6 +774,8 @@
 
       // Validate and show preview
       this.validateFusion();
+      // Missing units: still show which recipe is chosen and what it makes
+      if (!unit1 || !unit2) this.showResultPreview(fusion);
 
       // Scroll to fusion area
       // On stacked (narrow) layouts, bring the altar into view

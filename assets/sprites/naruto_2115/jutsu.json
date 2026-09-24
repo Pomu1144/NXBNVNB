@@ -1,22 +1,22 @@
 {
-  "frameWidth": 361,
-  "frameHeight": 300,
-  "frames": 26,
-  "columns": 11,
+  "frameWidth": 592,
+  "frameHeight": 451,
+  "frames": 28,
+  "columns": 6,
   "fps": 12,
   "loop": false,
   "hits": [
-    10,
-    11,
-    12,
     13,
     14,
     15,
     16,
     17,
     18,
-    19
+    19,
+    20,
+    21,
+    22
   ],
-  "heightScale": 1.0084,
-  "anchorX": 0.4791
+  "heightScale": 1.7205,
+  "anchorX": 0.4395
 }

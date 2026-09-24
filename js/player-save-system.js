@@ -177,7 +177,8 @@ class PlayerSaveSystem {
       cardLevels: localStorage.getItem('blazing_card_levels_v1'),
       characterEquip: localStorage.getItem('blazing_character_equip_v1'),
       equippedUltimates: localStorage.getItem('blazing_equipped_ultimates'),
-      summonState: localStorage.getItem('blazing_summon_state_v1')
+      summonState: localStorage.getItem('blazing_summon_state_v1'),
+      recipes: localStorage.getItem('blazing_recipes_v1')
     };
   }
 
@@ -245,7 +246,8 @@ class PlayerSaveSystem {
         cardLevels: 'blazing_card_levels_v1',
         characterEquip: 'blazing_character_equip_v1',
         equippedUltimates: 'blazing_equipped_ultimates',
-        summonState: 'blazing_summon_state_v1'
+        summonState: 'blazing_summon_state_v1',
+        recipes: 'blazing_recipes_v1'
       };
       Object.entries(keyMap).forEach(([field, storageKey]) => {
         if (data[field] !== null && data[field] !== undefined) {
@@ -333,6 +335,7 @@ class PlayerSaveSystem {
       'blazing_character_equip_v1',
       'blazing_equipped_ultimates',
       'blazing_summon_state_v1',
+      'blazing_recipes_v1',
       'mailboxMessages',
       'blazing_redeemed_codes_v1',
       'blazing_audio_settings',

@@ -16,8 +16,15 @@
       // Setup event listeners
       this.setupEventListeners();
 
-      // Render initial tab
-      this.renderTab('ramen');
+      // Render initial tab (deep link: shop.html?tab=recipes)
+      const startTab = new URLSearchParams(location.search).get('tab');
+      if (startTab && this.shopData[startTab]) this.switchTab(startTab);
+      else this.renderTab('ramen');
+
+      // Recipe ownership / fragments can change from other pages or tabs
+      const refreshRecipes = () => { if (document.getElementById('tab-recipes')?.classList.contains('active')) this.renderTab('recipes'); };
+      window.addEventListener('recipebook:change', refreshRecipes);
+      window.addEventListener('storage', (e) => { if (e.key === window.RecipeBook?.STORAGE_KEY) refreshRecipes(); });
 
       // Update resource display
       this.updateResourceDisplay();
@@ -153,6 +160,84 @@
         const card = this.createItemCard(item, tabName);
         grid.appendChild(card);
       });
+
+      if (tabName === 'recipes') this.updateRecipeStatus();
+    },
+
+    // ---------------- Recipe scrolls (js/recipe-book.js) ----------------
+    updateRecipeStatus() {
+      const book = window.RecipeBook;
+      if (!book) return;
+      const owned = document.getElementById('rc-shop-owned');
+      const frags = document.getElementById('rc-shop-fragments');
+      book.loadData().then(d => { if (owned) owned.textContent = `${book.count()} / ${d.fusions.length}`; });
+      if (frags) frags.textContent = book.fragments();
+    },
+
+    // Sealed scroll: same grade rates as Summon › Recipes (all recipes, no rate-up)
+    async buyRandomRecipe(item) {
+      const book = window.RecipeBook;
+      const cost = item.cost.ninja_pearls || item.cost.pearls || 0;
+      if (!book || !window.Resources) return;
+      if (window.Resources.get('ninja_pearls') < cost) {
+        alert(`Insufficient Ninja Pearls! You need ${cost} but only have ${window.Resources.get('ninja_pearls')}.`);
+        return;
+      }
+      const data = await book.loadData();
+      const [fusion] = book.roll(data.fusions, [], 1);
+      if (!fusion) return;
+      window.Resources.subtract('ninja_pearls', cost);
+      const res = book.grant(fusion.id, 'shop');
+      this.updateResourceDisplay();
+      this.renderTab('recipes');
+      window.RecipeScroll?.reveal([{ fusion, isNew: res.isNew }], data);
+    },
+
+    // Chosen recipe: picker of recipes the player doesn't own, paid with fragments
+    async openRecipePicker(item) {
+      const book = window.RecipeBook;
+      if (!book || !window.RecipeScroll) return;
+      const data = await book.loadData();
+      const price = item.cost.recipe_fragments || book.FRAGMENTS_PER_CHOICE;
+      const unowned = data.fusions.filter(f => !book.has(f.id));
+      document.getElementById('rc-picker')?.remove();
+      const ov = document.createElement('div');
+      ov.id = 'rc-picker';
+      ov.className = 'rc-picker';
+      ov.setAttribute('role', 'dialog');
+      ov.setAttribute('aria-modal', 'true');
+      const have = book.fragments();
+      ov.innerHTML = `
+        <div class="rc-picker-panel">
+          <header class="rc-picker-head">
+            <h2>Choose a Recipe</h2>
+            <span class="rc-picker-bal">Fragments <b>${have}</b> / ${price}</span>
+            <button class="rc-picker-close" type="button" aria-label="Close">✕</button>
+          </header>
+          ${have < price ? `<p class="rc-picker-note">You need ${price} Recipe Fragments — duplicate scrolls from Summon › Recipes give 1 each.</p>` : ''}
+          <div class="rc-picker-grid">
+            ${unowned.length ? unowned.map(f => window.RecipeScroll.html(f, data, { button: true })).join('') : '<p class="rc-picker-note">You own every recipe.</p>'}
+          </div>
+        </div>`;
+      document.body.appendChild(ov);
+      const close = () => ov.remove();
+      ov.querySelector('.rc-picker-close').addEventListener('click', close);
+      ov.addEventListener('click', (e) => { if (e.target === ov) close(); });
+      ov.querySelectorAll('.rscroll').forEach(card => {
+        const pick = () => {
+          const fusion = data.fusions.find(f => f.id === card.dataset.fusionId);
+          if (!fusion) return;
+          if (book.fragments() < price) { alert(`Not enough Recipe Fragments (${book.fragments()} / ${price}).`); return; }
+          if (!confirm(`Trade ${price} Recipe Fragments for "${fusion.name}"?`)) return;
+          if (!book.spendFragments(price)) return;
+          const res = book.grant(fusion.id, 'shop-choice');
+          close();
+          this.renderTab('recipes');
+          window.RecipeScroll.reveal([{ fusion, isNew: res.isNew }], data);
+        };
+        card.addEventListener('click', pick);
+        card.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pick(); } });
+      });
     },
 
     createItemCard(item, category) {
@@ -191,6 +276,13 @@
               <span>${item.cost.granny_coin.toLocaleString()}</span>
             </div>
           `;
+        } else if (item.cost.recipe_fragments) {
+          costHTML = `
+            <div class="item-cost">
+              <img src="assets/ui/recipes/scroll_closed.webp" alt="Recipe Fragments" class="cost-icon">
+              <span>${item.cost.recipe_fragments} Fragments</span>
+            </div>
+          `;
         }
       }
 
@@ -223,9 +315,11 @@
 
       // Add click handler to buy button
       const buyBtn = card.querySelector('.btn-buy');
+      if (item.recipe) card.classList.add('is-recipe');
       buyBtn.addEventListener('click', (e) => {
         e.stopPropagation();
-        this.openPurchaseModal(item, category);
+        if (item.recipe === 'choice') this.openRecipePicker(item);
+        else this.openPurchaseModal(item, category);
       });
 
       return card;
@@ -246,6 +340,9 @@
       if (name) name.textContent = item.name;
       if (desc) desc.textContent = item.description;
       if (qtyInput) qtyInput.value = 1;
+      // Recipe scrolls are unsealed one at a time
+      const qtyRow = document.querySelector('#purchase-modal .quantity-selector');
+      if (qtyRow) qtyRow.style.display = item.recipe ? 'none' : '';
 
       this.updatePurchaseCost();
 
@@ -299,6 +396,12 @@
       const item = this.currentItem;
 
       if (!item || !window.Resources) return;
+
+      if (item.recipe === 'random') {
+        this.closeModal('purchase-modal');
+        this.buyRandomRecipe(item);
+        return;
+      }
 
       // Calculate total cost and determine currency type
       let totalCost = 0;
