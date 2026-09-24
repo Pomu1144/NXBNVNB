@@ -21,15 +21,8 @@
   <link rel="stylesheet" href="css/mobile.css" />
 </head>
 <body class="page-fusion">
-  <div id="full-bg"></div>
-  <!-- Ambient scene layers (decorative, CSS-only animation) -->
-  <div class="fx-scene" aria-hidden="true">
-    <div class="fx-backdrop"></div>
-    <div class="fx-vignette"></div>
-    <div class="fx-embers">
-      <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
-    </div>
-  </div>
+  <!-- Quiet ink-teal screen background (shared JJK look) -->
+  <div class="fu-bg" aria-hidden="true"></div>
 
   <!-- ==================== MAIN FUSION UI ==================== -->
   <main class="fusion-content">
@@ -55,72 +48,72 @@
     <div id="tab-fusions" class="fusion-tab-content active">
     <div id="fusion-root" class="fusion-layout">
 
-      <!-- ---- Left: Available Recipes ---- -->
+      <!-- ---- Left: recipe list ---- -->
       <section class="fusion-recipes-panel">
-        <h2 class="panel-title"><span>Fusion Recipes</span></h2>
+        <h2 class="panel-title">Recipes</h2>
         <div id="fusions-grid" class="fusions-grid"></div>
       </section>
 
-      <!-- ---- Right: Active Fusion Workspace ---- -->
+      <!-- ---- Right: the fusion ticket (units | perforation | cost + actions) ---- -->
       <section class="fusion-workspace-panel">
-        <!-- Sealing array under the altar (decorative) -->
-        <div class="altar-seal" aria-hidden="true">
-          <div class="seal-ring seal-ring--outer"></div>
-          <div class="seal-ring seal-ring--inner"></div>
-          <div class="seal-core"></div>
-        </div>
+        <article class="fu-ticket">
+          <div class="fu-ticket-body">
+            <header class="fu-ticket-head">
+              <span id="fu-ticket-kicker" class="fu-kicker">Fusion</span>
+              <h2 id="fu-ticket-title" class="fu-ticket-title">Choose a recipe</h2>
+            </header>
 
-        <p class="altar-hint">Choose a recipe, or place two shinobi upon the seal</p>
+            <div class="fusion-slots-row">
+              <div class="fusion-slot-wrapper">
+                <div id="slot-1" class="fusion-slot" role="button" tabindex="0" aria-label="Select unit 1">
+                  <div class="slot-placeholder">
+                    <div class="slot-icon">+</div>
+                    <div class="slot-label">Unit 1</div>
+                  </div>
+                </div>
+                <div id="info-1" class="fusion-slot-info"></div>
+              </div>
 
-        <!-- Unit Slots -->
-        <div class="fusion-slots-row">
-          <div class="fusion-slot-wrapper">
-            <div id="slot-1" class="fusion-slot">
-              <div class="slot-placeholder">
-                <div class="slot-icon">+</div>
-                <div class="slot-label">Select Unit 1</div>
+              <div class="fu-op" aria-hidden="true">+</div>
+
+              <div class="fusion-slot-wrapper">
+                <div id="slot-2" class="fusion-slot" role="button" tabindex="0" aria-label="Select unit 2">
+                  <div class="slot-placeholder">
+                    <div class="slot-icon">+</div>
+                    <div class="slot-label">Unit 2</div>
+                  </div>
+                </div>
+                <div id="info-2" class="fusion-slot-info"></div>
+              </div>
+
+              <div class="fu-op fu-op--arrow" aria-hidden="true"></div>
+
+              <div class="fusion-slot-wrapper is-result">
+                <div id="result-slot" class="fusion-slot result-slot">
+                  <div class="slot-placeholder">
+                    <div class="slot-icon">?</div>
+                    <div class="slot-label">Result</div>
+                  </div>
+                </div>
+                <div id="result-info" class="fusion-slot-info result-info"></div>
               </div>
             </div>
-            <div id="info-1" class="fusion-slot-info"></div>
           </div>
 
-          <div class="fusion-plus-sign" aria-hidden="true"><span>+</span></div>
+          <div class="fu-perf" aria-hidden="true"></div>
 
-          <div class="fusion-slot-wrapper">
-            <div id="slot-2" class="fusion-slot">
-              <div class="slot-placeholder">
-                <div class="slot-icon">+</div>
-                <div class="slot-label">Select Unit 2</div>
-              </div>
+          <aside class="fu-ticket-stub">
+            <h3 class="fu-stub-title">Requirements</h3>
+            <p class="altar-hint">Pick a recipe, or tap a slot to place a unit.</p>
+            <div id="fusion-requirements" class="fusion-requirements" style="display:none;">
+              <div id="requirements-grid" class="requirements-grid"></div>
             </div>
-            <div id="info-2" class="fusion-slot-info"></div>
-          </div>
-
-          <div class="fusion-arrow-sign" aria-hidden="true"><span class="flow-line"></span><img src="assets/ui/hf/arrow.webp" alt=""></div>
-
-          <div class="fusion-slot-wrapper">
-            <div id="result-slot" class="fusion-slot result-slot">
-              <div class="slot-placeholder">
-                <div class="slot-icon">?</div>
-                <div class="slot-label">Fusion Result</div>
-              </div>
+            <div class="fusion-actions">
+              <button id="btn-clear" class="jjk-btn clear-btn" type="button">Clear</button>
+              <button id="btn-fuse" class="jjk-btn is-primary fuse-btn" type="button" disabled>Fuse</button>
             </div>
-            <div id="result-info" class="fusion-slot-info result-info"></div>
-          </div>
-        </div>
-
-        <!-- Requirements -->
-        <div id="fusion-requirements" class="fusion-requirements" style="display:none;">
-          <h3 class="requirements-title">Requirements</h3>
-          <div id="requirements-grid" class="requirements-grid"></div>
-        </div>
-
-        <!-- Action Buttons -->
-        <div class="fusion-actions">
-          <button id="btn-fuse" class="fusion-btn fuse-btn" disabled>Fuse</button>
-          <button id="btn-clear" class="fusion-btn clear-btn">Clear</button>
-        </div>
-
+          </aside>
+        </article>
       </section>
     </div><!-- /#fusion-root -->
     </div><!-- /#tab-fusions -->
@@ -148,7 +141,7 @@
             <img src="assets/icons/currency/ryo.png" alt="Ryo" class="exchange-cost-icon" onerror="this.style.display='none'">
             <span id="exchange-ryo-cost" class="exchange-cost-value">20,000</span>
           </div>
-          <button id="btn-exchange" class="fusion-btn fuse-btn" disabled>Exchange</button>
+          <button id="btn-exchange" class="jjk-btn is-primary" type="button" disabled>Exchange</button>
         </div>
       </section>
     </div><!-- /#tab-exchanges -->
@@ -175,7 +168,7 @@
       </div>
       <div id="units-grid" class="units-grid"></div>
       <div class="modal-footer">
-        <button id="modal-cancel" class="fusion-btn clear-btn">Cancel</button>
+        <button id="modal-cancel" class="jjk-btn" type="button">Cancel</button>
       </div>
     </div>
   </div>
@@ -185,7 +178,7 @@
     <div class="modal-panel success-panel">
       <h2 class="success-title">Fusion Complete!</h2>
       <div id="success-content" class="success-content"></div>
-      <button id="success-close" class="fusion-btn fuse-btn">Awesome!</button>
+      <button id="success-close" class="jjk-btn is-primary" type="button">Continue</button>
     </div>
   </div>
 
@@ -398,7 +391,7 @@
       const modal = document.getElementById('fusion-success-modal');
       const content = document.getElementById('success-content');
       if (modal && content) {
-        content.innerHTML = `<p style="color:#d9b362;font-size:1.1rem;font-family:'Rowdies',sans-serif">
+        content.innerHTML = `<p class="success-note">
           Exchanged 5 ${name} copies for a <strong>${nextTier}</strong> version!
         </p>`;
         modal.setAttribute('aria-hidden', 'false');

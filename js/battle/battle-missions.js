@@ -92,6 +92,12 @@
                 id: charData.id,
                 name: charData.name,
                 portrait: charData.portrait || "assets/characters/common/silhouette.png",
+                // Real skills / abilities: enemies cast their jutsu with the
+                // same status-effect pipeline as the player's units.
+                skills: charData.skills,
+                abilities: charData.abilities,
+                element: charData.element,
+                starMinCode: charData.starMinCode,
                 stats: {
                   hp: charData.statsMax?.hp || 800,
                   atk: charData.statsMax?.atk || 80,

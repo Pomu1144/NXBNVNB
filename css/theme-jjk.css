@@ -180,3 +180,42 @@ html.is-mobile.is-landscape.is-compact .jjk-page-header .jjk-icon-btn { width: 3
 html.is-mobile.is-landscape.is-compact .jjk-page-header .jjk-title-plate {
   min-width: 150px; min-height: 32px; padding: 3px 40px 3px 14px; font-size: 17px;
 }
+
+/* ---------- Card auras: 7-star lightning + fully-maxed wind ----------
+   Shared by the Shinobi grid (characters.css) and Teams (teams.css), which
+   position the .seven-star-fx / .maxed-fx box. js/seven-star-fx.js injects
+   <i class="seven-star-fx aura-fx"><b></b></i> only into on-screen cards.
+   PERF: no <video>, no blend mode, no box-shadow/filter animation, ONE
+   animated layer per aura. The <b> holds a transparent WebP still (from the
+   old clip) and a shared keyframe animates only transform + opacity, which
+   the compositor runs off the main thread. */
+.aura-fx {
+  display: block;
+  overflow: hidden;
+  mix-blend-mode: normal !important;
+  contain: strict;
+}
+.aura-fx > b {
+  position: absolute;
+  inset: 0;
+  background: center / cover no-repeat;
+  pointer-events: none;
+}
+.seven-star-fx.aura-fx > b { background-image: url("../assets/effects/aura_lightning_a.webp"); animation: auraBolt .6s infinite; }
+.maxed-fx.aura-fx > b      { background-image: url("../assets/effects/aura_wind_a.webp"); animation: auraWind 3.8s ease-in-out infinite; }
+/* one still x 4 mirror poses, hard cuts + flicker = crackling lightning */
+@keyframes auraBolt {
+  0%   { transform: none;           opacity: 1;   animation-timing-function: steps(1, end); }
+  25%  { transform: scale(-1, 1);   opacity: .72; animation-timing-function: steps(1, end); }
+  50%  { transform: scale(-1, -1);  opacity: 1;   animation-timing-function: steps(1, end); }
+  75%  { transform: scale(1, -1);   opacity: .85; animation-timing-function: steps(1, end); }
+  100% { transform: none;           opacity: 1; }
+}
+/* slow breathing swirl for the wind ring */
+@keyframes auraWind {
+  0%, 100% { transform: scale(1) rotate(0deg);        opacity: .95; }
+  50%      { transform: scale(1.045) rotate(-3deg);   opacity: .55; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .aura-fx > b { animation: none !important; }
+}

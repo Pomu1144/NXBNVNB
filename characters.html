@@ -67,7 +67,10 @@
         <div class="nameplate">
           <div class="nameplate-main">
             <div class="nameplate-name" id="nameplate-name">Character</div>
-            <div class="nameplate-version" id="nameplate-version">Version</div>
+            <div class="nameplate-sub">
+              <span class="cx-elem" id="nameplate-element" hidden></span>
+              <span class="nameplate-version" id="nameplate-version">Version</span>
+            </div>
           </div>
           <div class="nameplate-stars" id="nameplate-stars"></div>
         </div>
@@ -77,8 +80,9 @@
           <button class="tab-btn" data-tab="awakening">Awakening</button>
           <button class="tab-btn" data-tab="skills">Ninjutsu</button>
           <button class="tab-btn" data-tab="support">Passives</button>
-          <button class="tab-btn" data-tab="tools">Tools</button>
         </div>
+
+        <div class="cx-perf" aria-hidden="true"></div>
 
         <div class="tab-panels">
           <section class="tab-panel is-active" id="tab-status">
@@ -178,57 +182,6 @@
             </div>
           </section>
 
-          <section class="tab-panel" id="tab-tools">
-            <div class="tools-wrap tools-coming-soon">
-              <div class="tools-header">
-                <h3 class="tools-title">Tools</h3>
-                <p class="tools-desc">Ninja Tools are a separate system from Ninjutsu — coming in a future update.</p>
-                <div class="tools-soon-badge">Coming Soon</div>
-              </div>
-
-              <!-- Power Display -->
-              <div class="tools-power-display">
-                <div class="tools-power-label">Personal Power</div>
-                <div class="tools-power-value" id="tools-power-value">0</div>
-              </div>
-
-              <!-- Equipment Slots Layout -->
-              <div class="tools-equipment-container">
-                <!-- Left Column -->
-                <div class="tools-equipment-column">
-                  <div class="tools-equipment-slot" data-slot="1">
-                    <div class="tools-slot-empty">
-                      <div class="tools-slot-label">Slot 1</div>
-                    </div>
-                  </div>
-                  <div class="tools-equipment-slot" data-slot="2">
-                    <div class="tools-slot-empty">
-                      <div class="tools-slot-label">Slot 2</div>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Right Column -->
-                <div class="tools-equipment-column">
-                  <div class="tools-equipment-slot" data-slot="3">
-                    <div class="tools-slot-empty">
-                      <div class="tools-slot-label">Slot 3</div>
-                    </div>
-                  </div>
-                  <div class="tools-equipment-slot" data-slot="4">
-                    <div class="tools-slot-empty">
-                      <div class="tools-slot-label">Slot 4</div>
-                    </div>
-                  </div>
-                  <div class="tools-equipment-slot" data-slot="5">
-                    <div class="tools-slot-empty">
-                      <div class="tools-slot-label">Slot 5</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
         </div>
 
         <div class="char-modal-actions">

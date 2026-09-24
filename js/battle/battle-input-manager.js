@@ -80,6 +80,10 @@
       if (type === 'jutsu' && !C.isJutsuUnlocked(unit)) return `${label} is locked! Requires Level 20.`;
       if (type === 'ultimate' && !C.isUltimateUnlocked(unit)) return `${label} is locked! Requires Level 50.`;
       if (type === 'secret' && !C.isSecretUnlocked(unit)) return `${label} is locked! Requires 6★ or higher.`;
+      if (C.isSkillSealed?.(unit, type)) {
+        window.StatusEffectUI?.popup?.(unit, 'Jutsu Sealed!', '#d6b8ff', 'jutsu_seal');
+        return `${label} is sealed! (${window.BattleBuffs?.sealTurns?.(unit) || 0} turn(s) left)`;
+      }
       const cd = type === 'jutsu' ? unit.jutsuCooldown : type === 'ultimate' ? unit.ultimateCooldown : 0;
       if ((cd || 0) > 0) return `${label} on cooldown! (${cd} turn${cd > 1 ? 's' : ''} left)`;
       const cost = C.getSkillChakraCost(unit, entry);
@@ -473,8 +477,8 @@
             ok = window.BattleCombat.performUltimate(attacker, [target], core, doEndTurn) !== false;
             break;
           case this.ATTACK_TYPES.SECRET: {
-            ok = window.BattleCombat.performSecret(attacker, core);
-            if (ok) doEndTurn();
+            // onDone ends the turn once the secret has resolved
+            ok = window.BattleCombat.performSecret(attacker, core, doEndTurn);
             break;
           }
         }

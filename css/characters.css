@@ -133,7 +133,8 @@ body.page-characters::-webkit-scrollbar {
     0 0 16px rgba(220, 90, 200, .5),
     0 0 26px rgba(255, 180, 80, .25),
     inset 0 0 0 1px rgba(255, 170, 220, .22);
-  animation: sevenStarPulse 2.2s ease-in-out infinite;
+  /* PERF: static glow (the old box-shadow pulse repainted every card every
+     frame); the motion now comes from the compositor-only aura overlay. */
 }
 .char-slot.is-7star:hover {
   border-color: rgba(255, 150, 230, 0.85);
@@ -151,9 +152,7 @@ body.page-characters::-webkit-scrollbar {
   object-fit: cover;
   border-radius: 16px;
   pointer-events: none;
-  mix-blend-mode: screen;
   z-index: 3;
-  opacity: 1;
 }
 
 /* Keep the level & ultimate badges crisp above the lightning */
@@ -162,15 +161,6 @@ body.page-characters::-webkit-scrollbar {
   z-index: 5;
 }
 
-@keyframes sevenStarPulse {
-  0%, 100% { box-shadow: 0 6px 18px rgba(0,0,0,.4), 0 0 12px rgba(220,90,200,.4), 0 0 20px rgba(255,180,80,.18), inset 0 0 0 1px rgba(255,170,220,.18); }
-  50%      { box-shadow: 0 6px 20px rgba(0,0,0,.45), 0 0 26px rgba(255,120,220,.75), 0 0 34px rgba(255,190,90,.35), inset 0 0 0 1px rgba(255,200,235,.4); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .char-slot.is-7star { animation: none; }
-  .seven-star-fx { display: none; }
-}
 
 /* ---------- Level Bar (Using levelholder.png) ---------- */
 .char-card-level {
@@ -225,21 +215,9 @@ body.page-characters::-webkit-scrollbar {
   pointer-events: none;
   user-select: none;
   z-index: 2;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.6));
-  animation: ultimate-badge-glow 2s ease-in-out infinite;
-}
-
-/* PERF: cards scrolled off-screen get .fx-off (js/seven-star-fx.js) so a big
-   roster doesn't run ~one filter animation per maxed unit every frame. */
-.char-slot.fx-off .ultimate-badge { animation: none; }
-
-@keyframes ultimate-badge-glow {
-  0%, 100% {
-    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.6)) drop-shadow(0 0 8px rgba(255, 215, 0, 0.4));
-  }
-  50% {
-    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.6)) drop-shadow(0 0 16px rgba(255, 215, 0, 0.8));
-  }
+  /* PERF: static glow. An infinite drop-shadow (filter) pulse on every
+     maxed unit's badge forced a filter repaint per card per frame. */
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.6)) drop-shadow(0 0 11px rgba(255, 215, 0, 0.55));
 }
 
 /* ---------- Modal Overlay ---------- */
@@ -3274,3 +3252,363 @@ html.is-mobile.is-landscape.is-compact body.page-characters .material-amount b {
   html:not(.is-mobile) body.page-characters .char-modal-panel { grid-template-rows: 28vh minmax(0, 1fr); }
   html:not(.is-mobile) body.page-characters .char-modal-art { min-height: 0; }
 }
+
+/* ==========================================================================
+   Character detail — "info ticket" (matches the Fusion ticket, css/fusion.css)
+   The info column is one washi ticket (btn_ticket.webp 9-slice: chamfered
+   corners, lattice frets) with an inner gold hairline; a perforation divides
+   the header (name / element / stars / tabs) from the tab content. Inside,
+   everything is ruled rows + kicker labels — no boxes inside the ticket.
+   Markup: js/characters.js (statusPanelHTML, skillStubHTML, renderSupportTab).
+   ========================================================================== */
+body.page-characters .char-modal-info {
+  --cx-edge: 26px;
+  --cx-line: rgba(201, 162, 78, 0.16);
+  --cx-rule: rgba(201, 162, 78, 0.3);
+  --cx-hole: #08171b;
+  position: relative;
+  isolation: isolate;
+  box-sizing: border-box;
+  min-width: 0;
+  margin: 4px 4px 4px 2px;
+  padding: 20px 26px 16px;
+  filter: drop-shadow(0 14px 24px rgba(0, 0, 0, 0.5));
+}
+body.page-characters .char-modal-info::before {          /* washi plate */
+  content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  border: solid transparent;
+  border-image: url("../assets/ui/jjk/btn_ticket.webp") 36 fill / var(--cx-edge) stretch;
+  filter: brightness(0.6) saturate(0.85);
+}
+body.page-characters .char-modal-info::after {           /* inner gold hairline */
+  content: ""; position: absolute; inset: calc(var(--cx-edge) * 0.55); z-index: -1; pointer-events: none;
+  border: 1px solid rgba(201, 162, 78, 0.3);
+}
+
+/* header: no extra accent bar / rule — the ticket frames it */
+body.page-characters .char-modal-info .nameplate { margin: 0; padding: 4px 4px 10px 6px; }
+body.page-characters .char-modal-info .nameplate::before,
+body.page-characters .char-modal-info .nameplate::after { content: none; }
+body.page-characters .nameplate-name { font-size: 28px; color: var(--jjk-gold-hi); }
+body.page-characters .nameplate-sub { display: flex; align-items: center; gap: 12px; margin-top: 4px; min-width: 0; }
+body.page-characters .nameplate-sub .nameplate-version { margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* element badge: small diamond + name in the element colour */
+.cx-elem {
+  --el: var(--jjk-gold);
+  display: inline-flex; align-items: center; gap: 6px; flex: 0 0 auto;
+  padding: 1px 9px 1px 7px;
+  font-family: var(--jjk-font); font-size: 11px; font-weight: 800; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--el);
+  border: 1px solid color-mix(in srgb, var(--el) 55%, transparent);
+  background: color-mix(in srgb, var(--el) 12%, transparent);
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.8);
+}
+.cx-elem[hidden] { display: none; }
+.cx-elem::before {
+  content: ""; width: 7px; height: 7px; transform: rotate(45deg);
+  background: var(--el); box-shadow: 0 0 6px color-mix(in srgb, var(--el) 70%, transparent);
+}
+.cx-elem[data-el="body"]    { --el: #e0685a; }
+.cx-elem[data-el="skill"]   { --el: #5cc473; }
+.cx-elem[data-el="bravery"] { --el: #e7bd4a; }
+.cx-elem[data-el="wisdom"]  { --el: #5b9be6; }
+.cx-elem[data-el="heart"]   { --el: #e07abb; }
+
+/* tabs: quiet kicker-style labels, active = gold with a crimson diamond */
+body.page-characters .char-modal-info .char-tabs {
+  justify-content: flex-start; gap: 4px; padding: 2px 0 0; overflow: visible;
+}
+body.page-characters .char-modal-info .char-tabs .tab-btn {
+  position: relative;
+  flex: 0 0 auto; width: auto; height: 34px; padding: 0 14px 0 16px;
+  border: 0; border-image: none; background: none; filter: none;
+  font-family: var(--jjk-font); font-size: 13px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase;
+  color: rgba(236, 230, 214, 0.55);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
+  transition: color 0.15s;
+}
+body.page-characters .char-modal-info .char-tabs .tab-btn:hover { color: var(--jjk-text); filter: none; }
+body.page-characters .char-modal-info .char-tabs .tab-btn.is-active { color: var(--jjk-gold-hi); font-weight: 800; }
+body.page-characters .char-modal-info .char-tabs .tab-btn.is-active::before {
+  content: ""; position: absolute; left: 3px; top: 50%; width: 6px; height: 6px; margin-top: -3px;
+  background: #c8383a; transform: rotate(45deg); box-shadow: 0 0 6px rgba(200, 56, 58, 0.7);
+}
+body.page-characters .char-modal-info .char-tabs .tab-btn.is-active::after {
+  content: ""; position: absolute; left: 16px; right: 14px; bottom: 3px; height: 1px;
+  background: linear-gradient(90deg, var(--jjk-gold), rgba(201, 162, 78, 0));
+}
+body.page-characters .char-modal-info .char-tabs .tab-btn:focus-visible { outline: 1px solid var(--jjk-gold-hi); outline-offset: -2px; }
+
+/* perforation between the header and the content, with edge notches */
+.cx-perf {
+  position: relative; flex: 0 0 auto; height: 14px;
+  margin: 2px calc(var(--cx-edge) * -1) 0;
+}
+.cx-perf::before {
+  content: ""; position: absolute; left: 22px; right: 22px; top: 50%; height: 5px; margin-top: -2.5px;
+  background: radial-gradient(circle, rgba(3, 9, 11, 0.85) 1.6px, transparent 2.2px) left center / 10px 5px repeat-x;
+}
+.cx-perf::after {
+  content: ""; position: absolute; left: -7px; right: -7px; top: 0; bottom: 0;
+  background:
+    radial-gradient(circle at 0 50%, var(--cx-hole) 7px, transparent 7.5px) left / 16px 14px no-repeat,
+    radial-gradient(circle at 100% 50%, var(--cx-hole) 7px, transparent 7.5px) right / 16px 14px no-repeat;
+}
+
+/* content area */
+body.page-characters .char-modal-info .tab-panels { padding: 12px 6px 6px; }
+body.page-characters .char-modal-info .tab-panel { min-height: 0; }
+body.page-characters .char-modal-info .char-modal-actions { margin-top: 10px; }
+
+/* kicker label (as .fu-stub-title) */
+.cx-kicker {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 10px;
+  margin: 0 0 4px; padding: 0 0 7px;
+  font-family: var(--jjk-font); font-size: 11px; font-weight: 700; letter-spacing: 0.32em; text-transform: uppercase;
+  color: var(--jjk-gold);
+  border-bottom: 1px solid var(--cx-rule);
+}
+.cx-kicker:not(:first-child) { margin-top: 20px; }
+.cx-count { letter-spacing: 0.1em; color: var(--jjk-muted); font-variant-numeric: tabular-nums; }
+.cx-empty { margin: 8px 0; font-family: var(--jjk-font); font-size: 14px; color: var(--jjk-muted); }
+
+/* ── Status: ruled stat list ── */
+body.page-characters #char-stats.stats-grid { display: block; max-width: none; margin: 0; padding: 0 2px; gap: 0; }
+.cx-stats { display: flex; flex-direction: column; }
+.cx-stat {
+  display: grid; grid-template-columns: 30px minmax(0, 1fr) auto; align-items: center; gap: 12px;
+  padding: 9px 2px;
+  border-bottom: 1px solid var(--cx-line);
+  font-family: var(--jjk-font);
+}
+.cx-stat-ico {
+  display: grid; place-items: center; width: 28px; height: 28px;
+  border: 1px solid rgba(201, 162, 78, 0.45); transform: rotate(45deg) scale(0.82);
+  background: rgba(3, 10, 12, 0.5);
+}
+.cx-stat-ico svg { width: 17px; height: 17px; transform: rotate(-45deg) scale(1.2); fill: var(--jjk-gold-hi); }
+.cx-stat--hp  .cx-stat-ico svg { fill: #e57b6e; }
+.cx-stat--atk .cx-stat-ico svg { fill: #e7bd4a; }
+.cx-stat--spd .cx-stat-ico svg { fill: #7fd0dc; }
+.cx-stat-label { font-size: 15px; font-weight: 700; color: var(--jjk-text); letter-spacing: 0.04em; }
+.cx-stat-val {
+  font-size: 28px; font-weight: 800; line-height: 1; color: #fff8e6;
+  font-variant-numeric: tabular-nums; letter-spacing: 0.02em;
+  text-shadow: 0 2px 0 rgba(0, 0, 0, 0.6);
+}
+.cx-minors { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); padding: 10px 0 2px; }
+.cx-minor { display: flex; flex-direction: column; gap: 3px; padding: 0 12px; font-family: var(--jjk-font); }
+.cx-minor + .cx-minor { border-left: 1px solid var(--cx-line); }
+.cx-minor:first-child { padding-left: 2px; }
+.cx-minor span { font-size: 10px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--jjk-muted); }
+.cx-minor b { font-size: 17px; font-weight: 800; color: var(--jjk-text); font-variant-numeric: tabular-nums; }
+
+/* equipment slots: two tidy rows, a small tag on the left */
+body.page-characters .stat-equip-rows.cx-equip { gap: 10px; padding: 12px 0 4px; z-index: auto; }
+body.page-characters .cx-equip .stat-equip-row { justify-content: flex-start; align-items: center; gap: 12px; }
+.cx-equip-tag {
+  flex: 0 0 64px;
+  font-family: var(--jjk-font); font-size: 10px; font-weight: 700; letter-spacing: 0.24em; text-transform: uppercase;
+  color: var(--jjk-muted);
+}
+body.page-characters .cx-equip .jutsu-slot,
+body.page-characters .cx-equip .ultimate-slot { width: 58px; height: 58px; }
+body.page-characters .cx-equip .jutsu-slot:hover,
+body.page-characters .cx-equip .ultimate-slot:hover { transform: translateY(-2px); }
+
+/* ── Ninjutsu: ticket stubs separated by perforations ── */
+body.page-characters #char-skills.skills-wrap { display: block; min-height: 0; padding: 0 2px; background: none; }
+body.page-characters #tab-skills .jutsu-slots-container { display: none; }   /* same slots live on Status */
+.cx-stub { --kc: #6fa6e0; position: relative; padding: 14px 0 16px; font-family: var(--jjk-font); }
+.cx-stub:first-child { padding-top: 2px; }
+.cx-stub + .cx-stub::before {
+  content: ""; position: absolute; left: 0; right: 0; top: -2px; height: 5px;
+  background: radial-gradient(circle, rgba(3, 9, 11, 0.85) 1.6px, transparent 2.2px) left center / 10px 5px repeat-x;
+}
+.cx-stub.is-ultimate { --kc: #e0605a; }
+.cx-stub.is-secret   { --kc: #e3bb55; }
+.cx-stub.is-latent   { --kc: #b996e8; }
+.cx-stub-head { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.cx-chip {
+  flex: 0 0 auto;
+  padding: 2px 8px 1px;
+  font-size: 10px; font-weight: 800; letter-spacing: 0.2em; text-transform: uppercase; line-height: 1.4;
+  color: var(--kc);
+  border: 1px solid color-mix(in srgb, var(--kc) 60%, transparent);
+  background: color-mix(in srgb, var(--kc) 13%, transparent);
+  clip-path: polygon(5px 0, 100% 0, 100% calc(100% - 5px), calc(100% - 5px) 100%, 0 100%, 0 5px);
+}
+.cx-stub-name {
+  margin: 0; min-width: 0; flex: 1 1 auto;
+  font-size: 18px; font-weight: 800; line-height: 1.25; color: var(--jjk-gold-hi);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+}
+.cx-lock {
+  flex: 0 0 auto; margin-left: auto;
+  font-family: var(--jjk-font); font-size: 10px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase;
+  color: #e8877a;
+}
+.cx-stub-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 18px; margin-top: 9px; }
+.cx-chakra { display: inline-flex; align-items: center; gap: 8px; }
+.cx-pips { display: inline-flex; gap: 3px; }
+.cx-pip {
+  width: 15px; height: 15px; border-radius: 50%;
+  background: url("../assets/ui/battle/chakra_full.webp") center / contain no-repeat;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.7));
+}
+.cx-pip.is-cut { opacity: 0.32; filter: grayscale(0.6); }   /* shaved off at max level */
+.cx-chakra b { font-size: 16px; font-weight: 800; color: #9fdcf5; font-variant-numeric: tabular-nums; }
+.cx-chakra em { font-style: normal; font-size: 11px; color: var(--jjk-muted); letter-spacing: 0.04em; }
+.cx-facts { display: inline-flex; flex-wrap: wrap; gap: 4px 16px; font-size: 12px; color: var(--jjk-muted); letter-spacing: 0.06em; }
+.cx-facts b { margin-left: 3px; font-weight: 700; color: var(--jjk-text); }
+.cx-stub-desc { margin: 9px 0 0; font-size: 14px; line-height: 1.6; color: rgba(236, 230, 214, 0.9); }
+.cx-stub.is-locked .cx-stub-name { color: rgba(241, 217, 138, 0.6); }
+.cx-stub.is-locked .cx-stub-meta,
+.cx-stub.is-locked .cx-stub-desc { opacity: 0.55; }
+
+/* ── Passives: Field / Buddy + latent abilities as ruled rows ── */
+body.page-characters #char-support.support-wrap {
+  display: block; min-height: 0; padding: 0 2px;
+  background: none; border: 0; border-radius: 0; box-shadow: none;
+}
+.cx-pas-list { display: flex; flex-direction: column; }
+.cx-pas {
+  display: grid; grid-template-columns: 38px minmax(0, 1fr); align-items: start; gap: 14px;
+  padding: 10px 2px;
+  border-bottom: 1px solid var(--cx-line);
+  font-family: var(--jjk-font);
+}
+.cx-pas:last-child { border-bottom: 0; }
+.cx-seal {
+  display: grid; place-items: center; width: 34px; height: 34px; margin: 2px;
+  font-size: 15px; font-weight: 800; color: var(--jjk-gold-hi);
+  border: 1px solid rgba(201, 162, 78, 0.65);
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 35%, rgba(45, 107, 115, 0.55), rgba(3, 10, 12, 0.8));
+  box-shadow: inset 0 0 0 3px rgba(3, 10, 12, 0.6);
+}
+.cx-seal--buddy { background: radial-gradient(circle at 50% 35%, rgba(142, 28, 28, 0.6), rgba(3, 10, 12, 0.8)); }
+.cx-pas-ico { display: block; width: 38px; height: 38px; object-fit: contain; filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.75)); }
+.cx-pas-body { min-width: 0; }
+.cx-pas-name {
+  display: flex; align-items: baseline; gap: 10px;
+  font-size: 15px; font-weight: 800; color: var(--jjk-gold-hi); line-height: 1.3;
+}
+.cx-pas-desc { margin: 3px 0 0; font-size: 13.5px; line-height: 1.55; color: rgba(236, 230, 214, 0.86); }
+.cx-pas.is-locked .cx-pas-ico { filter: grayscale(1) brightness(0.7) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.75)); opacity: 0.5; }
+.cx-pas.is-locked .cx-pas-name { color: rgba(236, 230, 214, 0.5); }
+.cx-pas.is-locked .cx-pas-desc { color: rgba(236, 230, 214, 0.42); }
+
+/* ── Awakening: same ticket language, no nested panel ── */
+body.page-characters .materials-display.jjk-panel {
+  margin: 6px 0 0; padding: 0;
+  background: none; border: 0; box-shadow: none;
+}
+body.page-characters .materials-display.jjk-panel::before,
+body.page-characters .materials-display.jjk-panel::after { content: none; }
+body.page-characters .materials-title {
+  margin: 0 0 2px; padding: 0 0 7px; font-size: 11px; letter-spacing: 0.32em;
+  border-bottom: 1px solid var(--cx-rule);
+}
+body.page-characters .materials-title::after { content: none; }
+body.page-characters .material-item.jjk-row,
+body.page-characters .material-item.jjk-row.insufficient {
+  min-height: 0; margin: 0; padding: 8px 2px;
+  background: none; box-shadow: none; clip-path: none;
+  border-bottom: 1px solid var(--cx-line);
+}
+body.page-characters .material-item.jjk-row:last-child { border-bottom: 0; }
+body.page-characters .limitbreak-info {
+  padding: 8px 2px; background: none; border: 0;
+  border-top: 1px solid var(--cx-line); border-bottom: 1px solid var(--cx-line);
+}
+body.page-characters .lb-level { font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; }
+
+/* ── Art column: latent ability icons shown clean (no gold boxes) ── */
+body.page-characters .char-modal-art .passive-icon,
+body.page-characters .char-modal-art .passive-icon:hover,
+body.page-characters .char-modal-art .passive-icon.locked:hover {
+  width: 40px; height: 40px; padding: 0;
+  border: 0; border-radius: 0; background: none; box-shadow: none;
+  backdrop-filter: none; -webkit-backdrop-filter: none;
+}
+body.page-characters .char-modal-art .passive-icon img { filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.8)); }
+body.page-characters .char-modal-art .passive-icon:hover { transform: scale(1.06); }
+body.page-characters .char-modal-art .passive-icon:hover img { filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.85)) brightness(1.1); }
+body.page-characters .char-modal-art .passive-icon.locked::before { content: none; }
+body.page-characters .char-modal-art .passive-icon.locked img,
+body.page-characters .char-modal-art .passive-icon.locked:hover img {
+  filter: grayscale(1) brightness(0.75) drop-shadow(0 3px 5px rgba(0, 0, 0, 0.8)); opacity: 0.55;
+}
+
+/* ── Compact mobile landscape ── */
+html.is-mobile.is-landscape.is-compact body.page-characters .char-modal-info {
+  --cx-edge: 16px;
+  margin: 2px 2px 2px 0; padding: 9px 12px 7px !important;
+}
+html.is-mobile.is-landscape.is-compact body.page-characters .char-modal-info .nameplate { padding: 0 2px 3px 4px !important; margin: 0 !important; }
+html.is-mobile.is-landscape.is-compact body.page-characters .nameplate-sub { gap: 8px; margin-top: 2px; }
+html.is-mobile.is-landscape.is-compact .cx-elem { font-size: 8px; padding: 0 6px 0 5px; gap: 4px; letter-spacing: 0.14em; }
+html.is-mobile.is-landscape.is-compact .cx-elem::before { width: 5px; height: 5px; }
+html.is-mobile.is-landscape.is-compact body.page-characters .char-modal-info .char-tabs { gap: 0 !important; padding: 0 !important; overflow: visible; }
+html.is-mobile.is-landscape.is-compact body.page-characters .char-modal-info .char-tabs .tab-btn {
+  flex: 0 1 auto !important; height: 24px !important; padding: 0 8px 0 11px !important;
+  font-size: 9.5px !important; letter-spacing: 0.14em;
+}
+html.is-mobile.is-landscape.is-compact body.page-characters .char-modal-info .char-tabs .tab-btn.is-active::before { left: 1px; width: 5px; height: 5px; margin-top: -2.5px; }
+html.is-mobile.is-landscape.is-compact body.page-characters .char-modal-info .char-tabs .tab-btn.is-active::after { left: 11px; right: 8px; bottom: 2px; }
+html.is-mobile.is-landscape.is-compact .cx-perf { height: 10px; margin-top: 0; }
+html.is-mobile.is-landscape.is-compact .cx-perf::before { left: 12px; right: 12px; }
+html.is-mobile.is-landscape.is-compact .cx-perf::after {
+  background:
+    radial-gradient(circle at 0 50%, var(--cx-hole) 5px, transparent 5.5px) left / 12px 10px no-repeat,
+    radial-gradient(circle at 100% 50%, var(--cx-hole) 5px, transparent 5.5px) right / 12px 10px no-repeat;
+}
+html.is-mobile.is-landscape.is-compact body.page-characters .char-modal-info .tab-panels { padding: 6px 2px 2px !important; }
+html.is-mobile.is-landscape.is-compact body.page-characters .char-modal-info .char-modal-actions { margin-top: 4px !important; }
+html.is-mobile.is-landscape.is-compact .cx-kicker { font-size: 8.5px; letter-spacing: 0.26em; padding-bottom: 4px; margin-bottom: 2px; }
+html.is-mobile.is-landscape.is-compact .cx-kicker:not(:first-child) { margin-top: 10px; }
+html.is-mobile.is-landscape.is-compact .cx-stat { grid-template-columns: 20px minmax(0, 1fr) auto; gap: 8px; padding: 4px 2px; }
+html.is-mobile.is-landscape.is-compact .cx-stat-ico { width: 19px; height: 19px; }
+html.is-mobile.is-landscape.is-compact .cx-stat-ico svg { width: 12px; height: 12px; }
+html.is-mobile.is-landscape.is-compact .cx-stat-label { font-size: 11px; }
+html.is-mobile.is-landscape.is-compact .cx-stat-val { font-size: 17px; }
+html.is-mobile.is-landscape.is-compact .cx-minors { padding-top: 5px; }
+html.is-mobile.is-landscape.is-compact .cx-minor { padding: 0 8px; gap: 1px; }
+html.is-mobile.is-landscape.is-compact .cx-minor span { font-size: 7.5px; letter-spacing: 0.14em; }
+html.is-mobile.is-landscape.is-compact .cx-minor b { font-size: 12px; }
+html.is-mobile.is-landscape.is-compact body.page-characters .stat-equip-rows.cx-equip { gap: 5px; padding: 6px 0 2px; }
+html.is-mobile.is-landscape.is-compact body.page-characters .cx-equip .stat-equip-row { gap: 8px; }
+html.is-mobile.is-landscape.is-compact .cx-equip-tag { flex-basis: 40px; font-size: 7.5px; letter-spacing: 0.16em; }
+html.is-mobile.is-landscape.is-compact body.page-characters .cx-equip .jutsu-slot,
+html.is-mobile.is-landscape.is-compact body.page-characters .cx-equip .ultimate-slot { width: 36px; height: 36px; }
+html.is-mobile.is-landscape.is-compact .cx-stub { padding: 8px 0 9px; }
+html.is-mobile.is-landscape.is-compact .cx-stub:first-child { padding-top: 0; }
+html.is-mobile.is-landscape.is-compact .cx-stub-head { gap: 6px; }
+html.is-mobile.is-landscape.is-compact .cx-chip { font-size: 7.5px; padding: 1px 5px 0; letter-spacing: 0.14em; }
+html.is-mobile.is-landscape.is-compact .cx-stub-name { font-size: 12.5px; }
+html.is-mobile.is-landscape.is-compact .cx-lock { font-size: 7.5px; }
+html.is-mobile.is-landscape.is-compact .cx-stub-meta { gap: 4px 12px; margin-top: 4px; }
+html.is-mobile.is-landscape.is-compact .cx-pip { width: 10px; height: 10px; }
+html.is-mobile.is-landscape.is-compact .cx-pips { gap: 2px; }
+html.is-mobile.is-landscape.is-compact .cx-chakra { gap: 5px; }
+html.is-mobile.is-landscape.is-compact .cx-chakra b { font-size: 11px; }
+html.is-mobile.is-landscape.is-compact .cx-chakra em,
+html.is-mobile.is-landscape.is-compact .cx-facts { font-size: 9px; }
+html.is-mobile.is-landscape.is-compact .cx-facts { gap: 2px 10px; }
+html.is-mobile.is-landscape.is-compact .cx-stub-desc { margin-top: 4px; font-size: 10.5px; line-height: 1.45; }
+html.is-mobile.is-landscape.is-compact .cx-pas { grid-template-columns: 24px minmax(0, 1fr); gap: 8px; padding: 5px 2px; }
+html.is-mobile.is-landscape.is-compact .cx-seal { width: 22px; height: 22px; margin: 1px; font-size: 10px; box-shadow: inset 0 0 0 2px rgba(3, 10, 12, 0.6); }
+html.is-mobile.is-landscape.is-compact .cx-pas-ico { width: 24px; height: 24px; }
+html.is-mobile.is-landscape.is-compact .cx-pas-name { font-size: 11px; gap: 6px; }
+html.is-mobile.is-landscape.is-compact .cx-pas-desc { margin-top: 1px; font-size: 10px; line-height: 1.4; }
+html.is-mobile.is-landscape.is-compact body.page-characters .char-modal-art .passive-icon,
+html.is-mobile.is-landscape.is-compact body.page-characters .char-modal-art .passive-icon:hover { width: 24px; height: 24px; padding: 0; }
+html.is-mobile.is-landscape.is-compact body.page-characters .material-item.jjk-row,
+html.is-mobile.is-landscape.is-compact body.page-characters .material-item.jjk-row.insufficient { padding: 3px 2px; }
+html.is-mobile.is-landscape.is-compact body.page-characters .materials-title { font-size: 8.5px; letter-spacing: 0.26em; padding-bottom: 4px; }
+html.is-mobile.is-landscape.is-compact body.page-characters .limitbreak-info { padding: 4px 2px; }
+/* slot art already has transparent corners; multiply only darkened it on the ink ticket */
+body.page-characters .cx-equip .jutsu-slot-bg,
+body.page-characters .cx-equip .ultimate-slot-bg { mix-blend-mode: normal; filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.6)); }

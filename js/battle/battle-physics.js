@@ -28,8 +28,8 @@
         return;
       }
 
-      const targetEl = core.dom.scene?.querySelector(`[data-unit-id="${target.id}"]`);
-      const sourceEl = core.dom.scene?.querySelector(`[data-unit-id="${source.id}"]`);
+      const targetEl = core.dom.scene?.querySelector(`.battle-unit[data-unit-id="${target.id}"]`);
+      const sourceEl = core.dom.scene?.querySelector(`.battle-unit[data-unit-id="${source.id}"]`);
 
       if (!targetEl || !sourceEl) return;
 

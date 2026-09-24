@@ -1,0 +1,82 @@
+/* Collapsible battle action panel (js/battle/battle-action-panel-toggle.js) */
+#action-panel {
+  overflow: visible !important;
+  transition: transform 0.32s cubic-bezier(.2, .8, .2, 1);
+}
+/* Desktop: panel is centred vertically (translateY(-50%)); slide it fully
+   off the left edge, the handle (outside its right border) stays visible. */
+#action-panel.ap-collapsed {
+  transform: translate(calc(-100% - 22px), -50%);
+}
+html.is-mobile #action-panel.ap-collapsed {
+  transform: translateX(calc(-100% - max(4px, env(safe-area-inset-left)) - 2px));
+}
+#action-panel.ap-collapsed > :not(.ap-handle) { visibility: hidden; transition: visibility 0s 0.32s; }
+
+#action-panel .ap-handle {
+  box-sizing: border-box;
+  position: absolute;
+  left: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  margin-left: 2px;
+  width: 22px;
+  min-height: 64px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 6px 0;
+  border: 2px solid var(--jjk-gold, #c9a24e);
+  border-left: 0;
+  border-radius: 0 10px 10px 0;
+  background:
+    linear-gradient(90deg, rgba(0,0,0,0.25), transparent 40%),
+    linear-gradient(180deg, var(--jjk-ink-3, #133039), var(--jjk-ink, #071418));
+  box-shadow: 2px 3px 10px rgba(0, 0, 0, 0.55), inset 0 0 0 1px rgba(241, 217, 138, 0.18);
+  color: var(--jjk-gold-hi, #f1d98a);
+  cursor: pointer;
+  z-index: 2;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition: width 0.25s cubic-bezier(.2, .8, .2, 1), background-color 0.2s;
+}
+#action-panel .ap-handle::before {
+  /* gold slash accent, JJK trim */
+  content: '';
+  position: absolute;
+  left: 3px; right: 3px; top: 4px; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--jjk-gold-hi, #f1d98a), transparent);
+  opacity: 0.7;
+}
+#action-panel .ap-handle:hover { background-color: #1b3f4a; filter: brightness(1.15); }
+#action-panel .ap-handle:focus-visible { outline: 2px solid var(--jjk-gold-hi, #f1d98a); outline-offset: 2px; }
+#action-panel .ap-chev { width: 10px; height: 16px; transition: transform 0.3s cubic-bezier(.2, .8, .2, 1); }
+#action-panel.ap-collapsed .ap-chev { transform: rotate(180deg); }
+
+/* Compact strip while collapsed: whose turn + chakra */
+#action-panel .ap-mini { display: none; flex-direction: column; align-items: center; gap: 2px; }
+#action-panel .ap-mini-portrait {
+  width: 34px; height: 34px;
+  border-radius: 6px;
+  border: 1.5px solid var(--jjk-gold, #c9a24e);
+  object-fit: cover;
+  background: #000;
+}
+#action-panel .ap-mini-chakra {
+  font: 800 10px/1 system-ui, sans-serif;
+  color: #9fe3ff;
+  text-shadow: 0 1px 2px #000;
+}
+#action-panel.ap-collapsed .ap-handle { width: 44px; }
+#action-panel.ap-collapsed .ap-mini { display: flex; }
+
+html.is-mobile #action-panel .ap-handle { width: 18px; min-height: 48px; }
+html.is-mobile #action-panel.ap-collapsed .ap-handle { width: 38px; }
+html.is-mobile #action-panel .ap-mini-portrait { width: 28px; height: 28px; }
+
+@media (prefers-reduced-motion: reduce) {
+  #action-panel, #action-panel .ap-handle, #action-panel .ap-chev { transition: none !important; }
+  #action-panel.ap-collapsed > :not(.ap-handle) { transition: none; }
+}

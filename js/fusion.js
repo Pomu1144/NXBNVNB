@@ -64,6 +64,9 @@
       // Slot click handlers
       document.getElementById('slot-1')?.addEventListener('click', () => this.openUnitSelector(1));
       document.getElementById('slot-2')?.addEventListener('click', () => this.openUnitSelector(2));
+      ['slot-1', 'slot-2'].forEach((id, i) => document.getElementById(id)?.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); this.openUnitSelector(i + 1); }
+      }));
 
       // Button handlers
       document.getElementById('btn-fuse')?.addEventListener('click', () => this.performFusion());
@@ -118,7 +121,7 @@
       const inventory = window.InventoryChar?.allInstances() || [];
 
       if (inventory.length === 0) {
-        grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: rgba(238,230,209,0.5);">No characters available</div>';
+        grid.innerHTML = '<div class="fu-empty">No characters available</div>';
         return;
       }
 
@@ -148,10 +151,11 @@
         const portrait = tierData.portrait || charData?.portrait || 'assets/characters/common/silhouette.png';
 
         return `
-          <div class="unit-card" data-uid="${inst.uid}">
-            <img src="${portrait}" alt="${charData?.name || 'Unknown'}" onerror="this.src='assets/characters/common/silhouette.png'">
+          <div class="unit-card" data-uid="${inst.uid}" data-tier="${this.tierRank(inst.tierCode)}">
+            <div class="unit-card-art"><img src="${portrait}" alt="${charData?.name || 'Unknown'}" loading="lazy" onerror="this.src='assets/characters/common/silhouette.png'"></div>
             <div class="unit-card-info">
               <div class="unit-card-name">${charData?.name || 'Unknown'}</div>
+              <div class="unit-card-meta">${inst.tierCode || '—'} · Lv ${inst.level || 1}</div>
             </div>
           </div>
         `;
@@ -195,7 +199,7 @@
         slotEl.innerHTML = `
           <div class="slot-placeholder">
             <div class="slot-icon">+</div>
-            <div class="slot-label">Select Unit ${slot}</div>
+            <div class="slot-label">Unit ${slot}</div>
           </div>
         `;
         slotEl.classList.remove('filled');
@@ -204,23 +208,13 @@
         return;
       }
 
-      // Calculate effective stats
-      const stats = this.calculateUnitStats(unit);
-
       slotEl.innerHTML = `<img src="${unit.portrait}" alt="${unit.charData?.name || 'Unknown'}">`;
       slotEl.classList.add('filled');
       slotEl.dataset.tier = this.tierRank(unit.tierCode);
 
       infoEl.innerHTML = `
         <div class="unit-name">${unit.charData?.name || 'Unknown'}</div>
-        <div class="unit-tier">Tier: ${unit.tierCode || 'Unknown'}</div>
-        <div class="unit-level">Level: ${unit.level || 1}</div>
-        <div class="unit-stats">
-          <div class="stat-row"><span>HP:</span><span>${stats.hp || 0}</span></div>
-          <div class="stat-row"><span>ATK:</span><span>${stats.atk || 0}</span></div>
-          <div class="stat-row"><span>DEF:</span><span>${stats.def || 0}</span></div>
-          <div class="stat-row"><span>SPD:</span><span>${stats.speed || 0}</span></div>
-        </div>
+        <div class="unit-meta">${unit.tierCode || '—'} · Lv ${unit.level || 1}</div>
       `;
     },
 
@@ -276,7 +270,7 @@
 
       if (!fusion) {
         requirementsEl.style.display = 'block';
-        requirementsGrid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: rgba(231,76,60,0.8);">No fusion recipe found for these units</div>';
+        requirementsGrid.innerHTML = '<div class="requirement-none">No recipe uses these two units</div>';
         btnFuse.disabled = true;
         this.clearResultSlot();
         return;
@@ -291,25 +285,19 @@
       const char1Data = this.charactersData.find(c => c.id === fusion.requirements.unit1);
       const char2Data = this.charactersData.find(c => c.id === fusion.requirements.unit2);
 
-      if (char1Data) {
-        const maxTier = char1Data.starMaxCode;
-        const met = slot1.tierCode === maxTier;
+      // Pair each required unit with the slot holding it (either order).
+      const swapped = !(this.unitMeetsReq(slot1, reqs.unit1).match && this.unitMeetsReq(slot2, reqs.unit2).match);
+      const pairs = [[char1Data, reqs.unit1, swapped ? slot2 : slot1], [char2Data, reqs.unit2, swapped ? slot1 : slot2]];
+      pairs.forEach(([charData, reqId, slot]) => {
+        if (!charData) return;
+        const maxTier = this.reqTopTier(charData);
+        const { met } = this.unitMeetsReq(slot, reqId);
         requirements.push({
-          label: `${char1Data.name} at ${maxTier}`,
-          value: met ? '✓' : `${slot1.tierCode} (Awaken to ${maxTier})`,
+          label: `${charData.name} ${maxTier}`,
+          value: met ? '✓' : `${slot.tierCode} → ${maxTier}`,
           met
         });
-      }
-
-      if (char2Data) {
-        const maxTier = char2Data.starMaxCode;
-        const met = slot2.tierCode === maxTier;
-        requirements.push({
-          label: `${char2Data.name} at ${maxTier}`,
-          value: met ? '✓' : `${slot2.tierCode} (Awaken to ${maxTier})`,
-          met
-        });
-      }
+      });
 
       // Duplicate copies requirement (same unit recipes)
       if (reqs.requiredCopies && slot1.charId === slot2.charId) {
@@ -327,7 +315,7 @@
       if (reqs.minLevel) {
         const met = (slot1.level >= reqs.minLevel) && (slot2.level >= reqs.minLevel);
         requirements.push({
-          label: `Min Level ${reqs.minLevel}`,
+          label: `Level ${reqs.minLevel}+`,
           value: met ? '✓' : '✗',
           met
         });
@@ -342,9 +330,13 @@
           }
           const have = window.Resources?.get?.(material) ?? (resources[material] || 0);
           const met = have >= amount;
+          const fmt = (n) => Number(n || 0).toLocaleString();
+          const icon = this.currencyIcon(material);
           requirements.push({
-            label: material,
-            value: `${have}/${amount}`,
+            label: `${icon ? `<img src="${icon}" alt="" class="requirement-icon">` : ''}${material}`,
+            value: met ? fmt(amount) : `${fmt(have)} / ${fmt(amount)}`,
+            title: `Have ${fmt(have)}`,
+            cost: true,
             met
           });
         });
@@ -353,7 +345,7 @@
       // Render requirements
       requirementsEl.style.display = 'block';
       requirementsGrid.innerHTML = requirements.map(req => `
-        <div class="requirement-item ${req.met ? 'met' : 'not-met'}">
+        <div class="requirement-item ${req.met ? 'met' : 'not-met'}${req.cost ? ' is-cost' : ''}"${req.title ? ` title="${req.title}"` : ''}>
           <span class="requirement-label">${req.label}</span>
           <span class="requirement-value">${req.value}</span>
         </div>
@@ -367,15 +359,51 @@
       this.showResultPreview(fusion);
     },
 
+    // Top tier a required unit must reach. A card that transforms into another
+    // card when awakened past a tier (awakening-transforms.json) can never be
+    // at its nominal starMaxCode, so its top is the tier just below the
+    // transform (Progression.statTopTier); otherwise starMaxCode.
+    reqTopTier(charData) {
+      if (!charData) return null;
+      return window.Progression?.statTopTier?.(charData) || charData.starMaxCode;
+    },
+
+    // { tier, toId } when the required card turns into another card past its top tier.
+    reqTransform(charData) {
+      return (charData && window.Progression?.transformAtTop?.(charData)) || null;
+    },
+
+    // Does this instance count as the required unit? Either the card itself at
+    // its top tier, or the card it transforms into (at/after the transform tier).
+    // Returns { match: bool (right chain), met: bool (tier requirement satisfied) }.
+    unitMeetsReq(inst, reqId) {
+      if (!inst) return { match: false, met: false };
+      const reqChar = this.charactersData.find(c => c.id === reqId);
+      const top = this.reqTopTier(reqChar);
+      if (inst.charId === reqId) {
+        const tier = inst.tierCode || reqChar?.starMinCode;
+        return { match: true, met: tier === top || tier === reqChar?.starMaxCode };
+      }
+      const tf = this.reqTransform(reqChar);
+      if (tf && inst.charId === tf.toId) {
+        const order = window.Progression?.TIER_ORDER || [];
+        const toChar = this.charactersData.find(c => c.id === tf.toId);
+        const tier = inst.tierCode || toChar?.starMinCode;
+        return { match: true, met: order.indexOf(tier) >= order.indexOf(tf.tier) };
+      }
+      return { match: false, met: false };
+    },
+
     // Find fusion recipe
     findFusionRecipe(unit1, unit2) {
       if (!this.fusionsData?.fusions) return null;
 
+      const is = (inst, reqId) => this.unitMeetsReq(inst, reqId).match;
       return this.fusionsData.fusions.find(fusion => {
         const req = fusion.requirements;
         return (
-          (unit1.charId === req.unit1 && unit2.charId === req.unit2) ||
-          (unit1.charId === req.unit2 && unit2.charId === req.unit1)
+          (is(unit1, req.unit1) && is(unit2, req.unit2)) ||
+          (is(unit1, req.unit2) && is(unit2, req.unit1))
         );
       });
     },
@@ -394,23 +422,21 @@
       const tierData = resultChar.artByTier?.[fusion.result.tier] || {};
       const portrait = tierData.portrait || resultChar.portrait || 'assets/characters/common/silhouette.png';
 
+      this.setTicketHead(fusion.stepNumber ? `Step ${fusion.stepNumber}` : 'Fusion', fusion.name || resultChar.name);
       resultSlot.innerHTML = `<img src="${portrait}" alt="${resultChar.name}">`;
       resultSlot.classList.add('filled');
       resultSlot.dataset.tier = this.tierRank(fusion.result.tier);
 
       const bonusStats = fusion.result.bonusStats || {};
       if (!resultInfo) return;
+      const bonus = [['hp', 'HP'], ['atk', 'ATK'], ['def', 'DEF']]
+        .filter(([k]) => bonusStats[k])
+        .map(([k, l]) => `<span>+${Number(bonusStats[k]).toLocaleString()} ${l}</span>`)
+        .join('');
       resultInfo.innerHTML = `
         <div class="unit-name">${resultChar.name}</div>
-        <div class="unit-tier">Tier: ${fusion.result.tier}</div>
-        <div class="unit-level">Starting Level: ${fusion.result.level}</div>
-        ${Object.keys(bonusStats).length > 0 ? `
-          <div class="unit-stats">
-            ${bonusStats.hp ? `<div class="stat-row"><span>Bonus HP:</span><span>+${bonusStats.hp}</span></div>` : ''}
-            ${bonusStats.atk ? `<div class="stat-row"><span>Bonus ATK:</span><span>+${bonusStats.atk}</span></div>` : ''}
-            ${bonusStats.def ? `<div class="stat-row"><span>Bonus DEF:</span><span>+${bonusStats.def}</span></div>` : ''}
-          </div>
-        ` : ''}
+        <div class="unit-meta">${fusion.result.tier} · Lv ${fusion.result.level || 1}</div>
+        ${bonus ? `<div class="unit-bonus">${bonus}</div>` : ''}
       `;
     },
 
@@ -422,12 +448,21 @@
       resultSlot.innerHTML = `
         <div class="slot-placeholder">
           <div class="slot-icon">?</div>
-          <div class="slot-label">Fusion Result</div>
+          <div class="slot-label">Result</div>
         </div>
       `;
       resultSlot.classList.remove('filled');
       delete resultSlot.dataset.tier;
       if (resultInfo) resultInfo.innerHTML = '';
+      this.setTicketHead('Fusion', 'Choose a recipe');
+    },
+
+    // Fusion ticket header (kicker + recipe name)
+    setTicketHead(kicker, title) {
+      const k = document.getElementById('fu-ticket-kicker');
+      const t = document.getElementById('fu-ticket-title');
+      if (k) k.textContent = kicker;
+      if (t) t.textContent = title;
     },
 
     // Perform fusion
@@ -524,16 +559,13 @@
 
       const legacyBonusPercent = (legacyBonus * bonusPerStep * 100).toFixed(1);
       const legacyBonusDisplay = legacyBonus > 0 ? `
-        <div style="font-size: 1rem; color: rgba(255, 215, 0, 0.9); margin-top: 12px; padding: 8px; background: rgba(217, 179, 98, 0.1); border-radius: 8px;">
-          <strong>⭐ Legacy Bonus:</strong> ${legacyBonus} step${legacyBonus !== 1 ? 's' : ''} (+${legacyBonusPercent}% to all stats)
-        </div>
+        <div class="success-legacy">Legacy bonus · ${legacyBonus} step${legacyBonus !== 1 ? 's' : ''} · +${legacyBonusPercent}% all stats</div>
       ` : '';
 
       resultEl.innerHTML = `
-        <img src="${portrait}" style="width: 200px; height: 200px; object-fit: cover; border-radius: 12px; margin: 20px auto; display: block;" alt="${charData?.name || 'Unknown'}">
-        <div style="font-size: 1.5rem; color: var(--gold); font-weight: 600; margin-bottom: 10px;">${charData?.name || 'Unknown'}</div>
-        <div style="font-size: 1rem; color: rgba(238,230,209,0.8);">Tier: ${fusion.result.tier}</div>
-        <div style="font-size: 1rem; color: rgba(238,230,209,0.8);">Level: ${fusion.result.level}</div>
+        <div class="success-art"><img src="${portrait}" alt="${charData?.name || 'Unknown'}"></div>
+        <div class="success-name">${charData?.name || 'Unknown'}</div>
+        <div class="success-meta">${fusion.result.tier} · Lv ${fusion.result.level || 1}</div>
         ${legacyBonusDisplay}
       `;
 
@@ -574,7 +606,7 @@
       if (!grid || !this.fusionsData?.fusions) return;
 
       if (this.fusionsData.fusions.length === 0) {
-        grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: rgba(238,230,209,0.5);">No fusion recipes available</div>';
+        grid.innerHTML = '<div class="fu-empty">No fusion recipes available</div>';
         return;
       }
 
@@ -593,37 +625,30 @@
           .filter(([mat]) => !mat.toLowerCase().includes('scroll'))
           .map(([mat, amt]) => {
             const icon = this.currencyIcon(mat);
-            return `<div class="material-tag" data-mat="${mat}">${icon ? `<img src="${icon}" alt="" class="material-icon">` : ''}<span class="material-amt">${Number(amt).toLocaleString()}</span></div>`;
+            return `<span class="material-tag" data-mat="${mat}">${icon ? `<img src="${icon}" alt="" class="material-icon">` : ''}${Number(amt).toLocaleString()}</span>`;
           })
           .join('');
         const levelTag = fusion.requirements.minLevel
-          ? `<div class="material-tag level-tag"><span class="material-lv">Lv</span><span class="material-amt">${fusion.requirements.minLevel}</span></div>` : '';
-        const step = fusion.stepNumber ? `<span class="fusion-card-step">Step ${fusion.stepNumber}</span>` : '';
+          ? `<span class="material-tag level-tag">Lv ${fusion.requirements.minLevel}</span>` : '';
         const unitHtml = (c, portrait, tier, extra = '') => `
-              <div class="fusion-preview-unit${extra}" data-tier="${this.tierRank(tier)}">
-                <div class="fusion-preview-frame"><img src="${portrait}" alt="${c?.name || 'Unknown'}" class="fusion-preview-icon" loading="lazy" onerror="this.style.visibility='hidden'"></div>
-                <div class="fusion-preview-name">${c?.name || 'Unknown'}</div>
-                <div class="fusion-preview-version">${c?.version || ''}</div>
-              </div>`;
+              <span class="fusion-preview-unit${extra}" data-tier="${this.tierRank(tier)}" title="${c?.name || 'Unknown'}">
+                <img src="${portrait}" alt="${c?.name || 'Unknown'}" class="fusion-preview-icon" loading="lazy" onerror="this.style.visibility='hidden'">
+              </span>`;
 
         return `
           <div class="fusion-card" data-fusion-id="${fusion.id}" role="button" tabindex="0">
-            <div class="fusion-card-head">
-              <div class="fusion-card-title">${fusion.name || 'Unknown Fusion'}</div>
-              ${step}
+            <div class="fusion-card-text">
+              ${fusion.stepNumber ? `<span class="fusion-card-step">Step ${fusion.stepNumber}</span>` : ''}
+              <span class="fusion-card-title">${fusion.name || 'Unknown Fusion'}</span>
+              <span class="fusion-card-materials">${levelTag}${materials}</span>
             </div>
-
-            <!-- Fusion Preview with Icons -->
             <div class="fusion-preview">
               ${unitHtml(char1, char1Portrait, char1?.starMinCode)}
-              <div class="fusion-preview-plus">+</div>
+              <span class="fusion-preview-plus">+</span>
               ${unitHtml(char2, char2Portrait, char2?.starMinCode)}
-              <div class="fusion-preview-arrow"></div>
+              <span class="fusion-preview-arrow"></span>
               ${unitHtml(result, resultPortrait, fusion.result.tier, ' result')}
             </div>
-
-            <div class="fusion-card-description">${fusion.description || ''}</div>
-            <div class="fusion-card-materials">${levelTag}${materials}</div>
           </div>
         `;
       }).join('');
@@ -680,17 +705,16 @@
       const char1Data = this.charactersData.find(c => c.id === fusion.requirements.unit1);
       const char2Data = this.charactersData.find(c => c.id === fusion.requirements.unit2);
 
-      const unit1 = inventory.find(inst =>
-        inst.charId === fusion.requirements.unit1 &&
-        inst.tierCode === char1Data?.starMaxCode
-      );
+      // Eligible: the card at its top tier, or the card it transforms into.
+      const eligible = (inst, reqId) => this.unitMeetsReq(inst, reqId).met;
+      const unit1 = inventory.find(inst => eligible(inst, fusion.requirements.unit1));
 
       const unit2 = inventory.find(inst => {
-        if (inst.charId !== fusion.requirements.unit2) return false;
-        if (inst.tierCode !== char2Data?.starMaxCode) return false;
+        if (!eligible(inst, fusion.requirements.unit2)) return false;
         // same-unit recipes can reuse type, but not exact same instance
         return inst.uid !== unit1?.uid;
       });
+      const dataOf = (inst, fallback) => this.charactersData.find(c => c.id === inst?.charId) || fallback;
 
       // Clear previous selection
       this.clearSelection();
@@ -701,18 +725,20 @@
 
       // Populate slots if units are found
       if (unit1) {
-        const tierData = char1Data?.artByTier?.[unit1.tierCode] || {};
-        const portrait = tierData.portrait || char1Data?.portrait || 'assets/characters/common/silhouette.png';
+        const d1 = dataOf(unit1, char1Data);
+        const tierData = d1?.artByTier?.[unit1.tierCode] || {};
+        const portrait = tierData.portrait || d1?.portrait || 'assets/characters/common/silhouette.png';
 
-        this.selectedUnits.slot1 = { ...unit1, portrait, charData: char1Data };
+        this.selectedUnits.slot1 = { ...unit1, portrait, charData: d1 };
         this.updateSlotDisplay(1);
       }
 
       if (unit2) {
-        const tierData = char2Data?.artByTier?.[unit2.tierCode] || {};
-        const portrait = tierData.portrait || char2Data?.portrait || 'assets/characters/common/silhouette.png';
+        const d2 = dataOf(unit2, char2Data);
+        const tierData = d2?.artByTier?.[unit2.tierCode] || {};
+        const portrait = tierData.portrait || d2?.portrait || 'assets/characters/common/silhouette.png';
 
-        this.selectedUnits.slot2 = { ...unit2, portrait, charData: char2Data };
+        this.selectedUnits.slot2 = { ...unit2, portrait, charData: d2 };
         this.updateSlotDisplay(2);
       }
 

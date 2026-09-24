@@ -345,3 +345,37 @@ window.addCharacterById = async function (charId) {
     if (window.ModalManager) { window.ModalManager.showInfo(" Failed to add character — see console for details."); };
   }
 };
+
+// ---------- Tier floor migration ----------
+// A saved instance whose tierCode is below its unit's starMinCode (e.g. a card
+// whose data was corrected from 5S–6S to 6S–6SB after the instance was saved)
+// is lifted to the unit's min tier; the level is clamped to the new tier's cap.
+// Runs once per page load, after characters.json is available; idempotent.
+(function (global) {
+  const ORDER = ["1S","2S","3S","4S","5S","6S","6SB","7S","7SL","8S","8SM","9S","9ST","10SO"];
+  function migrateTierFloor() {
+    if (!global.InventoryChar || typeof global.loadCharactersData !== "function") return;
+    global.loadCharactersData().then((data) => {
+      const list = Array.isArray(data) ? data : (Array.isArray(data?.characters) ? data.characters : []);
+      const byId = {};
+      list.forEach((c) => { if (c && c.id) byId[c.id] = c; });
+      let changed = 0;
+      global.InventoryChar.allInstances().forEach((inst) => {
+        const c = byId[inst.charId];
+        const min = c && c.starMinCode;
+        const iMin = ORDER.indexOf(min);
+        const iCur = ORDER.indexOf(inst.tierCode);
+        if (iMin < 0 || iCur < 0 || iCur >= iMin) return;
+        const cap = global.Progression?.levelCapForCode?.(min) || 100;
+        global.InventoryChar._mutate(inst.uid, (x) => {
+          x.tierCode = min;
+          x.level = Math.max(1, Math.min(Number(x.level) || 1, cap));
+        });
+        changed++;
+      });
+      if (changed) console.log(`[Inventory] Lifted ${changed} instance(s) to their unit's minimum tier`);
+    }).catch(() => {});
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", migrateTierFloor);
+  else migrateTierFloor();
+})(window);

@@ -234,15 +234,10 @@ body.page-teams {
   object-fit: cover;
   border-radius: 10px;
   pointer-events: none;
-  mix-blend-mode: screen;   /* black bg drops out, only the bolts show */
   z-index: 1;
-  opacity: 1;
 }
 .slot-card.is-7star .lv-badge,
 .slot-card.is-7star .ultimate-badge { z-index: 3; }
-@media (prefers-reduced-motion: reduce) {
-  .slot-card.is-7star .seven-star-fx { display: none; }
-}
 
 /* Ultimate Badge — overlaps bottom-right corner of portrait image */
 .slot-card .portrait .ultimate-badge {
@@ -649,7 +644,7 @@ body.page-teams {
     0 0 15px rgba(220, 90, 200, .5),
     0 0 26px rgba(255, 180, 80, .22),
     inset 0 0 0 1px rgba(255, 170, 220, .22);
-  animation: teamSevenStarPulse 2.2s ease-in-out infinite;
+  /* PERF: static glow; motion comes from the compositor-only aura overlay */
 }
 .team-char-card.is-7star .seven-star-fx {
   position: absolute;
@@ -660,25 +655,11 @@ body.page-teams {
   object-fit: cover;
   border-radius: 14px;
   pointer-events: none;
-  mix-blend-mode: screen;            /* black bg drops out, only bolts show */
   z-index: 1;
-  opacity: 1;
 }
 /* Keep badges & footer text crisp above the lightning */
 .team-char-card.is-7star .team-char-card-info { position: relative; z-index: 3; }
 
-/* PERF: the pulsing box-shadow only runs while the card is on-screen
-   (.fx-live, toggled by js/seven-star-fx.js). */
-.team-char-card.is-7star:not(.fx-live) { animation: none; }
-
-@keyframes teamSevenStarPulse {
-  0%, 100% { box-shadow: 0 0 12px rgba(220,90,200,.4), 0 0 20px rgba(255,180,80,.16), inset 0 0 0 1px rgba(255,170,220,.18); }
-  50%      { box-shadow: 0 0 24px rgba(255,120,220,.72), 0 0 32px rgba(255,190,90,.3), inset 0 0 0 1px rgba(255,200,235,.4); }
-}
-@media (prefers-reduced-motion: reduce) {
-  .team-char-card.is-7star { animation: none; }
-  .team-char-card.is-7star .seven-star-fx { display: none; }
-}
 
 /* Preview Modal */
 #char-preview-modal {
