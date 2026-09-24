@@ -180,8 +180,8 @@
     itachi_2031: 'assets/sprites/itachi_2031', // Itachi Uchiha "The Promised Day" 5★
     itachi_2032: 'assets/sprites/itachi_2031', // Itachi Uchiha "The Promised Day" 6★
     itachi_2096: 'assets/sprites/itachi_2096', // Itachi Uchiha "Talent and Burden" 6★
-    itachi_2199: 'assets/sprites/itachi_2096', // Itachi Uchiha "Talent and Burden" 7★
-    itachi_2200: 'assets/sprites/itachi_2096', // Itachi Uchiha "Talent and Burden" 7★
+    itachi_2199: 'assets/sprites/itachi_2096', // Itachi Uchiha "Talent and Burden" 6★ Blazing Awakened
+    itachi_2200: 'assets/sprites/itachi_2096', // Itachi Uchiha "Talent and Burden" 6★ Blazing Awakened
     itachi_2094: 'assets/sprites/itachi_2094', // Itachi Uchiha "Talent and Burden" 5★
     itachi_2095: 'assets/sprites/itachi_2094', // Itachi Uchiha "Talent and Burden" 6★
     jiraiya_9001: 'assets/sprites/jiraiya_9001', // Jiraiya "Gallant Sage of Mount Myoboku" 7★

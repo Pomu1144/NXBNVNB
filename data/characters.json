@@ -129583,10 +129583,10 @@
   "name": "Itachi Uchiha",
   "version": "Talent and Burden",
   "element": "Heart",
-  "rarity": 7,
-  "starMinCode": "7S",
-  "starMaxCode": "7S",
-  "lbEligible": true,
+  "rarity": 6,
+  "starMinCode": "6SB",
+  "starMaxCode": "6SB",
+  "lbEligible": false,
   "portrait": "assets/characters/itachi_2096/portrait_6S.webp",
   "full": "assets/characters/itachi_2096/full_6S.webp",
   "ultimateAnimation": null,
@@ -129596,20 +129596,20 @@
     "portrait": "assets/characters/itachi_2096/portrait_6S.webp",
     "full": "assets/characters/itachi_2096/full_6S.webp"
    },
-   "7S": {
+   "6SB": {
     "portrait": "assets/characters/itachi_2096/portrait_6S.webp",
     "full": "assets/characters/itachi_2096/full_6S.webp"
    }
   },
   "statsBase": {
-   "hp": 41850,
-   "atk": 3472,
-   "speed": 360
+   "hp": 20925,
+   "atk": 1736,
+   "speed": 180
   },
   "statsMax": {
-   "hp": 83700,
-   "atk": 6942,
-   "speed": 720
+   "hp": 41850,
+   "atk": 3471,
+   "speed": 360
   },
   "growthCurve": {
    "hp": 1,
@@ -129618,7 +129618,7 @@
    "speed": 1,
    "chakra": 1
   },
-  "powerRank": 16000,
+  "powerRank": 13997,
   "powerWeights": {
    "hp": 0.3,
    "atk": 0.4,
@@ -129628,12 +129628,12 @@
   },
   "range": "Short",
   "luck": {
-   "base": 0,
-   "max": 0
+   "base": 10,
+   "max": 99
   },
   "cost": {
-   "base": 0,
-   "max": 0
+   "base": 56,
+   "max": 28
   },
   "affiliation": [
    "Hidden Leaf",
@@ -129664,22 +129664,31 @@
       "position": "Center",
       "description": "Removes Perfect Dodge and Barrier for all enemies in range and ignores Substitution with 3.5x attack toward them.",
       "nwusDescription": "Removes Perfect Dodge and Barrier for all enemies in range and ignores Substitution, changing their element to Skill for 3 turn(s) with 4x attack toward them. 50% chance of immobilization for 1 second(s)."
-     },
-     "7S": {
-      "chakraCost": 4,
-      "hits": 6,
+     }
+    }
+   },
+   "ultimate": {
+    "name": "Sealing Sword: Totsuka Blade",
+    "type": "Ultimate",
+    "byTier": {
+     "6S": {
+      "chakraCost": 8,
+      "hits": 10,
       "shape": "Circle",
       "range": "Vast",
-      "position": "Center",
-      "description": "Removes Perfect Dodge and Barrier for all enemies in range and ignores Substitution with 3.5x attack toward them.",
-      "nwusDescription": "Removes Perfect Dodge and Barrier for all enemies in range and ignores Substitution, changing their element to Skill for 3 turn(s) with 4x attack toward them. 50% chance of immobilization for 1 second(s)."
+      "position": "Right",
+      "description": "Removes Perfect Dodge and Barrier for all enemies in range and ignores Substitution with 8x attack toward them, knocking them back. 80% chance of attack weakened for 6 turn(s).",
+      "nwusDescription": "Removes Perfect Dodge and Barrier for all enemies in range and ignores Substitution with 12x attack toward them, knocking them back. 80% chance of attack weakened for 10 turn(s). 75% chance of switch sealing for 4 turn(s), and 70% chance of chakra recovery sealing for 3 turn(s).",
+      "effects": {
+       "multiplier": 8
+      }
      }
     }
    }
   },
   "abilities": [
    {
-    "name": "0 Chakra Required for Ninjutsu",
+    "name": "0 Chakra Req'd for Ninjutsu",
     "description": "35% chance to reduce chakra consumed by Ninjutsu to 0."
    },
    {
@@ -129687,52 +129696,56 @@
     "description": "Boosts speed by 40."
    },
    {
-    "name": "0 Chakra Required for Ninjutsu",
-    "description": "Another 35% chance to reduce chakra consumed by Ninjutsu to 0."
+    "name": "0 Chakra Req'd for Ninjutsu",
+    "description": "35% chance to reduce chakra consumed by Ninjutsu to 0."
    },
    {
     "name": "Reduce Damage/Substitution Jutsu",
-    "description": "Reduces damage taken by 30% and gives a 30% chance to dodge a physical attack (not slip damage)."
+    "description": "Reduces damage taken by 30% and a 30% chance of dodging a physical attack (Not slip damage)."
    },
    {
-    "name": "Speed Boost When Health Drops",
-    "description": "Boosts speed by 1.5x when health reaches 50% or less."
+    "name": "Speed boost when health drops",
+    "description": "Boosts speed by 1.5x when your health reaches 50% or less."
    }
   ],
   "metadata": {
    "cardNumber": 2199,
-   "maxLevel": null,
-   "hitCount": 0
+   "maxLevel": 100,
+   "hitCount": 6
   }
  },
  {
   "id": "itachi_2200",
   "name": "Itachi Uchiha",
   "version": "Talent and Burden",
-  "element": "heart",
-  "rarity": 7,
-  "starMinCode": "7S",
-  "starMaxCode": "7S",
-  "lbEligible": true,
+  "element": "Heart",
+  "rarity": 6,
+  "starMinCode": "6SB",
+  "starMaxCode": "6SB",
+  "lbEligible": false,
   "portrait": "assets/characters/itachi_2096/portrait_6S.webp",
   "full": "assets/characters/itachi_2096/full_6S.webp",
   "ultimateAnimation": null,
   "secretAnimation": null,
   "artByTier": {
-   "7S": {
+   "6S": {
+    "portrait": "assets/characters/itachi_2096/portrait_6S.webp",
+    "full": "assets/characters/itachi_2096/full_6S.webp"
+   },
+   "6SB": {
     "portrait": "assets/characters/itachi_2096/portrait_6S.webp",
     "full": "assets/characters/itachi_2096/full_6S.webp"
    }
   },
   "statsBase": {
-   "hp": 40925,
-   "atk": 4736,
+   "hp": 20925,
+   "atk": 1736,
    "speed": 180
   },
   "statsMax": {
-   "hp": 83700,
-   "atk": 6942,
-   "speed": 320
+   "hp": 41850,
+   "atk": 3471,
+   "speed": 360
   },
   "growthCurve": {
    "hp": 1,
@@ -129741,7 +129754,7 @@
    "speed": 1,
    "chakra": 1
   },
-  "powerRank": 16000,
+  "powerRank": 13997,
   "powerWeights": {
    "hp": 0.3,
    "atk": 0.4,
@@ -129751,12 +129764,12 @@
   },
   "range": "Short",
   "luck": {
-   "base": 0,
-   "max": 0
+   "base": 10,
+   "max": 99
   },
   "cost": {
-   "base": 0,
-   "max": 0
+   "base": 56,
+   "max": 28
   },
   "affiliation": [
    "Hidden Leaf",
@@ -129779,7 +129792,7 @@
     "name": "Susano'o: Destruction",
     "type": "Jutsu",
     "byTier": {
-     "7S": {
+     "6S": {
       "chakraCost": 4,
       "hits": 6,
       "shape": "Circle",
@@ -129789,11 +129802,29 @@
       "nwusDescription": "Removes Perfect Dodge and Barrier for all enemies in range and ignores Substitution, changing their element to Skill for 3 turn(s) with 4x attack toward them. 50% chance of immobilization for 1 second(s)."
      }
     }
+   },
+   "ultimate": {
+    "name": "Sealing Sword: Totsuka Blade",
+    "type": "Ultimate",
+    "byTier": {
+     "6S": {
+      "chakraCost": 8,
+      "hits": 10,
+      "shape": "Circle",
+      "range": "Vast",
+      "position": "Right",
+      "description": "Removes Perfect Dodge and Barrier for all enemies in range and ignores Substitution with 8x attack toward them, knocking them back. 80% chance of attack weakened for 6 turn(s).",
+      "nwusDescription": "Removes Perfect Dodge and Barrier for all enemies in range and ignores Substitution with 12x attack toward them, knocking them back. 80% chance of attack weakened for 10 turn(s). 75% chance of switch sealing for 4 turn(s), and 70% chance of chakra recovery sealing for 3 turn(s).",
+      "effects": {
+       "multiplier": 8
+      }
+     }
+    }
    }
   },
   "abilities": [
    {
-    "name": "0 Chakra Required for Ninjutsu",
+    "name": "0 Chakra Req'd for Ninjutsu",
     "description": "35% chance to reduce chakra consumed by Ninjutsu to 0."
    },
    {
@@ -129801,22 +129832,22 @@
     "description": "Boosts speed by 40."
    },
    {
-    "name": "0 Chakra Required for Ninjutsu",
-    "description": "Another 35% chance to reduce chakra consumed by Ninjutsu to 0."
+    "name": "0 Chakra Req'd for Ninjutsu",
+    "description": "35% chance to reduce chakra consumed by Ninjutsu to 0."
    },
    {
     "name": "Reduce Damage/Substitution Jutsu",
-    "description": "Reduces damage taken by 30% and gives a 30% chance to dodge a physical attack (not slip damage)."
+    "description": "Reduces damage taken by 30% and a 30% chance of dodging a physical attack (Not slip damage)."
    },
    {
-    "name": "Speed Boost When Health Drops",
-    "description": "Boosts speed by 1.5x when health reaches 50% or less."
+    "name": "Speed boost when health drops",
+    "description": "Boosts speed by 1.5x when your health reaches 50% or less."
    }
   ],
   "metadata": {
    "cardNumber": 2200,
-   "maxLevel": null,
-   "hitCount": 0
+   "maxLevel": 100,
+   "hitCount": 6
   }
  },
  {

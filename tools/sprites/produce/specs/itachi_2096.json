@@ -8,13 +8,13 @@
  ],
  "primary": {
   "id": "itachi_2199",
-  "tier": "7S"
+  "tier": "6SB"
  },
  "dev": {
   "id": "itachi_2199",
-  "tier": "7S",
+  "tier": "6SB",
   "label": "Itachi (Talent and Burden)",
-  "note": "Itachi Uchiha \"Talent and Burden\" 7★ (itachi_2199, featured banner; 2096/2200 share the art, 2094/2095 use the same set with their Clone Explosion jutsu)."
+  "note": "Itachi Uchiha \"Talent and Burden\" 6★ Blazing Awakened (itachi_2199, featured banner; 2096/2200 share the art, 2094/2095 use the same set with their Clone Explosion jutsu)."
  },
  "reference_art": "assets/characters/itachi_2096/full_6S.png",
  "character": "Itachi Uchiha of the Akatsuki from Naruto Shippuden: slim young man, long black hair tied in a low ponytail with long bangs framing his face, red Mangekyo Sharingan eyes, tear-trough lines under his eyes, calm cold expression, Konoha forehead protector with a scratch through the symbol, long black high-collared Akatsuki cloak with red clouds and red lining, a ring on his finger, dark purple nail polish, dark sandals",
@@ -419,7 +419,7 @@
     "id": "itachi_2096",
     "tier": "6S"
    },
-   "_note": "itachi_2199/2200 have no ultimate in data/characters.json; hit count taken from itachi_2096 (Totsuka Blade, 10 hits)"
+   "_note": "itachi_2199/2200 mirror itachi_2096 in data/characters.json (Totsuka Blade, 10 hits)"
   },
   "jutsu_body": {
    "type": "fx",

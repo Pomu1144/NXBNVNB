@@ -256,7 +256,9 @@
 #team-holder .tag-ult {
   color: #fff1d6;
   background: linear-gradient(180deg, rgba(170, 40, 24, 0.96), rgba(90, 14, 10, 0.96));
-  border: 1px solid #f1c070;
+  /* No gold box around the ULT tag. The transparent 1px border keeps it the
+     same size as the JUTSU tag, so the stacked tags still line up. */
+  border: 1px solid transparent;
   text-shadow: 0 0 4px rgba(255, 120, 60, 0.9);
 }
 #team-holder .unit-card.jutsu-ready .tag-jutsu,
