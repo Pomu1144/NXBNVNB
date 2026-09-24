@@ -346,38 +346,82 @@ window.addCharacterById = async function (charId) {
   }
 };
 
-// ---------- Tier floor migration ----------
-// A saved instance whose tierCode is below its unit's starMinCode (e.g. a card
-// whose data was corrected from 5S–6S to 6S–6SB after the instance was saved)
-// is lifted to the unit's min tier; the level is clamped to the new tier's cap.
-// Runs once per page load, after characters.json is available; idempotent.
+// ---------- Tier bounds migration ----------
+// Keeps every saved instance's tierCode inside its unit's starMinCode..starMaxCode:
+//  • Floor: an instance below the unit's min tier (e.g. a card whose data was
+//    corrected from 5S–6S to 6S–6SB after the instance was saved) is lifted to
+//    the min tier; the level is clamped to the new tier's cap.
+//  • Ceiling: an instance above the unit's max tier is lowered to the max tier.
+//    This repairs saves of itachi_2199 / itachi_2200 ("Talent and Burden"),
+//    which were wrongly listed as 7★ (7S) but are the 6★ Blazing Awakened card
+//    (6SB). Level, limit break, dupes, luck, equips etc. are kept; the level is
+//    only clamped to the new tier's cap (incl. limit-break levels) and the limit
+//    break to the new tier's maximum.
+// Runs once per page load, after characters.json is available. It only touches
+// instances that are out of bounds, so it is idempotent (a no-op once clean).
 (function (global) {
   const ORDER = ["1S","2S","3S","4S","5S","6S","6SB","7S","7SL","8S","8SM","9S","9ST","10SO"];
-  function migrateTierFloor() {
-    if (!global.InventoryChar || typeof global.loadCharactersData !== "function") return;
-    global.loadCharactersData().then((data) => {
-      const list = Array.isArray(data) ? data : (Array.isArray(data?.characters) ? data.characters : []);
-      const byId = {};
-      list.forEach((c) => { if (c && c.id) byId[c.id] = c; });
-      let changed = 0;
-      global.InventoryChar.allInstances().forEach((inst) => {
-        const c = byId[inst.charId];
-        const min = c && c.starMinCode;
-        const iMin = ORDER.indexOf(min);
-        const iCur = ORDER.indexOf(inst.tierCode);
-        if (iMin < 0 || iCur < 0 || iCur >= iMin) return;
-        const cap = global.Progression?.levelCapForCode?.(min) || 100;
+  // Mirrors Progression.TIER_CAPS / LimitBreak (used if those aren't loaded).
+  const CAPS = { "1S":20,"2S":30,"3S":40,"4S":55,"5S":70,"6S":100,"6SB":100,"7S":100,"7SL":100,"8S":110,"8SM":120,"9S":125,"9ST":130,"10SO":150 };
+  const LB_TIERS = ["6S","6SB","7S","7SL","8S","8SM","9S","9ST","10SO"];
+  const capFor = (code) => global.Progression?.levelCapForCode?.(code) || CAPS[code] || 100;
+  const maxLbFor = (code) => global.LimitBreak?.getMaxLimitBreakLevel
+    ? (global.LimitBreak.getMaxLimitBreakLevel(code) || 0)
+    : (LB_TIERS.includes(code) ? 10 : 0);
+  // Synchronous core: pass the characters list (array or { characters }).
+  // Returns { lifted, lowered }. Also exposed as InventoryChar.clampTiersToData
+  // so pages that build units from saved tiers (battle) can run it first.
+  function clampTiersToData(data) {
+    const res = { lifted: 0, lowered: 0 };
+    if (!global.InventoryChar) return res;
+    const list = Array.isArray(data) ? data : (Array.isArray(data?.characters) ? data.characters : []);
+    const byId = {};
+    list.forEach((c) => { if (c && c.id) byId[c.id] = c; });
+    global.InventoryChar.allInstances().forEach((inst) => {
+      const c = byId[inst.charId];
+      if (!c) return;
+      const iCur = ORDER.indexOf(inst.tierCode);
+      if (iCur < 0) return;
+      const min = c.starMinCode, max = c.starMaxCode;
+      const iMin = ORDER.indexOf(min), iMax = ORDER.indexOf(max);
+      if (iMin >= 0 && iCur < iMin) {
+        const cap = capFor(min);
         global.InventoryChar._mutate(inst.uid, (x) => {
           x.tierCode = min;
           x.level = Math.max(1, Math.min(Number(x.level) || 1, cap));
         });
-        changed++;
-      });
-      if (changed) console.log(`[Inventory] Lifted ${changed} instance(s) to their unit's minimum tier`);
-    }).catch(() => {});
+        res.lifted++;
+      } else if (iMax >= 0 && iMax >= iMin && iCur > iMax) {
+        const lbMax = maxLbFor(max);
+        global.InventoryChar._mutate(inst.uid, (x) => {
+          const from = x.tierCode;
+          const lb = Math.max(0, Math.min(Number(x.limitBreakLevel) || 0, lbMax));
+          const cap = Math.min(capFor(max) + lb * 5, Math.max(capFor(max), 150));
+          x.tierCode = max;
+          if (typeof x.limitBreakLevel !== "undefined") x.limitBreakLevel = lb;
+          x.level = Math.max(1, Math.min(Number(x.level) || 1, cap));
+          console.log(`[Inventory] ${x.charId}: tier ${from} -> ${max} (above the unit's max tier)`);
+        });
+        res.lowered++;
+      }
+    });
+    if (res.lifted) console.log(`[Inventory] Lifted ${res.lifted} instance(s) to their unit's minimum tier`);
+    if (res.lowered) console.log(`[Inventory] Lowered ${res.lowered} instance(s) to their unit's maximum tier`);
+    if (res.lifted || res.lowered) {
+      // Pages may have rendered before this ran — let them redraw.
+      try { global.dispatchEvent(new CustomEvent("inventory:tiers-migrated", { detail: res })); } catch (_) {}
+      if (typeof global.refreshCharacterGrid === "function") global.refreshCharacterGrid();
+    }
+    return res;
   }
-  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", migrateTierFloor);
-  else migrateTierFloor();
+  if (global.InventoryChar) global.InventoryChar.clampTiersToData = clampTiersToData;
+
+  function migrateTierBounds() {
+    if (!global.InventoryChar || typeof global.loadCharactersData !== "function") return;
+    global.loadCharactersData().then(clampTiersToData).catch(() => {});
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", migrateTierBounds);
+  else migrateTierBounds();
 })(window);
 
 // ---------- Removed units ----------
