@@ -1,18 +1,24 @@
 {
-  "frameWidth": 322,
-  "frameHeight": 320,
-  "frames": 24,
-  "columns": 12,
+  "frameWidth": 161,
+  "frameHeight": 301,
+  "frames": 26,
+  "columns": 25,
   "fps": 12,
   "loop": false,
-  "hits": [
-    7,
-    9,
-    11,
-    13,
-    15,
-    17
-  ],
-  "heightScale": 1.0807,
-  "anchorX": 0.4589
+  "hits": [],
+  "heightScale": 1.0164,
+  "anchorX": 0.35,
+  "fx": [
+    {
+      "sheet": "jutsu_body",
+      "at": "caster",
+      "startFrame": 2,
+      "layer": "behind"
+    },
+    {
+      "sheet": "jutsu_fx",
+      "at": "targets",
+      "startFrame": 11
+    }
+  ]
 }

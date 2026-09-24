@@ -177,11 +177,16 @@
     hinata_813: 'assets/sprites/hinata_813', // Hinata Hyuga "Beyond the Ceaseless" 6★
     hinata_811: 'assets/sprites/hinata_811', // Hinata Hyuga "Beyond the Ceaseless" 5★
     hinata_812: 'assets/sprites/hinata_811', // Hinata Hyuga "Beyond the Ceaseless" 6★
+    itachi_2031: 'assets/sprites/itachi_2031', // Itachi Uchiha "The Promised Day" 5★
+    itachi_2032: 'assets/sprites/itachi_2031', // Itachi Uchiha "The Promised Day" 6★
     itachi_2096: 'assets/sprites/itachi_2096', // Itachi Uchiha "Talent and Burden" 6★
     itachi_2199: 'assets/sprites/itachi_2096', // Itachi Uchiha "Talent and Burden" 6★ Blazing Awakened
     itachi_2200: 'assets/sprites/itachi_2096', // Itachi Uchiha "Talent and Burden" 6★ Blazing Awakened
     itachi_2094: 'assets/sprites/itachi_2094', // Itachi Uchiha "Talent and Burden" 5★
     itachi_2095: 'assets/sprites/itachi_2094', // Itachi Uchiha "Talent and Burden" 6★
+    jiraiya_9001: 'assets/sprites/jiraiya_9001', // Jiraiya "Gallant Sage of Mount Myoboku" 7★
+    kaguya_9003: 'assets/sprites/kaguya_9003', // Kaguya Otsutsuki "Progenitor of All Chakra" 7★
+    pain_9004: 'assets/sprites/pain_9004', // Pain "God of Amegakure" 7★
     // </produce:registry>
   };
 

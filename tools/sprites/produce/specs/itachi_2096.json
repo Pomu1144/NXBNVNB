@@ -202,6 +202,126 @@
    "fps": 12,
    "height": 300,
    "body_px": 296,
+   "fx": [
+    {
+     "sheet": "jutsu_body",
+     "at": "caster",
+     "layer": "behind",
+     "start_key": "cs_seal"
+    },
+    {
+     "sheet": "jutsu_fx",
+     "at": "targets",
+     "start_key": "cs_seal",
+     "delay": 9
+    }
+   ],
+   "timeline": [
+    [
+     "base",
+     2
+    ],
+    [
+     "cs_seal",
+     4
+    ],
+    [
+     "cs_point",
+     16
+    ],
+    [
+     "cs_seal",
+     2
+    ],
+    [
+     "base",
+     2
+    ]
+   ]
+  },
+  "ultimate": {
+   "fps": 12,
+   "height": 300,
+   "body_px": 296,
+   "unit": {
+    "id": "itachi_2096",
+    "tier": "6S"
+   },
+   "fx": [
+    {
+     "sheet": "ultimate_body",
+     "at": "caster",
+     "layer": "behind",
+     "start_key": "cs_seal"
+    },
+    {
+     "sheet": "ultimate_fx",
+     "at": "targets",
+     "start_key": "cs_seal",
+     "delay": 12
+    }
+   ],
+   "timeline": [
+    [
+     "base",
+     2
+    ],
+    [
+     "cs_seal",
+     4
+    ],
+    [
+     "cs_point",
+     24
+    ],
+    [
+     "cs_seal",
+     2
+    ],
+    [
+     "base",
+     2
+    ]
+   ]
+  },
+  "attack": {
+   "fps": 14,
+   "height": 256,
+   "body_px": 256,
+   "hits": 2,
+   "timeline": [
+    [
+     "at1",
+     1
+    ],
+    [
+     "at2",
+     1
+    ],
+    [
+     "at3",
+     2,
+     "hit"
+    ],
+    [
+     "at4",
+     1
+    ],
+    [
+     "at5",
+     2,
+     "hit"
+    ],
+    [
+     "base",
+     2
+    ]
+   ]
+  },
+  "_jutsu_old": {
+   "fps": 12,
+   "height": 300,
+   "body_px": 296,
    "skill": "jutsu",
    "timeline": [
     [
@@ -244,7 +364,7 @@
     ]
    ]
   },
-  "ultimate": {
+  "_ultimate_old": {
    "fps": 14,
    "height": 300,
    "body_px": 296,
@@ -301,33 +421,327 @@
    },
    "_note": "itachi_2199/2200 mirror itachi_2096 in data/characters.json (Totsuka Blade, 10 hits)"
   },
-  "attack": {
-   "fps": 14,
-   "height": 256,
-   "body_px": 256,
-   "hits": 2,
+  "jutsu_body": {
+   "type": "fx",
+   "key": "unmix",
+   "quality": 88,
+   "ground_y": 0.88,
+   "size_by": "bbox",
+   "fps": 12,
+   "height": 480,
+   "sphere_key": "s3",
+   "sphere_units": 3.0,
    "timeline": [
     [
-     "at1",
+     "s1",
+     2
+    ],
+    [
+     "s2",
+     2
+    ],
+    [
+     "s3",
+     3
+    ],
+    [
+     "s4",
+     2
+    ],
+    [
+     "s5",
+     8
+    ],
+    [
+     "s6",
+     3
+    ]
+   ],
+   "recolor": [
+    "fx_no_green",
+    "fx_no_violet"
+   ]
+  },
+  "jutsu_fx": {
+   "type": "fx",
+   "key": "unmix",
+   "quality": 88,
+   "ground_y": 0.88,
+   "size_by": "bbox",
+   "fps": 12,
+   "height": 420,
+   "skill": "jutsu",
+   "sphere_key": "x2",
+   "sphere_units": 2.6,
+   "timeline": [
+    [
+     "x1",
      1
     ],
     [
-     "at2",
-     1
-    ],
-    [
-     "at3",
+     "x2",
      2,
      "hit"
     ],
     [
-     "at4",
+     "@hits",
+     [
+      "x3",
+      "x4"
+     ],
      1
     ],
     [
-     "at5",
+     "x5",
      2,
      "hit"
+    ],
+    [
+     "x6",
+     3
+    ]
+   ],
+   "recolor": [
+    "fx_no_green",
+    "fx_no_violet"
+   ]
+  },
+  "ultimate_body": {
+   "type": "fx",
+   "key": "unmix",
+   "quality": 88,
+   "ground_y": 0.88,
+   "size_by": "bbox",
+   "recolor": [
+    "fx_no_green",
+    "fx_no_violet"
+   ],
+   "fps": 12,
+   "height": 480,
+   "sphere_key": "s3",
+   "sphere_units": 3.0,
+   "timeline": [
+    [
+     "s1",
+     2
+    ],
+    [
+     "s2",
+     2
+    ],
+    [
+     "s3",
+     2
+    ],
+    [
+     "b1",
+     3
+    ],
+    [
+     "b0",
+     3
+    ],
+    [
+     "b3",
+     12
+    ],
+    [
+     "s6",
+     3
+    ]
+   ]
+  },
+  "ultimate_fx": {
+   "type": "fx",
+   "key": "unmix",
+   "quality": 88,
+   "ground_y": 0.88,
+   "size_by": "bbox",
+   "recolor": [
+    "fx_no_green",
+    "fx_no_violet"
+   ],
+   "fps": 12,
+   "height": 420,
+   "skill": "ultimate",
+   "unit": {
+    "id": "itachi_2096",
+    "tier": "6S"
+   },
+   "sphere_key": "z4",
+   "sphere_units": 2.4,
+   "timeline": [
+    [
+     "z1",
+     2,
+     "hit"
+    ],
+    [
+     "@hits",
+     [
+      "z2",
+      "z3",
+      "z2b",
+      "z3b"
+     ],
+     1
+    ],
+    [
+     "z4",
+     3,
+     "hit"
+    ],
+    [
+     "z5",
+     3
+    ]
+   ],
+   "variants": {
+    "z2b": {
+     "from": "z2",
+     "scale": 1.03
+    },
+    "z3b": {
+     "from": "z3",
+     "scale": 0.98
+    }
+   }
+  },
+  "_ultimate_body_v1": {
+   "type": "fx",
+   "key": "unmix",
+   "quality": 88,
+   "ground_y": 0.88,
+   "size_by": "bbox",
+   "fps": 12,
+   "height": 480,
+   "sphere_key": "s3",
+   "sphere_units": 3.0,
+   "timeline": [
+    [
+     "s1",
+     2
+    ],
+    [
+     "s2",
+     2
+    ],
+    [
+     "s3",
+     2
+    ],
+    [
+     "b1",
+     4
+    ],
+    [
+     "b2",
+     10
+    ],
+    [
+     "s6",
+     3
+    ]
+   ],
+   "recolor": [
+    "fx_no_green",
+    "fx_no_violet"
+   ]
+  },
+  "_ultimate_fx_v1": {
+   "type": "fx",
+   "key": "unmix",
+   "quality": 88,
+   "ground_y": 0.88,
+   "size_by": "bbox",
+   "fps": 12,
+   "height": 420,
+   "skill": "ultimate",
+   "unit": {
+    "id": "itachi_2096",
+    "tier": "6S"
+   },
+   "sphere_key": "t4",
+   "sphere_units": 2.6,
+   "timeline": [
+    [
+     "t1",
+     2,
+     "hit"
+    ],
+    [
+     "@hits",
+     [
+      "t2",
+      "t3",
+      "t2b",
+      "t3b"
+     ],
+     1
+    ],
+    [
+     "t4",
+     3,
+     "hit"
+    ],
+    [
+     "t5",
+     3
+    ]
+   ],
+   "variants": {
+    "t2b": {
+     "from": "t2",
+     "scale": 1.04
+    },
+    "t3b": {
+     "from": "t3",
+     "scale": 0.97
+    }
+   },
+   "recolor": [
+    "fx_no_green",
+    "fx_no_violet"
+   ]
+  },
+  "_ultimate_v1": {
+   "fps": 12,
+   "height": 300,
+   "body_px": 296,
+   "unit": {
+    "id": "itachi_2096",
+    "tier": "6S"
+   },
+   "fx": [
+    {
+     "sheet": "ultimate_body",
+     "at": "caster",
+     "layer": "behind",
+     "start_key": "cs_seal"
+    },
+    {
+     "sheet": "ultimate_fx",
+     "at": "targets",
+     "start_key": "cs_seal",
+     "delay": 10
+    }
+   ],
+   "timeline": [
+    [
+     "base",
+     2
+    ],
+    [
+     "cs_seal",
+     4
+    ],
+    [
+     "cs_point",
+     20
+    ],
+    [
+     "cs_seal",
+     2
     ],
     [
      "base",
@@ -485,17 +899,22 @@
    "type": "pose",
    "prompt": "step 5: Itachi standing calmly on the left, the explosion to his right fading into grey smoke and embers."
   },
-  "h1": {
-   "type": "edit",
-   "prompt": "the pose only: HIT REACTION at the moment of impact - struck hard by a blow coming from the RIGHT: torso and head snapped backward, leaning back toward the LEFT side of the canvas, eyes squeezed shut, pained grimace, arms flung loosely outward and back, knees slightly bent, both feet still planted. No blood, no sparks, no effects."
+  "x1": {
+   "type": "fx",
+   "prompt": "a giant translucent red-orange chakra fist (a Susano'o fist with light-orange line swirls) punching in from the LEFT, its arm trailing off into flames before the left edge, the knuckles arriving at the centre; speed lines. The point of impact is at the CENTRE of the canvas, 60% down from the top.",
+   "quality": "medium"
   },
-  "h2": {
-   "type": "edit",
-   "prompt": "the pose only: STAGGER after being hit - knocked back half a step: body hunched forward in pain, one hand clutching his stomach, head lowered with a pained grimace, knees bent low, left foot slid back behind his with his weight on it. No blood, no effects."
+  "x2": {
+   "type": "fx",
+   "prompt": "impact: the giant fist slams down at the centre: a huge golden-yellow radial light burst, big brown rocks and slabs flying outward, fire bursting. The point of impact is at the CENTRE of the canvas, 60% down from the top.",
+   "quality": "high",
+   "from": "x1"
   },
-  "h3": {
-   "type": "edit",
-   "prompt": "the pose only: RECOVERING from a hit - straightening back up toward his fighting stance: almost upright but slightly hunched, one arm raised in guard, hurt but determined expression. No blood, no effects."
+  "x3": {
+   "type": "fx",
+   "prompt": "the fist is gone; a dark impact crater at the centre with glowing red cracks, a huge golden-yellow radial light burst behind it, rocks still flying, flames and dust. The point of impact is at the CENTRE of the canvas, 60% down from the top.",
+   "quality": "medium",
+   "from": "x2"
   },
   "h0": {
    "type": "tween",
@@ -552,6 +971,187 @@
   "at5": {
    "type": "pose",
    "prompt": "NORMAL ATTACK - a clearly DIFFERENT pose from the reference. STRIKE 2: high roundhouse kick to the right at chest height with his leg fully extended, cloak flaring open, a thin white impact streak at his foot."
+  },
+  "s1": {
+   "type": "fx",
+   "prompt": "a ring of bright yellow-orange flames erupting from the ground in a wide oval around an empty spot at the centre of the canvas (where the user stands, not drawn), flames about 25% of the canvas height, embers rising.",
+   "quality": "medium"
+  },
+  "s2": {
+   "type": "fx",
+   "prompt": "inside the flame ring a giant translucent red-orange chakra ribcage and spine rise out of the flames at the centre, about 45% of the canvas height, flame-like edges, embers. The Susano'o is centred horizontally and rises from the ground line; the empty spot at the centre of its base is where the ninja stands (do NOT draw any person).",
+   "quality": "medium",
+   "from": "s1"
+  },
+  "s3": {
+   "type": "fx",
+   "prompt": "the full Susano'o manifests: a giant hunched armoured upper body made of translucent red-orange chakra with a cloudy texture and light-orange line-art swirls like the style reference, a flame-shaped crest on its head, a hood, glowing yellow eyes and a toothy grin, a large round flame-shaped shield (the Yata Mirror) on its left arm, right fist clenched, facing RIGHT; it fills about 75% of the canvas height, flames and embers at its base. The Susano'o is centred horizontally and rises from the ground line; the empty spot at the centre of its base is where the ninja stands (do NOT draw any person).",
+   "quality": "high",
+   "from": "s2"
+  },
+  "s4": {
+   "type": "fx",
+   "prompt": "the same Susano'o turns toward the RIGHT and draws its giant fist back, ready to punch toward the right side of the canvas, flames swirling around it. The Susano'o is centred horizontally and rises from the ground line; the empty spot at the centre of its base is where the ninja stands (do NOT draw any person).",
+   "quality": "medium",
+   "from": "s3"
+  },
+  "s5": {
+   "type": "fx",
+   "prompt": "the same Susano'o punches its giant right fist forward toward the far RIGHT, arm fully extended to the right (the fist still inside the canvas), a burst of flame around the fist. The Susano'o is centred horizontally and rises from the ground line; the empty spot at the centre of its base is where the ninja stands (do NOT draw any person).",
+   "quality": "medium",
+   "from": "s4"
+  },
+  "s6": {
+   "type": "fx",
+   "prompt": "the Susano'o dissolving from the top down into red-orange flame wisps and embers, only a faint ribcage left at the base. The Susano'o is centred horizontally and rises from the ground line; the empty spot at the centre of its base is where the ninja stands (do NOT draw any person).",
+   "quality": "medium",
+   "from": "s5"
+  },
+  "b1": {
+   "type": "fx",
+   "prompt": "the same Susano'o, turned toward the RIGHT, now holds the Totsuka Blade: a long sword made of bright yellow-orange liquid fire raised high in its fist, the Yata Mirror shield on its other arm, embers. The Susano'o is centred horizontally and rises from the ground line; the empty spot at the centre of its base is where the ninja stands (do NOT draw any person).",
+   "quality": "high",
+   "from": "s3"
+  },
+  "b2": {
+   "type": "fx",
+   "prompt": "the same Susano'o thrusts the flaming Totsuka Blade straight forward toward the far RIGHT, the long fire blade horizontal (its tip still inside the canvas), the Yata Mirror held in front of its body. The Susano'o is centred horizontally and rises from the ground line; the empty spot at the centre of its base is where the ninja stands (do NOT draw any person).",
+   "quality": "medium",
+   "from": "b1"
+  },
+  "x4": {
+   "type": "fx",
+   "prompt": "a second blast from the crater: a pillar of yellow-orange fire and red chakra shooting up, rocks and embers flying. The point of impact is at the CENTRE of the canvas, 60% down from the top.",
+   "quality": "medium",
+   "from": "x3"
+  },
+  "x5": {
+   "type": "fx",
+   "prompt": "a blinding white-gold flash bursting from the crater with rock debris. The point of impact is at the CENTRE of the canvas, 60% down from the top.",
+   "quality": "medium",
+   "from": "x4"
+  },
+  "x6": {
+   "type": "fx",
+   "prompt": "aftermath: a brown dust cloud rolling along the ground line and small rocks falling, a few embers, fading. The point of impact is at the CENTRE of the canvas, 60% down from the top.",
+   "quality": "medium",
+   "from": "x5"
+  },
+  "t1": {
+   "type": "fx",
+   "prompt": "a long blade of bright yellow-orange liquid fire (the Totsuka Blade) thrusting in horizontally from the LEFT edge of the canvas, its tip piercing the centre with a bright white star-shaped impact flash and white speed lines; embers. Only the blade enters from the left edge; everything else stays inside the canvas with a green margin. Only the attack arriving at the target: NO Susano'o body, NO red chakra giant, NO shield in this frame. The point of impact is at the CENTRE of the canvas, 60% down from the top.",
+   "quality": "high",
+   "no_margin": true,
+   "edge_ok": true,
+   "fx_refs": false
+  },
+  "t2": {
+   "type": "fx",
+   "prompt": "the fire blade pulls back and slashes again: a big crescent slash of yellow-orange fire across the centre with a white impact star and white slash lines. Only the attack arriving at the target: NO Susano'o body, NO red chakra giant, NO shield in this frame. The point of impact is at the CENTRE of the canvas, 60% down from the top.",
+   "quality": "medium",
+   "from": "t1",
+   "fx_refs": false
+  },
+  "t3": {
+   "type": "fx",
+   "prompt": "a red flash: a burst of red-orange sealing flame swirling at the centre with white slash lines crossing it, embers. Only the attack arriving at the target: NO Susano'o body, NO red chakra giant, NO shield in this frame. The point of impact is at the CENTRE of the canvas, 60% down from the top.",
+   "quality": "medium",
+   "from": "t2",
+   "fx_refs": false
+  },
+  "t4": {
+   "type": "fx",
+   "prompt": "the final sealing blast: a huge explosion at the centre, brown rock slabs and debris blasting up and outward, white-gold light and fire. Only the attack arriving at the target: NO Susano'o body, NO red chakra giant, NO shield in this frame. The point of impact is at the CENTRE of the canvas, 60% down from the top.",
+   "quality": "high",
+   "from": "t3",
+   "fx_refs": false
+  },
+  "t5": {
+   "type": "fx",
+   "prompt": "aftermath: a big brown dust cloud rolling along the ground line, pebbles falling, a few embers, fading out. Only the attack arriving at the target: NO Susano'o body, NO red chakra giant, NO shield in this frame. The point of impact is at the CENTRE of the canvas, 60% down from the top.",
+   "quality": "medium",
+   "from": "t4",
+   "fx_refs": false
+  },
+  "cs_seal": {
+   "type": "pose",
+   "from": "base",
+   "prompt": "CASTER POSE: standing calmly in place, right hand raised in front of his face with two fingers up, Mangekyo Sharingan glowing. Keep it CLEAN: no chakra, no flames, no effects at all.",
+   "quality": "medium"
+  },
+  "cs_point": {
+   "type": "pose",
+   "from": "base",
+   "prompt": "CASTER POSE: standing firm in place, right arm stretched forward toward the far right, palm open, commanding a giant technique in the distance (not visible here), cloak hanging still. Keep it CLEAN: no chakra, no flames, no effects at all.",
+   "quality": "medium"
+  },
+  "h1": {
+   "type": "edit",
+   "prompt": "the pose only: HIT REACTION at the moment of impact - struck hard by a blow coming from the RIGHT: torso and head snapped backward, leaning back toward the LEFT side of the canvas, eyes squeezed shut, pained grimace, arms flung loosely outward and back. No blood, no sparks, no effects."
+  },
+  "h2": {
+   "type": "edit",
+   "prompt": "the pose only: STAGGER after being hit - knocked back half a step: body hunched forward in pain, one hand clutching his stomach, head lowered with a pained grimace. No blood, no effects."
+  },
+  "h3": {
+   "type": "edit",
+   "prompt": "the pose only: RECOVERING from a hit - straightening back up toward his fighting stance: almost upright but slightly hunched, one arm raised in guard, hurt but determined expression. No blood, no effects."
+  },
+  "b0": {
+   "type": "fx",
+   "from": "b1",
+   "quality": "medium",
+   "prompt": "the same Susano'o pulls the flaming Totsuka Blade back to its hip, point aimed straight at the far RIGHT, body coiled and leaning back, ready to STAB. The Susano'o is centred horizontally and rises from the ground line; the empty spot at the centre of its base is where the ninja stands (do NOT draw any person)."
+  },
+  "b3": {
+   "type": "fx",
+   "from": "b2",
+   "quality": "medium",
+   "prompt": "the same Susano'o LUNGES forward in a straight stab: its body leaning hard toward the RIGHT, sword arm fully extended, the long flaming Totsuka Blade driven straight ahead horizontally (its tip still inside the canvas), the Yata Mirror held behind. The Susano'o is centred horizontally and rises from the ground line; the empty spot at the centre of its base is where the ninja stands (do NOT draw any person)."
+  },
+  "z1": {
+   "type": "fx",
+   "prompt": "TOTSUKA BLADE STAB: the long flaming Totsuka Blade (a straight sword of bright yellow-orange liquid fire) driven in horizontally from the LEFT edge of the canvas, its point PIERCING straight THROUGH the centre and out a little on the other side, a white-hot star flash at the point of piercing, red sparks spraying. Only the blade enters from the left edge; everything else stays inside the canvas with a green margin. Only the attack arriving at the target: NO Susano'o body, NO red chakra giant, NO shield in this frame. The point of impact is at the CENTRE of the canvas, 60% down from the top.",
+   "quality": "high",
+   "fx_refs": false,
+   "no_margin": true,
+   "edge_ok": true
+  },
+  "z2": {
+   "type": "fx",
+   "prompt": "the blade stays driven through the centre: a spiral of red-orange sealing chakra (the sake-jar seal) swirls around the pierced point and is sucked into the blade, white flashes. Only the attack arriving at the target: NO Susano'o body, NO red chakra giant, NO shield in this frame. The point of impact is at the CENTRE of the canvas, 60% down from the top.",
+   "quality": "medium",
+   "fx_refs": false,
+   "from": "z1",
+   "no_margin": true,
+   "edge_ok": true
+  },
+  "z3": {
+   "type": "fx",
+   "prompt": "the sealing swirl tightens around the impaled point: red-orange chakra drained along the blade in streaks toward the left, a bright white core at the pierced point. Only the attack arriving at the target: NO Susano'o body, NO red chakra giant, NO shield in this frame. The point of impact is at the CENTRE of the canvas, 60% down from the top.",
+   "quality": "medium",
+   "fx_refs": false,
+   "from": "z2",
+   "no_margin": true,
+   "edge_ok": true
+  },
+  "z4": {
+   "type": "fx",
+   "prompt": "the seal completes: a bright white-gold flash at the pierced point, rings of red chakra collapsing inward into the blade. Only the attack arriving at the target: NO Susano'o body, NO red chakra giant, NO shield in this frame. The point of impact is at the CENTRE of the canvas, 60% down from the top.",
+   "quality": "high",
+   "fx_refs": false,
+   "from": "z3",
+   "no_margin": true,
+   "edge_ok": true
+  },
+  "z5": {
+   "type": "fx",
+   "prompt": "the blade withdraws back to the LEFT, leaving a few embers and a faint red swirl fading at the centre. Only the attack arriving at the target: NO Susano'o body, NO red chakra giant, NO shield in this frame. The point of impact is at the CENTRE of the canvas, 60% down from the top.",
+   "quality": "medium",
+   "fx_refs": false,
+   "from": "z4",
+   "no_margin": true,
+   "edge_ok": true
   }
  },
  "state": {
@@ -909,8 +1509,248 @@
     "status": "completed",
     "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_005644_621ab389-b1c0-4683-b435-762a9047e870.png",
     "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_005644_621ab389-b1c0-4683-b435-762a9047e870.png"
+   },
+   "s1": {
+    "pending_index": 3073,
+    "job_id": "0383e5ab-7717-4c88-af13-802afeae4e1b",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_154309_0383e5ab-7717-4c88-af13-802afeae4e1b.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_154309_0383e5ab-7717-4c88-af13-802afeae4e1b.png"
+   },
+   "t1": {
+    "pending_index": 3096,
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_155627_d3708433-d61c-4416-88c5-a13c4df4fa2e.png",
+    "previous": [
+     "afdc2fea-7c48-4751-8e8b-96cfa83519c3"
+    ],
+    "job_id": "d3708433-d61c-4416-88c5-a13c4df4fa2e",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_155627_d3708433-d61c-4416-88c5-a13c4df4fa2e.png"
+   },
+   "cs_seal": {
+    "pending_index": 3075,
+    "job_id": "9e8293fe-36e8-49e8-96e6-e89330555c78",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_154308_9e8293fe-36e8-49e8-96e6-e89330555c78.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_154308_9e8293fe-36e8-49e8-96e6-e89330555c78.png"
+   },
+   "cs_point": {
+    "pending_index": 3076,
+    "job_id": "6465ca9a-a422-4f7b-b2d2-dc9767a2c7bd",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_154308_6465ca9a-a422-4f7b-b2d2-dc9767a2c7bd.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_154308_6465ca9a-a422-4f7b-b2d2-dc9767a2c7bd.png"
+   },
+   "x1": {
+    "pending_index": 3077,
+    "job_id": "5540bcff-f2fc-4ed1-bf95-2799032d3e9b",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_154309_5540bcff-f2fc-4ed1-bf95-2799032d3e9b.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_154309_5540bcff-f2fc-4ed1-bf95-2799032d3e9b.png"
+   },
+   "x2": {
+    "pending_index": 3078,
+    "job_id": "2d1a79f6-ff5f-41ee-9fa4-ab4c53e72869",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_154524_2d1a79f6-ff5f-41ee-9fa4-ab4c53e72869.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_154524_2d1a79f6-ff5f-41ee-9fa4-ab4c53e72869.png"
+   },
+   "s2": {
+    "pending_index": 3079,
+    "job_id": "f66a4a1f-cd72-4701-a8d3-fd95619d951d",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_154525_f66a4a1f-cd72-4701-a8d3-fd95619d951d.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_154525_f66a4a1f-cd72-4701-a8d3-fd95619d951d.png"
+   },
+   "t2": {
+    "pending_index": 3097,
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_155812_38ae96e9-18e2-457d-b6ef-77288cdbf6a0.png",
+    "previous": [
+     "24e7346b-858b-47c6-82b6-f2e2a3f4de3f"
+    ],
+    "job_id": "38ae96e9-18e2-457d-b6ef-77288cdbf6a0",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_155812_38ae96e9-18e2-457d-b6ef-77288cdbf6a0.png"
+   },
+   "x3": {
+    "pending_index": 3081,
+    "job_id": "fad467ee-c16c-4588-b20e-54c8a920f1d7",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_154704_fad467ee-c16c-4588-b20e-54c8a920f1d7.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_154704_fad467ee-c16c-4588-b20e-54c8a920f1d7.png"
+   },
+   "s3": {
+    "pending_index": 3082,
+    "job_id": "899d40ad-1c6e-4438-b726-d3e4b3a47820",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_154706_899d40ad-1c6e-4438-b726-d3e4b3a47820.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_154706_899d40ad-1c6e-4438-b726-d3e4b3a47820.png"
+   },
+   "t3": {
+    "pending_index": 3098,
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_155851_b0e54ad1-5892-47c2-b7fc-94465073e32f.png",
+    "previous": [
+     "59b647d4-3bd6-4aa6-bd11-323c1bd18e27"
+    ],
+    "job_id": "b0e54ad1-5892-47c2-b7fc-94465073e32f",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_155851_b0e54ad1-5892-47c2-b7fc-94465073e32f.png"
+   },
+   "s4": {
+    "pending_index": 3088,
+    "job_id": "b5e8bc98-c868-4edf-a603-bf9823921a3f",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_154848_b5e8bc98-c868-4edf-a603-bf9823921a3f.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_154848_b5e8bc98-c868-4edf-a603-bf9823921a3f.png"
+   },
+   "b1": {
+    "pending_index": 3089,
+    "job_id": "28283921-cd67-45a5-b611-03fddd9f81a4",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_154848_28283921-cd67-45a5-b611-03fddd9f81a4.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_154848_28283921-cd67-45a5-b611-03fddd9f81a4.png"
+   },
+   "x4": {
+    "pending_index": 3086,
+    "job_id": "eedabb3c-3f1e-4f94-8ad2-ee7d7871097d",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_154849_eedabb3c-3f1e-4f94-8ad2-ee7d7871097d.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_154849_eedabb3c-3f1e-4f94-8ad2-ee7d7871097d.png"
+   },
+   "t4": {
+    "pending_index": 3099,
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_155956_688f4df1-c92e-4af5-8419-ac445c84b4cf.png",
+    "previous": [
+     "19a2289b-b375-4b99-9e5f-20cd75de2e20"
+    ],
+    "job_id": "688f4df1-c92e-4af5-8419-ac445c84b4cf",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_155956_688f4df1-c92e-4af5-8419-ac445c84b4cf.png"
+   },
+   "s5": {
+    "pending_index": 3090,
+    "job_id": "220c78fe-925b-43c2-bf06-62cc16e23e7d",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_154958_220c78fe-925b-43c2-bf06-62cc16e23e7d.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_154958_220c78fe-925b-43c2-bf06-62cc16e23e7d.png"
+   },
+   "b2": {
+    "pending_index": 3091,
+    "job_id": "0ec65c11-e42d-473c-a867-388b20424ccb",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_154958_0ec65c11-e42d-473c-a867-388b20424ccb.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_154958_0ec65c11-e42d-473c-a867-388b20424ccb.png"
+   },
+   "x5": {
+    "pending_index": 3092,
+    "job_id": "d7698771-1fd6-4562-b642-e01db852c86f",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_154959_d7698771-1fd6-4562-b642-e01db852c86f.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_154959_d7698771-1fd6-4562-b642-e01db852c86f.png"
+   },
+   "s6": {
+    "pending_index": 3093,
+    "job_id": "8034dc69-11b6-4afa-af3a-6136fb3c856e",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_155059_8034dc69-11b6-4afa-af3a-6136fb3c856e.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_155059_8034dc69-11b6-4afa-af3a-6136fb3c856e.png"
+   },
+   "x6": {
+    "pending_index": 3094,
+    "job_id": "fa02dc12-547b-4772-b786-f63211fcbc2a",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_155058_fa02dc12-547b-4772-b786-f63211fcbc2a.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_155058_fa02dc12-547b-4772-b786-f63211fcbc2a.png"
+   },
+   "t5": {
+    "pending_index": 3100,
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_160045_d6e58ef6-8c52-4e63-96be-80ac12c36f8d.png",
+    "previous": [
+     "3f7c3b39-8730-4454-9d33-d91feb126eb7"
+    ],
+    "job_id": "d6e58ef6-8c52-4e63-96be-80ac12c36f8d",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_160045_d6e58ef6-8c52-4e63-96be-80ac12c36f8d.png"
+   },
+   "b0": {
+    "pending_index": 3101,
+    "job_id": "0bc61c96-41e3-44e8-be02-b4a186f535f1",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_170454_0bc61c96-41e3-44e8-be02-b4a186f535f1.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_170454_0bc61c96-41e3-44e8-be02-b4a186f535f1.png"
+   },
+   "z1": {
+    "pending_index": 3102,
+    "job_id": "51adbbe1-37f0-4496-b928-e24aaa232f79",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_170453_51adbbe1-37f0-4496-b928-e24aaa232f79.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_170453_51adbbe1-37f0-4496-b928-e24aaa232f79.png"
+   },
+   "b3": {
+    "pending_index": 3103,
+    "job_id": "f78c7fb6-e338-4b29-8afc-5e5a799df52c",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_170739_f78c7fb6-e338-4b29-8afc-5e5a799df52c.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_170739_f78c7fb6-e338-4b29-8afc-5e5a799df52c.png"
+   },
+   "z2": {
+    "pending_index": 3104,
+    "job_id": "ab01c34f-6b8b-4fa6-963d-32a97ed6bbef",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_170739_ab01c34f-6b8b-4fa6-963d-32a97ed6bbef.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_170739_ab01c34f-6b8b-4fa6-963d-32a97ed6bbef.png"
+   },
+   "z3": {
+    "pending_index": 3105,
+    "job_id": "298bf889-c056-43d1-86d3-01465e3000b2",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_170916_298bf889-c056-43d1-86d3-01465e3000b2.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_170916_298bf889-c056-43d1-86d3-01465e3000b2.png"
+   },
+   "z4": {
+    "pending_index": 3106,
+    "job_id": "2c751aab-e2ac-4a9e-b0fd-aa10f94c3b3d",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_170958_2c751aab-e2ac-4a9e-b0fd-aa10f94c3b3d.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_170958_2c751aab-e2ac-4a9e-b0fd-aa10f94c3b3d.png"
+   },
+   "z5": {
+    "pending_index": 3107,
+    "job_id": "b051a539-e190-4161-ba46-2f9710926916",
+    "status": "completed",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_171050_b051a539-e190-4161-ba46-2f9710926916.png",
+    "fetched": "https://d8j0ntlcm91z4.cloudfront.net/user_3ExhJLdSJP4zpTAt39VpPKE7gHV/hf_20260924_171050_b051a539-e190-4161-ba46-2f9710926916.png"
    }
   },
-  "next_index": 3073
+  "next_index": 3108
+ },
+ "fx_refs": [
+  "9c8aca07-958b-4a29-a618-ddea0727fdd8"
+ ],
+ "_fx_refs_note": "fx_refs[0] = crop of the user's Naruto Blazing reference video (6* Itachi V3, full red Susano'o with Totsuka Blade and Yata Mirror), used only as a style/colour reference for generation",
+ "fx_style": "Anime film still, painted cel-shaded, matching the Naruto Shippuden anime and Naruto Blazing style: clean lines, soft painted shading, smooth clean high-resolution rendering that fits hand-painted anime characters and backgrounds. NOT pixel art, NOT low-res game VFX, no glitter or particle noise. Colours: Itachi's Susano'o is translucent RED-ORANGE chakra with a soft cloudy texture, thin light-orange line-art swirls and flickering flame-shaped edges; fire and the Totsuka Blade are bright yellow-orange flame; light bursts are golden white; rocks and dust are natural browns. NO purple, NO blue, NO green.",
+ "recolors": {
+  "fx_no_green": {
+   "hue": [
+    62,
+    165
+   ],
+   "min_s": 0.1,
+   "min_v": 0.15,
+   "to_hue": 44,
+   "sat_mul": 1.0,
+   "val_add": 0
+  },
+  "fx_no_violet": {
+   "hue": [
+    235,
+    320
+   ],
+   "min_s": 0.15,
+   "min_v": 0.3,
+   "to_hue": 15,
+   "sat_mul": 1.0,
+   "val_add": 0
+  }
  }
 }

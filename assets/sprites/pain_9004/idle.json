@@ -1,0 +1,10 @@
+{
+  "frameWidth": 160,
+  "frameHeight": 256,
+  "frames": 12,
+  "columns": 12,
+  "fps": 8,
+  "loop": true,
+  "anchorX": 0.5181,
+  "anchorY": 1.0
+}

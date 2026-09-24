@@ -55,16 +55,26 @@ TEMPLATES = {
              "size, do not shrink or enlarge {obj}), feet at the same spot near the bottom of the canvas, side view "
              "facing RIGHT. Change only: {prompt} {margin} {bg}"),
     # refs: base pose, style sprite
-    "pose": ("Same character, outfit and rendering as the FIRST reference image ({short}). {style} IMPORTANT: "
-             "draw {obj} at EXACTLY the same scale as the FIRST reference (same head size and body size, do not "
-             "shrink {obj}). Battle sprite key pose facing RIGHT: {prompt} Feet near the bottom of the canvas. "
+    "pose": ("Same character, outfit and rendering as the FIRST reference image ({short}). {style} {scale_rule}"
+             "Battle sprite key pose facing RIGHT: {prompt} Feet near the bottom of the canvas. "
              "{margin} {bg}"),
     # refs: pose A, pose B
+    # effect-only frames (technique layer, no character); refs: previous FX frame when "from" is set
+    "fx": ("Effect-only frame (no character) of a jutsu for a Naruto Blazing style battle. {fx_style} "
+           "{fx_refs}NO character, NO people, NO hands, NO text. {continuity}{prompt} Composition: the effect is centred horizontally; the ground line is at about "
+           "88% of the canvas height (only cracks, dust and rocks on it, no drawn ground plane). {margin} {bg}"),
     "tween": ("The two reference images are consecutive key poses of the same battle sprite ({short}). Draw the "
               "IN-BETWEEN frame exactly halfway between the FIRST and the SECOND pose: {prompt} Same character, "
               "outfit, rendering, canvas and scale (identical head and body size), side view facing RIGHT, feet "
               "near the bottom of the canvas. {margin} {bg}"),
 }
+
+
+# default look of effect-only frames; a spec can override it with "fx_style"
+FX_STYLE = ("Anime film still, painted cel-shaded, matching the Naruto Shippuden anime style: clean dark "
+            "outlines, cel colours with soft painted shading, smooth clean high-resolution rendering that fits "
+            "hand-painted anime characters and backgrounds. NOT pixel art, NOT low-res game VFX, no sparkles, no "
+            "glitter or particle noise.")
 
 
 # ------------------------------------------------------------------ spec ---
@@ -136,6 +146,8 @@ def deps(s, name):
     t = p["type"]
     if t == "base":
         return []
+    if t == "fx":
+        return [p["from"]] if p.get("from") else []
     if t in ("edit", "pose"):
         return [p.get("from", "base")]
     if t == "tween":
@@ -147,7 +159,9 @@ def media_for(s, name):
     p, st = s["poses"][name], s["state"]
     job = lambda n: st["poses"][n]["job_id"]  # noqa: E731
     t = p["type"]
-    if t == "base":
+    if t == "fx":
+        refs = ([job(p["from"])] if p.get("from") else []) + ([] if p.get("fx_refs") is False else list(s.get("fx_refs", [])))
+    elif t == "base":
         refs = [st["media"]["ref_art"], st["media"].get("style", STYLE_MEDIA)]
     elif t == "edit":
         refs = [job(p.get("from", "base"))]
@@ -161,7 +175,19 @@ def media_for(s, name):
 def prompt_for(s, name):
     p = s["poses"][name]
     subj, obj = (s.get("pronouns") or ["he", "him"])[:2]
+    scale_rule = "" if p.get("free_scale") else (
+        f"IMPORTANT: draw {obj} at EXACTLY the same scale as the FIRST reference (same head size and body size, "
+        f"do not shrink {obj}). ")
+    continuity = ("Continue EXACTLY from the FIRST reference image (the previous frame): same camera, same "
+                  "framing, same scale and the same centre point of the effect; change only this: ") if p.get("from") else ""
+    fx_refs = ""
+    if p["type"] == "fx" and s.get("fx_refs") and p.get("fx_refs") is not False:
+        which = "SECOND" if p.get("from") else "The"
+        fx_refs = (f"{which} reference image is only a style and colour reference (screenshot): match its "
+                   f"look, NOT its sky, clouds or background. ")
     return TEMPLATES[p["type"]].format(character=s["character"], short=s["short"], prompt=p["prompt"].strip(),
+                                       scale_rule=scale_rule, continuity=continuity, fx_refs=fx_refs,
+                                       fx_style=p.get("fx_style", s.get("fx_style", FX_STYLE)),
                                        style=STYLE, margin=MARGIN if not p.get("no_margin") else "", bg=BG,
                                        subj=subj, obj=obj).replace("  ", " ")
 
@@ -186,8 +212,11 @@ def cmd_requests(s, a):
     for n in ready:
         i = s["state"]["next_index"]
         s["state"]["next_index"] += 1
-        reqs.append({"index": i, "params": {"model": MODEL, "quality": "high", "aspect_ratio": "1:1",
-                                            "medias": media_for(s, n), "prompt": prompt_for(s, n)}})
+        params = {"model": MODEL, "quality": s["poses"][n].get("quality", "high"), "aspect_ratio": "1:1",
+                  "medias": media_for(s, n), "prompt": prompt_for(s, n)}
+        if not params["medias"]:
+            del params["medias"]
+        reqs.append({"index": i, "params": params})
     for r, n in zip(reqs, ready):
         e = st.setdefault(n, {})
         if e.get("job_id"):  # keep the superseded take for reference
@@ -303,6 +332,8 @@ def sheet_jobs(s):
     """(folder, sheet name, sheet spec, unit for hits) for every sheet incl. variants."""
     jobs = []
     for name, sh in s["sheets"].items():
+        if name.startswith("_"):  # parked / disabled sheet definitions
+            continue
         jobs.append((s["folder"], name, sh, sh.get("unit") or s["primary"]))
     for v in s.get("variants", []):
         for name, sh in v["sheets"].items():
@@ -322,7 +353,7 @@ def measure_scales(s, force=False):
     f = os.path.join(workdir(s), "scales.json")
     cache = json.load(open(f)) if os.path.exists(f) and not force else {}
     base = pose_file(s, "base")
-    have = [n for n in s["poses"] if os.path.exists(pose_file(s, n))]
+    have = [n for n in s["poses"] if os.path.exists(pose_file(s, n)) and s["poses"][n].get("type") != "fx"]
     sig = {n: int(os.path.getmtime(pose_file(s, n))) for n in have}
     key = json.dumps(sig, sort_keys=True)
     if cache.get("_key") == key:
@@ -357,6 +388,8 @@ def key_opts(s, n, scales):
     """Pose placement for the packer: auto body-scale correction + manual tweaks."""
     p = s["poses"][n]
     k = {"path": pose_file(s, n), "feet": p.get("feet", True), "dx": p.get("dx", 0), "dy": p.get("dy", 0)}
+    if p.get("recolor"):
+        k["recolor"] = s.get("recolors", {}).get(p["recolor"], p["recolor"]) if isinstance(p["recolor"], str) else p["recolor"]
     if "scale" in p:
         k["scale"] = p["scale"]
     else:
@@ -384,15 +417,51 @@ def cmd_pack(s, a):
             hits = sh.get("hits", 0)
         tl = expand_timeline(sh["timeline"], hits)
         names = {e[0] for e in tl}
+        if sh.get("type") == "fx":
+            var = sh.get("variants", {})
+            keys = {n: ({"path": pose_file(s, var[n]["from"]), "scale": var[n].get("scale", 1.0)} if n in var
+                        else {"path": pose_file(s, n), "scale": s["poses"][n].get("scale", 1.0)}) for n in names}
+            if sh.get("recolor"):
+                names_ = sh["recolor"] if isinstance(sh["recolor"], list) else [sh["recolor"]]
+                rc = [s.get("recolors", {}).get(r, r) for r in names_]
+                for k in keys.values():
+                    k["recolor"] = rc
+            meta = L.pack_fx(os.path.join(ROOT, folder, name), keys, tl, fps=sh.get("fps", 14),
+                             height=sh.get("height", 360), ground_y=sh.get("ground_y", 0.88),
+                             sphere_key=sh.get("sphere_key"), sphere_units=sh.get("sphere_units", 1.75),
+                             crossfade=sh.get("crossfade", True), quality=sh.get("quality", 80),
+                             key=sh.get("key", "green"), size_by=sh.get("size_by", "blob"))
+            report[f"{folder}/{name}"] = {"hits": len(meta["hits"]), "want_hits": hits, "frames": meta["frames"],
+                                          "size": [meta["frameWidth"], meta["frameHeight"]], "fx": True,
+                                          "heightUnits": meta["heightUnits"], "sphereFrac": meta["sphereFrac"]}
+            print(f"{folder}/{name} (fx): {meta['frames']}f {meta['frameWidth']}x{meta['frameHeight']} "
+                  f"hits={len(meta['hits'])} heightUnits={meta['heightUnits']} groundY={meta['groundY']}")
+            continue
         keys = {n: key_opts(s, n, scales) for n in names}
         meta = L.pack_sheet(os.path.join(ROOT, folder, name), pose_file(s, "base"), keys, tl,
                             fps=sh.get("fps", 12), height=sh.get("height", 256),
                             body_px=max(sh.get("body_px") or 0, idle_body) or None,
                             loop=sh.get("loop", False), edge_fade=sh.get("edge_fade", 10),
-                            anchor_x_from_ref=sh.get("anchor_x_from_ref", False),
+                            anchor_x_from_ref=sh.get("anchor_x_from_ref", False), quality=sh.get("quality", 86),
                             write_scale=sh.get("write_scale", not sh.get("loop", False) or name == "run"))
         if name == "idle":
             idle_body = math.ceil(meta["bodyPx"])
+        if sh.get("fx"):  # caster sheet of a layered technique: tell the battle code when to spawn each FX layer
+            out = []
+            for fx in (sh["fx"] if isinstance(sh["fx"], list) else [sh["fx"]]):
+                start = 0
+                for e in tl:
+                    if e[0] == fx.get("start_key"):
+                        break
+                    start += int(e[1])
+                o = {"sheet": fx["sheet"], "at": fx.get("at", "targets"), "startFrame": start + int(fx.get("delay", 0))}
+                for k in ("layer", "projectile", "base"):
+                    if k in fx:
+                        o[k] = fx[k]
+                out.append(o)
+            m = json.load(open(os.path.join(ROOT, folder, name + ".json")))
+            m["fx"] = out if isinstance(sh["fx"], list) else out[0]
+            json.dump(m, open(os.path.join(ROOT, folder, name + ".json"), "w"), indent=2)
         report[f"{folder}/{name}"] = {"bodyPx": meta["bodyPx"], "hits": len(meta.get("hits", [])),
                                       "want_hits": hits,
                                       "frames": meta["frames"], "size": [meta["frameWidth"], meta["frameHeight"]],
@@ -411,7 +480,12 @@ def cmd_validate(s, a):
     for folder, name, sh, unit in sheet_jobs(s):
         for e in sh["timeline"]:
             used.update(e[1] if e[0] == "@hits" else [e[0]])
+    fx_variants = {}
+    for folder, name, sh, unit in sheet_jobs(s):
+        fx_variants.update(sh.get("variants", {}) if sh.get("type") == "fx" else {})
     for n in sorted(used):
+        if n in fx_variants:
+            continue
         if n not in s["poses"]:
             errs.append(f"timeline uses undefined pose {n}")
         elif not os.path.exists(pose_file(s, n)):
@@ -422,21 +496,23 @@ def cmd_validate(s, a):
     tol = s.get("edge_tolerance_px", 12)
     for n in sorted(used):
         f = pose_file(s, n)
-        if not os.path.exists(f):
+        if n in fx_variants or not os.path.exists(f):
             continue
         er = L.edge_report(f)
         bad = {k: v for k, v in er.items() if v > tol}
         if bad and not s["poses"].get(n, {}).get("edge_ok"):
             errs.append(f"pose {n}: art touches the canvas edge {bad} (regenerate, or set edge_ok after checking the fade)")
-        m = scales.get(n, {})
         p = s["poses"].get(n, {})
+        if p.get("type") == "fx" or n in fx_variants:
+            continue
+        m = scales.get(n, {})
         applied = key_opts(s, n, scales)["scale"]
         if m.get("scale") is None:
             if n != "base" and "scale" not in p:
                 warns.append(f"pose {n}: body scale not measurable ({m.get('matches')} matches) — check by eye")
         else:
             final = m["scale"] * applied
-            if abs(final - 1) > 0.05:
+            if abs(final - 1) > 0.05 and p.get("size_check", True):
                 errs.append(f"pose {n}: body size {final:.3f}x idle after correction (>±5%)")
             if abs(m["scale"] - 1) > 0.15:
                 warns.append(f"pose {n}: generated at {m['scale']:.2f}x idle (auto-corrected; large drift)")
@@ -454,8 +530,22 @@ def cmd_validate(s, a):
         m = json.load(open(path))
         if want is not None and len(m.get("hits", [])) != want:
             errs.append(f"{folder}/{name}: {len(m.get('hits', []))} hit frames, data says {want}")
+        if sh.get("fx"):
+            layers = sh["fx"] if isinstance(sh["fx"], list) else [sh["fx"]]
+            mfx = m.get("fx")
+            mfx = mfx if isinstance(mfx, list) else [mfx] if mfx else []
+            if len(mfx) != len(layers):
+                errs.append(f"{folder}/{name}: fx block missing in the packed json")
+            for fx, mf in zip(layers, mfx):
+                fxp = os.path.join(ROOT, fx.get("base", folder), fx["sheet"] + ".json")
+                if not os.path.exists(fxp):
+                    errs.append(f"{folder}/{name}: fx sheet {fx['sheet']} not packed")
+                elif not 0 <= mf["startFrame"] < m["frames"]:
+                    errs.append(f"{folder}/{name}: fx {fx['sheet']} startFrame {mf['startFrame']} outside the caster sheet")
+        if sh.get("type") == "fx":
+            continue
         hs = m.get("heightScale", 1)
-        if not 0.85 <= hs <= 1.35:
+        if not 0.85 <= hs <= sh.get("max_height_scale", 1.35):
             errs.append(f"{folder}/{name}: heightScale {hs} out of range")
         elif not 0.93 <= hs <= 1.15:
             warns.append(f"{folder}/{name}: heightScale {hs} (effects extend well beyond the body)")
