@@ -611,6 +611,7 @@
         const side = startX <= hit.pos.x ? -1 : 1;
         const gap = (this.SPRITE_ATTACK_GAP_PX / rect.width) * 100;
         unit.pos = { x: Math.max(0, Math.min(100, hit.pos.x + side * gap)), y: hit.pos.y };
+        window.BattleSeparation?.resolve(core, { fixed: unit });
         core.units?.updateUnitPosition(unit, core);
       }
       this.handleDragEnd(ev, core);
@@ -694,6 +695,10 @@
         x: Math.max(0, Math.min(100, ((clientX - rect.left) / rect.width) * 100)),
         y: Math.max(0, Math.min(100, ((clientY - rect.top) / rect.height) * 100)),
       };
+      // Don't stand inside another unit: nudge the others aside (or snap
+      // this one to the nearest free spot) before it becomes the home the
+      // attack dashes back to.
+      window.BattleSeparation?.resolve(core, { fixed: unit });
 
       const action = pred.action; // "move" when nothing is in range
       const targets = pred.main.slice();

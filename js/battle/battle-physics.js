@@ -112,8 +112,9 @@
         if (progress < 1) {
           requestAnimationFrame(animate);
         } else {
-          // Animation complete
+          // Animation complete: slide apart from anyone it landed on
           this.activeKnockbacks.delete(unit.id);
+          window.BattleSeparation?.request(core);
         }
       };
 

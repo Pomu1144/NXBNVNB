@@ -7,7 +7,7 @@
       "requirement": 1,
       "reward": {
         "ryo": 5000,
-        "scroll_body": 1
+        "book_body_3": 1
       }
     },
     {
@@ -17,7 +17,7 @@
       "requirement": 1,
       "reward": {
         "ryo": 3000,
-        "scroll_skill": 1
+        "book_skill_3": 1
       }
     },
     {
@@ -27,7 +27,7 @@
       "requirement": 1,
       "reward": {
         "pearls": 2,
-        "awakening_stone_4": 1
+        "beads_heart_4": 1
       }
     },
     {
@@ -55,49 +55,49 @@
       "day": 1,
       "reward": {
         "ryo": 10000,
-        "scroll_body": 2
+        "book_body_2": 2
       }
     },
     {
       "day": 2,
       "reward": {
         "pearls": 1,
-        "scroll_skill": 2
+        "book_skill_2": 2
       }
     },
     {
       "day": 3,
       "reward": {
         "ryo": 15000,
-        "scroll_bravery": 2
+        "book_bravery_2": 2
       }
     },
     {
       "day": 4,
       "reward": {
         "pearls": 1,
-        "awakening_stone_3": 3
+        "book_heart_2": 3
       }
     },
     {
       "day": 5,
       "reward": {
         "ryo": 20000,
-        "scroll_wisdom": 3
+        "book_wisdom_3": 3
       }
     },
     {
       "day": 6,
       "reward": {
         "pearls": 2,
-        "scroll_heart": 3
+        "book_heart_3": 3
       }
     },
     {
       "day": 7,
       "reward": {
         "pearls": 5,
-        "awakening_stone_5": 5,
+        "beads_body_4": 5,
         "character_stone": 3,
         "ryo": 50000
       }
@@ -106,42 +106,42 @@
       "day": 8,
       "reward": {
         "ryo": 15000,
-        "scroll_body": 3
+        "book_body_3": 3
       }
     },
     {
       "day": 9,
       "reward": {
         "pearls": 2,
-        "scroll_skill": 3
+        "book_skill_3": 3
       }
     },
     {
       "day": 10,
       "reward": {
         "ryo": 20000,
-        "awakening_stone_4": 3
+        "book_bravery_4": 3
       }
     },
     {
       "day": 11,
       "reward": {
         "pearls": 2,
-        "scroll_bravery": 4
+        "book_bravery_3": 4
       }
     },
     {
       "day": 12,
       "reward": {
         "ryo": 25000,
-        "scroll_wisdom": 4
+        "book_wisdom_4": 4
       }
     },
     {
       "day": 13,
       "reward": {
         "pearls": 3,
-        "awakening_stone_5": 4
+        "beads_wisdom_4": 4
       }
     },
     {
@@ -151,7 +151,8 @@
         "awakening_stone_6": 5,
         "limit_break_crystal": 1,
         "dupe_crystal": 3,
-        "ryo": 100000
+        "ryo": 100000,
+        "beads_skill_5": 2
       }
     }
   ],

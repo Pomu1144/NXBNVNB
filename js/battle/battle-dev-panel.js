@@ -4,6 +4,7 @@
 //   - Max chakra for every player unit (field + bench) or a single unit
 //   - "Set turn": pick any living unit (ally or enemy) to act right now
 //   - Remove cooldowns now, or a persistent "No cooldowns" mode
+//   - Clear the saved (refresh-resume) battle snapshot
 // Purely a dev tool; normal play is untouched unless it is used.
 (() => {
   "use strict";
@@ -212,6 +213,7 @@
           <button type="button" class="jjk-btn bdev-maxall bdev-cutins" id="bdev-cutins" aria-pressed="true">Cut-ins: On</button>
           <button type="button" class="jjk-btn bdev-maxall" id="bdev-clearcd">Remove cooldowns</button>
           <button type="button" class="jjk-btn bdev-maxall bdev-nocd" id="bdev-nocd" aria-pressed="false">No cooldowns: Off</button>
+          <button type="button" class="jjk-btn bdev-maxall" id="bdev-clearsave" title="Delete the refresh-resume snapshot; reload to start this battle fresh">Clear saved battle</button>
           <div class="bdev-sub">Set turn <small>tap a unit to act now</small></div>
           <div class="bdev-list" id="bdev-list"></div>
           <div class="bdev-status" id="bdev-status" aria-live="polite"></div>
@@ -225,6 +227,11 @@
       root.querySelector("#bdev-close").addEventListener("click", () => this.setCollapsed(true));
       root.querySelector("#bdev-maxall").addEventListener("click", () => this.maxAllChakra());
       root.querySelector("#bdev-clearcd").addEventListener("click", () => this.clearCooldowns());
+      root.querySelector("#bdev-clearsave").addEventListener("click", () => {
+        if (!window.BattleSave) { this.flash("Battle save not loaded"); return; }
+        window.BattleSave.clearSaved("dev panel", true);
+        this.flash("Saved battle cleared (reload starts fresh)");
+      });
       const nocdBtn = root.querySelector("#bdev-nocd");
       const syncNocd = () => {
         nocdBtn.textContent = `No cooldowns: ${this.noCooldowns ? "On" : "Off"}`;

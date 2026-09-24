@@ -180,19 +180,6 @@
     }
   }
 
-  function sortInstances(list) {
-    if (currentSort === "name") {
-      return list.slice().sort((a, b) => {
-        const ca = BYID[a.charId], cb = BYID[b.charId];
-        return safeStr(ca?.name).localeCompare(safeStr(cb?.name));
-      });
-    }
-    return list.slice().sort((a, b) => {
-      const ca = BYID[a.charId], cb = BYID[b.charId];
-      return sortKey(b, cb) - sortKey(a, ca); // descending (best first)
-    });
-  }
-
   /* =========================
    * Commander System Functions
    * ========================= */
@@ -486,6 +473,7 @@
     slots.forEach(slot => {
       const slotId = slot.dataset.slot;
       const assigned = team[slotId];
+      slot.classList.toggle("has-unit", !!assigned?.uid);
 
       if (assigned?.uid) {
         const inst = window.InventoryChar?.getByUid(assigned.uid);
@@ -540,147 +528,424 @@
     totalCostEl.style.color = totalCost > MAX_COST ? "#ff4444" : "var(--gold)";
   }
 
-  /* ---------- Character Grid ---------- */
-  function renderCharacterGrid(filter = "") {
-    const instances = window.InventoryChar?.allInstances() || [];
-    const team = teams[currentTeam] || {};
-    // Include commander in assigned UIDs
-    const assignedUids = new Set(Object.values(team).map(a => a?.uid).filter(Boolean));
+  /* ---------- Character Grid ----------
+   * The roster can hold hundreds of units, so the grid is built ONCE (per page
+   * load) and afterwards only patched:
+   *   - search / element / star filters toggle the `hidden` attribute,
+   *   - sorting re-appends the existing nodes in the new order,
+   *   - team changes flip the `.assigned` class.
+   * No card is ever re-rendered while the player types or drags. */
+  const ELEMENTS = ["heart", "skill", "body", "bravery", "wisdom"];
+  const FILTER_PREFS_KEY = "blazing_teams_filters_v1"; // per-viewer convenience only
+  const filterState = { q: "", els: new Set(), stars: new Set() };
+  let gridEntries = [];            // [{ uid, el, name, element, stars }]
+  const cardByUid = new Map();     // uid -> card element
+  const rosterCountEl = document.getElementById("roster-count");
+  const filterResetBtn = document.getElementById("btn-filter-reset");
+  let gridEmptyEl = null;
 
-    const filterLower = filter.toLowerCase();
-    const filtered = instances.filter(inst => {
-      const char = BYID[inst.charId];
-      if (!char) return false;
-      if (filter && !char.name.toLowerCase().includes(filterLower)) return false;
-      return true;
-    });
+  const elementOf = (char) => {
+    const e = safeStr(char?.element).toLowerCase();
+    return ELEMENTS.includes(e) ? e : "";
+  };
+  // Star bucket used by the star chips: 1–3★ share the "≤3" chip.
+  const starBucket = (n) => (n <= 3 ? 3 : Math.min(n, 7));
 
-    const sorted = sortInstances(filtered);
-
-    charGrid.innerHTML = sorted.map(inst => {
-      const char = BYID[inst.charId];
-      const tier = inst.tierCode || minTier(char);
-      const art = resolveTierArt(char, tier);
-      const isAssigned = assignedUids.has(inst.uid);
-      const stars = starsFromTier(tier) || safeNum(char.rarity, 1);
-      const is7Star = stars >= 7;
-      const power = Math.round(tierCeilingPower(char, inst));
-      // Lightning overlay: injected by js/seven-star-fx.js only while the
-      // card is on-screen (one shared video for the page), placed before the
-      // portrait <img> where the per-card <video> used to be.
-      const fxAttr = is7Star ? ' data-fx="7star" data-fx-before=":scope > img"' : "";
-
-      return `
-        <div class="team-char-card ${isAssigned ? 'assigned' : ''}${is7Star ? ' is-7star' : ''}"
-             data-uid="${inst.uid}"
-             data-char-id="${char.id}"
-             data-stars="${Math.min(stars, 7)}"
-             title="${safeStr(char.name)} · ${stars}★ · Lv ${inst.level} · Power ${power.toLocaleString()}"
-             draggable="${!isAssigned}"${fxAttr}>
-          <img src="${art.portrait}" alt="${char.name}" loading="lazy" decoding="async"
-               onerror="this.src='assets/characters/_common/silhouette.png';" />
-          <div class="team-char-card-info">
-            <div class="team-char-card-name">${safeStr(char.name)}</div>
-            <div class="team-char-card-stars">${renderStars(stars)}</div>
-            <div class="team-char-card-meta">
-              <span class="tcc-lv">Lv <b>${inst.level}</b></span>
-              <span class="tcc-power" title="Power at max level for this star tier">${power.toLocaleString()}</span>
-            </div>
+  function cardHTML(inst, char) {
+    const tier = inst.tierCode || minTier(char);
+    const art = resolveTierArt(char, tier);
+    const stars = starsFromTier(tier) || safeNum(char.rarity, 1);
+    const is7Star = stars >= 7;
+    const power = Math.round(tierCeilingPower(char, inst));
+    const el = elementOf(char);
+    // Lightning overlay: injected by js/seven-star-fx.js only while the
+    // card is on-screen (one shared video for the page), placed before the
+    // portrait <img> where the per-card <video> used to be.
+    const fxAttr = is7Star ? ' data-fx="7star" data-fx-before=":scope > img"' : "";
+    return `
+      <div class="team-char-card${is7Star ? ' is-7star' : ''}"
+           data-uid="${inst.uid}"
+           data-char-id="${char.id}"
+           data-stars="${Math.min(stars, 7)}"${el ? ` data-el="${el}"` : ""}
+           title="${safeStr(char.name)} · ${stars}★ · Lv ${inst.level} · Power ${power.toLocaleString()}"${fxAttr}>
+        <img src="${art.portrait}" alt="${char.name}" loading="lazy" decoding="async" draggable="false"
+             onerror="this.src='assets/characters/_common/silhouette.png';" />
+        <div class="team-char-card-info">
+          <div class="team-char-card-name">${safeStr(char.name)}</div>
+          <div class="team-char-card-stars">${renderStars(stars)}</div>
+          <div class="team-char-card-meta">
+            <span class="tcc-lv">Lv <b>${inst.level}</b></span>
+            <span class="tcc-power" title="Power at max level for this star tier">${power.toLocaleString()}</span>
           </div>
         </div>
-      `;
-    }).join("");
+      </div>`;
+  }
 
-    if (filtered.length === 0) {
-      charGrid.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding:20px; color:#888;">No characters found.</div>`;
+  function buildCharacterGrid() {
+    const instances = (window.InventoryChar?.allInstances() || []).filter(i => BYID[i.charId]);
+    charGrid.innerHTML = instances.map(inst => cardHTML(inst, BYID[inst.charId])).join("");
+    cardByUid.clear();
+    gridEntries = [];
+    charGrid.querySelectorAll(".team-char-card").forEach((card, i) => {
+      const inst = instances[i];
+      const char = BYID[inst.charId];
+      cardByUid.set(inst.uid, card);
+      gridEntries.push({
+        uid: inst.uid,
+        inst,
+        char,
+        el: card,
+        name: safeStr(char.name).toLowerCase(),
+        element: elementOf(char),
+        stars: starBucket(Number(card.dataset.stars) || 1),
+      });
+    });
+    gridEmptyEl = document.createElement("div");
+    gridEmptyEl.className = "grid-empty";
+    gridEmptyEl.hidden = true;
+    charGrid.appendChild(gridEmptyEl);
+    applySort();
+    applyFilters();
+  }
+
+  // Precompute every key once per sort (the power keys are not cheap).
+  function applySort() {
+    if (!gridEntries.length) return;
+    let ordered;
+    if (currentSort === "name") {
+      ordered = gridEntries.slice().sort((a, b) => a.name.localeCompare(b.name));
+    } else {
+      const keys = new Map(gridEntries.map(e => [e, sortKey(e.inst, e.char)]));
+      ordered = gridEntries.slice().sort((a, b) => keys.get(b) - keys.get(a)); // best first
     }
+    const frag = document.createDocumentFragment();
+    ordered.forEach(e => frag.appendChild(e.el));
+    frag.appendChild(gridEmptyEl);
+    charGrid.appendChild(frag);
+  }
 
-    // Attach drag listeners
-    attachDragListeners();
+  function applyFilters() {
+    const q = filterState.q.trim().toLowerCase();
+    const { els, stars } = filterState;
+    let shown = 0;
+    for (const e of gridEntries) {
+      const ok = (!q || e.name.includes(q)) &&
+                 (!els.size || els.has(e.element)) &&
+                 (!stars.size || stars.has(e.stars));
+      if (e.el.hidden === ok) e.el.hidden = !ok;
+      if (ok) shown++;
+    }
+    const active = !!q || els.size > 0 || stars.size > 0;
+    if (rosterCountEl) rosterCountEl.textContent = active ? `${shown} / ${gridEntries.length}` : `${gridEntries.length}`;
+    if (filterResetBtn) filterResetBtn.hidden = !active;
+    if (gridEmptyEl) {
+      gridEmptyEl.hidden = shown > 0;
+      gridEmptyEl.textContent = gridEntries.length ? "No units match these filters." : "No characters found.";
+    }
+    saveFilterPrefs();
+  }
+
+  function syncGridAssigned() {
+    const team = teams[currentTeam] || {};
+    const assigned = new Set(Object.values(team).map(a => a?.uid).filter(Boolean));
+    for (const e of gridEntries) {
+      const on = assigned.has(e.uid);
+      if (e.el.classList.contains("assigned") !== on) e.el.classList.toggle("assigned", on);
+    }
+  }
+
+  function renderCharacterGrid() {
+    if (!gridEntries.length && !gridEmptyEl) buildCharacterGrid();
+    syncGridAssigned();
+  }
+
+  function saveFilterPrefs() {
+    try {
+      localStorage.setItem(FILTER_PREFS_KEY, JSON.stringify({
+        els: [...filterState.els], stars: [...filterState.stars], sort: currentSort,
+      }));
+    } catch (e) { /* storage unavailable: prefs are optional */ }
+  }
+  function loadFilterPrefs() {
+    try {
+      const p = JSON.parse(localStorage.getItem(FILTER_PREFS_KEY) || "null");
+      if (!p) return;
+      (p.els || []).forEach(x => ELEMENTS.includes(x) && filterState.els.add(x));
+      (p.stars || []).forEach(x => [3, 4, 5, 6, 7].includes(Number(x)) && filterState.stars.add(Number(x)));
+      if (typeof p.sort === "string" && document.querySelector(`.sort-opt[data-sort="${p.sort}"]`)) currentSort = p.sort;
+    } catch (e) { /* ignore */ }
   }
 
   /* =========================
-   * Drag & Drop System
-   * ========================= */
-  function attachDragListeners() {
-    // Character cards - drag start
-    document.querySelectorAll(".team-char-card:not(.assigned)").forEach(card => {
-      card.addEventListener("dragstart", handleDragStart);
-    });
-
-    // Team slots - drop zones
-    slots.forEach(slot => {
-      slot.addEventListener("dragover", handleDragOver);
-      slot.addEventListener("dragleave", handleDragLeave);
-      slot.addEventListener("drop", handleDrop);
-    });
+   * Team placement rules
+   * =========================
+   * Slots: front-1..4, back-1..4 (active) and "commander" (off-field support).
+   * Any unit may sit in any slot; the only rule is that a character appears
+   * on a team once (same copy OR another copy of the same character). */
+  function slotHolding(team, pred, exceptSlot) {
+    return Object.keys(team).find(k => k !== exceptSlot && team[k]?.uid && pred(team[k])) || null;
   }
+  const slotLabel = (id) => id === "commander" ? "Commander"
+    : id.replace(/^front-/, "Front ").replace(/^back-/, "Back ");
 
-  function handleDragStart(e) {
-    const card = e.currentTarget;
-    const uid = card.dataset.uid;
-    const charId = card.dataset.charId;
-
-    e.dataTransfer.effectAllowed = "move";
-    e.dataTransfer.setData("application/json", JSON.stringify({ uid, charId }));
-
-    // Visual feedback
-    card.style.opacity = "0.5";
-    console.log("[Team Manager] Drag started:", uid);
-  }
-
-  function handleDragOver(e) {
-    e.preventDefault();
-    e.dataTransfer.dropEffect = "move";
-
-    const slot = e.currentTarget;
-    slot.classList.add("drag-over");
-  }
-
-  function handleDragLeave(e) {
-    const slot = e.currentTarget;
-    slot.classList.remove("drag-over");
-  }
-
-  function handleDrop(e) {
-    e.preventDefault();
-
-    const slot = e.currentTarget;
-    slot.classList.remove("drag-over");
-
-    try {
-      const data = JSON.parse(e.dataTransfer.getData("application/json"));
-      const { uid, charId } = data;
-
-      if (!uid || !charId) {
-        console.error("[Team Manager] Invalid drop data");
-        return;
-      }
-
-      const slotId = slot.dataset.slot;
-      const slotType = slot.dataset.type; // "active" or "commander"
-      const team = teams[currentTeam];
-
-      // Check if already assigned elsewhere
-      const alreadyAssigned = Object.entries(team).find(([slot, data]) =>
-        data?.uid === uid
-      );
-
-      if (alreadyAssigned) {
-        alert(`This character is already assigned to ${alreadyAssigned[0]}!`);
-        return;
-      }
-
-      // Assign to slot
-      team[slotId] = { uid, charId };
-      saveTeams();
-      renderTeam();
-
-      console.log("[Team Manager] Character assigned to", slotId, `(${slotType})`);
-
-    } catch (err) {
-      console.error("[Team Manager] Drop failed:", err);
+  /** Work out what dropping `src` on `targetSlot` would do (no side effects).
+   *  src = { from: "slot", slot } | { from: "list", uid, charId }
+   *  target = slot id, or "list" (remove from team). */
+  function planDrop(src, target) {
+    const team = teams[currentTeam] || {};
+    if (target === "list") {
+      return src.from === "slot" ? { kind: "remove" } : { kind: "none" };
     }
+    const occupant = team[target]?.uid ? team[target] : null;
+    if (src.from === "slot") {
+      if (src.slot === target) return { kind: "none" };
+      return { kind: occupant ? "swap" : "move" };
+    }
+    // From the roster list. A card already on this team acts like its slot.
+    const at = slotHolding(team, a => a.uid === src.uid);
+    if (at) return planDrop({ from: "slot", slot: at }, target);
+    const dupe = slotHolding(team, a => a.charId === src.charId, target);
+    if (dupe) return { kind: "invalid", reason: `Already in ${slotLabel(dupe)}` };
+    return { kind: occupant ? "replace" : "place" };
+  }
+
+  function commitDrop(src, target) {
+    const plan = planDrop(src, target);
+    const team = teams[currentTeam] || (teams[currentTeam] = {});
+    if (plan.kind === "none" || plan.kind === "invalid") return plan;
+
+    let fromSlot = src.from === "slot" ? src.slot : slotHolding(team, a => a.uid === src.uid);
+    if (plan.kind === "remove") {
+      delete team[fromSlot];
+    } else if (plan.kind === "swap" || plan.kind === "move") {
+      const moving = team[fromSlot];
+      const other = team[target];
+      team[target] = moving;
+      if (plan.kind === "swap") team[fromSlot] = other; else delete team[fromSlot];
+    } else { // place / replace — the old occupant simply returns to the list
+      team[target] = { uid: src.uid, charId: src.charId };
+    }
+    saveTeams();
+    renderTeam();
+    flashSlots(plan.kind === "swap" ? [target, fromSlot] : plan.kind === "remove" ? [] : [target]);
+    return plan;
+  }
+
+  function flashSlots(ids) {
+    ids.forEach(id => {
+      const el = document.querySelector(`.team-slot[data-slot="${id}"]`);
+      if (!el) return;
+      el.classList.remove("just-dropped");
+      void el.offsetWidth; // restart the animation
+      el.classList.add("just-dropped");
+      setTimeout(() => el.classList.remove("just-dropped"), 520);
+    });
+  }
+
+  /* =========================
+   * Drag & Drop (pointer events: mouse, touch and pen)
+   * =========================
+   * Mouse: press and move 6px to pick a unit up.
+   * Touch/pen: press and hold ~220ms (a quick swipe still scrolls the list).
+   * While dragging, a ghost follows the pointer; the slot under it shows what
+   * will happen (Place / Replace / Move / Swap / Remove, or a red "already on
+   * team"). Releasing commits it and saves. Esc cancels. */
+  const DRAG_THRESHOLD = 6;
+  const HOLD_MS = 220;
+  const HOLD_SLOP = 8;
+  const dropLabels = { place: "Place", replace: "Replace", move: "Move", swap: "Swap", remove: "Remove" };
+  let drag = null;          // active gesture
+  let suppressClick = false;
+
+  function dragSourceFrom(target) {
+    if (target.closest(".slot-remove, button, input")) return null;
+    const card = target.closest(".team-char-card");
+    if (card && charGrid.contains(card)) {
+      return { src: { from: "list", uid: card.dataset.uid, charId: card.dataset.charId }, el: card,
+               img: card.querySelector(":scope > img")?.src };
+    }
+    const slot = target.closest(".team-slot");
+    if (slot) {
+      const a = (teams[currentTeam] || {})[slot.dataset.slot];
+      if (!a?.uid || !slot.querySelector(".slot-card")) return null;
+      return { src: { from: "slot", slot: slot.dataset.slot }, el: slot,
+               img: slot.querySelector(".portrait img")?.src };
+    }
+    return null;
+  }
+
+  function onPointerDown(e) {
+    if (drag || (e.pointerType === "mouse" && e.button !== 0)) return;
+    const s = dragSourceFrom(e.target);
+    if (!s) return;
+    drag = {
+      ...s, id: e.pointerId, type: e.pointerType,
+      x0: e.clientX, y0: e.clientY, x: e.clientX, y: e.clientY,
+      active: false, target: null, plan: null, ghost: null, timer: 0,
+    };
+    if (e.pointerType !== "mouse") {
+      drag.timer = setTimeout(() => { if (drag && !drag.active) startDrag(); }, HOLD_MS);
+    }
+  }
+
+  function startDrag() {
+    drag.active = true;
+    clearTimeout(drag.timer);
+    const g = document.createElement("div");
+    g.className = "drag-ghost";
+    g.innerHTML = `<img src="${drag.img || "assets/characters/_common/silhouette.png"}" alt="" draggable="false" />`;
+    document.body.appendChild(g);
+    drag.ghost = g;
+    drag.el.classList.add("drag-source");
+    document.body.classList.add("is-dragging-unit");
+    try { window.getSelection()?.removeAllRanges(); } catch (e) {}
+    positionGhost();
+    updateDropTarget();
+    try { navigator.vibrate?.(12); } catch (e) {}
+  }
+
+  function positionGhost() {
+    if (drag?.ghost) drag.ghost.style.transform = `translate3d(${drag.x}px, ${drag.y}px, 0) translate(-50%, -60%)`;
+  }
+
+  function onPointerMove(e) {
+    if (!drag || e.pointerId !== drag.id) return;
+    drag.x = e.clientX; drag.y = e.clientY;
+    const dist = Math.hypot(drag.x - drag.x0, drag.y - drag.y0);
+    if (!drag.active) {
+      if (drag.type === "mouse") { if (dist >= DRAG_THRESHOLD) startDrag(); }
+      else if (dist > HOLD_SLOP) { cancelDrag(); }   // moved before the hold: let it scroll
+      return;
+    }
+    e.preventDefault();
+    positionGhost();
+    updateDropTarget();
+    autoScroll();
+  }
+
+  function hitTarget(x, y) {
+    const el = document.elementFromPoint(x, y);
+    if (!el) return null;
+    const slot = el.closest(".team-slot");
+    if (slot) return { key: slot.dataset.slot, el: slot };
+    const list = el.closest(".char-selection");
+    if (list) return { key: "list", el: list };
+    return null;
+  }
+
+  function clearDropMarks() {
+    if (drag?.target?.el) {
+      drag.target.el.classList.remove("drag-over", "drop-ok", "drop-swap", "drop-invalid", "drop-remove");
+      delete drag.target.el.dataset.dropLabel;
+    }
+  }
+
+  function updateDropTarget() {
+    const hit = hitTarget(drag.x, drag.y);
+    if (hit?.el === drag.target?.el && hit?.key === drag.target?.key) return;
+    clearDropMarks();
+    drag.target = hit;
+    drag.plan = hit ? planDrop(drag.src, hit.key) : null;
+    if (!hit || !drag.plan || drag.plan.kind === "none") return;
+    const k = drag.plan.kind;
+    hit.el.classList.add("drag-over",
+      k === "invalid" ? "drop-invalid" : k === "swap" ? "drop-swap" : k === "remove" ? "drop-remove" : "drop-ok");
+    hit.el.dataset.dropLabel = k === "invalid" ? drag.plan.reason : dropLabels[k];
+  }
+
+  // Edge auto-scroll so a unit can be carried from the list to slots that are
+  // off-screen (stacked layout) or to hidden cards in the list.
+  function autoScroll() {
+    if (drag.scrollRaf) return;
+    const step = () => {
+      drag && (drag.scrollRaf = 0);
+      if (!drag?.active) return;
+      const edge = 48, vh = window.innerHeight;
+      const bottomBar = document.querySelector(".bottom-bar")?.offsetHeight || 0;
+      const lo = edge, hi = vh - bottomBar - edge;
+      // Only scroll once the pointer has been outside the edge bands since the
+      // drag began, so picking a unit up near an edge doesn't yank the page.
+      if (drag.y > lo && drag.y < hi) { drag.scrollArmed = true; return; }
+      if (!drag.scrollArmed) return;
+      let dy = 0;
+      if (drag.y <= lo) dy = -Math.ceil((lo - drag.y + 4) / 3);
+      else dy = Math.ceil((drag.y - hi + 4) / 3);
+      if (dy) {
+        const sc = document.scrollingElement;
+        const before = sc.scrollTop;
+        sc.scrollTop += dy;
+        if (sc.scrollTop !== before) {
+          updateDropTarget();
+          drag.scrollRaf = requestAnimationFrame(step);
+        }
+      }
+    };
+    drag.scrollRaf = requestAnimationFrame(step);
+  }
+
+  function onPointerUp(e) {
+    if (!drag || e.pointerId !== drag.id) return;
+    if (drag.active) {
+      e.preventDefault();
+      updateDropTarget();
+      const target = drag.target, plan = drag.plan, src = drag.src;
+      endDrag();
+      suppressClick = true;
+      setTimeout(() => { suppressClick = false; }, 0);
+      if (target && plan) {
+        if (plan.kind === "invalid") toast(plan.reason);
+        else if (plan.kind !== "none") commitDrop(src, target.key);
+      }
+      return;
+    }
+    cancelDrag();
+  }
+
+  function endDrag() {
+    if (!drag) return;
+    clearTimeout(drag.timer);
+    if (drag.scrollRaf) cancelAnimationFrame(drag.scrollRaf);
+    clearDropMarks();
+    drag.ghost?.remove();
+    drag.el?.classList.remove("drag-source");
+    document.body.classList.remove("is-dragging-unit");
+    drag = null;
+  }
+  function cancelDrag() { endDrag(); }
+
+  let toastTimer = 0;
+  function toast(msg) {
+    let t = document.getElementById("team-toast");
+    if (!t) {
+      t = document.createElement("div");
+      t.id = "team-toast";
+      t.setAttribute("role", "status");
+      document.body.appendChild(t);
+    }
+    t.textContent = msg;
+    t.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove("show"), 1600);
+  }
+
+  function initDragAndDrop() {
+    document.addEventListener("pointerdown", onPointerDown);
+    document.addEventListener("pointermove", onPointerMove, { passive: false });
+    document.addEventListener("pointerup", onPointerUp);
+    document.addEventListener("pointercancel", (e) => { if (drag && e.pointerId === drag.id) cancelDrag(); });
+    // Once a touch drag has started, stop the page/list from scrolling under it.
+    document.addEventListener("touchmove", (e) => { if (drag?.active) e.preventDefault(); }, { passive: false });
+    // Long-press must not open the context menu / image callout.
+    document.addEventListener("contextmenu", (e) => { if (drag) e.preventDefault(); });
+    // A drag ends with a click on whatever is underneath; swallow it.
+    document.addEventListener("click", (e) => {
+      if (suppressClick) { e.stopPropagation(); e.preventDefault(); suppressClick = false; }
+    }, true);
+    // No native HTML5 drag (it would fight the pointer drag).
+    document.addEventListener("dragstart", (e) => {
+      if (e.target.closest?.(".team-slot, #team-char-grid")) e.preventDefault();
+    });
+    document.addEventListener("keydown", (e) => { if (e.key === "Escape" && drag) cancelDrag(); });
   }
 
   /* =========================
@@ -782,18 +1047,18 @@
       return;
     }
 
-    const team = teams[currentTeam];
-
-    // Prevent duplicate assignment of the same instance
-    const alreadyAssigned = Object.entries(team).find(([slot, data]) =>
-      data?.uid === selectedChar.uid
-    );
-    if (alreadyAssigned) {
-      const slotLabel = alreadyAssigned[0] === 'commander' ? 'Commander' : alreadyAssigned[0];
-      alert(`This character is already assigned to ${slotLabel}!`);
+    // Same rules as drag & drop (one copy of a character per team); an
+    // occupied slot is replaced and its unit goes back to the list.
+    const plan = planDrop({ from: "list", uid: selectedChar.uid, charId: selectedChar.charId }, activeSlot);
+    if (plan.kind === "invalid") {
+      alert(`This character is already on this team (${plan.reason.replace(/^Already in /, "")})!`);
       return;
     }
-
+    if (plan.kind === "move" || plan.kind === "swap") {
+      alert("This character is already on this team — drag it to move or swap slots.");
+      return;
+    }
+    const team = teams[currentTeam];
     team[activeSlot] = {
       uid: selectedChar.uid,
       charId: selectedChar.charId
@@ -841,12 +1106,12 @@
     }
   }
 
-  // Debounced: rebuilding the whole roster grid on every keystroke stutters
-  // typing with a big roster.
-  let filterTimer = 0;
+  // Live search: filtering only toggles `hidden` on existing cards, so it
+  // runs on every keystroke without re-rendering the grid.
   function filterCharacters() {
-    clearTimeout(filterTimer);
-    filterTimer = setTimeout(() => renderCharacterGrid(charFilter.value), 120);
+    filterState.q = charFilter.value || "";
+    applyFilters();
+    charGrid.scrollTop = 0;
   }
 
   /* =========================
@@ -873,30 +1138,64 @@
   btnClear?.addEventListener("click", clearTeam);
   charFilter?.addEventListener("input", filterCharacters);
 
-  /* ---------- Sort / filter menu ---------- */
+  /* ---------- Sort menu ---------- */
   const sortBtn = document.getElementById("btn-sort");
   const sortMenu = document.getElementById("sort-menu");
+  const sortLabel = document.getElementById("sort-label");
   function closeSortMenu() {
     if (sortMenu) sortMenu.hidden = true;
     sortBtn?.classList.remove("open");
+    sortBtn?.setAttribute("aria-expanded", "false");
+  }
+  function reflectSort() {
+    sortMenu?.querySelectorAll(".sort-opt").forEach(o =>
+      o.classList.toggle("active", o.dataset.sort === currentSort));
+    const opt = sortMenu?.querySelector(`.sort-opt[data-sort="${currentSort}"]`);
+    if (sortLabel && opt) sortLabel.textContent = opt.textContent;
   }
   sortBtn?.addEventListener("click", (e) => {
     e.stopPropagation();
     if (!sortMenu) return;
     sortMenu.hidden = !sortMenu.hidden;
     sortBtn.classList.toggle("open", !sortMenu.hidden);
+    sortBtn.setAttribute("aria-expanded", String(!sortMenu.hidden));
   });
   sortMenu?.querySelectorAll(".sort-opt").forEach(opt => {
     opt.addEventListener("click", () => {
       currentSort = opt.dataset.sort || "rarity";
-      sortMenu.querySelectorAll(".sort-opt").forEach(o =>
-        o.classList.toggle("active", o === opt));
+      reflectSort();
       closeSortMenu();
-      renderCharacterGrid(charFilter?.value || "");
+      applySort();
+      saveFilterPrefs();
     });
   });
   document.addEventListener("click", (e) => {
     if (sortMenu && !sortMenu.hidden && !e.target.closest(".sort-wrap")) closeSortMenu();
+  });
+
+  /* ---------- Element / star filter chips ---------- */
+  function reflectChips() {
+    document.querySelectorAll("#filter-elements .f-chip").forEach(b =>
+      b.setAttribute("aria-pressed", String(filterState.els.has(b.dataset.el))));
+    document.querySelectorAll("#filter-stars .f-chip").forEach(b =>
+      b.setAttribute("aria-pressed", String(filterState.stars.has(Number(b.dataset.stars)))));
+  }
+  document.getElementById("filter-elements")?.addEventListener("click", (e) => {
+    const b = e.target.closest(".f-chip"); if (!b) return;
+    const k = b.dataset.el;
+    filterState.els.has(k) ? filterState.els.delete(k) : filterState.els.add(k);
+    reflectChips(); applyFilters(); charGrid.scrollTop = 0;
+  });
+  document.getElementById("filter-stars")?.addEventListener("click", (e) => {
+    const b = e.target.closest(".f-chip"); if (!b) return;
+    const k = Number(b.dataset.stars);
+    filterState.stars.has(k) ? filterState.stars.delete(k) : filterState.stars.add(k);
+    reflectChips(); applyFilters(); charGrid.scrollTop = 0;
+  });
+  filterResetBtn?.addEventListener("click", () => {
+    filterState.q = ""; filterState.els.clear(); filterState.stars.clear();
+    if (charFilter) charFilter.value = "";
+    reflectChips(); applyFilters();
   });
 
   /* =========================
@@ -924,6 +1223,10 @@
     const renameBtn = document.getElementById("btn-rename-team");
     if (renameBtn) renameBtn.addEventListener("click", renameCurrentTeam);
 
+    loadFilterPrefs();
+    reflectSort();
+    reflectChips();
+    initDragAndDrop();
     renderTeam();
     // Saved tiers corrected by the inventory migration (js/character_inv.js)
     // after the first render: redraw so stars / 7★ frames / cost match.

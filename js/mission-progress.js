@@ -70,7 +70,7 @@
   // ---------- Default Rewards (missions without a config entry) ----------
   const DIFFICULTY_MULTIPLIERS = { D: 0.5, C: 1, B: 1.5, A: 2.5, S: 4, SS: 6 };
 
-  function getDefaultRewards(difficulty) {
+  function getDefaultRewards(difficulty, missionId = "") {
     const mult = DIFFICULTY_MULTIPLIERS[difficulty] || 1;
 
     const completion = {
@@ -82,19 +82,26 @@
       ryo: Math.round(5000 * mult)
     };
 
-    // Higher difficulties add rarer first-clear materials
+    // Higher difficulties add rarer first-clear materials: the real Naruto
+    // Blazing awakening scrolls / Blazing Awakening beads; the element is
+    // fixed per mission (hash of its id) so previews match what is granted
+    const ELEMENTS = ["heart", "skill", "body", "bravery", "wisdom"];
+    let h = 0;
+    for (const ch of String(missionId)) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
+    const el = ELEMENTS[h % ELEMENTS.length];
     if (mult >= 6) {
+      firstTime[`beads_${el}_5`] = 1;
       firstTime.awakening_stone_6 = 1;
       firstTime.limit_break_crystal = 1;
     } else if (mult >= 4) {
-      firstTime.awakening_stone_5 = 1;
+      firstTime[`beads_${el}_4`] = 1;
       firstTime.dupe_crystal = 1;
     } else if (mult >= 2.5) {
-      firstTime.awakening_stone_4 = 1;
+      firstTime[`book_${el}_3`] = 1;
     } else if (mult >= 1.5) {
-      firstTime.awakening_stone_3 = 1;
+      firstTime[`book_${el}_2`] = 1;
     } else {
-      firstTime.scroll_basic = 2;
+      firstTime[`book_${el}_1`] = 2;
     }
 
     return { completion, firstTime, objectives: [] };
@@ -107,7 +114,7 @@
 
     if (!missionRewards || !missionRewards[difficulty]) {
       // No hand-authored rewards: fall back to difficulty-scaled defaults
-      return getDefaultRewards(difficulty);
+      return getDefaultRewards(difficulty, missionId);
     }
 
     return {

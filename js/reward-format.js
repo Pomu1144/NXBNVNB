@@ -27,8 +27,15 @@
     ramen_5star: 'ramen_heart_5star',
     scroll_3star: 'awakening_stone_3',
     scroll_4star: 'awakening_stone_4',
-    scroll_5star: 'awakening_stone_5'
+    scroll_5star: 'awakening_stone_5',
+    scroll_6star: 'awakening_stone_6'
   };
+
+  // Naruto Blazing wiki awakening materials (data/materials.json): framed card
+  // icons live at a predictable path, so the icon is right even before the
+  // catalog finishes loading.
+  const WIKI_MATERIAL_RE = /^(book_(heart|skill|body|bravery|wisdom)_[1-4]|book_victor_[56]|awakening_charm|beads_(heart|skill|body|bravery|wisdom)_[45]|(ferocious|deadly)_beads_[a-z0-9_]+|tool_[a-z0-9_]+)$/;
+  const WIKI_ICON_DIR = 'assets/awakening-materials/wiki/';
 
   // Names that read better than (or are missing from) Resources.MATERIAL_TYPES
   const NAMES = {
@@ -93,10 +100,18 @@
     const c = canonical(raw);
     if (NAMES[c]) return NAMES[c];
     const i = info(c);
+    if (i && i.fullName) return i.name; // catalog material: already a short display name
     if (i && i.name && i.name !== c) {
       // Drop flavour subtitles like 'Awakening Charm "Talisman of Legends"'
       return i.name.replace(/\s*"[^"]*"\s*$/, '').replace(/\s+Ichiraku Ramen$/, ' Ramen');
     }
+    // Wiki materials before the catalog has loaded
+    let wm = c.match(/^book_(heart|skill|body|bravery|wisdom)_(\d)$/);
+    if (wm) return `${titleCase(wm[1])} Book ★${wm[2]}`;
+    wm = c.match(/^beads_(heart|skill|body|bravery|wisdom)_(\d)$/);
+    if (wm) return `${wm[2] === '5' ? 'Light' : 'Battle'} ${titleCase(wm[1])} Beads ★${wm[2]}`;
+    wm = c.match(/^book_victor_(\d)$/);
+    if (wm) return `Book of Victor ★${wm[1]}`;
     // Loose matches for free-form names
     const n = raw.toLowerCase();
     if (n.includes('pearl')) return 'Ninja Pearls';
@@ -186,6 +201,8 @@
     if (n.includes('ryo')) return ICONS.ryo;
 
     const i = info(c);
+    if (i && i.icon && i.icon.indexOf(WIKI_ICON_DIR) === 0) return i.icon;
+    if (WIKI_MATERIAL_RE.test(c)) return WIKI_ICON_DIR + c + '.webp';
     // Ramen icons are real portraits
     if (i && i.icon && /^assets\/characters\//.test(i.icon)) return i.icon;
 
