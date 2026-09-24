@@ -3394,10 +3394,8 @@ body.page-characters #char-stats.stats-grid { display: block; max-width: none; m
   border: 1px solid rgba(201, 162, 78, 0.45); transform: rotate(45deg) scale(0.82);
   background: rgba(3, 10, 12, 0.5);
 }
-.cx-stat-ico svg { width: 17px; height: 17px; transform: rotate(-45deg) scale(1.2); fill: var(--jjk-gold-hi); }
-.cx-stat--hp  .cx-stat-ico svg { fill: #e57b6e; }
-.cx-stat--atk .cx-stat-ico svg { fill: #e7bd4a; }
-.cx-stat--spd .cx-stat-ico svg { fill: #7fd0dc; }
+.cx-stat-ico { position: relative; }
+.cx-stat-ico img { position: absolute; left: 50%; top: 50%; width: 31px; height: 31px; object-fit: contain; transform: translate(-50%, -50%) rotate(-45deg); pointer-events: none; }
 .cx-stat-label { font-size: 15px; font-weight: 700; color: var(--jjk-text); letter-spacing: 0.04em; }
 .cx-stat-val {
   font-size: 28px; font-weight: 800; line-height: 1; color: #fff8e6;
@@ -3580,7 +3578,7 @@ html.is-mobile.is-landscape.is-compact .cx-kicker { font-size: 8.5px; letter-spa
 html.is-mobile.is-landscape.is-compact .cx-kicker:not(:first-child) { margin-top: 10px; }
 html.is-mobile.is-landscape.is-compact .cx-stat { grid-template-columns: 20px minmax(0, 1fr) auto; gap: 8px; padding: 4px 2px; }
 html.is-mobile.is-landscape.is-compact .cx-stat-ico { width: 19px; height: 19px; }
-html.is-mobile.is-landscape.is-compact .cx-stat-ico svg { width: 12px; height: 12px; }
+html.is-mobile.is-landscape.is-compact .cx-stat-ico img { width: 23px; height: 23px; }
 html.is-mobile.is-landscape.is-compact .cx-stat-label { font-size: 11px; }
 html.is-mobile.is-landscape.is-compact .cx-stat-val { font-size: 17px; }
 html.is-mobile.is-landscape.is-compact .cx-minors { padding-top: 5px; }
