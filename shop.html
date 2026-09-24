@@ -77,6 +77,7 @@
       <button class="shop-tab" data-tab="resources">Resources</button>
       <button class="shop-tab" data-tab="granny">Granny Cat Shop</button>
       <button class="shop-tab" data-tab="recipes">Recipe Scrolls</button>
+      <button class="shop-tab" data-tab="limitbreak">Limit Break</button>
     </div>
 
     <!-- Ramen Tab -->
@@ -106,6 +107,48 @@
         <span>Recipe Fragments <b id="rc-shop-fragments">0</b></span>
       </div>
       <div class="shop-grid" id="recipes-grid"></div>
+    </div>
+
+    <!-- Limit Break Tab: character crystals (data/lb-crystals.json, js/lb-shop.js) -->
+    <div class="shop-tab-content" id="tab-limitbreak">
+      <div class="lb-toolbar">
+        <label class="lb-search">
+          <span class="lb-visually-hidden">Search characters</span>
+          <svg class="lb-search-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/></svg>
+          <input type="search" id="lb-search" placeholder="Search character" autocomplete="off" spellcheck="false" />
+          <button type="button" class="lb-search-clear" id="lb-search-clear" aria-label="Clear search" hidden>&times;</button>
+        </label>
+        <div class="lb-seg" id="lb-variant" role="group" aria-label="Crystal grade">
+          <button type="button" class="lb-seg-btn is-on" data-variant="all" aria-pressed="true">All</button>
+          <button type="button" class="lb-seg-btn" data-variant="blue" aria-pressed="false">Blue ★5</button>
+          <button type="button" class="lb-seg-btn" data-variant="gold" aria-pressed="false">Gold ★6</button>
+        </div>
+        <label class="lb-sort">
+          <span>Sort</span>
+          <select id="lb-sort">
+            <option value="name">Name</option>
+            <option value="element">Element</option>
+            <option value="price">Price</option>
+            <option value="owned">Owned</option>
+          </select>
+        </label>
+      </div>
+      <div class="lb-elements" id="lb-elements" role="group" aria-label="Filter by element">
+        <button type="button" class="lb-el" data-el="Heart" aria-pressed="false"><img src="assets/ui/jjk/orb_heart.webp" alt="" width="22" height="22">Heart</button>
+        <button type="button" class="lb-el" data-el="Skill" aria-pressed="false"><img src="assets/ui/jjk/orb_skill.webp" alt="" width="22" height="22">Skill</button>
+        <button type="button" class="lb-el" data-el="Body" aria-pressed="false"><img src="assets/ui/jjk/orb_body.webp" alt="" width="22" height="22">Body</button>
+        <button type="button" class="lb-el" data-el="Bravery" aria-pressed="false"><img src="assets/ui/jjk/orb_bravery.webp" alt="" width="22" height="22">Bravery</button>
+        <button type="button" class="lb-el" data-el="Wisdom" aria-pressed="false"><img src="assets/ui/jjk/orb_wisdom.webp" alt="" width="22" height="22">Wisdom</button>
+        <span class="lb-count" id="lb-count" aria-live="polite"></span>
+      </div>
+      <p class="lb-rule">Each crystal fits one character, in every version. Blue ★5 crystals work at 6★ tiers; gold ★6 crystals work at every tier. They are spent before generic Limit Break Crystals.</p>
+      <div class="lb-grid" id="limitbreak-grid"></div>
+      <div class="lb-empty" id="lb-empty" hidden>
+        <img src="assets/items/limitbreakcrystal_portrait.webp" alt="" width="72" height="72">
+        <p class="lb-empty-title" id="lb-empty-title">No crystals match</p>
+        <p class="lb-empty-sub" id="lb-empty-sub">Try another name or clear the element filters.</p>
+        <button type="button" class="jjk-btn" id="lb-reset">Clear filters</button>
+      </div>
     </div>
   </main>
 
@@ -184,7 +227,9 @@
   <script src="js/resources.js"></script>
   <script src="js/recipe-book.js"></script>
   <script src="js/recipe-scroll.js"></script>
+  <script src="js/lb-crystals.js"></script>
   <script defer src="js/shop.js"></script>
+  <script defer src="js/lb-shop.js"></script>
 
   <!-- Navigation Script -->
   <script src="js/navigation.js"></script>

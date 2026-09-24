@@ -395,10 +395,21 @@
     return { ...MATERIAL_TYPES };
   }
 
+  // Add item types defined in data files (e.g. character Limit Break crystals
+  // from data/lb-crystals.json). Existing ids are never overwritten.
+  function registerMaterialTypes(types) {
+    let added = 0;
+    for (const [id, info] of Object.entries(types || {})) {
+      if (!MATERIAL_TYPES[id]) { MATERIAL_TYPES[id] = info; added++; }
+    }
+    return added;
+  }
+
   function getItemsByCategory(category) {
     const items = [];
     for (const [id, info] of Object.entries(MATERIAL_TYPES)) {
-      if (info.category === category) {
+      // hideWhenZero: large data-driven sets only show once owned
+      if (info.category === category && !(info.hideWhenZero && get(id) <= 0)) {
         items.push({
           id,
           name: info.name,
@@ -434,6 +445,7 @@
     getItemsByCategory,
     getCatalog,
     ready,
+    registerMaterialTypes,
     MATERIAL_TYPES
   };
 

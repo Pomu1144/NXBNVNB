@@ -119,7 +119,9 @@ document.addEventListener('DOMContentLoaded', () => {
           noteText = 'Use this material in the Awakening system to upgrade character tiers.';
           break;
         case 'scrolls':
-          if (item.id === 'limit_break_crystal') {
+          if (item.lbCrystal) {
+            noteText = 'Character crystal: spent automatically, before generic Limit Break Crystals, when you limit break a matching unit.';
+          } else if (item.id === 'limit_break_crystal') {
             noteText = 'Use this crystal in the Limit Break system to increase character level caps.';
           } else {
             noteText = 'Use these materials in various character enhancement systems.';
@@ -232,6 +234,9 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
   };
+
+  // Character LB crystal types arrive from data/lb-crystals.json after first paint
+  window.addEventListener('lbcrystals:ready', () => window.InventoryManager.refresh());
 
   // Listen for storage events from other tabs/windows
   window.addEventListener('storage', (e) => {
