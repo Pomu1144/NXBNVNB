@@ -1,0 +1,178 @@
+/* ===================================================
+   SKILL PREVIEW (character screen, Ninjutsu tab)
+   ▶ button on each Jutsu / Ultimate / Secret stub, and the full-screen stage
+   it opens. Built by js/skill-preview.js; the cut-in itself is
+   css/battle-cutin.css mounted inside .sp-cutin-host.
+   =================================================== */
+
+/* ---- ▶ button: gold ring with a play triangle, tinted by the stub's kind ---- */
+.cx-play {
+  --kc-play: var(--kc, #6fa6e0);
+  position: relative;
+  flex: 0 0 auto;
+  width: 26px; height: 26px;
+  margin: 0 -2px 0 0;
+  padding: 0;
+  border: 1.5px solid rgba(201, 162, 78, 0.85);
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 35%, rgba(24, 52, 60, 0.95), rgba(5, 14, 17, 0.95));
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.7), inset 0 0 0 1px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+  transition: transform .15s ease, box-shadow .2s ease, border-color .2s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.cx-play::before {                 /* triangle, nudged right to look optically centred */
+  content: "";
+  position: absolute; left: 53%; top: 50%;
+  width: 0; height: 0;
+  transform: translate(-40%, -50%);
+  border-style: solid;
+  border-width: 6px 0 6px 10px;
+  border-color: transparent transparent transparent var(--jjk-gold-hi, #f1d98a);
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.8));
+}
+.cx-play:hover {
+  border-color: var(--jjk-gold-hi, #f1d98a);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.7), 0 0 8px color-mix(in srgb, var(--kc-play) 60%, transparent);
+}
+.cx-play:active { transform: scale(0.92); }
+.cx-play:focus-visible { outline: 2px solid var(--jjk-gold-hi, #f1d98a); outline-offset: 2px; }
+.cx-stub.is-locked .cx-play { opacity: 1; }   /* previews work before the skill unlocks */
+
+html.is-mobile.is-landscape.is-compact .cx-play { width: 19px; height: 19px; border-width: 1px; }
+html.is-mobile.is-landscape.is-compact .cx-play::before { border-width: 4.5px 0 4.5px 7.5px; }
+
+/* ---- overlay ---- */
+.sp-overlay {
+  --sp-c: #3fd6ff;
+  position: fixed;
+  inset: 0;
+  z-index: 6000;                    /* above the character modal (2000) */
+  display: none;
+  font-family: var(--jjk-font);
+  color: var(--jjk-text, #ece6d6);
+}
+.sp-overlay.sp-ultimate { --sp-c: #ff4a3d; }
+.sp-overlay.sp-secret   { --sp-c: #ffd75a; }
+.sp-overlay.is-open { display: block; animation: sp-fade .2s ease both; }
+@keyframes sp-fade { from { opacity: 0; } to { opacity: 1; } }
+
+.sp-backdrop {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse at 50% 62%, color-mix(in srgb, var(--sp-c) 16%, transparent) 0%, transparent 60%),
+    rgba(3, 8, 10, 0.985);
+}
+
+.sp-stage {
+  position: absolute;
+  left: 50%; top: 50%;
+  width: min(92vw, 900px);
+  height: min(70vh, 560px);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+.sp-art {
+  position: absolute; left: 50%; bottom: 0;
+  height: 100%; max-width: 100%;
+  transform: translateX(-50%);
+  object-fit: contain;
+  opacity: 0.18;
+  filter: saturate(0.7);
+  transition: opacity .3s ease;
+}
+.sp-overlay.is-art .sp-art { opacity: 1; filter: drop-shadow(0 10px 24px rgba(0, 0, 0, 0.7)); }
+.sp-overlay.is-sprite .sp-art,
+.sp-overlay.is-video .sp-art { opacity: 0.12; }
+
+.sp-actor {
+  position: absolute; left: 0; right: 0; bottom: 12%;
+  display: flex; justify-content: center; align-items: flex-end;
+}
+.sp-actor .sprite-player { filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.7)); }
+.sp-ground {
+  position: absolute; left: 20%; right: 20%; bottom: 11%;
+  height: 18px;
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.55), transparent 70%);
+  opacity: 0;
+}
+.sp-overlay.is-sprite .sp-ground { opacity: 1; }
+
+.sp-video {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: contain;
+  display: none;
+  border: 1px solid rgba(201, 162, 78, 0.45);
+  background: #000;
+}
+.sp-overlay.is-video .sp-video { display: block; }
+
+/* ---- header: kind chip + skill name ---- */
+.sp-head {
+  position: absolute; left: 0; right: 0; top: max(18px, env(safe-area-inset-top));
+  display: flex; align-items: center; justify-content: center; gap: 12px;
+  padding: 0 16px;
+  pointer-events: none;
+}
+.sp-chip {
+  flex: 0 0 auto;
+  padding: 2px 9px 1px;
+  font-size: 11px; font-weight: 800; letter-spacing: 0.2em; text-transform: uppercase; line-height: 1.4;
+  color: var(--sp-c);
+  border: 1px solid color-mix(in srgb, var(--sp-c) 60%, transparent);
+  background: color-mix(in srgb, var(--sp-c) 13%, transparent);
+  clip-path: polygon(5px 0, 100% 0, 100% calc(100% - 5px), calc(100% - 5px) 100%, 0 100%, 0 5px);
+}
+.sp-name {
+  margin: 0; min-width: 0;
+  font-size: clamp(18px, 3vw, 26px); font-weight: 800;
+  color: var(--jjk-gold-hi, #f1d98a);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
+/* ---- controls: shown once the preview has played ---- */
+.sp-controls {
+  position: absolute; left: 0; right: 0; bottom: max(18px, env(safe-area-inset-bottom));
+  display: flex; justify-content: center; gap: 12px;
+  opacity: 0; transform: translateY(6px);
+  transition: opacity .2s ease, transform .2s ease;
+}
+.sp-overlay.is-done .sp-controls { opacity: 1; transform: none; }
+.sp-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  min-width: 112px; height: 38px;
+  padding: 0 18px;
+  border: solid transparent;
+  border-image: url("../assets/ui/jjk/btn_ticket.webp") 36 fill / 10px stretch;
+  background: none;
+  font-family: var(--jjk-font); font-size: 14px; font-weight: 700; letter-spacing: 0.08em;
+  color: var(--jjk-text, #ece6d6);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
+  justify-content: center;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.sp-btn:hover { color: var(--jjk-gold-hi, #f1d98a); }
+.sp-btn:active { transform: translateY(1px); }
+.sp-btn-ico {
+  width: 0; height: 0;
+  border-style: solid;
+  border-width: 5px 0 5px 8px;
+  border-color: transparent transparent transparent currentColor;
+}
+
+/* cut-in mounts here and covers the whole overlay while it plays */
+.sp-cutin-host { position: absolute; inset: 0; pointer-events: none; }
+.sp-cutin-host .battle-cutin { pointer-events: auto; }
+
+@media (max-height: 480px) {
+  .sp-stage { height: 64vh; }
+  .sp-head { top: 10px; }
+  .sp-controls { bottom: 10px; }
+  .sp-btn { height: 30px; min-width: 92px; font-size: 12px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sp-overlay.is-open { animation: none; }
+}

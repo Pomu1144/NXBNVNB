@@ -3314,6 +3314,13 @@ body.page-characters .nameplate-sub .nameplate-version { margin: 0; white-space:
 .cx-elem[data-el="bravery"] { --el: #e7bd4a; }
 .cx-elem[data-el="wisdom"]  { --el: #5b9be6; }
 .cx-elem[data-el="heart"]   { --el: #e07abb; }
+/* known elements show their orb instead of the text badge */
+.cx-elem.has-orb { padding: 0; border: 0; background: none; }
+.cx-elem.has-orb::before { content: none; }
+.cx-elem-orb {
+  display: block; width: 26px; height: 26px;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.85)) drop-shadow(0 0 5px color-mix(in srgb, var(--el) 45%, transparent));
+}
 
 /* tabs: quiet kicker-style labels, active = gold with a crimson diamond */
 body.page-characters .char-modal-info .char-tabs {
@@ -3551,6 +3558,8 @@ html.is-mobile.is-landscape.is-compact body.page-characters .char-modal-info .na
 html.is-mobile.is-landscape.is-compact body.page-characters .nameplate-sub { gap: 8px; margin-top: 2px; }
 html.is-mobile.is-landscape.is-compact .cx-elem { font-size: 8px; padding: 0 6px 0 5px; gap: 4px; letter-spacing: 0.14em; }
 html.is-mobile.is-landscape.is-compact .cx-elem::before { width: 5px; height: 5px; }
+html.is-mobile.is-landscape.is-compact .cx-elem.has-orb { padding: 0; }
+html.is-mobile.is-landscape.is-compact .cx-elem-orb { width: 18px; height: 18px; }
 html.is-mobile.is-landscape.is-compact body.page-characters .char-modal-info .char-tabs { gap: 0 !important; padding: 0 !important; overflow: visible; }
 html.is-mobile.is-landscape.is-compact body.page-characters .char-modal-info .char-tabs .tab-btn {
   flex: 0 1 auto !important; height: 24px !important; padding: 0 8px 0 11px !important;

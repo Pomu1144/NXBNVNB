@@ -372,9 +372,16 @@
     NP_VERSION.textContent = safeStr(c.version, "");
     NP_STARS.innerHTML     = renderStars(starsFromTier(tier));
     if (NP_ELEMENT) {
+      // Element orb (assets/ui/jjk/orb_<element>.webp); text only for unknown elements
       const el = safeStr(c.element, "");
-      NP_ELEMENT.textContent = el;
-      NP_ELEMENT.dataset.el = el.toLowerCase();
+      const key = el.toLowerCase();
+      const hasOrb = ["body", "skill", "bravery", "wisdom", "heart"].includes(key);
+      if (hasOrb) NP_ELEMENT.innerHTML = `<img class="cx-elem-orb" src="assets/ui/jjk/orb_${key}.webp" alt="" draggable="false">`;
+      else NP_ELEMENT.textContent = el;
+      NP_ELEMENT.classList.toggle("has-orb", hasOrb);
+      NP_ELEMENT.dataset.el = key;
+      NP_ELEMENT.title = el;
+      NP_ELEMENT.setAttribute("aria-label", el ? `${el} element` : "");
       NP_ELEMENT.hidden = !el;
     }
 
@@ -1639,6 +1646,7 @@
     return `
       <article class="cx-stub is-${kind}${lockNote ? " is-locked" : ""}">
         <header class="cx-stub-head">
+          ${PREVIEW_KINDS.has(kind) ? `<button type="button" class="cx-play" data-kind="${kind}" aria-label="Preview ${esc(name)}" title="Preview"></button>` : ""}
           <span class="cx-chip cx-chip--${kind}">${chip}</span>
           <h5 class="cx-stub-name">${esc(name)}</h5>
           ${lockNote ? `<span class="cx-lock">${esc(lockNote)}</span>` : ""}
@@ -1648,7 +1656,24 @@
       </article>`;
   }
 
+  // ▶ on Jutsu / Ultimate / Secret stubs opens an attack preview (js/skill-preview.js)
+  const PREVIEW_KINDS = new Set(["jutsu", "ultimate", "secret"]);
+  let skillPreviewCtx = null;
+  SKILLS_WRAP.addEventListener("click", (ev) => {
+    const btn = ev.target.closest(".cx-play");
+    if (!btn || !skillPreviewCtx || !window.SkillPreview) return;
+    const { c, tier } = skillPreviewCtx;
+    const kind = btn.dataset.kind;
+    const fallback = { jutsu: "Ninjutsu", ultimate: "Ultimate", secret: "Secret Technique" }[kind];
+    window.SkillPreview.open({
+      charId: c.id, kind, base: c,
+      name: safeStr(c.skills?.[kind]?.name, fallback),
+      art: resolveTierArt(c, tier),
+    });
+  });
+
   function renderSkillsTab(c, inst, tier) {
+    skillPreviewCtx = { c, tier };
     const minT = minTier(c);
     const { jutsu = null, ultimate = null, secret = null, latent = null } = c.skills || {};
     const stubs = [];
