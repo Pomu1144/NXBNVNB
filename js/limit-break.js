@@ -153,7 +153,32 @@
     const currentLB = inst.limitBreakLevel || 0;
     const cost = await getLimitBreakCost(tier, currentLB, character);
 
-    return global.Resources.canAfford(cost);
+    return (await resolveSpend(cost, character, tier)).ok;
+  }
+
+  // Concrete items for a limit break. The cost asks for N limit_break_crystal;
+  // character crystals (js/lb-crystals.js) that match this unit are used first,
+  // generic crystals cover the rest. Without LBCrystals it is the plain cost.
+  async function resolveSpend(cost, character, tier) {
+    const LBC = global.LBCrystals;
+    if (LBC) {
+      await LBC.load();
+      return LBC.resolveCost(cost, character, tier);
+    }
+    return {
+      ok: !!global.Resources && global.Resources.canAfford(cost),
+      spend: { ...cost }, specific: [],
+      generic: Number(cost.limit_break_crystal) || 0,
+      needed: Number(cost.limit_break_crystal) || 0
+    };
+  }
+
+  // What the next limit break of this unit would spend (for confirm dialogs).
+  async function getLimitBreakSpend(inst, character) {
+    const bounds = global.Progression?.getTierBounds(character);
+    const tier = inst.tierCode || bounds?.minCode || "6S";
+    const cost = await getLimitBreakCost(tier, inst.limitBreakLevel || 0, character);
+    return { tier, cost, ...(await resolveSpend(cost, character, tier)) };
   }
 
   // Perform limit break
@@ -171,12 +196,16 @@
       return { ok: false, reason: "RESOURCES_NOT_INITIALIZED" };
     }
 
-    const tier = inst.tierCode;
+    const tier = inst.tierCode || global.Progression?.getTierBounds(character)?.minCode;
     const currentLB = inst.limitBreakLevel || 0;
     const cost = await getLimitBreakCost(tier, currentLB, character);
 
-    // Check and spend materials
-    const spendResult = global.Resources.spend(cost);
+    // Check and spend materials (character crystals first, then generic)
+    const plan = await resolveSpend(cost, character, tier);
+    if (!plan.ok) {
+      return { ok: false, reason: "INSUFFICIENT_MATERIALS" };
+    }
+    const spendResult = global.Resources.spend(plan.spend);
     if (!spendResult.ok) {
       return spendResult;
     }
@@ -189,6 +218,7 @@
 
     return {
       ok: true,
+      spent: plan.spend,
       limitBreakLevel: inst.limitBreakLevel,
       bonusStats: computeLimitBreakBonus(inst.limitBreakLevel)
     };
@@ -247,6 +277,7 @@
     computeLimitBreakBonus,
     applyLimitBreakToStats,
     getLimitBreakCost,
+    getLimitBreakSpend,
     getMaxLimitBreakLevel,
     getExtendedLevelCap,
     MAX_LIMIT_BREAK_LEVELS,

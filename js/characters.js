@@ -1560,9 +1560,13 @@
 
         const tier = inst.tierCode || minTier(c);
         const cost = await window.LimitBreak.getLimitBreakCost(tier, inst.limitBreakLevel || 0, c);
+        // Character LB crystals are used before generic ones (js/lb-crystals.js)
+        const plan = window.LimitBreak.getLimitBreakSpend
+          ? await window.LimitBreak.getLimitBreakSpend(inst, c)
+          : { spend: cost };
 
         let costStr = "Cost:\n";
-        for (const [matId, amt] of Object.entries(cost)) {
+        for (const [matId, amt] of Object.entries(plan.spend || cost)) {
           const matInfo = window.Resources.getMaterialInfo(matId);
           costStr += `${matInfo.name}: ${amt}\n`;
         }
