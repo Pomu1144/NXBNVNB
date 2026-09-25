@@ -1,11 +1,11 @@
 {
-  "frameWidth": 290,
+  "frameWidth": 224,
   "frameHeight": 256,
   "frames": 8,
   "columns": 8,
   "fps": 10,
   "loop": false,
   "hits": [],
-  "heightScale": 0.9721,
-  "anchorX": 0.4989
+  "heightScale": 1.0,
+  "anchorX": 0.6877
 }
