@@ -1,13 +1,13 @@
 {
-  "frameWidth": 248,
-  "frameHeight": 300,
+  "frameWidth": 208,
+  "frameHeight": 256,
   "frames": 28,
-  "columns": 16,
+  "columns": 12,
   "fps": 12,
   "loop": false,
   "hits": [],
-  "heightScale": 1.007,
-  "anchorX": 0.4811,
+  "heightScale": 1.0,
+  "anchorX": 0.4846,
   "fx": [
     {
       "sheet": "jutsu_body",
