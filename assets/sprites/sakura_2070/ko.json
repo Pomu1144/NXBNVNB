@@ -1,5 +1,5 @@
 {
-  "frameWidth": 260,
+  "frameWidth": 256,
   "frameHeight": 256,
   "frames": 8,
   "columns": 8,
@@ -7,5 +7,5 @@
   "loop": false,
   "hits": [],
   "heightScale": 1.0,
-  "anchorX": 0.3833
+  "anchorX": 0.355
 }
