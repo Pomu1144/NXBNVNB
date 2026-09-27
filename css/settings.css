@@ -1,0 +1,255 @@
+/* ─────────────────────────────────────────────────────────────
+   Settings page — same shell as Items / Shop:
+   .jjk-page-header (back + crimson title plate), ink backdrop,
+   one gold-trimmed ink panel with ticket tabs, bottom nav dock.
+   Controls: gold-trimmed range sliders with a medallion thumb,
+   ticket-plate switches, .jjk-btn actions (red = danger).
+   Tokens come from css/theme-jjk.css.
+   ───────────────────────────────────────────────────────────── */
+* { box-sizing: border-box; }
+
+body.page-settings {
+  margin: 0;
+  min-height: 100vh;
+  overflow: hidden;
+  font-family: var(--jjk-font);
+  color: var(--jjk-text);
+  background: var(--jjk-ink);
+}
+
+/* Ink backdrop; a chosen village background (bg-N) shows through dimmed */
+body.page-settings #full-bg {
+  position: fixed; inset: 0; z-index: -1;
+  background-color: var(--jjk-ink);
+}
+body.page-settings #full-bg:not([class*="bg-"]) {
+  background:
+    radial-gradient(ellipse at 50% 35%, rgba(24, 70, 78, 0.28), rgba(3, 9, 11, 0.86) 78%),
+    url('../assets/ui/jjk/ink_bg.webp') center / cover no-repeat,
+    var(--jjk-ink);
+}
+body.page-settings #full-bg[class*="bg-"] {
+  background-size: cover; background-position: center; background-repeat: no-repeat;
+}
+body.page-settings #full-bg[class*="bg-"]::after {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 50% 40%, rgba(7, 20, 24, 0.55), rgba(3, 9, 11, 0.88) 80%);
+}
+
+/* ── Panel ─────────────────────────────────────────────────── */
+.settings-panel {
+  position: fixed;
+  top: var(--jjk-header-h);
+  bottom: calc(var(--dock-h, 64px) + 14px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(95%, 1040px);
+  display: flex;
+  flex-direction: column;
+  padding: 18px 22px 20px;
+  z-index: 10;
+}
+
+.settings-tabs {
+  flex: none;
+  display: flex; justify-content: center; flex-wrap: wrap;
+  gap: 2px; margin-bottom: 14px;
+}
+.settings-tabs .jjk-tab { min-width: 140px; }
+
+.settings-well {
+  position: relative;
+  flex: 1 1 auto; min-height: 0;
+  overflow-y: auto; overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  padding: 6px 20px 16px;
+  background: rgba(3, 10, 12, 0.6);
+  border: 1px solid rgba(201, 162, 78, 0.2);
+}
+
+.settings-pane { display: none; }
+.settings-pane.active { display: block; animation: setFade .25s var(--jjk-ease); }
+@keyframes setFade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+/* Script group heading with a thin gold rule */
+.set-group {
+  display: flex; align-items: center; gap: 12px;
+  margin: 12px 0 4px;
+  font-family: var(--jjk-font-script); font-weight: 400; font-size: 16px;
+  color: var(--jjk-gold-hi); letter-spacing: 0.04em;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
+}
+.set-group::after {
+  content: ''; flex: 1; height: 1px;
+  background: linear-gradient(90deg, rgba(201, 162, 78, 0.6), rgba(201, 162, 78, 0));
+}
+
+/* ── Row: label on the left, control on the right ─────────── */
+.set-row {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 16px; padding: 10px 4px;
+  border-bottom: 1px solid rgba(201, 162, 78, 0.14);
+}
+.set-row:last-child { border-bottom: 0; }
+.set-label { min-width: 0; flex: 1 1 auto; }
+.set-label b { display: block; font-weight: 700; font-size: 15px; color: var(--jjk-text); }
+.set-label small { display: block; margin-top: 2px; font-size: 12px; line-height: 1.35; color: var(--jjk-muted); }
+.set-label code {
+  font-family: ui-monospace, Menlo, monospace; font-size: 11px;
+  color: var(--jjk-gold-hi); background: rgba(0, 0, 0, 0.45);
+  padding: 1px 5px; border: 1px solid rgba(201, 162, 78, 0.25);
+}
+.set-control { flex: 0 0 auto; display: flex; align-items: center; gap: 8px; }
+.set-control.is-wide { flex: 0 1 460px; min-width: 0; }
+
+/* ── Gold-trimmed slider ──────────────────────────────────── */
+.set-slider {
+  --pct: 50%;
+  -webkit-appearance: none; appearance: none;
+  flex: 1 1 auto; width: 260px; min-width: 120px; height: 10px; margin: 0;
+  cursor: pointer; outline: none;
+  background:
+    linear-gradient(90deg, var(--jjk-crimson), #c0392b 60%, var(--jjk-gold-hi)) 0 0 / var(--pct) 100% no-repeat,
+    repeating-linear-gradient(90deg, rgba(201, 162, 78, 0.18) 0 1px, transparent 1px 10%),
+    rgba(0, 0, 0, 0.65);
+  border: 1px solid rgba(201, 162, 78, 0.7);
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.55), inset 0 1px 2px rgba(0, 0, 0, 0.8);
+  clip-path: none;
+}
+.set-slider::-webkit-slider-runnable-track { height: 10px; background: transparent; border: 0; }
+.set-slider::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none;
+  width: 24px; height: 24px; margin-top: -8px; border-radius: 50%;
+  background: radial-gradient(circle at 50% 50%,
+    #d63a2a 0 22%, #6e1010 23% 34%, var(--jjk-gold-hi) 35% 48%, var(--jjk-gold) 60%, var(--jjk-gold-lo) 100%);
+  border: 1px solid #2a1d08;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(241, 217, 138, 0.35);
+}
+.set-slider::-moz-range-track { height: 10px; background: transparent; border: 0; }
+.set-slider::-moz-range-thumb {
+  width: 22px; height: 22px; border-radius: 50%;
+  background: radial-gradient(circle at 50% 50%,
+    #d63a2a 0 22%, #6e1010 23% 34%, var(--jjk-gold-hi) 35% 48%, var(--jjk-gold) 60%, var(--jjk-gold-lo) 100%);
+  border: 1px solid #2a1d08;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+}
+.set-slider:focus-visible { box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.55), 0 0 0 3px var(--jjk-gold-hi); }
+.set-slider:active::-webkit-slider-thumb { filter: brightness(1.15); }
+
+/* Value readout: slanted ink chip */
+.set-value {
+  min-width: 56px; text-align: center; justify-content: center;
+  font-size: 14px; color: var(--jjk-gold-hi);
+}
+
+/* ── Switch: two ticket plates, the live one is red ───────── */
+.set-switch {
+  display: inline-flex; gap: 0; padding: 3px;
+  border: 1px solid rgba(201, 162, 78, 0.55);
+  background: rgba(0, 0, 0, 0.55);
+  cursor: pointer; font: inherit;
+}
+.set-switch > span {
+  min-width: 78px; height: 34px; padding: 0 14px;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-family: var(--jjk-font); font-weight: 700; font-size: 14px;
+  color: rgba(236, 230, 214, 0.55); text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
+  border: 0; border-image: url('../assets/ui/jjk/btn_ticket_off.webp') 36 fill / var(--jjk-tkt-w-sm) stretch;
+  transition: filter .15s, color .15s;
+}
+.set-switch[aria-checked="true"]  > .is-on,
+.set-switch[aria-checked="false"] > .is-off {
+  border-image-source: url('../assets/ui/jjk/btn_ticket_red.webp');
+  color: var(--jjk-gold-hi);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.95), 0 0 8px rgba(60, 0, 0, 0.6);
+}
+.set-switch:hover > span { filter: brightness(1.1); }
+.set-switch:focus-visible { outline: 2px solid var(--jjk-gold-hi); outline-offset: 2px; }
+
+/* ── Buttons, fields, select ──────────────────────────────── */
+.settings-panel .jjk-btn { min-width: 110px; height: 40px; padding: 0 20px; font-size: 14px; white-space: nowrap; }
+
+.set-field,
+.set-select {
+  height: 38px; min-width: 0; padding: 0 12px;
+  font-family: var(--jjk-font); font-size: 14px; font-weight: 700;
+  color: var(--jjk-text);
+  background: rgba(3, 10, 12, 0.85);
+  border: 1px solid rgba(201, 162, 78, 0.55);
+  border-radius: 0;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.8);
+  outline: none;
+}
+.set-field { flex: 1 1 auto; width: 100%; }
+.set-field::placeholder { color: rgba(147, 163, 163, 0.7); font-weight: 400; }
+.set-field:focus, .set-select:focus { border-color: var(--jjk-gold-hi); }
+#gift-code-input { text-transform: uppercase; letter-spacing: 0.06em; }
+
+.set-select {
+  -webkit-appearance: none; appearance: none;
+  min-width: 170px; padding-right: 34px; cursor: pointer;
+  background:
+    linear-gradient(45deg, transparent 50%, var(--jjk-gold) 50%) calc(100% - 17px) 50% / 6px 6px no-repeat,
+    linear-gradient(135deg, var(--jjk-gold) 50%, transparent 50%) calc(100% - 11px) 50% / 6px 6px no-repeat,
+    rgba(3, 10, 12, 0.85);
+}
+.set-select option { background: var(--jjk-ink-2); color: var(--jjk-text); }
+
+/* Small square step buttons flanking the background picker */
+.set-step {
+  width: 38px; height: 38px; font-size: 16px; font-family: var(--jjk-font);
+}
+
+.set-id {
+  font-family: ui-monospace, Menlo, monospace; font-size: 12px;
+  color: var(--jjk-gold-hi); user-select: all; word-break: break-all; text-align: right;
+}
+.set-name { font-weight: 800; font-size: 15px; color: var(--jjk-gold-hi); }
+
+/* ── Narrow screens (portrait phones): stack rows ─────────── */
+@media (max-width: 640px) {
+  .settings-panel { width: calc(100% - 16px); padding: 12px 10px 12px; }
+  .settings-tabs { flex-wrap: nowrap; margin-bottom: 10px; }
+  .settings-tabs .jjk-tab { min-width: 0; flex: 1 1 0; height: 34px; padding: 0 4px; font-size: 12px; white-space: nowrap; }
+  .settings-well { padding: 4px 12px 12px; }
+  .set-row { flex-direction: column; align-items: stretch; gap: 8px; }
+  .set-control, .set-control.is-wide { flex: 1 1 auto; justify-content: flex-start; }
+  .set-control .jjk-btn { min-width: 0; padding: 0 14px; flex: none; }
+  .set-field { width: auto; flex: 1 1 0; }
+  .set-slider { width: auto; }
+  .set-id { text-align: left; }
+}
+
+/* ── iPhone held sideways (compact landscape): tabs become a left rail
+   so the settings list gets the full panel height ────────────────── */
+html.is-mobile.is-landscape.is-compact .settings-panel {
+  top: calc(var(--jjk-header-h) + var(--safe-t, 0px));
+  bottom: calc(var(--m-dock-h, 58px) + 8px);
+  left: max(10px, env(safe-area-inset-left, 0px));
+  right: max(10px, env(safe-area-inset-right, 0px));
+  width: auto; transform: none;
+  flex-direction: row; gap: 10px;
+  padding: 8px 10px;
+}
+html.is-mobile.is-landscape.is-compact .settings-tabs {
+  flex-direction: column; flex-wrap: nowrap; justify-content: flex-start;
+  width: 120px; margin: 0; gap: 3px;
+  overflow-y: auto;
+}
+html.is-mobile.is-landscape.is-compact .settings-tabs .jjk-tab {
+  min-width: 0; width: 100%; height: 30px; padding: 0 8px; font-size: 12px; flex: none;
+}
+html.is-mobile.is-landscape.is-compact .settings-well { padding: 0 12px 8px; }
+html.is-mobile.is-landscape.is-compact .set-group { font-size: 13px; margin: 8px 0 0; }
+html.is-mobile.is-landscape.is-compact .set-row { padding: 6px 2px; gap: 12px; }
+html.is-mobile.is-landscape.is-compact .set-label b { font-size: 13px; }
+html.is-mobile.is-landscape.is-compact .set-label small { font-size: 10.5px; }
+html.is-mobile.is-landscape.is-compact .settings-panel .jjk-btn { min-width: 84px; height: 30px; padding: 0 12px; font-size: 12px; }
+html.is-mobile.is-landscape.is-compact .set-switch > span { min-width: 58px; height: 26px; font-size: 12px; }
+html.is-mobile.is-landscape.is-compact .set-field,
+html.is-mobile.is-landscape.is-compact .set-select { height: 30px; font-size: 12px; }
+html.is-mobile.is-landscape.is-compact .set-select { min-width: 140px; }
+html.is-mobile.is-landscape.is-compact .set-step { width: 30px; height: 30px; }
+html.is-mobile.is-landscape.is-compact .set-slider { width: 200px; }
+html.is-mobile.is-landscape.is-compact .set-value { min-width: 48px; font-size: 12px; }

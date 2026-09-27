@@ -43,7 +43,7 @@
           <div class="settings-body">
             <!-- Music Section -->
             <div class="settings-section">
-              <h3 class="settings-section-title">🎵 Music</h3>
+              <h3 class="settings-section-title">Music</h3>
 
               <div class="settings-option">
                 <label class="settings-option-label">Music Enabled</label>
@@ -69,7 +69,7 @@
 
             <!-- Player Section -->
             <div class="settings-section">
-              <h3 class="settings-section-title">👤 Player</h3>
+              <h3 class="settings-section-title">Player</h3>
 
               <div class="settings-option">
                 <label class="settings-option-label">Username</label>
@@ -84,7 +84,7 @@
 
             <!-- Visual Section -->
             <div class="settings-section">
-              <h3 class="settings-section-title">🎨 Visual</h3>
+              <h3 class="settings-section-title">Visual</h3>
 
               <div class="settings-option">
                 <label class="settings-option-label">Background Theme</label>
@@ -99,7 +99,7 @@
 
             <!-- Character Display Section -->
             <div class="settings-section">
-              <h3 class="settings-section-title">⚡ Character Display</h3>
+              <h3 class="settings-section-title">Character Display</h3>
 
               <div class="settings-option">
                 <button class="settings-button" id="setting-select-character">
@@ -113,7 +113,7 @@
 
             <!-- Developer Tools Section -->
             <div class="settings-section">
-              <h3 class="settings-section-title">🎁 Developer Tools</h3>
+              <h3 class="settings-section-title">Developer Tools</h3>
 
               <div class="settings-option">
                 <button class="settings-button settings-button-special" id="setting-receive-random-chars">
@@ -134,13 +134,20 @@
 
             <!-- Data Section -->
             <div class="settings-section">
-              <h3 class="settings-section-title">💾 Data</h3>
+              <h3 class="settings-section-title">Data</h3>
 
               <div class="settings-option">
                 <button class="settings-button" id="setting-view-resources">
                   View Resources
                 </button>
                 <p class="settings-help">Check your materials and currency</p>
+              </div>
+
+              <div class="settings-option">
+                <button class="settings-button" id="setting-open-settings-page">
+                  All Settings
+                </button>
+                <p class="settings-help">Sound effects, gift codes, save export / import and log out</p>
               </div>
             </div>
           </div>
@@ -166,7 +173,9 @@
         option.className = 'background-option';
         option.dataset.bg = i;
         option.dataset.number = i;
-        option.style.backgroundImage = `url('assets/backgrounds/bg-${i}.jpg')`;
+        // Same art as the #full-bg .bg-N classes in css/background.css
+        const file = i === 1 ? 'Background.png' : `Background${i}.gif`;
+        option.style.backgroundImage = `url('assets/Main Background/${file}')`;
 
         // Check if this is the current background
         const bgElement = document.getElementById('full-bg');
@@ -222,6 +231,7 @@
         volumeSlider.addEventListener('input', (e) => {
           const volume = e.target.value;
           if (volumeDisplay) volumeDisplay.textContent = `${volume}%`;
+          volumeSlider.style.setProperty('--pct', `${volume}%`);
           window.MusicPlayer?.setVolume(volume / 100);
         });
       }
@@ -252,6 +262,19 @@
           if (hudEl) hudEl.textContent = username;
 
           console.log('Username updated:', username);
+        });
+      }
+
+      // Full settings page
+      const settingsPageBtn = document.getElementById('setting-open-settings-page');
+      if (settingsPageBtn) {
+        settingsPageBtn.addEventListener('click', () => {
+          this.close();
+          if (typeof window.Navigation !== 'undefined') {
+            window.Navigation.navigateTo('settings.html');
+          } else {
+            window.location.href = 'settings.html';
+          }
         });
       }
 
@@ -437,8 +460,9 @@
         }
       });
 
-      // Save preference
+      // Save preference (blazing_background is the key the save export carries)
       localStorage.setItem('selected_background', num);
+      localStorage.setItem('blazing_background', num);
 
       console.log(`Background changed to bg-${num}`);
     },
@@ -461,11 +485,12 @@
         const status = window.MusicPlayer.getStatus();
         const volumePercent = Math.round(status.volume * 100);
         volumeSlider.value = volumePercent;
+        volumeSlider.style.setProperty('--pct', `${volumePercent}%`);
         if (volumeDisplay) volumeDisplay.textContent = `${volumePercent}%`;
       }
 
       // Background
-      const savedBg = localStorage.getItem('selected_background');
+      const savedBg = localStorage.getItem('blazing_background') || localStorage.getItem('selected_background');
       if (savedBg) {
         document.querySelectorAll('.background-option').forEach(opt => {
           opt.classList.toggle('active', opt.dataset.bg == savedBg);
