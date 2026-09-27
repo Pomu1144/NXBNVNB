@@ -14,56 +14,25 @@
    * - Both ultimates deal LINK_BONUS extra damage.
    * - The partner pays its own chakra but keeps its normal turn.
    * - Works for both sides, so enemy pairs (Pain + Konan, …) can link too.
-   * - Synergy is by character name, so every version of a character counts.
+   * - Synergy groups live in js/synergy.js (window.Synergy), matched by
+   *   character name, so every version of a character counts.
+   * - Unit cards in the team holder get a chain badge naming the link; it
+   *   lights up gold when the unit and an on-field partner can both fire.
    *
    * Wraps BattleCombat.performUltimate / calculateDamage; load after
-   * battle-hp-fix.js (and any other performUltimate wrapper).
+   * js/synergy.js and battle-hp-fix.js (and any other performUltimate wrapper).
    */
 
   const LINK_BONUS = 1.2; // ×1.2 damage on both linked ultimates
 
-  // Any two members of the same group can link. First matching group names the link.
-  const GROUPS = [
-    { name: "Rival Bond", members: ["Naruto Uzumaki", "Sasuke Uchiha"] },
-    { name: "Team 7", members: ["Naruto Uzumaki", "Sasuke Uchiha", "Sakura Haruno", "Kakashi Hatake", "Sai", "Yamato"] },
-    { name: "Uzumaki Family", members: ["Naruto Uzumaki", "Minato Namikaze", "Kushina Uzumaki"] },
-    { name: "Team Minato", members: ["Minato Namikaze", "Kakashi Hatake", "Obito Uchiha", "Rin Nohara"] },
-    { name: "Uchiha Brothers", members: ["Itachi Uchiha", "Sasuke Uchiha"] },
-    { name: "Uchiha Brothers", members: ["Madara Uchiha", "Izuna Uchiha"] },
-    { name: "Senju Brothers", members: ["Hashirama Senju", "Tobirama Senju"] },
-    { name: "Founders of the Leaf", members: ["Hashirama Senju", "Madara Uchiha"] },
-    { name: "Moon's Eye Plan", members: ["Madara Uchiha", "Obito Uchiha"] },
-    { name: "Reincarnations", members: ["Indra", "Ashura"] },
-    { name: "Legendary Sannin", members: ["Jiraiya", "Tsunade", "Orochimaru"] },
-    { name: "Team Guy", members: ["Might Guy", "Rock Lee", "Neji Hyuga", "Tenten"] },
-    { name: "Ino-Shika-Cho", members: ["Ino Yamanaka", "Shikamaru Nara", "Choji Akimichi", "Asuma Sarutobi"] },
-    { name: "Team 8", members: ["Hinata Hyuga", "Kiba Inuzuka", "Shino Aburame", "Kurenai Yuhi"] },
-    { name: "Sand Siblings", members: ["Gaara", "Temari", "Kankuro"] },
-    { name: "Taka", members: ["Sasuke Uchiha", "Karin", "Suigetsu Hozuki", "Jugo"] },
-    { name: "Demon of the Mist", members: ["Zabuza Momochi", "Haku"] },
-    { name: "Sound Four", members: ["Tayuya", "Kidomaru", "Jirobo", "Sakon", "Kimimaro"] },
-    { name: "Hidden Cloud", members: ["Killer Bee", "Darui"] },
-    { name: "Akatsuki: Itachi & Kisame", members: ["Itachi Uchiha", "Kisame Hoshigaki"] },
-    { name: "Akatsuki: Art Is…", members: ["Deidara", "Sasori"] },
-    { name: "Akatsuki: Zombie Combo", members: ["Hidan", "Kakuzu"] },
-    { name: "Akatsuki: Angel & God", members: ["Pain", "Konan", "Nagato"] },
-  ];
-
-  const norm = s => String(s || "").trim().toLowerCase();
-  const GROUPS_N = GROUPS.map(g => ({ name: g.name, members: new Set(g.members.map(norm)) }));
-
   const BattleLinkUltimate = {
     LINK_BONUS,
-    GROUPS,
     enabled: true,
     _linking: false,
 
     /** Name of the link between two units, or null when they have no synergy. */
     linkName(a, b) {
-      const na = norm(a?.name), nb = norm(b?.name);
-      if (!na || !nb || na === nb) return null;
-      const g = GROUPS_N.find(g => g.members.has(na) && g.members.has(nb));
-      return g ? g.name : null;
+      return window.Synergy?.linkName(a?.name, b?.name) || null;
     },
 
     /** True if `unit` could fire its ultimate right now (outside its own turn). */
@@ -106,6 +75,60 @@
         host.appendChild(el);
         setTimeout(() => { el.remove(); resolve(); }, 1300);
       });
+    },
+
+    /* ===== Team holder badges =====
+       Each player card with an on-field synergy partner carries a chain
+       badge (.uc-link) naming the link; .is-ready (gold pulse) when the unit
+       and a partner can both fire their ultimates, i.e. using this unit's
+       ultimate now would link. Cards are re-rendered by the team holder, so
+       a light poll keeps badges in place and only touches the DOM on change. */
+
+    CHAIN_SVG: '<svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M6.6 9.4a2.4 2.4 0 0 0 3.4 0l2.6-2.6a2.4 2.4 0 0 0-3.4-3.4l-.9.9M9.4 6.6a2.4 2.4 0 0 0-3.4 0L3.4 9.2a2.4 2.4 0 0 0 3.4 3.4l.9-.9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',
+
+    /** On-field synergy partners of a player unit: [{ partner, name }]. */
+    partnersOf(unit, core) {
+      return (core.activeTeam || [])
+        .filter(u => u && u !== unit && !u.isBench && u.stats?.hp > 0)
+        .map(u => ({ partner: u, name: this.linkName(unit, u) }))
+        .filter(l => l.name);
+    },
+
+    syncBadges(core) {
+      const holder = document.getElementById("team-holder");
+      const C = window.BattleCombat;
+      if (!holder || !core || !C) return;
+      const esc = v => String(v ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+      holder.querySelectorAll(".unit-card[data-unit-id]").forEach(card => {
+        const unit = (core.activeTeam || []).find(u => u && String(u.id) === card.dataset.unitId);
+        const links = unit && unit.stats?.hp > 0 && this.enabled ? this.partnersOf(unit, core) : [];
+        const ready = links.length > 0 && this.isUltReady(unit, C) && links.some(l => this.isUltReady(l.partner, C));
+        const title = links.map(l => `${l.name}: ${l.partner.name}`).join(" · ");
+        const key = links.length ? `${ready ? 1 : 0}|${title}` : "";
+
+        let badge = card.querySelector(".uc-link");
+        if (badge?.dataset.key === key) return;
+        card.classList.toggle("link-ready", ready);
+        if (!key) { badge?.remove(); return; }
+        if (!badge) {
+          badge = document.createElement("span");
+          badge.className = "uc-link";
+          (card.querySelector(".uc-body") || card).appendChild(badge);
+        }
+        badge.dataset.key = key;
+        badge.classList.toggle("is-ready", ready);
+        badge.title = `Link Ultimate — ${title}${ready ? " (ready!)" : ""}`;
+        badge.setAttribute("aria-label", badge.title);
+        badge.innerHTML = `${this.CHAIN_SVG}<span class="uc-link__txt">${ready ? "LINK!" : esc(links[0].name)}</span>`;
+      });
+    },
+
+    startBadgeSync() {
+      if (this._badgeTimer) return;
+      this._badgeTimer = setInterval(() => {
+        try { this.syncBadges(window.BattleManager); } catch (e) { /* cosmetic */ }
+      }, 250);
     },
 
     install() {
@@ -181,6 +204,7 @@
         return ok;
       };
 
+      this.startBadgeSync();
       console.log("[LinkUltimate] Installed ✅");
     }
   };

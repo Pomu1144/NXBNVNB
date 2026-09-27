@@ -490,8 +490,66 @@
     });
 
     updateTeamStats();
+    renderSynergies();
     renderCommanderInfo();
     renderCharacterGrid();
+  }
+
+  /* ---------- Synergies (Link Ultimates) ----------
+   * Pairs of team members with synergy (js/synergy.js). Front-row pairs link
+   * their ultimates in battle; pairs involving a back-row unit only link once
+   * that unit is swapped onto the field. Linked slots get a chain badge. */
+  const CHAIN_SVG = '<svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M6.6 9.4a2.4 2.4 0 0 0 3.4 0l2.6-2.6a2.4 2.4 0 0 0-3.4-3.4l-.9.9M9.4 6.6a2.4 2.4 0 0 0-3.4 0L3.4 9.2a2.4 2.4 0 0 0 3.4 3.4l.9-.9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>';
+
+  function renderSynergies() {
+    const box = document.getElementById("team-synergy");
+    const S = window.Synergy;
+    if (!box || !S) return;
+    const esc = v => String(v ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+    const team = teams[currentTeam] || {};
+
+    const members = [];
+    Object.entries(team).forEach(([slotId, assigned]) => {
+      if (!assigned?.uid || !/^(front|back)-/.test(slotId)) return;
+      const char = BYID[assigned.charId];
+      if (!char || !window.InventoryChar?.getByUid(assigned.uid)) return;
+      members.push({ slotId, name: char.name, front: slotId.startsWith("front-") });
+    });
+
+    const pairs = S.pairs(members)
+      .map(p => ({ ...p, active: p.a.front && p.b.front }))
+      .sort((x, y) => (y.active - x.active) || x.name.localeCompare(y.name));
+
+    // Chain badge on every slot that is part of a pair (gold when active).
+    slots.forEach(slot => slot.querySelector(".slot-link")?.remove());
+    pairs.forEach(p => [p.a, p.b].forEach(m => {
+      const card = document.querySelector(`.team-slot[data-slot="${m.slotId}"] .slot-card`);
+      if (!card) return;
+      let badge = card.querySelector(".slot-link");
+      if (!badge) {
+        badge = document.createElement("span");
+        badge.className = "slot-link";
+        badge.innerHTML = CHAIN_SVG;
+        card.appendChild(badge);
+      }
+      if (p.active) badge.classList.add("is-active");
+      const partner = m === p.a ? p.b : p.a;
+      badge.title = (badge.title ? badge.title + " · " : "Synergy — ") + `${p.name}: ${partner.name}`;
+    }));
+
+    if (!pairs.length) {
+      box.innerHTML = `<p class="synergy-empty">No synergies yet. Pair characters with a bond, like Naruto + Sasuke or Deidara + Sasori, and their ultimates fire together for +20% damage.</p>`;
+      return;
+    }
+    box.innerHTML = pairs.map(p => `
+      <div class="synergy-pair${p.active ? " is-active" : ""}">
+        <span class="synergy-icon">${CHAIN_SVG}</span>
+        <span class="synergy-body">
+          <span class="synergy-name">${esc(p.name)}</span>
+          <span class="synergy-units">${esc(p.a.name)} × ${esc(p.b.name)}</span>
+        </span>
+        <span class="synergy-state">${p.active ? "Active" : "Needs swap-in"}</span>
+      </div>`).join("");
   }
 
   // Update header totals: pooled HP & total cost (actives only)
