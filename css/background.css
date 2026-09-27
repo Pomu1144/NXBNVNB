@@ -30,15 +30,6 @@ body {
 
 /* --- INDIVIDUAL BACKGROUND IMAGE CLASSES --- */
 .bg-1  { background-image: url("../assets/Main Background/Background.png"); }
-.bg-2  { background-image: url("../assets/backgrounds/leaf-sunset.webp"); }
-.bg-3  { background-image: url("../assets/backgrounds/training-ground.webp"); }
-.bg-4  { background-image: url("../assets/backgrounds/valley-of-the-end.webp"); }
-.bg-5  { background-image: url("../assets/backgrounds/hidden-sand.webp"); }
-.bg-6  { background-image: url("../assets/backgrounds/hidden-mist.webp"); }
-.bg-7  { background-image: url("../assets/backgrounds/hidden-cloud.webp"); }
-.bg-8  { background-image: url("../assets/backgrounds/akatsuki-hideout.webp"); }
-.bg-9  { background-image: url("../assets/backgrounds/uchiha-shrine.webp"); }
-.bg-10 { background-image: url("../assets/backgrounds/war-battlefield.webp"); }
 /* Painted 1920px art (catalog in js/backgrounds.js): smooth scaling, not the
    pixel-art mode the original Background.png uses */
 #full-bg:not(.bg-1)[class*="bg-"] { image-rendering: auto; }

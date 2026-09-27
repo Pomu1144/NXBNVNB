@@ -10,16 +10,7 @@
   const DEFAULT_ID = 1;
 
   const LIST = [
-    { id: 1,  name: "Hidden Leaf",       full: "assets/Main Background/Background.png", thumb: "assets/backgrounds/thumbs/hidden-leaf.webp" },
-    { id: 2,  name: "Leaf at Sunset",    full: "assets/backgrounds/leaf-sunset.webp",     thumb: "assets/backgrounds/thumbs/leaf-sunset.webp" },
-    { id: 3,  name: "Training Ground",   full: "assets/backgrounds/training-ground.webp", thumb: "assets/backgrounds/thumbs/training-ground.webp" },
-    { id: 4,  name: "Valley of the End", full: "assets/backgrounds/valley-of-the-end.webp", thumb: "assets/backgrounds/thumbs/valley-of-the-end.webp" },
-    { id: 5,  name: "Hidden Sand",       full: "assets/backgrounds/hidden-sand.webp",     thumb: "assets/backgrounds/thumbs/hidden-sand.webp" },
-    { id: 6,  name: "Hidden Mist",       full: "assets/backgrounds/hidden-mist.webp",     thumb: "assets/backgrounds/thumbs/hidden-mist.webp" },
-    { id: 7,  name: "Hidden Cloud",      full: "assets/backgrounds/hidden-cloud.webp",    thumb: "assets/backgrounds/thumbs/hidden-cloud.webp" },
-    { id: 8,  name: "Akatsuki Hideout",  full: "assets/backgrounds/akatsuki-hideout.webp", thumb: "assets/backgrounds/thumbs/akatsuki-hideout.webp" },
-    { id: 9,  name: "Uchiha Shrine",     full: "assets/backgrounds/uchiha-shrine.webp",   thumb: "assets/backgrounds/thumbs/uchiha-shrine.webp" },
-    { id: 10, name: "War Battlefield",   full: "assets/backgrounds/war-battlefield.webp", thumb: "assets/backgrounds/thumbs/war-battlefield.webp" }
+    { id: 1,  name: "Hidden Leaf",       full: "assets/Main Background/Background.png", thumb: "assets/backgrounds/thumbs/hidden-leaf.webp" }
   ];
 
   function get(id) {
