@@ -1356,7 +1356,8 @@
       const aW = meta ? meta.frameWidth * (h * (meta.heightScale || 1) / meta.frameHeight) : h * 0.8;
       const gapPx = tW * 0.45 + aW * 0.28;
       const x = Math.max(3, Math.min(97, target.pos.x - dir * (gapPx / grid.width) * 100));
-      return { x, y: this.sheetSafeY(attacker, attackerEl, target.pos.y, meta, core) };
+      const ty = target.isBoss && window.BattleBoss ? window.BattleBoss.strikeY(target, attackerEl) : target.pos.y;
+      return { x, y: this.sheetSafeY(attacker, attackerEl, ty, meta, core) };
     },
 
     /**
@@ -1914,6 +1915,8 @@
      * AI chooses between attack, jutsu, ultimate, or guard
      */
     performAITurn(unit, core, onDone) {
+      if (unit.isBoss && window.BattleBoss) return window.BattleBoss.performTurn(unit, core, onDone);
+
       console.log(`[Combat] AI Turn for ${unit.name} (isPlayer: ${unit.isPlayer})`);
 
       const targets = (unit.isPlayer ? core.enemyTeam : core.activeTeam).filter(u => u.stats.hp > 0);

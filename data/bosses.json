@@ -1,0 +1,156 @@
+{
+  "_doc": "Boss definitions for Boss Battles (js/battle/battle-boss.js). Coordinates are % of the battlefield (#battlefield-grid): x 0 = player side, 100 = far right; y is the ground line. See the shape / attack / phase notes at the top of battle-boss.js.",
+  "nine_tails": {
+    "name": "Nine-Tailed Fox",
+    "title": "Rampaging Tailed Beast",
+    "sprite": "assets/sprites/bosses/nine_tails",
+    "element": "body",
+    "placeholder": "beast",
+    "palette": { "glow": "#ff6a1f", "eyes": "#ffd84a", "aura": "#ff2414", "tint": "rgba(70, 8, 0, 0.42)" },
+    "scale": 3.6,
+    "aspect": 1.35,
+    "positions": [
+      { "x": 77, "y": 60 },
+      { "x": 66, "y": 54 },
+      { "x": 83, "y": 70 },
+      { "x": 71, "y": 74 }
+    ],
+    "ranks": {
+      "S":  { "hp": 380000, "atk": 4300, "def": 140, "speed": 100 },
+      "SS": { "hp": 520000, "atk": 5800, "def": 220, "speed": 110 }
+    },
+    "phases": [
+      {
+        "hp": 1.0,
+        "pattern": ["rending_claws", "tail_sweep", "fox_fire", "rending_claws", "tailed_beast_bomb"]
+      },
+      {
+        "hp": 0.5,
+        "name": "Enraged",
+        "banner": "The Fox's rage erupts!",
+        "speedMult": 1.35,
+        "damageMult": 1.2,
+        "aura": "#ff1a0a",
+        "pattern": ["tail_sweep", "tailed_beast_bomb", "fox_fire", "chakra_shockwave", "tailed_beast_bomb"]
+      }
+    ],
+    "attacks": {
+      "rending_claws": {
+        "name": "Rending Claws",
+        "kind": "area",
+        "shape": { "type": "row", "at": "target", "size": 30 },
+        "mult": 2.4,
+        "sheet": "attack_area"
+      },
+      "tail_sweep": {
+        "name": "Nine-Tail Sweep",
+        "kind": "area",
+        "shape": { "type": "half", "side": "target" },
+        "mult": 2.0,
+        "sheet": "attack_area"
+      },
+      "fox_fire": {
+        "name": "Fox Fire",
+        "kind": "area",
+        "shape": { "type": "cone", "angle": 46, "range": 95 },
+        "mult": 2.6,
+        "sheet": "attack_area"
+      },
+      "chakra_shockwave": {
+        "name": "Chakra Shockwave",
+        "kind": "area",
+        "shape": [
+          { "type": "circle", "at": "target", "radius": 17 },
+          { "type": "circle", "at": "target", "radius": 17 }
+        ],
+        "mult": 2.8,
+        "sheet": "attack_area"
+      },
+      "tailed_beast_bomb": {
+        "name": "Tailed Beast Bomb",
+        "kind": "map",
+        "mult": 2.6,
+        "warnMs": 2000,
+        "banner": "Tailed Beast Bomb charging — Guard!",
+        "sheet": "attack_map"
+      }
+    }
+  },
+  "susanoo_perfect": {
+    "name": "Perfect Susanoo",
+    "title": "Armoured Giant of the Uchiha",
+    "sprite": "assets/sprites/bosses/susanoo_perfect",
+    "element": "wisdom",
+    "placeholder": "giant",
+    "palette": { "glow": "#3f8cff", "eyes": "#ff3b30", "aura": "#6f5bff", "tint": "rgba(4, 14, 48, 0.46)" },
+    "scale": 3.3,
+    "aspect": 1.0,
+    "positions": [
+      { "x": 78, "y": 64 },
+      { "x": 67, "y": 58 },
+      { "x": 84, "y": 74 },
+      { "x": 72, "y": 76 }
+    ],
+    "ranks": {
+      "S":  { "hp": 420000, "atk": 3900, "def": 200, "speed": 92 },
+      "SS": { "hp": 600000, "atk": 5000, "def": 280, "speed": 100 }
+    },
+    "phases": [
+      {
+        "hp": 1.0,
+        "pattern": ["blade_sweep", "twin_blade_cross", "blade_sweep", "magatama_volley", "heaven_splitter"]
+      },
+      {
+        "hp": 0.5,
+        "name": "Awakened",
+        "banner": "The Susanoo spreads its wings!",
+        "speedMult": 1.3,
+        "damageMult": 1.25,
+        "aura": "#5b3bff",
+        "pattern": ["twin_blade_cross", "heaven_splitter", "near_cleave", "magatama_volley", "heaven_splitter"]
+      }
+    ],
+    "attacks": {
+      "blade_sweep": {
+        "name": "Blade Sweep",
+        "kind": "area",
+        "shape": { "type": "row", "at": "target", "size": 34 },
+        "mult": 2.3,
+        "sheet": "attack_area"
+      },
+      "twin_blade_cross": {
+        "name": "Twin Blade Cross",
+        "kind": "area",
+        "shape": { "type": "cross", "at": "target", "size": 20 },
+        "mult": 2.5,
+        "sheet": "attack_area"
+      },
+      "near_cleave": {
+        "name": "Cleaving Descent",
+        "kind": "area",
+        "shape": { "type": "column", "at": "target", "size": 30 },
+        "mult": 2.8,
+        "sheet": "attack_area"
+      },
+      "magatama_volley": {
+        "name": "Yasaka Magatama",
+        "kind": "area",
+        "shape": [
+          { "type": "circle", "at": "target", "radius": 14 },
+          { "type": "circle", "at": "target", "radius": 14 },
+          { "type": "circle", "at": "target", "radius": 14 }
+        ],
+        "mult": 2.2,
+        "sheet": "attack_area"
+      },
+      "heaven_splitter": {
+        "name": "Heaven Splitter",
+        "kind": "map",
+        "mult": 2.5,
+        "warnMs": 2000,
+        "banner": "Heaven Splitter incoming — Guard!",
+        "sheet": "attack_map"
+      }
+    }
+  }
+}

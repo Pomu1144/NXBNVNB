@@ -73,6 +73,12 @@
 
       // Create enemy team
       bm.enemyTeam = (waveData.enemies || []).map((enemyData, i) => {
+        // Boss Battles: { "giant": "<id>" } spawns the giant from data/bosses.json
+        if (enemyData && typeof enemyData === 'object' && enemyData.giant && window.BattleBoss) {
+          const boss = window.BattleBoss.createUnit(bm, enemyData.giant);
+          if (boss) return boss;
+        }
+
         let base;
 
         // Support pre-built enemy objects (e.g. from arena mode) as well as string IDs

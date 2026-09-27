@@ -183,7 +183,7 @@
           ${animated ? '' : `<img src="${unit.portrait}" alt="${unit.name}"
                onerror="this.src='assets/characters/common/silhouette.png';">`}
         </div>
-        ${unit.isPlayer ? '' : `
+        ${unit.isPlayer || unit.isBoss ? '' : `
         <div class="unit-hp-bar">
           <div class="unit-hp-fill" style="width:${hpPercent}%"></div>
         </div>
@@ -194,7 +194,8 @@
 
       core.dom.grid.appendChild(unitEl);
 
-      if (animated) this.attachSprite(unit, unitEl);
+      if (unit.isBoss && window.BattleBoss) window.BattleBoss.mount(unit, unitEl);
+      else if (animated) this.attachSprite(unit, unitEl);
 
       // Add event listeners for player units
       if (unit.isPlayer && core.drag) {
@@ -220,6 +221,9 @@
      * Update unit display (HP, chakra, status)
      */
     updateUnitDisplay(unit, core) {
+      // The boss has its own HP bar, phases and defeat sequence
+      if (unit.isBoss && window.BattleBoss) return window.BattleBoss.updateDisplay(unit, core);
+
       console.log(`[BattleUnits] Updating display for ${unit.name}, HP: ${unit.stats.hp}/${unit.stats.maxHP}`);
 
       const unitEl = core.dom.scene?.querySelector(`.battle-unit[data-unit-id="${unit.id}"]`);

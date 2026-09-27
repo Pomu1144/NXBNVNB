@@ -246,6 +246,9 @@
       // Lock turn system
       this.turnLocked = true;
       this.currentUnit = unit;
+      // Every turn gets its own id so timers left over from this unit's
+      // previous turn (e.g. a boss acting twice in a row) never end this one.
+      const turnId = (this._turnSeq = (this._turnSeq || 0) + 1);
       this.isPlayerTurn = unit.isPlayer;
 
       // Pause all other units
@@ -319,7 +322,7 @@
           // Safety timeout: end turn if combat callback never fires (guard, sealed, no targets, etc.)
           // Long spritesheet skills flag the unit busy; wait for them instead.
           const safety = () => {
-            if (this.currentUnit !== unit) return;
+            if (this.currentUnit !== unit || this._turnSeq !== turnId) return;
             if (unit._actionBusy) { setTimeout(safety, 500); return; }
             this.endTurn(core);
           };
@@ -383,6 +386,9 @@
 
       this.updateSpeedGaugeDisplay(core);
       core.teamHolder?.highlightActingUnit?.(null);
+
+      // Boss crossed an HP threshold during that turn: roar into the next phase now
+      if (core.isBossBattle) window.BattleBoss?.afterTurn(core);
     },
 
     /* ===== Action Panel ===== */

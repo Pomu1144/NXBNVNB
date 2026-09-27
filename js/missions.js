@@ -6,7 +6,9 @@
 //     stamina: {rank: n}, power: {rank: n},
 //     clearRewards: {rank: { firstTime, completion }},
 //     difficulties: {rank: [ { stage, title, map, boss?, waves: [{ enemies: [...] }], rewards } ]},
-//     cast: { charId: { name, portrait } } }
+//     cast: { charId: { name, portrait } },
+//     giant?: bossId }  -> Boss Battles: the stage's wave is [{ "giant": bossId }] and
+//                          js/battle/battle-boss.js fields that boss from data/bosses.json
 // Tabs: one per distinct `category`, ordered by TAB_ORDER; any other
 // category found in the data gets a tab after those, in data order.
 
@@ -22,6 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
     'Shinobi Chronicles Part 1',
     'Shinobi Chronicles Part 2',
     'Super Impact',
+    'Boss Battles',
     'Impact Missions',
     'Limited Time Event',
     'Growth Missions'
@@ -31,6 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
     'Shinobi Chronicles Part 1': 'The story from the Academy to the Valley of the End. Clear an arc on Normal to open the next.',
     'Shinobi Chronicles Part 2': 'Shippuden, from Naruto’s homecoming to the final battle. Opens after Part 1.',
     'Super Impact': 'A / S / SS boss fights. Clearing SS recruits a unit that can be Blazing Awakened.',
+    'Boss Battles': 'One giant boss that stalks the whole field. Move out of the red zones, Guard against map-wide blasts.',
     'Impact Missions': 'Much tougher missions; the top rank recruits the featured unit.',
     'Limited Time Event': 'Raids: defeat the featured shinobi for a chance to recruit a new unit.',
     'Growth Missions': 'EXP ramen, ryo and Awakening Scroll missions for building your team.'
@@ -180,9 +184,9 @@ document.addEventListener('DOMContentLoaded', () => {
       </div>`;
   }
 
-  // "Super Impact! Wings of Freedom" -> kicker "Super Impact!", title "Wings of Freedom"
+  // "Super Impact! Wings of Freedom" -> kicker "Super Impact!", title "Wings of Freedom" (same for "Boss Battle!")
   function cardTitle(m) {
-    const hit = /^(Super Impact!|Impact!)\s+(.+)$/.exec(m.name || '');
+    const hit = /^(Super Impact!|Impact!|Boss Battle!)\s+(.+)$/.exec(m.name || '');
     if (hit) return { kicker: hit[1], title: hit[2] };
     const kicker = m.arc
       ? (m.chapter ? `Chapter ${m.chapter} · ${m.arc}` : m.arc)
@@ -216,6 +220,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const isLocked = !isRequirementMet(mission);
       if (isLocked) card.classList.add('mission-locked');
+      if (mission.giant) card.classList.add('mission-card--boss'); // Boss Battles (data/bosses.json)
       const ranks = ranksOf(mission);
       const allClear = ranks.length > 0 && ranks.every(r => isCleared(mission.id, r));
       if (allClear) card.classList.add('mission-complete');
@@ -331,7 +336,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="md-sheet jjk-panel">
           <button type="button" class="jjk-icon-btn md-close" data-close aria-label="Close"><img src="assets/ui/jjk/back_arrow.webp" alt=""></button>
           <div class="md-side">
-            <div class="md-hero">
+            <div class="md-hero${mission.giant ? ' mission-card--boss' : ''}">
               ${bannerArt(mission)}
               <div class="mc-text">
                 <span class="mc-kicker">${esc(cardTitle(mission).kicker)}</span>

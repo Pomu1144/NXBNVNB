@@ -653,3 +653,54 @@ body.page-missions .start-btn:disabled {
   .md-foe { width: 32px; height: 32px; }
   .md-foe.is-boss { width: 38px; height: 38px; }
 }
+
+/* ---------- Boss Battles: giant boss missions (mission.giant) ---------- */
+body.page-missions .tab-btn[data-category="boss-battles"] { --cat: #ff3a2a; }
+.mission-card.mission-card--boss {
+  border-color: rgba(214, 60, 40, 0.75);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.55), 0 0 18px rgba(170, 10, 0, 0.35), inset 0 0 0 1px rgba(0, 0, 0, 0.6);
+}
+.mission-card.mission-card--boss:hover { border-color: #ff5a3a; }
+.mission-card--boss .mc-kicker { color: #ff6a52; }
+.mission-card--boss .mc-shade {
+  background:
+    linear-gradient(90deg, rgba(10, 2, 2, 0.9) 0%, rgba(10, 2, 2, 0.55) 40%, rgba(10, 2, 2, 0) 66%),
+    linear-gradient(0deg, rgba(10, 2, 2, 0.92) 0%, rgba(10, 2, 2, 0) 45%);
+}
+/* hazard tag, top-right */
+.mission-card--boss .mc-art::after {
+  content: "Giant Boss";
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  padding: 2px 10px;
+  font-family: var(--jjk-font);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #ffe9d2;
+  background: repeating-linear-gradient(-45deg, #5a0000 0 7px, #a50f09 7px 14px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.7);
+}
+/* key art not landed yet: a black giant with glowing eyes on a blood-red wash */
+.mission-card--boss .mission-banner.is-missing {
+  background:
+    radial-gradient(ellipse 26% 70% at 74% 92%, #000 60%, transparent 62%),
+    radial-gradient(ellipse at 74% 70%, rgba(190, 20, 0, 0.55) 0%, transparent 55%),
+    linear-gradient(100deg, #0b0203, #2a0504 60%, #0b0203);
+}
+.mission-card--boss .mc-art:has(.is-missing)::before {
+  content: "";
+  position: absolute;
+  left: 68%;
+  top: 44%;
+  width: 12%;
+  height: 7%;
+  background:
+    linear-gradient(20deg, transparent 40%, #ffd23a 42%, #ffd23a 60%, transparent 62%) left / 40% 100% no-repeat,
+    linear-gradient(-20deg, transparent 40%, #ffd23a 42%, #ffd23a 60%, transparent 62%) right / 40% 100% no-repeat;
+  filter: drop-shadow(0 0 4px #ffb400) drop-shadow(0 0 10px #ff5a00);
+  animation: bossEyes 2.2s ease-in-out infinite;
+}
+@keyframes bossEyes { 0%, 100% { opacity: 1; } 45% { opacity: 0.5; } 50% { opacity: 1; } }

@@ -148,11 +148,12 @@
       const missionId = localStorage.getItem("currentMissionId") || "m_001";
       const preferredDifficulty = localStorage.getItem("currentDifficulty") || "C";
 
-      const [missions, enemies, characters, jutsuCards] = await Promise.all([
+      const [missions, enemies, characters, jutsuCards, bosses] = await Promise.all([
         fetchJSON("data/missions.json", []),
         fetchJSON("data/enemies.json", []),
         fetchJSON("data/characters.json", []),
-        fetchJSON("data/cards.json", null).then(d => d || fetchJSON("data/jutsu_cards.json", { cards: [] }))
+        fetchJSON("data/cards.json", null).then(d => d || fetchJSON("data/jutsu_cards.json", { cards: [] })),
+        fetchJSON("data/bosses.json", {})
       ]);
 
       this.enemiesData = enemies;
@@ -244,6 +245,9 @@
       if (this.dom.scene && this.drag) {
         this.overlay = this.drag.makeOverlay(this.dom.scene);
       }
+
+      // Boss Battles: one giant enemy (js/battle/battle-boss.js)
+      window.BattleBoss?.setup(this, bosses);
 
       // Load player team
       this.loadPlayerTeamFromStorage();

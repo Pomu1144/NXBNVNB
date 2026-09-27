@@ -150,6 +150,7 @@
   function react(unit, dom, { strong = false } = {}) {
     try {
       if (!unit || !unit.stats) return;
+      if (unit.isBoss && window.BattleBoss) { window.BattleBoss.onHit(unit); return; }
       const unitEl = unitElOf(unit, dom);
       if (unit._sprite) {
         if (unit.stats.hp <= 0) { spriteKO(unit, dom); return; }
