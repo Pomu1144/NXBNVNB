@@ -566,6 +566,7 @@
       // Calculate statistics
       const stats = this.calculateBattleStats(bm);
 
+      if (!bm._outcomeBanner) window.AudioManager?.playVictoryMusic();
       this.playOutcomeBanner(bm, true).then(() => this.showResult(bm, true, stats));
     },
 
@@ -589,6 +590,7 @@
       // Calculate statistics
       const stats = this.calculateBattleStats(bm);
 
+      if (!bm._outcomeBanner) window.AudioManager?.playDefeatMusic();
       this.playOutcomeBanner(bm, false).then(() => this.showResult(bm, false, stats));
     },
 

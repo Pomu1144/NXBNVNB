@@ -23,31 +23,7 @@
 
   if (!overlay) return;
 
-  const setupLoginMusic = () => {
-    const track = new Audio('assets/music/general.mp3');
-    track.loop = true;
-    track.volume = 0.35;
-    track.preload = 'auto';
-
-    const tryPlay = () => {
-      track.play().catch(() => {});
-    };
-
-    tryPlay();
-    ['click', 'touchstart', 'keydown'].forEach((evt) => {
-      overlay.addEventListener(
-        evt,
-        () => {
-          tryPlay();
-        },
-        { once: true },
-      );
-    });
-
-    return track;
-  };
-
-  setupLoginMusic();
+  // Login music: js/audio-manager.js plays the title theme on this page.
 
   const safeGet = (key) => {
     try {

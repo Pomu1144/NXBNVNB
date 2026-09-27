@@ -139,6 +139,8 @@
       this.setupEventListeners();
 
       const isArenaBattle = localStorage.getItem("arena_battle_mode") === "1";
+      // Music starts while the stage loads; boss fights switch below
+      window.AudioManager?.playMusic(isArenaBattle ? "arena" : "battle");
       const missionId = localStorage.getItem("currentMissionId") || "m_001";
       const preferredDifficulty = localStorage.getItem("currentDifficulty") || "C";
 
@@ -258,14 +260,15 @@
 
       // NOTE: BattleFieldBuddy.init() is called AFTER first wave loads in battle-missions.js
 
+      // Boss fights get the boss theme (set this.isBoss when building a boss
+      // stage, or call AudioManager.playMusic('boss') from the boss scene)
+      if (this.isBoss && window.AudioManager) {
+        window.AudioManager.playMusic("boss");
+      }
+
       // Play entrance animations if available
       if (window.BattleEntrance) {
         await window.BattleEntrance.playEntranceSequence(this);
-      }
-
-      // Start battle music
-      if (window.AudioManager) {
-        window.AudioManager.playBattleMusic();
       }
 
       // Start speed gauge system if turns module available
