@@ -930,6 +930,11 @@
           }
         }, 600);
       } else if (enemiesAlive === 0) {
+        // Several hits can report the last kill (e.g. a sprite attack re-checks
+        // after its animation); complete each wave only once, or the next
+        // wave/stage gets skipped. loadWave() builds a new enemyTeam array.
+        if (this._completedWave === this.enemyTeam) return;
+        this._completedWave = this.enemyTeam;
         this.isPaused = true;
 
         // Delay to allow HP bars to finish animating to 0

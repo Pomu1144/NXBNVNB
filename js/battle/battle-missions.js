@@ -118,6 +118,16 @@
           }
         }
 
+        // Mission data may tune an enemy per stage:
+        // { "id": "zabuza_144", "hp": 9000, "atk": 400, "def": 20, "speed": 95, "boss": true }
+        if (typeof enemyData === 'object' && enemyData !== null && !enemyData.stats) {
+          const tuned = { ...base.stats };
+          ['hp', 'atk', 'def', 'speed'].forEach(k => {
+            if (Number(enemyData[k]) > 0) tuned[k] = Number(enemyData[k]);
+          });
+          base = { ...base, stats: tuned };
+        }
+
         // Convert sprite to portrait for compatibility
         const portrait = base.portrait || base.sprite || "assets/characters/common/silhouette.png";
 
@@ -248,6 +258,9 @@
         // Award final stage chest (arena pays out via arena stars instead)
         if (window.BattleRewards && !bm.isArena) {
           await window.BattleRewards.awardStageChest(currentStage, bm.currentStageIndex, bm);
+          // There is no "next stage" to pick it up, so collect it here —
+          // otherwise the last stage's rewards (e.g. an SS unit) are never granted
+          await window.BattleRewards.collectStageChest(bm);
         }
 
         // Record completion, first-clear rewards, player EXP and dailies
@@ -290,7 +303,7 @@
       try {
         if (window.ExpRewards) {
           const stats = this.calculateBattleStats(bm);
-          const expByDifficulty = { C: "MISSION_EASY", B: "MISSION_NORMAL", A: "MISSION_HARD", S: "MISSION_EXTREME" };
+          const expByDifficulty = { D: "MISSION_EASY", C: "MISSION_EASY", B: "MISSION_NORMAL", A: "MISSION_HARD", S: "MISSION_EXTREME", SS: "MISSION_EXTREME" };
           const expMission = window.ExpRewards.giveReward(expByDifficulty[difficulty] || "MISSION_NORMAL");
           const expWin = window.ExpRewards.onBattleWin({
             unitsLost: stats.totalUnits - stats.survivingUnits,

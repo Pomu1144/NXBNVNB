@@ -1,10 +1,48 @@
-// js/missions.js — CLEAN & FINAL VERSION (supports C, B, A, S, SS)
+// js/missions.js — Missions screen: category tabs, banner cards, detail sheet.
+//
+// Everything comes from data/missions.json (one entry per mission):
+//   { id, category, arc?, chapter?, name, description, banner, feature?, featureArt?,
+//     sortOrder, requires?: { mission, rank }, rankGate?, rankNames?,
+//     stamina: {rank: n}, power: {rank: n},
+//     clearRewards: {rank: { firstTime, completion }},
+//     difficulties: {rank: [ { stage, title, map, boss?, waves: [{ enemies: [...] }], rewards } ]},
+//     cast: { charId: { name, portrait } } }
+// Tabs: one per distinct `category`, ordered by TAB_ORDER; any other
+// category found in the data gets a tab after those, in data order.
 
 document.addEventListener('DOMContentLoaded', () => {
   const tabsContainer = document.querySelector('.mission-tabs');
   const listContainer = document.querySelector('.mission-list');
 
   let allMissions = [];
+
+  // Known tabs, left to right. A new category needs no entry here (it is
+  // appended), but can be listed to control its position.
+  const TAB_ORDER = [
+    'Shinobi Chronicles Part 1',
+    'Shinobi Chronicles Part 2',
+    'Super Impact',
+    'Impact Missions',
+    'Limited Time Event',
+    'Growth Missions'
+  ];
+  // Short line shown above each tab's list
+  const TAB_BLURB = {
+    'Shinobi Chronicles Part 1': 'The story from the Academy to the Valley of the End. Clear an arc on Normal to open the next.',
+    'Shinobi Chronicles Part 2': 'Shippuden, from Naruto’s homecoming to the final battle. Opens after Part 1.',
+    'Super Impact': 'A / S / SS boss fights. Clearing SS recruits a unit that can be Blazing Awakened.',
+    'Impact Missions': 'Much tougher missions; the top rank recruits the featured unit.',
+    'Limited Time Event': 'Raids: defeat the featured shinobi for a chance to recruit a new unit.',
+    'Growth Missions': 'EXP ramen, ryo and Awakening Scroll missions for building your team.'
+  };
+  const RANK_ORDER = ['D', 'C', 'B', 'A', 'S', 'SS'];
+  const PROGRESS_KEY = 'blazing_mission_progress_v1';
+  // Player EXP per clear (mirrors js/battle/battle-missions.js -> ExpRewards)
+  const RANK_EXP = { D: 25, C: 25, B: 50, A: 100, S: 200, SS: 200 };
+
+  const esc = (v) => String(v ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const slug = (s) => String(s).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  const fmt = (n) => (Number(n) || 0).toLocaleString();
 
   /* ------------------------------------------------------------------
    * Scroll routing. The page itself never scrolls (header, panel and
@@ -66,177 +104,290 @@ document.addEventListener('DOMContentLoaded', () => {
     if (performance.now() - tLastT < 80) glide();
   }, { passive: true });
 
+  /* ------------------------------------------------------------------
+   * Progress (shared with js/mission-progress.js, which isn't loaded here):
+   * blazing_mission_progress_v1 = { missionId: { rank: { firstClear } } }
+   * ------------------------------------------------------------------ */
+  let progress = {};
+  function loadProgress() {
+    try { progress = JSON.parse(localStorage.getItem(PROGRESS_KEY) || '{}') || {}; }
+    catch { progress = {}; }
+  }
+  const isCleared = (id, rank) => progress?.[id]?.[rank]?.firstClear === true;
+  const ranksOf = (m) => Object.keys(m.difficulties || {})
+    .sort((a, b) => RANK_ORDER.indexOf(a) - RANK_ORDER.indexOf(b));
+  const rankLabel = (m, r) => (m && m.rankNames && m.rankNames[r]) || `${r} Rank`;
+  const missionById = (id) => allMissions.find(x => x.id === id);
+
   // A mission may gate itself behind another mission's rank clear via a
-  // `requires: { mission, rank }` field. Read the shared progress store
-  // directly (mission-progress.js isn't loaded on this page).
+  // `requires: { mission, rank }` field.
   function isRequirementMet(mission) {
     const req = mission && mission.requires;
     if (!req || !req.mission) return true;
-    try {
-      const prog = JSON.parse(localStorage.getItem('blazing_mission_progress_v1') || '{}');
-      const rank = req.rank || 'SS';
-      return prog?.[req.mission]?.[rank]?.firstClear === true;
-    } catch { return true; }
+    return isCleared(req.mission, req.rank || 'SS');
   }
-  function missionNameById(id) {
-    const m = allMissions.find(x => x.id === id);
-    return m ? (m.name || id) : id;
+  function requirementText(mission) {
+    const req = mission.requires;
+    const reqM = missionById(req.mission);
+    return `Clear ${rankLabel(reqM, req.rank || 'SS')} of “${reqM ? reqM.name : req.mission}”`;
+  }
+  // `rankGate`: each rank opens once the rank before it is cleared
+  function isRankOpen(mission, rank) {
+    if (!isRequirementMet(mission)) return false;
+    if (!mission.rankGate) return true;
+    const ranks = ranksOf(mission);
+    const i = ranks.indexOf(rank);
+    return i <= 0 || isCleared(mission.id, ranks[i - 1]);
+  }
+  // First open rank the player hasn't cleared yet
+  function defaultRank(m) {
+    const ranks = ranksOf(m);
+    const open = ranks.filter(r => isRankOpen(m, r));
+    return open.find(r => !isCleared(m.id, r)) || open[open.length - 1] || ranks[0];
   }
 
-  /**
-   * Render all missions for a selected category
-   */
+  /* ---------------------------- rewards ---------------------------- */
+  const RF = () => window.RewardFormat;
+  function rewardTiles(map, extraClass = '') {
+    const items = RF() ? RF().items(map) : Object.entries(map || {}).map(([k, v]) => ({ key: k, name: k, qty: v, icon: '' }));
+    return items.map(it => `
+      <span class="mr-tile ${extraClass} ${it.kind === 'character' ? 'is-unit' : ''}" title="${esc(it.name)}">
+        <img src="${esc(it.icon)}" alt="" loading="lazy" onerror="this.onerror=null;this.src='${esc(it.fallback || '')}'">
+        <b>${it.kind === 'character' ? esc(String(it.tier || '').replace('S', '★')) : '×' + esc(RF() ? RF().fmtQty(it.qty) : it.qty)}</b>
+        <small>${esc(it.name)}</small>
+      </span>`).join('');
+  }
+  const mergeMaps = (...maps) => (RF() ? RF().merge(...maps) : Object.assign({}, ...maps));
+
+  /* ------------------------------ cards ----------------------------- */
+  // Banner = generated arc/category key art + the featured unit's full art
+  // (story arcs share an arc banner, so they get a small boss medallion
+  // instead of the full art that would cover the key art)
+  function bannerArt(mission) {
+    const boss = mission.feature && mission.cast && mission.cast[mission.feature];
+    let feat = '';
+    if (mission.chapter && boss) {
+      feat = `<img class="mc-medal" src="${esc(boss.portrait)}" alt="" loading="lazy" onerror="this.remove()">`;
+    } else if (mission.featureArt) {
+      feat = `<img class="mc-feature" src="${esc(mission.featureArt)}" alt="" loading="lazy" onerror="this.remove()">`;
+    }
+    return `
+      <div class="mc-art">
+        <img class="mission-banner" src="${esc(mission.banner)}" alt="" loading="lazy"
+             onerror="this.classList.add('is-missing');this.removeAttribute('src')">
+        ${feat}
+        <div class="mc-shade"></div>
+      </div>`;
+  }
+
+  // "Super Impact! Wings of Freedom" -> kicker "Super Impact!", title "Wings of Freedom"
+  function cardTitle(m) {
+    const hit = /^(Super Impact!|Impact!)\s+(.+)$/.exec(m.name || '');
+    if (hit) return { kicker: hit[1], title: hit[2] };
+    const kicker = m.arc
+      ? (m.chapter ? `Chapter ${m.chapter} · ${m.arc}` : m.arc)
+      : (m.category || '');
+    return { kicker, title: m.name };
+  }
+
   function renderMissionsForCategory(categoryName) {
-
-    // Filter + sort missions
     const missionsToRender = allMissions
       .filter(m => m.category === categoryName)
       .sort((a, b) => (a.sortOrder ?? 9999) - (b.sortOrder ?? 9999));
 
+    loadProgress();
     listContainer.innerHTML = '';
+    listContainer.dataset.category = slug(categoryName);
+
+    // Tab header: blurb + clear count
+    const clearedCount = missionsToRender.filter(m => ranksOf(m).some(r => isCleared(m.id, r))).length;
+    const head = document.createElement('div');
+    head.className = 'mission-list-head';
+    head.innerHTML = `
+      <span class="mlh-blurb">${esc(TAB_BLURB[categoryName] || '')}</span>
+      <span class="jjk-chip mlh-count">${clearedCount} / ${missionsToRender.length} cleared</span>`;
+    listContainer.appendChild(head);
 
     missionsToRender.forEach(mission => {
-      const card = document.createElement('div');
+      const card = document.createElement('button');
+      card.type = 'button';
       card.className = 'mission-card';
+      card.dataset.missionId = mission.id;
 
-      // Locked if a prerequisite mission/rank hasn't been cleared yet
       const isLocked = !isRequirementMet(mission);
       if (isLocked) card.classList.add('mission-locked');
+      const ranks = ranksOf(mission);
+      const allClear = ranks.length > 0 && ranks.every(r => isCleared(mission.id, r));
+      if (allClear) card.classList.add('mission-complete');
 
-      // ---------------------------
-      // Banner (styled fallback when the art file is missing —
-      // most legacy missions ship without banner images)
-      // ---------------------------
-      const CATEGORY_THEMES = {
-        'Super Impact':              ['#4a0d0d', '#8b1a1a', '#ff6b45'],
-        'Impact Missions':           ['#3a2604', '#7a5410', '#ffd24a'],
-        'Shinobi Chronicles Part 1': ['#0d2a12', '#1e5a2a', '#7fdc8f'],
-        'Shinobi Chronicles Part 2': ['#0d1c3a', '#1e3f7a', '#7fb2ff'],
-        'Limited Time Event':        ['#2a0d3a', '#5a1e7a', '#d67fff'],
-        'Growth Missions':           ['#0d2a2a', '#1e5a5a', '#7fdcdc']
-      };
+      const { kicker, title } = cardTitle(mission);
+      const pips = ranks.map(r => `<i class="mc-pip ${isCleared(mission.id, r) ? 'is-clear' : ''}" title="${esc(rankLabel(mission, r))}">${esc(r)}</i>`).join('');
+      const r0 = defaultRank(mission);
 
-      const banner = document.createElement('img');
-      banner.className = 'mission-banner';
-      banner.src = mission.banner || 'assets/missions/banners/default_banner.png';
-      banner.alt = mission.name || 'Mission Banner';
-      banner.onerror = () => {
-        const [dark, mid, glow] = CATEGORY_THEMES[mission.category] || ['#1a1a2a', '#2a2a4a', '#d4af37'];
-        const fallback = document.createElement('div');
-        fallback.className = 'mission-banner mission-banner-fallback';
-        fallback.style.background = `
-          repeating-linear-gradient(-55deg, transparent 0 14px, rgba(0,0,0,0.18) 14px 16px),
-          radial-gradient(circle at 85% 20%, ${mid}cc, transparent 60%),
-          linear-gradient(100deg, ${dark} 0%, ${mid} 55%, ${dark} 100%)`;
-        fallback.innerHTML = `
-          <span class="mbf-category" style="color:${glow}">${mission.category || ''}</span>
-          <span class="mbf-name">${mission.name || 'Mission'}</span>`;
-        banner.replaceWith(fallback);
-      };
-      card.appendChild(banner);
+      card.innerHTML = `
+        ${bannerArt(mission)}
+        <div class="mc-text">
+          <span class="mc-kicker">${esc(kicker)}</span>
+          <span class="mc-title">${esc(title)}</span>
+        </div>
+        <div class="mc-meta">
+          <span class="mc-pips">${pips}</span>
+          <span class="mc-stat" title="Stamina"><i class="ic-stamina"></i>${esc(mission.stamina?.[r0] ?? '-')}</span>
+          <span class="mc-stat" title="Recommended power"><i class="ic-power"></i>${esc(((mission.power?.[r0] || 0) / 1000).toFixed(1))}k</span>
+        </div>
+        ${allClear ? '<img class="mc-stamp" src="assets/ui/jjk/stamp_claimed.webp" alt="Cleared">' : ''}
+        ${isLocked ? `<span class="mc-lock"><img src="assets/ui/jjk/medal_locked.webp" alt=""><span class="mission-lock-note">${esc(requirementText(mission))}</span></span>` : ''}`;
+      card.addEventListener('click', () => openDetail(mission));
+      listContainer.appendChild(card);
+    });
 
-      // ---------------------------
-      // Controls container
-      // ---------------------------
-      const controls = document.createElement('div');
-      controls.className = 'mission-controls';
+    // Highlight selected category tab
+    document.querySelectorAll('.tab-btn').forEach(tab => {
+      tab.classList.toggle('active', tab.dataset.name === categoryName);
+    });
+    revealActiveTab();
+    try { sessionStorage.setItem('missions_tab', categoryName); } catch { /* ignore */ }
+    // New category starts at the top of its list
+    if (scroller) scroller.scrollTop = 0;
+  }
 
-      // ---------------------------
-      // Difficulty icons row
-      // ---------------------------
-      const difficultyContainer = document.createElement('div');
-      difficultyContainer.className = 'difficulty-icons-container';
+  /* --------------------------- detail sheet -------------------------- */
+  let modal = null;
+  function onKey(e) { if (e.key === 'Escape') closeDetail(); }
+  function closeDetail() {
+    if (!modal) return;
+    modal.remove(); modal = null;
+    document.removeEventListener('keydown', onKey);
+  }
 
-      const availableDifficulties = Object.keys(mission.difficulties || {});
-      let selectedDifficulty = availableDifficulties[0] || 'C';
+  function openDetail(mission, rank) {
+    loadProgress();
+    closeDetail();
+    const ranks = ranksOf(mission);
+    let selected = rank && ranks.includes(rank) ? rank : defaultRank(mission);
 
-      availableDifficulties.forEach(rank => {
-        const button = document.createElement('button');
-        button.className = 'difficulty-icon-btn';
-        button.dataset.difficulty = rank;
+    modal = document.createElement('div');
+    modal.className = 'mission-modal';
+    modal.setAttribute('role', 'dialog');
+    modal.setAttribute('aria-modal', 'true');
+    modal.setAttribute('aria-label', mission.name);
+    document.body.appendChild(modal);
+    document.addEventListener('keydown', onKey);
 
-        const icon = document.createElement('img');
+    const cast = mission.cast || {};
+    const who = (id) => cast[id] || { name: id, portrait: 'assets/characters/common/silhouette.png' };
 
-        // ✔ Each rank uses its own icon file
-        // c_icons.png, b_icons.png, a_icons.png, s_icons.png, ss_icons.png
-        const safeRank = rank.toLowerCase(); // handles "SS", "Ex", etc.
-        icon.src = `assets/icons/${safeRank}_icons.png`;
-        icon.alt = rank + ' Rank';
+    const paint = () => {
+      const stages = mission.difficulties?.[selected] || [];
+      const open = isRankOpen(mission, selected);
+      const cleared = isCleared(mission.id, selected);
+      const clear = mission.clearRewards?.[selected] || {};
+      const repeat = mergeMaps(...stages.map(s => s.rewards || {}), clear.completion || {});
+      const waves = stages.reduce((n, s) => n + (s.waves?.length || 0), 0);
 
-        // If icon missing → fallback to text
-        icon.onerror = () => {
-          icon.remove();
-          button.textContent = rank;
-          button.classList.add('difficulty-fallback');
-        };
+      const rankBtns = ranks.map(r => `
+        <button type="button" class="difficulty-icon-btn md-rank ${r === selected ? 'active' : ''} ${isRankOpen(mission, r) ? '' : 'is-locked'} ${isCleared(mission.id, r) ? 'is-clear' : ''}" data-difficulty="${esc(r)}">
+          <span class="md-rank-letter">${esc(r)}</span>
+          <span class="md-rank-name">${esc(mission.rankNames?.[r] || 'Rank')}</span>
+        </button>`).join('');
 
-        button.appendChild(icon);
+      const stageRows = stages.map((s, i) => {
+        // one chip per distinct enemy, boss last
+        const seen = new Map();
+        (s.waves || []).forEach(w => (w.enemies || []).forEach(e => {
+          const id = typeof e === 'string' ? e : e.id;
+          const boss = !!(e && e.boss);
+          const k = id + (boss ? '*' : '');
+          seen.set(k, { id, boss, n: (seen.get(k)?.n || 0) + 1 });
+        }));
+        const chips = [...seen.values()].sort((a, b) => a.boss - b.boss).map(e => `
+          <span class="md-foe ${e.boss ? 'is-boss' : ''}" title="${esc(who(e.id).name)}${e.boss ? ' (Boss)' : ''}">
+            <img src="${esc(who(e.id).portrait)}" alt="" loading="lazy" onerror="this.onerror=null;this.src='assets/characters/common/silhouette.png'">
+            ${e.n > 1 ? `<b>×${e.n}</b>` : ''}
+          </span>`).join('');
+        const nW = (s.waves || []).length;
+        return `
+          <li class="md-stage ${s.boss ? 'is-boss-stage' : ''}">
+            <span class="md-stage-no">${i + 1}</span>
+            <span class="md-stage-body">
+              <span class="md-stage-title">${esc(s.title || `Stage ${i + 1}`)}${s.boss && i === stages.length - 1 ? '<em>Boss</em>' : ''}</span>
+              <span class="md-stage-sub">${nW} wave${nW === 1 ? '' : 's'}${s.boss ? ' · ' + esc(who(s.boss).name) : ''}</span>
+            </span>
+            <span class="md-foes">${chips}</span>
+            <span class="md-drops">${rewardTiles(s.rewards, 'is-mini')}</span>
+          </li>`;
+      }).join('');
 
-        // Default active difficulty
-        if (rank === selectedDifficulty) {
-          button.classList.add('active');
-        }
+      let lockText = '';
+      if (!isRequirementMet(mission)) {
+        lockText = requirementText(mission) + ' first.';
+      } else if (!open) {
+        const prev = ranks[ranks.indexOf(selected) - 1];
+        lockText = `Clear ${rankLabel(mission, prev)} to unlock ${rankLabel(mission, selected)}.`;
+      }
 
-        // Switch difficulty
-        button.addEventListener('click', () => {
-          difficultyContainer.querySelectorAll('.difficulty-icon-btn')
-            .forEach(b => b.classList.remove('active'));
+      modal.innerHTML = `
+        <div class="md-backdrop" data-close></div>
+        <div class="md-sheet jjk-panel">
+          <button type="button" class="jjk-icon-btn md-close" data-close aria-label="Close"><img src="assets/ui/jjk/back_arrow.webp" alt=""></button>
+          <div class="md-side">
+            <div class="md-hero">
+              ${bannerArt(mission)}
+              <div class="mc-text">
+                <span class="mc-kicker">${esc(cardTitle(mission).kicker)}</span>
+                <span class="mc-title">${esc(cardTitle(mission).title)}</span>
+              </div>
+            </div>
+            <p class="md-desc">${esc(mission.description || '')}</p>
+            <div class="md-ranks difficulty-icons-container">${rankBtns}</div>
+            <div class="md-facts">
+              <span class="jjk-chip"><i class="ic-stamina"></i>Stamina ${esc(mission.stamina?.[selected] ?? '-')}</span>
+              <span class="jjk-chip"><i class="ic-power"></i>Rec. Power ${fmt(mission.power?.[selected])}</span>
+              <span class="jjk-chip">${stages.length} stage${stages.length === 1 ? '' : 's'} · ${waves} waves</span>
+              <span class="jjk-chip">Player EXP +${RANK_EXP[selected] || 50}</span>
+            </div>
+            <div class="md-rewards">
+              <div class="md-rw-block ${cleared ? 'is-claimed' : ''}">
+                <span class="md-label">First Clear${cleared ? ' · Claimed' : ''}</span>
+                <div class="md-tiles">${rewardTiles(clear.firstTime) || '<span class="md-none">—</span>'}</div>
+              </div>
+              <div class="md-rw-block">
+                <span class="md-label">Every Clear</span>
+                <div class="md-tiles">${rewardTiles(repeat) || '<span class="md-none">—</span>'}</div>
+              </div>
+            </div>
+            <div class="md-go">
+              ${lockText ? `<span class="mission-lock-note">${esc(lockText)}</span>` : ''}
+              <button type="button" class="start-btn" ${open ? '' : 'disabled'}>${open ? 'Start Mission' : 'Locked'}</button>
+            </div>
+          </div>
+          <div class="md-main">
+            <span class="md-label">Stages · ${esc(rankLabel(mission, selected))}</span>
+            <ol class="md-stages">${stageRows}</ol>
+          </div>
+        </div>`;
 
-          button.classList.add('active');
-          selectedDifficulty = rank;
-        });
-
-        difficultyContainer.appendChild(button);
-      });
-
-      controls.appendChild(difficultyContainer);
-
-      // ---------------------------
-      // Start Mission Button
-      // ---------------------------
-      const startButton = document.createElement('button');
-      startButton.className = 'start-btn';
-      startButton.textContent = isLocked ? 'Locked' : 'Start Mission';
-      if (isLocked) startButton.disabled = true;
-
-      startButton.addEventListener('click', () => {
-        if (isLocked) return;
+      modal.querySelectorAll('[data-close]').forEach(el => el.addEventListener('click', closeDetail));
+      modal.querySelectorAll('.md-rank').forEach(btn => btn.addEventListener('click', () => {
+        selected = btn.dataset.difficulty;
+        paint();
+      }));
+      modal.querySelector('.start-btn').addEventListener('click', () => {
+        if (!isRankOpen(mission, selected)) return;
         localStorage.setItem('currentMissionId', String(mission.id));
-        localStorage.setItem('currentDifficulty', selectedDifficulty);
+        localStorage.setItem('currentDifficulty', selected);
         localStorage.setItem('currentMissionName', mission.name || '');
         localStorage.setItem('currentMissionBanner', mission.banner || '');
 
         // Fade transition
         document.body.style.transition = 'opacity 0.25s linear';
         document.body.style.opacity = '0';
-
         setTimeout(() => {
           window.location.href = 'teams.html?mode=prebattle';
         }, 250);
       });
-
-      controls.appendChild(startButton);
-
-      // Requirement note for locked missions
-      if (isLocked && mission.requires) {
-        const lockNote = document.createElement('div');
-        lockNote.className = 'mission-lock-note';
-        lockNote.textContent = `🔒 Clear ${mission.requires.rank || 'SS'} Rank of “${missionNameById(mission.requires.mission)}” to unlock`;
-        controls.appendChild(lockNote);
-      }
-
-      // Attach to card
-      card.appendChild(controls);
-      listContainer.appendChild(card);
-    });
-
-    // Highlight selected category tab
-    document.querySelectorAll('.tab-btn').forEach(tab => {
-      tab.classList.toggle('active', tab.textContent === categoryName);
-    });
-    revealActiveTab();
-    // New category starts at the top of its list
-    if (scroller) scroller.scrollTop = 0;
+    };
+    paint();
   }
 
   /* ------------------------------------------------------------------
@@ -287,17 +438,22 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-      // Extract categories
-      const categoryNames = [...new Set(allMissions.map(m => m.category || 'Other'))];
+      // Tabs: TAB_ORDER first, then any other category in data order
+      const inData = [...new Set(allMissions.map(m => m.category || 'Other'))];
+      const categoryNames = [
+        ...TAB_ORDER.filter(n => inData.includes(n)),
+        ...inData.filter(n => !TAB_ORDER.includes(n))
+      ];
 
       // Build tabs
       tabsContainer.innerHTML = '';
       categoryNames.forEach(name => {
         const tab = document.createElement('button');
         tab.className = 'tab-btn';
+        tab.dataset.name = name;
         // slug used by CSS to tint each category (see .tab-btn[data-category])
-        tab.dataset.category = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-        tab.innerHTML = `<span class="tab-label">${name}</span>`;
+        tab.dataset.category = slug(name);
+        tab.innerHTML = `<span class="tab-label">${esc(name)}</span>`;
         tab.addEventListener('click', () => renderMissionsForCategory(name));
         tabsContainer.appendChild(tab);
       });
@@ -307,8 +463,13 @@ document.addEventListener('DOMContentLoaded', () => {
       window.addEventListener('resize', scheduleTabFade);
       if (document.fonts && document.fonts.ready) document.fonts.ready.then(scheduleTabFade);
 
-      // Load first category
-      renderMissionsForCategory(categoryNames[0]);
+      // Reopen the last tab of this session (e.g. back from a battle)
+      let first = categoryNames[0];
+      try {
+        const saved = sessionStorage.getItem('missions_tab');
+        if (saved && categoryNames.includes(saved)) first = saved;
+      } catch { /* ignore */ }
+      renderMissionsForCategory(first);
       updateTabFade();
     })
     .catch(err => {
