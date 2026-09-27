@@ -41,12 +41,13 @@ class SummonDataLoader {
         '4star': 84.67
       };
 
-      // Load character pool
-      const charsResponse = await fetch('data/characters.json');
-      if (!charsResponse.ok) {
-        throw new Error(`HTTP ${charsResponse.status}: ${charsResponse.statusText}`);
-      }
-      const charsData = await charsResponse.json();
+      // Load character pool (one shared request per page: js/character_inv.js)
+      const charsData = window.loadCharactersData
+        ? await window.loadCharactersData()
+        : await fetch('data/characters.json').then(r => {
+            if (!r.ok) throw new Error(`HTTP ${r.status}: ${r.statusText}`);
+            return r.json();
+          });
 
       // Validate character data
       if (!charsData || (typeof charsData !== 'object' && !Array.isArray(charsData))) {

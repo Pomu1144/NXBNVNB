@@ -13,6 +13,8 @@
  *     first visit)
  *   - sprite sheets asked for before the reveal (js/sprite-player.js tracks
  *     its own loads here)
+ *   - a page's <meta name="page-loader-skip" content="data/a.json, …"> lists
+ *     fetches its first screen doesn't need (not waited on)
  *   - anything a page registers itself:
  *       PageLoader.wait(promise[, label])   → returns the promise
  *       const done = PageLoader.hold(label); … done();
@@ -33,6 +35,7 @@
   var MAX_MS = 15000;     // safety timeout
   var LEAVE_MS = 520;     // ink-wipe length (css/page-loader.css)
   var SETTLE_ROUNDS = 10; // rescans for work started by the page's own loaders
+  var DETACHED_CAP_MS = 2500; // longest one script-made (detached) image holds the page
 
   var doc = document;
   var root = doc.documentElement;
@@ -251,7 +254,11 @@
           srcDesc.set.call(this, v);
           if (revealed || seen.has(this) || this.loading === 'lazy' || !v || String(v).indexOf('data:') === 0) return;
           seen.add(this);
-          add('img ' + v, mediaPromise(this, false));
+          // A detached new Image() may be one of dozens of probes (the village
+          // checks every banner's art): wait on each for DETACHED_CAP_MS at
+          // most. Images in the page are found by scanMedia and waited on fully.
+          var p = mediaPromise(this, false);
+          add('img ' + v, this.isConnected ? p : Promise.race([p, sleep(DETACHED_CAP_MS)]));
         }
       });
       srcHooked = true;
@@ -283,6 +290,17 @@
     return pump();
   }
 
+  // A page can leave out data its first screen doesn't draw from:
+  //   <meta name="page-loader-skip" content="data/characters.json, data/x.json">
+  var skipList = null;
+  function skipped(path) {
+    if (!skipList) {
+      var m = doc.querySelector('meta[name="page-loader-skip"]');
+      skipList = m ? m.content.split(',').map(function (s) { return s.trim(); }).filter(Boolean) : [];
+    }
+    return skipList.some(function (s) { return path.slice(-s.length) === s; });
+  }
+
   // Same-origin fetches started before the reveal (data JSON the page renders
   // from). The body is read from a clone so the page's own .json() is untouched.
   if (window.fetch) {
@@ -293,8 +311,10 @@
         try {
           var url = typeof input === 'string' ? input : (input && input.url) || '';
           var method = (init && init.method) || (input && input.method) || 'GET';
-          var same = new URL(url, location.href).origin === location.origin;
-          if (same && String(method).toUpperCase() === 'GET') {
+          var abs = new URL(url, location.href);
+          var same = abs.origin === location.origin;
+          var media = /\.(mp3|ogg|wav|m4a|aac|mp4|webm)$/i.test(abs.pathname); // music streams in later
+          if (same && !media && !skipped(abs.pathname) && String(method).toUpperCase() === 'GET') {
             var item = {};
             add('fetch ' + url, p.then(function (r) { return readBody(r, item); }), 3, item);
           }

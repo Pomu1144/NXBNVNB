@@ -7,6 +7,9 @@
   <!-- Page loader: covers the page until its art, fonts and data are in -->
   <link rel="stylesheet" href="css/page-loader.css" />
   <script src="js/page-loader.js"></script>
+  <!-- The hub's first screen doesn't draw from characters.json (only the tier
+       check and panel-mission names use it), so the loader doesn't wait for it. -->
+  <meta name="page-loader-skip" content="data/characters.json" />
   <script src="js/device-detect.js"></script>
   <script src="js/dev-mode.js"></script>
   <script src="js/backgrounds.js"></script>
@@ -19,11 +22,19 @@
   <link rel="apple-touch-icon" href="assets/icons/achievement_icon.png" />
   <script src="js/pwa-register.js"></script>
   <script src="js/session-gate.js"></script>
-  <!-- Warm the cache for the heaviest shared data while idle on the hub, so
-       the first jump to Characters / Teams is instant. Low priority; the
-       service worker serves them from cache on subsequent visits. -->
-  <link rel="prefetch" href="data/characters.json" as="fetch" crossorigin="anonymous" />
-  <link rel="prefetch" href="data/cards.json" as="fetch" crossorigin="anonymous" />
+  <!-- Warm the cache for cards.json while idle on the hub, so the first jump
+       to Characters / Teams is instant; the service worker serves it from
+       cache on later visits. Added once the page loader has lifted, so it
+       doesn't share the first visit's bandwidth with the hub's own data.
+       characters.json is not prefetched: the hub fetches it itself, and a
+       low-priority prefetch of the same file made that fetch wait behind it. -->
+  <script>
+    (window.PageLoader ? window.PageLoader.ready : Promise.resolve()).then(() => {
+      const l = document.createElement('link');
+      l.rel = 'prefetch'; l.href = 'data/cards.json'; l.as = 'fetch'; l.crossOrigin = 'anonymous';
+      document.head.appendChild(l);
+    });
+  </script>
   <!-- 16:9 Game Canvas Architecture -->
   <link rel="stylesheet" href="css/fonts.css" />
   <link rel="stylesheet" href="css/theme-jjk.css" />

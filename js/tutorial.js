@@ -325,6 +325,14 @@
     if (!on) return;
     followTimer = setInterval(() => {
       if (current >= 0 && blocked()) { const i = current; follow(false); show(i); return; }
+      const step = STEPS[current];
+      if (step && step.advanceWhen && safeCall(step.advanceWhen) && current + 1 < STEPS.length) {
+        follow(false); show(current + 1); return;
+      }
+      if (step && step.revertWhen && safeCall(step.revertWhen)) {
+        const j = indexOf(step.revertTo);
+        if (j >= 0) { follow(false); show(j); return; }
+      }
       if (target) layout();
     }, 400);
   }
@@ -376,7 +384,8 @@
     ui.title.hidden = !step.title;
     ui.text.innerHTML = step.text || '';
     ui.count.textContent = `${i + 1} / ${STEPS.length}`;
-    ui.back.hidden = i <= runStart(i);
+    ui.back.hidden = i <= runStart(i) || !!step.noBack;
+    ui.next.hidden = step.next === false;
     ui.next.textContent = step.next || (i === STEPS.length - 1 ? 'Finish' : 'Next');
     ui.skip.hidden = i === STEPS.length - 1;
     ui.root.classList.toggle('is-interactive', !!step.interactive);
@@ -391,7 +400,7 @@
     ui.root.classList.add('is-in');
     layout();
     follow(true);
-    try { ui.next.focus({ preventScroll: true }); } catch (e) { /* ignore */ }
+    try { if (!ui.next.hidden) ui.next.focus({ preventScroll: true }); } catch (e) { /* ignore */ }
   }
 
   function safeCall(fn) { try { return !!fn(); } catch (e) { return false; } }

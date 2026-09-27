@@ -9,8 +9,8 @@
 (function () {
   const state = { charMap: null, pending: null, banner: null, views: ['banner'] };
 
-  fetch('data/characters.json')
-    .then(r => r.json())
+  // One shared characters.json request per page (js/character_inv.js)
+  (window.loadCharactersData ? window.loadCharactersData() : fetch('data/characters.json').then(r => r.json()))
     .then(d => {
       const arr = Array.isArray(d) ? d : (d.characters || Object.values(d));
       const m = {};

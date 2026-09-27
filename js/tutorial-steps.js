@@ -23,6 +23,12 @@
  *   jumpIn    on the first step of a page's run: show this run whenever the
  *             player lands on its page while the tutorial is active and the
  *             run isn't finished (battle basics on the first battle)
+ *   next: false hides the Next button (the player must do the thing)
+ *   advanceWhen  () => boolean; moves on to the next step once true
+ *                (e.g. the player opened the sheet the step asked for)
+ *   revertWhen / revertTo  () => boolean + step id; goes back to that step
+ *                once true (e.g. the player closed that sheet again)
+ *   noBack    hides the Back button
  *   waitUntil optional () => boolean; the step waits until it is true
  *   waitMax   give up waiting on waitUntil after this many ms
  *
@@ -136,11 +142,20 @@ window.TUTORIAL = {
     /* ── Starting a mission ────────────────────────────────────── */
     {
       id: 'mission-pick', page: 'missions.html',
-      target: '.mission-card:not(.mission-locked) .start-btn, .mission-card:not(.mission-locked)',
-      interactive: true,
+      target: '.mission-card:not(.mission-locked)',
+      interactive: true, next: false,
+      advanceWhen: () => !!document.querySelector('.mission-modal .start-btn'),
       title: 'Start a Mission',
-      text: 'Pick a mission and a difficulty, then tap <b>Start</b>. Go on — I\'ll meet you there.',
-      next: 'Got it', await: true,
+      text: 'Each banner is a mission. <b>Tap this one</b> to see its stages and rewards.',
+    },
+    {
+      id: 'mission-start', page: 'missions.html', target: '.mission-modal .md-go .start-btn',
+      waitUntil: () => !!document.querySelector('.mission-modal .start-btn'),
+      revertWhen: () => !document.querySelector('.mission-modal'), revertTo: 'mission-pick',
+      interactive: true, noBack: true,
+      title: 'Choose & Start',
+      text: 'Pick a <b>rank</b> — harder ranks pay better — then tap <b>Start Mission</b>. Go on, I\'ll meet you there.',
+      next: 'Got it', await: true, resume: 'mission-pick',
     },
     {
       id: 'mission-confirm', page: 'teams.html?mode=prebattle', target: '#btn-start-battle',

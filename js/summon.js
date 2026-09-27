@@ -80,12 +80,13 @@
       // Load summon JSON structure
       await summonData.init();
 
-      // Load all characters
-      const charsResponse = await fetch('data/characters.json');
-      if (!charsResponse.ok)
-        throw new Error(`HTTP ${charsResponse.status}: ${charsResponse.statusText}`);
-
-      const charsData = await charsResponse.json();
+      // Load all characters (one shared request per page: js/character_inv.js)
+      const charsData = window.loadCharactersData
+        ? await window.loadCharactersData()
+        : await fetch('data/characters.json').then(r => {
+            if (!r.ok) throw new Error(`HTTP ${r.status}: ${r.statusText}`);
+            return r.json();
+          });
       allCharacters = Object.values(charsData);
 
       // Initialize UI systems
