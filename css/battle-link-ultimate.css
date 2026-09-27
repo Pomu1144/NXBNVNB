@@ -1,0 +1,57 @@
+/* ===================================================
+   LINK ULTIMATE banner — shown between two linked ultimates.
+   Built by js/battle/battle-link-ultimate.js.
+   =================================================== */
+
+.link-ult-banner {
+  --lu-c1: #ffd75a;
+  --lu-c2: #ff4a3d;
+
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 38%;
+  z-index: 910;                       /* above the skill cut-in */
+  padding: 14px 16px;
+  text-align: center;
+  pointer-events: none;
+  color: #fff;
+  background: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.82) 18%, rgba(0, 0, 0, 0.82) 82%, transparent);
+  border-top: 2px solid var(--lu-c1);
+  border-bottom: 2px solid var(--lu-c2);
+  animation: linkUltIn 1.3s ease-out forwards;
+}
+.link-ult-banner.is-enemy {
+  --lu-c1: #c77dff;
+  --lu-c2: #6a0dad;
+}
+
+.link-ult-banner__kicker {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--lu-c1);
+}
+.link-ult-banner__names {
+  margin-top: 4px;
+  font-size: clamp(18px, 4.5vw, 30px);
+  font-weight: 900;
+  text-shadow: 0 0 12px var(--lu-c2), 2px 2px 0 #000;
+}
+.link-ult-banner__bond {
+  margin-top: 2px;
+  font-size: 12px;
+  opacity: 0.85;
+}
+
+@keyframes linkUltIn {
+  0%   { opacity: 0; transform: scaleY(0.2); }
+  15%  { opacity: 1; transform: scaleY(1); }
+  85%  { opacity: 1; transform: scaleY(1); }
+  100% { opacity: 0; transform: scaleY(0.6); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .link-ult-banner { animation: none; }
+}
