@@ -37,7 +37,7 @@
     { id: 'naruto_2115_hokage', charIds: ['naruto_2115'], unit: 'Naruto Uzumaki', name: 'Seventh Hokage',
       folder: 'assets/sprites/skins/naruto_2115_hokage', own: BODY, thumb: 'assets/sprites/skins/naruto_2115_hokage/thumb.webp', price: 60 },
     { id: 'sasuke_2117_akatsuki', charIds: ['sasuke_2117', 'sasuke_2116'], unit: 'Sasuke Uchiha', name: 'Akatsuki Cloak',
-      folder: 'assets/sprites/skins/sasuke_2117_akatsuki', own: BODY, thumb: 'assets/sprites/skins/sasuke_2117_akatsuki/thumb.webp', price: 50 },
+      folder: 'assets/sprites/skins/sasuke_2117_akatsuki', own: [...BODY, 'secret'], thumb: 'assets/sprites/skins/sasuke_2117_akatsuki/thumb.webp', price: 50 },
     { id: 'itachi_2031_anbu', charIds: ['itachi_2031', 'itachi_2032'], unit: 'Itachi Uchiha', name: 'ANBU Black Ops',
       folder: 'assets/sprites/skins/itachi_2031_anbu', own: BODY, thumb: 'assets/sprites/skins/itachi_2031_anbu/thumb.webp', price: 45 },
   ];
