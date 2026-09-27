@@ -1,0 +1,19 @@
+{
+  "frameWidth": 335,
+  "frameHeight": 420,
+  "frames": 17,
+  "columns": 8,
+  "fps": 12,
+  "loop": false,
+  "hits": [
+    6,
+    8,
+    9,
+    10,
+    11
+  ],
+  "fxOnly": true,
+  "groundY": 0.9948,
+  "centerX": 0.5,
+  "heightUnits": 1.9
+}
