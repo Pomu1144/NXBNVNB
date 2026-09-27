@@ -4,6 +4,9 @@
   <meta charset="UTF-8" />
   <title>Blazing — Village HUD</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <!-- Page loader: covers the page until its art, fonts and data are in -->
+  <link rel="stylesheet" href="css/page-loader.css" />
+  <script src="js/page-loader.js"></script>
   <script src="js/device-detect.js"></script>
   <script src="js/dev-mode.js"></script>
   <script src="js/backgrounds.js"></script>
@@ -54,6 +57,7 @@
       scrollbar-width: none;  /* Firefox */
     }
   </style>
+  <link rel="stylesheet" href="css/tutorial.css" />
   <link rel="stylesheet" href="css/mobile.css" />
 </head>
 
@@ -323,6 +327,8 @@
 
       // Process login bonus
       if (typeof window.DailyMissions !== "undefined") {
+        // Show the bonus once the page loader has lifted, not underneath it.
+        if (window.PageLoader) await window.PageLoader.ready;
         const loginResult = await window.DailyMissions.processLogin();
         if (loginResult.ok && !loginResult.alreadyClaimed) {
           const reward = loginResult.reward || {};
@@ -338,6 +344,8 @@
           }
         }
       }
+      // Login bonus is up (or not due): the tutorial may start after it.
+      document.body.dataset.loginBonus = 'done';
 
       // ===== HELPER FUNCTIONS =====
 
@@ -691,5 +699,8 @@
       </div><!-- .game-content -->
     </div><!-- .game-canvas -->
   </div><!-- .game-canvas-wrapper -->
+  <!-- First-time tutorial (steps: js/tutorial-steps.js) -->
+  <script src="js/tutorial-steps.js"></script>
+  <script src="js/tutorial.js"></script>
 </body>
 </html>

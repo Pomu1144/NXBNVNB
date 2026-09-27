@@ -2,6 +2,10 @@
 (() => {
   "use strict";
 
+  // Keep the page loader (js/page-loader.js) up until the field is built:
+  // mission data, map and the units' idle sprites. Released in init().
+  const releaseLoader = window.PageLoader ? window.PageLoader.hold("battle field") : () => {};
+
   async function fetchJSON(url, fallback = null) {
     try {
       const res = await fetch(url, { cache: "no-store" });
@@ -213,6 +217,7 @@
 
         if (!this.missionData) {
           console.error(`[BattleCore] Mission ${missionId} not found!`);
+          releaseLoader();
           return;
         }
 
@@ -265,6 +270,23 @@
       if (this.isBoss && window.AudioManager) {
         window.AudioManager.playMusic("boss");
       }
+
+      // Field is built: the loader lifts once the map and the units' sprite
+      // sheets are in; the entrance plays after it has, so it is seen.
+      const loader = window.PageLoader;
+      if (loader && !loader.revealed) {
+        const map = this.dom.scene && /url\(["']?(.*?)["']?\)/.exec(this.dom.scene.style.backgroundImage || "");
+        if (map) {
+          loader.wait(new Promise(resolve => {
+            const img = new Image();
+            img.onload = img.onerror = resolve;
+            img.src = map[1];
+          }), "battle map");
+        }
+        releaseLoader();
+        await loader.ready;
+      }
+      releaseLoader();
 
       // Play entrance animations if available
       if (window.BattleEntrance) {

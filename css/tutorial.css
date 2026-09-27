@@ -1,0 +1,213 @@
+/* ─────────────────────────────────────────────────────────────
+   First-time tutorial (js/tutorial.js, steps in js/tutorial-steps.js)
+   Dimmed ink overlay with a gold-ringed spotlight cut out around the
+   real UI element, a gold kunai (assets/ui/hf/arrow.webp) pointing at it,
+   and Kakashi (battle idle sprite) talking from a .jjk-panel with the
+   crimson title plate as his name tag. Needs theme-jjk.css.
+   ───────────────────────────────────────────────────────────── */
+.tut {
+  position: fixed; inset: 0;
+  z-index: 2147482000;           /* under the page loader, over everything else */
+  pointer-events: none;
+  font-family: var(--jjk-font);
+  color: var(--jjk-text);
+  -webkit-user-select: none; user-select: none;
+}
+.tut[hidden] { display: none; }
+
+/* Click blockers around the spotlight (transparent; the ring's shadow dims) */
+.tut-block { position: fixed; pointer-events: auto; touch-action: none; }
+.tut-block[hidden] { display: none; }
+.tut-hole { cursor: pointer; }
+
+/* Spotlight: the ring is the cut-out; its huge shadow is the dark overlay */
+.tut-ring {
+  position: fixed;
+  border-radius: 10px;
+  border: 2px solid var(--jjk-gold-hi);
+  box-shadow:
+    0 0 0 1px rgba(110, 83, 32, 0.9),
+    0 0 18px 4px rgba(241, 217, 138, 0.45),
+    inset 0 0 14px rgba(241, 217, 138, 0.25),
+    0 0 0 200vmax rgba(2, 10, 12, 0.74);
+  transition: left .32s var(--jjk-ease), top .32s var(--jjk-ease), width .32s var(--jjk-ease), height .32s var(--jjk-ease);
+  pointer-events: none;
+}
+.tut-ring::after {
+  content: ''; position: absolute; inset: -8px;
+  border-radius: 14px;
+  border: 2px solid rgba(241, 217, 138, 0.7);
+  animation: tut-pulse 1.6s ease-out infinite;
+}
+.tut:not(.has-target) .tut-ring {
+  border-color: transparent;
+  box-shadow: 0 0 0 200vmax rgba(2, 10, 12, 0.78);
+}
+.tut:not(.has-target) .tut-ring::after { display: none; }
+
+/* Gold kunai pointer (art points right; --rot turns it toward the target) */
+.tut-arrow {
+  position: fixed; height: auto;
+  transform: translate(-50%, -50%) rotate(var(--rot, 0deg));
+  filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.8)) drop-shadow(0 0 6px rgba(241, 217, 138, 0.35));
+  animation: tut-bob .9s ease-in-out infinite;
+  pointer-events: none;
+}
+.tut-arrow[hidden] { display: none; }
+
+/* ── Sensei + speech panel ─────────────────────────────────────── */
+.tut-guide {
+  position: fixed;
+  display: flex; align-items: flex-end; gap: 0;
+  pointer-events: auto;
+  max-width: calc(100vw - 20px);
+}
+.tut-guide.is-right { flex-direction: row-reverse; }
+.tut-sensei {
+  flex: 0 0 auto;
+  background-repeat: no-repeat;
+  filter: drop-shadow(0 6px 6px rgba(0, 0, 0, 0.65));
+  margin-right: -14px;          /* stand just in front of the panel edge */
+  position: relative; z-index: 1;
+}
+.tut-guide.is-right .tut-sensei { transform: scaleX(-1); margin-right: 0; margin-left: -14px; }
+
+.tut-bubble {
+  position: relative;
+  width: 440px; max-width: calc(100vw - 150px);
+  padding: 26px 20px 14px;
+  margin-bottom: 10px;
+  background:
+    linear-gradient(180deg, rgba(14, 38, 45, 0.93), rgba(6, 17, 21, 0.96)),
+    url('../assets/ui/jjk/ink_bg.webp') center / cover;
+}
+.tut-name.jjk-title-plate {
+  position: absolute; left: -10px; top: -20px;
+  min-height: 32px; padding: 3px 46px 3px 16px;
+  font-size: 15px; letter-spacing: 0.4px;
+  white-space: nowrap;
+}
+.tut-guide.is-right .tut-name.jjk-title-plate { left: auto; right: -10px; }
+.tut-count {
+  position: absolute; right: 14px; top: 8px;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
+  color: var(--jjk-muted);
+}
+.tut-guide.is-right .tut-count { right: auto; left: 14px; }
+.tut-title {
+  margin: 2px 0 4px;
+  font-family: var(--jjk-font-script); font-weight: 400;
+  font-size: 19px; line-height: 1.15;
+  color: var(--jjk-gold-hi);
+  text-shadow: 0 2px 0 rgba(0, 0, 0, 0.8);
+}
+.tut-title[hidden] { display: none; }
+.tut-text {
+  margin: 0;
+  font-size: 15px; font-weight: 500; line-height: 1.5;
+  color: var(--jjk-text);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+}
+.tut-text b { color: var(--jjk-gold-hi); font-weight: 800; }
+
+.tut-actions {
+  display: flex; align-items: center; justify-content: flex-end; gap: 8px;
+  margin-top: 12px;
+}
+.tut-actions .jjk-btn {
+  min-width: 92px; height: 36px; padding: 0 18px; font-size: 15px;
+}
+.tut-actions .jjk-btn[hidden] { display: none; }
+.tut-skip {
+  margin-right: auto;
+  border: 0; background: none; cursor: pointer; padding: 6px 2px;
+  font-family: var(--jjk-font); font-size: 12px; font-weight: 700;
+  color: var(--jjk-muted); text-decoration: underline; text-underline-offset: 3px;
+}
+.tut-skip:hover { color: var(--jjk-text); }
+.tut-skip[data-confirm="1"] { color: var(--jjk-gold-hi); }
+.tut-skip[hidden] { display: none; }
+
+/* Entrance */
+.tut.is-in .tut-guide { animation: tut-in .34s var(--jjk-ease) both; }
+.tut.is-in .tut-sensei { animation: tut-hop .42s var(--jjk-ease) both; }
+.tut.is-in .tut-guide.is-right .tut-sensei { animation-name: tut-hop-r; }
+
+/* ── "Continue lesson" tab ─────────────────────────────────────── */
+.tut-chip {
+  position: fixed; left: 0; top: 58%;
+  z-index: 2147481000;
+  display: flex; align-items: center;
+  font-family: var(--jjk-font);
+  background: linear-gradient(180deg, rgba(14, 38, 45, 0.96), rgba(6, 17, 21, 0.98));
+  border: 1px solid rgba(201, 162, 78, 0.75); border-left: 0;
+  border-radius: 0 26px 26px 0;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6), 0 0 12px rgba(241, 217, 138, 0.18);
+  animation: tut-chip-in .4s var(--jjk-ease) both;
+}
+.tut-chip[hidden] { display: none; }
+.tut-chip button { border: 0; background: none; cursor: pointer; font-family: inherit; color: inherit; }
+.tut-chip-go { display: flex; align-items: center; gap: 8px; padding: 4px 4px 4px 8px; }
+.tut-chip-face {
+  width: 40px; height: 40px; flex: 0 0 auto;
+  border-radius: 50%;
+  border: 2px solid var(--jjk-gold);
+  background-color: var(--jjk-ink-3);
+  background-repeat: no-repeat;
+  box-shadow: 0 0 8px rgba(241, 217, 138, 0.35);
+}
+.tut-chip-label { font-size: 13px; font-weight: 800; color: var(--jjk-gold-hi); white-space: nowrap; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9); }
+.tut-chip-x { width: 34px; height: 40px; font-size: 20px; line-height: 1; color: var(--jjk-muted) !important; }
+.tut-chip.is-confirm .tut-chip-x { color: var(--jjk-gold-hi) !important; }
+
+@keyframes tut-pulse {
+  0%   { opacity: .9; transform: scale(.98); }
+  100% { opacity: 0;  transform: scale(1.06); }
+}
+@keyframes tut-bob {
+  0%, 100% { transform: translate(-50%, -50%) rotate(var(--rot, 0deg)) translateX(-7px); }
+  50%      { transform: translate(-50%, -50%) rotate(var(--rot, 0deg)) translateX(1px); }
+}
+@keyframes tut-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes tut-hop {
+  0%   { transform: translateY(14px); opacity: 0; }
+  60%  { transform: translateY(-6px); opacity: 1; }
+  100% { transform: none; }
+}
+@keyframes tut-hop-r {
+  0%   { transform: scaleX(-1) translateY(14px); opacity: 0; }
+  60%  { transform: scaleX(-1) translateY(-6px); opacity: 1; }
+  100% { transform: scaleX(-1); }
+}
+@keyframes tut-chip-in {
+  from { transform: translateX(-100%); }
+  to   { transform: none; }
+}
+
+/* Big screens: a touch larger */
+@media (min-width: 1200px) and (min-height: 760px) {
+  .tut-bubble { width: 500px; padding: 30px 24px 16px; }
+  .tut-title { font-size: 22px; }
+  .tut-text { font-size: 17px; }
+}
+
+/* Phones held sideways (~932×375) */
+@media (max-height: 480px), (max-width: 600px) {
+  .tut-bubble { width: 400px; max-width: calc(100vw - 110px); padding: 20px 14px 10px; margin-bottom: 6px; }
+  .tut-name.jjk-title-plate { top: -16px; min-height: 26px; font-size: 13px; padding: 2px 40px 2px 12px; }
+  .tut-title { font-size: 16px; margin-bottom: 2px; }
+  .tut-text { font-size: 13px; line-height: 1.42; }
+  .tut-actions { margin-top: 8px; }
+  .tut-actions .jjk-btn { min-width: 76px; height: 32px; font-size: 13px; padding: 0 14px; }
+  .tut-count { top: 5px; font-size: 10px; }
+  .tut-sensei { margin-right: -10px; }
+  .tut-guide.is-right .tut-sensei { margin-left: -10px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tut-ring { transition: none; }
+  .tut-ring::after, .tut-arrow, .tut.is-in .tut-guide, .tut.is-in .tut-sensei, .tut-chip { animation: none; }
+}

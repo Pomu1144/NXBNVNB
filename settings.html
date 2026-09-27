@@ -4,6 +4,9 @@
   <meta charset="UTF-8" />
   <title>Settings - Naruto Blazing</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <!-- Page loader: covers the page until its art, fonts and data are in -->
+  <link rel="stylesheet" href="css/page-loader.css" />
+  <script src="js/page-loader.js"></script>
   <script src="js/device-detect.js"></script>
   <script src="js/dev-mode.js"></script>
   <script src="js/backgrounds.js"></script>
@@ -36,6 +39,7 @@
       scrollbar-width: none;  /* Firefox */
     }
   </style>
+  <link rel="stylesheet" href="css/tutorial.css" />
   <link rel="stylesheet" href="css/mobile.css" />
 </head>
 
@@ -113,6 +117,12 @@
           <div class="set-control">
             <span class="set-name" id="username-display"></span>
             <button class="jjk-btn" id="change-username-button">Edit</button>
+          </div>
+        </div>
+        <div class="set-row">
+          <div class="set-label"><b>Tutorial</b><small>Kakashi walks you through the village, summoning, teams and battle again</small></div>
+          <div class="set-control">
+            <button class="jjk-btn" id="replay-tutorial-button">Replay Tutorial</button>
           </div>
         </div>
         <div class="set-row">
@@ -381,6 +391,11 @@
       try { sessionStorage.clear(); } catch (error) { /* ignore */ }
       window.location.href = 'index.html';
     }
+
+    // Replay Tutorial: restarts js/tutorial.js from its first step (village)
+    document.getElementById('replay-tutorial-button')?.addEventListener('click', () => {
+      window.Tutorial?.replay();
+    });
 
     const logoutButton = document.getElementById('logout-button');
     if (logoutButton) {
@@ -686,5 +701,8 @@
       e.target.value = '';
     });
   </script>
+  <!-- First-time tutorial (steps: js/tutorial-steps.js) -->
+  <script src="js/tutorial-steps.js"></script>
+  <script src="js/tutorial.js"></script>
 </body>
 </html>

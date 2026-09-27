@@ -49,6 +49,13 @@
     return metaCache.get(key);
   }
 
+  /* Sheets asked for before the page is shown keep the page loader
+   * (js/page-loader.js) up until they have arrived. */
+  function track(p, label) {
+    const PL = window.PageLoader;
+    return PL && !PL.revealed ? PL.track(p, `sprite ${label}`) : p;
+  }
+
   function create(container, base, opts = {}) {
     const el = document.createElement('div');
     el.className = 'sprite-player';
@@ -91,7 +98,7 @@
     async function play(name, { then = null, speed = 1, onFrame = null, onHit = null, onEnd = null } = {}) {
       const my = ++token;
       current = name;
-      const anim = await loadAnim(base, name);
+      const anim = await track(loadAnim(base, name), `${base}/${name}`);
       if (my !== token) return; // superseded by a newer play()
 
       const hs = Number(anim.heightScale) > 0 ? Number(anim.heightScale) : 1;
@@ -268,7 +275,10 @@
 
   window.SpritePlayer = {
     create,
-    preload: loadAnim,
+    /* preload(base, name, { background: true }) warms a sheet without
+     * holding the page loader (hit / ko / attack sheets fetched ahead). */
+    preload: (base, name, { background = false } = {}) =>
+      background ? loadAnim(base, name) : track(loadAnim(base, name), `${base}/${name}`),
     has: charId => !!REGISTRY[charId],
     /* Folder to animate a unit from: its equipped skin (js/skins.js) when it
      * has one, else its own folder. { skin: false } always gives the base

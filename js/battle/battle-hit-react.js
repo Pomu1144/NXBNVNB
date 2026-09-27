@@ -208,9 +208,9 @@
   wrap(U, 'attachSprite', unit => {
     const base = unit?._spriteBase || (unit?.charId && window.SpritePlayer?.pathFor(unit.charId));
     if (!base) return;
-    window.SpritePlayer.preload(base, 'hit').catch(() => {});
-    window.SpritePlayer.preload(base, 'ko').catch(() => {});
-    window.SpritePlayer.preload(base, 'attack').catch(() => {});
+    window.SpritePlayer.preload(base, 'hit', { background: true }).catch(() => {});
+    window.SpritePlayer.preload(base, 'ko', { background: true }).catch(() => {});
+    window.SpritePlayer.preload(base, 'attack', { background: true }).catch(() => {});
   });
 
   window.BattleHitReact = { react, spriteKO };

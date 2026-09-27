@@ -181,7 +181,8 @@ class PlayerSaveSystem {
       summonSeen: localStorage.getItem('blazing_summon_seen_v1'),
       recipes: localStorage.getItem('blazing_recipes_v1'),
       skinsEquipped: localStorage.getItem('blazing_skins_equipped_v1'),
-      skinsOwned: localStorage.getItem('blazing_skins_owned_v1')
+      skinsOwned: localStorage.getItem('blazing_skins_owned_v1'),
+      tutorial: localStorage.getItem('blazing_tutorial_v1')
     };
   }
 
@@ -253,7 +254,8 @@ class PlayerSaveSystem {
         summonSeen: 'blazing_summon_seen_v1',
         recipes: 'blazing_recipes_v1',
         skinsEquipped: 'blazing_skins_equipped_v1',
-        skinsOwned: 'blazing_skins_owned_v1'
+        skinsOwned: 'blazing_skins_owned_v1',
+        tutorial: 'blazing_tutorial_v1'
       };
       Object.entries(keyMap).forEach(([field, storageKey]) => {
         if (data[field] !== null && data[field] !== undefined) {

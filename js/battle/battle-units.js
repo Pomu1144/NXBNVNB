@@ -339,7 +339,7 @@
       });
       unit._sprite = player;
       // Warm the run sheet so the first drag/move switches without a gap.
-      window.SpritePlayer.preload(base, 'run').catch(() => {});
+      window.SpritePlayer.preload(base, 'run', { background: true }).catch(() => {});
       player.play('idle').catch(err => {
         // Sheet missing: fall back to the static portrait.
         console.warn('[BattleUnits] sprite load failed, using portrait', err);

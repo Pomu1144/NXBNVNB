@@ -7,6 +7,7 @@
   const INVENTORY_KEY = 'blazing_inventory_v2';
   const TEAM_KEY = 'blazing_teams_v1';
   const ACCOUNT_SOURCE_PATH = 'data/user-accounts.json';
+  const TUTORIAL_KEY = 'blazing_tutorial_v1';
 
   const overlay = document.getElementById('login-overlay');
   const formWrapper = overlay?.querySelector('[data-login-form]');
@@ -268,6 +269,11 @@
     applyAccountInventory(account);
     applyAccountTeams(account);
     safeSet(LOGIN_KEY, 'true');
+    // First login / guest start on this device: the village runs the
+    // tutorial (js/tutorial.js). Never re-armed once finished or skipped.
+    if (safeGet(TUTORIAL_KEY) === null) {
+      safeSet(TUTORIAL_KEY, JSON.stringify({ status: 'pending', updated: Date.now() }));
+    }
     overlay.classList.add('is-hidden');
     document.body.classList.remove('login-active');
     const removeOverlay = () => overlay.remove();
