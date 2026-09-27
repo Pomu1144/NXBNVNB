@@ -499,7 +499,7 @@
 .success-title {
   font-size: 2.2rem;
   font-weight: 700;
-  color: #5efc82;
+  color: #f1d98a;
   text-shadow: 0 0 20px rgba(94, 252, 130, 0.6);
   margin-bottom: 20px;
 }
@@ -779,7 +779,7 @@
 }
 .page-shop .btn-confirm:hover,
 .page-shop .btn-cancel:hover { transform: none; box-shadow: none; filter: brightness(1.14); background-color: transparent; }
-.page-shop .success-title { font-family: var(--jjk-font, 'Kaisei Tokumin', 'Times New Roman', serif); color: var(--jjk-good, #8fd49a); text-shadow: none; }
+.page-shop .success-title { font-family: var(--jjk-font, 'Kaisei Tokumin', 'Times New Roman', serif); color: var(--jjk-good, #f1d98a); text-shadow: none; }
 
 /* Narrow desktop windows: currency row drops under the header */
 @media (max-width: 1100px) {
@@ -1034,11 +1034,11 @@ html.is-mobile.is-landscape.is-compact .rc-picker-grid { grid-template-columns: 
 }
 .lb-elem img { width: 18px; height: 18px; object-fit: contain; }
 /* accent = the orb art's own hue (assets/ui/jjk/orb_*.webp) */
-.lb-elem-heart   { box-shadow: inset 3px 0 0 #c9468c; }
-.lb-elem-skill   { box-shadow: inset 3px 0 0 #4f9e6c; }
-.lb-elem-body    { box-shadow: inset 3px 0 0 #c24a3a; }
-.lb-elem-bravery { box-shadow: inset 3px 0 0 #d39a3a; }
-.lb-elem-wisdom  { box-shadow: inset 3px 0 0 #4a7cc4; }
+.lb-elem-heart   { box-shadow: inset 3px 0 0 #e0473c; }
+.lb-elem-skill   { box-shadow: inset 3px 0 0 #3fae5a; }
+.lb-elem-body    { box-shadow: inset 3px 0 0 #3f8fd8; }
+.lb-elem-bravery { box-shadow: inset 3px 0 0 #c9b23a; }
+.lb-elem-wisdom  { box-shadow: inset 3px 0 0 #9a5ad0; }
 .lb-foot {
   display: flex; align-items: center; justify-content: space-between; gap: 8px;
   padding-top: 6px; border-top: 1px solid rgba(201, 162, 78, 0.22);

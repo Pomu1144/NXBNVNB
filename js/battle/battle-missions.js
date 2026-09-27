@@ -254,13 +254,14 @@
         await this.recordMissionComplete(bm);
 
         setTimeout(async () => {
+          await this.playOutcomeBanner(bm, true);
           // Show results screen with all collected chests
           if (!bm.isArena && window.BattleRewards && window.BattleRewards.collectedChests.length > 0) {
             await window.BattleRewards.showResultsScreen(bm);
           } else {
             this.declareVictory(bm);
           }
-        }, 1000);
+        }, 400);
       }
     },
 
@@ -565,7 +566,7 @@
       // Calculate statistics
       const stats = this.calculateBattleStats(bm);
 
-      this.showResult(bm, true, stats);
+      this.playOutcomeBanner(bm, true).then(() => this.showResult(bm, true, stats));
     },
 
     /**
@@ -588,7 +589,22 @@
       // Calculate statistics
       const stats = this.calculateBattleStats(bm);
 
-      this.showResult(bm, false, stats);
+      this.playOutcomeBanner(bm, false).then(() => this.showResult(bm, false, stats));
+    },
+
+    /**
+     * Big "Victory" / "Defeat" banner over the field before the results.
+     * Plays once per battle; later calls share the same promise.
+     * @param {Object} bm - BattleManager reference
+     * @param {boolean} isVictory
+     * @returns {Promise<void>}
+     */
+    playOutcomeBanner(bm, isVictory) {
+      if (!bm._outcomeBanner) {
+        const B = window.BattleOutcomeBanner;
+        bm._outcomeBanner = B ? B.play(isVictory).catch(() => {}) : Promise.resolve();
+      }
+      return bm._outcomeBanner;
     },
 
     /**

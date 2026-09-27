@@ -1373,7 +1373,7 @@ html.is-mobile .nameplate-stars { --bz-star-size: 18px; }
 
 .ability-unlock-status {
   font-size: 11px;
-  color: #62d98f;
+  color: #f1d98a;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -1545,7 +1545,7 @@ html.is-mobile .nameplate-stars { --bz-star-size: 18px; }
 .ramen-exp {
   font-family: 'Times New Roman', serif;
   font-size: 11px;
-  color: #7ec97e;
+  color: #f1d98a;
   font-weight: 600;
   margin-bottom: 6px;
 }
@@ -2408,7 +2408,7 @@ html.is-mobile .ci-empty-text { margin: 4px 0 8px; font-size: 12px; }
 /* Card HP/ATK bonus shown inline next to the base stat */
 .stat-card-bonus {
   font-size: 10px;
-  color: #4cff8a;
+  color: #f1d98a;
   margin-left: 5px;
   font-family: "Cinzel", serif;
   font-weight: 600;
@@ -2648,7 +2648,7 @@ html.is-mobile .ci-empty-text { margin: 4px 0 8px; font-size: 12px; }
 }
 
 .cd-stat-next {
-  color: #4cff8a;
+  color: #f1d98a;
   font-size: 10px;
   margin-left: 3px;
 }

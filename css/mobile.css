@@ -624,6 +624,8 @@ html.is-mobile.is-landscape.is-compact .page-missions .mission-page-container {
 html.is-mobile.is-landscape.is-compact .page-missions .page-title {
   display: none !important;
 }
+@property --tab-fade-l { syntax: '<length>'; inherits: false; initial-value: 0px; }
+@property --tab-fade-r { syntax: '<length>'; inherits: false; initial-value: 0px; }
 /* tab row lifted into the header line */
 html.is-mobile.is-landscape.is-compact .page-missions .mission-tabs {
   position: absolute !important;
@@ -639,11 +641,20 @@ html.is-mobile.is-landscape.is-compact .page-missions .mission-tabs {
   overflow-y: hidden;
   gap: 0 !important;
   margin: 0 !important;
-  padding: 0 4px !important;
+  padding: 0 6px !important;
   scrollbar-width: none;
-  -webkit-mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - 22px), transparent);
-  mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - 22px), transparent);
+  /* Soft fade into the header shadow on whichever side still has tabs
+     scrolled out of view. js/missions.js toggles .fade-l / .fade-r from the
+     scroll position, so the first/last tab is never faded when the row is
+     scrolled fully to that end. A mask (not an overlay) keeps taps working. */
+  --tab-fade-l: 0px;
+  --tab-fade-r: 0px;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 var(--tab-fade-l), #000 calc(100% - var(--tab-fade-r)), transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0, #000 var(--tab-fade-l), #000 calc(100% - var(--tab-fade-r)), transparent 100%);
+  transition: --tab-fade-l 0.18s ease, --tab-fade-r 0.18s ease;
 }
+html.is-mobile.is-landscape.is-compact .page-missions .mission-tabs.fade-l { --tab-fade-l: 40px; }
+html.is-mobile.is-landscape.is-compact .page-missions .mission-tabs.fade-r { --tab-fade-r: 40px; }
 html.is-mobile.is-landscape.is-compact .page-missions .mission-tabs::-webkit-scrollbar {
   display: none;
 }

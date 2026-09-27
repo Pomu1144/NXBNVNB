@@ -1,5 +1,5 @@
 {
-  "frameWidth": 255,
+  "frameWidth": 270,
   "frameHeight": 256,
   "frames": 9,
   "columns": 9,
@@ -8,6 +8,6 @@
   "hits": [
     3
   ],
-  "heightScale": 0.999,
-  "anchorX": 0.486
+  "heightScale": 1.0,
+  "anchorX": 0.4176
 }

@@ -12,7 +12,7 @@
   --fu-gold-hi: var(--jjk-gold-hi, #f1d98a);
   --fu-text: var(--jjk-text, #ece6d6);
   --fu-muted: var(--jjk-muted, #93a3a3);
-  --fu-good: var(--jjk-good, #8fd49a);
+  --fu-good: var(--jjk-good, #f1d98a);
   --fu-bad: #e8877a;
   --fu-line: rgba(201, 162, 78, 0.28);        /* hairline rule */
   --fu-ink: #071418;

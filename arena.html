@@ -15,123 +15,168 @@
   <script src="js/pwa-register.js"></script>
   <link rel="stylesheet" href="css/fonts.css" />
   <link rel="stylesheet" href="css/theme-jjk.css" />
-  <link rel="stylesheet" href="css/fonts.css" />
   <link rel="stylesheet" href="css/bottombar.css" />
   <link rel="stylesheet" href="css/arena.css" />
   <link rel="stylesheet" href="css/mobile.css" />
 </head>
-<body>
-  <div id="arena-bg"></div>
+<body class="page-arena">
+  <!-- Line icons (thin stroke, currentColor) -->
+  <svg class="wb-sprite" aria-hidden="true" focusable="false">
+    <symbol id="i-back" viewBox="0 0 24 24"><path d="M14.5 5.5 8 12l6.5 6.5"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/></symbol>
+    <symbol id="i-chev" viewBox="0 0 24 24"><path d="M7.5 10l4.5 4.5 4.5-4.5"/></symbol>
+    <symbol id="i-next" viewBox="0 0 24 24"><path d="M10 6.5 15.5 12 10 17.5"/></symbol>
+    <symbol id="i-reward" viewBox="0 0 24 24"><path d="M4.5 10.5h15v9h-15zM3.5 7.5h17v3h-17zM12 7.5v12M12 7.5C10.6 4.6 7 4.4 7 6.3c0 1.2 2.2 1.2 5 1.2zm0 0c1.4-2.9 5-3.1 5-1.2 0 1.2-2.2 1.2-5 1.2z"/></symbol>
+    <symbol id="i-ladder" viewBox="0 0 24 24"><path d="M3.5 19.5h17M5 19.5v-5h4.5v5M9.5 19.5v-10h5v10M14.5 19.5V13H19v6.5"/></symbol>
+    <symbol id="i-record" viewBox="0 0 24 24"><path d="M6 4.5h12v15H6zM9 9h6M9 12h6M9 15h3.5"/></symbol>
+    <symbol id="i-scout" viewBox="0 0 24 24"><path d="M18.5 12a6.5 6.5 0 1 1-1.9-4.6M18.5 5v3.4h-3.4"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><path d="M7 11h10v8.5H7zM9.5 11V8.5a2.5 2.5 0 0 1 5 0V11"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M6 12.5l3.8 3.8L18 8"/></symbol>
+    <symbol id="i-star" viewBox="0 0 24 24"><path class="fill" d="M12 3.2l2.6 5.6 6.1.7-4.5 4.2 1.2 6.1L12 16.8l-5.4 3 1.2-6.1-4.5-4.2 6.1-.7z"/></symbol>
+  </svg>
 
-  <div class="arena-page">
-    <header class="arena-topbar">
-      <a href="village.html" class="arena-back jjk-icon-btn" aria-label="Back to village">
-        <img src="assets/ui/jjk/back_arrow.webp" alt="" class="jjk-back-glyph" draggable="false">
-      </a>
-      <h1 class="arena-title jjk-title-plate">Arena</h1>
-      <div class="arena-stars-chip" title="Arena Stars">
-        <img src="assets/ui/star_icon.png" alt="">
-        <span id="arena-stars-total">0</span>
+  <!-- Scene: backdrop, scrims, watermark, featured art, mist (all decoration). -->
+  <div id="arena-bg" data-deco aria-hidden="true">
+    <div class="wb-bg-img"></div>
+    <div class="wb-seal"></div>
+    <!-- Team 7 key art: Sasuke (sasuke_2117 7S), Naruto (naruto_2090 7S), Sakura (sakura_2070 6S) back to back -->
+    <div class="wb-art" id="al-banner-art"><img class="wb-char wb-trio" src="assets/ui/arena/trio_key.webp" alt=""></div>
+    <div class="wb-vtitle" id="wb-vtitle">Academy Student League</div>
+    <div class="wb-mist"></div>
+    <div class="wb-scrim"></div>
+  </div>
+
+  <div class="arena-page" id="arena-lobby">
+    <header class="wb-head">
+      <a href="village.html" class="wb-icon-btn" aria-label="Back to village"><svg><use href="#i-back"/></svg></a>
+      <div class="wb-title">
+        <span class="wb-kicker">Ranked PvP</span>
+        <h1>Arena Showdown</h1>
       </div>
     </header>
 
-    <main class="arena-main">
-      <!-- Rank panel -->
-      <section class="rank-panel" id="player-rank-card">
-        <div class="rank-hero">
-          <div class="rank-badge" id="rank-badge">
-            <div class="rank-badge-tier" id="rank-badge-tier">T2</div>
-          </div>
-          <div class="rank-info">
-            <div class="rank-name" id="rank-name-display">Academy Student</div>
-            <div class="rank-progress-row">
-              <div class="rank-stars-text" id="rank-stars-text">Next: Academy Student T1</div>
-              <div class="rank-tier-label" id="rank-tier-display">0 / 2</div>
-            </div>
-            <div class="rank-stars-bar">
-              <div class="rank-stars-fill" id="rank-stars-fill" style="width:0%"></div>
-            </div>
-          </div>
+    <p class="wb-feature" id="wb-feature">
+      <span class="wb-kicker">Featured</span>
+      <span class="wb-feature-name">Team 7</span>
+      <span class="wb-feature-ver">Naruto &middot; Sasuke &middot; Sakura</span>
+    </p>
+
+    <!-- League panel: rank, star progress, record, rules, next reward -->
+    <section class="wb-panel" id="player-rank-card" aria-label="League status">
+      <header class="wb-league">
+        <img class="wb-medal" id="wb-medal" src="assets/ui/arena/emblem_1.webp" alt="">
+        <div class="wb-league-text">
+          <span class="wb-kicker">Rank <b id="al-league-num">1</b> of <b id="al-rank-of">23</b></span>
+          <h2 class="wb-league-name"><span id="rank-name-display">Academy Student</span><span class="wb-tier" id="rank-badge-tier">T2</span></h2>
         </div>
-
-        <div class="arena-record-strip" id="arena-record-strip">
-          <div class="arena-record-cell">
-            <div class="arena-record-value" id="record-wins">0</div>
-            <div class="arena-record-label">Wins</div>
-          </div>
-          <div class="arena-record-cell">
-            <div class="arena-record-value loss-value" id="record-losses">0</div>
-            <div class="arena-record-label">Losses</div>
-          </div>
-          <div class="arena-record-cell">
-            <div class="arena-record-value" id="record-streak">0</div>
-            <div class="arena-record-label">Streak</div>
-          </div>
-          <div class="arena-record-cell">
-            <div class="arena-record-value" id="record-best">0</div>
-            <div class="arena-record-label">Best</div>
-          </div>
+        <div class="wb-total" title="Arena Stars earned">
+          <b id="arena-stars-total">0</b>
+          <span class="wb-kicker">Stars</span>
         </div>
-      </section>
+      </header>
 
-      <!-- Actions -->
-      <section class="arena-actions">
-        <button class="arena-battle-btn" id="btn-battle-arena" onclick="openArenaBattle()">Battle</button>
-
-        <div class="arena-tiles">
-          <button class="arena-tile" id="tile-defense" onclick="openDefenseSetup()">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M12 2.8l7.5 3v5.6c0 4.7-3.2 8.5-7.5 9.9-4.3-1.4-7.5-5.2-7.5-9.9V5.8z" fill="currentColor" fill-opacity=".18"/><path d="M12 7v10"/></svg>
-            <span class="arena-tile-label">Defense</span>
-            <span class="arena-tile-sub" id="defense-team-sub">Not set</span>
-          </button>
-          <button class="arena-tile" id="tile-rewards" onclick="openSeasonRewards()">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M3.5 10.5h17v8.5a1 1 0 0 1-1 1h-15a1 1 0 0 1-1-1z" fill="currentColor" fill-opacity=".18"/><path d="M3.5 10.5V8a4 4 0 0 1 4-4h9a4 4 0 0 1 4 4v2.5"/><path d="M10 10.5v3h4v-3"/></svg>
-            <span class="arena-tile-label">Rewards</span>
-            <span class="arena-tile-sub" id="rewards-sub">Season</span>
-            <span class="arena-tile-badge" id="rewards-badge" hidden>0</span>
-          </button>
-          <button class="arena-tile" id="tile-ranks" onclick="toggleRanksTable()">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 20v-6h4v6M10 20V9h4v11M15 20v-8h4v8" fill="currentColor" fill-opacity=".18"/><path d="M3 20h18"/></svg>
-            <span class="arena-tile-label">Ranks</span>
-            <span class="arena-tile-sub">Ladder</span>
-          </button>
-          <button class="arena-tile" id="tile-record" onclick="toggleHistoryTable()">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="3" width="15" height="18" rx="2" fill="currentColor" fill-opacity=".18"/><path d="M8.5 8h7M8.5 12h7M8.5 16h4"/></svg>
-            <span class="arena-tile-label">Record</span>
-            <span class="arena-tile-sub">History</span>
-          </button>
+      <div class="wb-progress">
+        <div class="wb-row">
+          <span class="wb-kicker">Arena stars</span>
+          <span class="wb-num" id="rank-tier-display">0 / 2</span>
         </div>
-      </section>
-    </main>
+        <div class="wb-track" id="wb-track"><i id="rank-stars-fill"></i></div>
+        <div class="wb-row wb-sub">
+          <span id="rank-stars-text">Next &middot; Academy Student T1</span>
+          <span id="al-promo"></span>
+        </div>
+      </div>
 
-    <!-- Collapsible ranking table (hidden by default) -->
-    <div class="ranking-section" id="ranking-section" style="display:none;">
-      <div class="ranking-section-title">Rank Ladder</div>
-      <table class="rank-table" id="rank-table">
-        <thead>
-          <tr>
-            <th>Rank</th>
-            <th>Tier</th>
-            <th>Stars Needed</th>
-          </tr>
-        </thead>
-        <tbody id="rank-table-body"></tbody>
-      </table>
+      <dl class="wb-stats" id="arena-record-strip">
+        <div><dt>Wins</dt><dd id="record-wins">0</dd></div>
+        <div><dt>Losses</dt><dd id="record-losses">0</dd></div>
+        <div><dt>Streak</dt><dd id="record-streak">0</dd></div>
+        <div><dt>Best</dt><dd id="record-best">0</dd></div>
+      </dl>
+
+      <button class="wb-line wb-rules-toggle" id="wb-rules-toggle" onclick="toggleArenaRules()" aria-expanded="false" aria-controls="wb-rules">
+        <i class="wb-diamond" aria-hidden="true"></i>
+        <span class="wb-kicker">Special rules</span>
+        <span class="wb-line-text" id="wb-rules-summary">Bonus star every 3rd win</span>
+        <svg class="wb-chev"><use href="#i-chev"/></svg>
+      </button>
+      <div class="wb-rules" id="wb-rules" hidden>
+        <ul>
+          <li><b>Victory</b><span>+1 <svg class="wb-star"><use href="#i-star"/></svg> plus rival bounty &mdash; Formidable +1, Elite +2</span></li>
+          <li><b>Streak</b><span>Every 3rd straight win adds a bonus <svg class="wb-star"><use href="#i-star"/></svg></span></li>
+          <li><b>Defeat</b><span>Above Chunin a loss costs 1 <svg class="wb-star"><use href="#i-star"/></svg></span></li>
+        </ul>
+      </div>
+
+      <div class="wb-line wb-reward" id="al-status-foot">
+        <span class="wb-kicker">Next<span class="wb-long"> reward</span></span>
+        <span class="wb-line-text" id="wb-reward-rank"></span>
+        <span class="wb-loot" id="wb-reward-loot"></span>
+      </div>
+    </section>
+
+    <!-- Bottom-right actions: quiet chips + the one primary CTA -->
+    <nav class="wb-cta" aria-label="Arena actions">
+      <div class="wb-chips">
+        <button class="wb-chip wb-chip-team" id="tile-defense" onclick="openDefenseSetup()">
+          <span class="wb-stack" id="al-team-cluster" aria-hidden="true"></span>
+          <span class="wb-chip-label">Team<span class="wb-long"> Setup</span></span>
+        </button>
+        <button class="wb-chip" id="tile-rewards" onclick="openSeasonRewards()">
+          <svg><use href="#i-reward"/></svg><span class="wb-chip-label">Rewards</span>
+          <span class="wb-count" id="rewards-badge" hidden>0</span>
+        </button>
+        <button class="wb-chip" id="tile-ranks" onclick="toggleRanksTable()">
+          <svg><use href="#i-ladder"/></svg><span class="wb-chip-label">Ladder</span>
+        </button>
+        <button class="wb-chip" id="tile-record" onclick="toggleHistoryTable()">
+          <svg><use href="#i-record"/></svg><span class="wb-chip-label">Record</span>
+        </button>
+      </div>
+      <button class="wb-start" id="btn-battle-arena" onclick="openArenaBattle()">
+        <span class="wb-start-label"><i class="wb-diamond" aria-hidden="true"></i>Start Battle</span>
+        <span class="wb-start-sub" id="al-start-sub">Three rivals near your rank</span>
+      </button>
+    </nav>
+  </div>
+
+  <!-- Rank ladder sheet -->
+  <div class="wb-sheet" id="ranking-section" style="display:none;" role="dialog" aria-modal="true" aria-labelledby="ranking-title">
+    <div class="wb-sheet-scrim" onclick="toggleRanksTable()"></div>
+    <div class="wb-sheet-panel">
+      <header class="wb-sheet-head">
+        <div>
+          <span class="wb-kicker">League</span>
+          <h2 class="wb-sheet-title" id="ranking-title">Rank Ladder</h2>
+        </div>
+        <button class="wb-icon-btn" onclick="toggleRanksTable()" aria-label="Close"><svg><use href="#i-close"/></svg></button>
+      </header>
+      <div class="wb-sheet-body">
+        <table class="rank-table" id="rank-table">
+          <thead><tr><th>Rank</th><th>Tier</th><th>Stars</th></tr></thead>
+          <tbody id="rank-table-body"></tbody>
+        </table>
+      </div>
     </div>
+  </div>
 
-    <!-- Collapsible battle history (hidden by default) -->
-    <div class="ranking-section" id="history-section" style="display:none;">
-      <div class="ranking-section-title">Recent Battles</div>
-      <table class="rank-table" id="history-table">
-        <thead>
-          <tr>
-            <th>Result</th>
-            <th>Opponent</th>
-            <th>Stars</th>
-          </tr>
-        </thead>
-        <tbody id="history-table-body"></tbody>
-      </table>
+  <!-- Battle record sheet -->
+  <div class="wb-sheet" id="history-section" style="display:none;" role="dialog" aria-modal="true" aria-labelledby="history-title">
+    <div class="wb-sheet-scrim" onclick="toggleHistoryTable()"></div>
+    <div class="wb-sheet-panel">
+      <header class="wb-sheet-head">
+        <div>
+          <span class="wb-kicker">Recent battles</span>
+          <h2 class="wb-sheet-title" id="history-title">Battle Record</h2>
+        </div>
+        <button class="wb-icon-btn" onclick="toggleHistoryTable()" aria-label="Close"><svg><use href="#i-close"/></svg></button>
+      </header>
+      <div class="wb-sheet-body">
+        <table class="rank-table" id="history-table">
+          <thead><tr><th>Result</th><th>Opponent</th><th>Stars</th></tr></thead>
+          <tbody id="history-table-body"></tbody>
+        </table>
+      </div>
     </div>
   </div>
 
@@ -170,10 +215,9 @@
 
   <script src="js/resources.js"></script>
   <script>
-  // ── Star icon helper — renders the game's star asset in place of glyphs ──
-  const STAR_ASSET = 'assets/ui/star_icon.png';
+  // ── Star glyph — thin pale-gold star (svg sprite #i-star) ────────────────
   function starIco(px = 12) {
-    return `<img src="${STAR_ASSET}" class="star-ico" style="width:${px}px;height:${px}px" alt="star" onerror="this.style.display='none'">`;
+    return `<svg class="wb-star" style="width:${px}px;height:${px}px" role="img" aria-label="stars"><use href="#i-star"/></svg>`;
   }
 
   // ── Arena Rank Definitions ──────────────────────────────────────────────
@@ -223,6 +267,14 @@
     return { idx: list.length - 1, starsInTier: stars, rank: list[list.length - 1] };
   }
 
+  // League medallions (assets/ui/arena/emblem_1..6.webp), one per league band
+  const RANK_EMBLEM = {
+    'Academy Student': 1, 'Genin': 1, 'Chunin': 2, 'Special Jounin': 2,
+    'Jounin': 3, 'Elite Jounin': 3, 'ANBU': 4, 'ANBU Captain': 4,
+    'Shadow Kage': 5, 'Sannin': 5, 'Kage': 5, 'Six Paths': 6, 'Shinobi Legend': 6,
+  };
+  const emblemFor = name => `assets/ui/arena/emblem_${RANK_EMBLEM[name] || 1}.webp`;
+
   function renderRankTable() {
     const tbody = document.getElementById('rank-table-body');
     if (!tbody) return;
@@ -231,45 +283,150 @@
     const list = buildRankList();
 
     tbody.innerHTML = list.map((r, i) => `
-      <tr class="${i === idx ? 'current-rank' : ''}">
-        <td class="rank-name-cell">${r.label}</td>
-        <td class="rank-tier-cell">${r.tier}</td>
-        <td class="rank-stars-cell"><span class="rank-stars-imgs"><span class="rank-star-text">${r.totalStarsLabel}</span> ${starIco(13)}</span></td>
+      <tr class="${i === idx ? 'current-rank' : ''}${i < idx ? ' passed' : ''}">
+        <td class="rank-name-cell"><img src="${emblemFor(r.name)}" alt="">${r.name}</td>
+        <td class="rank-tier-cell">${r.label === r.name ? '&mdash;' : r.tier}</td>
+        <td class="rank-stars-cell">${r.starsNeeded} ${starIco(11)}</td>
       </tr>`).join('');
   }
 
   function renderPlayerRank() {
     const stars = getArenaStars();
     const { idx, starsInTier, rank } = getCurrentRankIndex(stars);
+    const list = buildRankList();
+    const cumTo = n => list.slice(0, n).reduce((s, r) => s + r.starsNeeded, 0);
+    const atTop = idx === list.length - 1 && stars >= cumTo(list.length);
+    const multiTier = rank.label !== rank.name;
 
     document.getElementById('rank-name-display').textContent = rank.name;
-    document.getElementById('rank-badge-tier').textContent = rank.tier;
-    const totalEl = document.getElementById('arena-stars-total');
-    if (totalEl) totalEl.textContent = stars;
+    const tierEl = document.getElementById('rank-badge-tier');
+    tierEl.textContent = multiTier ? rank.tier : '';
+    tierEl.hidden = !multiTier;
+    document.getElementById('al-league-num').textContent = idx + 1;
+    document.getElementById('al-rank-of').textContent = list.length;
+    document.getElementById('arena-stars-total').textContent = stars;
+    document.getElementById('wb-medal').src = emblemFor(rank.name);
+    document.getElementById('wb-vtitle').textContent = `${rank.name} League`;
 
-    const list = buildRankList();
     const next = list[idx + 1];
-    document.getElementById('rank-stars-text').textContent = next ? `Next: ${next.label}` : 'Top rank reached';
+    document.getElementById('rank-stars-text').innerHTML = next
+      ? `<span class="wb-dim">Next</span> ${next.label}` : 'Top rank reached';
 
-    const pct = Math.min(100, Math.round((starsInTier / rank.starsNeeded) * 100));
+    // Hairline track: one tick per star in this tier, pale-gold fill + marker
+    const inTier = atTop ? rank.starsNeeded : Math.min(starsInTier, rank.starsNeeded);
+    const pct = Math.min(100, (inTier / rank.starsNeeded) * 100);
+    const track = document.getElementById('wb-track');
+    track.style.setProperty('--pct', pct + '%');
+    track.querySelectorAll('.wb-tick').forEach(t => t.remove());
+    for (let t = 1; t < rank.starsNeeded; t++) {
+      const tick = document.createElement('span');
+      tick.className = 'wb-tick' + (t <= inTier ? ' on' : '');
+      tick.style.left = (t / rank.starsNeeded * 100) + '%';
+      track.appendChild(tick);
+    }
     document.getElementById('rank-stars-fill').style.width = pct + '%';
+    track.classList.toggle('is-max', atTop);
     document.getElementById('rank-tier-display').innerHTML =
-      `${starsInTier} / ${rank.starsNeeded} ${starIco(16)}`;
+      `${inTier}<small>/ ${rank.starsNeeded}</small>${starIco(13)}`;
+
+    // Promotion: the next league with a different name + stars still needed
+    const nextIdx = list.findIndex((r, i) => i > idx && r.name !== rank.name);
+    document.getElementById('al-promo').innerHTML = nextIdx < 0
+      ? 'Reigning league'
+      : `<span class="wb-dim">${list[nextIdx].name} in</span> ${Math.max(0, cumTo(nextIdx) - stars)}${starIco(10)}`;
   }
 
-  // Tile sub-labels: current defense team + claimable reward count
+  // Chip states: defense team, claimable rewards; panel line: next reward
   function renderActionTiles() {
     let def = null;
     try { def = JSON.parse(localStorage.getItem('arena_defense_team') || 'null'); } catch(e) {}
-    const defSub = document.getElementById('defense-team-sub');
-    if (defSub) defSub.textContent = def ? `Team ${def}` : 'Not set';
+    const defText = def ? `Defense: Team ${def}` : 'Defense not set';
+    const chip = document.getElementById('tile-defense');
+    chip?.setAttribute('title', `Team Setup · ${defText}`);
+    chip?.setAttribute('aria-label', `Team Setup, ${defText}`);
 
     const claimed = getClaimedSeasonRewards();
     const ready = SEASON_REWARD_MILESTONES.filter(m => !claimed.includes(m.rank) && milestoneReached(m.rank)).length;
     const badge = document.getElementById('rewards-badge');
     if (badge) { badge.textContent = ready; badge.hidden = ready === 0; }
-    const rSub = document.getElementById('rewards-sub');
-    if (rSub) rSub.textContent = ready ? 'Ready!' : 'Season';
+    document.getElementById('tile-rewards')?.classList.toggle('has-ready', ready > 0);
+
+    // Next reward: first milestone not yet reached (or a claim prompt)
+    const nextMs = SEASON_REWARD_MILESTONES.find(m => !milestoneReached(m.rank));
+    const rankEl = document.getElementById('wb-reward-rank');
+    const lootEl = document.getElementById('wb-reward-loot');
+    const short = n => n >= 1000 ? `${Math.round(n / 1000)}k` : n;
+    if (ready) {
+      rankEl.textContent = `${ready} ready to claim`;
+      lootEl.innerHTML = '';
+    } else if (nextMs) {
+      rankEl.textContent = nextMs.rank;
+      lootEl.innerHTML =
+        `<span><img src="assets/icons/currency/ninjapearl.png" alt="Pearls">${nextMs.pearl}</span>` +
+        `<span><img src="assets/icons/currency/ryo.png" alt="Ryo">${short(nextMs.ryo)}</span>` +
+        `<span><img src="assets/icons/currency/shinobite.png" alt="Shinobites">${nextMs.shin}</span>`;
+    } else {
+      rankEl.textContent = 'All season rewards earned';
+      lootEl.innerHTML = '';
+    }
+  }
+
+  // ── Special rules: one line that expands over the panel ───────────────────
+  function toggleArenaRules(force) {
+    const box = document.getElementById('wb-rules');
+    const btn = document.getElementById('wb-rules-toggle');
+    const open = typeof force === 'boolean' ? force : box.hidden;
+    box.hidden = !open;
+    btn.setAttribute('aria-expanded', String(open));
+    document.getElementById('player-rank-card').classList.toggle('rules-open', open);
+  }
+  document.addEventListener('click', e => {
+    if (!e.target.closest?.('#wb-rules, #wb-rules-toggle')) toggleArenaRules(false);
+  });
+
+  // ── Team chip stack (the featured art is the fixed Team 7 key art) ───────
+  async function renderLobbyTeam() {
+    const pool = await loadArenaCharPool();
+    const byId = Object.fromEntries(pool.map(c => [c.id, c]));
+    let teams = {}, inv = {};
+    try { teams = JSON.parse(localStorage.getItem('blazing_teams_v1') || '{}'); } catch(e) {}
+    try {
+      const arr = JSON.parse(localStorage.getItem('blazing_inventory_v2') || '[]');
+      if (Array.isArray(arr)) arr.forEach(i => { inv[i.uid] = i; });
+    } catch(e) {}
+    const num = (() => {
+      for (const k of ['arena_defense_team', 'arena_offense_team']) {
+        try {
+          const n = JSON.parse(localStorage.getItem(k) || 'null');
+          if (n && teams[n]) return n;
+        } catch(e) {}
+      }
+      return Object.keys(teams).find(k => Object.keys(teams[k] || {}).length) || null;
+    })();
+
+    const slots = ['front-1','front-2','front-3','front-4','back-1','back-2','back-3','back-4','commander'];
+    const members = num ? slots.map(s => {
+      const entry = teams[num][s];
+      if (!entry) return null;
+      const inst = inv[entry.uid] || { charId: entry.charId };
+      const c = byId[inst.charId || entry.charId];
+      if (!c) return null;
+      const tier = inst.tierCode || c.starMaxCode || c.starMinCode || '3S';
+      const art = c.artByTier?.[tier] || {};
+      return { c, portrait: art.portrait || c.portrait || '' };
+    }).filter(Boolean) : [];
+
+    // Team chip: up to three overlapping face crops drawn as ONE svg image
+    const faces = members.slice(0, 3);
+    const D = 24, STEP = 15, R = D / 2;
+    document.getElementById('al-team-cluster').innerHTML = faces.length ? `
+      <svg viewBox="0 0 ${D + STEP * (faces.length - 1) + 2} ${D + 2}" width="${D + STEP * (faces.length - 1) + 2}" height="${D + 2}">
+        <defs>${faces.map((m, i) => `<clipPath id="wb-face-${i}"><circle cx="${1 + R + i * STEP}" cy="${1 + R}" r="${R - 0.5}"/></clipPath>`).join('')}</defs>
+        ${faces.map((m, i) => i).reverse().map(i => `
+          <circle cx="${1 + R + i * STEP}" cy="${1 + R}" r="${R + 1}" fill="#071418" stroke="none"/>
+          <image href="${faces[i].portrait}" x="${1 + i * STEP - 9}" y="${1 - 4}" width="${D + 18}" height="${D + 18}" clip-path="url(#wb-face-${i})" preserveAspectRatio="xMidYMid slice"/>
+          <circle cx="${1 + R + i * STEP}" cy="${1 + R}" r="${R - 0.5}" fill="none" stroke="rgba(241,217,138,.6)" stroke-width="1"/>`).join('')}
+      </svg>` : '';
   }
 
   function getArenaRecord() {
@@ -290,6 +447,14 @@
     streakEl.textContent = rec.streak;
     streakEl.classList.toggle('streak-hot', rec.streak >= 3);
     document.getElementById('record-best').textContent = rec.bestStreak;
+
+    // Start Battle sub-line + rules summary track the streak bonus
+    const toBonus = 3 - (rec.streak % 3);
+    document.getElementById('al-start-sub').textContent =
+      rec.streak >= 2 ? `${rec.streak}-win streak` : 'Three rivals near your rank';
+    document.getElementById('wb-rules-summary').textContent = toBonus === 1
+      ? 'Bonus star on next win'
+      : `Bonus star in ${toBonus} wins`;
   }
 
   function renderHistoryTable() {
@@ -305,7 +470,7 @@
       const win = h.result === 'win';
       const starsTxt = h.stars > 0 ? `+${h.stars} ${starIco(11)}` : (h.stars < 0 ? `${h.stars} ${starIco(11)}` : '—');
       return `<tr>
-        <td><span class="history-row-result ${win ? 'win' : 'loss'}">${win ? 'VICTORY' : 'DEFEAT'}</span></td>
+        <td><span class="history-row-result ${win ? 'win' : 'loss'}">${win ? 'Victory' : 'Defeat'}</span></td>
         <td class="history-opponent-cell">${h.opponent || 'Unknown Shinobi'}
           ${h.epithet ? `<span class="history-opponent-epithet">${h.epithet}</span>` : ''}</td>
         <td class="history-stars-cell ${h.stars > 0 ? 'gain' : 'drop'}">${starsTxt}${win && h.streak > 1 ? `<span class="history-streak">${h.streak} streak</span>` : ''}</td>
@@ -313,17 +478,24 @@
     }).join('');
   }
 
-  function toggleHistoryTable() {
-    const section = document.getElementById('history-section');
+  // Ladder / Record open as side sheets over the lobby
+  function _toggleSheet(id, otherId, onOpen) {
+    const section = document.getElementById(id);
     if (!section) return;
     const isHidden = section.style.display === 'none';
     section.style.display = isHidden ? 'block' : 'none';
     if (isHidden) {
-      renderHistoryTable();
-      document.getElementById('ranking-section').style.display = 'none';
-      section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      onOpen?.();
+      const other = document.getElementById(otherId);
+      if (other) other.style.display = 'none';
+      section.querySelector('.wb-sheet-body')?.scrollTo(0, 0);
+      section.querySelector('.current-rank')?.scrollIntoView({ block: 'center' });
     }
     _syncDrawerTiles();
+  }
+
+  function toggleHistoryTable() {
+    _toggleSheet('history-section', 'ranking-section', renderHistoryTable);
   }
 
   function _syncDrawerTiles() {
@@ -331,6 +503,13 @@
     document.getElementById('tile-ranks')?.classList.toggle('is-open', open('ranking-section'));
     document.getElementById('tile-record')?.classList.toggle('is-open', open('history-section'));
   }
+  document.addEventListener('keydown', e => {
+    if (e.key !== 'Escape') return;
+    ['ranking-section', 'history-section'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el && el.style.display !== 'none') { el.style.display = 'none'; _syncDrawerTiles(); }
+    });
+  });
 
   // ── Rank-up celebration (fires when returning above last seen rank) ─────
   function checkRankUpCelebration() {
@@ -343,19 +522,36 @@
 
     _showArenaInfoModal('Rank Up!',
       `<div class="rankup">
-        <img src="assets/ui/arena_rank_emblem.png" alt="">
+        <img src="${emblemFor(rank.name)}" alt="">
         <div class="rankup-name">${rank.label}</div>
         <div class="rankup-sub">${stars} Arena Stars · new rewards may be ready</div>
       </div>`);
   }
+
+  // Gentle pointer parallax on the featured art (mouse / trackpad only)
+  (() => {
+    const scene = document.getElementById('arena-bg');
+    if (!scene || !matchMedia('(pointer: fine)').matches || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    let raf = 0, px = 0, py = 0;
+    addEventListener('pointermove', e => {
+      px = (e.clientX / innerWidth) * 2 - 1;
+      py = (e.clientY / innerHeight) * 2 - 1;
+      if (raf) return;
+      raf = requestAnimationFrame(() => {
+        raf = 0;
+        scene.style.setProperty('--wb-px', px.toFixed(3));
+        scene.style.setProperty('--wb-py', py.toFixed(3));
+      });
+    }, { passive: true });
+  })();
 
   renderRankTable();
   renderPlayerRank();
   renderRecordStrip();
   renderHistoryTable();
   checkRankUpCelebration();
-  // Deferred: reward milestones are declared further down the script
-  setTimeout(renderActionTiles, 0);
+  // Deferred: reward milestones + the character pool are declared further down the script
+  setTimeout(() => { renderActionTiles(); renderLobbyTeam(); }, 0);
 
   // ── Arena Battle Maps ────────────────────────────────────────────────────
   const ARENA_MAPS = [
@@ -445,6 +641,7 @@
 
     const shuffle = arr => [...arr].sort(() => Math.random() - 0.5);
     const usedNames = new Set();
+    const usedEpithets = new Set();
 
     return RIVAL_TIERS.map((tier, d) => {
       // Units drawn from a power band that climbs with player rank + rival tier
@@ -461,7 +658,10 @@
       while (usedNames.has(name));
       usedNames.add(name);
 
-      const epithet = RIVAL_EPITHETS[Math.floor(Math.random() * RIVAL_EPITHETS.length)];
+      let epithet;
+      do { epithet = RIVAL_EPITHETS[Math.floor(Math.random() * RIVAL_EPITHETS.length)]; }
+      while (usedEpithets.has(epithet));
+      usedEpithets.add(epithet);
       const rivalRank = rankList[Math.min(idx + d, rankList.length - 1)];
       const teamPower = units.reduce((s, u) => s + u.hp + u.atk * 5, 0);
 
@@ -485,46 +685,49 @@
 
     const cardsHTML = rivals.map((r, i) => {
       const portraits = r.units.map(u => `
-        <div class="aos-unit">
+        <div class="aos-unit" title="${u.name}">
           <img src="${u.icon || 'assets/characters/common/silhouette.png'}" alt=""
                onerror="this.src='assets/characters/common/silhouette.png'">
         </div>`).join('');
       const bounty = 1 + r.tier.bonusStars;
       return `
-      <div class="aos-card" onclick="chooseOpponent(${i})">
-        <div class="aos-emblem">
-          <div class="aos-emblem-inner">${r.name.charAt(0)}</div>
-        </div>
-        <div class="aos-info">
-          <div class="aos-name">${r.name} <span class="aos-epithet">${r.epithet}</span></div>
-          <div class="aos-rank">${r.rankLabel}</div>
-          <div class="aos-units">${portraits}</div>
-        </div>
-        <div class="aos-side">
-          <div class="aos-threat" style="color:${r.tier.color}">${r.tier.label}</div>
-          <div class="aos-power">PWR ${Math.round(r.teamPower / 1000)}k</div>
-          <div class="aos-bounty">${starIco(15).repeat(bounty)}<span class="aos-bounty-label">reward</span></div>
-        </div>
-      </div>`;
+      <button class="aos-card" data-threat="${i}" onclick="chooseOpponent(${i})" style="--threat:${r.tier.color}">
+        <span class="aos-top">
+          <span class="aos-threat"><i></i>${r.tier.label}</span>
+          <span class="aos-bounty" title="Stars for a win">+${bounty}${starIco(12)}</span>
+        </span>
+        <span class="aos-id">
+          <span class="aos-emblem">${r.name.charAt(0)}</span>
+          <span class="aos-info">
+            <span class="aos-name">${r.name}</span>
+            <span class="aos-epithet">${r.epithet}</span>
+          </span>
+        </span>
+        <span class="aos-units">${portraits}</span>
+        <span class="aos-foot">
+          <span class="aos-rank">${r.rankLabel}</span>
+          <span class="aos-power"><small>PWR</small>${Math.round(r.teamPower / 1000)}k</span>
+        </span>
+        <span class="aos-go">Challenge<svg><use href="#i-next"/></svg></span>
+      </button>`;
     }).join('');
 
     const modal = document.createElement('div');
     modal.id = 'arena-opponent-select';
+    modal.className = 'wb-screen';
     modal._rivals = rivals;
     modal.innerHTML = `
-      <div class="aos-overlay" onclick="document.getElementById('arena-opponent-select').remove()"></div>
-      <div class="aos-panel">
-        <div class="aos-header">
-          <div>
-            <div class="aos-title">Choose Opponent</div>
-            <div class="aos-desc">Three rivals near your rank</div>
+      <div class="aos-overlay wb-screen-bg"></div>
+      <div class="aos-panel wb-screen-panel">
+        <div class="aos-header wb-screen-head">
+          <button class="aos-close wb-icon-btn" onclick="document.getElementById('arena-opponent-select').remove()" aria-label="Back"><svg><use href="#i-back"/></svg></button>
+          <div class="wb-title">
+            <span class="wb-kicker aos-desc">Three rivals near your rank</span>
+            <div class="aos-title">Choose Your Rival</div>
           </div>
-          <button class="aos-close" onclick="document.getElementById('arena-opponent-select').remove()">✕</button>
+          <button class="aos-rescout wb-chip" onclick="rescoutOpponents()"><svg><use href="#i-scout"/></svg><span class="wb-chip-label">Scout Again</span></button>
         </div>
         <div class="aos-cards">${cardsHTML}</div>
-        <div class="aos-footer">
-          <button class="aos-rescout" onclick="rescoutOpponents()">Scout Again</button>
-        </div>
       </div>`;
 
     _injectOpponentSelectStyles();
@@ -603,38 +806,33 @@
 
       if (members.length === 0) {
         return `<div class="atp-team-card empty" data-team="${teamNum}">
-          <div class="atp-team-label">Team ${teamNum}</div>
+          <div class="atp-team-head"><span class="atp-team-label">Team ${teamNum}</span></div>
           <div class="atp-empty-msg">No characters assigned</div>
         </div>`;
       }
 
-      const rarityBorder = r => r >= 7 ? '#ff2244' : r >= 6 ? '#ffd700' : r >= 5 ? '#c084fc' : '#4ade80';
       const memberCards = members.map(m => `
-        <div class="atp-member">
-          <div class="atp-portrait" style="background-image:url('${m.portrait}');border-color:${rarityBorder(m.rarity)}"></div>
-          <div class="atp-member-info">
-            <div class="atp-member-name">${m.name}</div>
-            ${m.version ? `<div class="atp-member-ver">${m.version}</div>` : ''}
-            <div class="atp-jutsu-row">
-              <div class="atp-jutsu-icon" style="background-image:url('${m.portrait}')"></div>
-              <div class="atp-jutsu-name">${m.jutsuName}</div>
-              <div class="atp-chakra">${m.chakra}C</div>
-            </div>
-          </div>
+        <div class="atp-member" title="${m.name}${m.version ? ' · ' + m.version : ''}">
+          <div class="atp-portrait" style="background-image:url('${m.portrait}')"></div>
         </div>`).join('');
+      const lead = members[0];
 
       const isActiveMode = mode === 'offense' ? currentOffenseTeam === teamNum : currentDefenseTeam === teamNum;
-      return `<div class="atp-team-card ${isActiveMode ? 'atp-active' : ''}" data-team="${teamNum}" onclick="selectArenaTeam(${teamNum})">
-        <div class="atp-team-label">Team ${teamNum}</div>
-        <div class="atp-members">${memberCards}</div>
-        ${isActiveMode ? '<div class="atp-active-badge">Current</div>' : ''}
-      </div>`;
+      return `<button class="atp-team-card ${isActiveMode ? 'atp-active atp-selected' : ''}" data-team="${teamNum}" onclick="selectArenaTeam(${teamNum})">
+        <span class="atp-team-head">
+          <span class="atp-team-label">Team ${teamNum}</span>
+          ${isActiveMode ? '<span class="atp-active-badge">Current</span>' : ''}
+          <span class="atp-team-count">${members.length} units</span>
+        </span>
+        <span class="atp-members">${memberCards}</span>
+        <span class="atp-lead"><span class="atp-member-name">${lead.name}</span>${lead.version ? `<span class="atp-member-ver">${lead.version}</span>` : ''}</span>
+      </button>`;
     }
 
     const title = mode === 'offense' ? 'Select Offense Team' : 'Select Defense Team';
     const desc  = mode === 'offense'
-      ? 'Pick the team you will fight with.'
-      : 'Pick the team other players will fight against.';
+      ? 'Your lineup for this battle'
+      : 'The lineup rivals will face';
 
     document.getElementById('arena-team-picker')?.remove();
     const modal = document.createElement('div');
@@ -660,23 +858,24 @@
     modal.dataset.resolvedTeams = JSON.stringify(resolvedTeams);
     if (enemyTeam) modal.dataset.enemyTeam = JSON.stringify(enemyTeam);
 
+    modal.className = 'wb-screen';
     modal.innerHTML = `
-      <div class="atp-overlay" onclick="document.getElementById('arena-team-picker').remove()"></div>
-      <div class="atp-panel">
-        <div class="atp-header">
-          <div>
+      <div class="atp-overlay wb-screen-bg"></div>
+      <div class="atp-panel wb-screen-panel">
+        <div class="atp-header wb-screen-head">
+          <button class="atp-close wb-icon-btn" onclick="document.getElementById('arena-team-picker').remove()" aria-label="Back"><svg><use href="#i-back"/></svg></button>
+          <div class="wb-title">
+            <span class="wb-kicker atp-desc">${desc}</span>
             <div class="atp-title">${title}</div>
-            <div class="atp-desc">${desc}</div>
           </div>
-          <button class="atp-close" onclick="document.getElementById('arena-team-picker').remove()">✕</button>
+          <a href="teams.html" class="atp-link-btn wb-chip"><span class="wb-chip-label">Manage Teams</span></a>
         </div>
         <div class="atp-teams">
           ${[1,2,3,4,5,6,7,8].map(n => buildTeamCard(n)).join('')}
         </div>
         <div class="atp-footer">
-          <a href="teams.html" class="atp-link-btn">Manage Teams</a>
-          <button class="atp-confirm arena-pill-btn${mode === 'offense' ? '' : ' blue'}" id="atp-confirm-btn" onclick="confirmArenaTeam()" disabled>
-            ${mode === 'offense' ? 'Use This Team' : 'Set Defense'}
+          <button class="atp-confirm wb-start" id="atp-confirm-btn" onclick="confirmArenaTeam()" disabled>
+            <span class="wb-start-label"><i class="wb-diamond" aria-hidden="true"></i>${mode === 'offense' ? 'Use This Team' : 'Set Defense'}</span>
           </button>
         </div>
       </div>`;
@@ -716,6 +915,7 @@
       _showArenaInfoModal('Defense Team Set',
         `<p class="aim-note ok">Team ${teamNum} is now your defense team.</p>`);
       renderActionTiles();
+      renderLobbyTeam();
       return;
     }
 
@@ -735,58 +935,63 @@
   function showTeamSelectorModal(playerMembers, enemyTeam) {
     // playerMembers: pre-resolved array of { name, version, portrait, rarity }
     // enemyTeam:     array from openArenaBattle
-
     const mapPath = randomMap();
-
-    const rarityColor = r => r >= 6 ? '#ff4444' : r >= 5 ? '#ffd700' : r >= 4 ? '#a78bfa' : '#6bcf7f';
+    let opp = {};
+    try { opp = JSON.parse(localStorage.getItem('arena_opponent') || '{}'); } catch(e) {}
 
     const enemyHTML = enemyTeam.map(e => `
       <div class="arena-team-member">
-        <div class="arena-member-avatar" style="${e.icon ? `background-image:url('${e.icon}');` : 'background:#333'}"></div>
-        <div class="arena-member-name">${e.name}${e.version ? `<br><span>${e.version}</span>` : ''}</div>
+        <div class="arena-member-avatar" style="${e.icon ? `background-image:url('${e.icon}');` : ''}"></div>
+        <div class="arena-member-name">${e.name}</div>
         <div class="arena-member-stats">
-          <span title="HP">HP ${(e.hp/1000).toFixed(1)}k</span>
-          <span title="ATK">ATK ${e.atk}</span>
-          <span title="SPD">SPD ${e.spd}</span>
+          <span title="HP"><small>HP</small>${(e.hp/1000).toFixed(1)}k</span>
+          <span title="ATK"><small>ATK</small>${e.atk}</span>
         </div>
       </div>`).join('');
 
     const playerHTML = playerMembers.length > 0
       ? playerMembers.slice(0, 4).map(m => `
           <div class="arena-team-member">
-            <div class="arena-member-avatar" style="${m.portrait ? `background-image:url('${m.portrait}');` : 'background:#444'}"></div>
-            <div class="arena-member-name">${m.name}${m.version ? `<br><span>${m.version}</span>` : ''}</div>
+            <div class="arena-member-avatar" style="${m.portrait ? `background-image:url('${m.portrait}');` : ''}"></div>
+            <div class="arena-member-name">${m.name}</div>
+            ${m.version ? `<div class="arena-member-stats"><span>${m.version}</span></div>` : ''}
           </div>`).join('')
       : '<div class="arena-no-team">No team set — default characters will be used</div>';
 
     const modal = document.createElement('div');
     modal.id = 'arena-team-modal';
+    modal.className = 'wb-screen';
     modal.innerHTML = `
-      <div class="arena-modal-overlay" onclick="document.getElementById('arena-team-modal').remove()"></div>
-      <div class="arena-modal-panel">
-        <div class="arena-modal-header">
-          <span class="arena-modal-title">Arena Battle</span>
-          <button class="arena-modal-close" onclick="document.getElementById('arena-team-modal').remove()">✕</button>
+      <div class="arena-modal-overlay wb-screen-bg wb-duel-bg"></div>
+      <div class="arena-modal-panel wb-screen-panel">
+        <div class="arena-modal-header wb-screen-head">
+          <button class="arena-modal-close wb-icon-btn" onclick="document.getElementById('arena-team-modal').remove()" aria-label="Back"><svg><use href="#i-back"/></svg></button>
+          <div class="wb-title">
+            <span class="wb-kicker">Arena battle</span>
+            <div class="arena-modal-title">Confirm Lineup</div>
+          </div>
         </div>
         <div class="arena-modal-body">
           <div class="arena-teams-row">
             <div class="arena-team-col">
-              <div class="arena-team-label">Your Team</div>
+              <div class="arena-team-label"><span class="wb-kicker">Your team</span></div>
               <div class="arena-team-grid">${playerHTML}</div>
             </div>
-            <div class="arena-vs-badge">VS</div>
-            <div class="arena-team-col">
-              <div class="arena-team-label enemy-label">Enemy Team</div>
+            <div class="arena-vs-badge" aria-label="versus"><span>VS</span></div>
+            <div class="arena-team-col enemy">
+              <div class="arena-team-label enemy-label"><span class="wb-kicker">${opp.name ? `${opp.name} <span class="arena-opp-epithet">${opp.epithet || ''}</span>` : 'Enemy team'}</span></div>
               <div class="arena-team-grid">${enemyHTML}</div>
             </div>
           </div>
-          <div class="arena-map-preview" style="background-image:url('${mapPath}')">
-            <span class="arena-map-label">Battle Map</span>
-          </div>
         </div>
-        <button class="arena-start-match-btn arena-pill-btn" onclick="startArenaBattle(${JSON.stringify(enemyTeam).replace(/"/g, '&quot;')}, '${mapPath}')">
-          Fight!
-        </button>
+        <div class="arena-modal-foot">
+          <div class="arena-map-preview" style="background-image:url('${mapPath}')">
+            <span class="arena-map-label"><span class="wb-kicker">Battle map</span></span>
+          </div>
+          <button class="arena-start-match-btn wb-start" onclick="startArenaBattle(${JSON.stringify(enemyTeam).replace(/"/g, '&quot;')}, '${mapPath}')">
+            <span class="wb-start-label"><i class="wb-diamond" aria-hidden="true"></i>Fight</span>
+          </button>
+        </div>
       </div>`;
 
     // Styles live in css/arena.css
@@ -801,16 +1006,7 @@
   }
 
   function toggleRanksTable() {
-    const section = document.getElementById('ranking-section');
-    if (!section) return;
-    const isHidden = section.style.display === 'none';
-    section.style.display = isHidden ? 'block' : 'none';
-    if (isHidden) {
-      const history = document.getElementById('history-section');
-      if (history) history.style.display = 'none';
-      section.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-    _syncDrawerTiles();
+    _toggleSheet('ranking-section', 'history-section', renderRankTable);
   }
 
   function openDefenseSetup() {
@@ -875,16 +1071,17 @@
            const reached = milestoneReached(r.rank);
            let action;
            if (isClaimed) {
-             action = '<span class="sr-claimed">Claimed</span>';
+             action = '<span class="sr-claimed"><svg><use href="#i-check"/></svg>Claimed</span>';
            } else if (reached) {
-             action = `<button class="sr-claim arena-pill-btn" onclick="claimSeasonReward('${r.rank}')">Claim</button>`;
+             action = `<button class="sr-claim wb-start" onclick="claimSeasonReward('${r.rank}')"><span class="wb-start-label">Claim</span></button>`;
            } else {
-             action = '<span class="sr-locked">Locked</span>';
+             action = '<span class="sr-locked"><svg><use href="#i-lock"/></svg>Locked</span>';
            }
-           const rowCls = reached && !isClaimed ? 'claimable' : (!reached ? 'locked' : '');
+           const rowCls = reached && !isClaimed ? 'claimable' : (!reached ? 'locked' : 'claimed');
            return `
            <div class="sr-row ${rowCls}">
-             <div style="min-width:0;flex:1">
+             <img class="sr-emblem" src="${emblemFor(r.rank)}" alt="">
+             <div class="sr-main">
                <div class="sr-rank">${r.rank}</div>
                <div class="sr-loot">
                  <span>${pearlIcon}${r.pearl}</span>
@@ -896,23 +1093,27 @@
            </div>`;
          }).join('')}
        </div>
-       <div class="sr-footer"><span>Current rank: <strong>${rank.label}</strong></span><span>${stars} ${starIco(14)}</span></div>`
+       <div class="sr-footer"><span><span class="wb-kicker">Current rank</span> <strong>${rank.label}</strong></span><span class="sr-total">${stars} ${starIco(13)}</span></div>`,
+      'League milestones'
     );
     renderActionTiles();
   }
 
   function _injectArenaTeamPickerStyles() {}
 
-  function _showArenaInfoModal(title, bodyHTML) {
+  function _showArenaInfoModal(title, bodyHTML, kicker = 'Arena') {
     document.getElementById('arena-info-modal')?.remove();
     const modal = document.createElement('div');
     modal.id = 'arena-info-modal';
     modal.innerHTML = `
       <div class="aim-overlay" onclick="document.getElementById('arena-info-modal').remove()"></div>
-      <div class="aim-panel">
+      <div class="aim-panel" role="dialog" aria-modal="true">
         <div class="aim-header">
-          <span class="aim-title">${title}</span>
-          <button class="aim-close" onclick="document.getElementById('arena-info-modal').remove()">✕</button>
+          <div class="wb-title">
+            <span class="wb-kicker">${kicker}</span>
+            <span class="aim-title">${title}</span>
+          </div>
+          <button class="aim-close wb-icon-btn" onclick="document.getElementById('arena-info-modal').remove()" aria-label="Close"><svg><use href="#i-close"/></svg></button>
         </div>
         <div class="aim-body">${bodyHTML}</div>
       </div>`;

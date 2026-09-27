@@ -1,0 +1,703 @@
+/* ═══════════════════ Summon reveal — face-down papers ═══════════════════
+   Results start face-down as dossier papers dealt onto a layered stage
+   (js/summon/summon-reveal.js). Paper colour alone tells the star tier:
+     7★ pearl · 6★ sapphire · 5★ gold · 4★ silver · 3★ bronze · ≤2★ sage
+   Depth, not decoration: the stage is three painted layers (far mist, slow
+   drifting clouds, a near cloud bank) with a light pool under the grid and a
+   vignette. Each paper sits in its own perspective with a small pose (the
+   row curves toward the viewer, a hair of rotation), a soft shadow cast on
+   the backdrop, a thin paper edge, curvature shading and a slow idle float.
+   Glossy papers (pearl, sapphire, gold, a little on silver) carry a static
+   specular and a moving glint; bronze and sage stay matte.
+   Deal: papers drop in from toward the camera, one after another, and
+   settle. Open: the paper lifts toward the camera as it whitens, flips edge-
+   on, and the card turns in from the other side out of that light. A never-
+   owned unit gets the cinematic NEW reveal in between. Results: the panel
+   tilts up into place and the cards rise out of a recessed tray in order,
+   framed and under-lit by tier; they lift on hover/press.
+   Art lives in assets/ui/summon/; missing paper art falls back to plain
+   tier-coloured placeholders. Papers stay hidden until the grid is dealt
+   (.sr-dealt: every paper decoded).
+   Reduced motion keeps every pose, shadow and light, with no movement.
+   PERF: everything animates transform / opacity (filter only on the card's
+   single flip); the stage layers are plain backgrounds moved by transform;
+   ten papers × three masked overlays. */
+
+.summon-modal {
+  --sr-cloud: url('../assets/ui/summon/reveal_bg.webp');
+  /* Sealed grid slot width: two rows (plus hint + buttons) must fit the
+     height, five papers with four half-paper gaps the width. */
+  --sr-chrome: 240px;
+  --sr-w: clamp(60px, min(
+    (100vw - var(--safe-l, 0px) - var(--safe-r, 0px) - 64px) / 7,
+    (var(--app-vh, 100vh) - var(--safe-t, 0px) - var(--safe-b, 0px) - var(--sr-chrome)) / 2.2
+  ), 150px);
+  --sr-w1: min(var(--sr-w) * 1.4, 200px); /* single pull */
+  --mx: 0; --my: 0; /* pointer parallax, -1…1 (set by summon-reveal.js) */
+  /* Kaisei's small sizes get grid-fitted advances in some renderers (a gap
+     after 's': "Kakas hi", "SUMMO NED"); unhinted outlines keep the spacing. */
+  text-rendering: geometricPrecision;
+}
+html.is-mobile.is-landscape.is-compact .summon-modal { --sr-chrome: 176px; }
+/* Short landscape phones: the modal is already full-screen, so drop the
+   generic 12px modal margin (mobile.css) and the results panel (header, two
+   rows, Continue ticket) fits without scrolling. */
+html.is-mobile.is-landscape.is-compact #summon-modal .modal-content {
+  max-height: calc(var(--app-vh, 100vh) - var(--safe-t, 0px) - var(--safe-b, 0px)) !important;
+}
+/* ...and a single pull stays one centred card (the compact 5-across grid
+   rule in summon-premium.css would otherwise pin it to the first column) */
+html.is-mobile.is-landscape.is-compact .summon-modal .result-grid.single { grid-template-columns: minmax(0, 150px); justify-content: center; }
+
+/* ── Stage: far mist → drifting clouds → light pool → near clouds → vignette ── */
+.summon-modal .modal-overlay {
+  background: radial-gradient(ellipse 70% 60% at 50% 45%, #163a40, #06100f 75%);
+  backdrop-filter: none; /* the stage is opaque: nothing behind to blur */
+  overflow: hidden;
+}
+.sr-stage, .sr-stage i { position: absolute; display: block; pointer-events: none; }
+.sr-stage { inset: 0; overflow: hidden; }
+.sr-stage i { transition: translate .8s cubic-bezier(.2,.7,.3,1); }
+/* Far: misty ridges and a pine, slowly breathing in */
+.sr-far {
+  inset: -5%;
+  background: url('../assets/ui/summon/stage_far.webp') 50% 45% / cover no-repeat;
+  opacity: .78;
+  translate: calc(var(--mx) * -6px) calc(var(--my) * -4px);
+  animation: srFar 38s ease-in-out infinite alternate;
+}
+@keyframes srFar { from { transform: scale(1); } to { transform: scale(1.06); } }
+/* Mid: hazy clouds drifting left, one seamless tile (1488×523 art) per loop */
+.sr-mid {
+  --h: calc(var(--app-vh, 100vh) * 0.62);
+  --tile: calc(var(--h) * 2.845);
+  top: 0; left: 0; height: var(--h); width: calc(100vw + var(--tile));
+  background: url('../assets/ui/summon/stage_mid.webp') 0 0 / auto 100% repeat-x;
+  opacity: .34;
+  translate: calc(var(--mx) * -14px) calc(var(--my) * -7px);
+  animation: srDrift 120s linear infinite;
+}
+@keyframes srDrift { from { transform: translateX(0); } to { transform: translateX(calc(var(--tile) * -1)); } }
+/* Light pool: the grid sits in a soft warm spot, breathing very slowly */
+.sr-pool {
+  left: 50%; top: 47%; width: 110vw; height: 90%;
+  margin: 0 0 0 -55vw; transform: translateY(-50%);
+  background: radial-gradient(ellipse 50% 50% at 50% 50%, rgba(255,228,172,0.15), rgba(241,217,138,0.06) 45%, transparent 72%);
+  animation: srPool 7s ease-in-out infinite alternate;
+}
+@keyframes srPool { from { opacity: .75; } to { opacity: 1; } }
+/* Near: the gilded cloud bank along the bottom, darkened at its base */
+.sr-near {
+  left: -8%; right: -8%; bottom: -3%; height: 40%;
+  background:
+    linear-gradient(0deg, rgba(3,9,11,0.9), rgba(3,9,11,0.35) 45%, rgba(3,9,11,0) 75%),
+    url('../assets/ui/summon/stage_near.webp') 50% 0 / 100% auto no-repeat;
+  opacity: .6;
+  translate: calc(var(--mx) * -24px) calc(var(--my) * -10px);
+  animation: srSway 22s ease-in-out infinite alternate;
+}
+@keyframes srSway { from { transform: translateX(-1.5%); } to { transform: translateX(1.5%); } }
+/* Vignette: edges fall away into ink */
+.sr-vig {
+  inset: 0;
+  background:
+    radial-gradient(ellipse 78% 72% at 50% 47%, rgba(3,9,11,0) 40%, rgba(3,9,11,0.55) 78%, rgba(2,6,8,0.92) 100%),
+    linear-gradient(180deg, rgba(2,6,8,0.55), rgba(2,6,8,0) 22%);
+}
+
+/* Tier colours: --tc tints the NEW bloom, --st the stars, --ph the placeholder
+   paper, --lit the floor light under an opened card on the results panel */
+.sr-slot.tier-7, .sr-new.tier-7 { --tc: #f4eef8; --st: #efe6f4; --ph: linear-gradient(135deg, #f6eef4, #e9eef6 50%, #efe7dc); --lit: rgba(255,170,110,0.5); }
+.sr-slot.tier-6, .sr-new.tier-6 { --tc: #9ec3f0; --st: #b4cdec; --ph: linear-gradient(160deg, #6f95d0, #3a5fa6); --lit: rgba(247,214,130,0.42); }
+.sr-slot.tier-5, .sr-new.tier-5 { --tc: #f1d98a; --st: #e8cf86; --ph: linear-gradient(160deg, #f3d990, #d9a94e); --lit: rgba(224,185,100,0.28); }
+.sr-slot.tier-4, .sr-new.tier-4 { --tc: #e4e8ea; --st: #cfd5d8; --ph: linear-gradient(160deg, #e8ecee, #aeb6bb); --lit: rgba(180,200,200,0.12); }
+.sr-slot.tier-3, .sr-new.tier-3 { --tc: #e2b48a; --st: #cfa27c; --ph: linear-gradient(160deg, #cfa682, #9c7453); --lit: transparent; }
+.sr-slot.tier-2, .sr-new.tier-2 { --tc: #c4dcb4; --st: #afc6a0; --ph: linear-gradient(160deg, #c9dcbc, #93ac86); --lit: transparent; }
+.sr-slot.tier-7 { --sr-mask: url('../assets/ui/summon/scroll_7.webp'); }
+.sr-slot.tier-6 { --sr-mask: url('../assets/ui/summon/scroll_6.webp'); }
+.sr-slot.tier-5 { --sr-mask: url('../assets/ui/summon/scroll_5.webp'); }
+.sr-slot.tier-4 { --sr-mask: url('../assets/ui/summon/scroll_4.webp'); }
+.sr-slot.tier-3 { --sr-mask: url('../assets/ui/summon/scroll_3.webp'); }
+.sr-slot.tier-2 { --sr-mask: url('../assets/ui/summon/scroll_2.webp'); }
+
+/* ── Sealed phase: bare papers on the stage, header/ticket held back ── */
+.summon-modal .sr-seal-hint,
+.summon-modal .sr-seal-actions { display: none; }
+.summon-modal.sr-sealed .sr-head,
+.summon-modal.sr-sealed .btn-continue { display: none; }
+.summon-modal.sr-sealed .sr-panel {
+  background: none; border-color: transparent; box-shadow: none;
+  animation: none;
+}
+.summon-modal.sr-sealed .sr-panel::before,
+.summon-modal.sr-sealed .sr-panel::after { opacity: 0; }
+
+/* Hint: small caps between two hairlines */
+.summon-modal.sr-sealed .sr-seal-hint {
+  display: flex; align-items: center; justify-content: center; gap: 14px;
+  margin: 0;
+  font-family: 'Rajdhani', var(--jjk-font); font-weight: 600; font-size: 12px; line-height: 1;
+  letter-spacing: 0.34em; text-indent: 0.34em; text-transform: uppercase;
+  color: rgba(241,217,138,0.78); text-shadow: 0 1px 3px rgba(0,0,0,0.9);
+}
+.summon-modal.sr-sealed .sr-seal-hint::before,
+.summon-modal.sr-sealed .sr-seal-hint::after {
+  content: ''; width: 36px; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(201,162,78,0.7));
+}
+.summon-modal.sr-sealed .sr-seal-hint::after { background: linear-gradient(270deg, transparent, rgba(201,162,78,0.7)); }
+
+/* Open All / Skip: quiet hairline buttons */
+.summon-modal.sr-sealed .sr-seal-actions { display: flex; gap: 10px; justify-content: center; }
+.summon-modal .sr-seal-btn {
+  min-width: 118px; height: 32px; padding: 0 18px;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-family: 'Rajdhani', var(--jjk-font); font-weight: 600; font-size: 13px; line-height: 1;
+  letter-spacing: 0.26em; text-indent: 0.26em; text-transform: uppercase;
+  color: var(--jjk-gold-hi, #f1d98a);
+  background: rgba(5,14,17,0.62);
+  border: 1px solid rgba(201,162,78,0.55); border-radius: 2px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.45);
+  cursor: pointer;
+  transition: background-color .15s ease, border-color .15s ease, color .15s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.summon-modal .sr-seal-btn[hidden] { display: none; }
+.summon-modal .sr-seal-btn.is-quiet {
+  color: rgba(236,230,214,0.72);
+  border-color: rgba(147,163,163,0.32);
+}
+.summon-modal .sr-seal-btn:hover { background: rgba(201,162,78,0.14); border-color: var(--jjk-gold, #c9a24e); }
+.summon-modal .sr-seal-btn.is-quiet:hover { color: var(--jjk-text, #ece6d6); background: rgba(147,163,163,0.1); border-color: rgba(147,163,163,0.6); }
+.summon-modal .sr-seal-btn:active { background: rgba(201,162,78,0.22); }
+.summon-modal .sr-seal-btn:focus-visible { outline: 1px solid var(--jjk-gold-hi, #f1d98a); outline-offset: 3px; }
+
+/* Hint + buttons come up with the deal (not before the papers), and step
+   back once every paper is open while the grid holds a beat; then the grid
+   fades and the results panel comes up (see checkDone). */
+.summon-modal.sr-sealed .sr-seal-hint,
+.summon-modal.sr-sealed .sr-seal-actions { opacity: 0; pointer-events: none; transition: opacity .25s ease; }
+.summon-modal.sr-sealed.sr-dealt:not(.sr-done) .sr-seal-hint,
+.summon-modal.sr-sealed.sr-dealt:not(.sr-done) .sr-seal-actions { opacity: 1; pointer-events: auto; transition-delay: .35s; }
+.summon-modal.sr-settling .sr-panel { opacity: 0; transition: opacity .2s ease-in; }
+
+/* Evenly spaced grid sized for the paper (≈ 0.78 : 1). Height sets the paper
+   size; spare width opens the gaps up to ⅔ of a paper so the rows sweep
+   across the stage like the reference. The whole grid drifts a few px with
+   the pointer (in front of the clouds). The ID beats the compact-landscape
+   panel/grid rules in summon-premium.css. */
+#summon-modal.sr-sealed .sr-panel { width: 100%; max-width: none; }
+#summon-modal.sr-sealed .result-grid {
+  grid-template-columns: repeat(5, var(--sr-w));
+  column-gap: max(calc(var(--sr-w) * 0.5), min(calc(var(--sr-w) * 0.65), calc((100% - var(--sr-w) * 5) / 4)));
+  row-gap: calc(var(--sr-w) * 0.2);
+  justify-content: center;
+  translate: calc(var(--mx) * 5px) calc(var(--my) * 3px);
+  transition: translate .8s cubic-bezier(.2,.7,.3,1);
+}
+#summon-modal.sr-sealed .result-grid.single { grid-template-columns: var(--sr-w1); }
+
+/* ── Slot: result card in flow (sets the size), shadow + paper laid over it.
+   Each slot is its own small 3D scene. The pose: tilted back a touch (--rx),
+   turned toward the centre (--ry, set per column + pointer), a hair of
+   rotation (--rz, per paper). Every keyframe below keeps the same function
+   list so the browser interpolates the pose rather than a matrix. ── */
+.summon-modal .sr-slot {
+  position: relative; min-width: 0; --i: 0;
+  --si: var(--i);
+  --rx: 6deg;
+  --ryp: calc(var(--ry, 0deg) + var(--mx) * 4deg);
+  --lx: 0; /* lift: 0 resting, 1 raised toward the camera */
+  perspective: calc(var(--sr-w) * 6);
+}
+.summon-modal .sr-slot:has(.sr-paper:hover),
+.summon-modal .sr-slot.is-flash,
+.summon-modal .sr-slot.is-open { z-index: 3; }
+.summon-modal .sr-slot .result-card { --i: 0; height: 100%; }
+.summon-modal .sr-slot:not(.is-open) .result-card { visibility: hidden; }
+/* Hold every card animation until it turns over; the paper's flash is the
+   only flash, so the card's own landing flash never plays here. */
+.summon-modal .sr-slot:not(.is-open) .result-card,
+.summon-modal .sr-slot:not(.is-open) .result-card::after { animation: none; }
+.summon-modal .sr-slot .result-card .result-card-art::after { animation: none; opacity: 0; }
+/* While the grid is on the stage an opened card keeps its paper's pose */
+.summon-modal.sr-sealed .sr-slot .result-card,
+.summon-modal.sr-sealed .sr-slot .result-card:hover {
+  transform: translate3d(0, 0, 0) rotateX(var(--rx)) rotateY(var(--ryp)) rotateZ(var(--rz, 0deg));
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.55), 0 10px 16px -4px rgba(0,0,0,0.75), 0 3px 5px rgba(0,0,0,0.5);
+  transition: transform .3s cubic-bezier(.2,.7,.3,1);
+}
+.summon-modal.sr-sealed .sr-slot.is-open:not(.is-instant) .result-card { animation: srCardFlip .52s cubic-bezier(.2,.7,.2,1) .15s both; }
+.summon-modal.sr-sealed .sr-slot.is-open.is-instant .result-card { animation: srCardFade .3s ease-out both; }
+/* The card turns in from edge-on at the lifted height, out of white light */
+@keyframes srCardFlip {
+  0%   { transform: translate3d(0, -6%, 50px) rotateX(0deg) rotateY(-90deg) rotateZ(0deg); filter: brightness(2.6) saturate(0); }
+  40%  { filter: brightness(1.7) saturate(.45); }
+  100% { transform: translate3d(0, 0, 0) rotateX(var(--rx)) rotateY(var(--ryp)) rotateZ(var(--rz, 0deg)); filter: none; }
+}
+@keyframes srCardFade { from { opacity: 0; } to { opacity: 1; } }
+
+/* A 7★ single pull shows its animated art big once turned over (not on
+   short landscape phones, where that card would not fit the height) */
+.summon-modal .sr-slot > .result-card.has-a7 { width: 100%; }
+html:not(.is-compact) .summon-modal .result-grid.single .sr-slot.is-open:has(> .result-card.has-a7) { width: min(380px, 80vw); justify-self: center; }
+
+/* Shadow the paper casts on the backdrop: soft, offset down-right, grows and
+   fades as the paper floats or lifts toward the camera */
+.summon-modal .sr-shadow {
+  position: absolute; left: 6%; right: 4%; top: 7%; bottom: 3%; z-index: 1;
+  border-radius: 4px;
+  background: rgba(0,4,6,0.62);
+  filter: blur(calc(var(--sr-w) * 0.07));
+  transform: translate3d(5%, 6%, 0) scale(1.02);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform .3s cubic-bezier(.2,.7,.3,1), opacity .3s ease;
+}
+.summon-modal.sr-dealt .sr-shadow {
+  opacity: 1;
+  /* (the deal-in is listed last so it wins while the paper is still away) */
+  animation: srShadowFloat 6s ease-in-out infinite alternate, srShadowIn .6s cubic-bezier(.2,.8,.25,1) backwards;
+  animation-delay: var(--fd, 0s), calc(0.05s + var(--si) * 0.06s);
+}
+.summon-modal .sr-slot.is-open .sr-shadow { display: none; }
+.summon-modal .sr-slot:has(.sr-paper:hover) .sr-shadow { transform: translate3d(9%, 13%, 0) scale(1.06); opacity: .75; }
+.summon-modal.sr-dealt .sr-slot.is-flash .sr-shadow { animation: srShadowLift .2s ease-out forwards; }
+@keyframes srShadowIn    { from { opacity: 0; transform: translate3d(18%, 30%, 0) scale(1.3); } }
+@keyframes srShadowFloat { to { transform: translate3d(6.5%, 8.5%, 0) scale(1.04); } }
+@keyframes srShadowLift  { to { transform: translate3d(14%, 22%, 0) scale(1.14); opacity: .35; } }
+
+/* ── Paper: posed in 3D, dealt in, lifts on hover, raised on open ── */
+.summon-modal .sr-paper {
+  position: absolute; inset: 0; z-index: 2;
+  display: block; margin: 0; padding: 0;
+  background: none; border: 0; cursor: pointer;
+  opacity: 0; /* until the grid is dealt (all art decoded) */
+  transform: translate3d(0, 0, 0) rotateX(var(--rx)) rotateY(var(--ryp)) rotateZ(var(--rz, 0deg));
+  transform-style: preserve-3d;
+  transition: transform .3s cubic-bezier(.2,.7,.3,1);
+  -webkit-tap-highlight-color: transparent;
+}
+.summon-modal.sr-dealt .sr-paper {
+  opacity: 1;
+  animation: srDeal .62s cubic-bezier(.2,.8,.25,1) backwards;
+  animation-delay: calc(0.05s + var(--si) * 0.06s);
+}
+/* Dealt onto the table: from above the camera, turning into place, a small
+   settle past the pose */
+@keyframes srDeal {
+  0%   { opacity: 0; transform: translate3d(0, -34%, 170px) rotateX(calc(var(--rx) - 30deg)) rotateY(var(--ryp)) rotateZ(calc(var(--rz, 0deg) + 9deg)); }
+  45%  { opacity: 1; }
+  78%  { transform: translate3d(0, 1.2%, -5px) rotateX(calc(var(--rx) + 2deg)) rotateY(var(--ryp)) rotateZ(calc(var(--rz, 0deg) - 0.6deg)); }
+  100% { transform: translate3d(0, 0, 0) rotateX(var(--rx)) rotateY(var(--ryp)) rotateZ(var(--rz, 0deg)); }
+}
+.summon-modal .sr-paper:focus-visible { outline: 1px solid var(--jjk-gold-hi, #f1d98a); outline-offset: 4px; }
+@media (hover: hover) {
+  .summon-modal .sr-paper:hover {
+    transform: translate3d(0, -3%, 18px) rotateX(calc(var(--rx) * 0.5)) rotateY(calc(var(--ryp) * 0.6)) rotateZ(var(--rz, 0deg));
+  }
+}
+.summon-modal .sr-paper:active { transform: translate3d(0, 0, -6px) rotateX(var(--rx)) rotateY(var(--ryp)) rotateZ(var(--rz, 0deg)); transition-duration: .08s; }
+/* Open: lift square to the camera while it whitens… */
+.summon-modal.sr-dealt .sr-slot.is-flash .sr-paper { animation: srLift .2s cubic-bezier(.3,.6,.3,1) forwards; }
+@keyframes srLift {
+  to { transform: translate3d(0, -6%, 50px) rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
+}
+/* …then turn edge-on; the card turns in from the other side (srCardFlip) */
+.summon-modal.sr-dealt .sr-slot.is-open .sr-paper { pointer-events: none; animation: srFlipOut .16s ease-in forwards; }
+.summon-modal .sr-slot.is-open.is-instant .sr-paper { display: none; }
+@keyframes srFlipOut {
+  from { transform: translate3d(0, -6%, 50px) rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
+  to   { transform: translate3d(0, -6%, 50px) rotateX(0deg) rotateY(90deg) rotateZ(0deg); opacity: 0; }
+}
+
+/* Body: the sheet itself, floating very slowly (phase per paper) */
+.summon-modal .sr-paper-body {
+  position: absolute; inset: 0; display: block;
+  animation: srFloat 6s ease-in-out infinite alternate;
+  animation-delay: var(--fd, 0s);
+}
+@keyframes srFloat {
+  from { transform: translate3d(0, 0, 0) rotateZ(0deg); }
+  to   { transform: translate3d(0, -2.5%, 4px) rotateZ(0.5deg); }
+}
+.summon-modal .sr-slot.is-flash .sr-paper-body,
+.summon-modal .sr-slot.is-open .sr-paper-body { animation: none; }
+
+/* Paper art (600×767, transparent: one sheet with a slightly lifted
+   bottom-left corner) or its placeholder, full slot width. Two stacked tight
+   shadows give the sheet an edge and sit it on the stage. */
+.summon-modal .sr-paper-art,
+.summon-modal .sr-paper-ph,
+.summon-modal .sr-paper-light,
+.summon-modal .sr-paper-shine,
+.summon-modal .sr-paper-body::after {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+}
+.summon-modal .sr-paper-art {
+  object-fit: contain;
+  filter: drop-shadow(0 1px 0 rgba(20,26,28,0.75)) drop-shadow(0 2px 2px rgba(0,0,0,0.5));
+  pointer-events: none;
+}
+.summon-modal .sr-paper-ph {
+  inset: 3% 0; height: 94%;
+  background: var(--ph);
+  border-radius: 2px;
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.25), 0 1px 0 rgba(20,26,28,0.75), 0 2px 3px rgba(0,0,0,0.5);
+}
+.summon-modal .sr-paper.has-art .sr-paper-ph { display: none; }
+
+/* Light on the sheet, masked to it: every paper gets curvature shading
+   (brighter along the top, falling off toward the curled lower corner);
+   glossy tiers add a soft specular where the light source sits. */
+.summon-modal .sr-paper-light,
+.summon-modal .sr-paper-shine { pointer-events: none; overflow: hidden; }
+.summon-modal .sr-paper:not(.has-art) .sr-paper-light,
+.summon-modal .sr-paper:not(.has-art) .sr-paper-shine,
+.summon-modal .sr-paper:not(.has-art) .sr-paper-body::after { inset: 3% 0; height: 94%; border-radius: 2px; }
+.summon-modal .sr-paper.has-art .sr-paper-light,
+.summon-modal .sr-paper.has-art .sr-paper-shine,
+.summon-modal .sr-paper.has-art .sr-paper-body::after {
+  -webkit-mask: var(--sr-mask) center / contain no-repeat;
+          mask: var(--sr-mask) center / contain no-repeat;
+}
+.summon-modal .sr-paper-light {
+  display: block;
+  background:
+    radial-gradient(ellipse 60% 40% at 0% 100%, rgba(0,0,0,0.2), transparent 70%),
+    linear-gradient(172deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 32%, rgba(0,0,0,0) 62%, rgba(0,0,0,0.16) 100%);
+}
+.summon-modal .sr-slot.tier-7 .sr-paper-light,
+.summon-modal .sr-slot.tier-6 .sr-paper-light,
+.summon-modal .sr-slot.tier-5 .sr-paper-light {
+  background:
+    radial-gradient(ellipse 70% 38% at 28% 8%, rgba(255,255,255,0.3), rgba(255,255,255,0) 70%),
+    radial-gradient(ellipse 60% 40% at 0% 100%, rgba(0,0,0,0.2), transparent 70%),
+    linear-gradient(172deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 32%, rgba(0,0,0,0) 62%, rgba(0,0,0,0.18) 100%);
+}
+.summon-modal .sr-slot.tier-4 .sr-paper-light {
+  background:
+    radial-gradient(ellipse 70% 38% at 28% 8%, rgba(255,255,255,0.16), rgba(255,255,255,0) 70%),
+    radial-gradient(ellipse 60% 40% at 0% 100%, rgba(0,0,0,0.2), transparent 70%),
+    linear-gradient(172deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 32%, rgba(0,0,0,0) 62%, rgba(0,0,0,0.16) 100%);
+}
+
+/* Glint: a specular band travelling across the glossy sheets. Sapphire is
+   the glossiest (like the shiny blue paper in the reference), pearl is
+   iridescent, gold warm, silver faint; bronze and sage are matte. */
+.summon-modal .sr-paper-shine { display: none; }
+.summon-modal .sr-slot:is(.tier-4, .tier-5, .tier-6, .tier-7) .sr-paper-shine { display: block; }
+.summon-modal .sr-paper-shine::before {
+  content: ''; position: absolute; top: -20%; bottom: -20%; left: 0; width: 42%;
+  background: linear-gradient(100deg, transparent 12%, rgba(255,255,255,var(--ga, 0.4)) 50%, transparent 88%);
+  transform: translateX(-170%) skewX(-14deg);
+  animation: srSheen var(--gd, 5s) ease-in-out infinite;
+  animation-delay: calc(0.9s + var(--si) * 0.3s);
+}
+.summon-modal .sr-slot.tier-6 { --ga: 0.55; --gd: 4.2s; }
+.summon-modal .sr-slot.tier-5 { --ga: 0.42; --gd: 5s; }
+.summon-modal .sr-slot.tier-4 { --ga: 0.24; --gd: 7s; }
+.summon-modal .sr-slot.tier-7 { --gd: 4.6s; }
+.summon-modal .sr-slot.tier-5 .sr-paper-shine::before {
+  background: linear-gradient(100deg, transparent 12%, rgba(255,246,214,0.42) 50%, transparent 88%);
+}
+.summon-modal .sr-slot.tier-7 .sr-paper-shine::before {
+  width: 60%;
+  background: linear-gradient(100deg, transparent 8%, rgba(255,190,232,0.26) 32%, rgba(255,255,255,0.6) 50%, rgba(176,226,255,0.3) 66%, rgba(236,255,190,0.16) 78%, transparent 92%);
+}
+@keyframes srSheen {
+  0%        { transform: translateX(-170%) skewX(-14deg); }
+  34%, 100% { transform: translateX(300%) skewX(-14deg); }
+}
+
+/* Open: the sheet whitens (paper-shaped light) as it lifts, and stays white
+   while it turns edge-on */
+.summon-modal .sr-paper-body::after {
+  content: ''; z-index: 2; pointer-events: none;
+  background: #fffaf0;
+  opacity: 0;
+}
+.summon-modal .sr-slot.is-flash .sr-paper-body::after { animation: srPaperFlash .2s ease-in both; }
+.summon-modal .sr-slot.is-open .sr-paper-body::after { opacity: .96; }
+.summon-modal .sr-slot:is(.is-flash, .is-open) .sr-paper-shine { display: none; }
+@keyframes srPaperFlash { from { opacity: 0; } to { opacity: .96; } }
+
+/* ── Results panel: dimensional, not a flat table ──
+   The panel tilts up into place under a top light; the cards sit in a
+   recessed tray, rise into it in order, bevelled and under-lit by tier, and
+   lift toward the viewer on hover/press. */
+.summon-modal .modal-content { perspective: 1400px; }
+.summon-modal.sr-revealed .sr-panel {
+  background:
+    radial-gradient(ellipse 70% 38% at 50% 0%, rgba(241,217,138,0.1), rgba(241,217,138,0) 70%),
+    linear-gradient(180deg, rgba(14,38,45,0.93), rgba(6,17,21,0.96)),
+    url('../assets/ui/jjk/ink_bg.webp') center / cover no-repeat,
+    #0a1b20;
+  box-shadow:
+    0 1px 0 rgba(0,0,0,0.8),
+    0 34px 70px -12px rgba(0,0,0,0.92), 0 12px 24px rgba(0,0,0,0.55),
+    inset 0 1px 0 rgba(241,217,138,0.4), inset 0 -1px 0 rgba(0,0,0,0.6),
+    inset 0 0 0 4px rgba(3,10,12,0.55), inset 0 0 0 5px rgba(201,162,78,0.22), inset 0 0 50px rgba(0,0,0,0.5);
+  transform-origin: 50% 100%;
+  animation: srPanelRise .5s cubic-bezier(.2,.8,.25,1) both;
+}
+@keyframes srPanelRise {
+  from { opacity: 0; transform: translate3d(0, 22px, -60px) rotateX(14deg); }
+  to   { opacity: 1; transform: none; }
+}
+/* The tray the cards sit in */
+.summon-modal.sr-revealed .result-grid {
+  box-sizing: border-box;
+  padding: 10px;
+  background: linear-gradient(180deg, rgba(2,8,10,0.55), rgba(2,8,10,0.3));
+  box-shadow: inset 0 3px 10px rgba(0,0,0,0.75), inset 0 0 0 1px rgba(0,0,0,0.5), 0 1px 0 rgba(241,217,138,0.14);
+  border-radius: 2px;
+}
+.summon-modal.sr-revealed .result-grid.single { background: none; box-shadow: none; padding: 0; }
+html.is-mobile.is-landscape.is-compact .summon-modal.sr-revealed .result-grid { padding: 2px; }
+/* Cards: bevel (lit top edge, dark lower edge), a floor shadow, a top light
+   on the face and a recessed art well the portrait stands out of */
+.summon-modal.sr-revealed .sr-slot .result-card {
+  box-shadow:
+    inset 0 1px 0 rgba(255,244,214,0.22), inset 0 -2px 0 rgba(0,0,0,0.45),
+    0 0 0 1px rgba(0,0,0,0.6), 0 10px 14px -6px rgba(0,0,0,0.85), 0 2px 3px rgba(0,0,0,0.5);
+  transform: none; /* flat at rest: stays a crisp 2D layer */
+  transition: transform .22s cubic-bezier(.2,.7,.3,1), box-shadow .22s ease;
+  animation: srCardRise .55s cubic-bezier(.2,.8,.25,1) backwards;
+  animation-delay: calc(0.2s + var(--si) * 0.055s);
+}
+.summon-modal.sr-revealed .sr-slot.tier-6 .result-card { box-shadow: inset 0 1px 0 rgba(255,244,214,0.3), inset 0 -2px 0 rgba(0,0,0,0.45), 0 0 0 1px rgba(0,0,0,0.7), 0 0 14px rgba(241,200,110,0.4), 0 10px 14px -6px rgba(0,0,0,0.85); }
+.summon-modal.sr-revealed .sr-slot.tier-7 .result-card { box-shadow: inset 0 1px 0 rgba(255,244,214,0.34), inset 0 -2px 0 rgba(0,0,0,0.45), 0 0 0 1px rgba(0,0,0,0.7), 0 0 22px rgba(255,140,60,0.5), 0 10px 14px -6px rgba(0,0,0,0.85); }
+@keyframes srCardRise {
+  from { opacity: 0; transform: translate3d(0, 26px, -70px) rotateX(32deg); }
+  to   { opacity: 1; transform: none; }
+}
+.summon-modal .sr-slot .result-card-inner::before {
+  content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: linear-gradient(180deg, rgba(255,244,214,0.09), rgba(255,244,214,0) 28%);
+}
+.summon-modal .sr-slot .result-card-art { box-shadow: inset 0 8px 12px -8px rgba(0,0,0,0.75); }
+/* Floor light: rarer cards throw their colour onto the tray beneath them */
+.summon-modal .sr-slot::before {
+  content: ''; position: absolute; left: -10%; right: -10%; bottom: -16%; height: 36%; z-index: -1;
+  background: radial-gradient(ellipse 50% 50% at 50% 50%, var(--lit, transparent), transparent 72%);
+  opacity: 0; pointer-events: none;
+}
+.summon-modal.sr-revealed .sr-slot::before { animation: srLit .8s ease-out both; animation-delay: calc(0.45s + var(--si) * 0.055s); }
+@keyframes srLit { to { opacity: 1; } }
+.summon-modal.sr-revealed .result-grid { isolation: isolate; }
+@media (hover: hover) {
+  .summon-modal.sr-revealed .sr-slot .result-card:hover {
+    transform: translate3d(0, -4px, 16px) rotateX(-4deg);
+    box-shadow: inset 0 1px 0 rgba(255,244,214,0.3), inset 0 -2px 0 rgba(0,0,0,0.45), 0 0 0 1px rgba(0,0,0,0.6), 0 18px 20px -8px rgba(0,0,0,0.9), 0 2px 3px rgba(0,0,0,0.5);
+  }
+}
+.summon-modal.sr-revealed .sr-slot .result-card:active { transform: translate3d(0, -2px, 10px) rotateX(-3deg); transition-duration: .1s; }
+
+/* Opened card: a tiny NEW plate (top-right, clear of the element icon;
+   drops below Featured when both show). Text stays for screen readers. */
+.summon-modal .result-card-new {
+  position: absolute; top: 5px; right: 5px; z-index: 3;
+  width: 40%; max-width: 58px; aspect-ratio: 600 / 290;
+  background: url('../assets/ui/summon/new_badge.webp') center / contain no-repeat;
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.75));
+  font-size: 0; line-height: 0; color: transparent;
+  overflow: hidden;
+}
+.summon-modal .result-card.featured .result-card-new { top: 24px; }
+/* Short landscape: tucked into the corner, onto the card's own border, so it
+   clears the portrait frame (smaller on the big single card) */
+html.is-mobile.is-landscape.is-compact .summon-modal .result-card-new { top: 2px; right: 2px; }
+html.is-mobile.is-landscape.is-compact .summon-modal .result-grid.single .result-card-new { max-width: 46px; }
+html.is-mobile.is-landscape.is-compact .summon-modal .result-card.featured .result-card-new { top: 17px; }
+.summon-modal .sr-summary .is-new { color: #ecdcae; box-shadow: inset 0 0 0 1px rgba(201,162,78,0.65); }
+
+/* ═══════════════════ NEW reveal — first-ever copy ═══════════════════
+   Dark vignette over the clouds, soft light bloom, the full art sliding in,
+   fine gold dust, and a restrained title block: name (Kaisei) + small NEW
+   plate, a thin gold rule, the version in small caps, understated stars. */
+.sr-new {
+  position: fixed; inset: 0; z-index: 20;
+  overflow: hidden; cursor: pointer; outline: none;
+  background:
+    linear-gradient(90deg, rgba(3,9,11,0.82) 0%, rgba(3,9,11,0.45) 38%, rgba(3,9,11,0) 60%),
+    radial-gradient(ellipse 70% 90% at 62% 50%, rgba(3,9,11,0.35), rgba(3,9,11,0.94) 100%),
+    var(--sr-cloud, none) center / cover no-repeat,
+    #050d0f;
+  -webkit-tap-highlight-color: transparent;
+  /* Art box never taller than the screen: its feathered edge must reach
+     transparency on-screen (a taller box cut saturated art at the bottom) */
+  --art: min(var(--app-vh, 100vh), 64vw);
+}
+/* No fade-in: the overlay cuts in at full opacity under the white flash
+   (.sr-new-flash), so the flash reads as one clean burst of light. */
+.sr-new.is-leaving { animation: srNewOut .28s ease-in both; }
+@keyframes srNewOut { to { opacity: 0; } }
+
+/* Bloom: soft warm light behind the character. A faint wide glow sits behind
+   the art; a screen-blended light inside the art lifts its backdrop so the
+   feathered edge never reads as a dark disc. */
+.sr-new-bloom {
+  position: absolute; left: 62%; top: 50%;
+  width: calc(var(--art) * 1.3); height: calc(var(--art) * 1.3);
+  margin: calc(var(--art) * -0.65) 0 0 calc(var(--art) * -0.65);
+  background: radial-gradient(closest-side,
+    rgba(255,240,208,0.13) 0%,
+    color-mix(in srgb, var(--tc) 20%, rgba(241,217,138,0.08)) 45%,
+    rgba(241,217,138,0.03) 70%,
+    transparent 100%);
+  animation: srNewBloom 1.2s ease-out .05s both;
+  pointer-events: none;
+}
+@keyframes srNewBloom { from { opacity: 0; transform: scale(.7); } to { opacity: 1; transform: none; } }
+
+.sr-new-art {
+  position: absolute; left: 62%; top: 50%;
+  width: var(--art); height: var(--art);
+  margin: calc(var(--art) * -0.5) 0 0 calc(var(--art) * -0.5);
+  animation: srNewArt .95s cubic-bezier(.16,.8,.24,1) .1s both;
+  pointer-events: none;
+}
+.sr-new-art::after {
+  content: ''; position: absolute; inset: 14%;
+  background: radial-gradient(closest-side, rgba(255,241,212,0.32), rgba(255,232,190,0.14) 50%, transparent 100%);
+  mix-blend-mode: screen;
+  animation: srNewBloom 1.3s ease-out .2s both;
+}
+.sr-new-art img {
+  display: block; width: 100%; height: 100%; object-fit: contain;
+  /* full art ships with its own backdrop: feather it into the scene */
+  -webkit-mask: radial-gradient(closest-side, #000 52%, rgba(0,0,0,0.6) 72%, transparent 96%);
+          mask: radial-gradient(closest-side, #000 52%, rgba(0,0,0,0.6) 72%, transparent 96%);
+  animation: srNewPush 9s ease-out .1s both;
+}
+@keyframes srNewArt  { from { opacity: 0; transform: translateX(7%); } to { opacity: 1; transform: none; } }
+@keyframes srNewPush { from { transform: scale(1); } to { transform: scale(1.045); } }
+
+/* Gold dust: tiny motes drifting up and across (positions set inline) */
+.sr-new-dust { position: absolute; inset: 0; pointer-events: none; }
+.sr-new-dust i {
+  position: absolute; left: var(--x); top: var(--y);
+  width: var(--s); height: var(--s); border-radius: 50%;
+  background: radial-gradient(circle, #fff5d2 0%, rgba(241,217,138,0.9) 40%, rgba(201,162,78,0) 72%);
+  opacity: 0;
+  animation: srDust var(--d) linear var(--dl) infinite;
+}
+@keyframes srDust {
+  0%   { opacity: 0; transform: translate(0, 0); }
+  18%  { opacity: var(--o); }
+  80%  { opacity: var(--o); }
+  100% { opacity: 0; transform: translate(var(--dx), var(--dy)); }
+}
+
+.sr-new-info {
+  position: absolute; z-index: 2;
+  left: max(28px, calc(var(--safe-l, 0px) + 6vw)); bottom: max(58px, 17vh);
+  display: flex; flex-direction: column; align-items: flex-start;
+  max-width: min(44vw, 520px);
+  pointer-events: none;
+}
+.sr-new-title { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 14px; }
+.sr-new-name {
+  margin: 0;
+  font-family: var(--jjk-font); font-weight: 700; font-size: clamp(24px, 3.3vw, 46px); line-height: 1.12;
+  letter-spacing: 0.01em;
+  color: #f5eedb; text-shadow: 0 2px 14px rgba(0,0,0,0.85), 0 1px 2px rgba(0,0,0,0.9);
+  animation: srNewUp .6s ease-out .45s both;
+}
+.sr-new-plate {
+  flex: none; display: block;
+  height: clamp(20px, 2.5vw, 34px); aspect-ratio: 600 / 290;
+  animation: srNewFade .6s ease-out .85s both;
+}
+.sr-new-plate img { display: block; width: 100%; height: 100%; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.7)); }
+.sr-new-plate b { display: none; }
+/* Fallback when the plate art is missing: a small-caps hairline tag */
+.sr-new-plate:not(.has-art) { height: auto; aspect-ratio: auto; }
+.sr-new-plate:not(.has-art) b {
+  display: block; padding: 3px 8px 3px 10px;
+  font-family: 'Rajdhani', var(--jjk-font); font-weight: 600; font-size: 12px; letter-spacing: .3em; line-height: 1;
+  color: var(--jjk-gold-hi, #f1d98a); border: 1px solid rgba(201,162,78,0.7);
+}
+.sr-new-rule {
+  display: block; align-self: stretch; min-width: 180px; height: 1px; margin: 9px 0 8px;
+  background: linear-gradient(90deg, var(--jjk-gold-hi, #f1d98a), var(--jjk-gold, #c9a24e) 40%, rgba(201,162,78,0) 100%);
+  transform-origin: left center;
+  animation: srNewRule .8s cubic-bezier(.3,.7,.2,1) .55s both;
+}
+.sr-new-ver {
+  font-family: 'Rajdhani', var(--jjk-font); font-weight: 600; font-size: clamp(11px, 1.2vw, 16px); line-height: 1.2;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  color: rgba(236,222,180,0.86); text-shadow: 0 1px 3px rgba(0,0,0,0.9);
+  animation: srNewFade .6s ease-out .7s both;
+}
+.sr-new-stars {
+  margin-top: 7px;
+  font-size: clamp(10px, 1.05vw, 14px); line-height: 1; letter-spacing: 0.3em;
+  color: var(--st, var(--jjk-gold, #c9a24e)); opacity: .9;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.9);
+  animation: srNewFade .6s ease-out .8s both;
+}
+.sr-new.tier-7 .sr-new-stars {
+  background: linear-gradient(90deg, #f3e3ee, #e4eef6 35%, #eef3e2 65%, #efe0f4);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  text-shadow: none; filter: drop-shadow(0 1px 1px rgba(0,0,0,0.9));
+}
+@keyframes srNewUp   { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@keyframes srNewFade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes srNewRule { from { opacity: 0; transform: scaleX(0); } to { opacity: 1; transform: none; } }
+
+.sr-new-hint {
+  position: absolute; z-index: 2; left: max(28px, calc(var(--safe-l, 0px) + 6vw)); bottom: max(18px, calc(var(--safe-b, 0px) + 5vh));
+  font-family: 'Rajdhani', var(--jjk-font); font-weight: 600; font-size: 11px; line-height: 1;
+  letter-spacing: 0.36em; text-transform: uppercase;
+  color: rgba(236,230,214,0.82); text-shadow: 0 1px 3px #000;
+  animation: srNewFade .6s ease-out 1.4s both, srHint 2.4s ease-in-out 2s infinite;
+  pointer-events: none;
+}
+@keyframes srHint { 0%, 100% { opacity: 1; } 50% { opacity: .6; } }
+
+/* Large screens: the title block scales up with the art */
+@media (min-width: 1100px) and (min-height: 640px) {
+  .sr-new-info { max-width: min(44vw, 680px); bottom: max(72px, 18vh); }
+  .sr-new-title { gap: 8px 18px; }
+  .sr-new-name { font-size: clamp(44px, 3.9vw, 64px); }
+  .sr-new-plate { height: clamp(34px, 2.9vw, 48px); }
+  .sr-new-rule { min-width: 300px; margin: 14px 0 12px; }
+  .sr-new-ver { font-size: clamp(16px, 1.35vw, 22px); }
+  .sr-new-stars { margin-top: 10px; font-size: clamp(18px, 1.55vw, 26px); }
+  .sr-new-hint { font-size: 14px; bottom: max(28px, 6vh); }
+}
+
+/* The paper's flash carried onto the whole screen: it holds white for a
+   beat (covering the cut to the overlay), then clears once */
+.sr-new-flash {
+  position: absolute; inset: 0; z-index: 5; pointer-events: none;
+  background: #fffaf0;
+  animation: srNewFlash .6s ease-out both;
+}
+@keyframes srNewFlash { 0%, 12% { opacity: .94; } 100% { opacity: 0; } }
+
+/* Portrait fallback (phones normally show the rotate overlay) */
+@media (orientation: portrait) {
+  .sr-new { --art: min(96vw, 62vh); }
+  .sr-new-art, .sr-new-bloom { left: 50%; top: 40%; }
+  .sr-new-info { left: 20px; right: 20px; bottom: 64px; max-width: none; align-items: center; text-align: center; }
+  .sr-new-title { justify-content: center; }
+  .sr-new-hint { left: 0; right: 0; text-align: center; text-indent: 0.36em; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Static depth: poses, shadows, stage and lights stay; nothing moves */
+  .summon-modal .sr-paper, .summon-modal .sr-paper-body, .summon-modal .sr-shadow,
+  .summon-modal .sr-slot::before,
+  .summon-modal .sr-paper-shine::before,
+  .summon-modal .sr-slot .result-card,
+  .summon-modal.sr-revealed .sr-panel,
+  .sr-stage i,
+  .sr-new, .sr-new * { animation: none !important; transition: none !important; }
+  .summon-modal.sr-revealed .sr-slot::before { opacity: 1; }
+  .summon-modal .sr-paper-shine, .sr-new-flash, .sr-new-dust { display: none !important; }
+  .summon-modal .sr-slot.is-flash .sr-paper-body::after { opacity: 0; }
+  .summon-modal .sr-slot.is-open .sr-paper { display: none; }
+}

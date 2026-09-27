@@ -1,8 +1,8 @@
 {
-  "frameWidth": 592,
-  "frameHeight": 451,
+  "frameWidth": 414,
+  "frameHeight": 452,
   "frames": 28,
-  "columns": 6,
+  "columns": 12,
   "fps": 12,
   "loop": false,
   "hits": [
@@ -17,6 +17,39 @@
     21,
     22
   ],
-  "heightScale": 1.7205,
-  "anchorX": 0.4395
+  "heightScale": 1.7656,
+  "anchorX": 0.4901,
+  "fx": [
+    {
+      "sheet": "jutsu_kurama",
+      "at": "caster",
+      "layer": "behind",
+      "startFrame": 1
+    },
+    {
+      "sheet": "jutsu_bomb",
+      "at": "targets",
+      "startFrame": 8,
+      "fly": true,
+      "from": [
+        0.8397,
+        -0.0046
+      ]
+    },
+    {
+      "sheet": "jutsu_travel",
+      "at": "targets",
+      "startFrame": 8,
+      "fly": true,
+      "from": [
+        0.7633,
+        0.6341
+      ]
+    },
+    {
+      "sheet": "jutsu_fx",
+      "at": "targets",
+      "startFrame": 13
+    }
+  ]
 }

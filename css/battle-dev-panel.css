@@ -162,7 +162,7 @@
 .bdev-status {
   min-height: 14px;
   font-size: 11px;
-  color: var(--jjk-good, #8fd49a);
+  color: var(--jjk-good, #f1d98a);
   opacity: 0;
   transition: opacity 0.2s;
 }

@@ -1089,6 +1089,9 @@ button.pickup-unit:focus-visible { outline: none; box-shadow: inset 0 0 0 1px va
 .summon-modal .btn-continue.tkt:hover { color: #f4efe2; background: none; box-shadow: none; }
 .summon-modal .btn-continue.tkt .tkt-label { font-size: 10.5cqw; }
 .summon-modal .btn-continue.tkt .tkt-kicker { font-size: max(8px, 3.4cqw); letter-spacing: 0.24em; }
+/* ×10 on the single-ticket art: the multi ticket's count scale keeps it
+   inside the stub's border */
+.summon-modal .btn-continue.tkt .tkt-count[data-digits="2"] { font-size: 13.4cqw; }
 
 /* Narrow screens: 4 then 3 across, smaller chrome */
 @media (max-width: 720px) {
@@ -1114,6 +1117,7 @@ html.is-mobile.is-landscape.is-compact .summon-modal .result-card-info { padding
 html.is-mobile.is-landscape.is-compact .summon-modal .result-card-name { font-size: 10px; }
 html.is-mobile.is-landscape.is-compact .summon-modal .result-card-rarity { font-size: 9px; }
 html.is-mobile.is-landscape.is-compact .summon-modal .btn-continue.tkt { width: 140px; }
+html.is-mobile.is-landscape.is-compact .summon-modal .btn-continue.tkt .tkt-unit { font-size: max(6px, 4.4cqw); letter-spacing: 0.14em; margin-right: -0.14em; }
 html.is-mobile.is-landscape.is-compact .summon-modal .sr-summary span { padding: 1px 8px; font-size: 9px; }
 html.is-mobile.is-landscape.is-compact .summon-modal .sr-summary b { font-size: 11px; }
 html.is-mobile.is-landscape.is-compact .summon-modal .result-card-featured { font-size: 7px; padding: 1px 6px 1px 8px; top: 3px; }
@@ -1219,7 +1223,7 @@ html.is-mobile.is-landscape.is-compact .rc-name { font-size: 15px; margin: 2px 0
 .rc-info-text { display: flex; flex-direction: column; line-height: 1.25; }
 .rc-info-text b { color: #f1e8d0; font-size: 13px; }
 .rc-info-text small { color: var(--jjk-muted); font-size: 11px; }
-.rc-info-owned { color: var(--jjk-good, #8fd49a); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; }
+.rc-info-owned { color: var(--jjk-good, #f1d98a); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; }
 html.is-mobile.is-landscape.is-compact .rc-rail-foot { display: none; }
 
 /* ── Recipe banner: composed from game assets (no painted key art) ──

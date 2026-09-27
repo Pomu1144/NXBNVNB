@@ -178,6 +178,7 @@ class PlayerSaveSystem {
       characterEquip: localStorage.getItem('blazing_character_equip_v1'),
       equippedUltimates: localStorage.getItem('blazing_equipped_ultimates'),
       summonState: localStorage.getItem('blazing_summon_state_v1'),
+      summonSeen: localStorage.getItem('blazing_summon_seen_v1'),
       recipes: localStorage.getItem('blazing_recipes_v1')
     };
   }
@@ -247,6 +248,7 @@ class PlayerSaveSystem {
         characterEquip: 'blazing_character_equip_v1',
         equippedUltimates: 'blazing_equipped_ultimates',
         summonState: 'blazing_summon_state_v1',
+        summonSeen: 'blazing_summon_seen_v1',
         recipes: 'blazing_recipes_v1'
       };
       Object.entries(keyMap).forEach(([field, storageKey]) => {

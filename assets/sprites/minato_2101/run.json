@@ -1,10 +1,11 @@
 {
-  "frameWidth": 306,
+  "frameWidth": 184,
   "frameHeight": 256,
-  "frames": 4,
-  "columns": 4,
-  "fps": 10,
+  "frames": 16,
+  "columns": 12,
+  "fps": 24,
   "loop": true,
-  "anchorX": 0.5,
+  "heightScale": 1.0,
+  "anchorX": 0.7056,
   "anchorY": 1.0
 }

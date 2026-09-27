@@ -234,8 +234,41 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.tab-btn').forEach(tab => {
       tab.classList.toggle('active', tab.textContent === categoryName);
     });
+    revealActiveTab();
     // New category starts at the top of its list
     if (scroller) scroller.scrollTop = 0;
+  }
+
+  /* ------------------------------------------------------------------
+   * Tab row (horizontally scrollable on phones): .fade-l / .fade-r tell
+   * css/mobile.css to soft-fade that edge only while more tabs are hidden
+   * past it, and the selected tab is slid clear of the fades.
+   * ------------------------------------------------------------------ */
+  let tabFadeRaf = 0;
+  function updateTabFade() {
+    tabFadeRaf = 0;
+    const max = tabsContainer.scrollWidth - tabsContainer.clientWidth;
+    const x = tabsContainer.scrollLeft;
+    tabsContainer.classList.toggle('fade-l', max > 1 && x > 1);
+    tabsContainer.classList.toggle('fade-r', max > 1 && x < max - 1);
+  }
+  function scheduleTabFade() {
+    if (!tabFadeRaf) tabFadeRaf = requestAnimationFrame(updateTabFade);
+  }
+  let tabsPlaced = false;
+  function revealActiveTab() {
+    const tab = tabsContainer.querySelector('.tab-btn.active');
+    const max = tabsContainer.scrollWidth - tabsContainer.clientWidth;
+    if (!tab || max <= 1) return;
+    const box = tabsContainer.getBoundingClientRect();
+    const r = tab.getBoundingClientRect();
+    // centre the tab in the row (clamped to the scroll range)
+    const target = tabsContainer.scrollLeft + (r.left - box.left) - (box.width - r.width) / 2;
+    tabsContainer.scrollTo({
+      left: Math.max(0, Math.min(max, target)),
+      behavior: tabsPlaced ? 'smooth' : 'auto'
+    });
+    tabsPlaced = true;
   }
 
   /**
@@ -269,8 +302,14 @@ document.addEventListener('DOMContentLoaded', () => {
         tabsContainer.appendChild(tab);
       });
 
+      // Edge fades follow the tab row's scroll position (mobile row scrolls)
+      tabsContainer.addEventListener('scroll', scheduleTabFade, { passive: true });
+      window.addEventListener('resize', scheduleTabFade);
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(scheduleTabFade);
+
       // Load first category
       renderMissionsForCategory(categoryNames[0]);
+      updateTabFade();
     })
     .catch(err => {
       console.error('Mission load failed:', err);

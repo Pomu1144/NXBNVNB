@@ -1455,9 +1455,11 @@
           console.warn(`[Combat] ${attacker.name} has no '${kind}' sheet, using timed hits`, e);
         }
         // Layered technique: the caster sheet names effect-only sheets
-        // ("fx": {sheet, at, startFrame[, layer, projectile]} or a list of
+        // ("fx": {sheet, at, startFrame[, layer, projectile, fly, from]} or a list of
         // them) that play in the scene, over the targets ("at": "targets") or
-        // around the caster ("at": "caster", e.g. a Susano'o behind Itachi).
+        // around the caster ("at": "caster", e.g. a Susano'o behind Itachi);
+        // "fly" sheets travel from the caster's hand to the targets while they
+        // play (a thrown Rasenshuriken).
         // The layer with hit frames (normally the one at the targets) carries
         // the hits. The caster stays in place (no dash).
         const fxBase = meta?.fx ? window.SpritePlayer?.pathFor?.(attacker.charId) : null;
@@ -1526,7 +1528,7 @@
               if (L.started) return; L.started = true;
               if (!calloutTimer) { calloutTimer = true; setTimeout(hideCallout, 900); } // the name band would cover the effect
               this.playTechniqueFx(attacker, targets, L.base, L.sheet, L.meta, core, {
-                at: L.at, layer: L.layer, projectile: L.projectile,
+                at: L.at, layer: L.layer, projectile: L.projectile, fly: L.fly, from: L.from,
                 onHit: L === fxHitLayer ? (k => doHit(k)) : null,
                 onEnd: () => { L.ended = true; allDone(); }
               });
@@ -1597,9 +1599,14 @@
      * grid (behind every unit). If it would reach under the top HUD it slides
      * down (targets only), then shrinks (same HUD rule as sheetSafeY). With
      * `projectile`, a small black core flies from the caster's hand to the
-     * effect first (Chibaku Tensei). Removed when it ends.
+     * effect first (Chibaku Tensei). With `fly`, the sheet itself is the
+     * projectile: it starts centred on the caster's hand (or on `from`, a
+     * [x, y] point in the caster's frame, 0..1, mirrored with the caster) and
+     * travels to the centre of the effect area over its own length (a thrown
+     * Rasenshuriken, a Tailed Beast Bomb from Kurama's jaws).
+     * Removed when it ends.
      */
-    playTechniqueFx(attacker, targets, base, sheet, fxMeta, core, { onHit, onEnd, at = 'targets', layer = 'front', projectile = false } = {}) {
+    playTechniqueFx(attacker, targets, base, sheet, fxMeta, core, { onHit, onEnd, at = 'targets', layer = 'front', projectile = false, fly = false, from = null } = {}) {
       const scene = core.dom?.scene;
       const end = () => { try { onEnd?.(); } catch (e) { console.error(e); } };
       if (!scene || !window.SpritePlayer) { end(); return; }
@@ -1654,6 +1661,19 @@
         });
         scene.appendChild(box);
         const player = window.SpritePlayer.create(box, base, { height: h, flip });
+        if (ar && fly) {
+          // from the caster's hand to the middle of the target area, accelerating a little
+          let hx = (flip ? ar.left + ar.width * 0.3 : ar.right - ar.width * 0.3) - sr.left, hy = ar.top + ar.height * 0.3 - sr.top;
+          const pr = Array.isArray(from) && scene.querySelector(`.battle-unit[data-unit-id="${attacker.id}"] .sprite-player`)?.getBoundingClientRect();
+          if (pr && pr.width > 0) {
+            hx = (flip ? pr.right - pr.width * from[0] : pr.left + pr.width * from[0]) - sr.left;
+            hy = pr.top + pr.height * from[1] - sr.top;
+          }
+          const tx = cx, ty = top + h * 0.5;
+          const ms = (fxMeta.frames / fxMeta.fps) * 1000;
+          Object.assign(box.style, { left: `${hx - w / 2}px`, top: `${hy - h / 2}px`, transition: `transform ${ms}ms cubic-bezier(0.35, 0, 0.85, 1)` });
+          requestAnimationFrame(() => { box.style.transform = `translate(${tx - hx}px, ${ty - hy}px)`; });
+        }
         let done = false;
         const cleanup = () => { if (done) return; done = true; player.destroy(); box.remove(); end(); };
         // projectile: the core leaving the caster's palm
