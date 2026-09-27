@@ -347,6 +347,7 @@
     },
 
     init() {
+      if (!window.DEV_MODE) return; // players never see it (js/dev-mode.js, ?dev=1)
       this.build();
       // BattleTurns loads before this file; hook once the manager is wired.
       const tryHook = () => { if (this.turns) this.hookTurns(); else setTimeout(tryHook, 300); };

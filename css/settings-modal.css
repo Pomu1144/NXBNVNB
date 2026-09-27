@@ -217,12 +217,13 @@
 .settings-modal .settings-input:focus { border-color: var(--jjk-gold-hi, #f1d98a); }
 .settings-modal .settings-input::placeholder { color: rgba(147, 163, 163, 0.7); font-weight: 400; }
 
-/* Background picker: thumbnails use the same .bg-N art as #full-bg */
+/* Background picker: catalog thumbnails (js/backgrounds.js) with names */
 .settings-modal .background-grid {
   display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px;
 }
 .settings-modal .background-option {
   position: relative; aspect-ratio: 16 / 9; cursor: pointer; overflow: hidden;
+  padding: 0; font: inherit;
   background-color: var(--jjk-ink, #071418);
   background-size: cover; background-position: center;
   border: 1px solid rgba(201, 162, 78, 0.3);
@@ -230,10 +231,12 @@
   filter: brightness(0.8);
 }
 .settings-modal .background-option::before {
-  content: attr(data-number);
-  position: absolute; top: 3px; right: 3px; padding: 0 6px;
-  font-family: var(--jjk-font, serif); font-size: 10px; font-weight: 700;
-  color: var(--jjk-gold-hi, #f1d98a); background: rgba(5, 14, 17, 0.85);
+  content: attr(data-name);
+  position: absolute; left: 0; right: 0; bottom: 0; padding: 2px 4px;
+  overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
+  font-family: var(--jjk-font, serif); font-size: 10px; font-weight: 700; text-align: left;
+  color: var(--jjk-gold-hi, #f1d98a);
+  background: linear-gradient(0deg, rgba(5, 14, 17, 0.92), rgba(5, 14, 17, 0.55));
 }
 .settings-modal .background-option:hover { filter: none; border-color: rgba(241, 217, 138, 0.75); }
 .settings-modal .background-option.active {
@@ -252,4 +255,4 @@ html.is-mobile.is-landscape.is-compact .settings-modal .settings-option { paddin
 html.is-mobile.is-landscape.is-compact .settings-modal .settings-option-label { font-size: 13px; margin-bottom: 4px; }
 html.is-mobile.is-landscape.is-compact .settings-modal .settings-button { height: 32px; min-width: 0; padding: 0 14px; font-size: 12px; }
 html.is-mobile.is-landscape.is-compact .settings-modal .settings-input { height: 30px; font-size: 12px; }
-html.is-mobile.is-landscape.is-compact .settings-modal .background-grid { grid-template-columns: repeat(10, 1fr); gap: 4px; }
+html.is-mobile.is-landscape.is-compact .settings-modal .background-grid { grid-template-columns: repeat(5, 1fr); gap: 4px; }

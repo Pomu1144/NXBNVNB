@@ -6,6 +6,7 @@ class DevPanel {
   }
 
   init() {
+    if (!window.DEV_MODE) return; // players never see it (js/dev-mode.js, ?dev=1)
     this.createPanel();
     this.attachEventListeners();
     console.log('🛠️ Dev Panel initialized');

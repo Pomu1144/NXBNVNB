@@ -33,6 +33,30 @@
       this.overlay.id = 'settings-overlay';
       this.overlay.className = 'settings-overlay';
 
+      // Dev grants only exist in dev mode (js/dev-mode.js, ?dev=1)
+      const devSection = global.DEV_MODE ? `
+            <!-- Developer Tools Section -->
+            <div class="settings-section">
+              <h3 class="settings-section-title">Developer Tools</h3>
+
+              <div class="settings-option">
+                <button class="settings-button settings-button-special" id="setting-receive-random-chars">
+                  Receive 30 Random Characters
+                </button>
+                <p class="settings-help">Add 30 random characters to your inventory</p>
+              </div>
+
+              <div class="settings-option">
+                <button class="settings-button settings-button-special" id="setting-grant-blazing-bases">
+                  Grant All Blazing Awakened 5★ Bases
+                </button>
+                <p class="settings-help">Adds the 5★ base of every Blazing Awakened (6SB) unit so you can test the full 5S → 6S → 6SB path</p>
+              </div>
+            </div>
+
+            <div class="settings-divider"></div>
+` : '';
+
       // Create modal structure
       this.overlay.innerHTML = `
         <div id="settings-modal" class="settings-modal">
@@ -111,27 +135,7 @@
 
             <div class="settings-divider"></div>
 
-            <!-- Developer Tools Section -->
-            <div class="settings-section">
-              <h3 class="settings-section-title">Developer Tools</h3>
-
-              <div class="settings-option">
-                <button class="settings-button settings-button-special" id="setting-receive-random-chars">
-                  Receive 30 Random Characters
-                </button>
-                <p class="settings-help">Add 30 random characters to your inventory</p>
-              </div>
-
-              <div class="settings-option">
-                <button class="settings-button settings-button-special" id="setting-grant-blazing-bases">
-                  Grant All Blazing Awakened 5★ Bases
-                </button>
-                <p class="settings-help">Adds the 5★ base of every Blazing Awakened (6SB) unit so you can test the full 5S → 6S → 6SB path</p>
-              </div>
-            </div>
-
-            <div class="settings-divider"></div>
-
+            ${devSection}
             <!-- Data Section -->
             <div class="settings-section">
               <h3 class="settings-section-title">Data</h3>
@@ -168,24 +172,22 @@
       const grid = document.getElementById('background-grid');
       if (!grid) return;
 
-      for (let i = 1; i <= 10; i++) {
-        const option = document.createElement('div');
+      const BG = global.VillageBackgrounds;
+      if (!BG) return;
+      const current = BG.savedId();
+      BG.LIST.forEach((bg) => {
+        const option = document.createElement('button');
+        option.type = 'button';
         option.className = 'background-option';
-        option.dataset.bg = i;
-        option.dataset.number = i;
-        // Same art as the #full-bg .bg-N classes in css/background.css
-        const file = i === 1 ? 'Background.png' : `Background${i}.gif`;
-        option.style.backgroundImage = `url('assets/Main Background/${file}')`;
-
-        // Check if this is the current background
-        const bgElement = document.getElementById('full-bg');
-        if (bgElement && bgElement.classList.contains(`bg-${i}`)) {
-          option.classList.add('active');
-        }
-
-        option.addEventListener('click', () => this.changeBackground(i));
+        option.dataset.bg = bg.id;
+        option.dataset.name = bg.name;
+        option.title = bg.name;
+        option.setAttribute('aria-label', bg.name);
+        option.style.backgroundImage = `url('${bg.thumb}')`;
+        option.classList.toggle('active', bg.id === current);
+        option.addEventListener('click', () => this.changeBackground(bg.id));
         grid.appendChild(option);
-      }
+      });
     },
 
     /**
@@ -441,28 +443,16 @@
      * Change background theme
      */
     changeBackground(num) {
+      const BG = global.VillageBackgrounds;
+      if (!BG || !BG.save(num)) return;
+
+      // Only pages that show the village scene swap their backdrop live
       const bgElement = document.getElementById('full-bg');
-      if (!bgElement) return;
+      if (bgElement && bgElement.closest('.game-canvas')) BG.apply(bgElement, num);
 
-      // Remove all background classes
-      for (let i = 1; i <= 10; i++) {
-        bgElement.classList.remove(`bg-${i}`);
-      }
-
-      // Add new background class
-      bgElement.classList.add(`bg-${num}`);
-
-      // Update active state in grid
       document.querySelectorAll('.background-option').forEach(opt => {
-        opt.classList.remove('active');
-        if (opt.dataset.bg == num) {
-          opt.classList.add('active');
-        }
+        opt.classList.toggle('active', Number(opt.dataset.bg) === Number(num));
       });
-
-      // Save preference (blazing_background is the key the save export carries)
-      localStorage.setItem('selected_background', num);
-      localStorage.setItem('blazing_background', num);
 
       console.log(`Background changed to bg-${num}`);
     },
@@ -490,12 +480,10 @@
       }
 
       // Background
-      const savedBg = localStorage.getItem('blazing_background') || localStorage.getItem('selected_background');
-      if (savedBg) {
-        document.querySelectorAll('.background-option').forEach(opt => {
-          opt.classList.toggle('active', opt.dataset.bg == savedBg);
-        });
-      }
+      const current = global.VillageBackgrounds ? global.VillageBackgrounds.savedId() : 1;
+      document.querySelectorAll('.background-option').forEach(opt => {
+        opt.classList.toggle('active', Number(opt.dataset.bg) === current);
+      });
     },
 
     /**

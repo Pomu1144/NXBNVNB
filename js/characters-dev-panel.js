@@ -224,6 +224,7 @@
   function addSpriteKakashiEWH() { return addSpriteUnit("kakashi_2091", "7S", "Kakashi Hatake (Entrusted With Hope)"); }
 
   async function init() {
+    if (!global.DEV_MODE) return; // players never see it (js/dev-mode.js, ?dev=1)
     await loadChars();
     buildPanel();
     // Capture-phase so we run before the grid's own click -> detail modal.

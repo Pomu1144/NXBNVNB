@@ -5,6 +5,8 @@
   <title>Blazing — Resources</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <script src="js/device-detect.js"></script>
+  <script src="js/dev-mode.js"></script>
+  <script src="js/backgrounds.js"></script>
   <!-- PWA App Container -->
   <link rel="manifest" href="manifest.json" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -229,6 +231,8 @@
         <button class="dev-button" id="btn-add-ryo">+100,000 Ryo</button>
         <button class="dev-button" id="btn-reset-materials">Reset to Defaults</button>
       </div>
+      <!-- Dev-only (js/dev-mode.js, ?dev=1) -->
+      <script>if (!window.DEV_MODE) document.currentScript.previousElementSibling.remove();</script>
 
       <div id="resources-list"></div>
 

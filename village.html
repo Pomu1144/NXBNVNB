@@ -5,6 +5,8 @@
   <title>Blazing — Village HUD</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <script src="js/device-detect.js"></script>
+  <script src="js/dev-mode.js"></script>
+  <script src="js/backgrounds.js"></script>
   <!-- PWA App Container -->
   <link rel="manifest" href="manifest.json" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -60,8 +62,9 @@
   <div class="game-canvas-wrapper">
     <div class="game-canvas">
       <div class="game-content">
-        <!-- Default background -->
+        <!-- Village background: the one picked in Settings (Hidden Leaf by default) -->
         <div id="full-bg" class="bg-1"></div>
+        <script>window.VillageBackgrounds && VillageBackgrounds.apply(document.getElementById("full-bg"), VillageBackgrounds.savedId());</script>
 
         <!-- Character Vignette Display -->
         <div class="character-vignette-container"></div>
@@ -424,15 +427,13 @@
       // ===== BACKGROUND CYCLING SYSTEM =====
 
       const bgElement = document.getElementById("full-bg");
-      const totalBackgrounds = 10;
-      let currentBackground = 1;
+      let currentBackground = window.VillageBackgrounds ? VillageBackgrounds.savedId() : 1;
 
+      // Show and remember a background (same choice as the Settings picker)
       function updateBG(n) {
-        if (!bgElement) return;
-        for (let i = 1; i <= totalBackgrounds; i++) {
-          bgElement.classList.remove(`bg-${i}`);
-        }
-        bgElement.classList.add(`bg-${n}`);
+        if (!bgElement || !window.VillageBackgrounds) return;
+        VillageBackgrounds.apply(bgElement, n);
+        VillageBackgrounds.save(n);
         console.log(`🎨 Background changed to bg-${n}`);
       }
 

@@ -120,19 +120,20 @@
      * @param {string} message - Question to ask
      * @param {Function} onConfirm - Callback when confirmed
      * @param {Function} onCancel - Callback when cancelled
+     * @param {Object} [opts] - { title, confirmText, cancelText } to override the labels
      */
-    showConfirm(message, onConfirm, onCancel) {
+    showConfirm(message, onConfirm, onCancel, opts = {}) {
       const modal = this.createModal('confirm');
       modal.innerHTML = `
         <div class="modal-header modal-confirm">
-          <h3 class="modal-title">Confirm</h3>
+          <h3 class="modal-title">${this.escapeHtml(opts.title || 'Confirm')}</h3>
         </div>
         <div class="modal-body">
           <p class="modal-message">${this.escapeHtml(message)}</p>
         </div>
         <div class="modal-footer">
-          <button class="modal-btn modal-btn-secondary" id="modal-cancel-btn">Cancel</button>
-          <button class="modal-btn modal-btn-primary jjk-btn" id="modal-confirm-btn">Confirm</button>
+          <button class="modal-btn modal-btn-secondary" id="modal-cancel-btn">${this.escapeHtml(opts.cancelText || 'Cancel')}</button>
+          <button class="modal-btn modal-btn-primary jjk-btn" id="modal-confirm-btn">${this.escapeHtml(opts.confirmText || 'Confirm')}</button>
         </div>
       `;
 
@@ -294,6 +295,7 @@
         }
       };
       document.addEventListener('keydown', escHandler);
+      this._escHandler = escHandler;
     },
 
     /**
@@ -302,6 +304,11 @@
     close() {
       if (!this.isOpen) return;
 
+      // Stop a closed dialog's ESC handler from firing its onCancel later
+      if (this._escHandler) {
+        document.removeEventListener('keydown', this._escHandler);
+        this._escHandler = null;
+      }
       this.overlay.classList.remove('modal-open');
       if (this.currentModal) {
         this.currentModal.classList.remove('modal-show');
