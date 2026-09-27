@@ -50,6 +50,12 @@
       "sheet": "jutsu_fx",
       "at": "targets",
       "startFrame": 13
+    },
+    {
+      "sheet": "jutsu_blast",
+      "at": "targets",
+      "startFrame": 13,
+      "layer": "front"
     }
   ]
 }
