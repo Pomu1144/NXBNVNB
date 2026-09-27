@@ -24,11 +24,13 @@
    */
 
   const LINK_BONUS = 1.2; // ×1.2 damage on both linked ultimates
+  // A link holds the leader's turn open; if a callback is ever lost, release
+  // it after this long instead of soft-locking the battle.
+  const LINK_FAILSAFE_MS = 25000;
 
   const BattleLinkUltimate = {
     LINK_BONUS,
     enabled: true,
-    _linking: false,
 
     /** Name of the link between two units, or null when they have no synergy. */
     linkName(a, b) {
@@ -51,12 +53,16 @@
     findPartner(leader, core, C) {
       const team = leader.isPlayer ? core.activeTeam : core.enemyTeam;
       for (const u of team || []) {
-        if (!u || u === leader) continue;
-        if (core.combatants && !core.combatants.includes(u)) continue;
+        if (!u || u === leader || !this.onField(u, core)) continue;
         const name = this.linkName(leader, u);
         if (name && this.isUltReady(u, C)) return { partner: u, name };
       }
       return null;
+    },
+
+    /** On the field right now (in the turn order, not a backup). */
+    onField(u, core) {
+      return !u.isBench && (!core.combatants || core.combatants.includes(u));
     },
 
     /** "LINK ULTIMATE" banner with both names; resolves when it has played. */
@@ -89,7 +95,7 @@
     /** On-field synergy partners of a player unit: [{ partner, name }]. */
     partnersOf(unit, core) {
       return (core.activeTeam || [])
-        .filter(u => u && u !== unit && !u.isBench && u.stats?.hp > 0)
+        .filter(u => u && u !== unit && u.stats?.hp > 0 && this.onField(u, core))
         .map(u => ({ partner: u, name: this.linkName(unit, u) }))
         .filter(l => l.name);
     },
@@ -149,28 +155,41 @@
 
       const origUlt = C.performUltimate;
       C.performUltimate = function (attacker, targets, core, onDone, ...rest) {
-        // The partner's own ultimate (or links turned off) never chains again.
-        if (self._linking || !self.enabled || !attacker || !core) {
+        // A partner's follow-up ultimate (or links turned off) never chains again.
+        if (attacker?._linkFollowUp || !self.enabled || !attacker || !core) {
           return origUlt.call(this, attacker, targets, core, onDone, ...rest);
         }
+        // Any boost left over from a link whose callback never came back.
+        delete attacker._linkBoost;
 
         const link = self.findPartner(attacker, core, this);
         if (!link) return origUlt.call(this, attacker, targets, core, onDone, ...rest);
 
         const { partner, name } = link;
         const combat = this;
+        const wasBusy = attacker._actionBusy;
         attacker._linkBoost = LINK_BONUS;
-        self._linking = true;
+        // The leader's turn stays open for the whole link: without this the
+        // AI turn safety net (battle-turns, 1.8 s) and the input watchdog end
+        // the turn while the leader's non-sprite ultimate is still playing,
+        // and the partner's follow-up then overlaps the next unit's turn.
+        attacker._actionBusy = true;
 
+        let finished = false;
+        let failsafe = null;
         const finish = () => {
+          if (finished) return;
+          finished = true;
+          clearTimeout(failsafe);
           attacker._actionBusy = false;
           delete attacker._linkBoost;
           delete partner._linkBoost;
-          self._linking = false;
+          delete partner._linkFollowUp;
           onDone?.();
         };
 
         const afterLeader = () => {
+          if (finished) return;
           delete attacker._linkBoost;
           // Leader's ultimate cleared the wave (or the battle is over): no follow-up.
           const foes = combat.getOpponents(partner, core);
@@ -178,11 +197,12 @@
             finish();
             return;
           }
-          // Keep the leader's turn open while the partner acts (turn watchdogs wait).
+          // Sprite skills clear the leader's busy flag when they end; re-arm it.
           attacker._actionBusy = true;
           window.BattleNarrator?.narrate?.(`${attacker.name} and ${partner.name} link their ultimates!`, core);
           self.showBanner(attacker, partner, name).then(() => {
             partner._linkBoost = LINK_BONUS;
+            partner._linkFollowUp = true;
             let ok = false;
             try {
               ok = combat.performUltimate(partner, combat.getOpponents(partner, core), core, finish) !== false;
@@ -197,9 +217,14 @@
         if (ok === false) {
           // Leader couldn't fire (sealed / locked / chakra): nothing to link.
           delete attacker._linkBoost;
-          self._linking = false;
+          attacker._actionBusy = wasBusy || false;
         } else {
           console.log(`[LinkUltimate] ${attacker.name} ↔ ${partner.name} (${name})`);
+          failsafe = setTimeout(() => {
+            if (finished) return;
+            console.warn("[LinkUltimate] Link never finished — releasing the turn");
+            finish();
+          }, LINK_FAILSAFE_MS);
         }
         return ok;
       };

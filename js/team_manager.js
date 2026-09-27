@@ -498,7 +498,11 @@
   /* ---------- Synergies (Link Ultimates) ----------
    * Pairs of team members with synergy (js/synergy.js). Front-row pairs link
    * their ultimates in battle; pairs involving a back-row unit only link once
-   * that unit is swapped onto the field. Linked slots get a chain badge. */
+   * that unit is swapped onto the field. A front unit and its own backup swap
+   * places, so they are never on the field together and are left out
+   * (pairing mirrors BattleTeamHolder.getPairs: back-N backs up front-N; a
+   * backup with no front-N is lent to the first front unit without one).
+   * Linked slots get a chain badge. */
   const CHAIN_SVG = '<svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M6.6 9.4a2.4 2.4 0 0 0 3.4 0l2.6-2.6a2.4 2.4 0 0 0-3.4-3.4l-.9.9M9.4 6.6a2.4 2.4 0 0 0-3.4 0L3.4 9.2a2.4 2.4 0 0 0 3.4 3.4l.9-.9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>';
 
   function renderSynergies() {
@@ -513,10 +517,23 @@
       if (!assigned?.uid || !/^(front|back)-/.test(slotId)) return;
       const char = BYID[assigned.charId];
       if (!char || !window.InventoryChar?.getByUid(assigned.uid)) return;
-      members.push({ slotId, name: char.name, front: slotId.startsWith("front-") });
+      members.push({ slotId, name: char.name, front: slotId.startsWith("front-"), pos: Number(slotId.split("-")[1]) });
+    });
+
+    // front slotId <-> its backup's slotId
+    const swapWith = {};
+    const fronts = members.filter(m => m.front).sort((x, y) => x.pos - y.pos);
+    const backs = members.filter(m => !m.front).sort((x, y) => x.pos - y.pos);
+    const frontPos = new Set(fronts.map(m => m.pos));
+    backs.forEach(b => {
+      const f = frontPos.has(b.pos)
+        ? fronts.find(m => m.pos === b.pos)
+        : fronts.find(m => !swapWith[m.slotId] && !backs.some(o => o.pos === m.pos));
+      if (f && !swapWith[f.slotId]) { swapWith[f.slotId] = b.slotId; swapWith[b.slotId] = f.slotId; }
     });
 
     const pairs = S.pairs(members)
+      .filter(p => swapWith[p.a.slotId] !== p.b.slotId)
       .map(p => ({ ...p, active: p.a.front && p.b.front }))
       .sort((x, y) => (y.active - x.active) || x.name.localeCompare(y.name));
 
