@@ -26,3 +26,7 @@ A page can pick its track with `<body data-music="village">` (`none` = silent).
 
 Howler.js sounds defined in `AudioManager.defineSounds()` (ui_click, hit,
 critical, jutsu, ultimate, summon, victory, defeat). Missing files fail quietly.
+
+## Credits
+
+Music is original, rendered with the FluidR3_GM soundfont (MIT licence, Copyright Frank Wen).

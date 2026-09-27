@@ -25,13 +25,13 @@
   // head after loopEnd, so any window of (loopEnd - loopStart) loops cleanly
   // whatever MP3 decoder delay the browser does or doesn't trim.
   const MUSIC_TRACKS = {
-    title:   { file: 'title.mp3',   loopStart: 0.25, loopEnd: 68.8214 },
-    village: { file: 'village.mp3', loopStart: 0.25, loopEnd: 62.8587 },
-    battle:  { file: 'battle.mp3',  loopStart: 0.25, loopEnd: 51.45 },
-    boss:    { file: 'boss.mp3',    loopStart: 0.25, loopEnd: 61.2024 },
-    summon:  { file: 'summon.mp3',  loopStart: 0.25, loopEnd: 43.8864 },
-    arena:   { file: 'arena.mp3',   loopStart: 0.25, loopEnd: 55.1071 },
-    shop:    { file: 'shop.mp3',    loopStart: 0.25, loopEnd: 55.6346 },
+    title:   { file: 'title.mp3',   loopStart: 0.25, loopEnd: 76.0395 },
+    village: { file: 'village.mp3', loopStart: 0.25, loopEnd: 57.85 },
+    battle:  { file: 'battle.mp3',  loopStart: 0.25, loopEnd: 45.9643 },
+    boss:    { file: 'boss.mp3',    loopStart: 0.25, loopEnd: 60.25 },
+    summon:  { file: 'summon.mp3',  loopStart: 0.25, loopEnd: 48.25 },
+    arena:   { file: 'arena.mp3',   loopStart: 0.25, loopEnd: 55.9022 },
+    shop:    { file: 'shop.mp3',    loopStart: 0.25, loopEnd: 45.9643 },
     victory: { file: 'victory.mp3', loop: false },
     defeat:  { file: 'defeat.mp3',  loop: false }
   };
