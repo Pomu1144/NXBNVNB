@@ -1,0 +1,229 @@
+/* Cosmetic skins: Shop › Skins cards (js/skin-shop.js), the Skins button in
+   the character info art frame and its picker (js/skin-picker.js).
+   Ink-teal + antique gold, tokens from css/theme-jjk.css. */
+
+/* ── Shop › Skins ───────────────────────────────────────────────────────── */
+.skin-grid {
+  display: grid; gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  max-width: 1100px; margin: 0 auto;
+}
+.skin-card {
+  position: relative; display: flex; flex-direction: column; gap: 4px;
+  padding: 10px 12px 12px;
+  background: linear-gradient(180deg, rgba(14, 38, 45, 0.94), rgba(6, 17, 21, 0.96));
+  border: 1px solid rgba(201, 162, 78, 0.45);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.45), inset 0 0 0 1px rgba(0, 0, 0, 0.5);
+  font-family: var(--jjk-font, 'Kaisei Tokumin', 'Times New Roman', serif);
+}
+.skin-card::before, .skin-card::after {
+  content: ''; position: absolute; width: 12px; height: 12px; pointer-events: none;
+  border: 2px solid var(--jjk-gold, #c9a24e);
+}
+.skin-card::before { top: -3px; left: -3px; border-right: 0; border-bottom: 0; }
+.skin-card::after  { bottom: -3px; right: -3px; border-left: 0; border-top: 0; }
+.skin-card-art {
+  position: relative; aspect-ratio: 1; margin: 0 -4px 4px; overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+  background:
+    radial-gradient(circle at 50% 58%, rgba(241, 217, 138, 0.18), rgba(3, 10, 12, 0) 60%),
+    radial-gradient(ellipse at 50% 100%, rgba(45, 107, 115, 0.45), rgba(3, 10, 12, 0) 70%),
+    rgba(3, 10, 12, 0.6);
+  border: 1px solid rgba(201, 162, 78, 0.35);
+}
+.skin-card-art img { width: 100%; height: 100%; object-fit: contain; }
+.skin-card-art img[hidden] { display: none; }
+.skin-card-tag {
+  position: absolute; top: 16px; left: 14px;
+  padding: 1px 9px; font-size: 11px; font-weight: 800; letter-spacing: 0.04em;
+  color: var(--jjk-gold-hi, #f1d98a); background: rgba(30, 20, 4, 0.9);
+  border: 1px solid rgba(226, 190, 110, 0.8);
+  clip-path: polygon(5px 0, 100% 0, calc(100% - 5px) 100%, 0 100%);
+}
+.skin-card-unit {
+  margin: 0; font-size: 12px; letter-spacing: 0.06em; color: var(--jjk-muted, #93a3a3);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.skin-card-name {
+  margin: 0; font-size: 16px; font-weight: 800; line-height: 1.2;
+  color: var(--jjk-text, #ece6d6); text-shadow: 0 1px 2px rgba(0, 0, 0, 0.85);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.skin-card-foot {
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  margin-top: 4px; padding-top: 8px; border-top: 1px solid rgba(201, 162, 78, 0.22);
+}
+.skin-card-price {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 16px; font-weight: 800; color: var(--jjk-gold-hi, #f1d98a);
+}
+.skin-card-price img { width: 18px; height: 18px; object-fit: contain; }
+.skin-card-buy { flex: 0 1 auto; padding: 0 14px; min-width: 112px; }
+/* art not on the server yet */
+.skin-card.is-missing .skin-card-art,
+.skin-card.is-missing .skin-card-name,
+.skin-card.is-missing .skin-card-price { filter: grayscale(1); opacity: 0.55; }
+.skin-card-soon, .skin-opt-soon::after {
+  font-size: 13px; font-weight: 700; letter-spacing: 0.08em; color: var(--jjk-muted, #93a3a3);
+}
+
+html.is-mobile.is-landscape.is-compact .skin-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+html.is-mobile.is-landscape.is-compact .skin-card { padding: 6px 8px 8px; gap: 2px; }
+html.is-mobile.is-landscape.is-compact .skin-card-art { aspect-ratio: 4 / 3; }
+html.is-mobile.is-landscape.is-compact .skin-card-name { font-size: 13px; }
+html.is-mobile.is-landscape.is-compact .skin-card-unit { font-size: 11px; }
+html.is-mobile.is-landscape.is-compact .skin-card-price { font-size: 13px; }
+html.is-mobile.is-landscape.is-compact .skin-card-buy { height: 28px; font-size: 12px; min-width: 0; padding: 0 10px; }
+html.is-mobile.is-landscape.is-compact .skin-card-tag { top: 10px; left: 10px; font-size: 10px; }
+
+/* ── Skins button: bottom-right of the character info art frame ─────────── */
+.skin-btn {
+  position: absolute; right: 12px; bottom: 12px; z-index: 6;
+  display: inline-flex; align-items: center; gap: 6px;
+  height: 40px; padding: 0 12px 0 9px;
+  font: 800 13px var(--jjk-font, 'Kaisei Tokumin', serif); letter-spacing: 0.06em;
+  color: var(--jjk-gold-hi, #f1d98a);
+  background: linear-gradient(180deg, rgba(19, 48, 57, 0.95), rgba(5, 14, 17, 0.95));
+  border: 1px solid rgba(201, 162, 78, 0.9);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.7), 0 4px 12px rgba(0, 0, 0, 0.6);
+  cursor: pointer; transition: filter .15s, transform .12s var(--jjk-ease, ease);
+}
+.skin-btn[hidden] { display: none; }
+.skin-btn:hover { filter: brightness(1.18); }
+.skin-btn:active { transform: scale(0.96); }
+.skin-btn:focus-visible { outline: 2px solid var(--jjk-gold-hi, #f1d98a); outline-offset: 2px; }
+.skin-btn svg {
+  width: 22px; height: 22px; fill: none; stroke: currentColor;
+  stroke-width: 1.6; stroke-linejoin: round; stroke-linecap: round;
+}
+.skin-btn-count {
+  position: absolute; top: -8px; right: -8px;
+  min-width: 18px; height: 18px; padding: 0 4px; box-sizing: border-box;
+  display: inline-flex; align-items: center; justify-content: center;
+  font: 800 11px/1 var(--jjk-font, serif); color: #1a1204;
+  background: var(--jjk-gold-hi, #f1d98a); border: 1px solid var(--jjk-gold-lo, #6e5320);
+  border-radius: 9px;
+}
+/* a skin is equipped: gold face */
+.skin-btn.is-worn {
+  color: #1a1204;
+  background: linear-gradient(180deg, #f1d98a, #c9a24e);
+  border-color: #f1d98a;
+}
+.skin-btn.is-worn .skin-btn-count { background: var(--jjk-ink-2, #0c2229); color: var(--jjk-gold-hi, #f1d98a); border-color: var(--jjk-gold, #c9a24e); }
+html.is-mobile.is-landscape.is-compact body.page-characters .skin-btn { right: 6px; bottom: 6px; height: 32px; padding: 0 9px 0 7px; font-size: 11px; }
+html.is-mobile.is-landscape.is-compact body.page-characters .skin-btn svg { width: 18px; height: 18px; }
+
+/* ── Skin picker ────────────────────────────────────────────────────────── */
+.skin-picker {
+  position: fixed; inset: 0; z-index: 5000;          /* above the character modal (2000) */
+  display: flex; align-items: center; justify-content: center;
+  padding: max(10px, env(safe-area-inset-top)) max(12px, env(safe-area-inset-right)) max(10px, env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-left));
+  background: rgba(2, 7, 9, 0.72);
+  font-family: var(--jjk-font, 'Kaisei Tokumin', serif);
+  animation: skinFade .18s ease;
+}
+@keyframes skinFade { from { opacity: 0; } to { opacity: 1; } }
+.skin-picker-panel {
+  position: relative; box-sizing: border-box;
+  width: min(760px, 100%); max-height: 100%;
+  display: flex; flex-direction: column; gap: 12px;
+  padding: 16px 18px 14px;
+  background: linear-gradient(180deg, rgba(14, 38, 45, 0.97), rgba(6, 17, 21, 0.98));
+  border: 1px solid rgba(201, 162, 78, 0.6);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7), inset 0 0 0 1px rgba(0, 0, 0, 0.5);
+}
+.skin-picker-panel::before, .skin-picker-panel::after {
+  content: ''; position: absolute; width: 18px; height: 18px; pointer-events: none;
+  border: 2px solid var(--jjk-gold, #c9a24e);
+}
+.skin-picker-panel::before { top: -3px; left: -3px; border-right: 0; border-bottom: 0; }
+.skin-picker-panel::after  { bottom: -3px; right: -3px; border-left: 0; border-top: 0; }
+.skin-picker-head {
+  display: flex; align-items: baseline; gap: 12px;
+  padding-bottom: 8px; border-bottom: 1px solid rgba(201, 162, 78, 0.3);
+}
+.skin-picker-title {
+  margin: 0; font: 400 22px var(--jjk-font-script, serif); letter-spacing: 0.08em;
+  color: var(--jjk-gold-hi, #f1d98a); text-shadow: 0 2px 0 rgba(0, 0, 0, 0.6);
+}
+.skin-picker-unit { flex: 1; min-width: 0; font-size: 14px; color: var(--jjk-muted, #93a3a3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.skin-picker-close {
+  align-self: center; width: 34px; height: 34px; flex: 0 0 auto;
+  font-size: 22px; line-height: 1; color: var(--jjk-text, #ece6d6);
+  background: rgba(5, 14, 17, 0.9); border: 1px solid rgba(201, 162, 78, 0.6); cursor: pointer;
+}
+.skin-picker-close:hover { color: var(--jjk-gold-hi, #f1d98a); border-color: var(--jjk-gold-hi, #f1d98a); }
+.skin-list {
+  display: flex; gap: 12px; overflow-x: auto; overscroll-behavior: contain;
+  padding: 4px 2px 6px; justify-content: safe center;
+}
+.skin-opt {
+  flex: 0 0 168px; display: flex; flex-direction: column; align-items: stretch; gap: 4px;
+  padding: 8px; box-sizing: border-box;
+  background: rgba(3, 10, 12, 0.55);
+  border: 1px solid rgba(45, 107, 115, 0.6);
+  transition: border-color .15s;
+}
+.skin-opt.is-worn {
+  border-color: var(--jjk-gold-hi, #f1d98a);
+  box-shadow: 0 0 0 1px rgba(241, 217, 138, 0.35), 0 0 18px rgba(201, 162, 78, 0.25);
+}
+.skin-opt-stage {
+  position: relative; height: 150px; overflow: hidden;
+  display: flex; align-items: flex-end; justify-content: center;
+  background:
+    radial-gradient(ellipse at 50% 92%, rgba(0, 0, 0, 0.55) 0 18%, transparent 19%),
+    radial-gradient(circle at 50% 60%, rgba(45, 107, 115, 0.4), rgba(3, 10, 12, 0) 68%);
+}
+.skin-opt.is-worn .skin-opt-stage {
+  background:
+    radial-gradient(ellipse at 50% 92%, rgba(0, 0, 0, 0.55) 0 18%, transparent 19%),
+    radial-gradient(circle at 50% 60%, rgba(241, 217, 138, 0.22), rgba(3, 10, 12, 0) 68%);
+}
+.skin-opt-stage .sprite-player { flex: 0 0 auto; margin-bottom: 6px; }
+.skin-opt-thumb { width: 100%; height: 100%; object-fit: contain; }
+.skin-opt-thumb[hidden] { display: none; }
+.skin-opt-soon {
+  position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+}
+.skin-opt-soon::after { content: '?'; font: 400 54px var(--jjk-font-script, serif); color: rgba(147, 163, 163, 0.35); }
+.skin-opt-name {
+  font-size: 15px; font-weight: 800; color: var(--jjk-text, #ece6d6); text-align: center;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.skin-opt-note { min-height: 1.2em; font-size: 11px; color: var(--jjk-muted, #93a3a3); text-align: center; }
+.skin-opt-note:empty::before { content: 'Skin'; }
+.skin-opt-btn {
+  height: 32px; border: 0; cursor: pointer; background: none; box-sizing: border-box;
+  border-image: url('../assets/ui/jjk/btn_ticket_red.webp') 36 fill / var(--jjk-tkt-w-sm, 10px) stretch;
+  font: 800 13px var(--jjk-font, serif); color: var(--jjk-gold-hi, #f1d98a);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.95);
+  transition: filter .15s, transform .12s var(--jjk-ease, ease);
+}
+.skin-opt-btn:hover:not(:disabled) { filter: brightness(1.14); }
+.skin-opt-btn:active:not(:disabled) { transform: translateY(1px) scale(0.98); }
+.skin-opt-btn:disabled {
+  border-image-source: url('../assets/ui/jjk/btn_ticket_off.webp');
+  color: #8f9a98; cursor: default;
+}
+.skin-opt.is-worn .skin-opt-btn:disabled {
+  border-image-source: url('../assets/ui/jjk/btn_ticket.webp'); color: var(--jjk-gold-hi, #f1d98a);
+}
+.skin-opt.is-missing .skin-opt-name, .skin-opt.is-missing .skin-opt-stage { opacity: 0.5; filter: grayscale(1); }
+.skin-opt.is-locked .skin-opt-stage { filter: brightness(0.6); }
+.skin-picker-hint { margin: 0; font-size: 12px; text-align: center; color: rgba(185, 196, 194, 0.85); }
+
+html.is-compact .skin-picker-panel { gap: 6px; padding: 8px 12px 8px; }
+html.is-compact .skin-picker-head { padding-bottom: 4px; }
+html.is-compact .skin-picker-title { font-size: 17px; }
+html.is-compact .skin-picker-close { width: 28px; height: 28px; font-size: 18px; }
+html.is-compact .skin-opt { flex-basis: 140px; padding: 6px; gap: 2px; }
+html.is-compact .skin-opt-stage { height: 104px; }
+html.is-compact .skin-opt-name { font-size: 13px; }
+html.is-compact .skin-opt-btn { height: 28px; font-size: 12px; }
+html.is-compact .skin-picker-hint { font-size: 11px; }
+@media (prefers-reduced-motion: reduce) {
+  .skin-picker { animation: none; }
+  .skin-btn, .skin-opt-btn { transition: none; }
+}

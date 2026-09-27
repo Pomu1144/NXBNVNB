@@ -66,7 +66,7 @@
   function spriteKO(unit, dom) {
     const sp = unit._sprite;
     if (!sp || unit._koShown || !window.SpritePlayer) return;
-    const base = window.SpritePlayer.pathFor(unit.charId);
+    const base = unit._spriteBase || window.SpritePlayer.pathFor(unit.charId);
     const unitEl = unitElOf(unit, dom);
     const slot = unitEl?.querySelector('.unit-sprite');
     const host = unitEl?.parentElement;
@@ -206,7 +206,7 @@
   }
   // Warm the hit / ko sheets when a sprite is mounted so the first flinch is instant.
   wrap(U, 'attachSprite', unit => {
-    const base = unit?.charId && window.SpritePlayer?.pathFor(unit.charId);
+    const base = unit?._spriteBase || (unit?.charId && window.SpritePlayer?.pathFor(unit.charId));
     if (!base) return;
     window.SpritePlayer.preload(base, 'hit').catch(() => {});
     window.SpritePlayer.preload(base, 'ko').catch(() => {});

@@ -611,9 +611,11 @@
 /* Tabs -> washi ticket plates (teal idle, crimson active) */
 .page-shop .shop-tabs { gap: 2px; margin-bottom: 26px; }
 .page-shop .shop-tab {
-  width: 190px;
+  width: auto;          /* sized to the label so all seven tabs fit one row */
+  min-width: 150px;
   height: 42px;
-  padding: 0 20px;
+  padding: 0 18px;
+  white-space: nowrap;
   border: 0;
   box-sizing: border-box;
   background: none;

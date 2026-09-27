@@ -170,7 +170,7 @@
   /* ===== Serialization ===== */
 
   // Transient / derived unit fields never saved (DOM, sprites, caches, refs)
-  const SKIP_SAVE = new Set(["_ref", "_sprite", "_runToken", "_actionBusy", "_hitAt", "_koShown",
+  const SKIP_SAVE = new Set(["_ref", "_sprite", "_spriteBase", "_runToken", "_actionBusy", "_hitAt", "_koShown",
     "_statusProfile", "_noHitSheet", "isPaused", "clickCount"]);
   // Saved but rebuilt from game data on load instead of being overwritten
   const SKIP_RESTORE = new Set(["id", "name", "portrait", "charId", "passives", "passiveEffects", "isPlayer"]);

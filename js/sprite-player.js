@@ -13,9 +13,27 @@
 (function () {
   const metaCache = new Map();
 
+  // Folder that actually holds sheet `name` for `base`: variant / skin folders
+  // (SHARED) own only some sheets, the rest come from their family folder
+  // (which can itself be a variant, so follow the chain).
+  function sheetFolder(base, name) {
+    for (let i = 0; i < 4; i++) {
+      const sh = SHARED[base];
+      if (!sh || sh.own.includes(name)) break;
+      base = sh.from;
+    }
+    return base;
+  }
+
   function loadAnim(base, name) {
+    base = sheetFolder(base, name);
     const sh = SHARED[base];
-    if (sh && !sh.own.includes(name)) base = sh.from;
+    // An own sheet that isn't there (e.g. skin art not landed yet) is read
+    // from the family folder instead, so a unit never loses its sprite.
+    return sh ? loadSheet(base, name).catch(() => loadAnim(sh.from, name)) : loadSheet(base, name);
+  }
+
+  function loadSheet(base, name) {
     const key = `${base}/${name}`;
     if (!metaCache.has(key)) {
       const p = fetch(`${key}.json`)
@@ -242,6 +260,22 @@
     create,
     preload: loadAnim,
     has: charId => !!REGISTRY[charId],
-    pathFor: charId => REGISTRY[charId] || null,
+    /* Folder to animate a unit from: its equipped skin (js/skins.js) when it
+     * has one, else its own folder. { skin: false } always gives the base
+     * folder (e.g. enemy copies of a unit the player has skinned). */
+    pathFor: (charId, { skin = true } = {}) => {
+      const base = REGISTRY[charId] || null;
+      if (!base || !skin) return base;
+      try { return window.Skins?.folderFor?.(charId) || base; } catch (_) { return base; }
+    },
+    basePathFor: charId => REGISTRY[charId] || null,
+    /* Register a folder that carries only the sheets listed in `own`; every
+     * other sheet (effect layers, extra jutsu parts...) is read from `from`.
+     * Used by js/skins.js for skin folders. */
+    registerShared(folder, from, own) {
+      if (!folder || !from || folder === from) return;
+      SHARED[folder] = { from, own: Array.isArray(own) ? own.slice() : [] };
+    },
   };
+  window.Skins?.attach?.(window.SpritePlayer); // js/skins.js loaded first
 })();

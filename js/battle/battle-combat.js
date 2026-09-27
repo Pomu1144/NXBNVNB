@@ -1462,7 +1462,7 @@
         // play (a thrown Rasenshuriken).
         // The layer with hit frames (normally the one at the targets) carries
         // the hits. The caster stays in place (no dash).
-        const fxBase = meta?.fx ? window.SpritePlayer?.pathFor?.(attacker.charId) : null;
+        const fxBase = meta?.fx ? (attacker._spriteBase || window.SpritePlayer?.pathFor?.(attacker.charId)) : null;
         const fxLayers = [];
         if (fxBase) {
           for (const L of (Array.isArray(meta.fx) ? meta.fx : [meta.fx])) {

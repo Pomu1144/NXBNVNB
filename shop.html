@@ -17,6 +17,7 @@
   <link rel="stylesheet" href="css/theme-jjk.css" />
   <link rel="stylesheet" href="css/shop.css" />
   <link rel="stylesheet" href="css/recipe-scroll.css" />
+  <link rel="stylesheet" href="css/skins.css" />
   <link rel="stylesheet" href="css/background.css" />
   <link rel="stylesheet" href="css/bottombar.css" />
   <link rel="stylesheet" href="css/music-player.css" />
@@ -78,6 +79,7 @@
       <button class="shop-tab" data-tab="granny">Granny Cat Shop</button>
       <button class="shop-tab" data-tab="recipes">Recipe Scrolls</button>
       <button class="shop-tab" data-tab="limitbreak">Limit Break</button>
+      <button class="shop-tab" data-tab="skins">Skins</button>
     </div>
 
     <!-- Ramen Tab -->
@@ -149,6 +151,13 @@
         <p class="lb-empty-sub" id="lb-empty-sub">Try another name or clear the element filters.</p>
         <button type="button" class="jjk-btn" id="lb-reset">Clear filters</button>
       </div>
+    </div>
+
+    <!-- Skins Tab: cosmetic skins (js/skins.js, js/skin-shop.js) -->
+    <div class="shop-tab-content" id="tab-skins">
+      <p class="lb-rule">Skins change how a unit looks in battle and on its info screen. Stats stay the same. Equip skins from the unit's info screen in Shinobi.</p>
+      <div class="skin-grid" id="skins-grid"></div>
+      <p class="lb-rule" id="skins-empty" hidden>No skins on sale yet.</p>
     </div>
   </main>
 
@@ -228,6 +237,8 @@
   <script src="js/recipe-book.js"></script>
   <script src="js/recipe-scroll.js"></script>
   <script src="js/lb-crystals.js"></script>
+  <script defer src="js/skins.js"></script>
+  <script defer src="js/skin-shop.js"></script>
   <script defer src="js/shop.js"></script>
   <script defer src="js/lb-shop.js"></script>
 
