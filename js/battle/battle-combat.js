@@ -1354,10 +1354,14 @@
       const tW = tSprite.getBoundingClientRect().width || 60;
       const h = attacker._sprite?.el?.offsetHeight || 120;
       const aW = meta ? meta.frameWidth * (h * (meta.heightScale || 1) / meta.frameHeight) : h * 0.8;
+      // A giant boss: stop at its visible front edge, at the attacker's own height
+      if (target.isBoss && window.BattleBoss?.strikePoint) {
+        const p = window.BattleBoss.strikePoint(target, attacker, attackerEl, aW);
+        return { x: p.x, y: this.sheetSafeY(attacker, attackerEl, p.y, meta, core) };
+      }
       const gapPx = tW * 0.45 + aW * 0.28;
       const x = Math.max(3, Math.min(97, target.pos.x - dir * (gapPx / grid.width) * 100));
-      const ty = target.isBoss && window.BattleBoss ? window.BattleBoss.strikeY(target, attackerEl) : target.pos.y;
-      return { x, y: this.sheetSafeY(attacker, attackerEl, ty, meta, core) };
+      return { x, y: this.sheetSafeY(attacker, attackerEl, target.pos.y, meta, core) };
     },
 
     /**

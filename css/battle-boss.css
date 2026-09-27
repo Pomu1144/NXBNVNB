@@ -1,7 +1,9 @@
 /* ===================================================
    BOSS BATTLES (js/battle/battle-boss.js)
-   One giant enemy: darkened arena, danger zones on the ground, a big HP
-   bar under the speed gauge, warning banners and the entrance cut-in.
+   One giant enemy looming from the right edge: darkened arena, danger
+   zones on the ground, the Blazing-style "Boss" bar under the speed gauge,
+   the BOSS / Danger N tag on its head, warning banners and the entrance
+   cut-in.
    Palette comes from data/bosses.json via --boss-glow / --boss-eyes /
    --boss-aura / --boss-tint set on #battle-scene.
    =================================================== */
@@ -114,13 +116,16 @@
 @keyframes bzDash { to { stroke-dashoffset: -25; } }
 @keyframes bzStrike { 0% { opacity: 1; filter: brightness(3); } 100% { opacity: 0; filter: brightness(1); } }
 
-/* ---------- The boss itself ---------- */
+/* ---------- The boss itself ----------
+   The .battle-unit element is only the giant's head / chest box (damage
+   numbers, hit flash, tap target); the art is drawn around it at full size
+   (--frame-*) and runs off the right / top edges of the screen. */
 .battle-unit.battle-unit--boss {
   width: var(--boss-w, 280px) !important;
   height: var(--boss-h, 280px) !important;
   cursor: default;
   transition: opacity 0.5s ease, filter 0.5s ease !important;
-  --boss-aura-o: 0.38;
+  --boss-aura-o: 0.3;
 }
 .battle-unit.battle-unit--boss .unit-sprite.boss-body {
   position: relative;
@@ -139,31 +144,44 @@
 }
 .battle-unit--boss:hover .unit-sprite { transform: none !important; }
 .battle-unit.battle-unit--boss[data-dead="true"] { opacity: 1; filter: none; }
+/* whole giant: lean shifts (JS sets rotate / translate) pivot on its feet */
+.battle-unit--boss .boss-lean {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  transform-origin: var(--pivot-x, 50%) var(--pivot-y, 100%);
+}
 .battle-unit--boss .boss-aura {
   position: absolute;
-  left: -14%; right: -14%; top: 4%; bottom: -6%;
+  left: var(--frame-l, 0);
+  top: var(--frame-t, 0);
+  width: var(--frame-w, 100%);
+  height: var(--frame-h, 100%);
   border-radius: 50%;
-  background: radial-gradient(ellipse at 50% 72%, var(--boss-aura, #f22) 0%, transparent 62%);
+  background: radial-gradient(ellipse 40% 42% at 50% 58%, var(--boss-aura, #f22) 0%, transparent 70%);
   opacity: var(--boss-aura-o);
-  filter: blur(12px);
+  filter: blur(16px);
   mix-blend-mode: screen;
   animation: bossAura 2.4s ease-in-out infinite;
   pointer-events: none;
 }
-.battle-unit--boss.is-enraged { --boss-aura-o: 0.85; }
-.battle-unit--boss.is-enraged .boss-aura { animation-duration: 0.9s; left: -24%; right: -24%; top: -10%; }
+.battle-unit--boss.is-enraged { --boss-aura-o: 0.75; }
+.battle-unit--boss.is-enraged .boss-aura { animation-duration: 0.9s; }
 .battle-unit--boss.is-enraged .boss-placeholder svg,
 .battle-unit--boss.is-enraged .sprite-player {
   filter: drop-shadow(0 0 5px var(--boss-aura)) drop-shadow(0 0 22px var(--boss-aura));
 }
 @keyframes bossAura {
   0%, 100% { transform: scale(1); opacity: var(--boss-aura-o); }
-  50% { transform: scale(1.08, 1.12); opacity: calc(var(--boss-aura-o) * 1.3); }
+  50% { transform: scale(1.05, 1.08); opacity: calc(var(--boss-aura-o) * 1.3); }
 }
 
 .battle-unit--boss .boss-placeholder {
   position: absolute;
-  inset: 0;
+  left: var(--frame-l, 0);
+  top: var(--frame-t, 0);
+  width: var(--frame-w, 100%);
+  height: var(--frame-h, 100%);
   transition: opacity 0.6s ease;
 }
 .battle-unit--boss .boss-placeholder svg,
@@ -176,16 +194,32 @@
   animation: bossBreathe 3.2s ease-in-out infinite;
 }
 .battle-unit--boss.has-art .boss-placeholder { opacity: 0; }
+/* zero-size box on the frame's anchor, its bottom on the frame's bottom;
+   the looming sway (breathing + a slow rock around the feet) lives here */
 .battle-unit--boss .boss-sprite-host {
   position: absolute;
-  left: 50%;
-  bottom: 0;
   width: 0;
+  height: 0;
   display: flex;
   justify-content: center;
   align-items: flex-end;
+  animation: bossLoom var(--sway-ms, 5200ms) ease-in-out infinite;
 }
 .battle-unit--boss .boss-sprite-host .sprite-player { flex: none; transform-origin: 50% 100%; }
+@keyframes bossLoom {
+  0%, 100% { transform: rotate(0deg) translateY(0) scale(1, 1); }
+  30% { transform: rotate(calc(var(--sway-deg, 0.8deg) * -1)) translate(calc(var(--sway-px, 4px) * -1), calc(var(--sway-px, 4px) * 0.5)) scale(1.006, 1.012); }
+  55% { transform: rotate(calc(var(--sway-deg, 0.8deg) * -0.4)) translate(calc(var(--sway-px, 4px) * -0.4), 0) scale(1, 1); }
+  80% { transform: rotate(calc(var(--sway-deg, 0.8deg) * 0.5)) translate(calc(var(--sway-px, 4px) * 0.5), calc(var(--sway-px, 4px) * -0.3)) scale(1.004, 1.008); }
+}
+/* the hit flash stays on the head / chest instead of a huge disc */
+.battle-unit--boss > .impact-flash {
+  left: 18% !important;
+  top: 18% !important;
+  width: 64% !important;
+  height: 64% !important;
+  filter: blur(10px);
+}
 
 /* silhouette parts */
 .boss-placeholder .bp-body,
@@ -219,7 +253,8 @@
 @keyframes bpEyes { 0%, 100% { opacity: 1; } 45% { opacity: 0.55; } 50% { opacity: 1; } 55% { opacity: 0.7; } }
 @keyframes bpWings { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.04, 0.97); } }
 
-/* poses of the silhouette, or of the sprite when the art lacks that sheet */
+/* poses of the silhouette, or of the sprite when the art lacks that sheet
+   (they replace the sway while they play) */
 .battle-unit--boss.ph-telegraph :is(.boss-placeholder, .boss-sprite-host) { animation: bpCharge var(--pose-ms, 900ms) ease-out; }
 .battle-unit--boss.ph-attack_area :is(.boss-placeholder, .boss-sprite-host) { animation: bpLunge var(--pose-ms, 1000ms) ease-in-out; }
 .battle-unit--boss.ph-attack_map :is(.boss-placeholder, .boss-sprite-host) { animation: bpRear var(--pose-ms, 1300ms) ease-in-out; }
@@ -254,8 +289,6 @@
   100% { transform: rotate(-9deg) translateY(22%) scale(1, 0.72); filter: brightness(0.4) grayscale(1); }
 }
 
-.battle-unit--boss.is-walking .boss-body { animation: bossStep var(--step-ms, 380ms) ease-in-out infinite; }
-@keyframes bossStep { 0%, 100% { translate: 0 0; } 45% { translate: 0 -2.5%; } }
 .battle-unit--boss.is-hidden { opacity: 0 !important; }
 .battle-unit--boss.is-rising { animation: bossRise 1.6s cubic-bezier(.2,.8,.2,1); }
 @keyframes bossRise {
@@ -322,32 +355,88 @@
   100% { opacity: 0; transform: rotate(var(--r, -6deg)) scaleX(1); }
 }
 
-/* ---------- Boss HP bar (under the speed gauge) ---------- */
+/* ---------- Boss HP bar (under the speed gauge) ----------
+   Blazing-style: a red brush-stroke "Boss" label on the left end of a
+   long, gold-framed bar; phase pips on the right end. */
 .boss-hud {
   position: absolute;
   left: 50%;
   top: 70px;
-  width: min(640px, 58%);
+  width: min(1180px, 90%);
   transform: translateX(-50%);
   z-index: 46;
+  display: flex;
+  align-items: center;
   pointer-events: none;
   transition: opacity 0.5s ease, transform 0.5s ease;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.9));
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.85));
+  --bh-h: 14px;
 }
 .boss-hud.is-hidden { opacity: 0; transform: translate(-50%, -12px); }
 .boss-hud.is-down { opacity: 0.35; }
-.boss-hud .bh-top {
-  display: flex;
-  align-items: baseline;
-  gap: 10px;
-  padding: 0 4px 2px;
+.boss-hud .bh-label {
+  position: relative;
+  z-index: 2;
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: calc(var(--bh-h) * 7.6);
+  height: calc(var(--bh-h) * 2.5);
+  margin-right: calc(var(--bh-h) * -1.6);
+  /* ragged red brush stroke */
+  background: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 190 60' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23d8261a'/%3E%3Cstop offset='.55' stop-color='%23a30f0b'/%3E%3Cstop offset='1' stop-color='%236a0505'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath fill='url(%23g)' d='M6 22 C18 12 34 9 52 10 L60 5 L66 10 C96 7 128 6 150 9 L158 4 L163 10 C172 11 182 14 187 20 L178 23 L186 29 L176 33 L184 40 C168 46 150 50 128 50 L120 56 L114 50 C90 53 62 55 40 52 L30 57 L28 50 C18 49 9 46 3 41 L12 36 L2 31 L11 27 Z'/%3E%3Cpath fill='%23ff6a3a' opacity='.45' d='M20 16 C60 11 120 10 176 16 C130 14 70 15 20 19 Z'/%3E%3Cpath fill='%23000' opacity='.35' d='M16 44 C70 49 130 48 176 40 C140 47 80 50 16 46 Z'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
 }
-.boss-hud .bh-name {
+.boss-hud .bh-label span {
   font-family: var(--jjk-font-script, serif);
-  font-size: 17px;
-  color: #ffe2c8;
-  text-shadow: 0 0 8px var(--boss-aura, #f22), 0 1px 2px #000;
-  letter-spacing: 0.04em;
+  font-size: calc(var(--bh-h) * 1.45);
+  line-height: 1;
+  color: #fff6ea;
+  letter-spacing: 0.02em;
+  transform: rotate(-4deg) translateY(-1px);
+  -webkit-text-stroke: 1px #4a0303;
+  text-shadow: 0 0 6px rgba(255, 90, 40, 0.8), 0 2px 1px #300;
+}
+.boss-hud .bh-frame {
+  position: relative;
+  flex: 1;
+  padding: 2px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, var(--jjk-gold-hi, #f1d98a), var(--jjk-gold, #c9a24e) 45%, #6b4c16);
+  box-shadow: 0 0 0 1px #2a1a04, 0 0 10px rgba(200, 150, 40, 0.35);
+  clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 50%, calc(100% - 8px) 100%, 0 100%);
+}
+.boss-hud .bh-bar {
+  position: relative;
+  height: var(--bh-h);
+  background: linear-gradient(180deg, #120807, #050202);
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.95);
+  overflow: hidden;
+  clip-path: polygon(0 0, calc(100% - 7px) 0, 100% 50%, calc(100% - 7px) 100%, 0 100%);
+}
+.boss-hud .bh-ghost,
+.boss-hud .bh-fill { position: absolute; left: 0; top: 0; bottom: 0; width: 100%; }
+.boss-hud .bh-ghost { background: #ff5a3a; opacity: 0.85; transition: width 0.6s ease-in; }
+.boss-hud .bh-fill {
+  background: linear-gradient(180deg, #fff3a6 0%, #ffd23a 35%, #e7a012 70%, #a86a06 100%);
+  box-shadow: inset 0 -2px 3px rgba(120, 60, 0, 0.5);
+  transition: width 0.25s ease-out;
+}
+.boss-hud .bh-marks i {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  margin-left: -1px;
+  background: #3a1c02;
+  box-shadow: 0 0 0 1px rgba(255, 230, 160, 0.5);
+}
+.boss-hud .bh-side {
+  position: absolute;
+  right: 14px;
+  bottom: calc(100% - 2px);
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 .boss-hud .bh-phase {
   font-family: var(--jjk-font, serif);
@@ -356,50 +445,80 @@
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: #ff5a4a;
+  text-shadow: 0 1px 2px #000;
   animation: bzHatch 1s ease-in-out infinite;
 }
-.boss-hud .bh-pips { margin-left: auto; display: flex; gap: 5px; }
+.boss-hud .bh-pips { display: flex; gap: 5px; }
 .boss-hud .bh-pips i {
-  width: 10px;
-  height: 10px;
+  width: 9px;
+  height: 9px;
   transform: rotate(45deg);
-  border: 1px solid var(--jjk-gold, #c9a24e);
-  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid var(--jjk-gold-hi, #f1d98a);
+  background: rgba(0, 0, 0, 0.7);
 }
 .boss-hud .bh-pips i.on { background: #ff3a2a; box-shadow: 0 0 8px #ff3a2a; }
-.boss-hud .bh-bar {
-  position: relative;
-  height: 13px;
-  border: 1px solid var(--jjk-gold, #c9a24e);
-  background: linear-gradient(180deg, #1a0606, #070202);
-  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.9), 0 0 10px rgba(160, 0, 0, 0.45);
-  overflow: hidden;
-}
-.boss-hud .bh-ghost,
-.boss-hud .bh-fill { position: absolute; left: 0; top: 0; bottom: 0; width: 100%; }
-.boss-hud .bh-ghost { background: #ffd9a8; opacity: 0.8; transition: width 0.6s ease-in; }
-.boss-hud .bh-fill {
-  background: linear-gradient(180deg, #ff7a52 0%, #d4150c 45%, #7a0404 100%);
-  transition: width 0.25s ease-out;
-}
-.boss-hud .bh-marks i {
-  position: absolute;
-  top: -1px;
-  bottom: -1px;
-  width: 2px;
-  margin-left: -1px;
-  background: var(--jjk-gold-hi, #f1d98a);
-  box-shadow: 0 0 4px #000;
-}
 .boss-hud .bh-hp {
   position: absolute;
-  right: 6px;
-  bottom: -15px;
+  right: 14px;
+  top: calc(100% - 1px);
   font-family: var(--jjk-font, serif);
   font-size: 10px;
-  color: #f3d6c4;
-  text-shadow: 0 1px 2px #000;
+  color: #f3e2c4;
+  text-shadow: 0 1px 2px #000, 0 0 3px #000;
 }
+
+/* ---------- BOSS / Danger N tag on the giant's head ---------- */
+.boss-danger {
+  position: absolute;
+  z-index: 34;
+  transform: translate(-50%, -100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.8));
+}
+.boss-danger.is-hidden { opacity: 0; }
+.boss-danger .bd-tag {
+  margin-bottom: 3px;
+  padding: 0 3px;
+  font-family: var(--jjk-font, serif);
+  font-weight: 800;
+  font-style: italic;
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #ffb13a;
+  -webkit-text-stroke: 0.6px #5a1a00;
+  text-shadow: 0 0 4px rgba(255, 120, 0, 0.7), 0 1px 1px #000;
+}
+.boss-danger .bd-word {
+  font-family: var(--jjk-font-script, serif);
+  font-size: 15px;
+  color: #fff;
+  -webkit-text-stroke: 0.8px #1a0a08;
+  text-shadow: 0 1px 2px #000, 0 0 5px rgba(0, 0, 0, 0.7);
+}
+.boss-danger .bd-n {
+  margin-top: 2px;
+  font-family: var(--jjk-font-script, serif);
+  font-size: 22px;
+  color: #fff;
+  -webkit-text-stroke: 0.8px #1a0a08;
+  text-shadow: 0 1px 2px #000, 0 0 5px rgba(0, 0, 0, 0.7);
+}
+.boss-danger.is-tick .bd-n { animation: bdTick 0.5s cubic-bezier(.2,.8,.2,1); }
+.boss-danger.is-imminent .bd-word,
+.boss-danger.is-imminent .bd-n {
+  color: #ff3a2a;
+  -webkit-text-stroke-color: #fff0e0;
+  text-shadow: 0 0 8px #ff1a0a, 0 0 18px rgba(255, 20, 0, 0.8), 0 1px 2px #000;
+}
+.boss-danger.is-imminent { animation: bdPulse 0.7s ease-in-out infinite; }
+@keyframes bdTick { from { transform: scale(1.8); opacity: 0.3; } to { transform: none; opacity: 1; } }
+@keyframes bdPulse { 0%, 100% { transform: translate(-50%, -100%) scale(1); } 50% { transform: translate(-50%, -100%) scale(1.14); } }
 
 /* persistent warning while a whole-map attack is charging */
 .boss-warn {
@@ -572,13 +691,15 @@
 @keyframes bossCutName { from { opacity: 0; transform: scale(2.2); letter-spacing: 0.3em; } }
 
 /* ---------- Phones held sideways ---------- */
-html.is-mobile .boss-hud { width: min(460px, 50%); }
-html.is-mobile .boss-hud .bh-name { font-size: 12px; }
-html.is-mobile .boss-hud .bh-phase { font-size: 9px; }
-html.is-mobile .boss-hud .bh-pips i { width: 7px; height: 7px; }
-html.is-mobile .boss-hud .bh-bar { height: 8px; }
-html.is-mobile .boss-hud .bh-top { padding-bottom: 1px; }
-html.is-mobile .boss-hud .bh-hp { font-size: 8px; bottom: -11px; }
+html.is-mobile .boss-hud { width: min(820px, 88%); --bh-h: 8px; }
+html.is-mobile .boss-hud .bh-phase { font-size: 8px; }
+html.is-mobile .boss-hud .bh-pips i { width: 6px; height: 6px; }
+html.is-mobile .boss-hud .bh-side { gap: 5px; }
+html.is-mobile .boss-hud .bh-hp { font-size: 8px; }
+html.is-mobile .boss-hud .bh-label span { -webkit-text-stroke-width: 0.6px; }
+html.is-mobile .boss-danger .bd-tag { font-size: 8px; margin-bottom: 2px; }
+html.is-mobile .boss-danger .bd-word { font-size: 11px; }
+html.is-mobile .boss-danger .bd-n { font-size: 16px; }
 html.is-mobile .boss-warn { font-size: 10px; padding: 3px 12px; }
 html.is-mobile .boss-warn .bw-icon { width: 14px; height: 14px; font-size: 9px; padding-top: 3px; }
 html.is-mobile .boss-banner .bb-title { font-size: 26px; }
@@ -589,5 +710,6 @@ html.is-mobile .boss-cutin .bc-warning { font-size: 10px; }
 
 @media (prefers-reduced-motion: reduce) {
   .boss-placeholder svg, .boss-placeholder .bp-tail, .boss-placeholder .bp-wings,
-  .battle-unit--boss .boss-aura, .bz-edge > *, .boss-banner .bb-stripe { animation: none !important; }
+  .battle-unit--boss .boss-aura, .battle-unit--boss .boss-sprite-host, .boss-danger,
+  .bz-edge > *, .boss-banner .bb-stripe { animation: none !important; }
 }
