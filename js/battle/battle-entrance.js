@@ -71,6 +71,10 @@
 
       for (let i = 0; i < enemyUnits.length; i++) {
         const unit = enemyUnits[i];
+        if (unit.isBoss && window.BattleBoss) {
+          await window.BattleBoss.playEntrance(unit, core);
+          continue;
+        }
         const isBoss = unit.stats.hp > 2000;
 
         if (isBoss && hasBoss) {

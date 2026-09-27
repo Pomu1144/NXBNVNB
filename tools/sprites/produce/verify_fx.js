@@ -21,7 +21,7 @@ const URL = process.env.BASE_URL || 'http://localhost:8765';
   const errors = [];
   p.on('pageerror', e => errors.push(String(e)));
   const report = { charId: CID, kind: KIND };
-  await p.goto(`${URL}/characters.html`); await p.waitForTimeout(2500);
+  await p.goto(`${URL}/characters.html?dev=1`); await p.waitForTimeout(2500);
   await p.click('#chardev-fab'); await p.waitForTimeout(300);
   if (await p.$(`#chardev-add-${CID}`)) await p.click(`#chardev-add-${CID}`);
   else await p.evaluate(([c, t]) => CharDevTools.addSpriteUnit(c, t, c), [CID, TIER]);

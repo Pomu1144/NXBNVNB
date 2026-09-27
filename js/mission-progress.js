@@ -107,10 +107,35 @@
     return { completion, firstTime, objectives: [] };
   }
 
+  // ---------- Per-mission clear rewards (data/missions.json) ----------
+  // Missions declare { clearRewards: { <rank>: { firstTime, completion } } }
+  // next to their stages; that is the primary source. mission-rewards.json
+  // still supplies objectives and covers missions without clearRewards.
+  let _missionsPromise = null;
+  function loadMissions() {
+    if (!_missionsPromise) {
+      _missionsPromise = fetch("data/missions.json")
+        .then(r => (r.ok ? r.json() : []))
+        .catch(() => []);
+    }
+    return _missionsPromise;
+  }
+
   // ---------- Get Rewards for Mission ----------
   async function getRewards(missionId, difficulty) {
     const config = await loadRewardsConfig();
     const missionRewards = config[missionId];
+
+    const missions = await loadMissions();
+    const own = (Array.isArray(missions) ? missions : [])
+      .find(m => m.id === missionId)?.clearRewards?.[difficulty];
+    if (own) {
+      return {
+        completion: own.completion || {},
+        firstTime: own.firstTime || {},
+        objectives: missionRewards?.[difficulty]?.objectives || []
+      };
+    }
 
     if (!missionRewards || !missionRewards[difficulty]) {
       // No hand-authored rewards: fall back to difficulty-scaled defaults

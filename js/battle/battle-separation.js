@@ -160,7 +160,7 @@
       // Bodies in grid px (body centre, not the element centre).
       const bodies = [];
       for (const u of core.combatants) {
-        if (!u || u.isBench || !u.pos || !(u.stats?.hp > 0)) continue;
+        if (!u || u.isBench || u.isBoss || !u.pos || !(u.stats?.hp > 0)) continue;
         const el = this.unitEl(u, core);
         if (!el || el.dataset.dead === "true") continue;
         const isFixed = u === fixed;

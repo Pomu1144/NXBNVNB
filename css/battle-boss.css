@@ -1,0 +1,593 @@
+/* ===================================================
+   BOSS BATTLES (js/battle/battle-boss.js)
+   One giant enemy: darkened arena, danger zones on the ground, a big HP
+   bar under the speed gauge, warning banners and the entrance cut-in.
+   Palette comes from data/bosses.json via --boss-glow / --boss-eyes /
+   --boss-aura / --boss-tint set on #battle-scene.
+   =================================================== */
+
+/* ---------- Arena: tint + vignette (under the units) ---------- */
+.boss-arena-tint {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 75% 70% at 55% 55%, transparent 35%, rgba(0, 0, 0, 0.78) 100%),
+    linear-gradient(180deg, rgba(0, 0, 0, 0.45), transparent 40%, rgba(0, 0, 0, 0.35)),
+    var(--boss-tint, rgba(40, 0, 0, 0.4));
+  transition: background-color 0.8s ease, opacity 0.8s ease;
+}
+.boss-arena-tint::after {           /* red pulse: charging / enraged / roar */
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  background: radial-gradient(ellipse 90% 80% at 60% 50%, transparent 30%, rgba(170, 0, 0, 0.55) 100%);
+  transition: opacity 0.6s ease;
+}
+.boss-arena-tint.is-intro { background-color: rgba(0, 0, 0, 0.82); }
+.boss-arena-tint.is-charging::after { opacity: 1; animation: bossPulse 1.1s ease-in-out infinite; }
+.boss-arena-tint.is-enraged::after { opacity: 0.75; animation: bossPulse 1.8s ease-in-out infinite; }
+.boss-arena-tint.is-roaring { background-color: rgba(10, 0, 0, 0.6); }
+.boss-arena-tint.is-roaring::after { opacity: 1; animation: bossPulse 0.35s ease-in-out infinite; }
+.boss-arena-tint.is-defeated { opacity: 0.25; }
+@keyframes bossPulse { 0%, 100% { filter: brightness(0.7); } 50% { filter: brightness(1.35); } }
+
+/* ---------- Ground layer: shadow + danger zones (under the units) ---------- */
+.boss-ground {
+  position: absolute;
+  z-index: 4;
+  pointer-events: none;
+}
+.boss-shadow,
+.boss-looming {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+.boss-shadow {
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.55) 45%, transparent 72%);
+}
+/* the giant's shadow falling across the field toward the player side */
+.boss-looming {
+  width: 1500px;
+  height: 640px;
+  transform: translate(-72%, -50%);
+  background: radial-gradient(ellipse 50% 45% at 72% 50%, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.28) 45%, transparent 75%);
+}
+.boss-zones {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.bz-pending { opacity: 0; transition: opacity 0.35s ease; }
+.bz-pending.bz-on { opacity: 1; animation: bzAppear 0.45s ease-out; }
+.bz-fill > * { fill: url(#bz-glow); }
+.bz-hatch > * { fill: url(#bz-hatch); animation: bzHatch 1.4s ease-in-out infinite; }
+.bz-edge > * {
+  fill: none;
+  stroke: #ff3a2a;
+  stroke-width: 3;
+  stroke-dasharray: 16 9;
+  animation: bzDash 0.9s linear infinite;
+  filter: drop-shadow(0 0 6px rgba(255, 40, 20, 0.95));
+}
+.bz-map .bz-fill > * { fill: rgba(200, 0, 0, 0.14); }
+.bz-map .bz-edge > * { stroke-width: 5; }
+.bz-armed .bz-hatch > * { animation-duration: 0.28s; }
+.bz-armed .bz-edge > * { stroke: #ffe3c8; stroke-width: 4; animation-duration: 0.3s; filter: drop-shadow(0 0 10px #ff2a14); }
+.bz-strike { animation: bzStrike 0.5s ease-out forwards; }
+.boss-zone-label {
+  position: absolute;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 12px 2px 8px;
+  white-space: nowrap;
+  font-family: var(--jjk-font-script, serif);
+  font-size: 15px;
+  color: #ffe6da;
+  text-shadow: 0 1px 2px #000;
+  background: linear-gradient(90deg, transparent, rgba(110, 0, 0, 0.88) 14%, rgba(110, 0, 0, 0.88) 86%, transparent);
+  animation: bzHatch 1.1s ease-in-out infinite;
+  pointer-events: none;
+}
+.boss-zone-label .bw-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 16px;
+  height: 15px;
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+  background: #ffd23a;
+  color: #300;
+  font: 800 10px/1 var(--jjk-font, serif);
+  padding-top: 4px;
+  box-sizing: border-box;
+}
+.boss-zone-label.is-armed { animation-duration: 0.25s; }
+@keyframes bzAppear { from { opacity: 0; transform: scale(1.03); } to { opacity: 1; transform: none; } }
+@keyframes bzHatch { 0%, 100% { opacity: 0.55; } 50% { opacity: 1; } }
+@keyframes bzDash { to { stroke-dashoffset: -25; } }
+@keyframes bzStrike { 0% { opacity: 1; filter: brightness(3); } 100% { opacity: 0; filter: brightness(1); } }
+
+/* ---------- The boss itself ---------- */
+.battle-unit.battle-unit--boss {
+  width: var(--boss-w, 280px) !important;
+  height: var(--boss-h, 280px) !important;
+  cursor: default;
+  transition: opacity 0.5s ease, filter 0.5s ease !important;
+  --boss-aura-o: 0.38;
+}
+.battle-unit.battle-unit--boss .unit-sprite.boss-body {
+  position: relative;
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  max-width: none !important;
+  max-height: none !important;
+  overflow: visible !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: none !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+.battle-unit--boss:hover .unit-sprite { transform: none !important; }
+.battle-unit.battle-unit--boss[data-dead="true"] { opacity: 1; filter: none; }
+.battle-unit--boss .boss-aura {
+  position: absolute;
+  left: -14%; right: -14%; top: 4%; bottom: -6%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at 50% 72%, var(--boss-aura, #f22) 0%, transparent 62%);
+  opacity: var(--boss-aura-o);
+  filter: blur(12px);
+  mix-blend-mode: screen;
+  animation: bossAura 2.4s ease-in-out infinite;
+  pointer-events: none;
+}
+.battle-unit--boss.is-enraged { --boss-aura-o: 0.85; }
+.battle-unit--boss.is-enraged .boss-aura { animation-duration: 0.9s; left: -24%; right: -24%; top: -10%; }
+.battle-unit--boss.is-enraged .boss-placeholder svg,
+.battle-unit--boss.is-enraged .sprite-player {
+  filter: drop-shadow(0 0 5px var(--boss-aura)) drop-shadow(0 0 22px var(--boss-aura));
+}
+@keyframes bossAura {
+  0%, 100% { transform: scale(1); opacity: var(--boss-aura-o); }
+  50% { transform: scale(1.08, 1.12); opacity: calc(var(--boss-aura-o) * 1.3); }
+}
+
+.battle-unit--boss .boss-placeholder {
+  position: absolute;
+  inset: 0;
+  transition: opacity 0.6s ease;
+}
+.battle-unit--boss .boss-placeholder svg,
+.boss-cutin .boss-placeholder svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  transform-origin: 50% 100%;
+  filter: drop-shadow(0 0 3px var(--boss-glow)) drop-shadow(0 0 16px var(--boss-aura));
+  animation: bossBreathe 3.2s ease-in-out infinite;
+}
+.battle-unit--boss.has-art .boss-placeholder { opacity: 0; }
+.battle-unit--boss .boss-sprite-host {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+.battle-unit--boss .boss-sprite-host .sprite-player { flex: none; transform-origin: 50% 100%; }
+
+/* silhouette parts */
+.boss-placeholder .bp-body,
+.boss-placeholder .bp-wings path { fill: #050508; stroke: var(--boss-glow); stroke-width: 1.6; stroke-linejoin: round; }
+.boss-placeholder .bp-tail {
+  fill: none;
+  stroke: #050508;
+  stroke-width: 22;
+  stroke-linecap: round;
+  transform-box: view-box;
+  transform-origin: 300px 196px;
+  animation: bpTail 2.6s ease-in-out infinite;
+  animation-delay: calc(var(--i) * -0.29s);
+}
+.boss-placeholder .bp-tails { filter: drop-shadow(0 0 2px var(--boss-glow)) drop-shadow(0 0 6px var(--boss-aura)); }
+.boss-placeholder .bp-mouth { fill: var(--boss-aura); opacity: 0.85; animation: bpEyes 1.7s ease-in-out infinite; }
+.boss-placeholder .bp-eyes path {
+  fill: var(--boss-eyes);
+  filter: drop-shadow(0 0 3px var(--boss-eyes)) drop-shadow(0 0 8px var(--boss-eyes));
+  animation: bpEyes 2.2s ease-in-out infinite;
+}
+.boss-placeholder .bp-blade { fill: var(--boss-glow); opacity: 0.9; filter: drop-shadow(0 0 6px var(--boss-glow)); }
+.boss-placeholder .bp-crest { fill: #050508; stroke: var(--boss-glow); stroke-width: 1.4; }
+.boss-placeholder .bp-wings {
+  transform-box: view-box;
+  transform-origin: 160px 150px;
+  animation: bpWings 3.6s ease-in-out infinite;
+}
+@keyframes bossBreathe { 0%, 100% { transform: scale(1, 1); } 50% { transform: scale(1.012, 1.03); } }
+@keyframes bpTail { 0%, 100% { transform: rotate(-5deg); } 50% { transform: rotate(6deg); } }
+@keyframes bpEyes { 0%, 100% { opacity: 1; } 45% { opacity: 0.55; } 50% { opacity: 1; } 55% { opacity: 0.7; } }
+@keyframes bpWings { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.04, 0.97); } }
+
+/* poses of the silhouette, or of the sprite when the art lacks that sheet */
+.battle-unit--boss.ph-telegraph :is(.boss-placeholder, .boss-sprite-host) { animation: bpCharge var(--pose-ms, 900ms) ease-out; }
+.battle-unit--boss.ph-attack_area :is(.boss-placeholder, .boss-sprite-host) { animation: bpLunge var(--pose-ms, 1000ms) ease-in-out; }
+.battle-unit--boss.ph-attack_map :is(.boss-placeholder, .boss-sprite-host) { animation: bpRear var(--pose-ms, 1300ms) ease-in-out; }
+.battle-unit--boss.ph-roar :is(.boss-placeholder, .boss-sprite-host) { animation: bpRoar var(--pose-ms, 1300ms) ease-in-out; }
+.battle-unit--boss.ph-ko :is(.boss-placeholder, .boss-sprite-host) { animation: bpKO var(--pose-ms, 1500ms) ease-in forwards; }
+@keyframes bpCharge {
+  0% { filter: none; transform: none; }
+  60% { filter: brightness(1.8) drop-shadow(0 0 18px var(--boss-aura)); transform: translateY(-3%) scale(1.03); }
+  100% { filter: none; transform: none; }
+}
+@keyframes bpLunge {
+  0% { transform: none; }
+  35% { transform: translateX(6%) scale(0.97, 1.03); }
+  50% { transform: translateX(-16%) scale(1.06, 0.96); filter: brightness(1.8); }
+  100% { transform: none; }
+}
+@keyframes bpRear {
+  0% { transform: none; }
+  45% { transform: translateY(-6%) scale(1.08); filter: brightness(2.2) drop-shadow(0 0 30px var(--boss-aura)); }
+  60% { transform: translateY(2%) scale(1.02, 0.95); }
+  100% { transform: none; }
+}
+@keyframes bpRoar {
+  0%, 100% { transform: none; }
+  20% { transform: scale(1.05) translateY(-2%); filter: brightness(1.6); }
+  30%, 50%, 70% { transform: scale(1.06) translate(-0.8%, -2%); }
+  40%, 60%, 80% { transform: scale(1.06) translate(0.8%, -2%); }
+}
+@keyframes bpKO {
+  0% { transform: none; filter: none; }
+  30% { transform: rotate(-3deg) translateY(2%); filter: brightness(2.5); }
+  100% { transform: rotate(-9deg) translateY(22%) scale(1, 0.72); filter: brightness(0.4) grayscale(1); }
+}
+
+.battle-unit--boss.is-walking .boss-body { animation: bossStep var(--step-ms, 380ms) ease-in-out infinite; }
+@keyframes bossStep { 0%, 100% { translate: 0 0; } 45% { translate: 0 -2.5%; } }
+.battle-unit--boss.is-hidden { opacity: 0 !important; }
+.battle-unit--boss.is-rising { animation: bossRise 1.6s cubic-bezier(.2,.8,.2,1); }
+@keyframes bossRise {
+  0% { opacity: 0; filter: brightness(0); translate: 0 18%; }
+  40% { opacity: 1; filter: brightness(0.15); }
+  100% { opacity: 1; filter: none; translate: 0 0; }
+}
+.battle-unit--boss.is-gone { opacity: 0 !important; transition: opacity 1.4s ease 0.4s !important; }
+
+/* ---------- Effects over the units ---------- */
+.boss-fx {
+  position: absolute;
+  inset: 0;
+  z-index: 36;
+  pointer-events: none;
+  overflow: hidden;
+}
+.boss-fx-sheet { position: absolute; width: 0; height: 0; display: flex; justify-content: center; align-items: flex-end; }
+.boss-fx-sheet .sprite-player { flex: none; }
+.boss-flash { position: absolute; inset: 0; animation: bossFlash 400ms ease-out forwards; }
+@keyframes bossFlash { from { opacity: 1; } to { opacity: 0; } }
+.boss-dust {
+  position: absolute;
+  width: 120px;
+  height: 36px;
+  margin: -24px 0 0 -60px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(120, 100, 80, 0.55), transparent 70%);
+  animation: bossDust 0.9s ease-out forwards;
+}
+@keyframes bossDust { from { transform: scale(0.4); opacity: 1; } to { transform: scale(1.8, 1.4) translateY(-10px); opacity: 0; } }
+.boss-impact { position: absolute; }
+.boss-impact::before {                /* shock flash filling the zone */
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, rgba(255, 245, 225, 0.9), rgba(255, 60, 20, 0.6) 40%, transparent 75%);
+  animation: bossImpact 0.7s ease-out forwards;
+}
+.boss-impact i {                      /* claw / blade streaks */
+  position: absolute;
+  left: -10%;
+  width: 120%;
+  height: 7px;
+  top: 30%;
+  background: linear-gradient(90deg, transparent, #fff 45%, #ff4a2a 60%, transparent);
+  box-shadow: 0 0 14px #ff3a1a;
+  transform: rotate(-9deg) scaleX(0);
+  transform-origin: 100% 50%;
+  animation: bossSlash 0.45s ease-out forwards;
+}
+.boss-impact i:nth-child(2) { top: 50%; animation-delay: 0.07s; transform: rotate(-4deg) scaleX(0); }
+.boss-impact i:nth-child(3) { top: 70%; animation-delay: 0.14s; transform: rotate(3deg) scaleX(0); }
+.boss-impact.is-map i { display: none; }
+/* whole-map blast: a full-bleed glow that only fades (no scaling, so no box edges show) */
+.boss-impact.is-map::before {
+  background: radial-gradient(circle at 65% 50%, rgba(255, 250, 235, 0.9), rgba(255, 90, 30, 0.6) 30%, rgba(120, 0, 0, 0.25) 55%, transparent 75%);
+  animation: bossFlash 1s ease-out forwards;
+}
+@keyframes bossImpact { 0% { opacity: 0; transform: scale(0.6); } 15% { opacity: 1; } 100% { opacity: 0; transform: scale(1.15); } }
+@keyframes bossSlash {
+  0% { opacity: 1; }
+  60% { opacity: 1; transform: rotate(var(--r, -6deg)) scaleX(1); }
+  100% { opacity: 0; transform: rotate(var(--r, -6deg)) scaleX(1); }
+}
+
+/* ---------- Boss HP bar (under the speed gauge) ---------- */
+.boss-hud {
+  position: absolute;
+  left: 50%;
+  top: 70px;
+  width: min(640px, 58%);
+  transform: translateX(-50%);
+  z-index: 46;
+  pointer-events: none;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.9));
+}
+.boss-hud.is-hidden { opacity: 0; transform: translate(-50%, -12px); }
+.boss-hud.is-down { opacity: 0.35; }
+.boss-hud .bh-top {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 0 4px 2px;
+}
+.boss-hud .bh-name {
+  font-family: var(--jjk-font-script, serif);
+  font-size: 17px;
+  color: #ffe2c8;
+  text-shadow: 0 0 8px var(--boss-aura, #f22), 0 1px 2px #000;
+  letter-spacing: 0.04em;
+}
+.boss-hud .bh-phase {
+  font-family: var(--jjk-font, serif);
+  font-weight: 800;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #ff5a4a;
+  animation: bzHatch 1s ease-in-out infinite;
+}
+.boss-hud .bh-pips { margin-left: auto; display: flex; gap: 5px; }
+.boss-hud .bh-pips i {
+  width: 10px;
+  height: 10px;
+  transform: rotate(45deg);
+  border: 1px solid var(--jjk-gold, #c9a24e);
+  background: rgba(0, 0, 0, 0.6);
+}
+.boss-hud .bh-pips i.on { background: #ff3a2a; box-shadow: 0 0 8px #ff3a2a; }
+.boss-hud .bh-bar {
+  position: relative;
+  height: 13px;
+  border: 1px solid var(--jjk-gold, #c9a24e);
+  background: linear-gradient(180deg, #1a0606, #070202);
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.9), 0 0 10px rgba(160, 0, 0, 0.45);
+  overflow: hidden;
+}
+.boss-hud .bh-ghost,
+.boss-hud .bh-fill { position: absolute; left: 0; top: 0; bottom: 0; width: 100%; }
+.boss-hud .bh-ghost { background: #ffd9a8; opacity: 0.8; transition: width 0.6s ease-in; }
+.boss-hud .bh-fill {
+  background: linear-gradient(180deg, #ff7a52 0%, #d4150c 45%, #7a0404 100%);
+  transition: width 0.25s ease-out;
+}
+.boss-hud .bh-marks i {
+  position: absolute;
+  top: -1px;
+  bottom: -1px;
+  width: 2px;
+  margin-left: -1px;
+  background: var(--jjk-gold-hi, #f1d98a);
+  box-shadow: 0 0 4px #000;
+}
+.boss-hud .bh-hp {
+  position: absolute;
+  right: 6px;
+  bottom: -15px;
+  font-family: var(--jjk-font, serif);
+  font-size: 10px;
+  color: #f3d6c4;
+  text-shadow: 0 1px 2px #000;
+}
+
+/* persistent warning while a whole-map attack is charging */
+.boss-warn {
+  position: absolute;
+  left: 50%;
+  top: 110px;
+  transform: translate(-50%, -6px);
+  z-index: 47;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 5px 18px;
+  opacity: 0;
+  pointer-events: none;
+  white-space: nowrap;
+  font-family: var(--jjk-font, serif);
+  font-weight: 800;
+  font-size: 14px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #fff0e0;
+  background:
+    repeating-linear-gradient(-45deg, rgba(0, 0, 0, 0.35) 0 8px, transparent 8px 16px),
+    linear-gradient(90deg, transparent, rgba(150, 0, 0, 0.92) 12%, rgba(150, 0, 0, 0.92) 88%, transparent);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.boss-warn.on { opacity: 1; transform: translate(-50%, 0); animation: bossWarn 0.8s ease-in-out infinite; }
+.boss-warn .bw-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+  background: #ffd23a;
+  color: #300;
+  font-size: 12px;
+  padding-top: 4px;
+  box-sizing: border-box;
+}
+@keyframes bossWarn { 0%, 100% { filter: brightness(1); } 50% { filter: brightness(1.45); } }
+
+/* ---------- Big banners (incoming whole-map attack, phase change) ---------- */
+.boss-banner {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 36%;
+  z-index: 110;
+  pointer-events: none;
+  text-align: center;
+  animation: bossBannerIn 0.35s cubic-bezier(.2,.8,.2,1);
+}
+.boss-banner.out { animation: bossBannerOut 0.32s ease-in forwards; }
+.boss-banner .bb-stripe {
+  height: 8px;
+  background: repeating-linear-gradient(-45deg, #120000 0 10px, #c3140c 10px 20px);
+  animation: bossStripes 0.6s linear infinite;
+}
+.boss-banner .bb-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px 0 10px;
+  background: linear-gradient(90deg, transparent, rgba(20, 0, 0, 0.92) 15%, rgba(20, 0, 0, 0.92) 85%, transparent);
+}
+.boss-banner .bb-kicker {
+  font-family: var(--jjk-font, serif);
+  font-weight: 800;
+  font-size: 13px;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: #ff5a4a;
+}
+.boss-banner .bb-title {
+  font-family: var(--jjk-font-script, serif);
+  font-size: 40px;
+  line-height: 1.15;
+  color: #fff1e4;
+  text-shadow: 0 0 14px #ff2a14, 0 0 32px rgba(255, 30, 10, 0.7), 0 3px 3px #000;
+}
+.boss-banner.is-incoming .bb-body { animation: bossWarn 0.35s ease-in-out infinite; }
+@keyframes bossBannerIn { from { opacity: 0; transform: scaleY(0.2); } to { opacity: 1; transform: none; } }
+@keyframes bossBannerOut { to { opacity: 0; transform: scaleY(0.2); } }
+@keyframes bossStripes { to { background-position: 28px 0; } }
+
+/* ---------- Entrance cut-in ---------- */
+.boss-cutin {
+  position: absolute;
+  inset: 0;
+  z-index: 130;
+  pointer-events: none;
+  background: rgba(0, 0, 0, 0.55);
+  animation: bossCutFade 0.3s ease-out;
+}
+.boss-cutin.out { animation: bossCutFadeOut 0.4s ease-in forwards; }
+.boss-cutin .bc-band {
+  position: absolute;
+  left: -4%;
+  right: -4%;
+  top: 20%;
+  height: 58%;
+  display: flex;
+  align-items: stretch;
+  transform: skewY(-4deg);
+  background: linear-gradient(90deg, #000 0%, #1a0202 45%, #3b0505 100%);
+  border-top: 3px solid #c3140c;
+  border-bottom: 3px solid #c3140c;
+  box-shadow: 0 0 40px rgba(200, 0, 0, 0.6);
+  animation: bossCutSlide 0.5s cubic-bezier(.2,.8,.2,1);
+  overflow: hidden;
+}
+.boss-cutin .bc-art {
+  position: relative;
+  flex: 0 0 52%;
+  transform: skewY(4deg);
+  -webkit-mask-image: linear-gradient(90deg, #000 70%, transparent);
+  mask-image: linear-gradient(90deg, #000 70%, transparent);
+  animation: bossCutArt 2.3s ease-out;
+}
+.boss-cutin .bc-art img {
+  position: absolute;
+  inset: -8% 0;
+  width: 100%;
+  height: 116%;
+  object-fit: cover;
+  object-position: 50% 30%;
+}
+.boss-cutin .bc-art .boss-placeholder { position: absolute; inset: 8% 4% 0 10%; }
+.boss-cutin .bc-art.has-art .boss-placeholder { display: none; }
+.boss-cutin .bc-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+  padding-right: 6%;
+  transform: skewY(4deg);
+}
+.boss-cutin .bc-warning {
+  align-self: flex-start;
+  padding: 3px 12px;
+  font-family: var(--jjk-font, serif);
+  font-weight: 800;
+  font-size: 13px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #ffe9d2;
+  background: repeating-linear-gradient(-45deg, #5a0000 0 8px, #b3100a 8px 16px);
+  animation: bossWarn 0.4s ease-in-out infinite;
+}
+.boss-cutin .bc-name {
+  font-family: var(--jjk-font-script, serif);
+  font-size: clamp(30px, 5.4vw, 72px);
+  line-height: 1.05;
+  color: #fff3e6;
+  text-shadow: 0 0 18px var(--boss-aura, #f22), 0 0 40px rgba(255, 20, 0, 0.6), 0 4px 4px #000;
+  animation: bossCutName 0.6s cubic-bezier(.2,.8,.2,1) 0.25s both;
+}
+.boss-cutin .bc-title {
+  font-family: var(--jjk-font, serif);
+  font-size: clamp(12px, 1.5vw, 20px);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--jjk-gold-hi, #f1d98a);
+}
+@keyframes bossCutFade { from { opacity: 0; } }
+@keyframes bossCutFadeOut { to { opacity: 0; } }
+@keyframes bossCutSlide { from { transform: skewY(-4deg) translateX(100%); } }
+@keyframes bossCutArt { from { transform: skewY(4deg) scale(1.25); filter: brightness(0); } 30% { filter: brightness(1.3); } }
+@keyframes bossCutName { from { opacity: 0; transform: scale(2.2); letter-spacing: 0.3em; } }
+
+/* ---------- Phones held sideways ---------- */
+html.is-mobile .boss-hud { width: min(460px, 50%); }
+html.is-mobile .boss-hud .bh-name { font-size: 12px; }
+html.is-mobile .boss-hud .bh-phase { font-size: 9px; }
+html.is-mobile .boss-hud .bh-pips i { width: 7px; height: 7px; }
+html.is-mobile .boss-hud .bh-bar { height: 8px; }
+html.is-mobile .boss-hud .bh-top { padding-bottom: 1px; }
+html.is-mobile .boss-hud .bh-hp { font-size: 8px; bottom: -11px; }
+html.is-mobile .boss-warn { font-size: 10px; padding: 3px 12px; }
+html.is-mobile .boss-warn .bw-icon { width: 14px; height: 14px; font-size: 9px; padding-top: 3px; }
+html.is-mobile .boss-banner .bb-title { font-size: 26px; }
+html.is-mobile .boss-banner .bb-kicker { font-size: 10px; }
+html.is-mobile .boss-banner .bb-stripe { height: 5px; }
+html.is-mobile .boss-zone-label { font-size: 11px; }
+html.is-mobile .boss-cutin .bc-warning { font-size: 10px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .boss-placeholder svg, .boss-placeholder .bp-tail, .boss-placeholder .bp-wings,
+  .battle-unit--boss .boss-aura, .bz-edge > *, .boss-banner .bb-stripe { animation: none !important; }
+}

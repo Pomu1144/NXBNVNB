@@ -1,79 +1,32 @@
 # Audio Files Directory
 
-## Folder Structure
+## Music (`music/`)
 
-```
-assets/audio/
-├── bgm/              # Background Music
-│   ├── menu.mp3     # Main menu/village music
-│   ├── battle.mp3   # Battle music
-│   └── summon.mp3   # Summon/gacha music
-├── sfx/              # Sound Effects
-│   ├── button_click.mp3
-│   ├── summon_pull.mp3
-│   └── level_up.mp3
-└── README.md         # This file
-```
+Original instrumental BGM, MP3 128 kbps, played by `js/audio-manager.js`
+(Web Audio, per-page tracks, crossfades, gapless loops).
 
-## Music Files Setup
+| File | Where it plays |
+|------|----------------|
+| title.mp3 | index.html (login) |
+| village.mp3 | village.html |
+| battle.mp3 | battle.html |
+| boss.mp3 | boss battles (`BattleCore.isBoss`, or `AudioManager.playMusic('boss')`) |
+| summon.mp3 | summon.html |
+| arena.mp3 | arena.html and arena battles |
+| shop.mp3 | shop.html and every other menu page |
+| victory.mp3 / defeat.mp3 | battle results (one-shot) |
 
-### 1. Background Music (BGM)
+Loop tracks have 0.25 s of wrapped audio before the loop start and after the
+loop end; the loop points are listed in `MUSIC_TRACKS` in
+`js/audio-manager.js`. Replace a file only together with its loop points.
 
-Place your MP3 files in the `bgm/` folder:
+A page can pick its track with `<body data-music="village">` (`none` = silent).
 
-- **menu.mp3** - Plays on index.html (village/main menu)
-- **battle.mp3** - Plays during battles
-- **summon.mp3** - Plays on summon page
+## Sound Effects (`sfx/`)
 
-**Default path for menu music**: `assets/audio/bgm/menu.mp3`
+Howler.js sounds defined in `AudioManager.defineSounds()` (ui_click, hit,
+critical, jutsu, ultimate, summon, victory, defeat). Missing files fail quietly.
 
-### 2. Sound Effects (SFX)
+## Credits
 
-Place sound effect MP3 files in the `sfx/` folder for:
-- Button clicks
-- Summon animations
-- Level ups
-- Notifications
-- etc.
-
-## File Requirements
-
-- **Format**: MP3 (recommended)
-- **Bitrate**: 128-192 kbps recommended
-- **Loop**: BGM files should be seamless loops
-- **Size**: Keep files under 5MB for faster loading
-
-## How to Add Music
-
-1. Place your MP3 file at: `assets/audio/bgm/menu.mp3`
-2. Reload the page
-3. Click the Play button (▶) in the Music Control Panel
-4. Adjust volume using the slider
-
-## Alternative Music Path
-
-If you prefer a different folder structure, edit `js/music-player.js`:
-
-```javascript
-// Change line 18:
-init(trackPath = 'assets/music/general.mp3') {
-```
-
-To:
-
-```javascript
-init(trackPath = 'path/to/your/music.mp3') {
-```
-
-## Troubleshooting
-
-**Music won't play?**
-- Check the file path is exactly: `assets/audio/bgm/menu.mp3`
-- Check browser console for errors (F12)
-- Make sure file is MP3 format
-- Try clicking the page first (browsers block autoplay)
-
-**No sound?**
-- Check Music Control Panel volume slider
-- Check if mute button shows 🔇 (muted) or 🔊 (unmuted)
-- Check Settings > Audio Settings for master volume
+Music is original, rendered with the FluidR3_GM soundfont (MIT licence, Copyright Frank Wen).

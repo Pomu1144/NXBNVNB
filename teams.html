@@ -4,7 +4,12 @@
   <meta charset="UTF-8" />
   <title>Blazing — Team Setup</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <!-- Page loader: covers the page until its art, fonts and data are in -->
+  <link rel="stylesheet" href="css/page-loader.css" />
+  <script src="js/page-loader.js"></script>
   <script src="js/device-detect.js"></script>
+  <script src="js/dev-mode.js"></script>
+  <script src="js/backgrounds.js"></script>
   <!-- PWA App Container -->
   <link rel="manifest" href="manifest.json" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -19,7 +24,7 @@
   <link rel="stylesheet" href="css/bottombar.css" />
   <link rel="stylesheet" href="css/background.css" />
   <link rel="stylesheet" href="css/status_effects.css" />
-  <link rel="stylesheet" href="css/settings-modal.css" />
+  <link rel="stylesheet" href="css/settings-modal.css?v=3" />
   <!-- Hide scrollbar but keep functionality -->
   <style>
     /* Hide scrollbar for Chrome, Safari and Opera */
@@ -63,6 +68,7 @@
       border-color: #d4af37;
     }
   </style>
+  <link rel="stylesheet" href="css/tutorial.css" />
   <link rel="stylesheet" href="css/mobile.css" />
 </head>
 <body class="page-teams">
@@ -381,7 +387,7 @@
   </script>
 
   <!-- Settings Modal Script -->
-  <script src="js/settings-modal.js?v=2"></script>
+  <script src="js/settings-modal.js?v=3"></script>
 
   <!-- Navigation Script -->
   <script src="js/navigation.js"></script>
@@ -410,5 +416,8 @@
       document.addEventListener('click', startMusic, { once: true });
     })();
   </script>
+  <!-- First-time tutorial (steps: js/tutorial-steps.js) -->
+  <script src="js/tutorial-steps.js"></script>
+  <script src="js/tutorial.js"></script>
 </body>
 </html>

@@ -18,7 +18,7 @@
 
       // Render initial tab (deep link: shop.html?tab=recipes)
       const startTab = new URLSearchParams(location.search).get('tab');
-      if (startTab && (this.shopData[startTab] || startTab === 'limitbreak')) this.switchTab(startTab);
+      if (startTab && (this.shopData[startTab] || startTab === 'limitbreak' || startTab === 'skins')) this.switchTab(startTab);
       else this.renderTab('ramen');
 
       // Recipe ownership / fragments can change from other pages or tabs
@@ -150,6 +150,8 @@
     renderTab(tabName) {
       // Limit Break tab is data-driven from data/lb-crystals.json (js/lb-shop.js)
       if (tabName === 'limitbreak') { window.LBShop?.render(); return; }
+      // Skins tab: cosmetic catalogue from js/skins.js (js/skin-shop.js)
+      if (tabName === 'skins') { window.SkinShop?.render(); return; }
 
       const items = this.shopData[tabName] || [];
       const gridId = `${tabName}-grid`;

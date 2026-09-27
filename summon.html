@@ -4,7 +4,11 @@
   <meta charset="UTF-8" />
   <title>Blazing — Summon</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <!-- Page loader: covers the page until its art, fonts and data are in -->
+  <link rel="stylesheet" href="css/page-loader.css" />
+  <script src="js/page-loader.js"></script>
   <script src="js/device-detect.js"></script>
+  <script src="js/dev-mode.js"></script>
   <link rel="manifest" href="manifest.json" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-fullscreen" />
@@ -616,7 +620,9 @@
   </style>
   <link rel="stylesheet" href="css/summon-premium.css" />
   <link rel="stylesheet" href="css/seven-star-anim.css" />
+  <link rel="stylesheet" href="css/summon-reveal.css" />
   <link rel="stylesheet" href="css/recipe-scroll.css" />
+  <link rel="stylesheet" href="css/tutorial.css" />
   <link rel="stylesheet" href="css/mobile.css" />
 </head>
 <body class="page-summon">
@@ -774,7 +780,9 @@
 
   <!-- Results Modal -->
   <div class="summon-modal" id="summon-modal">
-    <div class="modal-overlay"></div>
+    <div class="modal-overlay">
+      <div class="sr-stage" aria-hidden="true"><i class="sr-far"></i><i class="sr-mid"></i><i class="sr-pool"></i><i class="sr-near"></i><i class="sr-vig"></i></div>
+    </div>
     <div class="modal-content">
       <section class="sr-panel" aria-labelledby="sr-title">
         <header class="sr-head">
@@ -785,9 +793,14 @@
           </div>
           <div class="sr-summary" id="sr-summary"></div>
         </header>
+        <p class="sr-seal-hint" aria-live="polite">Tap to open</p>
         <div class="result-display" id="result-display"></div>
         <div class="result-grid" id="result-grid"></div>
         <footer class="sr-foot">
+          <div class="sr-seal-actions">
+            <button class="sr-seal-btn" id="sr-open-all" type="button">Open All</button>
+            <button class="sr-seal-btn is-quiet" id="sr-skip" type="button">Skip</button>
+          </div>
           <button class="btn-continue tkt tkt-single" id="btn-continue" type="button" aria-label="Continue">
             <span class="tkt-body" aria-hidden="true"></span>
             <span class="tkt-stub" aria-hidden="true">
@@ -843,6 +856,7 @@
   <script src="js/summon/summon-animation.js"></script>
   <script src="js/summon/summon-carousel.js"></script>
   <script src="js/seven-star-anim.js"></script>
+  <script src="js/summon/summon-reveal.js"></script>
   <script src="js/summon/summon-ui.js"></script>
   <script src="js/summon/summon-dev-panel.js"></script>
   <script src="js/summon.js"></script>
@@ -922,5 +936,8 @@
     });
   })();
   </script>
+  <!-- First-time tutorial (steps: js/tutorial-steps.js) -->
+  <script src="js/tutorial-steps.js"></script>
+  <script src="js/tutorial.js"></script>
 </body>
 </html>

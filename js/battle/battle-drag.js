@@ -886,7 +886,11 @@
       const area = this.actionArea(unit, dragAction);
       const living = (core.enemyTeam || []).filter(e => e && e.stats && e.stats.hp > 0 && !e.isBench);
       const pts = new Map();
-      living.forEach(e => { const g = this.groundPoint(e, core, sceneRect); if (g) pts.set(e, g); });
+      living.forEach(e => {
+        // A giant boss is hit anywhere along its body, not just at its centre
+        const g = e.isBoss && window.BattleBoss ? window.BattleBoss.groundPointNear(e, origin, sceneRect) : this.groundPoint(e, core, sceneRect);
+        if (g) pts.set(e, g);
+      });
 
       // Directional shapes face the nearest enemy (right when there is none).
       let dir = 1, best = Infinity;

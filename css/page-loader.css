@@ -1,0 +1,263 @@
+/* ─────────────────────────────────────────────────────────────
+   Page loader (js/page-loader.js) — covers every page from the first
+   paint until its art, fonts, sprite sheets and data are in, then
+   lifts with an ink-brush wipe.
+   Ink wash + antique gold: medal emblem turning over the ink, a gold
+   chakra bar on the black brush band, chibi Naruto running on top.
+   Loaded first in <head>, before theme-jjk.css, so tokens have fallbacks.
+   ───────────────────────────────────────────────────────────── */
+html.pl-active { background: #071418; }
+
+#page-loader {
+  --pl-ink: var(--jjk-ink, #071418);
+  --pl-gold: var(--jjk-gold, #c9a24e);
+  --pl-gold-hi: var(--jjk-gold-hi, #f1d98a);
+  --pl-gold-lo: var(--jjk-gold-lo, #6e5320);
+  --pl-text: var(--jjk-text, #ece6d6);
+  --pl-muted: var(--jjk-muted, #93a3a3);
+  --pl-p: 0;                     /* progress 0..1, set by the script */
+  position: fixed; inset: 0;
+  z-index: 2147483000;
+  pointer-events: auto;
+  font-family: 'Kaisei Tokumin', 'Times New Roman', serif;
+  color: var(--pl-text);
+  -webkit-user-select: none; user-select: none;
+  touch-action: none;
+}
+#page-loader * { box-sizing: border-box; }
+
+/* The ink panel itself (clipped away by the wipe) */
+#page-loader .pl-panel {
+  position: absolute; inset: 0;
+  overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+  background:
+    radial-gradient(ellipse at 50% 46%, rgba(30, 78, 86, 0.30), rgba(4, 10, 12, 0.88) 72%),
+    url('../assets/ui/jjk/ink_bg.webp') center / cover no-repeat,
+    var(--pl-ink);
+}
+/* Faint gold dust drifting up through the wash */
+#page-loader .pl-panel::before {
+  content: ''; position: absolute; inset: -20% 0 0 0;
+  background:
+    radial-gradient(1.5px 1.5px at 12% 80%, rgba(241, 217, 138, 0.7), transparent 60%),
+    radial-gradient(1px 1px at 28% 60%, rgba(241, 217, 138, 0.5), transparent 60%),
+    radial-gradient(2px 2px at 47% 90%, rgba(241, 217, 138, 0.55), transparent 60%),
+    radial-gradient(1px 1px at 63% 70%, rgba(241, 217, 138, 0.6), transparent 60%),
+    radial-gradient(1.5px 1.5px at 81% 85%, rgba(241, 217, 138, 0.5), transparent 60%),
+    radial-gradient(1px 1px at 92% 64%, rgba(241, 217, 138, 0.45), transparent 60%);
+  animation: pl-dust 7s linear infinite;
+  pointer-events: none;
+}
+/* Corner brackets, same language as .jjk-panel */
+#page-loader .pl-panel::after {
+  content: ''; position: absolute; inset: 14px;
+  border: 1px solid rgba(201, 162, 78, 0.22);
+  pointer-events: none;
+}
+
+#page-loader .pl-stage {
+  position: relative;
+  width: min(620px, 86vw);
+  display: flex; flex-direction: column; align-items: center;
+  text-align: center;
+}
+
+/* ── Emblem: the gold swirl medal turning like a coin, halo behind ── */
+#page-loader .pl-emblem {
+  position: relative;
+  width: 84px; height: 100px;
+  perspective: 400px;
+  margin-bottom: 6px;
+}
+#page-loader .pl-emblem::before {
+  content: ''; position: absolute; left: 50%; top: 50%;
+  width: 150px; height: 150px; margin: -75px 0 0 -75px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(241, 217, 138, 0.28), rgba(201, 162, 78, 0.08) 45%, transparent 68%);
+  animation: pl-halo 2.4s ease-in-out infinite;
+}
+#page-loader .pl-emblem img {
+  position: relative;
+  display: block; width: 100%; height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.7));
+  animation: pl-coin 2.4s cubic-bezier(.45, 0, .55, 1) infinite;
+}
+
+#page-loader .pl-kicker {
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 0.42em; text-transform: uppercase;
+  color: var(--pl-gold);
+  margin-left: 0.42em; /* balance the trailing letter-spacing */
+}
+#page-loader .pl-title {
+  font-family: 'Shojumaru', 'Kaisei Tokumin', serif;
+  font-size: 30px; line-height: 1.1;
+  color: var(--pl-gold-hi);
+  background: linear-gradient(180deg, #fff3c4 0%, var(--pl-gold-hi) 38%, var(--pl-gold) 70%, var(--pl-gold-lo) 100%);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 0 rgba(0, 0, 0, 0.85));
+  margin: 2px 0 30px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%;
+}
+
+/* ── Chakra bar: black brush band with gold trim, gold chakra inside ── */
+#page-loader .pl-bar {
+  position: relative;
+  width: 100%; height: 40px;
+}
+#page-loader .pl-track {
+  position: absolute; inset: 0;
+  background:
+    url('../assets/ui/cutin/name_banner.webp') center / 100% 100% no-repeat,
+    linear-gradient(180deg, transparent 18%, var(--pl-gold) 18%, var(--pl-gold) 21%, #0a0d0e 21%, #151a1b 50%, #0a0d0e 79%, var(--pl-gold) 79%, var(--pl-gold) 82%, transparent 82%);
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.6));
+}
+#page-loader .pl-fill {
+  position: absolute; left: 4%; top: 31%; bottom: 31%;
+  width: calc(92% * var(--pl-p));
+  border-radius: 2px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.55), transparent 45%),
+    linear-gradient(90deg, var(--pl-gold-lo), var(--pl-gold) 45%, var(--pl-gold-hi));
+  box-shadow: 0 0 10px rgba(241, 217, 138, 0.55), 0 0 22px rgba(201, 162, 78, 0.35);
+  transition: width .18s linear;
+  overflow: hidden;
+}
+/* Chakra shimmer running through the fill */
+#page-loader .pl-fill::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(100deg, transparent 20%, rgba(255, 248, 220, 0.75) 50%, transparent 80%);
+  background-size: 60px 100%; background-repeat: no-repeat;
+  animation: pl-shimmer 1.1s linear infinite;
+}
+/* Spark at the leading edge */
+#page-loader .pl-fill::before {
+  content: ''; position: absolute; right: -3px; top: 50%;
+  width: 10px; height: 10px; margin-top: -5px; border-radius: 50%;
+  background: radial-gradient(circle, #fff8dc, rgba(241, 217, 138, 0.8) 40%, transparent 70%);
+  z-index: 1;
+}
+
+/* Ten chakra segments, like the battle chakra bars */
+#page-loader .pl-bar::after {
+  content: ''; position: absolute; left: 4%; right: 4%; top: 31%; bottom: 31%;
+  background: repeating-linear-gradient(90deg, transparent 0 calc(10% - 2px), rgba(7, 20, 24, 0.75) calc(10% - 2px) 10%);
+  pointer-events: none;
+}
+
+/* Chibi runner (assets/ui/loader/runner.webp, 8×2 frames) on the band */
+#page-loader .pl-runner {
+  position: absolute; bottom: 64%;
+  left: calc(4% + 92% * var(--pl-p));
+  z-index: 1;
+  width: 49px; height: 64px;
+  margin-left: -38px; /* body sits at ~77% of the frame */
+  background-repeat: no-repeat;
+  background-size: 392px 128px;
+  transition: left .18s linear;
+  filter: drop-shadow(0 3px 2px rgba(0, 0, 0, 0.6));
+  opacity: 0;
+}
+#page-loader .pl-runner.is-ready { opacity: 1; transition: left .18s linear, opacity .2s; }
+
+#page-loader .pl-meta {
+  width: 100%;
+  display: flex; align-items: baseline; justify-content: space-between; gap: 16px;
+  margin-top: 10px; padding: 0 4%;
+}
+#page-loader .pl-tip {
+  margin: 0; min-height: 1.4em;
+  font-size: 13px; font-weight: 500; text-align: left;
+  color: rgba(236, 230, 214, 0.78);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
+  transition: opacity .35s;
+}
+#page-loader .pl-tip b { color: var(--pl-gold); font-weight: 700; }
+#page-loader .pl-tip.is-swapping { opacity: 0; }
+#page-loader .pl-pct {
+  font-family: 'Shojumaru', 'Kaisei Tokumin', serif;
+  font-size: 18px; color: var(--pl-gold-hi);
+  text-shadow: 0 2px 0 rgba(0, 0, 0, 0.8);
+  font-variant-numeric: tabular-nums;
+  flex: 0 0 auto;
+}
+
+/* ── Reveal: an ink brush sweeps across, the panel is cut away behind it ── */
+#page-loader .pl-brush {
+  position: absolute; top: -8%; bottom: -8%; left: 0;
+  width: 34vh; min-width: 120px;
+  background: url('../assets/ui/cutin/ink_band.webp') center / 100% 100% no-repeat;
+  filter: brightness(0) drop-shadow(10px 0 0 rgba(201, 162, 78, 0.35));
+  transform: translateX(-120%);
+  pointer-events: none;
+  opacity: 0;
+}
+#page-loader.is-leaving { pointer-events: none; }
+#page-loader.is-leaving .pl-stage { opacity: 0; transform: scale(0.98); transition: opacity .16s, transform .2s; }
+#page-loader.is-leaving .pl-panel { animation: pl-wipe .5s cubic-bezier(.55, .05, .35, 1) forwards; }
+#page-loader.is-leaving .pl-brush { opacity: 1; animation: pl-brush .5s cubic-bezier(.55, .05, .35, 1) forwards; }
+
+@keyframes pl-wipe {
+  from { clip-path: inset(0 0 0 0); }
+  to   { clip-path: inset(0 0 0 100%); }
+}
+@keyframes pl-brush {
+  from { transform: translateX(-60%); }
+  to   { transform: translateX(calc(100vw + 10%)); }
+}
+@keyframes pl-coin {
+  0%   { transform: rotateY(0deg); }
+  60%  { transform: rotateY(360deg); }
+  100% { transform: rotateY(360deg); }
+}
+@keyframes pl-halo {
+  0%, 100% { opacity: .55; transform: scale(.92); }
+  50%      { opacity: 1;   transform: scale(1.06); }
+}
+@keyframes pl-shimmer {
+  from { background-position: -60px 0; }
+  to   { background-position: calc(100% + 60px) 0; }
+}
+@keyframes pl-dust {
+  from { transform: translateY(0); }
+  to   { transform: translateY(-16%); }
+}
+
+/* Big screens: a larger stage */
+@media (min-width: 1200px) and (min-height: 760px) {
+  #page-loader .pl-stage { width: 700px; }
+  #page-loader .pl-emblem { width: 100px; height: 120px; margin-bottom: 10px; }
+  #page-loader .pl-emblem::before { width: 180px; height: 180px; margin: -90px 0 0 -90px; }
+  #page-loader .pl-kicker { font-size: 12px; }
+  #page-loader .pl-title { font-size: 38px; margin-bottom: 36px; }
+  #page-loader .pl-bar { height: 46px; }
+  #page-loader .pl-tip { font-size: 15px; }
+  #page-loader .pl-pct { font-size: 21px; }
+}
+
+/* Phones held sideways (~932×375): tighter vertical rhythm */
+@media (max-height: 480px) {
+  #page-loader .pl-emblem { width: 62px; height: 74px; margin-bottom: 2px; }
+  #page-loader .pl-emblem::before { width: 112px; height: 112px; margin: -56px 0 0 -56px; }
+  #page-loader .pl-title { font-size: 24px; margin-bottom: 26px; }
+  #page-loader .pl-bar { height: 34px; }
+  #page-loader .pl-tip { font-size: 12px; }
+  #page-loader .pl-pct { font-size: 16px; }
+}
+@media (max-width: 520px) {
+  #page-loader .pl-meta { flex-direction: column-reverse; align-items: center; gap: 4px; }
+  #page-loader .pl-tip { text-align: center; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #page-loader .pl-panel::before,
+  #page-loader .pl-emblem::before,
+  #page-loader .pl-emblem img,
+  #page-loader .pl-fill::after { animation: none; }
+  #page-loader .pl-fill, #page-loader .pl-runner { transition: none; }
+  #page-loader .pl-brush { display: none; }
+  #page-loader.is-leaving .pl-panel { animation: none; opacity: 0; transition: opacity .2s; }
+}

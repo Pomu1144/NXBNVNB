@@ -23,8 +23,8 @@
      * @param {Object} core - Battle core reference
      */
     applyKnockback(target, source, distance = 50, core) {
-      // Skip if already being knocked back
-      if (this.activeKnockbacks.has(target.id)) {
+      // Skip if already being knocked back (bosses are too heavy to move)
+      if (target.isBoss || this.activeKnockbacks.has(target.id)) {
         return;
       }
 

@@ -30,15 +30,9 @@ body {
 
 /* --- INDIVIDUAL BACKGROUND IMAGE CLASSES --- */
 .bg-1  { background-image: url("../assets/Main Background/Background.png"); }
-.bg-2  { background-image: url("../assets/Main Background/Background2.gif"); }
-.bg-3  { background-image: url("../assets/Main Background/Background3.gif"); }
-.bg-4  { background-image: url("../assets/Main Background/Background4.gif"); }
-.bg-5  { background-image: url("../assets/Main Background/Background5.gif"); }
-.bg-6  { background-image: url("../assets/Main Background/Background6.gif"); }
-.bg-7  { background-image: url("../assets/Main Background/Background7.gif"); }
-.bg-8  { background-image: url("../assets/Main Background/Background8.gif"); }
-.bg-9  { background-image: url("../assets/Main Background/Background9.gif"); }
-.bg-10 { background-image: url("../assets/Main Background/Background10.gif"); }
+/* Painted 1920px art (catalog in js/backgrounds.js): smooth scaling, not the
+   pixel-art mode the original Background.png uses */
+#full-bg:not(.bg-1)[class*="bg-"] { image-rendering: auto; }
 
 /* --- PAGE-SPECIFIC BACKGROUNDS --- */
 /* missions background handled via <video id="full-bg"> in missions.html */

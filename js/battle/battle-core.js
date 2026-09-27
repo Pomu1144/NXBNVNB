@@ -2,6 +2,10 @@
 (() => {
   "use strict";
 
+  // Keep the page loader (js/page-loader.js) up until the field is built:
+  // mission data, map and the units' idle sprites. Released in init().
+  const releaseLoader = window.PageLoader ? window.PageLoader.hold("battle field") : () => {};
+
   async function fetchJSON(url, fallback = null) {
     try {
       const res = await fetch(url, { cache: "no-store" });
@@ -139,14 +143,17 @@
       this.setupEventListeners();
 
       const isArenaBattle = localStorage.getItem("arena_battle_mode") === "1";
+      // Music starts while the stage loads; boss fights switch below
+      window.AudioManager?.playMusic(isArenaBattle ? "arena" : "battle");
       const missionId = localStorage.getItem("currentMissionId") || "m_001";
       const preferredDifficulty = localStorage.getItem("currentDifficulty") || "C";
 
-      const [missions, enemies, characters, jutsuCards] = await Promise.all([
+      const [missions, enemies, characters, jutsuCards, bosses] = await Promise.all([
         fetchJSON("data/missions.json", []),
         fetchJSON("data/enemies.json", []),
         fetchJSON("data/characters.json", []),
-        fetchJSON("data/cards.json", null).then(d => d || fetchJSON("data/jutsu_cards.json", { cards: [] }))
+        fetchJSON("data/cards.json", null).then(d => d || fetchJSON("data/jutsu_cards.json", { cards: [] })),
+        fetchJSON("data/bosses.json", {})
       ]);
 
       this.enemiesData = enemies;
@@ -211,6 +218,7 @@
 
         if (!this.missionData) {
           console.error(`[BattleCore] Mission ${missionId} not found!`);
+          releaseLoader();
           return;
         }
 
@@ -238,6 +246,9 @@
         this.overlay = this.drag.makeOverlay(this.dom.scene);
       }
 
+      // Boss Battles: one giant enemy (js/battle/battle-boss.js)
+      window.BattleBoss?.setup(this, bosses);
+
       // Load player team
       this.loadPlayerTeamFromStorage();
 
@@ -258,14 +269,32 @@
 
       // NOTE: BattleFieldBuddy.init() is called AFTER first wave loads in battle-missions.js
 
+      // Boss fights get the boss theme (set this.isBoss when building a boss
+      // stage, or call AudioManager.playMusic('boss') from the boss scene)
+      if (this.isBoss && window.AudioManager) {
+        window.AudioManager.playMusic("boss");
+      }
+
+      // Field is built: the loader lifts once the map and the units' sprite
+      // sheets are in; the entrance plays after it has, so it is seen.
+      const loader = window.PageLoader;
+      if (loader && !loader.revealed) {
+        const map = this.dom.scene && /url\(["']?(.*?)["']?\)/.exec(this.dom.scene.style.backgroundImage || "");
+        if (map) {
+          loader.wait(new Promise(resolve => {
+            const img = new Image();
+            img.onload = img.onerror = resolve;
+            img.src = map[1];
+          }), "battle map");
+        }
+        releaseLoader();
+        await loader.ready;
+      }
+      releaseLoader();
+
       // Play entrance animations if available
       if (window.BattleEntrance) {
         await window.BattleEntrance.playEntranceSequence(this);
-      }
-
-      // Start battle music
-      if (window.AudioManager) {
-        window.AudioManager.playBattleMusic();
       }
 
       // Start speed gauge system if turns module available
@@ -927,6 +956,11 @@
           }
         }, 600);
       } else if (enemiesAlive === 0) {
+        // Several hits can report the last kill (e.g. a sprite attack re-checks
+        // after its animation); complete each wave only once, or the next
+        // wave/stage gets skipped. loadWave() builds a new enemyTeam array.
+        if (this._completedWave === this.enemyTeam) return;
+        this._completedWave = this.enemyTeam;
         this.isPaused = true;
 
         // Delay to allow HP bars to finish animating to 0

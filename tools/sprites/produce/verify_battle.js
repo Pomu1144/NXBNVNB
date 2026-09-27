@@ -20,7 +20,7 @@ const shot = (p, name, clip) => p.screenshot({ path: path.join(OUT, `vb_${CID}_$
   p.on('pageerror', e => errors.push(String(e)));
   const report = { charId: CID };
 
-  await p.goto(`${URL}/characters.html`); await p.waitForTimeout(2500);
+  await p.goto(`${URL}/characters.html?dev=1`); await p.waitForTimeout(2500);
   await p.click('#chardev-fab'); await p.waitForTimeout(300);
   // dev-panel button when the id has one; other family ids: same helper, tier from argv[4]
   // NOMAX=1: plain Lv80 copy (maxing awakens e.g. 5★/6★ forms into the next id)

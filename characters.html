@@ -4,7 +4,12 @@
   <meta charset="UTF-8" />
   <title>Blazing — Shinobi</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <!-- Page loader: covers the page until its art, fonts and data are in -->
+  <link rel="stylesheet" href="css/page-loader.css" />
+  <script src="js/page-loader.js"></script>
   <script src="js/device-detect.js"></script>
+  <script src="js/dev-mode.js"></script>
+  <script src="js/backgrounds.js"></script>
   <!-- PWA App Container -->
   <link rel="manifest" href="manifest.json" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -23,12 +28,13 @@
   <link rel="stylesheet" href="css/character_dupe_abilities.css" />
   <link rel="stylesheet" href="css/character-equip.css" />
   <link rel="stylesheet" href="css/character-profile-equipment.css" />
-  <link rel="stylesheet" href="css/settings-modal.css" />
+  <link rel="stylesheet" href="css/settings-modal.css?v=3" />
   <link rel="stylesheet" href="css/awakening-animation.css" />
   <link rel="stylesheet" href="css/awakening-materials.css" />
   <link rel="stylesheet" href="css/characters-dev-panel.css" />
   <link rel="stylesheet" href="css/battle-cutin.css" />
   <link rel="stylesheet" href="css/skill-preview.css" />
+  <link rel="stylesheet" href="css/skins.css" />
   
   <!-- Hide scrollbar but keep scroll functionality (characters page) -->
   <style>
@@ -304,6 +310,8 @@
   <script src="js/jutsu-inventory.js"></script>
   <script src="js/characters.js"></script>
   <script src="js/sprite-player.js"></script>
+  <script src="js/skins.js"></script>
+  <script src="js/skin-picker.js"></script>
   <script src="js/battle/battle-cutin.js"></script>
   <script src="js/skill-preview.js"></script>
   <script src="js/seven-star-fx.js"></script>
@@ -316,7 +324,7 @@
   <script src="js/character_dupe_abilities.js"></script>
 
   <!-- Settings Modal Script -->
-  <script src="js/settings-modal.js?v=2"></script>
+  <script src="js/settings-modal.js?v=3"></script>
 
   <!-- Navigation Script -->
   <script src="js/navigation.js"></script>

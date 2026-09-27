@@ -7,6 +7,7 @@
   const INVENTORY_KEY = 'blazing_inventory_v2';
   const TEAM_KEY = 'blazing_teams_v1';
   const ACCOUNT_SOURCE_PATH = 'data/user-accounts.json';
+  const TUTORIAL_KEY = 'blazing_tutorial_v1';
 
   const overlay = document.getElementById('login-overlay');
   const formWrapper = overlay?.querySelector('[data-login-form]');
@@ -23,31 +24,7 @@
 
   if (!overlay) return;
 
-  const setupLoginMusic = () => {
-    const track = new Audio('assets/music/general.mp3');
-    track.loop = true;
-    track.volume = 0.35;
-    track.preload = 'auto';
-
-    const tryPlay = () => {
-      track.play().catch(() => {});
-    };
-
-    tryPlay();
-    ['click', 'touchstart', 'keydown'].forEach((evt) => {
-      overlay.addEventListener(
-        evt,
-        () => {
-          tryPlay();
-        },
-        { once: true },
-      );
-    });
-
-    return track;
-  };
-
-  setupLoginMusic();
+  // Login music: js/audio-manager.js plays the title theme on this page.
 
   const safeGet = (key) => {
     try {
@@ -292,6 +269,11 @@
     applyAccountInventory(account);
     applyAccountTeams(account);
     safeSet(LOGIN_KEY, 'true');
+    // First login / guest start on this device: the village runs the
+    // tutorial (js/tutorial.js). Never re-armed once finished or skipped.
+    if (safeGet(TUTORIAL_KEY) === null) {
+      safeSet(TUTORIAL_KEY, JSON.stringify({ status: 'pending', updated: Date.now() }));
+    }
     overlay.classList.add('is-hidden');
     document.body.classList.remove('login-active');
     const removeOverlay = () => overlay.remove();

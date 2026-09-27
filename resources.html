@@ -4,7 +4,12 @@
   <meta charset="UTF-8" />
   <title>Blazing — Resources</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <!-- Page loader: covers the page until its art, fonts and data are in -->
+  <link rel="stylesheet" href="css/page-loader.css" />
+  <script src="js/page-loader.js"></script>
   <script src="js/device-detect.js"></script>
+  <script src="js/dev-mode.js"></script>
+  <script src="js/backgrounds.js"></script>
   <!-- PWA App Container -->
   <link rel="manifest" href="manifest.json" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -16,7 +21,7 @@
   <link rel="stylesheet" href="css/fonts.css" />
   <link rel="stylesheet" href="css/theme-jjk.css" />
   <link rel="stylesheet" href="css/bottombar.css" />
-  <link rel="stylesheet" href="css/settings-modal.css" />
+  <link rel="stylesheet" href="css/settings-modal.css?v=3" />
   <style>
     @import url("css/fonts.css");
 
@@ -229,6 +234,8 @@
         <button class="dev-button" id="btn-add-ryo">+100,000 Ryo</button>
         <button class="dev-button" id="btn-reset-materials">Reset to Defaults</button>
       </div>
+      <!-- Dev-only (js/dev-mode.js, ?dev=1) -->
+      <script>if (!window.DEV_MODE) document.currentScript.previousElementSibling.remove();</script>
 
       <div id="resources-list"></div>
 
@@ -274,7 +281,7 @@
   <script src="js/resources.js"></script>
 
   <!-- Settings Modal Script -->
-  <script src="js/settings-modal.js?v=2"></script>
+  <script src="js/settings-modal.js?v=3"></script>
 
   <script src="js/navigation.js"></script>
   <script>

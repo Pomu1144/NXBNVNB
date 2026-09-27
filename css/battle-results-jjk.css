@@ -358,7 +358,7 @@
   color: var(--mr-text);
 }
 .mr-exp img { width: 20px; height: 20px; }
-.mr-exp b { color: var(--jjk-good, #8fd49a); }
+.mr-exp b { color: var(--jjk-good, #f1d98a); }
 .mr-rankup { color: var(--mr-gold-hi); text-shadow: 0 0 10px rgba(241, 217, 138, 0.5); }
 
 .mr-actions { min-height: 48px; display: flex; justify-content: center; margin-top: 4px; }
@@ -456,8 +456,8 @@
 #battle-result .stat-value,
 #battle-result .summary-value { font-weight: 800; color: var(--mr-text); text-align: right; }
 #battle-result .stat-value.gold { color: var(--mr-gold-hi); }
-#battle-result .summary-value.success { color: var(--jjk-good, #8fd49a); }
-#battle-result .summary-value.warning { color: #e8c267; }
+#battle-result .summary-value.success { color: var(--jjk-good, #f1d98a); }
+#battle-result .summary-value.warning { color: #e89a4e; }
 #battle-result .summary-value.danger { color: #e0806e; }
 #battle-result .stat-divider {
   height: 1px;

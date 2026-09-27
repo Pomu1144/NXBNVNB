@@ -589,11 +589,11 @@ html.is-mobile.is-landscape.is-compact .page-teams #prebattle-footer {
 }
 
 /* ---------- Missions ----------
-   Phones: the header shrinks, the six category tabs become ONE swipeable row
-   of small plates that sits in the header line (right of the title), and the
-   panel spans the full width between header and dock. Cards turn horizontal
-   (banner left, ranks + Start right) so two full missions fit on a 375px-tall
-   screen. Scrolling stays owned by js/missions.js (list = only scroller). */
+   Phones: the header shrinks, the category tabs become ONE swipeable row
+   of small plates in the header line (right of the title), and the panel
+   spans the full width between header and dock. Cards / detail sheet sizes
+   live in css/missions.css (max-height: 540px). Scrolling stays owned by
+   js/missions.js (list = only scroller). */
 html.is-mobile.is-landscape.is-compact body.page-missions {
   --m-hdr-w: 170px;   /* back button + title plate */
 }
@@ -612,18 +612,10 @@ html.is-mobile.is-landscape.is-compact .page-missions .mission-page-container {
   bottom: calc(var(--dock-h) + var(--dock-safe-b) + 10px) !important;
   left: max(8px, var(--safe-l)) !important;
   right: max(8px, var(--safe-r)) !important;
-  transform: none !important;
-  width: auto !important;
-  max-width: none !important;
-  max-height: none !important;
   padding: 5px !important;
-  border-width: 1px !important;
-  display: flex !important;
-  flex-direction: column !important;
 }
-html.is-mobile.is-landscape.is-compact .page-missions .page-title {
-  display: none !important;
-}
+@property --tab-fade-l { syntax: '<length>'; inherits: false; initial-value: 0px; }
+@property --tab-fade-r { syntax: '<length>'; inherits: false; initial-value: 0px; }
 /* tab row lifted into the header line */
 html.is-mobile.is-landscape.is-compact .page-missions .mission-tabs {
   position: absolute !important;
@@ -631,7 +623,6 @@ html.is-mobile.is-landscape.is-compact .page-missions .mission-tabs {
   left: calc(var(--m-hdr-w) + 8px - max(8px, var(--safe-l)));
   right: 0;
   height: 34px;
-  flex: none;
   flex-wrap: nowrap !important;
   justify-content: flex-start !important;
   align-items: center !important;
@@ -639,11 +630,20 @@ html.is-mobile.is-landscape.is-compact .page-missions .mission-tabs {
   overflow-y: hidden;
   gap: 0 !important;
   margin: 0 !important;
-  padding: 0 4px !important;
+  padding: 0 6px !important;
   scrollbar-width: none;
-  -webkit-mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - 22px), transparent);
-  mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - 22px), transparent);
+  /* Soft fade into the header shadow on whichever side still has tabs
+     scrolled out of view. js/missions.js toggles .fade-l / .fade-r from the
+     scroll position, so the first/last tab is never faded when the row is
+     scrolled fully to that end. A mask (not an overlay) keeps taps working. */
+  --tab-fade-l: 0px;
+  --tab-fade-r: 0px;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 var(--tab-fade-l), #000 calc(100% - var(--tab-fade-r)), transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0, #000 var(--tab-fade-l), #000 calc(100% - var(--tab-fade-r)), transparent 100%);
+  transition: --tab-fade-l 0.18s ease, --tab-fade-r 0.18s ease;
 }
+html.is-mobile.is-landscape.is-compact .page-missions .mission-tabs.fade-l { --tab-fade-l: 40px; }
+html.is-mobile.is-landscape.is-compact .page-missions .mission-tabs.fade-r { --tab-fade-r: 40px; }
 html.is-mobile.is-landscape.is-compact .page-missions .mission-tabs::-webkit-scrollbar {
   display: none;
 }
@@ -651,82 +651,18 @@ html.is-mobile.is-landscape.is-compact body.page-missions .mission-tabs .tab-btn
   flex: none;
   min-width: 0 !important;
   height: 28px !important;
-  min-height: 0 !important;
   padding: 0 16px !important;
   margin: 0 1px !important;
   font-size: 10.5px !important;
-  white-space: nowrap;
 }
 html.is-mobile.is-landscape.is-compact body.page-missions .mission-tabs .tab-btn::after {
   bottom: 3px !important;
   width: 14px;
   margin-left: -7px;
 }
-html.is-mobile.is-landscape.is-compact .page-missions .mission-list-container {
-  height: auto !important;
-  flex: 1 1 auto;
-  min-height: 0;
-  padding: 5px !important;
-}
-/* horizontal card: banner | ranks + start */
-html.is-mobile.is-landscape.is-compact .page-missions .mission-card {
-  display: grid !important;
-  grid-template-columns: minmax(0, 36%) minmax(0, 1fr);
-  align-items: center;
-  column-gap: 12px;
-  margin-bottom: 6px !important;
-  padding: 5px !important;
-}
-html.is-mobile.is-landscape.is-compact .page-missions .mission-card .mission-banner {
-  width: 100%;
-  height: auto;
-  box-shadow: none;
-}
-html.is-mobile.is-landscape.is-compact .page-missions .mission-banner-fallback {
-  padding: 6px 10px;
-}
-html.is-mobile.is-landscape.is-compact .page-missions .mission-banner-fallback .mbf-name {
-  font-size: 14px;
-}
-html.is-mobile.is-landscape.is-compact .page-missions .mission-controls {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 6px 10px;
-  min-width: 0;
-}
-html.is-mobile.is-landscape.is-compact .page-missions .difficulty-icons-container {
-  flex: 1 1 auto;
-  gap: 4px;
-  margin: 0;
-  flex-wrap: wrap;
-}
-html.is-mobile.is-landscape.is-compact .page-missions .difficulty-icon-btn {
-  padding: 2px;
-}
-html.is-mobile.is-landscape.is-compact .page-missions .difficulty-icon-btn img {
-  width: 34px;
-  height: 34px;
-}
-html.is-mobile.is-landscape.is-compact body.page-missions .difficulty-icon-btn.difficulty-fallback {
-  min-width: 34px;
-  height: 34px;
-  padding: 0 6px;
-  font-size: 15px;
-}
-html.is-mobile.is-landscape.is-compact body.page-missions .start-btn {
-  margin-left: auto;
-  min-width: 124px;
-  height: 34px;
-  padding: 0 18px;
-  font-size: 13px;
-}
-html.is-mobile.is-landscape.is-compact .page-missions .mission-lock-note {
-  flex: 1 1 100%;
-  width: 100%;
-  margin: 0;
-  font-size: 10px;
-  text-align: left;
+/* detail sheet clears the notch / home indicator */
+html.is-mobile.is-landscape.is-compact .mission-modal {
+  padding: max(4px, var(--safe-t)) max(6px, var(--safe-r)) max(4px, var(--safe-b)) max(6px, var(--safe-l));
 }
 
 /* ---------- Inventory ---------- */

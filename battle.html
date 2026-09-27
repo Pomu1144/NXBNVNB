@@ -4,7 +4,11 @@
   <meta charset="UTF-8" />
   <title>Blazing — Battle</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <!-- Page loader: covers the page until its art, fonts and data are in -->
+  <link rel="stylesheet" href="css/page-loader.css" />
+  <script src="js/page-loader.js"></script>
   <script src="js/device-detect.js"></script>
+  <script src="js/dev-mode.js"></script>
   <!-- PWA App Container -->
   <link rel="manifest" href="manifest.json" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -29,8 +33,11 @@
   <link rel="stylesheet" href="css/battle-link-ultimate.css" />
   <link rel="stylesheet" href="css/battle-equipped-ultimate.css" />
   <link rel="stylesheet" href="css/battle-results-jjk.css" />
+  <link rel="stylesheet" href="css/battle-outcome-banner.css" />
   <link rel="stylesheet" href="css/battle-dev-panel.css" />
   <link rel="stylesheet" href="css/battle-action-panel.css" />
+  <link rel="stylesheet" href="css/battle-unit-info.css" />
+  <link rel="stylesheet" href="css/battle-boss.css" />
   <style>
     :root {
       --battle-unit-size: clamp(46px, 7.2vw, 70px);
@@ -76,6 +83,7 @@
       scrollbar-width: none;  /* Firefox */
     }
   </style>
+  <link rel="stylesheet" href="css/tutorial.css" />
   <link rel="stylesheet" href="css/mobile.css" />
 </head>
 <body class="page-battle">
@@ -183,6 +191,7 @@
   <script defer src="js/battle/battle-cutin.js"></script>
   <script defer src="js/battle/battle-combat.js"></script>
   <script defer src="js/sprite-player.js"></script>
+  <script defer src="js/skins.js"></script>
   <script defer src="js/battle/battle-units.js"></script>
   <script defer src="js/battle/battle-drag.js"></script>
   <script defer src="js/battle/battle-swap.js"></script>
@@ -199,7 +208,9 @@
   <script defer src="js/battle/battle-hit-react.js"></script>
   <script defer src="js/battle/battle-physics.js"></script>
   <script defer src="js/battle/battle-separation.js"></script>
+  <script defer src="js/battle/battle-outcome-banner.js"></script>
   <script defer src="js/battle/battle-missions.js"></script>
+  <script defer src="js/battle/battle-boss.js"></script>
   <script defer src="js/battle/battle-narrator.js"></script>
   <script defer src="js/battle/battle-hp-fix.js"></script>
   <script defer src="js/battle/battle-sprite-attack.js"></script>
@@ -211,9 +222,13 @@
   <script defer src="js/battle.js"></script>
   <script defer src="js/battle/battle-dev-panel.js"></script>
   <script defer src="js/battle/battle-action-panel-toggle.js"></script>
+  <script defer src="js/battle/battle-unit-info.js"></script>
 
       </div><!-- .game-content -->
     </div><!-- .game-canvas -->
   </div><!-- .game-canvas-wrapper -->
+  <!-- First-time tutorial (steps: js/tutorial-steps.js) -->
+  <script defer src="js/tutorial-steps.js"></script>
+  <script defer src="js/tutorial.js"></script>
 </body>
 </html>

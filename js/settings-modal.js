@@ -33,6 +33,30 @@
       this.overlay.id = 'settings-overlay';
       this.overlay.className = 'settings-overlay';
 
+      // Dev grants only exist in dev mode (js/dev-mode.js, ?dev=1)
+      const devSection = global.DEV_MODE ? `
+            <!-- Developer Tools Section -->
+            <div class="settings-section">
+              <h3 class="settings-section-title">Developer Tools</h3>
+
+              <div class="settings-option">
+                <button class="settings-button settings-button-special" id="setting-receive-random-chars">
+                  Receive 30 Random Characters
+                </button>
+                <p class="settings-help">Add 30 random characters to your inventory</p>
+              </div>
+
+              <div class="settings-option">
+                <button class="settings-button settings-button-special" id="setting-grant-blazing-bases">
+                  Grant All Blazing Awakened 5★ Bases
+                </button>
+                <p class="settings-help">Adds the 5★ base of every Blazing Awakened (6SB) unit so you can test the full 5S → 6S → 6SB path</p>
+              </div>
+            </div>
+
+            <div class="settings-divider"></div>
+` : '';
+
       // Create modal structure
       this.overlay.innerHTML = `
         <div id="settings-modal" class="settings-modal">
@@ -43,7 +67,7 @@
           <div class="settings-body">
             <!-- Music Section -->
             <div class="settings-section">
-              <h3 class="settings-section-title">🎵 Music</h3>
+              <h3 class="settings-section-title">Music</h3>
 
               <div class="settings-option">
                 <label class="settings-option-label">Music Enabled</label>
@@ -69,7 +93,7 @@
 
             <!-- Player Section -->
             <div class="settings-section">
-              <h3 class="settings-section-title">👤 Player</h3>
+              <h3 class="settings-section-title">Player</h3>
 
               <div class="settings-option">
                 <label class="settings-option-label">Username</label>
@@ -84,7 +108,7 @@
 
             <!-- Visual Section -->
             <div class="settings-section">
-              <h3 class="settings-section-title">🎨 Visual</h3>
+              <h3 class="settings-section-title">Visual</h3>
 
               <div class="settings-option">
                 <label class="settings-option-label">Background Theme</label>
@@ -99,7 +123,7 @@
 
             <!-- Character Display Section -->
             <div class="settings-section">
-              <h3 class="settings-section-title">⚡ Character Display</h3>
+              <h3 class="settings-section-title">Character Display</h3>
 
               <div class="settings-option">
                 <button class="settings-button" id="setting-select-character">
@@ -111,36 +135,23 @@
 
             <div class="settings-divider"></div>
 
-            <!-- Developer Tools Section -->
-            <div class="settings-section">
-              <h3 class="settings-section-title">🎁 Developer Tools</h3>
-
-              <div class="settings-option">
-                <button class="settings-button settings-button-special" id="setting-receive-random-chars">
-                  Receive 30 Random Characters
-                </button>
-                <p class="settings-help">Add 30 random characters to your inventory</p>
-              </div>
-
-              <div class="settings-option">
-                <button class="settings-button settings-button-special" id="setting-grant-blazing-bases">
-                  Grant All Blazing Awakened 5★ Bases
-                </button>
-                <p class="settings-help">Adds the 5★ base of every Blazing Awakened (6SB) unit so you can test the full 5S → 6S → 6SB path</p>
-              </div>
-            </div>
-
-            <div class="settings-divider"></div>
-
+            ${devSection}
             <!-- Data Section -->
             <div class="settings-section">
-              <h3 class="settings-section-title">💾 Data</h3>
+              <h3 class="settings-section-title">Data</h3>
 
               <div class="settings-option">
                 <button class="settings-button" id="setting-view-resources">
                   View Resources
                 </button>
                 <p class="settings-help">Check your materials and currency</p>
+              </div>
+
+              <div class="settings-option">
+                <button class="settings-button" id="setting-open-settings-page">
+                  All Settings
+                </button>
+                <p class="settings-help">Sound effects, gift codes, save export / import and log out</p>
               </div>
             </div>
           </div>
@@ -161,22 +172,22 @@
       const grid = document.getElementById('background-grid');
       if (!grid) return;
 
-      for (let i = 1; i <= 10; i++) {
-        const option = document.createElement('div');
+      const BG = global.VillageBackgrounds;
+      if (!BG) return;
+      const current = BG.savedId();
+      BG.LIST.forEach((bg) => {
+        const option = document.createElement('button');
+        option.type = 'button';
         option.className = 'background-option';
-        option.dataset.bg = i;
-        option.dataset.number = i;
-        option.style.backgroundImage = `url('assets/backgrounds/bg-${i}.jpg')`;
-
-        // Check if this is the current background
-        const bgElement = document.getElementById('full-bg');
-        if (bgElement && bgElement.classList.contains(`bg-${i}`)) {
-          option.classList.add('active');
-        }
-
-        option.addEventListener('click', () => this.changeBackground(i));
+        option.dataset.bg = bg.id;
+        option.dataset.name = bg.name;
+        option.title = bg.name;
+        option.setAttribute('aria-label', bg.name);
+        option.style.backgroundImage = `url('${bg.thumb}')`;
+        option.classList.toggle('active', bg.id === current);
+        option.addEventListener('click', () => this.changeBackground(bg.id));
         grid.appendChild(option);
-      }
+      });
     },
 
     /**
@@ -222,6 +233,7 @@
         volumeSlider.addEventListener('input', (e) => {
           const volume = e.target.value;
           if (volumeDisplay) volumeDisplay.textContent = `${volume}%`;
+          volumeSlider.style.setProperty('--pct', `${volume}%`);
           window.MusicPlayer?.setVolume(volume / 100);
         });
       }
@@ -252,6 +264,19 @@
           if (hudEl) hudEl.textContent = username;
 
           console.log('Username updated:', username);
+        });
+      }
+
+      // Full settings page
+      const settingsPageBtn = document.getElementById('setting-open-settings-page');
+      if (settingsPageBtn) {
+        settingsPageBtn.addEventListener('click', () => {
+          this.close();
+          if (typeof window.Navigation !== 'undefined') {
+            window.Navigation.navigateTo('settings.html');
+          } else {
+            window.location.href = 'settings.html';
+          }
         });
       }
 
@@ -418,27 +443,16 @@
      * Change background theme
      */
     changeBackground(num) {
+      const BG = global.VillageBackgrounds;
+      if (!BG || !BG.save(num)) return;
+
+      // Only pages that show the village scene swap their backdrop live
       const bgElement = document.getElementById('full-bg');
-      if (!bgElement) return;
+      if (bgElement && bgElement.closest('.game-canvas')) BG.apply(bgElement, num);
 
-      // Remove all background classes
-      for (let i = 1; i <= 10; i++) {
-        bgElement.classList.remove(`bg-${i}`);
-      }
-
-      // Add new background class
-      bgElement.classList.add(`bg-${num}`);
-
-      // Update active state in grid
       document.querySelectorAll('.background-option').forEach(opt => {
-        opt.classList.remove('active');
-        if (opt.dataset.bg == num) {
-          opt.classList.add('active');
-        }
+        opt.classList.toggle('active', Number(opt.dataset.bg) === Number(num));
       });
-
-      // Save preference
-      localStorage.setItem('selected_background', num);
 
       console.log(`Background changed to bg-${num}`);
     },
@@ -461,16 +475,15 @@
         const status = window.MusicPlayer.getStatus();
         const volumePercent = Math.round(status.volume * 100);
         volumeSlider.value = volumePercent;
+        volumeSlider.style.setProperty('--pct', `${volumePercent}%`);
         if (volumeDisplay) volumeDisplay.textContent = `${volumePercent}%`;
       }
 
       // Background
-      const savedBg = localStorage.getItem('selected_background');
-      if (savedBg) {
-        document.querySelectorAll('.background-option').forEach(opt => {
-          opt.classList.toggle('active', opt.dataset.bg == savedBg);
-        });
-      }
+      const current = global.VillageBackgrounds ? global.VillageBackgrounds.savedId() : 1;
+      document.querySelectorAll('.background-option').forEach(opt => {
+        opt.classList.toggle('active', Number(opt.dataset.bg) === current);
+      });
     },
 
     /**

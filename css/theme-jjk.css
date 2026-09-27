@@ -15,7 +15,7 @@
   --jjk-crimson:    #8e1c1c;   /* title plate / alerts */
   --jjk-text:       #ece6d6;   /* primary text */
   --jjk-muted:      #93a3a3;   /* secondary text */
-  --jjk-good:       #8fd49a;   /* reward / success */
+  --jjk-good:       #f1d98a;   /* reward / success (gold, no green text) */
 
   --jjk-font:        'Kaisei Tokumin', 'Times New Roman', serif; /* UI labels, body */
   --jjk-font-script: 'Shojumaru', 'Kaisei Tokumin', serif;       /* big section words */

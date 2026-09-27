@@ -4,7 +4,15 @@
   <meta charset="UTF-8" />
   <title>Blazing — Village HUD</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <!-- Page loader: covers the page until its art, fonts and data are in -->
+  <link rel="stylesheet" href="css/page-loader.css" />
+  <script src="js/page-loader.js"></script>
+  <!-- The hub's first screen doesn't draw from characters.json (only the tier
+       check and panel-mission names use it), so the loader doesn't wait for it. -->
+  <meta name="page-loader-skip" content="data/characters.json" />
   <script src="js/device-detect.js"></script>
+  <script src="js/dev-mode.js"></script>
+  <script src="js/backgrounds.js"></script>
   <!-- PWA App Container -->
   <link rel="manifest" href="manifest.json" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -14,11 +22,19 @@
   <link rel="apple-touch-icon" href="assets/icons/achievement_icon.png" />
   <script src="js/pwa-register.js"></script>
   <script src="js/session-gate.js"></script>
-  <!-- Warm the cache for the heaviest shared data while idle on the hub, so
-       the first jump to Characters / Teams is instant. Low priority; the
-       service worker serves them from cache on subsequent visits. -->
-  <link rel="prefetch" href="data/characters.json" as="fetch" crossorigin="anonymous" />
-  <link rel="prefetch" href="data/cards.json" as="fetch" crossorigin="anonymous" />
+  <!-- Warm the cache for cards.json while idle on the hub, so the first jump
+       to Characters / Teams is instant; the service worker serves it from
+       cache on later visits. Added once the page loader has lifted, so it
+       doesn't share the first visit's bandwidth with the hub's own data.
+       characters.json is not prefetched: the hub fetches it itself, and a
+       low-priority prefetch of the same file made that fetch wait behind it. -->
+  <script>
+    (window.PageLoader ? window.PageLoader.ready : Promise.resolve()).then(() => {
+      const l = document.createElement('link');
+      l.rel = 'prefetch'; l.href = 'data/cards.json'; l.as = 'fetch'; l.crossOrigin = 'anonymous';
+      document.head.appendChild(l);
+    });
+  </script>
   <!-- 16:9 Game Canvas Architecture -->
   <link rel="stylesheet" href="css/fonts.css" />
   <link rel="stylesheet" href="css/theme-jjk.css" />
@@ -31,7 +47,7 @@
   <link rel="stylesheet" href="css/dashboard.css?v=2" />
   <link rel="stylesheet" href="css/summon-banner-carousel.css?v=2" />
   <link rel="stylesheet" href="css/ui-layout.css?v=2" />
-  <link rel="stylesheet" href="css/settings-modal.css?v=2" />
+  <link rel="stylesheet" href="css/settings-modal.css?v=3" />
   <link rel="stylesheet" href="css/modal-system.css?v=2" />
   <link rel="stylesheet" href="css/fonts.css" />
   <link rel="stylesheet" id="present-box-css" href="css/present-box.css?v=2" />
@@ -52,6 +68,7 @@
       scrollbar-width: none;  /* Firefox */
     }
   </style>
+  <link rel="stylesheet" href="css/tutorial.css" />
   <link rel="stylesheet" href="css/mobile.css" />
 </head>
 
@@ -60,8 +77,9 @@
   <div class="game-canvas-wrapper">
     <div class="game-canvas">
       <div class="game-content">
-        <!-- Default background -->
+        <!-- Village background: the one picked in Settings (Hidden Leaf by default) -->
         <div id="full-bg" class="bg-1"></div>
+        <script>window.VillageBackgrounds && VillageBackgrounds.apply(document.getElementById("full-bg"), VillageBackgrounds.savedId());</script>
 
         <!-- Character Vignette Display -->
         <div class="character-vignette-container"></div>
@@ -234,6 +252,7 @@
   <!-- Game Scripts -->
   <script src="js/modal-manager.js?v=2"></script>
   <script src="js/user-profile.js?v=2"></script>
+  <script src="js/audio-manager.js"></script>
   <script src="js/music-player.js?v=2"></script>
   <script src="js/character_inv.js?v=2"></script>
   <script src="js/resources.js?v=2"></script>
@@ -243,7 +262,7 @@
   <script src="js/exp-rewards.js"></script>
   <script src="js/top-bar-enhanced.js"></script>
   <script src="js/character-vignette.js?v=3"></script>
-  <script src="js/settings-modal.js?v=2"></script>
+  <script src="js/settings-modal.js?v=3"></script>
   <script src="js/announcement-slideshow.js?v=2"></script>
   <script src="js/dashboard-mailbox.js?v=2"></script>
   <script src="js/panel-missions.js"></script>
@@ -319,6 +338,8 @@
 
       // Process login bonus
       if (typeof window.DailyMissions !== "undefined") {
+        // Show the bonus once the page loader has lifted, not underneath it.
+        if (window.PageLoader) await window.PageLoader.ready;
         const loginResult = await window.DailyMissions.processLogin();
         if (loginResult.ok && !loginResult.alreadyClaimed) {
           const reward = loginResult.reward || {};
@@ -334,6 +355,8 @@
           }
         }
       }
+      // Login bonus is up (or not due): the tutorial may start after it.
+      document.body.dataset.loginBonus = 'done';
 
       // ===== HELPER FUNCTIONS =====
 
@@ -424,15 +447,13 @@
       // ===== BACKGROUND CYCLING SYSTEM =====
 
       const bgElement = document.getElementById("full-bg");
-      const totalBackgrounds = 10;
-      let currentBackground = 1;
+      let currentBackground = window.VillageBackgrounds ? VillageBackgrounds.savedId() : 1;
 
+      // Show and remember a background (same choice as the Settings picker)
       function updateBG(n) {
-        if (!bgElement) return;
-        for (let i = 1; i <= totalBackgrounds; i++) {
-          bgElement.classList.remove(`bg-${i}`);
-        }
-        bgElement.classList.add(`bg-${n}`);
+        if (!bgElement || !window.VillageBackgrounds) return;
+        VillageBackgrounds.apply(bgElement, n);
+        VillageBackgrounds.save(n);
         console.log(`🎨 Background changed to bg-${n}`);
       }
 
@@ -689,5 +710,8 @@
       </div><!-- .game-content -->
     </div><!-- .game-canvas -->
   </div><!-- .game-canvas-wrapper -->
+  <!-- First-time tutorial (steps: js/tutorial-steps.js) -->
+  <script src="js/tutorial-steps.js"></script>
+  <script src="js/tutorial.js"></script>
 </body>
 </html>

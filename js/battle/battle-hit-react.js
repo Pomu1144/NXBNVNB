@@ -66,7 +66,7 @@
   function spriteKO(unit, dom) {
     const sp = unit._sprite;
     if (!sp || unit._koShown || !window.SpritePlayer) return;
-    const base = window.SpritePlayer.pathFor(unit.charId);
+    const base = unit._spriteBase || window.SpritePlayer.pathFor(unit.charId);
     const unitEl = unitElOf(unit, dom);
     const slot = unitEl?.querySelector('.unit-sprite');
     const host = unitEl?.parentElement;
@@ -150,6 +150,7 @@
   function react(unit, dom, { strong = false } = {}) {
     try {
       if (!unit || !unit.stats) return;
+      if (unit.isBoss && window.BattleBoss) { window.BattleBoss.onHit(unit); return; }
       const unitEl = unitElOf(unit, dom);
       if (unit._sprite) {
         if (unit.stats.hp <= 0) { spriteKO(unit, dom); return; }
@@ -206,11 +207,11 @@
   }
   // Warm the hit / ko sheets when a sprite is mounted so the first flinch is instant.
   wrap(U, 'attachSprite', unit => {
-    const base = unit?.charId && window.SpritePlayer?.pathFor(unit.charId);
+    const base = unit?._spriteBase || (unit?.charId && window.SpritePlayer?.pathFor(unit.charId));
     if (!base) return;
-    window.SpritePlayer.preload(base, 'hit').catch(() => {});
-    window.SpritePlayer.preload(base, 'ko').catch(() => {});
-    window.SpritePlayer.preload(base, 'attack').catch(() => {});
+    window.SpritePlayer.preload(base, 'hit', { background: true }).catch(() => {});
+    window.SpritePlayer.preload(base, 'ko', { background: true }).catch(() => {});
+    window.SpritePlayer.preload(base, 'attack', { background: true }).catch(() => {});
   });
 
   window.BattleHitReact = { react, spriteKO };

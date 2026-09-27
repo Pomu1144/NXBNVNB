@@ -1,0 +1,21 @@
+{
+  "frameWidth": 704,
+  "frameHeight": 512,
+  "frames": 18,
+  "columns": 8,
+  "fps": 12,
+  "loop": false,
+  "hits": [
+    5,
+    10
+  ],
+  "heightScale": 3.0,
+  "anchorX": 0.517,
+  "anchorY": 0.9648,
+  "fx": [
+    {
+      "sheet": "attack_area_fx",
+      "startFrame": 4
+    }
+  ]
+}

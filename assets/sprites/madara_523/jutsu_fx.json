@@ -1,0 +1,24 @@
+{
+  "frameWidth": 255,
+  "frameHeight": 360,
+  "frames": 20,
+  "columns": 8,
+  "fps": 12,
+  "loop": false,
+  "hits": [
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12
+  ],
+  "fxOnly": true,
+  "groundY": 0.9904,
+  "centerX": 0.5,
+  "heightUnits": 1.7
+}

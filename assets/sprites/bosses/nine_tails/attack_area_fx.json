@@ -1,0 +1,13 @@
+{
+  "frameWidth": 512,
+  "frameHeight": 512,
+  "frames": 12,
+  "columns": 6,
+  "fps": 12,
+  "loop": false,
+  "hits": [],
+  "fxOnly": true,
+  "groundY": 0.93,
+  "centerX": 0.5,
+  "heightUnits": 2.2
+}

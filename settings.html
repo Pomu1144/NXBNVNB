@@ -4,7 +4,12 @@
   <meta charset="UTF-8" />
   <title>Settings - Naruto Blazing</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <!-- Page loader: covers the page until its art, fonts and data are in -->
+  <link rel="stylesheet" href="css/page-loader.css" />
+  <script src="js/page-loader.js"></script>
   <script src="js/device-detect.js"></script>
+  <script src="js/dev-mode.js"></script>
+  <script src="js/backgrounds.js"></script>
   <!-- PWA App Container -->
   <link rel="manifest" href="manifest.json" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -16,194 +21,9 @@
   <link rel="stylesheet" href="css/fonts.css" />
   <link rel="stylesheet" href="css/theme-jjk.css" />
   <link rel="stylesheet" href="css/background.css" />
-  <link rel="stylesheet" href="css/top-bar.css" />
-  <link rel="stylesheet" href="css/dashboard.css" />
-  <style>
-    body {
-      font-family: "Cinzel", serif;
-      color: #f4efe3;
-    }
-
-    .settings-container {
-      max-width: 800px;
-      margin: 40px auto;
-      padding: 30px;
-      background: rgba(20, 20, 30, 0.95);
-      border-radius: 12px;
-      border: 2px solid rgba(139, 115, 85, 0.6);
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.8);
-    }
-
-    .settings-header {
-      font-size: 32px;
-      font-weight: 700;
-      color: #d4af37;
-      text-align: center;
-      margin-bottom: 30px;
-      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
-      border-bottom: 2px solid rgba(212, 175, 55, 0.4);
-      padding-bottom: 15px;
-    }
-
-    .settings-section {
-      margin-bottom: 30px;
-      padding: 20px;
-      background: rgba(30, 30, 40, 0.8);
-      border-radius: 8px;
-      border: 1px solid rgba(139, 115, 85, 0.3);
-    }
-
-    .settings-section-title {
-      font-size: 20px;
-      font-weight: 600;
-      color: #b8985f;
-      margin-bottom: 15px;
-      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.9);
-    }
-
-    .setting-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 12px 0;
-      border-bottom: 1px solid rgba(139, 115, 85, 0.2);
-    }
-
-    .setting-row:last-child {
-      border-bottom: none;
-    }
-
-    .setting-label {
-      font-size: 16px;
-      color: #f0e6d1;
-    }
-
-    .setting-control {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .slider {
-      width: 200px;
-      height: 6px;
-      border-radius: 3px;
-      background: rgba(139, 115, 85, 0.3);
-      outline: none;
-      cursor: pointer;
-    }
-
-    .slider::-webkit-slider-thumb {
-      appearance: none;
-      width: 18px;
-      height: 18px;
-      border-radius: 50%;
-      background: #d4af37;
-      cursor: pointer;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-    }
-
-    .slider::-moz-range-thumb {
-      width: 18px;
-      height: 18px;
-      border-radius: 50%;
-      background: #d4af37;
-      cursor: pointer;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-      border: none;
-    }
-
-    .volume-value {
-      min-width: 40px;
-      text-align: center;
-      font-weight: 600;
-      color: #d4af37;
-    }
-
-    .toggle-button {
-      padding: 8px 20px;
-      background: linear-gradient(135deg, #1f4d8b 0%, #2a5fa5 100%);
-      border: 2px solid #66c;
-      border-radius: 6px;
-      color: #e0f0ff;
-      font-family: "Cinzel", serif;
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
-    }
-
-    .toggle-button:hover {
-      background: linear-gradient(135deg, #2c6bb2 0%, #3a7dc9 100%);
-      box-shadow: 0 4px 8px rgba(44, 107, 178, 0.7);
-    }
-
-    .toggle-button.active {
-      background: linear-gradient(135deg, #1f8b2c 0%, #2da83d 100%);
-      border-color: #6c6;
-      color: #e6ffe0;
-    }
-
-    .back-button {
-      display: block;
-      margin: 30px auto 0;
-      padding: 12px 40px;
-      background: linear-gradient(135deg, #8b1f1f 0%, #a52a2a 100%);
-      border: 2px solid #c66;
-      border-radius: 8px;
-      color: #fff0e0;
-      font-family: "Cinzel", serif;
-      font-size: 16px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
-      text-decoration: none;
-      text-align: center;
-    }
-
-    .back-button:hover {
-      background: linear-gradient(135deg, #b22c2c 0%, #c93a3a 100%);
-      box-shadow: 0 4px 8px rgba(178, 44, 44, 0.7);
-    }
-
-    @media (max-width: 768px) {
-      .settings-container {
-        margin: 16px 10px;
-        padding: 16px;
-      }
-
-      .settings-header {
-        font-size: 24px;
-        margin-bottom: 16px;
-      }
-
-      .settings-section {
-        margin-bottom: 16px;
-        padding: 14px;
-      }
-
-      .settings-section-title {
-        font-size: 17px;
-      }
-
-      .setting-row {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 10px;
-      }
-
-      .setting-control {
-        width: 100%;
-        justify-content: space-between;
-      }
-
-      .slider {
-        width: min(100%, 240px);
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="css/bottombar.css" />
+  <link rel="stylesheet" href="css/settings.css" />
+  <link rel="stylesheet" href="css/modal-system.css?v=2" />
   <!-- Hide scrollbar but keep functionality -->
   <style>
     /* Hide scrollbar for Chrome, Safari and Opera */
@@ -218,203 +38,197 @@
       -ms-overflow-style: none;  /* IE and Edge */
       scrollbar-width: none;  /* Firefox */
     }
-
-    /* Keep background covering full viewport at all scroll depths */
-    html, body {
-      background: #0a0a12;
-      min-height: 100%;
-    }
-
-    #full-bg {
-      position: fixed !important;
-    }
   </style>
+  <link rel="stylesheet" href="css/tutorial.css" />
   <link rel="stylesheet" href="css/mobile.css" />
 </head>
 
-<body>
-  <div id="full-bg" class="bg-1"></div>
+<body class="page-settings">
+  <header class="jjk-page-header">
+    <a class="jjk-icon-btn jjk-back" href="village.html" aria-label="Back to Village"><img src="assets/ui/jjk/back_arrow.webp" alt="" /></a>
+    <h1 class="jjk-title-plate">Settings</h1>
+  </header>
+  <div id="full-bg" aria-hidden="true"></div>
 
-  <!-- Top Bar -->
-  <div class="top-bar">
-    <div class="ninja-rank-container">
-      <span class="ninja-rank-label">Ninja Rank:</span>
-      <span class="ninja-rank-value" id="ninja-rank-value">1</span>
+  <main class="settings-panel jjk-panel">
+    <nav class="settings-tabs" role="tablist" aria-label="Settings sections">
+      <button class="jjk-tab active" role="tab" aria-selected="true" data-tab="audio">Audio</button>
+      <button class="jjk-tab" role="tab" aria-selected="false" data-tab="display">Display</button>
+      <button class="jjk-tab" role="tab" aria-selected="false" data-tab="account">Account</button>
+      <button class="jjk-tab" role="tab" aria-selected="false" data-tab="data">Data</button>
+      <button class="jjk-tab dev-only" role="tab" aria-selected="false" data-tab="dev">Dev Tools</button>
+    </nav>
+
+    <div class="settings-well">
+      <!-- Audio -->
+      <section class="settings-pane active" id="pane-audio" role="tabpanel">
+        <h2 class="set-group">Sound</h2>
+        <div class="set-row">
+          <label class="set-label" for="bgm-volume"><b>Background Music</b></label>
+          <div class="set-control is-wide">
+            <input type="range" min="0" max="100" value="30" class="set-slider" id="bgm-volume">
+            <span class="jjk-chip set-value" id="bgm-value">30%</span>
+          </div>
+        </div>
+        <div class="set-row">
+          <label class="set-label" for="sfx-volume"><b>Sound Effects</b></label>
+          <div class="set-control is-wide">
+            <input type="range" min="0" max="100" value="50" class="set-slider" id="sfx-volume">
+            <span class="jjk-chip set-value" id="sfx-value">50%</span>
+          </div>
+        </div>
+        <div class="set-row">
+          <div class="set-label"><b>All Audio</b><small>Mutes music and effects everywhere</small></div>
+          <div class="set-control">
+            <button class="set-switch" id="mute-button" role="switch" aria-checked="true" aria-label="All audio">
+              <span class="is-on">On</span><span class="is-off">Muted</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Display -->
+      <section class="settings-pane" id="pane-display" role="tabpanel">
+        <h2 class="set-group">Village Background</h2>
+        <div class="bg-picker">
+          <!-- Live preview: same art, crop and screen shape as the village -->
+          <figure class="bg-preview">
+            <div class="bg-preview-frame" id="bg-preview-frame">
+              <div class="bg-preview-scene" id="bg-preview-scene"></div>
+              <div class="bg-preview-ui" aria-hidden="true">
+                <i class="pv-top"></i><i class="pv-left"></i><i class="pv-right"></i><i class="pv-hero"></i><i class="pv-dock"></i>
+              </div>
+            </div>
+            <figcaption class="bg-preview-bar">
+              <button class="jjk-icon-btn set-step" id="background-prev" aria-label="Previous background">&#9664;</button>
+              <span class="bg-preview-name" id="bg-preview-name" aria-live="polite"></span>
+              <button class="jjk-icon-btn set-step" id="background-next" aria-label="Next background">&#9654;</button>
+            </figcaption>
+          </figure>
+          <div class="bg-thumbs" id="bg-thumbs" role="radiogroup" aria-label="Village background"></div>
+        </div>
+      </section>
+
+      <!-- Account -->
+      <section class="settings-pane" id="pane-account" role="tabpanel">
+        <h2 class="set-group">Profile</h2>
+        <div class="set-row">
+          <div class="set-label"><b>Ninja Name</b><small>Shown in the village and on your profile</small></div>
+          <div class="set-control">
+            <span class="set-name" id="username-display"></span>
+            <button class="jjk-btn" id="change-username-button">Edit</button>
+          </div>
+        </div>
+        <div class="set-row">
+          <div class="set-label"><b>Tutorial</b><small>Kakashi walks you through the village, summoning, teams and battle again</small></div>
+          <div class="set-control">
+            <button class="jjk-btn" id="replay-tutorial-button">Replay Tutorial</button>
+          </div>
+        </div>
+        <div class="set-row">
+          <div class="set-label"><b>Session</b><small>Syncs, then clears this device's save and returns to the title screen</small></div>
+          <div class="set-control">
+            <button class="jjk-btn is-primary" id="logout-button">Log Out</button>
+          </div>
+        </div>
+
+        <h2 class="set-group">Gift Code</h2>
+        <div class="set-row">
+          <label class="set-label" for="gift-code-input"><b>Enter Gift Code</b><small>Rewards arrive in the Present Box</small></label>
+          <div class="set-control is-wide">
+            <input type="text" id="gift-code-input" class="set-field" placeholder="Enter code here" autocomplete="off" autocapitalize="characters" spellcheck="false">
+            <button class="jjk-btn" id="redeem-gift-code-button">Redeem</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Data -->
+      <section class="settings-pane" id="pane-data" role="tabpanel">
+        <h2 class="set-group">Save Data</h2>
+        <div class="set-row">
+          <div class="set-label"><b>Player ID</b></div>
+          <div class="set-control">
+            <span id="player-id-display" class="set-id">Loading...</span>
+          </div>
+        </div>
+        <div class="set-row">
+          <div class="set-label"><b>Export Save Data</b><small>Download your save as a .json file</small></div>
+          <div class="set-control">
+            <button class="jjk-btn" id="export-save-button">Download Save File</button>
+          </div>
+        </div>
+        <div class="set-row">
+          <div class="set-label"><b>Import Save Data</b><small>.json file from another device</small></div>
+          <div class="set-control">
+            <input type="file" id="import-save-input" accept=".json" hidden>
+            <button class="jjk-btn" id="import-save-button">Upload Save File</button>
+          </div>
+        </div>
+
+        <h2 class="set-group">Repair</h2>
+        <div class="set-row">
+          <div class="set-label"><b>Clean Up Invalid Characters</b><small>Removes units whose IDs no longer exist</small></div>
+          <div class="set-control">
+            <button class="jjk-btn is-primary" id="cleanup-characters-button">Clean Up</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Developer Tools -->
+      <section class="settings-pane dev-only" id="pane-dev" role="tabpanel">
+        <h2 class="set-group">Developer Tools</h2>
+        <div class="set-row">
+          <div class="set-label"><b>Add All Characters (Batch)</b><small>Instantly adds all 19 characters (evolved + unevolved) to your roster</small></div>
+          <div class="set-control">
+            <button class="jjk-btn" id="batch-add-all-button">Add All Units Now!</button>
+          </div>
+        </div>
+        <div class="set-row">
+          <label class="set-label" for="manual-unit-input"><b>Add Unit Manually</b><small>Format <code>characterId_tierCode*quantity</code>, e.g. <code>naruto_01_3S*5</code> (5 copies at 3&#9733;)</small></label>
+          <div class="set-control is-wide">
+            <input type="text" id="manual-unit-input" class="set-field" placeholder="naruto_01_3S*5" autocomplete="off" autocapitalize="off" spellcheck="false">
+            <button class="jjk-btn" id="add-manual-unit-button">Add Unit</button>
+          </div>
+        </div>
+      </section>
     </div>
-    <div class="player-username-container">
-      <span class="player-username" id="player-username">Player</span>
+  </main>
+
+  <!-- HUD Bottom Bar (no segment is active: Settings is opened from the village) -->
+  <div class="bottom-bar">
+    <div class="bottom-bar-content">
+      <button class="hud-button" id="btn-village" aria-label="Village">
+        <img src="assets/icons/nav/village_btm_btn.png" alt="Village">
+      </button>
+      <button class="hud-button" id="btn-characters" aria-label="Shinobi">
+        <img src="assets/icons/nav/characters_icon.png" alt="Characters" onerror="this.style.display='none'">
+      </button>
+      <button class="hud-button" id="btn-fusion" aria-label="Fusion">
+        <img src="assets/icons/nav/fusion_btm_btn.png" alt="Fusion">
+      </button>
+      <button class="hud-button" id="btn-teams" aria-label="Teams">
+        <img src="assets/icons/nav/teams_icon.png" alt="Teams">
+      </button>
+      <button class="hud-button" id="btn-tools" aria-label="Tools">
+        <img src="assets/icons/nav/guilds_icon.png" alt="Tools">
+      </button>
+      <button class="hud-button" id="btn-summon" aria-label="Summon">
+        <img src="assets/icons/nav/summon_btm_btn.png" alt="Summon">
+      </button>
+      <button class="hud-button" id="btn-missions" aria-label="Missions">
+        <img src="assets/icons/nav/mission_btm_btn.png" alt="Missions">
+      </button>
+      <button class="hud-button" id="btn-inventory" aria-label="Items">
+        <img src="assets/icons/nav/inventory_icon.png" alt="Inventory">
+      </button>
+      <button class="hud-button" id="btn-shop" aria-label="Shop">
+        <img src="assets/icons/nav/shop_btm_btn.png" alt="Shop">
+      </button>
     </div>
-    <div class="currency-hud">
-      <div class="currency-item ninja-pearls">
-        <img src="assets/icons/currency/ninjapearl.png" alt="Ninja Pearls" class="currency-icon" onerror="this.style.display='none';">
-        <span class="currency-amount" id="currency-ninja-pearls">0</span>
-      </div>
-      <div class="currency-item shinobites">
-        <img src="assets/icons/currency/shinobite.png" alt="Shinobites" class="currency-icon" onerror="this.style.display='none';">
-        <span class="currency-amount" id="currency-shinobites">0</span>
-      </div>
-      <div class="currency-item ryo">
-        <img src="assets/icons/currency/ryo.png" alt="Ryo" class="currency-icon" onerror="this.style.display='none';">
-        <span class="currency-amount" id="currency-ryo">0</span>
-      </div>
-    </div>
-  </div>
-
-  <div class="settings-container">
-    <h1 class="settings-header">Settings</h1>
-
-    <!-- Audio Settings -->
-    <div class="settings-section">
-      <div class="settings-section-title">Audio</div>
-
-      <div class="setting-row">
-        <div class="setting-label">Background Music Volume</div>
-        <div class="setting-control">
-          <input type="range" min="0" max="100" value="30" class="slider" id="bgm-volume">
-          <span class="volume-value" id="bgm-value">30%</span>
-        </div>
-      </div>
-
-      <div class="setting-row">
-        <div class="setting-label">Sound Effects Volume</div>
-        <div class="setting-control">
-          <input type="range" min="0" max="100" value="50" class="slider" id="sfx-volume">
-          <span class="volume-value" id="sfx-value">50%</span>
-        </div>
-      </div>
-
-      <div class="setting-row">
-        <div class="setting-label">Mute All Audio</div>
-        <div class="setting-control">
-          <button class="toggle-button" id="mute-button">Unmuted</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Account Settings -->
-    <div class="settings-section">
-      <div class="settings-section-title">Account</div>
-
-      <div class="setting-row">
-        <div class="setting-label">Change Username</div>
-        <div class="setting-control">
-          <button class="toggle-button" id="change-username-button">Edit</button>
-        </div>
-      </div>
-
-      <div class="setting-row">
-        <div class="setting-label">Session</div>
-        <div class="setting-control">
-          <button class="toggle-button" id="logout-button" style="background: linear-gradient(135deg, #8b1f1f 0%, #a52a2a 100%); border-color: #c66;">Log Out</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Gift Code -->
-    <div class="settings-section">
-      <div class="settings-section-title">Gift Code</div>
-
-      <div class="setting-row">
-        <div class="setting-label">Enter Gift Code</div>
-        <div class="setting-control" style="display: flex; gap: 10px;">
-          <input type="text" id="gift-code-input" placeholder="Enter code here" style="padding: 8px 16px; border-radius: 6px; background: rgba(30, 30, 40, 0.9); color: #f4efe3; border: 1px solid rgba(139, 115, 85, 0.6); font-family: 'Cinzel', serif; flex: 1; text-transform: uppercase;">
-          <button class="toggle-button" id="redeem-gift-code-button">Redeem</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Developer Tools -->
-    <div class="settings-section">
-      <div class="settings-section-title">Developer Tools</div>
-
-      <div class="setting-row">
-        <div class="setting-label">Add All Characters (Batch)</div>
-        <div class="setting-control">
-          <button class="toggle-button" id="batch-add-all-button" style="background: linear-gradient(135deg, #1f8b2c 0%, #2da83d 100%); border-color: #6c6;">Add All Units Now!</button>
-        </div>
-        <div style="font-size: 12px; color: #b8985f; margin-top: 8px;">
-          Instantly adds all 19 characters (evolved + unevolved) to your roster
-        </div>
-      </div>
-
-      <div class="setting-row">
-        <div class="setting-label">Add Unit Manually</div>
-        <div class="setting-control" style="display: flex; gap: 10px; flex-wrap: wrap;">
-          <input type="text" id="manual-unit-input" placeholder="naruto_01_3S*5" style="padding: 8px 16px; border-radius: 6px; background: rgba(30, 30, 40, 0.9); color: #f4efe3; border: 1px solid rgba(139, 115, 85, 0.6); font-family: 'Cinzel', serif; flex: 1; min-width: 200px;">
-          <button class="toggle-button" id="add-manual-unit-button">Add Unit</button>
-        </div>
-        <div style="font-size: 12px; color: #b8985f; margin-top: 8px;">
-          Format: <code style="background: rgba(0,0,0,0.3); padding: 2px 6px; border-radius: 3px;">characterId_tierCode*quantity</code>
-          <br>
-          Example: <code style="background: rgba(0,0,0,0.3); padding: 2px 6px; border-radius: 3px;">naruto_01_3S*5</code> (5 copies of Naruto at 3★)
-        </div>
-      </div>
-    </div>
-
-    <!-- Player Data Management -->
-    <div class="settings-section">
-      <div class="settings-section-title">Player Data</div>
-
-      <div class="setting-row">
-        <div class="setting-label">Clean Up Invalid Characters</div>
-        <div class="setting-control">
-          <button class="toggle-button" id="cleanup-characters-button">Clean Up</button>
-        </div>
-      </div>
-
-      <div class="setting-row">
-        <div class="setting-label">Export Save Data</div>
-        <div class="setting-control">
-          <button class="toggle-button" id="export-save-button">Download Save File</button>
-        </div>
-      </div>
-
-      <div class="setting-row">
-        <div class="setting-label">Import Save Data</div>
-        <div class="setting-control" style="display: flex; gap: 10px;">
-          <input type="file" id="import-save-input" accept=".json" style="display: none;">
-          <button class="toggle-button" id="import-save-button">Upload Save File</button>
-          <label style="font-size: 12px; color: #b8985f; align-self: center;">
-            (.json file from another device)
-          </label>
-        </div>
-      </div>
-
-      <div class="setting-row">
-        <div class="setting-label">Player ID</div>
-        <div class="setting-control">
-          <span id="player-id-display" style="font-size: 12px; color: #d4af37; font-family: monospace;">Loading...</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Visual Settings -->
-    <div class="settings-section">
-      <div class="settings-section-title">Visual</div>
-
-      <div class="setting-row">
-        <div class="setting-label">Background Theme</div>
-        <div class="setting-control">
-          <select id="background-select" style="padding: 8px 16px; border-radius: 6px; background: rgba(30, 30, 40, 0.9); color: #f4efe3; border: 1px solid rgba(139, 115, 85, 0.6); font-family: 'Cinzel', serif; cursor: pointer;">
-            <option value="1">Background 1</option>
-            <option value="2">Background 2</option>
-            <option value="3">Background 3</option>
-            <option value="4">Background 4</option>
-            <option value="5">Background 5</option>
-            <option value="6">Background 6</option>
-            <option value="7">Background 7</option>
-            <option value="8">Background 8</option>
-            <option value="9">Background 9</option>
-            <option value="10">Background 10</option>
-          </select>
-        </div>
-      </div>
-    </div>
-
-    <a href="village.html" class="back-button">Back to Home</a>
   </div>
 
   <script src="js/vendor/howler.min.js"></script>
+  <script src="js/modal-manager.js?v=2"></script>
   <script src="js/audio-manager.js"></script>
   <script src="js/username.js"></script>
   <script src="js/character_inv.js?v=3"></script>
@@ -435,6 +249,27 @@
       console.log('✅ Mailbox initialized in settings');
     }
 
+    // Dev Tools tab only exists in dev mode (js/dev-mode.js, ?dev=1)
+    if (!window.DEV_MODE) {
+      document.querySelectorAll('.dev-only').forEach((el) => el.remove());
+    }
+
+    // Tabs (same ticket tabs as Items / Shop)
+    const settingsTabs = document.querySelectorAll('.settings-tabs .jjk-tab');
+    settingsTabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        settingsTabs.forEach((t) => {
+          const on = t === tab;
+          t.classList.toggle('active', on);
+          t.setAttribute('aria-selected', on ? 'true' : 'false');
+        });
+        document.querySelectorAll('.settings-pane').forEach((pane) => {
+          pane.classList.toggle('active', pane.id === 'pane-' + tab.dataset.tab);
+        });
+        document.querySelector('.settings-well').scrollTop = 0;
+      });
+    });
+
     // Audio Settings
     const bgmSlider = document.getElementById('bgm-volume');
     const bgmValue = document.getElementById('bgm-value');
@@ -442,25 +277,36 @@
     const sfxValue = document.getElementById('sfx-value');
     const muteButton = document.getElementById('mute-button');
 
-    // Load current audio settings
+    // Paint the gold fill up to the thumb and the % readout
+    function paintSlider(slider, label) {
+      slider.style.setProperty('--pct', slider.value + '%');
+      label.textContent = slider.value + '%';
+    }
+
+    function paintMute(isMuted) {
+      muteButton.setAttribute('aria-checked', isMuted ? 'false' : 'true');
+    }
+
+    // Load current audio settings. AudioManager only reads its saved volumes
+    // in init() (on DOMContentLoaded, after this script), so init it first.
     if (typeof AudioManager !== 'undefined' && typeof AudioManager.getSettings === 'function') {
       try {
+        if (typeof AudioManager.init === 'function') AudioManager.init();
         const settings = AudioManager.getSettings();
         bgmSlider.value = Math.round(settings.bgmVolume * 100);
-        bgmValue.textContent = Math.round(settings.bgmVolume * 100) + '%';
         sfxSlider.value = Math.round(settings.sfxVolume * 100);
-        sfxValue.textContent = Math.round(settings.sfxVolume * 100) + '%';
-        muteButton.textContent = settings.masterMuted ? 'Muted' : 'Unmuted';
-        muteButton.classList.toggle('active', !settings.masterMuted);
+        paintMute(settings.masterMuted);
       } catch (error) {
         console.warn('[Settings] Could not load audio settings:', error);
       }
     }
+    paintSlider(bgmSlider, bgmValue);
+    paintSlider(sfxSlider, sfxValue);
 
     // BGM Volume Control
     bgmSlider.addEventListener('input', (e) => {
       const volume = e.target.value / 100;
-      bgmValue.textContent = e.target.value + '%';
+      paintSlider(bgmSlider, bgmValue);
       if (typeof AudioManager !== 'undefined') {
         AudioManager.setBGMVolume(volume);
       }
@@ -469,7 +315,7 @@
     // SFX Volume Control
     sfxSlider.addEventListener('input', (e) => {
       const volume = e.target.value / 100;
-      sfxValue.textContent = e.target.value + '%';
+      paintSlider(sfxSlider, sfxValue);
       if (typeof AudioManager !== 'undefined') {
         AudioManager.setSFXVolume(volume);
       }
@@ -478,13 +324,12 @@
     // Mute Toggle
     muteButton.addEventListener('click', () => {
       if (typeof AudioManager !== 'undefined') {
-        const isMuted = AudioManager.toggleMasterMute();
-        muteButton.textContent = isMuted ? 'Muted' : 'Unmuted';
-        muteButton.classList.toggle('active', !isMuted);
+        paintMute(AudioManager.toggleMasterMute());
       }
     });
 
-    // Username Change
+    // Username Change (js/username.js keeps #username-display in sync)
+    if (window.Username?.updateDisplay) window.Username.updateDisplay();
     document.getElementById('change-username-button').addEventListener('click', () => {
       if (typeof window.Username !== 'undefined') {
         window.Username.openEditor();
@@ -493,63 +338,150 @@
       }
     });
 
+    // Log Out: in-game "are you sure?" first, then clear every key the save
+    // system (js/player-save-system.js) exports plus the login session keys.
+    // Device preferences stay: blazing_audio_settings, blazing_background and
+    // selected_background (still carried in the save export).
+    const LOGOUT_KEYS = [
+      // login session (js/login-overlay.js / AccountSync)
+      'blazing-login-complete',
+      'blazing-login-username',
+      'blazing-player-id',
+      // save system: player id + everything exportSave() carries
+      'blazing_player_id',
+      'blazing_inventory_v2',
+      'blazing_resources_v1',
+      'blazing_user_profile_v1',
+      'blazing_username_v1',
+      'blazing_player_rank',
+      'blazing_player_exp',
+      'blazing_daily_progress_v1',
+      'blazing_mission_progress_v1',
+      'blazing_panel_mission_progress',
+      'blazing_achievements_v1',
+      'blazing_teams_v1',
+      'blazing_team_names',
+      'blazing_card_levels_v1',
+      'blazing_character_equip_v1',
+      'blazing_equipped_ultimates',
+      'blazing_summon_state_v1',
+      'blazing_summon_seen_v1',
+      'blazing_recipes_v1',
+      'blazing_skins_equipped_v1',
+      'blazing_skins_owned_v1',
+      'mailboxMessages',
+      'blazing_redeemed_codes_v1',
+      // tied to this player's roster, not in the save file
+      'blazing_home_character_v1',
+      'blazing_battle_resume_v1',
+      'blazing_battle_resume_intent_v1'
+    ];
+
+    function logOut() {
+      if (window.AccountSync?.syncNow) {
+        window.AccountSync.syncNow();
+      }
+      LOGOUT_KEYS.forEach((key) => {
+        try {
+          localStorage.removeItem(key);
+        } catch (error) {
+          // ignore cleanup failures
+        }
+      });
+      try { sessionStorage.clear(); } catch (error) { /* ignore */ }
+      window.location.href = 'index.html';
+    }
+
+    // Replay Tutorial: restarts js/tutorial.js from its first step (village)
+    document.getElementById('replay-tutorial-button')?.addEventListener('click', () => {
+      window.Tutorial?.replay();
+    });
+
     const logoutButton = document.getElementById('logout-button');
     if (logoutButton) {
       logoutButton.addEventListener('click', () => {
-        if (window.AccountSync?.syncNow) {
-          window.AccountSync.syncNow();
-        }
-
-        const keysToClear = [
-          'blazing-login-complete',
-          'blazing-login-username',
-          'blazing-player-id',
-          'blazing_inventory_v2',
-          'blazing_teams_v1',
-          'blazing_team_names',
-          'blazing_resources_v1',
-          'blazing_equipped_ultimates',
-          'blazing_username_v1',
-          'blazing_user_profile_v1',
-          'blazing_player_rank',
-          'blazing_player_exp',
-          'blazing_daily_progress_v1',
-          'blazing_mission_progress_v1',
-          'blazing_panel_mission_progress',
-          'blazing_achievements_v1',
-          'blazing_card_levels_v1',
-          'blazing_character_equip_v1',
-          'blazing_summon_state_v1',
-          'blazing_recipes_v1',
-          'mailboxMessages',
-          'blazing_redeemed_codes_v1'
-        ];
-
-        keysToClear.forEach((key) => {
-          try {
-            localStorage.removeItem(key);
-          } catch (error) {
-            // ignore cleanup failures
-          }
-        });
-
-        sessionStorage.clear();
-        window.location.href = 'index.html';
+        if (!window.ModalManager) return;
+        window.ModalManager.showConfirm(
+          'Log out of this device?\nYour progress is synced first, then this device\'s save is cleared and you return to the title screen.',
+          logOut,
+          null,
+          { title: 'Log Out', confirmText: 'Log Out', cancelText: 'Stay' }
+        );
       });
     }
 
-    // Background Change
-    document.getElementById('background-select').addEventListener('change', (e) => {
-      const bgNum = e.target.value;
-      const el = document.getElementById("full-bg");
-      if (el) {
-        for (let i = 1; i <= 10; i++) {
-          el.classList.remove(`bg-${i}`);
-        }
-        el.classList.add(`bg-${bgNum}`);
-        console.log(`[Settings] Background changed to bg-${bgNum}`);
-      }
+    // Village Background: thumbnails + a preview that matches the village
+    // screen (same art and crop; same shape as this device's village view).
+    // The choice lives in js/backgrounds.js; village.html reads it on load.
+    const BG = window.VillageBackgrounds;
+    const bgThumbs = document.getElementById('bg-thumbs');
+    const bgFrame = document.getElementById('bg-preview-frame');
+    const bgScene = document.getElementById('bg-preview-scene');
+    const bgName = document.getElementById('bg-preview-name');
+    const fullBg = document.getElementById('full-bg');
+    let bgCurrent = BG.savedId();
+
+    // Village is a fixed 16:9 canvas, except on phones held sideways where it
+    // fills the screen (css/mobile.css) - mirror that shape
+    function sizePreview() {
+      const fill = document.documentElement.classList.contains('is-compact');
+      bgFrame.style.aspectRatio = fill
+        ? `${window.innerWidth} / ${window.innerHeight}`
+        : '16 / 9';
+    }
+
+    function showBackground(id) {
+      const bg = BG.get(id) || BG.get(BG.DEFAULT_ID);
+      bgCurrent = bg.id;
+      bgScene.style.backgroundImage = `url("${bg.full}")`;
+      bgScene.classList.toggle('is-pixel', bg.id === 1); // matches .bg-1 rendering
+      bgName.textContent = bg.name;
+      bgThumbs.querySelectorAll('.bg-thumb').forEach((t) => {
+        const on = Number(t.dataset.bg) === bg.id;
+        t.classList.toggle('active', on);
+        t.setAttribute('aria-checked', on ? 'true' : 'false');
+        t.tabIndex = on ? 0 : -1;
+      });
+      // This screen's own backdrop: ink until a background has been picked
+      if (BG.hasSaved()) BG.apply(fullBg, bg.id);
+    }
+
+    function pickBackground(id) {
+      if (!BG.save(id)) return;
+      showBackground(id);
+      console.log(`[Settings] Village background set to bg-${id}`);
+    }
+
+    BG.LIST.forEach((bg) => {
+      const t = document.createElement('button');
+      t.type = 'button';
+      t.className = 'bg-thumb';
+      t.dataset.bg = bg.id;
+      t.setAttribute('role', 'radio');
+      t.innerHTML = `<img src="${bg.thumb}" alt="" loading="lazy" decoding="async"><span></span>`;
+      t.querySelector('span').textContent = bg.name;
+      t.addEventListener('click', () => pickBackground(bg.id));
+      bgThumbs.appendChild(t);
     });
+
+    function stepBackground(dir) {
+      const n = BG.LIST.length;
+      const i = BG.LIST.findIndex((b) => b.id === bgCurrent);
+      pickBackground(BG.LIST[(i + dir + n) % n].id);
+    }
+    document.getElementById('background-prev').addEventListener('click', () => stepBackground(-1));
+    document.getElementById('background-next').addEventListener('click', () => stepBackground(1));
+    bgThumbs.addEventListener('keydown', (e) => {
+      const dir = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[e.key];
+      if (!dir) return;
+      e.preventDefault();
+      stepBackground(dir);
+      bgThumbs.querySelector('.bg-thumb.active')?.focus();
+    });
+
+    sizePreview();
+    window.addEventListener('resize', sizePreview);
+    showBackground(bgCurrent);
 
     // Gift Code Redemption
     // Initialize Gift Code System with proper async handling
@@ -611,7 +543,7 @@
     });
 
     // Batch Add All Characters
-    document.getElementById('batch-add-all-button').addEventListener('click', async () => {
+    document.getElementById('batch-add-all-button')?.addEventListener('click', async () => {
       if (!confirm('This will add all 19 characters (evolved + unevolved) to your roster. Continue?')) {
         return;
       }
@@ -624,7 +556,7 @@
     });
 
     // Manual Unit Addition
-    document.getElementById('add-manual-unit-button').addEventListener('click', async () => {
+    document.getElementById('add-manual-unit-button')?.addEventListener('click', async () => {
       const input = document.getElementById('manual-unit-input');
       const code = input.value.trim();
 
@@ -769,5 +701,8 @@
       e.target.value = '';
     });
   </script>
+  <!-- First-time tutorial (steps: js/tutorial-steps.js) -->
+  <script src="js/tutorial-steps.js"></script>
+  <script src="js/tutorial.js"></script>
 </body>
 </html>

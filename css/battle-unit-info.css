@@ -1,0 +1,258 @@
+/* ─────────────────────────────────────────────────────────────
+   css/battle-unit-info.css — long-press unit info panel (battle)
+   Built by js/battle/battle-unit-info.js. Ink-teal face, antique gold
+   trim, Kaisei Tokumin text. Art (assets/ui/battle/):
+     info_panel_frame_9s.webp  frame, 9-slice (slice 172 of 634x1165)
+     info_panel_crest.webp     top-centre crest laid over the frame
+     info_tab.webp / info_tab_off.webp  active / idle tab plates
+   (_9s and _crest are cut from info_panel_frame.webp: the crest is
+   separate so the 9-slice top edge can stretch without distorting it.)
+   Layout: one column (desktop / portrait); two columns on landscape
+   phones so the whole panel fits in ~390px of height.
+   ───────────────────────────────────────────────────────────── */
+
+/* ── Hold cue: gold ring filling around the finger / cursor ── */
+.bui-hold {
+  position: fixed; z-index: 10050; width: 64px; height: 64px;
+  margin: -32px 0 0 -32px; pointer-events: none;
+  animation: bui-hold-in .12s ease-out both;
+}
+.bui-hold svg { width: 100%; height: 100%; transform: rotate(-90deg); overflow: visible; }
+.bui-hold circle { fill: none; stroke-width: 3.5; }
+.bui-hold-track { stroke: rgba(7, 20, 24, 0.55); }
+.bui-hold-fill {
+  stroke: var(--jjk-gold-hi, #f1d98a); stroke-linecap: round;
+  stroke-dasharray: 100; stroke-dashoffset: 100;
+  filter: drop-shadow(0 0 4px rgba(241, 217, 138, 0.7));
+  animation: bui-hold-fill var(--bui-hold-ms, 310ms) linear forwards;
+}
+@keyframes bui-hold-in { from { opacity: 0; transform: scale(.7); } }
+@keyframes bui-hold-fill { to { stroke-dashoffset: 0; } }
+
+/* ── Overlay ─────────────────────────────────────────────────── */
+.bui-overlay {
+  position: fixed; inset: 0; z-index: 10040;
+  display: flex; align-items: center; justify-content: center;
+  padding: max(10px, env(safe-area-inset-top, 0px)) max(10px, env(safe-area-inset-right, 0px))
+           max(10px, env(safe-area-inset-bottom, 0px)) max(10px, env(safe-area-inset-left, 0px));
+  box-sizing: border-box;
+  background: rgba(3, 9, 11, 0.62);
+  font-family: var(--jjk-font, 'Kaisei Tokumin', serif);
+  color: var(--jjk-text, #ece6d6);
+  -webkit-user-select: none; user-select: none; -webkit-touch-callout: none;
+  animation: bui-fade .16s ease-out both;
+}
+@keyframes bui-fade { from { opacity: 0; } }
+
+/* ── Panel ───────────────────────────────────────────────────── */
+.bui-panel {
+  position: relative; box-sizing: border-box;
+  width: min(440px, 100%); max-height: 100%;
+  display: flex; flex-direction: column;
+  /* The frame's corner ornaments are wider than its plain edges: the
+     image is painted 44px deep, the actual border only 14px, and the
+     padding keeps content clear of the corners. */
+  --bui-fw: 44px;
+  border: 14px solid transparent;
+  border-image: url('../assets/ui/battle/info_panel_frame_9s.webp') 172 fill / var(--bui-fw) stretch;
+  padding: 22px 6px 20px;
+  filter: drop-shadow(0 10px 26px rgba(0, 0, 0, 0.75));
+  animation: bui-pop .2s var(--jjk-ease, ease-out) both;
+}
+@keyframes bui-pop { from { opacity: 0; transform: translateY(8px) scale(.97); } }
+.bui-crest {
+  position: absolute; left: 50%; top: -14px; pointer-events: none;
+  width: calc(var(--bui-fw) * 194 / 172); aspect-ratio: 194 / 68;
+  transform: translateX(-50%);
+  background: url('../assets/ui/battle/info_panel_crest.webp') center / 100% 100% no-repeat;
+}
+
+.bui-close {
+  position: absolute; top: -2px; right: 4px; z-index: 2;
+  width: 36px; height: 36px; padding: 0; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(7, 20, 24, 0.92); color: var(--jjk-gold-hi, #f1d98a);
+  border: 1px solid rgba(201, 162, 78, 0.8);
+  transition: filter .15s, transform .12s;
+}
+.bui-close svg { width: 16px; height: 16px; }
+.bui-close:hover { filter: brightness(1.25); }
+.bui-close:active { transform: scale(.94); }
+.bui-close:focus-visible { outline: 2px solid var(--jjk-gold-hi, #f1d98a); outline-offset: 2px; }
+
+.bui-body {
+  min-height: 0; overflow-y: auto; overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  display: grid; gap: 8px;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas: "head" "equip" "tech" "skill" "status";
+  scrollbar-width: thin; scrollbar-color: rgba(201, 162, 78, 0.5) transparent;
+}
+.bui-head { grid-area: head; }
+.bui-equip { grid-area: equip; }
+.bui-tech { grid-area: tech; }
+.bui-skill { grid-area: skill; }
+.bui-status-sec { grid-area: status; }
+
+/* ── Header: portrait block + name + stats ───────────────────── */
+.bui-head { display: flex; gap: 12px; align-items: flex-start; padding-right: 40px; }
+.bui-face { position: relative; flex: 0 0 auto; width: 84px; padding-bottom: 26px; }
+.bui-portrait {
+  width: 84px; height: 84px; overflow: hidden;
+  background: rgba(3, 10, 12, 0.85);
+  border: 2px solid var(--jjk-gold, #c9a24e);
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.6), 0 2px 8px rgba(0, 0, 0, 0.6);
+}
+.bui-side-enemy .bui-portrait { border-color: #b0453a; }
+.bui-portrait img { width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; }
+.bui-el {
+  position: absolute; top: -8px; left: -8px; width: 28px; height: 28px;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.9));
+}
+.bui-stars {
+  position: absolute; left: 50%; top: 70px; transform: translateX(-50%);
+  display: inline-flex; align-items: center; gap: 2px;
+  padding: 0 7px 0 3px; height: 20px;
+  font-weight: 800; font-size: 13px; line-height: 20px; color: var(--jjk-gold-hi, #f1d98a);
+  background: rgba(5, 14, 17, 0.95); border: 1px solid rgba(201, 162, 78, 0.7);
+  text-shadow: 0 1px 2px #000; white-space: nowrap;
+}
+.bui-stars img { width: 15px; height: 15px; }
+.bui-lv {
+  position: absolute; left: 0; right: 0; bottom: 0; height: 18px;
+  text-align: center; font-weight: 700; font-size: 12px; line-height: 18px;
+  color: var(--jjk-text, #ece6d6);
+  background: rgba(45, 107, 115, 0.55); border: 1px solid rgba(201, 162, 78, 0.45);
+}
+
+.bui-id { flex: 1 1 auto; min-width: 0; }
+.bui-side {
+  font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--jjk-muted, #93a3a3);
+}
+.bui-name {
+  margin: 0; font-family: var(--jjk-font, serif); font-weight: 800; font-size: 20px; line-height: 1.15;
+  color: var(--jjk-text, #ece6d6); text-shadow: 0 2px 0 rgba(0, 0, 0, 0.6);
+  overflow-wrap: anywhere;
+}
+.bui-title { font-size: 13px; font-weight: 700; color: var(--jjk-gold-hi, #f1d98a); margin-top: 1px; }
+.bui-stats {
+  margin: 8px 0 0; padding: 5px 9px;
+  background: rgba(3, 10, 12, 0.6); border: 1px solid rgba(201, 162, 78, 0.35);
+}
+.bui-stat { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; padding: 1px 0; }
+.bui-stat dt { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 700; color: var(--jjk-text, #ece6d6); }
+.bui-stat dt svg { width: 14px; height: 14px; align-self: center; }
+.bui-stat-hp dt svg { color: #e0605a; }
+.bui-stat-atk dt svg { color: var(--jjk-gold, #c9a24e); }
+.bui-stat-range dt svg { color: #7fc7cf; }
+.bui-stat dd { margin: 0; white-space: nowrap; font-size: 14px; font-variant-numeric: tabular-nums; }
+.bui-stat dd b { font-weight: 800; }
+.bui-stat dd small { font-size: 11px; color: var(--jjk-muted, #93a3a3); }
+.bui-delta { margin-left: 6px; font-size: 12px; font-weight: 700; color: var(--jjk-good, #8fd49a); }
+.bui-delta.is-down { color: #ef7d6d; }
+.bui-stat dd b.is-up { color: var(--jjk-good, #8fd49a); }
+
+/* ── Equipment ───────────────────────────────────────────────── */
+.bui-equip {
+  display: flex; flex-wrap: wrap; gap: 6px; padding: 5px 8px;
+  background: rgba(3, 10, 12, 0.55); border: 1px solid rgba(201, 162, 78, 0.3);
+}
+.bui-item { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 700; }
+.bui-item em {
+  font-style: normal; font-size: 10px; letter-spacing: 1px; text-transform: uppercase;
+  padding: 1px 5px; color: var(--jjk-gold-hi, #f1d98a); border: 1px solid rgba(201, 162, 78, 0.6);
+}
+
+/* ── Section plates + tabs ───────────────────────────────────── */
+.bui-sec { min-width: 0; }
+.bui-tabrow { display: flex; gap: 4px; align-items: flex-end; }
+.bui-plate {
+  position: relative; margin: 0; box-sizing: border-box;
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 118px; height: 30px; padding: 0 20px;
+  font-family: var(--jjk-font, serif); font-weight: 800; font-size: 13px; letter-spacing: .3px;
+  color: var(--jjk-gold-hi, #f1d98a); text-shadow: 0 1px 2px rgba(0, 0, 0, 0.95);
+  white-space: nowrap;
+  background: url('../assets/ui/battle/info_tab.webp') center / 100% 100% no-repeat;
+  border: 0;
+}
+button.bui-tab {
+  cursor: pointer; font-size: 12px;
+  background-image: url('../assets/ui/battle/info_tab_off.webp');
+  color: rgba(236, 230, 214, 0.78);
+  transition: filter .15s;
+}
+button.bui-tab:hover { filter: brightness(1.15); }
+button.bui-tab.is-active { background-image: url('../assets/ui/battle/info_tab.webp'); color: var(--jjk-gold-hi, #f1d98a); }
+button.bui-tab:focus-visible { outline: 2px solid var(--jjk-gold-hi, #f1d98a); outline-offset: -2px; }
+
+.bui-card {
+  padding: 7px 10px;
+  background: rgba(3, 10, 12, 0.62);
+  border: 1px solid rgba(201, 162, 78, 0.4);
+}
+.bui-skill-name {
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  font-weight: 800; font-size: 15px; color: var(--jjk-text, #ece6d6);
+  padding-bottom: 4px; margin-bottom: 4px;
+  border-bottom: 1px solid rgba(201, 162, 78, 0.28);
+}
+.bui-cost {
+  flex: 0 0 auto; display: inline-flex; align-items: baseline; gap: 2px;
+  padding: 0 7px; font-size: 13px; line-height: 20px;
+  color: #bfe9f0; background: rgba(45, 107, 115, 0.55); border: 1px solid rgba(127, 199, 207, 0.6);
+}
+.bui-cost small { font-size: 9px; letter-spacing: .5px; color: #8fc4cb; }
+.bui-skill-meta { display: flex; flex-wrap: wrap; gap: 4px 12px; margin-bottom: 4px; font-size: 11px; color: var(--jjk-muted, #93a3a3); }
+.bui-lock { color: #ef9d6d; }
+.bui-desc { margin: 0; font-size: 13px; line-height: 1.45; color: var(--jjk-text, #ece6d6); }
+.bui-none { color: var(--jjk-muted, #93a3a3); font-style: italic; }
+.bui-pane[hidden] { display: none; }
+
+/* ── Status effects ──────────────────────────────────────────── */
+.bui-status { min-height: 30px; }
+.bui-st-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+.bui-st {
+  display: flex; align-items: center; gap: 8px; padding: 2px 6px 2px 2px;
+  border-left: 3px solid var(--st-c, #888);
+  background: rgba(255, 255, 255, 0.03);
+}
+.bui-st img, .bui-st > i { width: 24px; height: 24px; flex: 0 0 auto; border-radius: 50%; background: rgba(0, 0, 0, 0.4); }
+.bui-st-name { flex: 1 1 auto; min-width: 0; font-size: 13px; font-weight: 700; }
+.bui-st-name small { display: block; font-size: 11px; font-weight: 500; color: var(--jjk-muted, #93a3a3); }
+.bui-st-debuff .bui-st-name { color: #f2b3a8; }
+.bui-st-turns { flex: 0 0 auto; font-size: 12px; color: var(--jjk-gold-hi, #f1d98a); }
+
+/* ── Landscape phones: two columns, fits ~390px of height ────── */
+@media (orientation: landscape) and (max-height: 540px) {
+  .bui-overlay { padding: 6px max(10px, env(safe-area-inset-right, 0px)) 6px max(10px, env(safe-area-inset-left, 0px)); }
+  .bui-panel { width: min(800px, 100%); --bui-fw: 34px; border-width: 10px; padding: 16px 6px 14px; }
+  .bui-crest { top: -10px; }
+  .bui-close { width: 30px; height: 30px; top: -4px; right: 6px; }
+  .bui-body {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.12fr);
+    grid-template-rows: auto auto 1fr;
+    grid-template-areas: "head tech" "equip tech" "status skill";
+    column-gap: 12px; row-gap: 6px; align-items: start;
+  }
+  .bui-tech { grid-row: 1 / span 2; }
+  .bui-skill { padding-right: 0; }
+  .bui-face { width: 70px; padding-bottom: 24px; }
+  .bui-portrait { width: 70px; height: 70px; }
+  .bui-stars { top: 57px; }
+  .bui-head { gap: 10px; padding-right: 0; }
+  .bui-tech .bui-tabrow { padding-right: 38px; }
+  .bui-name { font-size: 17px; }
+  .bui-title { font-size: 12px; }
+  .bui-stats { margin-top: 5px; padding: 3px 8px; }
+  .bui-stat dt, .bui-stat dd { font-size: 12px; }
+  .bui-plate { height: 25px; font-size: 12px; min-width: 100px; padding: 0 16px; }
+  .bui-card { padding: 5px 8px; }
+  .bui-skill-name { font-size: 14px; }
+  .bui-desc { font-size: 12px; line-height: 1.38; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bui-overlay, .bui-panel, .bui-hold { animation: none; }
+}

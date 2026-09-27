@@ -59,8 +59,10 @@ class SummonUIController {
     this.elements.multiBtn?.addEventListener('click', () => this.handleMultiSummon());
     this.elements.continueBtn?.addEventListener('click', () => this.hideResults());
 
-    // Modal overlay click to close
-    this.elements.modal?.querySelector('.modal-overlay')?.addEventListener('click', () => this.hideResults());
+    // Modal overlay click to close (not while papers are still face-down)
+    this.elements.modal?.querySelector('.modal-overlay')?.addEventListener('click', () => {
+      if (!window.SummonReveal?.isSealed()) this.hideResults();
+    });
 
     // Refresh currency display every 2 seconds to catch changes from other pages
     setInterval(() => this.updateCurrencyDisplay(), 2000);
@@ -193,6 +195,36 @@ class SummonUIController {
     return character;
   }
 
+  // Flags each pull whose unit the player has never owned before (checked
+  // BEFORE the pulls are added). Ownership counts any awakened form of the
+  // same base unit, plus every unit ever summoned (blazing_summon_seen_v1), so
+  // fusing/selling a unit away doesn't make it "NEW" again. A unit pulled
+  // twice in one multi is only NEW the first time.
+  _markNew(entries) {
+    const SEEN_KEY = 'blazing_summon_seen_v1';
+    const baseOf = (id) => {
+      try { return window.SummonEvolve ? window.SummonEvolve.baseIdOf(id) : id; } catch (e) { return id; }
+    };
+    let seen = [];
+    try { seen = JSON.parse(localStorage.getItem(SEEN_KEY)) || []; } catch (e) {}
+    if (!Array.isArray(seen)) seen = [];
+    const owned = new Set(seen);
+    (window.InventoryChar?.allInstances() || []).forEach(inst => {
+      if (inst && inst.charId) { owned.add(inst.charId); owned.add(baseOf(inst.charId)); }
+    });
+
+    entries.forEach(entry => {
+      const c = entry && entry.character;
+      if (!c) return;
+      const base = baseOf(c.id);
+      entry.isNew = !owned.has(c.id) && !owned.has(base);
+      owned.add(c.id); owned.add(base);
+    });
+
+    try { localStorage.setItem(SEEN_KEY, JSON.stringify([...owned])); } catch (e) {}
+    return entries;
+  }
+
   async handleSingleSummon() {
     const pearls = window.Resources?.get('ninja_pearls') || 0;
 
@@ -212,6 +244,9 @@ class SummonUIController {
     // Deduct cost only once the pull succeeded
     window.Resources?.subtract('ninja_pearls', this.costs.single);
 
+    // NEW check must run before the copy lands in the inventory
+    const entry = this._markNew([{ character: characterData, summonData: result }])[0];
+
     // Add to inventory
     window.InventoryChar?.addCopy(characterData.id, 1);
 
@@ -220,7 +255,7 @@ class SummonUIController {
 
     // Show animation and results
     await window.SummonAnimator?.playSummonAnimation('single');
-    this.displayResults([{ character: characterData, summonData: result }]);
+    this.displayResults([entry]);
 
     // Update UI
     this.updateCurrencyDisplay();
@@ -249,6 +284,9 @@ class SummonUIController {
     // Deduct cost only once the pull succeeded
     window.Resources?.subtract('ninja_pearls', this.costs.multi);
 
+    // NEW check must run before the copies land in the inventory
+    this._markNew(characters);
+
     // Add to inventory
     characters.forEach(({character}) => {
       if (character) {
@@ -275,6 +313,7 @@ class SummonUIController {
     if (!this.elements.resultGrid) return;
 
     // Clear previous results (and any animated 7-star art from the last reveal)
+    window.SummonReveal?.reset();
     window.SevenStarAnim?.unmountAll(this.elements.resultGrid);
     this.elements.resultGrid.innerHTML = '';
 
@@ -305,16 +344,23 @@ class SummonUIController {
     }
 
     // Create result cards. Star tier drives the frame (4★ plain, 5★ gold glint,
-    // 6★/7★ stronger); --i staggers the reveal in grid order.
+    // 6★/7★ stronger). Each card starts face-down under a paper whose
+    // colour tells its star tier (see summon-reveal.js); --i staggers the deal.
     const frag = document.createDocumentFragment();
     let shown = 0;
-    results.forEach(({character, summonData}) => {
+    let fresh = 0;
+    results.forEach(({character, summonData, isNew}) => {
       if (!character) return;
 
       const stars = Math.max(1, Math.min(7, Number(character.rarity) || 4));
+      const slot = window.SummonReveal
+        ? window.SummonReveal.createSlot(character, stars, !!isNew, shown)
+        : null;
       const card = document.createElement('div');
       card.className = `result-card rarity-${summonData.rarity} stars-${stars}`;
-      card.style.setProperty('--i', shown++);
+      if (!slot) card.style.setProperty('--i', shown);
+      shown++;
+      if (isNew) fresh++;
 
       if (summonData.isFeatured) {
         card.classList.add('featured');
@@ -331,18 +377,21 @@ class SummonUIController {
             <div class="result-card-rarity" aria-label="${stars} stars">${'★'.repeat(stars)}</div>
           </div>
           ${summonData.isFeatured ? '<div class="result-card-featured">Featured</div>' : ''}
+          ${isNew ? '<div class="result-card-new">New</div>' : ''}
         </div>
       `;
 
-      frag.appendChild(card);
+      if (slot) { slot.appendChild(card); frag.appendChild(slot); }
+      else frag.appendChild(card);
 
       // Animated 7-star art (units with fx7): the full layered animation
       // replaces the static portrait in the reveal card.
       if (window.SevenStarAnim?.has(character)) {
         const inner = card.querySelector('.result-card-inner');
-        const img = inner?.querySelector('img');
+        // (the portrait sits inside .result-card-art: swap that whole block)
+        const art = inner?.querySelector('.result-card-art');
         const a7 = window.SevenStarAnim.mount(inner, character, { particles: results.length > 1 ? 8 : 14 });
-        if (a7 && img) { inner.insertBefore(a7, img); img.remove(); }
+        if (a7 && art) { inner.insertBefore(a7, art); art.remove(); }
         if (a7) { card.classList.add('has-a7'); card.style.setProperty('--fx7c', character.fx7.color || ''); }
       }
     });
@@ -354,16 +403,21 @@ class SummonUIController {
       summary.innerHTML =
         `<span><b>${shown}</b> Summoned</span>` +
         (stats.gold ? `<span><b>${stats.gold}</b> Gold</span>` : '') +
-        (stats.featured ? `<span class="is-featured"><b>${stats.featured}</b> Featured</span>` : '');
+        (stats.featured ? `<span class="is-featured"><b>${stats.featured}</b> Featured</span>` : '') +
+        (fresh ? `<span class="is-new"><b>${fresh}</b> New</span>` : '');
     }
     const count = document.getElementById('sr-count');
-    if (count) count.innerHTML = `<i>×</i>${shown}`;
+    if (count) {
+      count.innerHTML = `<i>×</i>${shown}`;
+      count.dataset.digits = String(shown).length; // ×10 sets smaller to fit the stub
+    }
     this.elements.modal?.style.setProperty('--sr-n', shown);
     const unit = document.getElementById('sr-unit');
     if (unit) unit.textContent = shown === 1 ? 'Unit' : 'Units';
 
-    // Show results
+    // Show results, face-down until every paper is opened
     this.showResults();
+    window.SummonReveal?.begin(this.elements.modal, this.elements.resultGrid);
   }
 
   calculateResultStats(results) {
@@ -423,6 +477,7 @@ class SummonUIController {
   }
 
   hideResults() {
+    window.SummonReveal?.reset();
     window.SevenStarAnim?.unmountAll(this.elements.resultGrid);
     if (this.elements.modal) {
       this.elements.modal.style.display = 'none';

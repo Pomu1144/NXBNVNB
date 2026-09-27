@@ -54,7 +54,7 @@ body.page-tools button, body.page-tools input, body.page-tools select { font-fam
   color: var(--jjk-gold-hi); text-shadow: 0 1px 0 #000;
 }
 .tl-count, .tl-set { font-size: 12px; padding: 1px 10px; }
-.tl-set { color: var(--jjk-good); border-color: rgba(143,212,154,0.6); }
+.tl-set { color: var(--jjk-good); border-color: rgba(241,217,138,0.6); }
 
 /* ── Search + sort/filter ───────────────────────────────────── */
 .tl-search {
@@ -247,9 +247,9 @@ body.page-tools button, body.page-tools input, body.page-tools select { font-fam
 .tl-stat dd b { font-size: 17px; font-weight: 800; }
 .tl-bonus { font-size: 12px; font-weight: 800; color: var(--jjk-good); }
 .tl-stat .tl-bar { grid-column: 1 / -1; height: 4px; margin-top: 4px; border-color: rgba(201,162,78,0.2); }
-.tl-stat.has-bonus { border-left-color: var(--jjk-good); background: linear-gradient(90deg, rgba(143,212,154,0.12), rgba(3,10,12,0.5) 60%); }
-.tl-stat.has-bonus dd b { color: #d9f5dc; }
-.tl-stat.has-bonus .tl-bar > i { background: linear-gradient(90deg, #3c7a47, var(--jjk-good)); }
+.tl-stat.has-bonus { border-left-color: var(--jjk-good); background: linear-gradient(90deg, rgba(241,217,138,0.12), rgba(3,10,12,0.5) 60%); }
+.tl-stat.has-bonus dd b { color: #f6ecc8; }
+.tl-stat.has-bonus .tl-bar > i { background: linear-gradient(90deg, #8a6a2c, var(--jjk-good)); }
 .tl-stat--power { border-top: 1px solid var(--tl-line-soft); background: none; padding-top: 8px; }
 .tl-stat--power dd b { font-size: 20px; color: var(--jjk-gold-hi); }
 

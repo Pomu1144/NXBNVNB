@@ -403,6 +403,10 @@
     }
   };
 
+  // Shared with the long-press unit info panel (battle-unit-info.js)
+  StatusEffectUI.describe = describe;
+  StatusEffectUI.iconUrl = iconUrl;
+
   window.StatusEffectUI = StatusEffectUI;
   if (typeof document !== "undefined" && /battle|arena/i.test(location.pathname)) {
     const go = () => StatusEffectUI.start();

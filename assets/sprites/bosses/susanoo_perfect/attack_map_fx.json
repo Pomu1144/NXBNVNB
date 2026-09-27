@@ -1,0 +1,21 @@
+{
+  "frameWidth": 1024,
+  "frameHeight": 512,
+  "frames": 15,
+  "columns": 4,
+  "fps": 12,
+  "loop": false,
+  "hits": [
+    1,
+    4,
+    6
+  ],
+  "heightScale": 1.0,
+  "anchorX": 0.5,
+  "anchorY": 0.95,
+  "fxOnly": true,
+  "groundY": 0.95,
+  "centerX": 0.5,
+  "heightUnits": 3.0,
+  "fieldWide": true
+}

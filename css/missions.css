@@ -15,258 +15,6 @@ body {
 
 /* Background handled by background.css + .page-missions #full-bg rule */
 
-/* Mission Container - Positioned on the Right */
-.mission-page-container {
-  position: fixed;
-  top: 50%;
-  right: 2%;
-  transform: translateY(-50%);
-  width: 55%;
-  max-width: 850px;
-  max-height: 72vh;
-  padding: 30px;
-  background: rgba(40, 40, 40, 0.6);
-  border: 4px solid #8b7355;
-  border-radius: 12px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.8);
-  overflow: hidden;
-  backdrop-filter: blur(8px);
-  z-index: 1;
-}
-
-/* Title */
-.page-title {
-  font-size: 32px;
-  font-weight: 700;
-  text-align: center;
-  margin-bottom: 20px;
-  color: #b8860b;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
-  letter-spacing: 2px;
-}
-
-/* Mission Tabs */
-.mission-tabs {
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-  flex-wrap: wrap;
-  margin-bottom: 20px;
-}
-
-.tab-btn {
-  position: relative;
-  font-family: 'Cinzel', 'Georgia', serif;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  padding: 13px 30px;
-  min-height: 46px;
-  border: none;
-  /* Clip the plate's rectangular bounding box to a pill so the dark image
-     corners are removed and the glow follows the plate shape */
-  border-radius: 999px;
-  overflow: hidden;
-  background: url("../assets/ui/generated/mission_tab_plate.webp") center / 100% 100% no-repeat, transparent;
-  color: #efe0c0;
-  cursor: pointer;
-  text-transform: uppercase;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
-  filter: brightness(0.85) saturate(0.9);
-  transition: transform 0.2s ease, filter 0.2s ease;
-}
-.tab-btn .tab-label { position: relative; z-index: 2; }
-
-/* per-category accent glow (bottom bar + hover/active halo) */
-.tab-btn::after {
-  content: "";
-  position: absolute;
-  left: 24%; right: 24%; bottom: 8px;
-  height: 2px; border-radius: 2px;
-  background: var(--cat, #d9c3a2);
-  opacity: 0.55;
-  box-shadow: 0 0 8px var(--cat, #d9c3a2);
-  transition: opacity 0.2s ease;
-}
-.tab-btn[data-category="super-impact"]              { --cat: #ff6b45; }
-.tab-btn[data-category="impact-missions"]           { --cat: #ffd24a; }
-.tab-btn[data-category="shinobi-chronicles-part-1"] { --cat: #7fdc8f; }
-.tab-btn[data-category="shinobi-chronicles-part-2"] { --cat: #7fb2ff; }
-.tab-btn[data-category="limited-time-event"]        { --cat: #d67fff; }
-.tab-btn[data-category="growth-missions"]           { --cat: #7fdcdc; }
-
-.tab-btn:hover {
-  filter: brightness(1) saturate(1);
-  transform: translateY(-1px);
-  color: #fff;
-}
-.tab-btn.active {
-  filter: brightness(1.18) saturate(1.05);
-  color: #fff;
-  transform: translateY(-1px) scale(1.03);
-  box-shadow: 0 0 18px color-mix(in srgb, var(--cat, #ffd396) 55%, transparent);
-}
-.tab-btn.active::after { opacity: 1; height: 3px; }
-
-/* Mission list scroll */
-.mission-list-container {
-  background: rgba(20, 20, 20, 0.55);
-  border: 2px solid rgba(80, 80, 80, 0.5);
-  border-radius: 8px;
-  padding: 12px;
-  height: 60vh;
-  overflow-y: auto;
-}
-
-/* Mission Card */
-.mission-card {
-  background: rgba(30, 30, 30, 0.55);
-  border: 2px solid rgba(100, 100, 100, 0.5);
-  border-radius: 10px;
-  margin-bottom: 22px;
-  padding: 12px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-/* Mission Banner — show the FULL art (no cropping of Super Impact banners) */
-.mission-banner {
-  width: 100%;
-  aspect-ratio: 2.6 / 1;   /* matches the composed Super Impact banner art */
-  height: auto;
-  object-fit: contain;      /* never crop the character/title art */
-  object-position: center;
-  border-radius: 8px;
-  border: 1.5px solid rgba(212, 175, 55, 0.4);
-  background:
-    radial-gradient(circle at 50% 40%, rgba(40,40,60,0.5), rgba(8,8,14,0.9)) ,
-    rgba(12, 12, 18, 0.85) !important;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
-}
-.mission-banner-fallback { aspect-ratio: 2.6 / 1; height: auto; }
-
-/* Styled stand-in when the banner art file is missing */
-.mission-banner-fallback {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-  gap: 4px;
-  padding: 12px 18px;
-  overflow: hidden;
-}
-.mission-banner-fallback .mbf-category {
-  font-family: "Cinzel", serif;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  opacity: 0.85;
-}
-.mission-banner-fallback .mbf-name {
-  font-family: "Cinzel", serif;
-  font-size: clamp(16px, 2.4vw, 24px);
-  font-weight: 700;
-  color: #f4efe3;
-  letter-spacing: 1px;
-  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.9), 0 0 22px rgba(0, 0, 0, 0.5);
-  line-height: 1.15;
-}
-
-/* Difficulty icon row */
-.difficulty-icons-container {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  justify-content: flex-start;
-  margin-top: 5px;
-}
-
-/* Rank icons */
-.difficulty-icon-btn {
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 4px;
-  transition: transform 0.15s ease, opacity 0.2s ease;
-}
-
-.difficulty-icon-btn img {
-  width: 48px;
-  height: 48px;
-  image-rendering: crisp-edges;
-  image-rendering: -webkit-optimize-contrast;
-  filter: drop-shadow(0 0 3px rgba(0,0,0,0.5));
-}
-
-/* Selected difficulty */
-.difficulty-icon-btn.active {
-  transform: scale(1.15);
-  filter: drop-shadow(0 0 8px rgba(255,215,0,0.9));
-}
-
-/* On hover */
-.difficulty-icon-btn:hover {
-  transform: scale(1.1);
-}
-
-/* Start Mission button — Aesthetic redesign */
-.start-btn {
-  margin-left: auto;
-  padding: 10px 22px;
-  font-size: 14px;
-  font-weight: 700;
-  background: url("../assets/ui/generated/button_gold.webp") center / 100% 100% no-repeat;
-  border: none;
-  color: #14100a;
-  text-shadow: 0 1px 0 rgba(255, 235, 170, 0.5);
-  border-radius: 6px;
-  cursor: pointer;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-  transition: all .25s ease;
-}
-
-.start-btn:hover {
-  transform: translateY(-2px) scale(1.03);
-  filter: brightness(1.22);
-  box-shadow: 0 6px 14px rgba(0,0,0,0.6), 0 0 14px rgba(255,213,150,.5);
-}
-
-.start-btn:active {
-  transform: scale(0.97);
-  box-shadow: inset 0 4px 8px rgba(0,0,0,0.5);
-}
-
-/* ---------- Locked missions (gated behind a prerequisite clear) ---------- */
-.mission-card.mission-locked {
-  filter: grayscale(0.6) brightness(0.72);
-  position: relative;
-}
-.mission-card.mission-locked .mission-banner,
-.mission-card.mission-locked .mission-banner-fallback {
-  opacity: 0.6;
-}
-.mission-card.mission-locked .start-btn {
-  filter: grayscale(1) brightness(0.8);
-  cursor: not-allowed;
-  pointer-events: none;
-  opacity: 0.75;
-}
-.mission-lock-note {
-  flex-basis: 100%;
-  width: 100%;
-  margin-top: 6px;
-  font-size: 12px;
-  font-weight: 600;
-  color: #ffcf8a;
-  text-align: center;
-  letter-spacing: 0.3px;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.7);
-}
-
 /* HUD Bottom Bar */
 .bottom-bar {
   position: fixed;
@@ -304,14 +52,17 @@ body {
 }
 
 /* ==========================================================================
-   JJK ink-teal theme pass (header = .jjk-page-header in missions.html)
+   JJK ink-teal theme (header = .jjk-page-header in missions.html)
+   Page = one wide panel: tab row on top, a grid of banner cards below
+   (the only scroller). Tapping a card opens the detail sheet
+   (.mission-modal, built by js/missions.js).
    ========================================================================== */
 body.page-missions {
   font-family: var(--jjk-font);
   color: var(--jjk-text);
   background: var(--jjk-ink, #071418);
 }
-/* teal ink wash over the looping video, heavier on the panel side */
+/* teal ink wash over the looping video */
 body.page-missions::after {
   content: "";
   position: fixed;
@@ -319,23 +70,21 @@ body.page-missions::after {
   z-index: 0;
   pointer-events: none;
   background:
-    linear-gradient(90deg, rgba(4, 14, 17, 0.35) 0%, rgba(4, 14, 17, 0.2) 35%, rgba(4, 12, 15, 0.8) 60%, rgba(3, 9, 11, 0.92) 100%),
-    linear-gradient(180deg, rgba(3, 9, 11, 0.75) 0%, transparent 18%, transparent 80%, rgba(3, 9, 11, 0.8) 100%);
-  mix-blend-mode: normal;
+    linear-gradient(180deg, rgba(3, 9, 11, 0.8) 0%, rgba(4, 14, 17, 0.45) 20%, rgba(4, 14, 17, 0.55) 80%, rgba(3, 9, 11, 0.85) 100%);
 }
 body.page-missions .jjk-page-header { z-index: 900; }
 
 body.page-missions .mission-page-container {
-  top: var(--jjk-header-h);
-  bottom: calc(var(--dock-h, 64px) + 14px);
-  transform: none;
-  max-height: none;
+  position: fixed;
+  top: var(--jjk-header-h, 78px);
+  bottom: calc(var(--dock-h, 64px) + var(--dock-safe-b, 0px) + 14px);
+  left: max(20px, 2.5vw);
+  right: max(20px, 2.5vw);
+  max-width: 1400px;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
-  padding: 18px 20px 20px;
-  border-radius: 0;
-  overflow: visible;
-  backdrop-filter: none;
+  padding: 14px 16px 16px;
   background: linear-gradient(180deg, rgba(14, 38, 45, 0.9), rgba(6, 17, 21, 0.94));
   border: 1px solid rgba(201, 162, 78, 0.5);
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6), inset 0 0 0 1px rgba(0, 0, 0, 0.5);
@@ -349,158 +98,609 @@ body.page-missions .mission-page-container::after {
 body.page-missions .mission-page-container::before { top: -3px; left: -3px; border-right: 0; border-bottom: 0; }
 body.page-missions .mission-page-container::after  { bottom: -3px; right: -3px; border-left: 0; border-top: 0; }
 
-/* Category tabs (generated by js/missions.js as .tab-btn) -> JJK plates */
-body.page-missions .mission-tabs { flex: none; gap: 4px 2px; margin-bottom: 14px; }
-body.page-missions .mission-tabs .tab-btn {
+/* ---------- Category tabs (js/missions.js builds one .tab-btn per category) ---------- */
+.mission-tabs {
+  display: flex;
+  flex: none;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px 2px;
+  margin-bottom: 12px;
+}
+.tab-btn {
+  position: relative;
   min-width: 120px;
-  min-height: 0;
   height: 38px;
-  padding: 0 24px;
-  border-radius: 0;
-  overflow: visible;
+  padding: 0 22px;
+  border: 0;
   box-sizing: border-box;
+  cursor: pointer;
   background: none;
   border-image: url('../assets/ui/jjk/btn_ticket.webp') 36 fill / var(--jjk-tkt-w, 14px) stretch;
   filter: brightness(0.82) saturate(0.85);
-  box-shadow: none;
-  transform: none;
   font-family: var(--jjk-font);
   font-weight: 700;
   font-size: 13.5px;
   letter-spacing: 0.02em;
-  text-transform: none;
   color: rgba(236, 230, 214, 0.8);
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
   white-space: nowrap;
 }
-/* category accent: a small lacquer tick instead of a glowing underline */
-body.page-missions .mission-tabs .tab-btn::after {
-  left: 50%; right: auto; bottom: 5px;
+.tab-btn .tab-label { position: relative; z-index: 2; }
+/* category accent: a small lacquer tick */
+.tab-btn::after {
+  content: "";
+  position: absolute;
+  left: 50%; bottom: 5px;
   width: 18px; height: 2px; margin-left: -9px;
-  border-radius: 0;
-  box-shadow: none;
+  background: var(--cat, #d9c3a2);
   opacity: 0.8;
 }
-body.page-missions .tab-btn[data-category="limited-time-event"] { --cat: #d0573c; }
-body.page-missions .mission-tabs .tab-btn:hover {
-  filter: none;
-  transform: none;
-  color: var(--jjk-text);
-}
-body.page-missions .mission-tabs .tab-btn.active {
+.tab-btn[data-category="super-impact"]              { --cat: #ff6b45; }
+.tab-btn[data-category="impact-missions"]           { --cat: #ffd24a; }
+.tab-btn[data-category="shinobi-chronicles-part-1"] { --cat: #f1d98a; }
+.tab-btn[data-category="shinobi-chronicles-part-2"] { --cat: #7fb2ff; }
+.tab-btn[data-category="limited-time-event"]        { --cat: #d0573c; }
+.tab-btn[data-category="growth-missions"]           { --cat: #7fdcdc; }
+.tab-btn:hover { filter: none; color: var(--jjk-text); }
+.tab-btn.active {
   border-image-source: url('../assets/ui/jjk/btn_ticket_red.webp');
+  filter: none;
   font-weight: 800;
   color: var(--jjk-gold-hi, #f1d98a);
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.95), 0 0 8px rgba(60, 0, 0, 0.6);
-  filter: none;
-  transform: none;
-  box-shadow: none;
 }
-body.page-missions .mission-tabs .tab-btn.active::after { opacity: 0; }
+.tab-btn.active::after { opacity: 0; }
 
-/* List + cards */
-body.page-missions .mission-list-container {
-  flex: 1 1 auto;
-  min-height: 0;
-  height: auto;
-  border-radius: 0;
-  background: rgba(3, 10, 12, 0.55);
-  border: 1px solid rgba(201, 162, 78, 0.2);
-  scrollbar-width: thin;
-  scrollbar-color: rgba(201, 162, 78, 0.45) transparent;
-}
-body.page-missions .mission-card {
-  border-radius: 0;
-  background: linear-gradient(180deg, rgba(19, 48, 57, 0.7), rgba(7, 20, 24, 0.85));
-  border: 1px solid rgba(201, 162, 78, 0.3);
-  margin-bottom: 14px;
-}
-body.page-missions .mission-banner {
-  border-radius: 0;
-  border: 1px solid rgba(201, 162, 78, 0.35);
-}
-body.page-missions .mission-banner-fallback .mbf-category,
-body.page-missions .mission-banner-fallback .mbf-name { font-family: var(--jjk-font); }
-body.page-missions .start-btn {
-  min-width: 150px;
-  height: 44px;
-  padding: 0 28px;
-  border-radius: 0;
-  border: 0;
-  box-sizing: border-box;
-  background: none;
-  border-image: url('../assets/ui/jjk/btn_ticket_red.webp') 36 fill / var(--jjk-tkt-w, 14px) stretch;
-  box-shadow: none;
-  font-family: var(--jjk-font);
-  font-weight: 800;
-  font-size: 15px;
-  letter-spacing: 0.02em;
-  text-transform: none;
-  color: var(--jjk-gold-hi, #f1d98a);
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.95), 0 0 8px rgba(60, 0, 0, 0.6);
-}
-body.page-missions .mission-card.mission-locked .start-btn {
-  border-image-source: url('../assets/ui/jjk/btn_ticket_off.webp');
-  color: #8f9a98;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
-  filter: none;
-  opacity: 1;
-}
-body.page-missions .start-btn:hover { transform: none; filter: brightness(1.12); box-shadow: none; }
-body.page-missions .start-btn:active { transform: translateY(1px) scale(0.98); box-shadow: none; }
-body.page-missions .mission-lock-note { font-family: var(--jjk-font); color: var(--jjk-gold-hi); }
-
-/* Mobile (compact landscape): layout lives in css/mobile.css "Missions" */
-html.is-mobile.is-landscape.is-compact body.page-missions .mission-page-container {
-  border-width: 1px !important;
-}
-html.is-mobile.is-landscape.is-compact body.page-missions .mission-tabs .tab-btn {
-  min-width: 0 !important;
-  height: 28px !important;
-  min-height: 0 !important;
-  padding: 0 14px !important;
-  font-size: 11px !important;
-}
-html.is-mobile.is-landscape.is-compact body.page-missions .start-btn {
-  min-width: 110px;
-  height: 34px;
-  font-size: 13px;
-}
-
-/* ---------- Scrolling: the list is the page's only scroller ----------
+/* ---------- List: the page's only scroller ----------
    (html/body never scroll; header, panel and dock are fixed). JS in
    missions.js forwards wheel/drag from outside the list to it. */
-body.page-missions .mission-list-container {
+.mission-list-container {
+  flex: 1 1 auto;
+  min-height: 0;
+  padding: 10px;
+  background: rgba(3, 10, 12, 0.55);
+  border: 1px solid rgba(201, 162, 78, 0.2);
   overflow-y: auto;
   overflow-x: hidden;
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
   touch-action: pan-y;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(201, 162, 78, 0.45) transparent;
 }
-/* tab row: horizontal swipes only, vertical drags are routed to the list */
-body.page-missions .mission-tabs { touch-action: pan-x; }
+body.page-missions .mission-tabs,
 body.page-missions .mission-tabs .tab-btn { touch-action: pan-x; }
 
-/* Rank without icon art (e.g. "D") falls back to text: was browser-default
-   black on the dark card */
-body.page-missions .difficulty-icon-btn.difficulty-fallback {
-  min-width: 48px;
-  height: 48px;
-  padding: 0 10px;
-  font-family: var(--jjk-font);
-  font-size: 20px;
+.mission-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+  gap: 10px;
+}
+.mission-list-head {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 0 2px 2px;
+  font-size: 13px;
+  color: var(--jjk-muted, #93a3a3);
+}
+.mission-list-head .mlh-count { flex: none; color: var(--jjk-gold-hi); }
+
+/* ---------- Mission card: banner art + HTML title ---------- */
+.mission-card {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 2.45 / 1;
+  padding: 0;
+  overflow: hidden;
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+  background: var(--jjk-ink-2, #0c2229);
+  border: 1px solid rgba(201, 162, 78, 0.45);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45), inset 0 0 0 1px rgba(0, 0, 0, 0.6);
+  transition: transform .15s var(--jjk-ease), border-color .15s, filter .15s;
+}
+.mission-card:hover { border-color: var(--jjk-gold, #c9a24e); filter: brightness(1.08); }
+.mission-card:active { transform: scale(0.985); }
+.mission-card:focus-visible { outline: 2px solid var(--jjk-gold-hi); outline-offset: 2px; }
+
+.mc-art { position: absolute; inset: 0; overflow: hidden; }
+.mc-art .mission-banner {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 35%;
+  display: block;
+}
+/* missing art: ink wash instead of a broken-image icon */
+.mc-art .mission-banner.is-missing {
+  background:
+    repeating-linear-gradient(-55deg, transparent 0 14px, rgba(0, 0, 0, 0.18) 14px 16px),
+    linear-gradient(100deg, #0c2229, #133039 55%, #071418);
+}
+/* featured unit: its square card art, faded into the banner on the right */
+.mc-art .mc-feature {
+  position: absolute;
+  top: 0; right: 0;
+  height: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  object-position: center 30%;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 38%);
+  mask-image: linear-gradient(90deg, transparent 0%, #000 38%);
+}
+/* story arcs: boss medallion, top-right */
+.mc-art .mc-medal {
+  position: absolute;
+  top: 8px; right: 8px;
+  width: 22%;
+  max-width: 64px;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border: 2px solid var(--jjk-gold, #c9a24e);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
+  background: var(--jjk-ink);
+}
+.mc-shade {
+  position: absolute; inset: 0;
+  background:
+    linear-gradient(90deg, rgba(4, 12, 15, 0.88) 0%, rgba(4, 12, 15, 0.55) 38%, rgba(4, 12, 15, 0) 62%),
+    linear-gradient(0deg, rgba(4, 12, 15, 0.9) 0%, rgba(4, 12, 15, 0) 42%);
+}
+.mc-text {
+  position: absolute;
+  left: 12px; top: 10px;
+  right: 34%;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  pointer-events: none;
+}
+.mc-kicker {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--jjk-gold, #c9a24e);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.95);
+}
+.mc-title {
+  font-family: var(--jjk-font-script);
+  font-size: clamp(17px, 1.7vw, 23px);
+  line-height: 1.12;
+  color: #fff6de;
+  text-shadow: 0 2px 0 rgba(0, 0, 0, 0.8), 0 0 14px rgba(0, 0, 0, 0.8), 0 0 2px #000;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.mc-meta {
+  position: absolute;
+  left: 10px; right: 10px; bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  pointer-events: none;
+}
+.mc-pips { display: flex; gap: 3px; margin-right: auto; }
+.mc-pip {
+  min-width: 22px;
+  height: 20px;
+  padding: 0 4px;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-style: normal;
+  font-size: 11px;
   font-weight: 800;
-  color: var(--jjk-gold-hi, #f0d58a);
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
-  background: rgba(3, 10, 12, 0.6);
-  border: 1px solid rgba(201, 162, 78, 0.55);
+  color: rgba(236, 230, 214, 0.75);
+  background: rgba(3, 10, 12, 0.8);
+  border: 1px solid rgba(201, 162, 78, 0.4);
 }
-body.page-missions .difficulty-icon-btn.difficulty-fallback.active {
-  color: #fff4cf;
-  border-color: var(--jjk-gold, #c9a24e);
+.mc-pip.is-clear {
+  color: #2a1a02;
+  background: linear-gradient(180deg, var(--jjk-gold-hi, #f1d98a), var(--jjk-gold, #c9a24e));
+  border-color: var(--jjk-gold-hi, #f1d98a);
 }
+.mc-stat {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 1px 8px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--jjk-text);
+  background: rgba(3, 10, 12, 0.8);
+  border: 1px solid rgba(201, 162, 78, 0.35);
+  text-shadow: 0 1px 2px #000;
+}
+/* stamina = small gold bolt, power = small gold diamond (CSS only) */
+.ic-stamina, .ic-power {
+  display: inline-block;
+  width: 9px; height: 12px;
+  background: var(--jjk-gold-hi, #f1d98a);
+  flex: none;
+}
+.ic-stamina { clip-path: polygon(55% 0, 0 58%, 45% 58%, 30% 100%, 100% 38%, 55% 38%); }
+.ic-power { width: 10px; height: 10px; clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%); }
+.mc-stamp {
+  position: absolute;
+  right: 8px; top: 6px;
+  width: 58px;
+  transform: rotate(-10deg);
+  opacity: 0.92;
+  pointer-events: none;
+}
+.mission-card.mission-complete .mc-medal { display: none; }
+
+/* ---------- Locked ---------- */
+.mission-card.mission-locked .mc-art { filter: grayscale(0.8) brightness(0.62); }
+.mission-card.mission-locked .mc-title { color: #c9c3b4; }
+.mc-lock {
+  position: absolute;
+  left: 10px; right: 10px; bottom: 34px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  pointer-events: none;
+}
+.mc-lock img { flex: none; width: 24px; height: auto; filter: drop-shadow(0 2px 4px #000); }
+.mission-lock-note {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--jjk-gold-hi, #f1d98a);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.95), 0 0 6px #000;
+}
+.mc-lock .mission-lock-note {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.mission-card.mission-locked .mc-meta { opacity: 0.55; }
+
 body.page-missions .error-message {
+  grid-column: 1 / -1;
   padding: 24px;
   text-align: center;
   color: var(--jjk-text, #e9e1cc);
 }
+
+/* ==========================================================================
+   Detail sheet
+   ========================================================================== */
+.mission-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: max(10px, var(--safe-t, 0px)) max(12px, var(--safe-r, 0px)) max(10px, var(--safe-b, 0px)) max(12px, var(--safe-l, 0px));
+  font-family: var(--jjk-font);
+  color: var(--jjk-text);
+}
+.mission-modal .md-backdrop { position: absolute; inset: 0; background: rgba(2, 7, 9, 0.78); }
+.mission-modal .md-sheet {
+  position: relative;
+  width: min(1180px, 100%);
+  height: min(760px, 100%);
+  display: grid;
+  grid-template-columns: minmax(0, 42%) minmax(0, 1fr);
+  gap: 14px;
+  padding: 14px;  background: linear-gradient(180deg, #0e262d, #061115);
+}
+.md-close {
+  position: absolute;
+  top: -8px; right: -8px;
+  z-index: 3;
+  width: 44px; height: 44px;
+}
+.md-close img { width: 70%; height: auto; }
+.md-side, .md-main {
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(201, 162, 78, 0.45) transparent;
+}
+.md-side { display: flex; flex-direction: column; gap: 10px; }
+.md-hero {
+  position: relative;
+  flex: none;
+  aspect-ratio: 2.45 / 1;
+  border: 1px solid rgba(201, 162, 78, 0.55);
+  overflow: hidden;
+}
+.md-hero .mc-title { font-size: clamp(18px, 2vw, 26px); }
+.md-desc { font-size: 13.5px; line-height: 1.45; color: rgba(236, 230, 214, 0.88); }
+.md-label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--jjk-gold, #c9a24e);
+}
+
+/* rank selector */
+.md-ranks { display: flex; flex-wrap: wrap; gap: 6px; }
+.md-rank {
+  position: relative;
+  display: inline-flex; align-items: center; gap: 6px;
+  height: 40px;
+  padding: 0 14px 0 6px;
+  border: 0;
+  cursor: pointer;
+  background: none;
+  border-image: url('../assets/ui/jjk/btn_ticket.webp') 36 fill / var(--jjk-tkt-w-sm, 10px) stretch;
+  font-family: var(--jjk-font);
+  color: var(--jjk-text);
+  filter: brightness(0.85);
+}
+.md-rank.active {
+  border-image-source: url('../assets/ui/jjk/btn_ticket_red.webp');
+  filter: none;
+}
+.md-rank-letter {
+  min-width: 30px; height: 28px;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-family: var(--jjk-font-script);
+  font-size: 17px;
+  color: var(--jjk-gold-hi, #f1d98a);
+  background: rgba(3, 10, 12, 0.7);
+  border: 1px solid rgba(201, 162, 78, 0.6);
+  text-shadow: 0 1px 2px #000;
+}
+.md-rank-name { font-size: 13px; font-weight: 700; text-shadow: 0 1px 2px #000; }
+.md-rank.is-clear .md-rank-letter {
+  color: #2a1a02;
+  background: linear-gradient(180deg, var(--jjk-gold-hi, #f1d98a), var(--jjk-gold, #c9a24e));
+  text-shadow: none;
+}
+.md-rank.is-locked { opacity: 0.55; }
+.md-rank.is-locked .md-rank-name::after { content: ' \1F512'; font-size: 10px; }
+
+.md-facts { display: flex; flex-wrap: wrap; gap: 5px; }
+.md-facts .jjk-chip { font-size: 12px; }
+
+.md-rewards { display: flex; flex-direction: column; gap: 8px; }
+.md-rw-block {
+  padding: 8px;
+  background: rgba(3, 10, 12, 0.55);
+  border: 1px solid rgba(201, 162, 78, 0.25);
+}
+.md-rw-block.is-claimed .md-tiles { opacity: 0.5; }
+.md-tiles { display: flex; flex-wrap: wrap; gap: 6px; }
+.md-none { color: var(--jjk-muted); }
+.mr-tile {
+  position: relative;
+  width: 58px;
+  display: flex; flex-direction: column; align-items: center;
+  gap: 1px;
+}
+.mr-tile img {
+  width: 44px; height: 44px;
+  object-fit: contain;
+  background: rgba(3, 10, 12, 0.7);
+  border: 1px solid rgba(201, 162, 78, 0.45);
+}
+.mr-tile.is-unit img { object-fit: cover; border-color: var(--jjk-gold-hi); box-shadow: 0 0 8px rgba(241, 217, 138, 0.45); }
+.mr-tile b {
+  position: absolute; top: 28px; right: 4px;
+  padding: 0 3px;
+  font-size: 11px;
+  color: #fff6de;
+  background: rgba(3, 9, 11, 0.85);
+  text-shadow: 0 1px 1px #000;
+}
+.mr-tile small {
+  width: 100%;
+  font-size: 9.5px;
+  line-height: 1.15;
+  text-align: center;
+  color: rgba(236, 230, 214, 0.75);
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+.mr-tile.is-mini { width: 34px; }
+.mr-tile.is-mini img { width: 30px; height: 30px; }
+.mr-tile.is-mini b { top: 16px; right: 0; font-size: 9px; }
+.mr-tile.is-mini small { display: none; }
+
+/* Start stays in view while the side column scrolls */
+.md-go {
+  position: sticky;
+  bottom: -1px;
+  z-index: 2;
+  margin-top: auto;
+  padding: 6px 0 2px;
+  background: linear-gradient(180deg, rgba(8, 22, 27, 0), rgba(8, 22, 27, 0.96) 30%);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+}
+.md-go .mission-lock-note { margin-right: auto; text-align: left; }
+body.page-missions .start-btn {
+  min-width: 170px;
+  height: 46px;
+  padding: 0 28px;
+  border: 0;
+  box-sizing: border-box;
+  cursor: pointer;
+  background: none;
+  border-image: url('../assets/ui/jjk/btn_ticket_red.webp') 36 fill / var(--jjk-tkt-w, 14px) stretch;
+  font-family: var(--jjk-font);
+  font-weight: 800;
+  font-size: 16px;
+  color: var(--jjk-gold-hi, #f1d98a);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.95), 0 0 8px rgba(60, 0, 0, 0.6);
+}
+body.page-missions .start-btn:hover:not(:disabled) { filter: brightness(1.12); }
+body.page-missions .start-btn:active:not(:disabled) { transform: translateY(1px) scale(0.98); }
+body.page-missions .start-btn:disabled {
+  border-image-source: url('../assets/ui/jjk/btn_ticket_off.webp');
+  color: #8f9a98;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
+  cursor: not-allowed;
+}
+
+/* stage list */
+.md-main { display: flex; flex-direction: column; padding-right: 30px; }
+.md-stages { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+.md-stage {
+  display: grid;
+  grid-template-columns: 30px minmax(0, 1fr) auto;
+  grid-template-areas:
+    "no body foes"
+    "no drops drops";
+  align-items: center;
+  column-gap: 10px;
+  row-gap: 4px;
+  padding: 7px 10px;
+  background: linear-gradient(90deg, rgba(19, 48, 57, 0.75), rgba(7, 20, 24, 0.85));
+  border: 1px solid rgba(201, 162, 78, 0.22);
+}
+.md-stage.is-boss-stage { border-color: rgba(208, 87, 60, 0.6); background: linear-gradient(90deg, rgba(78, 20, 18, 0.55), rgba(7, 20, 24, 0.85)); }
+.md-stage-no {
+  grid-area: no;
+  width: 28px; height: 28px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--jjk-font-script);
+  font-size: 15px;
+  color: var(--jjk-gold-hi);
+  border: 1px solid rgba(201, 162, 78, 0.6);
+  background: rgba(3, 10, 12, 0.7);
+}
+.md-stage-body { grid-area: body; display: flex; flex-direction: column; min-width: 0; }
+.md-stage-title { font-weight: 800; font-size: 14px; }
+.md-stage-title em {
+  margin-left: 6px;
+  padding: 0 6px;
+  font-style: normal;
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  vertical-align: 2px;
+  color: #fff1d6;
+  background: var(--jjk-crimson, #8e1c1c);
+}
+.md-stage-sub { font-size: 11.5px; color: var(--jjk-muted, #93a3a3); }
+.md-foes { grid-area: foes; display: flex; gap: 4px; justify-content: flex-end; flex-wrap: wrap; }
+.md-foe { position: relative; width: 40px; height: 40px; }
+.md-foe img { width: 100%; height: 100%; object-fit: cover; border: 1px solid rgba(201, 162, 78, 0.45); background: var(--jjk-ink); }
+.md-foe.is-boss { width: 48px; height: 48px; }
+.md-foe.is-boss img { border: 2px solid #d0573c; box-shadow: 0 0 8px rgba(208, 87, 60, 0.6); }
+.md-foe b {
+  position: absolute; right: 0; bottom: 0;
+  padding: 0 2px;
+  font-size: 10px;
+  background: rgba(3, 9, 11, 0.85);
+}
+.md-drops { grid-area: drops; display: flex; gap: 4px; flex-wrap: wrap; }
+
+/* ==========================================================================
+   Short screens (landscape phones, and small desktop windows) —
+   the iPhone sideways is ~932x375. Tabs sit in one swipeable row, cards
+   are ~2 per row, the detail sheet fills the screen.
+   ========================================================================== */
+@media (max-height: 540px) {
+  html:not(.is-mobile) body.page-missions .jjk-page-header { transform: scale(0.72); transform-origin: 0 0; }
+  body.page-missions .mission-page-container {
+    top: 50px;
+    left: 8px; right: 8px;
+    padding: 6px;
+  }
+  .mission-tabs { flex-wrap: nowrap; justify-content: flex-start; overflow-x: auto; scrollbar-width: none; margin-bottom: 6px; }
+  .mission-tabs::-webkit-scrollbar { display: none; }
+  .tab-btn { flex: none; min-width: 0; height: 30px; padding: 0 14px; font-size: 11.5px; }
+  .mission-list-container { padding: 6px; }
+  .mission-list { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 6px; }
+  .mission-list-head { font-size: 11px; }
+  .mc-title { font-size: 17px; }
+  .mc-kicker { font-size: 9.5px; }
+  .mc-stat { font-size: 11px; padding: 0 6px; }
+  .mc-pip { min-width: 19px; height: 17px; font-size: 10px; }
+
+  .mission-modal { padding: 6px; }
+  .mission-modal .md-sheet { height: 100%; width: 100%; gap: 10px; padding: 8px; grid-template-columns: minmax(0, 46%) minmax(0, 1fr); }
+  .md-close { top: 2px; right: 2px; width: 34px; height: 34px; }
+  .md-side { gap: 6px; }
+  .md-hero { aspect-ratio: 3.2 / 1; }
+  .md-hero .mc-title { font-size: 17px; }
+  .md-desc { font-size: 11.5px; line-height: 1.35; }
+  .md-rank { height: 32px; padding: 0 10px 0 4px; }
+  .md-rank-letter { min-width: 24px; height: 22px; font-size: 13px; }
+  .md-rank-name { font-size: 11.5px; }
+  .md-facts .jjk-chip { font-size: 10.5px; padding: 1px 9px; }
+  .md-rw-block { padding: 5px 6px; }
+  .md-label { font-size: 10.5px; margin-bottom: 4px; }
+  .mr-tile { width: 46px; }
+  .mr-tile img { width: 34px; height: 34px; }
+  .mr-tile b { top: 20px; font-size: 10px; }
+  .mr-tile small { font-size: 8.5px; }
+  body.page-missions .start-btn { min-width: 130px; height: 36px; font-size: 14px; }
+  .md-stage { padding: 5px 8px; column-gap: 8px; grid-template-columns: 24px minmax(0, 1fr) auto; }
+  .md-stage-no { width: 24px; height: 24px; font-size: 13px; }
+  .md-stage-title { font-size: 12.5px; }
+  .md-stage-sub { font-size: 10.5px; }
+  .md-foe { width: 32px; height: 32px; }
+  .md-foe.is-boss { width: 38px; height: 38px; }
+}
+
+/* ---------- Boss Battles: giant boss missions (mission.giant) ---------- */
+body.page-missions .tab-btn[data-category="boss-battles"] { --cat: #ff3a2a; }
+.mission-card.mission-card--boss {
+  border-color: rgba(214, 60, 40, 0.75);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.55), 0 0 18px rgba(170, 10, 0, 0.35), inset 0 0 0 1px rgba(0, 0, 0, 0.6);
+}
+.mission-card.mission-card--boss:hover { border-color: #ff5a3a; }
+.mission-card--boss .mc-kicker { color: #ff6a52; }
+.mission-card--boss .mc-shade {
+  background:
+    linear-gradient(90deg, rgba(10, 2, 2, 0.9) 0%, rgba(10, 2, 2, 0.55) 40%, rgba(10, 2, 2, 0) 66%),
+    linear-gradient(0deg, rgba(10, 2, 2, 0.92) 0%, rgba(10, 2, 2, 0) 45%);
+}
+/* hazard tag, top-right */
+.mission-card--boss .mc-art::after {
+  content: "Giant Boss";
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  padding: 2px 10px;
+  font-family: var(--jjk-font);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #ffe9d2;
+  background: repeating-linear-gradient(-45deg, #5a0000 0 7px, #a50f09 7px 14px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.7);
+}
+/* key art not landed yet: a black giant with glowing eyes on a blood-red wash */
+.mission-card--boss .mission-banner.is-missing {
+  background:
+    radial-gradient(ellipse 26% 70% at 74% 92%, #000 60%, transparent 62%),
+    radial-gradient(ellipse at 74% 70%, rgba(190, 20, 0, 0.55) 0%, transparent 55%),
+    linear-gradient(100deg, #0b0203, #2a0504 60%, #0b0203);
+}
+.mission-card--boss .mc-art:has(.is-missing)::before {
+  content: "";
+  position: absolute;
+  left: 68%;
+  top: 44%;
+  width: 12%;
+  height: 7%;
+  background:
+    linear-gradient(20deg, transparent 40%, #ffd23a 42%, #ffd23a 60%, transparent 62%) left / 40% 100% no-repeat,
+    linear-gradient(-20deg, transparent 40%, #ffd23a 42%, #ffd23a 60%, transparent 62%) right / 40% 100% no-repeat;
+  filter: drop-shadow(0 0 4px #ffb400) drop-shadow(0 0 10px #ff5a00);
+  animation: bossEyes 2.2s ease-in-out infinite;
+}
+@keyframes bossEyes { 0%, 100% { opacity: 1; } 45% { opacity: 0.5; } 50% { opacity: 1; } }

@@ -268,7 +268,7 @@ body.login-active { overflow: hidden; }
 .login-feedback.is-success {
   border-left-color: var(--jjk-good);
   background: linear-gradient(90deg, rgba(45, 107, 115, 0.45), rgba(3, 10, 12, 0.6));
-  color: #e6f5ea;
+  color: #f6ecc8;
 }
 
 /* ── Narrow / portrait: art becomes the backdrop above the card ── */

@@ -73,6 +73,12 @@
 
       // Create enemy team
       bm.enemyTeam = (waveData.enemies || []).map((enemyData, i) => {
+        // Boss Battles: { "giant": "<id>" } spawns the giant from data/bosses.json
+        if (enemyData && typeof enemyData === 'object' && enemyData.giant && window.BattleBoss) {
+          const boss = window.BattleBoss.createUnit(bm, enemyData.giant);
+          if (boss) return boss;
+        }
+
         let base;
 
         // Support pre-built enemy objects (e.g. from arena mode) as well as string IDs
@@ -116,6 +122,16 @@
               };
             }
           }
+        }
+
+        // Mission data may tune an enemy per stage:
+        // { "id": "zabuza_144", "hp": 9000, "atk": 400, "def": 20, "speed": 95, "boss": true }
+        if (typeof enemyData === 'object' && enemyData !== null && !enemyData.stats) {
+          const tuned = { ...base.stats };
+          ['hp', 'atk', 'def', 'speed'].forEach(k => {
+            if (Number(enemyData[k]) > 0) tuned[k] = Number(enemyData[k]);
+          });
+          base = { ...base, stats: tuned };
         }
 
         // Convert sprite to portrait for compatibility
@@ -248,19 +264,23 @@
         // Award final stage chest (arena pays out via arena stars instead)
         if (window.BattleRewards && !bm.isArena) {
           await window.BattleRewards.awardStageChest(currentStage, bm.currentStageIndex, bm);
+          // There is no "next stage" to pick it up, so collect it here —
+          // otherwise the last stage's rewards (e.g. an SS unit) are never granted
+          await window.BattleRewards.collectStageChest(bm);
         }
 
         // Record completion, first-clear rewards, player EXP and dailies
         await this.recordMissionComplete(bm);
 
         setTimeout(async () => {
+          await this.playOutcomeBanner(bm, true);
           // Show results screen with all collected chests
           if (!bm.isArena && window.BattleRewards && window.BattleRewards.collectedChests.length > 0) {
             await window.BattleRewards.showResultsScreen(bm);
           } else {
             this.declareVictory(bm);
           }
-        }, 1000);
+        }, 400);
       }
     },
 
@@ -289,7 +309,7 @@
       try {
         if (window.ExpRewards) {
           const stats = this.calculateBattleStats(bm);
-          const expByDifficulty = { C: "MISSION_EASY", B: "MISSION_NORMAL", A: "MISSION_HARD", S: "MISSION_EXTREME" };
+          const expByDifficulty = { D: "MISSION_EASY", C: "MISSION_EASY", B: "MISSION_NORMAL", A: "MISSION_HARD", S: "MISSION_EXTREME", SS: "MISSION_EXTREME" };
           const expMission = window.ExpRewards.giveReward(expByDifficulty[difficulty] || "MISSION_NORMAL");
           const expWin = window.ExpRewards.onBattleWin({
             unitsLost: stats.totalUnits - stats.survivingUnits,
@@ -565,7 +585,8 @@
       // Calculate statistics
       const stats = this.calculateBattleStats(bm);
 
-      this.showResult(bm, true, stats);
+      if (!bm._outcomeBanner) window.AudioManager?.playVictoryMusic();
+      this.playOutcomeBanner(bm, true).then(() => this.showResult(bm, true, stats));
     },
 
     /**
@@ -588,7 +609,23 @@
       // Calculate statistics
       const stats = this.calculateBattleStats(bm);
 
-      this.showResult(bm, false, stats);
+      if (!bm._outcomeBanner) window.AudioManager?.playDefeatMusic();
+      this.playOutcomeBanner(bm, false).then(() => this.showResult(bm, false, stats));
+    },
+
+    /**
+     * Big "Victory" / "Defeat" banner over the field before the results.
+     * Plays once per battle; later calls share the same promise.
+     * @param {Object} bm - BattleManager reference
+     * @param {boolean} isVictory
+     * @returns {Promise<void>}
+     */
+    playOutcomeBanner(bm, isVictory) {
+      if (!bm._outcomeBanner) {
+        const B = window.BattleOutcomeBanner;
+        bm._outcomeBanner = B ? B.play(isVictory).catch(() => {}) : Promise.resolve();
+      }
+      return bm._outcomeBanner;
     },
 
     /**

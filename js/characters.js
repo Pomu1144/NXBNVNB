@@ -364,6 +364,7 @@
       MODAL_IMG.src = "assets/characters/_common/silhouette.png";
       STATS_WRAP.innerHTML = `<div class="stat-row"><span class="stat-label">Note</span><span class="stat-value">Base '${safeStr(inst.charId,'unknown')}' not found in characters.json.</span></div>`;
       wireStatusButtons(null, inst, null);
+      window.SkinPicker?.mount(MODAL_ART, null);
       showModal();
       return;
     }
@@ -391,6 +392,8 @@
     MODAL_IMG.src = safeStr(art.full, art.portrait);
     MODAL_IMG.alt = `${c.name} full artwork`;
     mountModalAnim(c, tier, art);
+    // Skins button over the art (js/skin-picker.js); hidden for units without skins
+    window.SkinPicker?.mount(MODAL_ART, { charId: inst.charId, name: c.name, portrait: safeStr(art.portrait, c.portrait) });
 
     renderStatusTab(c, inst, tier);
     renderSkillsTab(c, inst, tier);
@@ -441,6 +444,7 @@
 
   function closeModal() {
     unmountModalAnim();
+    window.SkinPicker?.close();
     MODAL.classList.remove("open");
     MODAL.setAttribute("aria-hidden", "true");
     document.body.style.overflow = "";

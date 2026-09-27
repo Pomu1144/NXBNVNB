@@ -84,7 +84,8 @@
     if (_data) return _data;
     _data = Promise.all([
       fetch("data/fusions.json").then(r => r.json()).catch(() => ({ fusions: [] })),
-      fetch("data/characters.json").then(r => r.json()).catch(() => []),
+      // shared request when js/character_inv.js is on the page
+      (window.loadCharactersData ? window.loadCharactersData() : fetch("data/characters.json").then(r => r.json())).catch(() => []),
     ]).then(([f, c]) => {
       const list = Array.isArray(c) ? c : (c.characters || []);
       const chars = {};
