@@ -1,7 +1,7 @@
 {
-  "name": "Blazing",
-  "short_name": "Blazing",
-  "description": "Naruto Blazing fan game",
+  "name": "Naruto Shippuden: Ultimate Ninja Legends",
+  "short_name": "Ninja Legends",
+  "description": "Naruto Shippuden: Ultimate Ninja Legends — a Naruto fan game",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",

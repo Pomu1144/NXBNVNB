@@ -57,8 +57,8 @@
 
   // ── Build the overlay (body doesn't exist yet: hang it on <html>) ─────────
   // Page name from the <title>: the part that isn't the game's name
-  // ("Blazing — Summon", "Settings - Naruto Blazing").
-  var title = (doc.title || '').split(/\s+[—–-]\s+/).filter(function (t) { return !/blazing/i.test(t); })[0] || '';
+  // ("Ultimate Ninja Legends — Summon").
+  var title = (doc.title || '').split(/\s+[—–-]\s+/).filter(function (t) { return !/blazing|ninja legends/i.test(t); })[0] || '';
   title = title.replace(/\s+HUD$/i, '');
   if (!title || /^sign in$/i.test(title)) title = 'Hidden Leaf';
   var el = doc.createElement('div');
