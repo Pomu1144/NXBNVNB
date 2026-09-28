@@ -10,6 +10,7 @@
    */
   const GROUPS = [
     { name: "Rival Bond", members: ["Naruto Uzumaki", "Sasuke Uchiha"] },
+    { name: "The Strongest", members: ["Gojo Satoru", "Ryomen Sukuna"] },
     { name: "Team 7", members: ["Naruto Uzumaki", "Sasuke Uchiha", "Sakura Haruno", "Kakashi Hatake", "Sai", "Yamato"] },
     { name: "Uzumaki Family", members: ["Naruto Uzumaki", "Minato Namikaze", "Kushina Uzumaki"] },
     { name: "Team Minato", members: ["Minato Namikaze", "Kakashi Hatake", "Obito Uchiha", "Rin Nohara"] },

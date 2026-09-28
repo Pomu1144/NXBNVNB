@@ -35,6 +35,11 @@
   }
   function save(st) {
     st.updated = Date.now();
+    // Pages the current and next step live on: js/session-gate.js only lets a
+    // player who hasn't finished the tutorial open these (plus the village).
+    const i = st.step ? STEPS.findIndex((s) => s.id === st.step) : -1;
+    const pageOf = (s) => (s && s.page ? String(s.page).split('?')[0] : null);
+    st.pages = i < 0 ? [] : [pageOf(STEPS[i]), pageOf(STEPS[i + 1])].filter(Boolean);
     try { localStorage.setItem(KEY, JSON.stringify(st)); } catch (e) { /* storage blocked */ }
   }
 
@@ -487,6 +492,7 @@
     st = load();
     if (!st || (st.status !== 'pending' && st.status !== 'active')) return;
     if (st.status === 'pending') { st.status = 'active'; st.step = STEPS[0].id; st.started = Date.now(); save(st); }
+    else if (!Array.isArray(st.pages)) save(st); // progress saved before the page gate existed
     if (window.PageLoader) await window.PageLoader.ready;
     await sleep(350);
     let i = indexOf(st.step);

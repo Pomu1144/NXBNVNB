@@ -2,13 +2,15 @@
 // ---------------------------------------------------------------------------
 // Dev helper: instantly grant the 7-star units Obito, Sakura and Minato at
 // BOTH 6S and 7S tiers, plus the animated-art 7-star
-// units Kaguya (kaguya_9003), Pain (pain_9004), Jiraiya (jiraiya_9001) and
-// Gojo (gojo_9005) at 7S (their only tier),
+// units Kaguya (kaguya_9003), Pain (pain_9004), Jiraiya (jiraiya_9001),
+// Gojo (gojo_9005) and Sukuna (sukuna_9006 King of Curses, sukuna_9007 Heian
+// Era) at 7S (their only tier),
 // straight into your roster.
 //
 // HOW TO USE:
 //   Option A (in-game): redeem the gift code  SEVENSTARS  (or  LEGENDS7  for
-//                       Kaguya, Pain & Jiraiya,  STRONGEST7  for Gojo) from the
+//                       Kaguya, Pain & Jiraiya,  STRONGEST7  for Gojo,
+//                       KINGOFCURSES  for both Sukunas) from the
 //                       Settings / Gift Code screen,
 //                       then claim the rewards in your mailbox.
 //
@@ -19,7 +21,7 @@
 (function grantSevenStarUnits() {
   const UNITS = ["obito_2201", "sakura_2202", "minato_2204"];
   const TIERS = ["6S", "7S"];
-  const UNITS_7S_ONLY = ["kaguya_9003", "pain_9004", "jiraiya_9001", "gojo_9005"];
+  const UNITS_7S_ONLY = ["kaguya_9003", "pain_9004", "jiraiya_9001", "gojo_9005", "sukuna_9006", "sukuna_9007"];
 
   if (!window.InventoryChar || typeof window.InventoryChar.addCopy !== "function") {
     console.error("[grant] InventoryChar not available — run this on the Characters page.");
