@@ -132,6 +132,7 @@
     {"id": "jiraiya_9001", "tier": "7S", "label": "Jiraiya (Gallant Sage of Mount Myoboku)", "note": "Jiraiya \"Gallant Sage of Mount Myoboku\" 7★ (jiraiya_9001) — Toad Oil Flame Bullet / Gamabunta Great Rasengan."},
     {"id": "kaguya_9003", "tier": "7S", "label": "Kaguya (Progenitor of All Chakra)", "note": "Kaguya Ōtsutsuki \"Progenitor of All Chakra\" 7★ (kaguya_9003) — Ash Bones / Dimension Rift."},
     {"id": "pain_9004", "tier": "7S", "label": "Pain (God of Amegakure)", "note": "Pain Tendō \"God of Amegakure\" 7★ (pain_9004) — Shinra Tensei / Chibaku Tensei."},
+    {"id": "gojo_9005", "tier": "7S", "label": "Gojo (The Strongest)", "note": "Gojo Satoru \"The Strongest\" 7★ (gojo_9005) — Hollow Technique: Purple / Domain Expansion: Unlimited Void."},
     // </produce:units>
   ];
 

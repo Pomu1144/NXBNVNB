@@ -1,0 +1,28 @@
+{
+  "frameWidth": 324,
+  "frameHeight": 256,
+  "frames": 29,
+  "columns": 12,
+  "fps": 12,
+  "loop": false,
+  "hits": [],
+  "heightScale": 1.0,
+  "anchorX": 0.3073,
+  "fx": [
+    {
+      "sheet": "jutsu_fly",
+      "at": "targets",
+      "startFrame": 15,
+      "fly": true,
+      "from": [
+        0.82,
+        0.37
+      ]
+    },
+    {
+      "sheet": "jutsu_fx",
+      "at": "targets",
+      "startFrame": 20
+    }
+  ]
+}

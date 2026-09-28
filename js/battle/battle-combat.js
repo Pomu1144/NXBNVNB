@@ -558,7 +558,7 @@
             onDone?.();
           }
         });
-        this.afterCutin(attacker, 'jutsu', j.data.name || j.data.skillName || j.meta.name, () => tl.play());
+        this.afterCutin(attacker, 'jutsu', j.data.name || j.data.skillName || j.meta.name, () => tl.play(), j);
 
         // Step 1: Show attack name (0s)
         tl.call(() => {
@@ -742,7 +742,7 @@
             onDone?.();
           }
         });
-        this.afterCutin(attacker, 'ultimate', u.data.name || u.data.skillName || u.meta.name, () => tl.play());
+        this.afterCutin(attacker, 'ultimate', u.data.name || u.data.skillName || u.meta.name, () => tl.play(), u);
 
         // Step 1: Show attack name (0s)
         tl.call(() => {
@@ -1156,7 +1156,7 @@
         window.BattleAttackNames?.showAttackName?.(name, kind);
         if (attacker._sprite) this.playSheetInPlace(attacker, kind, core);
         setTimeout(finish, 450);
-      });
+      }, skill);
     },
 
     /**
@@ -1399,19 +1399,35 @@
     },
 
     /**
-     * Play the skill cut-in (BattleCutin), then run `fn`. The unit counts as
-     * busy meanwhile so the turn watchdogs wait. Runs `fn` right away (next
-     * microtask) when cut-ins are off.
+     * Play the skill cut-in (BattleCutin), then the skill's Domain Expansion
+     * if it has one (runDomain), then run `fn`. The unit counts as busy
+     * meanwhile so the turn watchdogs wait. Runs `fn` right away (next
+     * microtask) when cut-ins are off and there is no domain.
      */
-    afterCutin(attacker, kind, skillName, fn) {
+    afterCutin(attacker, kind, skillName, fn, skill = null) {
       const C = window.BattleCutin;
-      if (!C?.wants?.(attacker, kind)) { Promise.resolve().then(fn); return; }
+      const cut = C?.wants?.(attacker, kind);
+      const dom = !!window.BattleDomain?.defOf?.(skill);
+      if (!cut && !dom) { Promise.resolve().then(fn); return; }
       const wasBusy = attacker._actionBusy;
       attacker._actionBusy = true;
-      C.play(attacker, kind, skillName).catch(() => {}).then(() => {
-        attacker._actionBusy = wasBusy || false;
-        fn();
-      });
+      (cut ? C.play(attacker, kind, skillName).catch(() => {}) : Promise.resolve())
+        .then(() => this.runDomain(attacker, kind, skill))
+        .then(() => {
+          attacker._actionBusy = wasBusy || false;
+          fn();
+        });
+    },
+
+    /**
+     * Domain Expansion carried by the skill (skill.meta.domain or its tier
+     * entry's domain): js/battle/battle-domain.js plays it and stuns the
+     * opponents. Resolves at once for skills without one. Never rejects.
+     */
+    runDomain(attacker, kind, skill) {
+      const D = window.BattleDomain;
+      if (!D?.defOf?.(skill)) return Promise.resolve(false);
+      return D.expand(attacker, kind, skill, window.BattleManager).catch(() => false);
     },
 
     /**
@@ -1492,6 +1508,7 @@
 
         // Blazing-style cut-in first (resolves at once when off / not wanted).
         try { await window.BattleCutin?.play?.(attacker, kind, skillName); } catch (e) { /* cosmetic */ }
+        await this.runDomain(attacker, kind, skill);
         callout = window.BattleAttackNames?.showAttackName(skillName, kind, { hold: 'manual' });
         await wait(350); // let the skill name land
         let inPlace = null; // { y0, y1 } when the caster plays where it stands

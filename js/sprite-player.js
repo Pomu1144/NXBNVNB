@@ -259,6 +259,7 @@
     jiraiya_9001: 'assets/sprites/jiraiya_9001', // Jiraiya "Gallant Sage of Mount Myoboku" 7★
     kaguya_9003: 'assets/sprites/kaguya_9003', // Kaguya Otsutsuki "Progenitor of All Chakra" 7★
     pain_9004: 'assets/sprites/pain_9004', // Pain "God of Amegakure" 7★
+    gojo_9005: 'assets/sprites/gojo_9005', // Gojo Satoru "The Strongest" 7★
     // </produce:registry>
   };
 
