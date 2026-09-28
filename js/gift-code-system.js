@@ -118,7 +118,8 @@ class GiftCodeSystem {
       message: codeData.description || 'You have received rewards from a gift code!',
       rewards: {
         characters: rewards.characters || [],
-        resources: rewards.resources || []
+        resources: rewards.resources || [],
+        ...(rewards.allCharacters ? { allCharacters: true } : {})
       },
       rewardType: 'giftCode' // Special type for gift code rewards
     };
