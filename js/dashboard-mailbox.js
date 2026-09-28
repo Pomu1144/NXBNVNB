@@ -18,6 +18,13 @@ class DashboardMailbox {
       if (saved) {
         const parsed = JSON.parse(saved);
         this.messages = Array.isArray(parsed) ? parsed : [];
+        // Saved mailboxes keep the pre-rename welcome title; update it in
+        // place (read state and rewards untouched).
+        const welcome = this.messages.find(m => m && m.id === 'welcome_001');
+        if (welcome && welcome.title === 'Welcome to Naruto Blazing!') {
+          welcome.title = 'Welcome to Naruto Shippuden: Ultimate Ninja Legends!';
+          this.saveMessages();
+        }
       } else {
         this.messages = [
           {
