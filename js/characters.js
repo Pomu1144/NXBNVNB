@@ -913,85 +913,127 @@
     RAMEN_CHAR_NAME.textContent = character.name || "Unknown";
     RAMEN_CHAR_LEVEL.textContent = `Lv ${currentLevel}/${cap}`;
 
+    const previewEl = document.getElementById('ramen-level-preview');
+    const fillNow = document.getElementById('ramen-lv-fill-now');
+    const fillNew = document.getElementById('ramen-lv-fill-new');
+    const totalEl = document.getElementById('ramen-total-exp');
+    const hintEl = document.getElementById('ramen-total-hint');
+    const feedBtn = document.getElementById('ramen-modal-feed');
+    const clearBtn = document.getElementById('ramen-modal-clear');
+
     // Get all ramen from inventory
     const allRamen = window.Resources.getItemsByCategory('ramen');
     const availableRamen = allRamen.filter(r => r.quantity > 0);
 
+    // Live preview of the selection: total EXP, resulting level, level bar
+    const updateRamenPreview = () => {
+      let total = 0;
+      for (const r of availableRamen) total += (r.exp || 0) * (ramenClickCounts[r.id] || 0);
+      const newLevel = ramenLevelAfter(currentLevel, cap, total);
+      if (totalEl) totalEl.textContent = `+${total.toLocaleString()} EXP`;
+      if (previewEl) {
+        previewEl.textContent = total > 0 ? `→ Lv ${newLevel}${newLevel >= cap ? ' MAX' : ''}` : '';
+        previewEl.classList.toggle('is-max', total > 0 && newLevel >= cap);
+      }
+      if (fillNow) fillNow.style.width = `${Math.min(100, (currentLevel / cap) * 100)}%`;
+      if (fillNew) fillNew.style.width = `${Math.min(100, (newLevel / cap) * 100)}%`;
+      if (hintEl) {
+        hintEl.textContent = total === 0 ? 'Tap a ramen to add it'
+          : newLevel >= cap ? 'Reaches max level' : `+${newLevel - currentLevel} level${newLevel - currentLevel === 1 ? '' : 's'}`;
+      }
+      if (feedBtn) feedBtn.disabled = total === 0;
+      if (clearBtn) clearBtn.disabled = total === 0;
+    };
+
     if (availableRamen.length === 0) {
+      RAMEN_GRID.classList.add('is-empty');
       RAMEN_GRID.innerHTML = `
         <div class="ramen-empty-state">
-          <div class="ramen-empty-icon">🍜</div>
           <div class="ramen-empty-text">No Ramen Available</div>
-          <div class="ramen-empty-subtext">Visit the Shop to purchase ramen or complete missions to earn them!</div>
+          <div class="ramen-empty-subtext">Buy ramen in the Shop or earn it from missions.</div>
         </div>
       `;
+      updateRamenPreview();
       showRamenModal();
       return;
     }
+    RAMEN_GRID.classList.remove('is-empty');
 
     // Sort ramen by tier (element doesn't matter for feeding)
     availableRamen.sort((a, b) => (a.exp || 0) - (b.exp || 0));
 
-    // Render ramen cards with click counters
+    // Render ramen tiles: tap adds one, the − button (or right-click) removes one
     RAMEN_GRID.innerHTML = '';
     availableRamen.forEach(ramen => {
       const card = document.createElement('div');
       card.className = 'ramen-card';
+      card.setAttribute('role', 'button');
+      card.setAttribute('tabindex', '0');
       card.setAttribute('data-ramen-id', ramen.id);
-      if (ramen.element) {
-        card.setAttribute('data-element', ramen.element);
-      }
+      if (ramen.element) card.setAttribute('data-element', ramen.element);
 
       ramenClickCounts[ramen.id] = 0;
+      const shortName = String(ramen.name || '').replace(/\s*Ichiraku Ramen$/, '');
 
       card.innerHTML = `
-        <img src="${ramen.icon}" alt="${ramen.name}" class="ramen-icon" onerror="this.onerror=null; this.style.display='none';">
-        <div class="ramen-name">${ramen.name}</div>
-        <div class="ramen-exp">+${ramen.exp.toLocaleString()} EXP</div>
-        <div class="ramen-quantity">×${ramen.quantity}</div>
-        <div class="ramen-counter" id="counter-${ramen.id}">0</div>
+        <span class="ramen-icon-wrap">
+          <img src="${ramen.icon}" alt="" class="ramen-icon" onerror="this.onerror=null; this.style.visibility='hidden';">
+          <span class="ramen-counter" id="counter-${ramen.id}">0</span>
+        </span>
+        <span class="ramen-body">
+          <span class="ramen-name">${shortName}</span>
+          <span class="ramen-exp">+${ramen.exp.toLocaleString()}</span>
+          <span class="ramen-quantity">Owned ${ramen.quantity.toLocaleString()}</span>
+        </span>
+        <button type="button" class="ramen-minus" aria-label="Remove one ${shortName}">−</button>
       `;
 
-      card.addEventListener('click', (e) => {
-        // Increment counter
-        if (ramenClickCounts[ramen.id] < ramen.quantity) {
-          ramenClickCounts[ramen.id]++;
-          const counterEl = document.getElementById(`counter-${ramen.id}`);
-          if (counterEl) {
-            counterEl.textContent = ramenClickCounts[ramen.id];
-            counterEl.classList.add('active');
-          }
-        }
+      const counterEl = card.querySelector('.ramen-counter');
+      const setCount = (n) => {
+        ramenClickCounts[ramen.id] = Math.max(0, Math.min(ramen.quantity, n));
+        const c = ramenClickCounts[ramen.id];
+        counterEl.textContent = c;
+        counterEl.classList.toggle('active', c > 0);
+        card.classList.toggle('is-selected', c > 0);
+        card.classList.toggle('is-full', c >= ramen.quantity);
+        updateRamenPreview();
+      };
+      card.addEventListener('click', () => setCount(ramenClickCounts[ramen.id] + 1));
+      card.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setCount(ramenClickCounts[ramen.id] + 1); }
       });
-
-      // Right-click to decrement
-      card.addEventListener('contextmenu', (e) => {
-        e.preventDefault();
-        if (ramenClickCounts[ramen.id] > 0) {
-          ramenClickCounts[ramen.id]--;
-          const counterEl = document.getElementById(`counter-${ramen.id}`);
-          if (counterEl) {
-            counterEl.textContent = ramenClickCounts[ramen.id];
-            if (ramenClickCounts[ramen.id] === 0) {
-              counterEl.classList.remove('active');
-            }
-          }
-        }
+      card.addEventListener('contextmenu', (e) => { e.preventDefault(); setCount(ramenClickCounts[ramen.id] - 1); });
+      card.querySelector('.ramen-minus').addEventListener('click', (e) => {
+        e.stopPropagation();
+        setCount(ramenClickCounts[ramen.id] - 1);
       });
 
       RAMEN_GRID.appendChild(card);
     });
 
-    // Add "Use Ramen" button
-    const useButton = document.createElement('button');
-    useButton.className = 'ramen-use-button';
-    useButton.textContent = 'Use Selected Ramen';
-    useButton.addEventListener('click', async () => {
-      await processRamenFeeding(inst, character, cap);
-    });
-    RAMEN_GRID.appendChild(useButton);
+    if (clearBtn) clearBtn.onclick = () => {
+      for (const id of Object.keys(ramenClickCounts)) ramenClickCounts[id] = 0;
+      RAMEN_GRID.querySelectorAll('.ramen-card').forEach(c => {
+        c.classList.remove('is-selected', 'is-full');
+        const n = c.querySelector('.ramen-counter'); n.textContent = '0'; n.classList.remove('active');
+      });
+      updateRamenPreview();
+    };
+    if (feedBtn) feedBtn.onclick = async () => { await processRamenFeeding(inst, character, cap); };
 
+    updateRamenPreview();
     showRamenModal();
+  }
+
+  // Same level curve as processRamenFeeding: each level costs 100 × level EXP.
+  function ramenLevelAfter(level, cap, exp) {
+    let lv = level, rest = exp;
+    while (lv < cap) {
+      const need = Math.floor(100 * lv);
+      if (rest < need) break;
+      rest -= need; lv++;
+    }
+    return Math.min(lv, cap);
   }
 
   function showRamenModal() {
