@@ -55,7 +55,6 @@
     <header class="wb-head">
       <a href="village.html" class="wb-icon-btn" aria-label="Back to village"><svg><use href="#i-back"/></svg></a>
       <div class="wb-title">
-        <span class="wb-kicker">Ranked PvP</span>
         <h1>Arena Showdown</h1>
       </div>
     </header>
@@ -140,7 +139,7 @@
       </div>
       <button class="wb-start" id="btn-battle-arena" onclick="openArenaBattle()">
         <span class="wb-start-label"><i class="wb-diamond" aria-hidden="true"></i>Start Battle</span>
-        <span class="wb-start-sub" id="al-start-sub">Three rivals near your rank</span>
+        <span class="wb-start-sub" id="al-start-sub" hidden></span>
       </button>
     </nav>
   </div>
@@ -151,7 +150,6 @@
     <div class="wb-sheet-panel">
       <header class="wb-sheet-head">
         <div>
-          <span class="wb-kicker">League</span>
           <h2 class="wb-sheet-title" id="ranking-title">Rank Ladder</h2>
         </div>
         <button class="wb-icon-btn" onclick="toggleRanksTable()" aria-label="Close"><svg><use href="#i-close"/></svg></button>
@@ -171,7 +169,6 @@
     <div class="wb-sheet-panel">
       <header class="wb-sheet-head">
         <div>
-          <span class="wb-kicker">Recent battles</span>
           <h2 class="wb-sheet-title" id="history-title">Battle Record</h2>
         </div>
         <button class="wb-icon-btn" onclick="toggleHistoryTable()" aria-label="Close"><svg><use href="#i-close"/></svg></button>
@@ -457,8 +454,9 @@
 
     // Start Battle sub-line + rules summary track the streak bonus
     const toBonus = 3 - (rec.streak % 3);
-    document.getElementById('al-start-sub').textContent =
-      rec.streak >= 2 ? `${rec.streak}-win streak` : 'Three rivals near your rank';
+    const startSub = document.getElementById('al-start-sub');
+    startSub.textContent = rec.streak >= 2 ? `${rec.streak}-win streak` : '';
+    startSub.hidden = rec.streak < 2;
     document.getElementById('wb-rules-summary').textContent = toBonus === 1
       ? 'Bonus star on next win'
       : `Bonus star in ${toBonus} wins`;
@@ -755,7 +753,6 @@
         <div class="aos-header wb-screen-head">
           <button class="aos-close wb-icon-btn" onclick="document.getElementById('arena-opponent-select').remove()" aria-label="Back"><svg><use href="#i-back"/></svg></button>
           <div class="wb-title">
-            <span class="wb-kicker aos-desc">Three rivals near your rank</span>
             <div class="aos-title">Choose Your Rival</div>
           </div>
           <button class="aos-rescout wb-chip" onclick="rescoutOpponents()"><svg><use href="#i-scout"/></svg><span class="wb-chip-label">Scout Again</span></button>
@@ -840,7 +837,7 @@
       if (members.length === 0) {
         return `<div class="atp-team-card empty" data-team="${teamNum}">
           <div class="atp-team-head"><span class="atp-team-label">Team ${teamNum}</span></div>
-          <div class="atp-empty-msg">No characters assigned</div>
+          <div class="atp-empty-msg">Empty</div>
         </div>`;
       }
 
@@ -863,9 +860,6 @@
     }
 
     const title = mode === 'offense' ? 'Select Offense Team' : 'Select Defense Team';
-    const desc  = mode === 'offense'
-      ? 'Your lineup for this battle'
-      : 'The lineup rivals will face';
 
     document.getElementById('arena-team-picker')?.remove();
     const modal = document.createElement('div');
@@ -898,7 +892,6 @@
         <div class="atp-header wb-screen-head">
           <button class="atp-close wb-icon-btn" onclick="document.getElementById('arena-team-picker').remove()" aria-label="Back"><svg><use href="#i-back"/></svg></button>
           <div class="wb-title">
-            <span class="wb-kicker atp-desc">${desc}</span>
             <div class="atp-title">${title}</div>
           </div>
           <a href="teams.html" class="atp-link-btn wb-chip"><span class="wb-chip-label">Manage Teams</span></a>
@@ -945,8 +938,6 @@
     if (mode === 'defense') {
       localStorage.setItem('arena_defense_team', JSON.stringify(teamNum));
       modal.remove();
-      _showArenaInfoModal('Defense Team Set',
-        `<p class="aim-note ok">Team ${teamNum} is now your defense team.</p>`);
       renderActionTiles();
       renderLobbyTeam();
       return;
@@ -1000,14 +991,13 @@
         <div class="arena-modal-header wb-screen-head">
           <button class="arena-modal-close wb-icon-btn" onclick="document.getElementById('arena-team-modal').remove()" aria-label="Back"><svg><use href="#i-back"/></svg></button>
           <div class="wb-title">
-            <span class="wb-kicker">Arena battle</span>
             <div class="arena-modal-title">Confirm Lineup</div>
           </div>
         </div>
         <div class="arena-modal-body">
           <div class="arena-teams-row">
             <div class="arena-team-col">
-              <div class="arena-team-label"><span class="wb-kicker">Your team</span></div>
+              <div class="arena-team-label"><span class="wb-kicker">You</span></div>
               <div class="arena-team-grid">${playerHTML}</div>
             </div>
             <div class="arena-vs-badge" aria-label="versus"><span>VS</span></div>
@@ -1018,9 +1008,6 @@
           </div>
         </div>
         <div class="arena-modal-foot">
-          <div class="arena-map-preview" style="background-image:url('${mapPath}')">
-            <span class="arena-map-label"><span class="wb-kicker">Battle map</span></span>
-          </div>
           <button class="arena-start-match-btn wb-start" onclick="startArenaBattle(${JSON.stringify(enemyTeam).replace(/"/g, '&quot;')}, '${mapPath}')">
             <span class="wb-start-label"><i class="wb-diamond" aria-hidden="true"></i>Fight</span>
           </button>
@@ -1097,8 +1084,7 @@
     const shinIcon  = '<img src="assets/icons/currency/shinobite.png" alt="">';
 
     _showArenaInfoModal('Season Rewards',
-      `<p class="sr-intro">Win battles to earn stars. Reach a rank to unlock its rewards.</p>
-       <div class="sr-list">
+      `<div class="sr-list">
          ${SEASON_REWARD_MILESTONES.map(r => {
            const isClaimed = claimed.includes(r.rank);
            const reached = milestoneReached(r.rank);
@@ -1126,15 +1112,14 @@
            </div>`;
          }).join('')}
        </div>
-       <div class="sr-footer"><span><span class="wb-kicker">Current rank</span> <strong>${rank.label}</strong></span><span class="sr-total">${stars} ${starIco(13)}</span></div>`,
-      'League milestones'
+       <div class="sr-footer"><span><span class="wb-kicker">Current rank</span> <strong>${rank.label}</strong></span><span class="sr-total">${stars} ${starIco(13)}</span></div>`
     );
     renderActionTiles();
   }
 
   function _injectArenaTeamPickerStyles() {}
 
-  function _showArenaInfoModal(title, bodyHTML, kicker = 'Arena') {
+  function _showArenaInfoModal(title, bodyHTML, kicker = '') {
     document.getElementById('arena-info-modal')?.remove();
     const modal = document.createElement('div');
     modal.id = 'arena-info-modal';
@@ -1143,7 +1128,7 @@
       <div class="aim-panel" role="dialog" aria-modal="true">
         <div class="aim-header">
           <div class="wb-title">
-            <span class="wb-kicker">${kicker}</span>
+            ${kicker ? `<span class="wb-kicker">${kicker}</span>` : ''}
             <span class="aim-title">${title}</span>
           </div>
           <button class="aim-close wb-icon-btn" onclick="document.getElementById('arena-info-modal').remove()" aria-label="Close"><svg><use href="#i-close"/></svg></button>

@@ -986,3 +986,5 @@ svg.wb-star {
   .wb-stats { display: none; }
   .wb-start-sub { display: none; }
 }
+.wb-start-sub[hidden] { display: none; }
+.arena-modal-foot { justify-content: flex-end; }
