@@ -6,7 +6,7 @@
   "scope": "./",
   "display": "standalone",
   "orientation": "landscape",
-  "background_color": "#03090b",
+  "background_color": "#0a0606",
   "theme_color": "#000000",
   "icons": [
     {
@@ -22,7 +22,7 @@
       "purpose": "any"
     },
     {
-      "src": "assets/icons/app/icon-512.png",
+      "src": "assets/icons/app/icon-maskable-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
