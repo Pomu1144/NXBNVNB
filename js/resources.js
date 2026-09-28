@@ -16,6 +16,7 @@
     "ramen_heart_3star": { name: "3★ Heart Ichiraku Ramen", desc: "Heart element ramen. Provides 5,000 EXP.", icon: "assets/characters/heart_917/portrait_3S.webp", category: "ramen", element: "heart", exp: 5000 },
     "ramen_heart_4star": { name: "4★ Heart Ichiraku Ramen", desc: "Heart element ramen. Provides 15,000 EXP.", icon: "assets/characters/heart_967/portrait_4S.webp", category: "ramen", element: "heart", exp: 15000 },
     "ramen_heart_5star": { name: "5★ Heart Ichiraku Ramen", desc: "Heart element ramen. Provides 50,000 EXP.", icon: "assets/characters/heart_1071/portrait_5S.webp", category: "ramen", element: "heart", exp: 50000 },
+    "ramen_heart_6star": { name: "6★ Heart Ichiraku Ramen", desc: "Heart element ramen feast. Provides 150,000 EXP.", icon: "assets/characters/heart_ramen6/portrait_6S.webp", category: "ramen", element: "heart", exp: 150000 },
 
     // Skill Ramen - using actual ramen character portraits
     "ramen_skill_1star": { name: "1★ Skill Ichiraku Ramen", desc: "Skill element ramen. Provides 500 EXP.", icon: "assets/characters/skill_918/portrait_1S.webp", category: "ramen", element: "skill", exp: 500 },
@@ -23,6 +24,7 @@
     "ramen_skill_3star": { name: "3★ Skill Ichiraku Ramen", desc: "Skill element ramen. Provides 5,000 EXP.", icon: "assets/characters/skill_920/portrait_3S.webp", category: "ramen", element: "skill", exp: 5000 },
     "ramen_skill_4star": { name: "4★ Skill Ichiraku Ramen", desc: "Skill element ramen. Provides 15,000 EXP.", icon: "assets/characters/skill_968/portrait_4S.webp", category: "ramen", element: "skill", exp: 15000 },
     "ramen_skill_5star": { name: "5★ Skill Ichiraku Ramen", desc: "Skill element ramen. Provides 50,000 EXP.", icon: "assets/characters/skill_1074/portrait_5S.webp", category: "ramen", element: "skill", exp: 50000 },
+    "ramen_skill_6star": { name: "6★ Skill Ichiraku Ramen", desc: "Skill element ramen feast. Provides 150,000 EXP.", icon: "assets/characters/skill_ramen6/portrait_6S.webp", category: "ramen", element: "skill", exp: 150000 },
 
     // Body Ramen - using actual ramen character portraits
     "ramen_body_1star": { name: "1★ Body Ichiraku Ramen", desc: "Body element ramen. Provides 500 EXP.", icon: "assets/characters/body_921/portrait_1S.webp", category: "ramen", element: "body", exp: 500 },
@@ -30,6 +32,7 @@
     "ramen_body_3star": { name: "3★ Body Ichiraku Ramen", desc: "Body element ramen. Provides 5,000 EXP.", icon: "assets/characters/body_923/portrait_3S.webp", category: "ramen", element: "body", exp: 5000 },
     "ramen_body_4star": { name: "4★ Body Ichiraku Ramen", desc: "Body element ramen. Provides 15,000 EXP.", icon: "assets/characters/body_969/portrait_4S.webp", category: "ramen", element: "body", exp: 15000 },
     "ramen_body_5star": { name: "5★ Body Ichiraku Ramen", desc: "Body element ramen. Provides 50,000 EXP.", icon: "assets/characters/body_1077/portrait_5S.webp", category: "ramen", element: "body", exp: 50000 },
+    "ramen_body_6star": { name: "6★ Body Ichiraku Ramen", desc: "Body element ramen feast. Provides 150,000 EXP.", icon: "assets/characters/body_ramen6/portrait_6S.webp", category: "ramen", element: "body", exp: 150000 },
 
     // Bravery Ramen - using actual ramen character portraits
     "ramen_bravery_1star": { name: "1★ Bravery Ichiraku Ramen", desc: "Bravery element ramen. Provides 500 EXP.", icon: "assets/characters/bravery_924/portrait_1S.webp", category: "ramen", element: "bravery", exp: 500 },
@@ -37,6 +40,7 @@
     "ramen_bravery_3star": { name: "3★ Bravery Ichiraku Ramen", desc: "Bravery element ramen. Provides 5,000 EXP.", icon: "assets/characters/bravery_926/portrait_3S.webp", category: "ramen", element: "bravery", exp: 5000 },
     "ramen_bravery_4star": { name: "4★ Bravery Ichiraku Ramen", desc: "Bravery element ramen. Provides 15,000 EXP.", icon: "assets/characters/bravery_970/portrait_4S.webp", category: "ramen", element: "bravery", exp: 15000 },
     "ramen_bravery_5star": { name: "5★ Bravery Ichiraku Ramen", desc: "Bravery element ramen. Provides 50,000 EXP.", icon: "assets/characters/bravery_1080/portrait_5S.webp", category: "ramen", element: "bravery", exp: 50000 },
+    "ramen_bravery_6star": { name: "6★ Bravery Ichiraku Ramen", desc: "Bravery element ramen feast. Provides 150,000 EXP.", icon: "assets/characters/bravery_ramen6/portrait_6S.webp", category: "ramen", element: "bravery", exp: 150000 },
 
     // Wisdom Ramen - using actual ramen character portraits
     "ramen_wisdom_1star": { name: "1★ Wisdom Ichiraku Ramen", desc: "Wisdom element ramen. Provides 500 EXP.", icon: "assets/characters/wisdom_927/portrait_1S.webp", category: "ramen", element: "wisdom", exp: 500 },
@@ -44,6 +48,7 @@
     "ramen_wisdom_3star": { name: "3★ Wisdom Ichiraku Ramen", desc: "Wisdom element ramen. Provides 5,000 EXP.", icon: "assets/characters/wisdom_929/portrait_3S.webp", category: "ramen", element: "wisdom", exp: 5000 },
     "ramen_wisdom_4star": { name: "4★ Wisdom Ichiraku Ramen", desc: "Wisdom element ramen. Provides 15,000 EXP.", icon: "assets/characters/wisdom_971/portrait_4S.webp", category: "ramen", element: "wisdom", exp: 15000 },
     "ramen_wisdom_5star": { name: "5★ Wisdom Ichiraku Ramen", desc: "Wisdom element ramen. Provides 50,000 EXP.", icon: "assets/characters/wisdom_1083/portrait_5S.webp", category: "ramen", element: "wisdom", exp: 50000 },
+    "ramen_wisdom_6star": { name: "6★ Wisdom Ichiraku Ramen", desc: "Wisdom element ramen feast. Provides 150,000 EXP.", icon: "assets/characters/wisdom_ramen6/portrait_6S.webp", category: "ramen", element: "wisdom", exp: 150000 },
 
     // ========== ENHANCEMENT ITEMS (Stat Boosts) ==========
     "health_boost": { name: "Health Boost \"Health and Endurance\"", desc: "Increases HP stat permanently by 100.", icon: "assets/items/health_boost.png", category: "enhancement", statBoost: { hp: 100 } },
@@ -105,6 +110,9 @@
     "ramen_1star": "ramen_heart_1star",
     "ramen_2star": "ramen_heart_2star",
     "ramen_3star": "ramen_heart_3star",
+    "ramen_4star": "ramen_heart_4star",
+    "ramen_5star": "ramen_heart_5star",
+    "ramen_6star": "ramen_heart_6star",
     "scroll_3star": "awakening_stone_3",
     "scroll_4star": "awakening_stone_4",
     "scroll_5star": "awakening_stone_5",
@@ -219,15 +227,15 @@
     if (Object.keys(_resources).length === 0) {
       _resources = {
         // Ramen - Heart
-        "ramen_heart_1star": 5, "ramen_heart_2star": 3, "ramen_heart_3star": 2, "ramen_heart_4star": 1, "ramen_heart_5star": 0,
+        "ramen_heart_1star": 5, "ramen_heart_2star": 3, "ramen_heart_3star": 2, "ramen_heart_4star": 1, "ramen_heart_5star": 0, "ramen_heart_6star": 0,
         // Ramen - Skill
-        "ramen_skill_1star": 5, "ramen_skill_2star": 3, "ramen_skill_3star": 2, "ramen_skill_4star": 1, "ramen_skill_5star": 0,
+        "ramen_skill_1star": 5, "ramen_skill_2star": 3, "ramen_skill_3star": 2, "ramen_skill_4star": 1, "ramen_skill_5star": 0, "ramen_skill_6star": 0,
         // Ramen - Body
-        "ramen_body_1star": 5, "ramen_body_2star": 3, "ramen_body_3star": 2, "ramen_body_4star": 1, "ramen_body_5star": 0,
+        "ramen_body_1star": 5, "ramen_body_2star": 3, "ramen_body_3star": 2, "ramen_body_4star": 1, "ramen_body_5star": 0, "ramen_body_6star": 0,
         // Ramen - Bravery
-        "ramen_bravery_1star": 5, "ramen_bravery_2star": 3, "ramen_bravery_3star": 2, "ramen_bravery_4star": 1, "ramen_bravery_5star": 0,
+        "ramen_bravery_1star": 5, "ramen_bravery_2star": 3, "ramen_bravery_3star": 2, "ramen_bravery_4star": 1, "ramen_bravery_5star": 0, "ramen_bravery_6star": 0,
         // Ramen - Wisdom
-        "ramen_wisdom_1star": 5, "ramen_wisdom_2star": 3, "ramen_wisdom_3star": 2, "ramen_wisdom_4star": 1, "ramen_wisdom_5star": 0,
+        "ramen_wisdom_1star": 5, "ramen_wisdom_2star": 3, "ramen_wisdom_3star": 2, "ramen_wisdom_4star": 1, "ramen_wisdom_5star": 0, "ramen_wisdom_6star": 0,
 
         // Enhancement Items
         "health_boost": 3, "attack_boost": 3, "speed_boost": 2, "speed_boost_large": 1,
