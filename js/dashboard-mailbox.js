@@ -8,6 +8,7 @@ class DashboardMailbox {
 
   init() {
     this.loadMessages();
+    this._pruneGhostUnits();
     this.updateUnreadCount();
     console.log('✅ Dashboard Mailbox initialized - Unread messages:', this.unreadCount);
   }
@@ -124,8 +125,63 @@ class DashboardMailbox {
     return 'assets/icons/chestunopened.png';
   }
 
+  /**
+   * Character catalog (data/characters.json) as a Map id -> character.
+   * Claims wait for it so unknown ids are never added and "all units"
+   * rewards know the full roster. Pages without the data fetch it once.
+   */
+  _catalog() {
+    if (this._catalogPromise) return this._catalogPromise;
+    const fromPage = window.CHARACTERS_DATA || window.CharacterData || window.CHARACTERS;
+    this._catalogPromise = (Array.isArray(fromPage) && fromPage.length
+      ? Promise.resolve(fromPage)
+      : fetch('data/characters.json').then(r => r.json()).then(d => (Array.isArray(d) ? d : d.characters || []))
+    ).then(list => {
+      this._catalogMap = new Map(list.filter(c => c && c.id).map(c => [c.id, c]));
+      return this._catalogMap;
+    }).catch(e => {
+      console.error('[Mailbox] Could not load characters.json:', e);
+      this._catalogPromise = null; // retry on the next claim
+      return null;
+    });
+    return this._catalogPromise;
+  }
+
+  /**
+   * Remove units granted by old, mistyped gift-code ids (they never existed,
+   * so they showed up nowhere). Only these exact ids, and only while they are
+   * still missing from the catalog.
+   */
+  _pruneGhostUnits() {
+    const TYPO_IDS = ['naruto_01', 'sasuke_01', 'sakura_01', 'sasuke_05', 'naruto_163', 'madara_06sb'];
+    if (!window.InventoryChar?.removeByCharIds) return;
+    if (!window.InventoryChar.allInstances().some(x => TYPO_IDS.includes(x.charId))) return;
+    this._catalog().then(cat => {
+      if (!cat) return;
+      const ghosts = TYPO_IDS.filter(id => !cat.has(id));
+      const n = window.InventoryChar.removeByCharIds(ghosts);
+      if (n) console.log(`[Mailbox] Removed ${n} ghost unit(s) from old gift codes`);
+    });
+  }
+
+  /**
+   * Claim key per character entry. The same id can appear twice (e.g. 6S
+   * and 7S copies); the first keeps the legacy key "char_<id>" so old saves
+   * stay claimed, later ones get "#2", "#3"... (they used to collide and
+   * were silently skipped).
+   */
+  _charKeys(list) {
+    const seen = {};
+    return (list || []).map(ch => {
+      const id = ch && ch.characterId;
+      seen[id] = (seen[id] || 0) + 1;
+      return seen[id] === 1 ? `char_${id}` : `char_${id}#${seen[id]}`;
+    });
+  }
+
   _charName(id) {
     try {
+      if (this._catalogMap && this._catalogMap.has(id)) return this._catalogMap.get(id).name;
       const list = window.CharacterData || window.CHARACTERS || null;
       if (Array.isArray(list)) {
         const c = list.find(x => x.id === id);
@@ -159,8 +215,21 @@ class DashboardMailbox {
       });
     });
 
-    (r.characters || []).forEach(ch => {
-      const key = `char_${ch.characterId}`;
+    if (r.allCharacters) {
+      const n = this._catalogMap ? this._catalogMap.size : 0;
+      out.push({
+        key: 'all_characters', kind: 'character',
+        name: n ? `All Units (${n})` : 'All Units',
+        qty: 1,
+        icon: 'assets/icons/characters_icon.png',
+        fallback: 'assets/icons/characters_icon.png',
+        claimed: claimed.includes('all_characters')
+      });
+    }
+
+    const charKeys = this._charKeys(r.characters);
+    (r.characters || []).forEach((ch, i) => {
+      const key = charKeys[i];
       out.push({
         key, kind: 'character',
         name: this._charName(ch.characterId),
@@ -171,7 +240,7 @@ class DashboardMailbox {
       });
     });
 
-    Object.keys(r).filter(k => k !== 'characters' && k !== 'resources').forEach(name => {
+    Object.keys(r).filter(k => !['characters', 'resources', 'allCharacters'].includes(k)).forEach(name => {
       const key = `legacy_${name}`;
       out.push({
         key, kind: 'resource',
@@ -460,18 +529,33 @@ class DashboardMailbox {
       message.claimed.push(key);
     });
 
-    (r.characters || []).forEach(ch => {
-      const key = `char_${ch.characterId}`;
+    const cat = this._catalogMap; // loaded by claimRewards / claimAll
+
+    // Developer "all units" reward: one copy of every character at its max tier.
+    if (r.allCharacters && !message.claimed.includes('all_characters') && cat && window.InventoryChar) {
+      window.InventoryChar.addMany([...cat.values()].map(c => ({
+        charId: c.id, level: 1, tierCode: c.starMaxCode || c.starMinCode || '3S'
+      })));
+      message.claimed.push('all_characters');
+    }
+
+    const charKeys = this._charKeys(r.characters);
+    (r.characters || []).forEach((ch, i) => {
+      const key = charKeys[i];
       if (message.claimed.includes(key)) return;
-      if (window.InventoryChar) {
-        for (let i = 0; i < ch.quantity; i++) {
-          window.InventoryChar.addCopy(ch.characterId, 1, ch.tierCode || '3S');
-        }
+      // Never add an id the game doesn't know (it would be an invisible "ghost" unit).
+      if (cat && !cat.has(ch.characterId)) {
+        console.warn(`[Mailbox] Skipped unknown character "${ch.characterId}" in "${message.title}"`);
+      } else if (window.InventoryChar) {
+        const copies = Array.from({ length: Number(ch.quantity) || 1 },
+          () => ({ charId: ch.characterId, level: 1, tierCode: ch.tierCode || '3S' }));
+        window.InventoryChar.addMany ? window.InventoryChar.addMany(copies)
+          : copies.forEach(c => window.InventoryChar.addCopy(c.charId, c.level, c.tierCode));
       }
       message.claimed.push(key);
     });
 
-    Object.keys(r).filter(k => k !== 'characters' && k !== 'resources').forEach(name => {
+    Object.keys(r).filter(k => !['characters', 'resources', 'allCharacters'].includes(k)).forEach(name => {
       const key = `legacy_${name}`;
       if (message.claimed.includes(key)) return;
       const id = this._resourceNameToId(name);
@@ -485,7 +569,8 @@ class DashboardMailbox {
     return granted;
   }
 
-  claimRewards(index) {
+  async claimRewards(index) {
+    await this._catalog();
     const message = this.messages[index];
     if (!message || !message.rewards) {
       this.showCustomAlert('No Rewards', 'This present has nothing to claim.', 'error');
@@ -506,7 +591,8 @@ class DashboardMailbox {
     this.showRewardReveal(pending, { note: hasChars ? 'New ninja added to your Characters.' : '' });
   }
 
-  claimAll() {
+  async claimAll() {
+    await this._catalog();
     const totals = new Map();
     let hasChars = false;
     this.messages.forEach(msg => {

@@ -1,6 +1,6 @@
 // js/character_inv.js
 // Character Inventory System — stores character instances in localStorage
-// Provides: allInstances, instancesOf, getByUid, addCopy, addExisting, removeOneByUid,
+// Provides: allInstances, instancesOf, getByUid, addCopy, addMany, addExisting, removeOneByUid, removeByCharIds,
 //           updateInstance, replaceInstance, _mutate, levelUpInstance, promoteTier,
 //           and a helper: window.addCharacterById(charId)
 
@@ -69,6 +69,34 @@
     _instances.push(inst);
     save();
     return inst;
+  }
+
+  /** Add many copies at once ([{ charId, level, tierCode }]) with a single save. */
+  function addMany(list) {
+    const added = (list || []).filter(x => x && x.charId).map(x => ({
+      uid: uid(),
+      charId: x.charId,
+      level: Number(x.level) || 1,
+      tierCode: x.tierCode || null,
+      dupeUnlocks: 0,
+      cost: 50,
+      luck: 50,
+    }));
+    if (added.length) {
+      _instances.push(...added);
+      save();
+    }
+    return added;
+  }
+
+  /** Remove every instance whose charId is in `charIds`; returns how many were removed. */
+  function removeByCharIds(charIds) {
+    const drop = new Set(charIds || []);
+    const before = _instances.length;
+    _instances = _instances.filter(x => !drop.has(x.charId));
+    const removed = before - _instances.length;
+    if (removed) save();
+    return removed;
   }
 
   function addExisting(instance) {
@@ -256,6 +284,8 @@
     instancesOf,
     getByUid,
     addCopy,
+    addMany,
+    removeByCharIds,
     addExisting,
     removeOneByUid,
     updateInstance,
