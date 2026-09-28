@@ -499,7 +499,7 @@
         </defs><g class="bz-pending"></g>`;
       ground.appendChild(zones);
       const fx = mk("boss-fx");
-      // Blazing-style boss bar: red brush "Boss" label + a long gold-framed bar
+      // Boss bar in the game theme: crimson title plate label + gold-framed ink bar
       const hud = mk("boss-hud", scene, `
         <div class="bh-label" aria-label="${esc(this.def.name)}"><span>Boss</span></div>
         <div class="bh-frame">
