@@ -141,7 +141,8 @@
       return new Promise(resolve => {
         const tick = now => {
           if (my !== token) return resolve();
-          let i = Math.floor((now - start) / frameMs);
+          // rAF can pass a timestamp from just before `start`: never show frame -1 (blank)
+          let i = Math.max(0, Math.floor((now - start) / frameMs));
           if (i >= anim.frames) {
             if (!oneShot) i %= anim.frames;
             else {
