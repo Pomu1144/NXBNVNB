@@ -141,7 +141,8 @@
       return new Promise(resolve => {
         const tick = now => {
           if (my !== token) return resolve();
-          let i = Math.floor((now - start) / frameMs);
+          // rAF can pass a timestamp from just before `start`: never show frame -1 (blank)
+          let i = Math.max(0, Math.floor((now - start) / frameMs));
           if (i >= anim.frames) {
             if (!oneShot) i %= anim.frames;
             else {
@@ -258,6 +259,7 @@
     jiraiya_9001: 'assets/sprites/jiraiya_9001', // Jiraiya "Gallant Sage of Mount Myoboku" 7★
     kaguya_9003: 'assets/sprites/kaguya_9003', // Kaguya Otsutsuki "Progenitor of All Chakra" 7★
     pain_9004: 'assets/sprites/pain_9004', // Pain "God of Amegakure" 7★
+    gojo_9005: 'assets/sprites/gojo_9005', // Gojo Satoru "The Strongest" 7★
     // </produce:registry>
   };
 

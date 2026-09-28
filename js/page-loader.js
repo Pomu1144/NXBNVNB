@@ -329,7 +329,7 @@
     if (!doc.fonts) return;
     try {
       add('font Kaisei', doc.fonts.load('700 16px "Kaisei Tokumin"'));
-      add('font Shojumaru', doc.fonts.load('16px "Shojumaru"'));
+      add('font Bebas Neue', doc.fonts.load('16px "Bebas Neue"'));
       // Other faces the first layout asked for; capped, a late swap is harmless.
       add('fonts ready', Promise.race([doc.fonts.ready, sleep(4000)]));
     } catch (e) { /* ignore */ }

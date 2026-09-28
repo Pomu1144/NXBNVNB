@@ -606,8 +606,14 @@
       this.dropAt(ev.clientX, ev.clientY, core);
 
       // Dropped right on top of an enemy: step to its side instead of
-      // standing inside it (a short hop, then idle).
-      if (hit && hit.pos && unit.stats.hp > 0) {
+      // standing inside it (a short hop, then idle). A giant boss: step back
+      // to the front edge of its body.
+      const bossSpot = unit.stats.hp > 0 ? window.BattleBoss?.keepOut?.(unit) : null;
+      if (bossSpot) {
+        unit.pos = bossSpot;
+        window.BattleSeparation?.resolve(core, { fixed: unit });
+        core.units?.updateUnitPosition(unit, core);
+      } else if (hit && hit.pos && !hit.isBoss && unit.stats.hp > 0) {
         const side = startX <= hit.pos.x ? -1 : 1;
         const gap = (this.SPRITE_ATTACK_GAP_PX / rect.width) * 100;
         unit.pos = { x: Math.max(0, Math.min(100, hit.pos.x + side * gap)), y: hit.pos.y };

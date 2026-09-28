@@ -130542,6 +130542,168 @@
   }
  },
  {
+  "id": "gojo_9005",
+  "name": "Gojo Satoru",
+  "version": "The Strongest",
+  "element": "Skill",
+  "rarity": 7,
+  "starMinCode": "7S",
+  "starMaxCode": "7S",
+  "lbEligible": false,
+  "portrait": "assets/characters/gojo_9005/portrait_7S.webp",
+  "full": "assets/characters/gojo_9005/full_7S.webp",
+  "ultimateAnimation": null,
+  "secretAnimation": null,
+  "artByTier": {
+   "7S": {
+    "portrait": "assets/characters/gojo_9005/portrait_7S.webp",
+    "full": "assets/characters/gojo_9005/full_7S.webp"
+   }
+  },
+  "statsBase": {
+   "hp": 27200,
+   "atk": 2640,
+   "speed": 202
+  },
+  "statsMax": {
+   "hp": 55400,
+   "atk": 5280,
+   "speed": 404
+  },
+  "growthCurve": {
+   "hp": 1,
+   "atk": 1,
+   "def": 1,
+   "speed": 1,
+   "chakra": 1
+  },
+  "powerRank": 18400,
+  "powerWeights": {
+   "hp": 0.3,
+   "atk": 0.4,
+   "def": 0.1,
+   "speed": 0.15,
+   "chakra": 0.05
+  },
+  "range": "Long",
+  "luck": {
+   "base": 10,
+   "max": 99
+  },
+  "cost": {
+   "base": 150,
+   "max": 60
+  },
+  "affiliation": [
+   "Tokyo Jujutsu High",
+   "Gojo Clan"
+  ],
+  "passiveIcons": {},
+  "skills": {
+   "fieldSkill": {
+    "name": "Field Skill",
+    "type": "Field",
+    "description": "Infinity: reduces damage taken by 15-20% for all allies."
+   },
+   "buddySkill": {
+    "name": "Buddy Skill",
+    "type": "Buddy",
+    "description": "Boosts attack by 500 and 20% chance of dodging an attack."
+   },
+   "jutsu": {
+    "name": "Hollow Technique: Purple",
+    "type": "Jutsu",
+    "byTier": {
+     "7S": {
+      "chakraCost": 5,
+      "chakraCostMax": 4,
+      "hits": 10,
+      "shape": "Line",
+      "range": "Long",
+      "position": "Center",
+      "shapeArgs": {
+       "length": 700,
+       "width": 110
+      },
+      "description": "Merges Blue and Red into an imaginary mass that erases everything in its path: 10x attack toward enemies in range, ignoring 50% of enemy defense and ignoring Substitution.",
+      "effects": {
+       "multiplier": 10
+      }
+     }
+    }
+   },
+   "ultimate": {
+    "name": "Domain Expansion: Unlimited Void",
+    "type": "Ultimate",
+    "byTier": {
+     "7S": {
+      "chakraCost": 10,
+      "chakraCostMax": 9,
+      "hits": 12,
+      "shape": "Whole Map",
+      "range": "On-Screen",
+      "position": "Center",
+      "description": "Expands the domain Unlimited Void for 3 of your turns: every enemy on the field is paralysed by infinite information and loses its next turn (bosses: 50% chance). Then deals 18x attack toward all enemies, ignoring Substitution and Perfect Dodge. Inside the domain your attacks cannot miss and your attack rises by 15%.",
+      "effects": {
+       "multiplier": 18
+      }
+     }
+    },
+    "domain": {
+     "id": "unlimited_void",
+     "name": "Unlimited Void",
+     "kicker": "Domain Expansion",
+     "map": "assets/battle/domains/unlimited_void.webp",
+     "overlay": "assets/battle/domains/unlimited_void_overlay.webp",
+     "placeholder": "void",
+     "color": "#9fe0ff",
+     "color2": "#b28cff",
+     "turns": 3,
+     "stun": {
+      "status": "immobilize",
+      "turns": 1,
+      "chance": 1,
+      "bossChance": 0.5
+     },
+     "casterAtkPct": 15,
+     "sureHit": true,
+     "endOnCasterKO": true
+    }
+   }
+  },
+  "abilities": [
+   {
+    "name": "Ignore Substitution",
+    "description": "Six Eyes: sees through every feint. Ignores Substitution and does damage."
+   },
+   {
+    "name": "Reduce Damage/Substitution Jutsu",
+    "description": "Infinity: reduces damage taken by 40% and a 40% chance of dodging a physical attack (Not slip damage)."
+   },
+   {
+    "name": "Nullifies Immobilization",
+    "description": "Nullifies immobilization (not Field Effects & F Skills)."
+   },
+   {
+    "name": "Self-Healing",
+    "description": "Reverse Cursed Technique: restores 600 / 1,200 health every turn."
+   },
+   {
+    "name": "Chakra Gauge Reduction",
+    "description": "Six Eyes: reduces chakra consumed by 1."
+   },
+   {
+    "name": "Attack Boost",
+    "description": "Limitless: boosts attack by 600."
+   }
+  ],
+  "metadata": {
+   "cardNumber": 9005,
+   "maxLevel": 100,
+   "hitCount": 12
+  }
+ },
+ {
   "id": "obito_2201",
   "name": "Obito Uchiha",
   "version": "Shattered Illusion",

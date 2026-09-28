@@ -1,23 +1,23 @@
 {
-  "frameWidth": 704,
-  "frameHeight": 512,
-  "frames": 20,
-  "columns": 8,
-  "fps": 12,
+  "frameWidth": 1440,
+  "frameHeight": 1088,
+  "frames": 10,
+  "columns": 5,
+  "fps": 8,
   "loop": false,
   "hits": [
-    10,
-    12,
-    14
+    3,
+    5,
+    7
   ],
-  "heightScale": 3.0,
-  "anchorX": 0.517,
-  "anchorY": 0.9648,
-  "fireFrame": 6,
+  "heightScale": 1.0,
+  "anchorX": 0.5,
+  "anchorY": 0.9881,
+  "fireFrame": 2,
   "fx": [
     {
       "sheet": "attack_map_fx",
-      "startFrame": 7
+      "startFrame": 3
     }
   ]
 }

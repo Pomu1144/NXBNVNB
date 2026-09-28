@@ -160,7 +160,7 @@
 .ob-word-img.is-missing { display: none; }
 .ob-word-img.is-missing + .ob-word-ph {
   display: block;
-  font-family: var(--jjk-font-script, 'Shojumaru', serif);
+  font-family: var(--jjk-font-script, 'Bebas Neue', serif);
   font-size: clamp(56px, 13vw, 170px);
   line-height: 1;
   color: #ff8a1f;

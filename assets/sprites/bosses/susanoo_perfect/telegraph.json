@@ -1,12 +1,12 @@
 {
-  "frameWidth": 512,
-  "frameHeight": 512,
-  "frames": 16,
-  "columns": 8,
-  "fps": 12,
+  "frameWidth": 1536,
+  "frameHeight": 1024,
+  "frames": 8,
+  "columns": 4,
+  "fps": 8,
   "loop": false,
   "hits": [],
-  "heightScale": 3.3,
-  "anchorX": 0.5703,
-  "anchorY": 0.9805
+  "heightScale": 1.0,
+  "anchorX": 0.62,
+  "anchorY": 1.0
 }
