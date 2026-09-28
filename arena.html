@@ -220,6 +220,7 @@
 
   <script src="js/audio-manager.js"></script>
   <script src="js/resources.js"></script>
+  <script src="js/sprite-player.js"></script>
   <script>
   // ── Star glyph — thin pale-gold star (svg sprite #i-star) ────────────────
   function starIco(px = 12) {
@@ -639,6 +640,12 @@
     };
   }
 
+  function spritePool(pool) {
+    const SP = window.SpritePlayer;
+    if (!SP || typeof SP.has !== 'function') return [];
+    return pool.filter(c => SP.has(c.id));
+  }
+
   function generateRivals(pool) {
     const stars = getArenaStars();
     const rankList = buildRankList();
@@ -657,7 +664,27 @@
       const band = pool.slice(lo, Math.max(hi, lo + 8));
 
       const statMult = 0.85 + progress * 0.55 + tier.statScale;
-      const units = shuffle(band).slice(0, 4).map(c => buildRivalUnit(c, statMult));
+      // Rivals only field units that have battle animations (the rest would
+      // show up as flat portrait cards). The band above still sets how strong
+      // they are: each animated unit is scaled to the band's average power.
+      const animated = spritePool(pool);
+      let units;
+      if (animated.length >= 4) {
+        const target = band.reduce((s, c) => s + (Number(c.powerRank) || 0), 0) / Math.max(1, band.length);
+        const nearest = [...animated]
+          .sort((a, b) => Math.abs(a.powerRank - target) - Math.abs(b.powerRank - target))
+          .slice(0, 12);
+        // one of each character per team (variants share a name and face)
+        const seen = new Set();
+        const picks = shuffle(nearest).filter(c => !seen.has(c.name) && seen.add(c.name));
+        const four = picks.length >= 4 ? picks : shuffle(animated).filter(c => !seen.has(c.name) && seen.add(c.name));
+        units = picks.concat(four === picks ? [] : four).slice(0, 4).map(c => {
+          const scale = Math.min(1.2, Math.max(0.3, target / (Number(c.powerRank) || target)));
+          return buildRivalUnit(c, statMult * scale);
+        });
+      } else {
+        units = shuffle(band).slice(0, 4).map(c => buildRivalUnit(c, statMult));
+      }
 
       let name;
       do { name = RIVAL_NAMES[Math.floor(Math.random() * RIVAL_NAMES.length)]; }

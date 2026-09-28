@@ -143,6 +143,9 @@
         const unit = bm.units ?
           bm.units.createCombatant({
             id: base.id,
+            // Arena rivals are real playable units: give them their character
+            // id so they fight with their battle animations instead of a card.
+            charId: bm.isArena ? base.id : undefined,
             name: base.name,
             portrait: portrait,
             isPlayer: false,

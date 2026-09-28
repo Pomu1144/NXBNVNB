@@ -581,3 +581,38 @@
   }
   .mr-extra { opacity: 1; }
 }
+
+/* Result card never grows past the screen: the stat list shrinks and scrolls,
+   the Continue/Return buttons stay pinned at the bottom (phones were losing
+   them below the fold with no way to scroll, e.g. after an Arena battle). */
+#battle-result .result-container { display: flex; flex-direction: column; }
+#battle-result .result-subtitle,
+#battle-result .result-buttons { flex: 0 0 auto; }
+#battle-result .result-stats {
+  flex: 0 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+}
+
+/* Phone landscape: two columns of stats so the whole card fits */
+@media (max-height: 540px) and (min-width: 560px) {
+  #battle-result .result-container { width: min(720px, 96vw); }
+  #battle-result .result-stats {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 3px 10px;
+    align-content: start;
+  }
+  #battle-result .result-stats .stat-divider { display: none; }
+  #battle-result .result-summary {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 3px 10px;
+    margin-top: 4px;
+  }
+  #battle-result .summary-row { flex-direction: column; align-items: flex-start; gap: 0; }
+  #battle-result .summary-value { text-align: left; }
+}
