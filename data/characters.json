@@ -130701,6 +130701,13 @@
    "cardNumber": 9005,
    "maxLevel": 100,
    "hitCount": 12
+  },
+  "fx7": {
+   "aura": "assets/characters/gojo_9005/fx_aura.webp",
+   "glow": "assets/characters/gojo_9005/fx_glow.webp",
+   "particles": "assets/characters/gojo_9005/fx_particles.webp",
+   "color": "#8fd8ff",
+   "color2": "#8a4dff"
   }
  },
  {
@@ -130861,6 +130868,13 @@
    "cardNumber": 9006,
    "maxLevel": 100,
    "hitCount": 12
+  },
+  "fx7": {
+   "aura": "assets/characters/sukuna_9006/fx_aura.webp",
+   "glow": "assets/characters/sukuna_9006/fx_glow.webp",
+   "particles": "assets/characters/sukuna_9006/fx_particles.webp",
+   "color": "#ff3b4a",
+   "color2": "#a0101e"
   }
  },
  {
@@ -131004,6 +131018,13 @@
    "cardNumber": 9007,
    "maxLevel": 100,
    "hitCount": 12
+  },
+  "fx7": {
+   "aura": "assets/characters/sukuna_9007/fx_aura.webp",
+   "glow": "assets/characters/sukuna_9007/fx_glow.webp",
+   "particles": "assets/characters/sukuna_9007/fx_particles.webp",
+   "color": "#ffa23b",
+   "color2": "#ff4a1a"
   }
  },
  {
