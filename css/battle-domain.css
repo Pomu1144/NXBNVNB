@@ -1,0 +1,359 @@
+/* ===================================================
+   DOMAIN EXPANSION (js/battle/battle-domain.js)
+   The domain map spreads from the caster as a sphere (clip-path circle),
+   under the boss tint / ground layers and the units; a title card and a
+   black beat come first; a badge counts the caster's turns left.
+   Colours come from the domain block (--dom-c1 glow, --dom-c2 accent).
+   The "void" placeholder is a CSS starfield used until the map art exists.
+   =================================================== */
+
+/* ---------- Map layer (under .boss-arena-tint z3 / .boss-ground z4 / grid z5) ---------- */
+.domain-layer {
+  --dom-x: 50%;
+  --dom-y: 55%;
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  overflow: hidden;
+  visibility: hidden;
+  -webkit-clip-path: circle(0% at var(--dom-x) var(--dom-y));
+  clip-path: circle(0% at var(--dom-x) var(--dom-y));
+  transition: clip-path 0.95s cubic-bezier(0.55, 0.05, 0.25, 1), -webkit-clip-path 0.95s cubic-bezier(0.55, 0.05, 0.25, 1), visibility 0s linear 0.95s;
+}
+.domain-layer.is-on {
+  visibility: visible;
+  -webkit-clip-path: circle(150% at var(--dom-x) var(--dom-y));
+  clip-path: circle(150% at var(--dom-x) var(--dom-y));
+  transition: clip-path 0.95s cubic-bezier(0.55, 0.05, 0.25, 1), -webkit-clip-path 0.95s cubic-bezier(0.55, 0.05, 0.25, 1), visibility 0s;
+}
+.domain-layer.is-collapsing {
+  transition: clip-path 0.75s cubic-bezier(0.6, 0, 0.8, 0.4), -webkit-clip-path 0.75s cubic-bezier(0.6, 0, 0.8, 0.4), visibility 0s linear 0.75s;
+}
+.domain-layer.is-instant { transition: none; }
+/* reduced motion: a plain crossfade */
+.domain-layer.is-rm {
+  -webkit-clip-path: none;
+  clip-path: none;
+  opacity: 0;
+  transition: opacity 0.35s ease, visibility 0s linear 0.35s;
+}
+.domain-layer.is-rm.is-on { opacity: 1; transition: opacity 0.35s ease, visibility 0s; }
+
+.domain-map,
+.domain-overlay,
+.domain-vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.domain-map {
+  background: #02040b center center / cover no-repeat;
+}
+.domain-layer.is-pulse .domain-map { animation: domPulse 0.6s ease-out; }
+@keyframes domPulse {
+  0% { filter: brightness(1); }
+  30% { filter: brightness(1.9) saturate(1.3); }
+  100% { filter: brightness(1); }
+}
+
+/* Readability: darker rim, faint glow at the core */
+.domain-vignette {
+  background:
+    radial-gradient(ellipse 70% 65% at 50% 58%, transparent 40%, rgba(0, 2, 10, 0.62) 100%),
+    linear-gradient(180deg, rgba(0, 2, 10, 0.35), transparent 30%, transparent 75%, rgba(0, 2, 10, 0.4));
+}
+
+/* ---------- Placeholder: Unlimited Void (CSS starfield + light streams) ---------- */
+.domain-map.dom-ph-void {
+  background:
+    radial-gradient(ellipse 38% 30% at 50% 52%, rgba(235, 248, 255, 0.55), rgba(150, 210, 255, 0.18) 45%, transparent 75%),
+    repeating-conic-gradient(from 3deg at 50% 52%,
+      rgba(190, 230, 255, 0) 0deg 6deg,
+      rgba(190, 230, 255, 0.14) 6.6deg 7.2deg,
+      rgba(190, 230, 255, 0) 7.8deg 13deg,
+      rgba(178, 140, 255, 0.10) 13.5deg 14deg,
+      rgba(190, 230, 255, 0) 14.5deg 19deg),
+    radial-gradient(ellipse 120% 90% at 50% 52%, #10224a 0%, #070d24 38%, #02030a 78%);
+}
+.domain-map.dom-ph-void::before,
+.domain-map.dom-ph-void::after {
+  content: "";
+  position: absolute;
+  inset: -20%;
+  pointer-events: none;
+}
+/* star specks (two tiled fields) */
+.domain-map.dom-ph-void::before {
+  background-image:
+    radial-gradient(1.3px 1.3px at 18px 22px, #fff 60%, transparent 62%),
+    radial-gradient(1px 1px at 92px 64px, #d6ecff 60%, transparent 62%),
+    radial-gradient(1.6px 1.6px at 140px 18px, #fff 60%, transparent 62%),
+    radial-gradient(1px 1px at 60px 132px, #bfe2ff 60%, transparent 62%),
+    radial-gradient(1.2px 1.2px at 170px 110px, #fff 60%, transparent 62%),
+    radial-gradient(1px 1px at 34px 176px, #e6d8ff 60%, transparent 62%),
+    radial-gradient(0.9px 0.9px at 118px 160px, #fff 60%, transparent 62%);
+  background-size: 190px 190px;
+  opacity: 0.85;
+  animation: domStars 60s linear infinite;
+}
+.domain-map.dom-ph-void::after {
+  background-image:
+    radial-gradient(2px 2px at 40px 50px, rgba(255, 255, 255, 0.9) 50%, transparent 60%),
+    radial-gradient(1.4px 1.4px at 260px 190px, rgba(200, 235, 255, 0.9) 50%, transparent 60%),
+    radial-gradient(2.2px 2.2px at 330px 60px, rgba(255, 255, 255, 0.8) 50%, transparent 60%),
+    radial-gradient(1.6px 1.6px at 150px 300px, rgba(210, 190, 255, 0.85) 50%, transparent 60%);
+  background-size: 380px 360px;
+  animation: domStars 38s linear infinite reverse;
+}
+@keyframes domStars {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-190px, 95px, 0); }
+}
+
+/* Overlay: streams of light flowing out of the core (placeholder) or the art's overlay */
+.domain-overlay.dom-ov-void {
+  background:
+    repeating-linear-gradient(104deg, transparent 0 46px, rgba(200, 236, 255, 0.10) 47px 48px, transparent 49px 120px),
+    repeating-linear-gradient(76deg, transparent 0 80px, rgba(178, 140, 255, 0.08) 81px 82px, transparent 83px 170px);
+  -webkit-mask-image: radial-gradient(ellipse 60% 55% at 50% 52%, #000 20%, transparent 80%);
+  mask-image: radial-gradient(ellipse 60% 55% at 50% 52%, #000 20%, transparent 80%);
+  mix-blend-mode: screen;
+  animation: domStreams 7s ease-in-out infinite alternate;
+}
+@keyframes domStreams {
+  from { transform: scale(1) rotate(0deg); opacity: 0.55; }
+  to { transform: scale(1.08) rotate(2deg); opacity: 1; }
+}
+.domain-overlay.has-art {
+  background: center center / cover no-repeat;
+  mix-blend-mode: screen;
+  animation: domOverlay 14s ease-in-out infinite alternate;
+}
+@keyframes domOverlay {
+  from { transform: scale(1.02) translate3d(-1%, 0.5%, 0); opacity: 0.75; }
+  to { transform: scale(1.08) translate3d(1%, -0.5%, 0); opacity: 1; }
+}
+
+/* Boss battles: the boss tint lightens so the domain reads (pulses still show) */
+#battle-scene.domain-on .boss-arena-tint { --boss-tint: rgba(6, 14, 40, 0.16); }
+
+/* ---------- Sphere shell (reveal): a thin glowing edge growing with the clip ---------- */
+.domain-ring {
+  position: absolute;
+  z-index: 3;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  border: 2px solid rgba(240, 250, 255, 0.95);
+  box-shadow: 0 0 14px 4px var(--dom-c1, #9fe0ff), inset 0 0 18px 4px var(--dom-c1, #9fe0ff);
+  opacity: 1;
+}
+.domain-ring.is-go {
+  width: var(--dom-ring-d, 3000px);
+  height: var(--dom-ring-d, 3000px);
+  opacity: 0.2;
+  transition: width 0.95s cubic-bezier(0.55, 0.05, 0.25, 1), height 0.95s cubic-bezier(0.55, 0.05, 0.25, 1), opacity 0.95s ease-in;
+}
+
+/* ---------- Black veil ---------- */
+.domain-veil {
+  position: absolute;
+  inset: 0;
+  z-index: 880;
+  background: #000;
+  opacity: 0;
+  pointer-events: auto;
+  cursor: pointer;
+  transition: opacity 0.45s ease;
+}
+.domain-veil.is-in { opacity: 0.72; transition-duration: 0.3s; }
+.domain-veil.is-black { opacity: 1; transition-duration: 0.25s; }
+.domain-veil.is-rm { transition-duration: 0.2s; }
+
+/* ---------- Title card: "Domain Expansion" / "Unlimited Void" ---------- */
+.domain-title {
+  position: absolute;
+  inset: 0;
+  z-index: 905;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: auto;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+.domain-title.is-in { opacity: 1; }
+.domain-title.is-out { opacity: 0; transition-duration: 0.22s; }
+.domain-title .dt-band {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: clamp(10px, 3.2vh, 30px) 16px clamp(12px, 3.6vh, 34px);
+  background: linear-gradient(90deg, transparent, rgba(3, 7, 20, 0.94) 14%, rgba(3, 7, 20, 0.94) 86%, transparent);
+  background:
+    radial-gradient(ellipse 45% 120% at 50% 50%, color-mix(in srgb, var(--dom-c1, #9fe0ff) 26%, transparent), transparent 70%),
+    linear-gradient(90deg, transparent, rgba(3, 7, 20, 0.94) 14%, rgba(3, 7, 20, 0.94) 86%, transparent);
+  border-top: 1px solid rgba(201, 162, 78, 0.75);
+  border-bottom: 1px solid rgba(201, 162, 78, 0.75);
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.6);
+  -webkit-clip-path: inset(0 50% 0 50%);
+  clip-path: inset(0 50% 0 50%);
+  transition: clip-path 0.42s cubic-bezier(0.2, 0.8, 0.2, 1), -webkit-clip-path 0.42s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.domain-title.is-in .dt-band { -webkit-clip-path: inset(0 0 0 0); clip-path: inset(0 0 0 0); }
+.domain-title .dt-kicker {
+  font-family: var(--jjk-font, 'Kaisei Tokumin', serif);
+  font-weight: 800;
+  font-size: clamp(11px, 3.4vh, 26px);
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--jjk-gold-hi, #f1d98a);
+  text-shadow: 0 2px 0 rgba(0, 0, 0, 0.7);
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.35s ease 0.12s, transform 0.35s ease 0.12s;
+}
+.domain-title .dt-name {
+  margin-top: 0.1em;
+  font-family: var(--jjk-font-script, 'Bebas Neue', serif);
+  font-size: clamp(26px, min(11vh, 7.2vw), 96px);
+  line-height: 1.05;
+  white-space: nowrap;
+  letter-spacing: 0.5em;
+  color: #f4fbff;
+  text-align: center;
+  text-shadow:
+    0 0 10px var(--dom-c1, #9fe0ff),
+    0 0 26px var(--dom-c1, #9fe0ff),
+    0 0 48px var(--dom-c2, #b28cff),
+    0 3px 0 rgba(0, 0, 0, 0.8);
+  opacity: 0;
+  filter: blur(6px);
+  transition: letter-spacing 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) 0.2s, opacity 0.5s ease 0.2s, filter 0.6s ease 0.2s;
+}
+.domain-title .dt-caster {
+  margin-top: 0.35em;
+  font-family: var(--jjk-font, 'Kaisei Tokumin', serif);
+  font-weight: 700;
+  font-size: clamp(10px, 2.6vh, 18px);
+  letter-spacing: 0.18em;
+  color: var(--jjk-muted, #93a3a3);
+  opacity: 0;
+  transition: opacity 0.4s ease 0.55s;
+}
+.domain-title.is-in .dt-kicker { opacity: 1; transform: none; }
+.domain-title.is-in .dt-name { opacity: 1; filter: none; letter-spacing: 0.06em; }
+.domain-title.is-in .dt-caster { opacity: 1; }
+.domain-title .dt-skip {
+  position: absolute;
+  right: 12px;
+  bottom: 10px;
+  font-family: var(--jjk-font, serif);
+  font-size: 11px;
+  color: rgba(236, 230, 214, 0.55);
+}
+/* reduced motion: fades only */
+.domain-title.is-rm .dt-band,
+.domain-title.is-rm.is-in .dt-band { -webkit-clip-path: none; clip-path: none; transition: none; }
+.domain-title.is-rm .dt-kicker,
+.domain-title.is-rm .dt-name,
+.domain-title.is-rm .dt-caster { transform: none; filter: none; letter-spacing: 0.06em; transition: opacity 0.2s ease; }
+.domain-title.is-rm .dt-kicker { letter-spacing: 0.34em; }
+
+/* ---------- Badge: domain name + caster turns left (top HUD, centre slot) ---------- */
+.domain-badge {
+  display: none;
+  align-items: center;
+  gap: 6px;
+  height: 20px;
+  padding: 0 7px 0 3px;
+  border: 1px solid rgba(201, 162, 78, 0.8);
+  border-radius: 10px;
+  background: linear-gradient(90deg, rgba(4, 10, 24, 0.94), rgba(7, 20, 24, 0.9));
+  box-shadow: 0 0 8px rgba(159, 224, 255, 0.45), 0 1px 4px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 0 8px color-mix(in srgb, var(--dom-c1, #9fe0ff) 55%, transparent), 0 1px 4px rgba(0, 0, 0, 0.6);
+  font-family: var(--jjk-font, 'Kaisei Tokumin', serif);
+  line-height: 1;
+  white-space: nowrap;
+  pointer-events: none;
+  animation: domBadgeIn 0.35s ease-out;
+}
+.domain-badge.is-on { display: inline-flex; }
+.domain-badge.is-enemy { border-color: rgba(210, 70, 70, 0.9); }
+/* no HUD row: float over the scene's top-left */
+.domain-badge.is-floating { position: absolute; top: 6px; left: 8px; z-index: 46; }
+@keyframes domBadgeIn { from { opacity: 0; transform: translateY(-6px) scale(0.9); } }
+.domain-badge .db-ico {
+  flex: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 50% 50%, #fff 0 14%, var(--dom-c1, #9fe0ff) 32%, transparent 60%),
+    radial-gradient(circle at 50% 50%, transparent 58%, var(--dom-c2, #b28cff) 64%, transparent 74%),
+    #02040b;
+  box-shadow: 0 0 6px var(--dom-c1, #9fe0ff);
+  animation: domIco 3s ease-in-out infinite;
+}
+@keyframes domIco { 50% { box-shadow: 0 0 11px var(--dom-c1, #9fe0ff); filter: brightness(1.25); } }
+.domain-badge .db-text { display: flex; align-items: baseline; gap: 5px; }
+.domain-badge .db-kicker {
+  font-weight: 700;
+  font-size: 8px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--jjk-gold, #c9a24e);
+}
+.domain-badge .db-name {
+  font-weight: 800;
+  font-size: 11px;
+  letter-spacing: 0.02em;
+  color: #eef8ff;
+  text-shadow: 0 0 6px var(--dom-c1, #9fe0ff);
+}
+.domain-badge .db-turns {
+  display: flex;
+  align-items: baseline;
+  gap: 3px;
+  padding-left: 6px;
+  border-left: 1px solid rgba(201, 162, 78, 0.5);
+}
+.domain-badge .db-turns b {
+  font-family: var(--jjk-font-script, 'Bebas Neue', serif);
+  font-weight: 400;
+  font-size: 13px;
+  color: var(--jjk-gold-hi, #f1d98a);
+}
+.domain-badge .db-turns i {
+  font-style: normal;
+  font-size: 8px;
+  letter-spacing: 0.06em;
+  color: var(--jjk-muted, #93a3a3);
+}
+.domain-badge.is-last .db-turns b { color: #ff9b8a; animation: domLast 1s ease-in-out infinite; }
+@keyframes domLast { 50% { opacity: 0.45; } }
+
+/* Narrow / short screens (iPhone sideways ~932x375): name + count only */
+@media (max-width: 900px), (max-height: 430px) {
+  .domain-badge { height: 18px; gap: 4px; padding: 0 6px 0 2px; }
+  .domain-badge .db-ico { width: 12px; height: 12px; }
+  .domain-badge .db-kicker { display: none; }
+  .domain-badge .db-name { font-size: 10px; }
+  .domain-badge .db-turns b { font-size: 12px; }
+  .domain-badge .db-turns i { font-size: 7px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .domain-map.dom-ph-void::before,
+  .domain-map.dom-ph-void::after,
+  .domain-overlay.dom-ov-void,
+  .domain-overlay.has-art,
+  .domain-badge .db-ico,
+  .domain-badge.is-last .db-turns b { animation: none; }
+}

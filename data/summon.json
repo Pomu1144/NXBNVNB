@@ -37,6 +37,18 @@
  },
  "pools": [
   {
+   "id": "feat_gojo_9005",
+   "name": "The Strongest: Gojo Satoru",
+   "type": "featured",
+   "characters": [],
+   "featured": [
+    "gojo_9005"
+   ],
+   "description": "Throughout heaven and earth, he alone is the honored one. Featured ★7 Gojo Satoru — The Strongest.",
+   "image": "assets/banners/generated/banner_gojo_9005.webp",
+   "includeStandardPool": true
+  },
+  {
    "id": "feat_kaguya_9003",
    "name": "Progenitor of All Chakra: Kaguya",
    "type": "featured",

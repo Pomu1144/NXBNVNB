@@ -34,6 +34,19 @@
       }
     },
     {
+      "code": "STRONGEST7",
+      "description": "Developer Gift - 7-Star Gojo Satoru (The Strongest) at 7S",
+      "expiryDate": null,
+      "maxRedemptions": null,
+      "rewards": {
+        "characters": [
+          {"characterId": "gojo_9005", "quantity": 1, "tierCode": "7S"}
+        ],
+        "resources": [],
+        "message": "You've received Gojo Satoru (7S)! Check your present box to claim him."
+      }
+    },
+    {
       "code": "TKMA777",
       "description": "Special Gift - Taki & Mitsuha",
       "expiryDate": null,

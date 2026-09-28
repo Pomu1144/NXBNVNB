@@ -97,7 +97,7 @@
 .tut-title {
   margin: 2px 0 4px;
   font-family: var(--jjk-font-script); font-weight: 400;
-  font-size: 19px; line-height: 1.15;
+  font-size: 23px; line-height: 1.15;
   color: var(--jjk-gold-hi);
   text-shadow: 0 2px 0 rgba(0, 0, 0, 0.8);
 }

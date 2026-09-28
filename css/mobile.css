@@ -13,11 +13,11 @@
 /* Fonts used by the rotate overlay (declared here so this file is standalone;
    @font-face only downloads when a mobile-only rule actually uses it). */
 @font-face {
-  font-family: 'Shojumaru';
+  font-family: 'Bebas Neue';
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('../assets/fonts/shojumaru-400.woff2') format('woff2');
+  src: url('../assets/fonts/bebas-neue-400.woff2') format('woff2');
 }
 @font-face {
   font-family: 'Rowdies';
@@ -187,7 +187,7 @@ html.is-mobile #rotate-device-overlay .rdo-arrow {
   animation: rdo-arrow 2.4s cubic-bezier(.6, 0, .3, 1) infinite;
 }
 html.is-mobile #rotate-device-overlay .rdo-title {
-  font-family: 'Shojumaru', 'Rowdies', 'Bangers', 'Arial Black', sans-serif;
+  font-family: 'Bebas Neue', 'Rowdies', 'Bangers', 'Arial Black', sans-serif;
   font-size: 24px;
   line-height: 1.15;
   letter-spacing: 0.02em;

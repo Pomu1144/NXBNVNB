@@ -1,0 +1,24 @@
+{
+  "frameWidth": 270,
+  "frameHeight": 257,
+  "frames": 34,
+  "columns": 12,
+  "fps": 12,
+  "loop": false,
+  "hits": [],
+  "heightScale": 1.0039,
+  "anchorX": 0.5173,
+  "fx": [
+    {
+      "sheet": "ultimate_void",
+      "at": "caster",
+      "layer": "behind",
+      "startFrame": 9
+    },
+    {
+      "sheet": "ultimate_fx",
+      "at": "targets",
+      "startFrame": 19
+    }
+  ]
+}

@@ -1,4 +1,4 @@
-// js/battle/battle-boss.js - Boss Battles: one giant, moving enemy with telegraphed attacks
+// js/battle/battle-boss.js - Boss Battles: one giant enemy looming over the field with telegraphed attacks
 (() => {
   "use strict";
 
@@ -9,31 +9,48 @@
    * enemy `{ "giant": "<id>" }`) fields ONE giant enemy defined in
    * data/bosses.json. It is a normal combatant (speed gauge, damage, buffs,
    * KO, victory / defeat all run through the usual modules); this module only
-   * draws it big, moves it around and replaces its AI turn.
+   * draws it huge, anchored to the right edge of the field (cropped by the
+   * screen like Blazing's giant bosses), and replaces its AI turn.
    *
    * Boss turn (BattleCombat.performAITurn hands bosses to performTurn):
    *   1. unleash the attack telegraphed on its previous turn (the danger zone
    *      stayed on the field for the players' turns, so they could drag units
    *      out of it or Guard), hitting every player unit whose feet are inside;
-   *   2. stomp to another of its `positions` (screen shake on every step);
+   *   2. shift its lean (it never walks: it looms, breathes and sways);
    *   3. telegraph the next attack of the current phase's `pattern`.
+   * The "Danger N" tag on its head counts the boss turns until the next
+   * whole-map attack lands (from the pattern / phase data), red at 1.
    *
    * bosses.json, per boss:
    *   name, title, element, sprite (folder), placeholder ("beast" | "giant"),
-   *   palette { glow, eyes, aura, tint }, scale (height in unit heights;
-   *   defaults to the idle sheet's heightScale),
-   *   aspect (width / height of the body box), positions [{ x, y }] (feet, %
-   *   of the field), ranks { S: { hp, atk, def, speed } ... } (stamina,
-   *   recommended power and rewards live on the mission in missions.json),
+   *   palette { glow, eyes, aura, tint }, aspect (width / height of the
+   *   silhouette frame, used until the art exists),
+   *   ranks { S: { hp, atk, def, speed } ... } (stamina, recommended power and
+   *   rewards live on the mission in missions.json),
    *   sheets (optional list of the sheet names the art folder provides)
+   *   loom: how the giant is framed. Boxes / points are fractions of the idle
+   *   frame ([x0, y0, x1, y1] / [x, y], 0..1 from the frame's top-left):
+   *     - scale [min, max]: body height (body top to the feet) in unit
+   *       heights (the units' --sprite-h). The largest size in the range
+   *       that keeps `keep` between the boss bar and the bottom of the screen.
+   *     - body: the drawn body (hit area = its part on the field).
+   *     - keep: what must stay in view (head / face, claws / blades).
+   *     - keepAlign: where `keep` sits in the spare height (0 top .. 1 bottom).
+   *     - cropRight: frame x that lands on the right screen edge.
+   *     - core: head / chest box: the boss's element on the field (damage
+   *       numbers, hit flash, tap target).
+   *     - edge [[y, x], ...]: the body's front (left) edge by height; units
+   *       target it and stop there when they run in.
+   *     - tag [x, y]: where the BOSS / Danger tag sits (bottom centre).
+   *     - sway { deg, px, ms }: breathing sway (optional).
    *   phases [{ hp, pattern, name, banner, speedMult, damageMult, aura }]
    *     - a phase starts once HP / maxHP <= its `hp`; pattern lists attack ids
    *       and loops.
    *   attacks { id: { name, kind: "area" | "map", shape, mult, sheet, warnMs,
    *                   banner, telegraphTurns } }
    *     - mult is the damage multiplier fed to BattleCombat.calculateDamage.
-   *     - telegraphTurns (default 1): boss turns the zone stays up; 0 = the
-   *       attack lands right after its wind-up in the same turn.
+   *     - telegraphTurns (default 1): 0 = the attack lands right after its
+   *       wind-up in the same turn.
    *     - warnMs: last-second warning before the hit (map attacks: banner).
    *   shape (one object or an array, unioned), in field %:
    *     { type: "row",    at: "target" | y, size }  horizontal band, `size` tall
@@ -46,9 +63,9 @@
    *   picks a different one when it can).
    *
    * Art: sheets from <sprite>/ (idle, roar, telegraph, attack_area, attack_map,
-   * hit, ko, optional run and <sheet>_fx). Until idle.json + idle.webp exist
-   * a CSS / SVG silhouette stands in; the folder is polled and the real
-   * sprite swaps in as soon as it lands.
+   * hit, ko and <sheet>_fx), all sharing the idle frame's size and anchor.
+   * Until idle.json + idle.webp exist a CSS / SVG silhouette stands in; the
+   * folder is polled and the real sprite swaps in as soon as it lands.
    */
 
   const ART_POLL_MS = 5000;
@@ -56,8 +73,10 @@
   // (only listed sheets are ever fetched, so optional ones never 404).
   const DEFAULT_SHEETS = ["idle", "roar", "telegraph", "attack_area", "attack_map", "hit", "ko", "attack_area_fx", "attack_map_fx"];
   const FLAT = 0.6;            // ground squash of circles (matches the drag ranges)
-  const STOMP_MS = 380;        // one heavy step while moving
-  const rt = new WeakMap();    // unit -> { el, slot, host, sprite, art, poll, W, H }
+  const rt = new WeakMap();    // unit -> { el, slot, lean, host, sprite, art, poll, g (geometry) }
+  // Framing when bosses.json has no `loom` block (fractions of the frame).
+  const LOOM_DEFAULTS = { scale: [5.5, 7.5], body: [0.1, 0.1, 0.9, 1], keep: [0.1, 0.25, 0.6, 0.9], keepAlign: 0.4,
+    cropRight: 0.75, core: [0.2, 0.3, 0.6, 0.75], edge: [[0, 0.2], [1, 0.2]], tag: [0.3, 0.3], sway: { deg: 0.8, px: 4, ms: 5200 } };
   const sheetCache = new Map(); // "<base>/<name>" -> Promise<meta|null>, probed once per battle
 
   const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
@@ -251,9 +270,9 @@
       unit.bossId = bossId;
       unit.baseSpeed = stats.speed;
       unit.speedGauge = 650; // first turn only winds up an attack
-      unit.bossState = { phase: 0, step: 0, anchor: 0, pending: null, phasePending: null, turns: 0, dead: false };
+      unit.bossState = { phase: 0, step: 0, pending: null, phasePending: null, turns: 0, dead: false };
       unit._ref = { enemy: def, base: { id: bossId, name: def.name, element: def.element } };
-      unit.pos = this.anchorPos(unit, 0);
+      unit.pos = { x: 80, y: 45 }; // placed by mount() once the field exists
       this.unit = unit;
       return unit;
     },
@@ -277,10 +296,7 @@
       return h > 0 ? h : (document.documentElement.classList.contains("is-mobile") ? 76 : 101);
     },
 
-    /**
-     * Where the boss may stand (grid px): below the boss HP bar, above the
-     * team holder cards (the same bottom edge units use).
-     */
+    /** Band units stand in (grid px): below the boss HP bar, above the team holder cards. */
     standBand() {
       const grid = this.grid();
       const gr = grid.getBoundingClientRect();
@@ -291,50 +307,91 @@
       return { top, bottom: Math.max(top + 60, B.bottom) };
     },
 
-    /**
-     * Body box (px): `scale` unit heights from bosses.json, else the idle
-     * sheet's heightScale (the unit sprite convention). Width from the idle
-     * frame's aspect (bosses.json `aspect` for the silhouette). Shrunk to fit
-     * the stand band, so the whole boss (wings / tails too) stays on the
-     * field on phones.
-     */
-    size(unit) {
-      const def = this.defOf(unit);
-      const unitH = this.unitHeight();
+    loom(unit) {
+      const d = this.defOf(unit).loom || {};
+      return { ...LOOM_DEFAULTS, ...d, sway: { ...LOOM_DEFAULTS.sway, ...(d.sway || {}) } };
+    },
+
+    /** Idle frame metadata (the silhouette's box until the art exists). */
+    frameMeta(unit) {
       const idle = this.idleMeta;
-      const hs = idle && Number(idle.heightScale) > 0 ? Number(idle.heightScale) : 0;
-      let H = unitH * (Number(def.scale) || hs || 2.8);
-      const aspect = idle ? idle.frameWidth / idle.frameHeight : (def.aspect || 1.2);
-      const band = this.grid() ? this.standBand() : null;
-      if (band) H = Math.min(H, band.bottom - band.top);
-      H = Math.round(H);
-      return { W: Math.round(H * aspect), H, unitH };
+      if (idle) return { w: idle.frameWidth, h: idle.frameHeight, ax: Number(idle.anchorX) || 0.5, ay: Number(idle.anchorY) || 1, hs: Number(idle.heightScale) > 0 ? Number(idle.heightScale) : 1 };
+      return { w: (this.defOf(unit).aspect || 1.2) * 512, h: 512, ax: 0.5, ay: 1, hs: 1 };
     },
 
-    /** Element-centre position (grid %) for positions[i], kept inside the stand band. */
-    anchorPos(unit, i) {
-      const def = this.defOf(unit);
-      const a = (def.positions || [])[i] || { x: 75, y: 60 };
+    /**
+     * Where the giant is drawn (grid px): the frame box, its body / core /
+     * hit boxes and front edge. The largest `scale` that keeps `keep` between
+     * the boss bar and the bottom of the screen; `cropRight` of the frame on
+     * the right screen edge, so the rest runs off the right and top edges.
+     */
+    geom(unit) {
       const grid = this.grid();
-      const gw = grid?.clientWidth || 1000, gh = grid?.clientHeight || 600;
-      const { W, H } = this.size(unit);
-      const band = this.standBand();
-      const feetPx = clamp((a.y / 100) * gh, band.top + H, band.bottom);
-      const halfW = (W / 2 / gw) * 100;
-      const x = clamp(a.x, halfW + 1, 99 - halfW);
-      return { x, y: ((feetPx - H / 2) / gh) * 100 };
-    },
-
-    /** Feet (ground centre) of the boss, grid px. */
-    feet(unit) {
-      const grid = this.grid();
-      const r = rt.get(unit);
-      const el = r?.el;
+      const scene = this.layers?.scene || this.core?.dom?.scene;
       const gw = grid.clientWidth, gh = grid.clientHeight;
-      const x = el ? (parseFloat(el.style.left) / 100) * gw : (unit.pos.x / 100) * gw;
-      const y = el ? (parseFloat(el.style.top) / 100) * gh : (unit.pos.y / 100) * gh;
-      const H = r?.H || this.size(unit).H;
-      return { x, y: y + H / 2 };
+      const L = this.loom(unit), m = this.frameMeta(unit);
+      const U = this.unitHeight();
+      const band = this.standBand();
+      // visible screen in grid px
+      const vis = { l: -grid.offsetLeft, t: -grid.offsetTop, r: (scene?.clientWidth || gw) - grid.offsetLeft, b: (scene?.clientHeight || gh) - grid.offsetTop };
+      const hud = this.layers?.hud;
+      const top = hud && hud.offsetHeight ? hud.offsetTop + hud.offsetHeight + 4 - grid.offsetTop : band.top;
+      const bottom = vis.b - 2;
+      const bodyF = Math.max(0.2, m.ay - L.body[1]);
+      const keepH = Math.max(0.1, L.keep[3] - L.keep[1]);
+      const [sMin, sMax] = Array.isArray(L.scale) ? L.scale : [L.scale, L.scale];
+      const fit = ((bottom - top) * bodyF) / (keepH * U);
+      const scale = clamp(fit, sMin, sMax);
+      const FH = (scale * U) / bodyF;
+      const FW = (FH * m.w) / m.h;
+      const ox = vis.r - L.cropRight * FW;
+      const spare = bottom - top - keepH * FH;
+      const oy = top + Math.max(0, spare) * clamp(L.keepAlign, 0, 1) + Math.min(0, spare) * 0.5 - L.keep[1] * FH;
+      const P = (x, y) => ({ x: ox + x * FW, y: oy + y * FH });
+      const box = (f, lim) => {
+        const a = P(f[0], f[1]), b = P(f[2], f[3]);
+        return { l: Math.max(lim.l, a.x), t: Math.max(lim.t, a.y), r: Math.min(lim.r, b.x), b: Math.min(lim.b, b.y) };
+      };
+      const field = { l: 0, t: band.top, r: gw, b: band.bottom };
+      const core = box(L.core, { l: 0, t: top, r: gw, b: Math.min(bottom, gh) });
+      if (core.r - core.l < 60) core.l = core.r - 60;
+      if (core.b - core.t < 60) core.t = core.b - 60;
+      const edge = [...L.edge].sort((a, b) => a[0] - b[0]);
+      return {
+        U, scale, FH, FW, ox, oy, m, L, band, top, vis, gw, gh,
+        body: box(L.body, field), core,
+        face: P((L.keep[0] + L.keep[2]) / 2, L.keep[1] + keepH * 0.25),
+        feetY: oy + m.ay * FH,
+        /** Front (left) edge of the body at grid-px height y. */
+        edgeX(y) {
+          const f = (y - oy) / FH;
+          let x = edge[0][1];
+          if (f >= edge[edge.length - 1][0]) x = edge[edge.length - 1][1];
+          else for (let i = 1; i < edge.length; i++) {
+            if (f <= edge[i][0]) {
+              const [y0, x0] = edge[i - 1], [y1, x1] = edge[i];
+              x = f <= y0 ? x0 : x0 + ((x1 - x0) * (f - y0)) / Math.max(1e-6, y1 - y0);
+              break;
+            }
+          }
+          return ox + x * FW;
+        },
+        P,
+      };
+    },
+
+    /** Cached geometry of the mounted boss (recomputed by layout()). */
+    g(unit) {
+      const r = rt.get(unit);
+      if (r?.g) return r.g;
+      return this.geom(unit);
+    },
+
+    /** Ground point in front of the boss (grid px): where cones / "boss" circles start. */
+    front(unit) {
+      const g = this.g(unit);
+      const y = clamp(g.face.y + g.U * 1.2, g.band.top + 10, g.band.bottom - 10);
+      return { x: g.edgeX(y) - g.U * 0.2, y };
     },
 
     /** Feet of a player unit, grid px (same ground point the drag ranges use). */
@@ -357,32 +414,56 @@
       return { top: (B.top / gr.height) * 100, bottom: (B.bottom / gr.height) * 100 };
     },
 
-    /** Point of the boss body nearest to `origin` (scene px) — player drag targeting. */
+    /**
+     * Point of the boss's visible body nearest to `origin` (scene px) —
+     * player drag targeting: its front edge at the origin's height (the whole
+     * visible body counts, not just its centre).
+     */
     groundPointNear(unit, origin, sceneRect) {
       const r = rt.get(unit);
       if (!r?.el) return null;
-      const b = r.el.getBoundingClientRect();
-      const feet = b.bottom - sceneRect.top;
-      const x = clamp(origin.x, b.left - sceneRect.left + b.width * 0.14, b.right - sceneRect.left - b.width * 0.14);
-      const y = clamp(origin.y, feet - b.height * 0.3, feet);
-      return { x, y, headY: b.top - sceneRect.top, w: 0, cx: b.left - sceneRect.left + b.width / 2, cy: b.top - sceneRect.top + b.height / 2 };
+      const g = this.g(unit);
+      const gr = this.grid().getBoundingClientRect();
+      const dx = gr.left - sceneRect.left, dy = gr.top - sceneRect.top;
+      const y = clamp(origin.y - dy, g.body.t, g.body.b);
+      const x = clamp(origin.x - dx, Math.max(g.body.l, g.edgeX(y)), g.body.r);
+      const c = g.core;
+      return { x: x + dx, y: y + dy, headY: c.t + dy, w: 0, cx: (c.l + c.r) / 2 + dx, cy: (c.t + c.b) / 2 + dy };
     },
 
-    /** Grid-% y for an attacker striking the boss: stand on the boss's ground line. */
-    strikeY(unit, attackerEl) {
+    /**
+     * Grid-% spot an attacker runs to when striking the boss: its own height
+     * (inside the boss's body span), just in front of the body's edge.
+     * aW: the attacker's drawn attack-sheet width (px).
+     */
+    strikePoint(unit, attacker, attackerEl, aW = 100) {
+      const g = this.g(unit);
       const grid = this.grid();
-      const gh = grid.clientHeight || 1;
       const box = parseFloat(getComputedStyle(attackerEl || grid).getPropertyValue("--sprite-box")) || 110;
-      return clamp(((this.feet(unit).y - box / 2 - 4) / gh) * 100, 5, 95);
+      const cy = ((parseFloat(attackerEl?.style.top) || attacker.pos.y) / 100) * g.gh;
+      const feet = clamp(cy + box / 2 - 4, Math.max(g.body.t, g.band.top) + box * 0.4, Math.min(g.body.b, g.band.bottom));
+      const x = g.edgeX(feet) - aW * 0.28 + g.U * 0.12;
+      return { x: clamp((x / g.gw) * 100, 3, 97), y: clamp(((feet - box / 2 + 4) / g.gh) * 100, 5, 95) };
     },
 
+    /**
+     * A unit dropped inside the boss's body steps back to its front edge.
+     * Returns the new grid-% position, or null when it already stands clear.
+     */
+    keepOut(u) {
+      const unit = this.unit;
+      if (!unit || !rt.get(unit) || unit.stats.hp <= 0 || !u?.pos) return null;
+      const g = this.g(unit);
+      const f = this.unitFeet(u);
+      const limit = g.edgeX(f.y) - g.U * 0.25;
+      if (f.x <= limit || f.y < g.body.t) return null;
+      return { x: clamp(u.pos.x - ((f.x - limit) / g.gw) * 100, 2, 98), y: u.pos.y };
+    },
+
+    /** The giant stands behind every unit. */
     depth(unit) {
       const r = rt.get(unit);
-      if (!r?.el) return;
-      const gh = this.grid().clientHeight || 1;
-      const box = parseFloat(getComputedStyle(r.el).getPropertyValue("--sprite-box")) || 110;
-      const eq = ((this.feet(unit).y - box / 2) / gh) * 100; // same scale as BattleSeparation.depthSort
-      r.el.style.zIndex = String(2 + Math.round(clamp(eq, 0, 100) * 0.38));
+      if (r?.el) r.el.style.zIndex = "1";
     },
 
     /* ----- arena layers ----- */
@@ -418,16 +499,21 @@
         </defs><g class="bz-pending"></g>`;
       ground.appendChild(zones);
       const fx = mk("boss-fx");
+      // Boss bar in the game theme: crimson title plate label + gold-framed ink bar
       const hud = mk("boss-hud", scene, `
-        <div class="bh-top">
-          <span class="bh-name">${esc(this.def.name)}</span>
-          <span class="bh-phase"></span>
-          <span class="bh-pips"></span>
+        <div class="bh-label" aria-label="${esc(this.def.name)}"><span>Boss</span></div>
+        <div class="bh-frame">
+          <div class="bh-bar"><div class="bh-ghost"></div><div class="bh-fill"></div><div class="bh-marks"></div></div>
         </div>
-        <div class="bh-bar"><div class="bh-ghost"></div><div class="bh-fill"></div><div class="bh-marks"></div></div>
+        <div class="bh-side"><span class="bh-phase"></span><span class="bh-pips"></span></div>
         <div class="bh-hp"></div>`);
       const warn = mk("boss-warn");
-      this.layers = { scene, tint, ground, looming, shadow, zones, fx, hud, warn };
+      // "BOSS" + "Danger N" on the giant's head (N = boss turns to the next whole-map attack)
+      const danger = mk("boss-danger is-hidden", scene, `
+        <span class="bd-tag">Boss</span>
+        <span class="bd-word">Danger</span>
+        <span class="bd-n"></span>`);
+      this.layers = { scene, tint, ground, looming, shadow, zones, fx, hud, warn, danger };
 
       // phase pips + threshold ticks on the bar
       const phases = this.def.phases || [];
@@ -437,7 +523,7 @@
       this.layout();
     },
 
-    /** Keep the ground layer on the battlefield and the HUD under the speed bar. */
+    /** Keep the ground layer on the battlefield, the HUD under the speed bar and the giant framed. */
     layout() {
       const L = this.layers;
       const grid = this.grid();
@@ -456,14 +542,11 @@
 
       const unit = this.unit;
       const r = unit && rt.get(unit);
-      if (r?.el && !unit.bossState.dead) {
-        const s = this.size(unit);
-        if (s.H !== r.H) this.applySize(unit, s);
-        unit.pos = this.anchorPos(unit, unit.bossState.anchor);
-        r.el.style.left = `${unit.pos.x}%`;
-        r.el.style.top = `${unit.pos.y}%`;
-        this.placeShadow(unit);
-        this.depth(unit);
+      if (r?.el) {
+        this.place(unit);
+        // charging warning: centred over the open field, clear of the giant's head tag
+        const open = grid.offsetLeft + Math.max(0, r.g.body.l) / 2;
+        L.warn.style.left = `${Math.round(Math.max(open, Math.min(L.warn.offsetWidth / 2 + 8, sr.width / 2)))}px`;
         if (unit.bossState.pending) this.drawZone(unit.bossState.pending);
       }
     },
@@ -477,44 +560,122 @@
       el.draggable = false;
       slot.className = "unit-sprite boss-body";
       slot.innerHTML = `
-        <div class="boss-aura"></div>
-        <div class="boss-placeholder">${def.placeholder === "giant" ? giantSvg() : beastSvg()}</div>
-        <div class="boss-sprite-host"></div>`;
-      const r = { el, slot, host: slot.querySelector(".boss-sprite-host"), sprite: null, art: false, poll: 0, W: 0, H: 0 };
+        <div class="boss-lean">
+          <div class="boss-aura"></div>
+          <div class="boss-placeholder">${def.placeholder === "giant" ? giantSvg() : beastSvg()}</div>
+          <div class="boss-sprite-host"></div>
+        </div>`;
+      const r = { el, slot, lean: slot.querySelector(".boss-lean"), host: slot.querySelector(".boss-sprite-host"), sprite: null, art: false, poll: 0, g: null };
       rt.set(unit, r);
       this.unit = unit;
-      this.applySize(unit, this.size(unit));
-      unit.pos = this.anchorPos(unit, unit.bossState.anchor || 0);
-      el.style.left = `${unit.pos.x}%`;
-      el.style.top = `${unit.pos.y}%`;
+      const sw = this.loom(unit).sway;
+      el.style.setProperty("--sway-deg", `${sw.deg}deg`);
+      el.style.setProperty("--sway-px", `${sw.px}px`);
+      el.style.setProperty("--sway-ms", `${sw.ms}ms`);
       this.applyPhaseLook(unit);
       this.layout();
       this.updateDisplay(unit, this.core);
       this.probeArt(unit);
     },
 
-    applySize(unit, s) {
+    /**
+     * Frame the giant: the element is its head / chest box (what the rest
+     * of the battle code treats as "the unit"); the art is drawn around it
+     * at full size and runs off the screen edges.
+     */
+    place(unit) {
       const r = rt.get(unit);
-      r.W = s.W; r.H = s.H;
-      r.el.style.setProperty("--boss-w", `${s.W}px`);
-      r.el.style.setProperty("--boss-h", `${s.H}px`);
-      if (r.sprite) {
+      if (!r?.el) return;
+      const g = this.geom(unit);
+      const prevFH = r.g?.FH;
+      r.g = g;
+      const c = g.core;
+      const w = c.r - c.l, h = c.b - c.t;
+      unit.pos = { x: ((c.l + w / 2) / g.gw) * 100, y: ((c.t + h / 2) / g.gh) * 100 };
+      r.el.style.left = `${unit.pos.x}%`;
+      r.el.style.top = `${unit.pos.y}%`;
+      const set = (k, v) => r.el.style.setProperty(k, `${v.toFixed(1)}px`);
+      set("--boss-w", w);
+      set("--boss-h", h);
+      // frame box relative to the element's top-left
+      set("--frame-l", g.ox - c.l);
+      set("--frame-t", g.oy - c.t);
+      set("--frame-w", g.FW);
+      set("--frame-h", g.FH);
+      // lean / sway pivot: the feet under the body
+      set("--pivot-x", g.ox + g.m.ax * g.FW - c.l);
+      set("--pivot-y", g.feetY - c.t);
+      // sprite host: zero-size box on the frame's anchor, bottom on the frame's bottom
+      r.host.style.left = `${(g.ox + g.m.ax * g.FW - c.l).toFixed(1)}px`;
+      r.host.style.top = `${(g.oy + g.FH - c.t).toFixed(1)}px`;
+      r.host.style.bottom = "auto";
+      if (r.sprite && prevFH && Math.abs(prevFH - g.FH) > 0.5) {
         r.sprite.destroy();
         r.sprite = null;
         this.sheet("idle").then(m => this.attachArt(unit, m));
       }
+      this.placeShadow(unit);
+      this.depth(unit);
+      this.placeDanger(unit);
     },
 
     placeShadow(unit) {
       const L = this.layers, r = rt.get(unit);
-      if (!L || !r) return;
-      const f = this.feet(unit);
-      L.shadow.style.left = `${f.x}px`;
-      L.shadow.style.top = `${f.y}px`;
-      L.shadow.style.width = `${r.W * 1.05}px`;
-      L.shadow.style.height = `${Math.max(30, r.W * 0.2)}px`;
-      L.looming.style.left = `${f.x}px`;
-      L.looming.style.top = `${f.y - r.H * 0.35}px`;
+      if (!L || !r?.g) return;
+      const g = r.g, f = this.front(unit);
+      const bw = g.body.r - g.body.l;
+      L.shadow.style.left = `${g.body.l + bw * 0.55}px`;
+      L.shadow.style.top = `${Math.min(g.feetY, g.band.bottom + g.U)}px`;
+      L.shadow.style.width = `${bw * 1.2}px`;
+      L.shadow.style.height = `${Math.max(40, bw * 0.3)}px`;
+      L.looming.style.left = `${f.x + g.U}px`;
+      L.looming.style.top = `${f.y - g.U * 0.5}px`;
+    },
+
+    /* ----- danger countdown ----- */
+
+    /**
+     * Boss turns until the next whole-map attack lands: 1 while one is
+     * telegraphed, else the pattern steps to the next map attack + its
+     * wind-up turn. null when the phase's pattern has none.
+     */
+    dangerTurns(unit) {
+      const st = unit.bossState, atks = this.defOf(unit).attacks || {};
+      if (st.pending && atks[st.pending.id]?.kind === "map") return 1;
+      const pat = this.phaseDef(unit).pattern || [];
+      for (let k = 0; k < pat.length; k++) {
+        const a = atks[pat[(st.step + k) % pat.length]];
+        if (a?.kind === "map") return k + 1 + ((a.telegraphTurns ?? 1) > 0 ? 1 : 0);
+      }
+      return null;
+    },
+
+    updateDanger(unit = this.unit) {
+      const d = this.layers?.danger;
+      if (!d || !unit) return;
+      const n = unit.bossState.dead ? null : this.dangerTurns(unit);
+      const hidden = n == null || !this.introDone;
+      d.classList.toggle("is-hidden", hidden);
+      d.classList.toggle("is-imminent", n === 1);
+      const el = d.querySelector(".bd-n");
+      if (el.textContent !== String(n ?? "")) {
+        el.textContent = n ?? "";
+        d.classList.remove("is-tick");
+        void d.offsetWidth;
+        d.classList.add("is-tick");
+      }
+      this.placeDanger(unit);
+    },
+
+    placeDanger(unit) {
+      const d = this.layers?.danger, r = rt.get(unit);
+      if (!d || !r?.g) return;
+      const g = r.g, grid = this.grid();
+      const p = g.P(g.L.tag[0], g.L.tag[1]);
+      const x = clamp(p.x, 40, g.gw - 40);
+      const y = Math.max(p.y, g.top + d.offsetHeight + 2);
+      d.style.left = `${(grid.offsetLeft + x).toFixed(1)}px`;
+      d.style.top = `${(grid.offsetTop + y).toFixed(1)}px`;
     },
 
     /* ----- art: real sheets when the folder exists, silhouette until then ----- */
@@ -568,31 +729,21 @@
     },
 
     /**
-     * Mount the real sprite. The idle sheet is drawn exactly the body box
-     * tall (its heightScale only says how the other sheets relate to it) and
-     * sits on its anchorY ground line.
+     * Mount the real sprite: the idle frame drawn at the framed size (its
+     * heightScale only says how the other sheets relate to it), standing on
+     * the sprite host at the frame's anchor.
      */
     attachArt(unit, idle) {
       const r = rt.get(unit);
       if (!r || !window.SpritePlayer || !idle) return;
       if (this.idleMeta !== idle) {
-        // The art decides the size: resize the body box, then mount into it.
+        // The art decides the frame: re-frame the giant, then mount into it.
         this.idleMeta = idle;
-        const s = this.size(unit);
-        r.W = s.W; r.H = s.H;
-        r.el.style.setProperty("--boss-w", `${s.W}px`);
-        r.el.style.setProperty("--boss-h", `${s.H}px`);
-        if (!unit.bossState.dead) {
-          unit.pos = this.anchorPos(unit, unit.bossState.anchor || 0);
-          r.el.style.left = `${unit.pos.x}%`;
-          r.el.style.top = `${unit.pos.y}%`;
-          this.placeShadow(unit);
-          this.depth(unit);
-        }
+        this.place(unit);
       }
+      if (r.sprite) { r.sprite.destroy(); r.sprite = null; }
       const hs = Number(idle.heightScale) > 0 ? Number(idle.heightScale) : 1;
-      const sp = window.SpritePlayer.create(r.host, this.def.sprite, { height: r.H / hs }); // art faces left: no flip
-      r.host.style.bottom = `${(-(1 - (Number(idle.anchorY) || 1)) * r.H).toFixed(1)}px`;
+      const sp = window.SpritePlayer.create(r.host, this.def.sprite, { height: r.g.FH / hs }); // art faces left: no flip
       r.sprite = sp;
       sp.play("idle").catch(() => {});
       sp.meta("idle").then(() => {
@@ -648,7 +799,8 @@
     /**
      * Optional transparent effect sheet (e.g. attack_area_fx) played on the
      * zone: once per zone part (max 3), standing on the part's centre, or once
-     * across the whole field for `fieldWide` sheets / whole-map attacks.
+     * across the whole field for whole-map attacks. `fieldWide` sheets cover
+     * the whole visible screen (ground line on its bottom edge).
      * Size: `heightUnits` unit heights when given, else the zone's height.
      */
     async playFx(name, zone, declared = false) {
@@ -656,14 +808,16 @@
       if (!meta || !window.SpritePlayer || !this.layers || !zone) return;
       const grid = this.grid();
       const gw = grid.clientWidth, gh = grid.clientHeight;
-      const unitH = this.size(this.unit).unitH;
+      const unitH = this.unitHeight();
       const hs = Number(meta.heightScale) > 0 ? Number(meta.heightScale) : 1;
       const whole = meta.fieldWide || zone.some(z => z.type === "all");
-      const h = meta.fieldWide ? (gw * meta.frameHeight) / meta.frameWidth
+      const ground = Number(meta.groundY ?? meta.anchorY) || 1;
+      const sw = this.layers.scene.clientWidth, sh = this.layers.scene.clientHeight;
+      const h = meta.fieldWide ? Math.max((sw * meta.frameHeight) / meta.frameWidth, sh / ground) * 1.02
         : meta.heightUnits ? unitH * meta.heightUnits
         : whole ? gh : Math.max(120, this.zoneBox(zone).h);
-      const pts = whole ? [{ x: gw / 2, y: gh * 0.9 }] : zone.slice(0, 3).map(z => this.zoneCentre(z, gw, gh));
-      const ground = Number(meta.groundY ?? meta.anchorY) || 1;
+      const pts = meta.fieldWide ? [{ x: sw / 2 - grid.offsetLeft, y: sh - grid.offsetTop }]
+        : whole ? [{ x: gw / 2, y: gh * 0.9 }] : zone.slice(0, 3).map(z => this.zoneCentre(z, gw, gh));
       await Promise.all(pts.map(pt => {
         const holder = document.createElement("div");
         holder.className = "boss-fx-sheet";
@@ -779,62 +933,49 @@
         if (st.pending === p) st.pending = null;
         if (this.over(core)) return;
       }
-      if (this.phaseDef(unit).move !== false) await this.move(unit, core);
+      this.updateDanger(unit);
+      await this.shiftLean(unit);
       if (this.over(core)) return;
       await this.telegraph(unit, core);
+      this.updateDanger(unit);
     },
 
-    /* ----- movement ----- */
+    /* ----- looming: no walking, only breathing sway (CSS) + lean shifts ----- */
 
-    async move(unit, core) {
-      const def = this.defOf(unit);
-      const n = (def.positions || []).length;
+    /**
+     * Lean the whole giant around its feet: deg (negative = toward the
+     * units), x / y in unit heights. Resolves once the lean has settled.
+     */
+    lean(unit, { deg = 0, x = 0, y = 0 } = {}, ms = 1200) {
       const r = rt.get(unit);
-      if (n < 2 || !r) return;
+      if (!r?.lean) return Promise.resolve();
+      const U = r.g?.U || 80;
+      const dur = reduceMotion() ? 0 : this.ms(ms);
+      r.lean.style.transition = `rotate ${dur}ms cubic-bezier(.45,0,.3,1), translate ${dur}ms cubic-bezier(.45,0,.3,1)`;
+      r.lean.style.rotate = `${deg}deg`;
+      r.lean.style.translate = `${(x * U).toFixed(1)}px ${(y * U).toFixed(1)}px`;
+      return new Promise(res => setTimeout(res, dur));
+    },
+
+    /** Start of a boss turn: shift its weight to another lean (a slow loom, no steps). */
+    async shiftLean(unit) {
+      const LEANS = [{ deg: 0, x: 0, y: 0 }, { deg: -1.4, x: -0.22, y: 0.04 }, { deg: 0.9, x: 0.14, y: -0.04 }, { deg: -0.6, x: -0.08, y: 0.1 }];
       const st = unit.bossState;
-      let next = Math.floor(Math.random() * (n - 1));
-      if (next >= st.anchor) next++;
-      const to = this.anchorPos(unit, next);
-      const from = { x: parseFloat(r.el.style.left) || unit.pos.x, y: parseFloat(r.el.style.top) || unit.pos.y };
-      const dist = Math.hypot(to.x - from.x, to.y - from.y);
-      const dur = this.ms(clamp(700 + dist * 40, 1000, 1800));
-
-      const run = r.art && (await this.sheet("run"));
-      if (run && r.sprite) r.sprite.play("run").catch(() => {});
-      r.el.classList.add("is-walking");
-      r.el.style.setProperty("--step-ms", `${this.ms(STOMP_MS)}ms`);
-
-      let lastStep = -1;
-      await new Promise(resolve => {
-        const t0 = performance.now();
-        const step = now => {
-          const t = Math.min(1, (now - t0) / dur);
-          const e = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
-          r.el.style.left = `${from.x + (to.x - from.x) * e}%`;
-          r.el.style.top = `${from.y + (to.y - from.y) * e}%`;
-          this.placeShadow(unit);
-          const k = Math.floor((now - t0) / this.ms(STOMP_MS));
-          if (k !== lastStep && t < 1) { lastStep = k; this.stomp(unit, 4); }
-          if (t < 1) requestAnimationFrame(step); else resolve();
-        };
-        requestAnimationFrame(step);
-      });
-      unit.pos = to;
-      st.anchor = next;
-      r.el.classList.remove("is-walking");
-      if (r.sprite && r.art) r.sprite.play("idle").catch(() => {});
-      this.stomp(unit, 9);
-      this.depth(unit);
+      let i = Math.floor(Math.random() * (LEANS.length - 1));
+      if (i >= (st.leanIdx || 0)) i++;
+      st.leanIdx = i;
+      Sfx.rumble(0.9, 0.22);
+      await this.lean(unit, LEANS[i], 1300);
     },
 
     stomp(unit, power) {
       this.shake(power, 200);
       Sfx.stomp(0.35 + power * 0.04);
-      const f = this.feet(unit);
+      const f = this.front(unit);
       const grid = this.grid();
       const d = document.createElement("div");
       d.className = "boss-dust";
-      d.style.left = `${grid.offsetLeft + f.x + (Math.random() - 0.5) * (rt.get(unit)?.W || 200) * 0.5}px`;
+      d.style.left = `${grid.offsetLeft + f.x + (Math.random() - 0.2) * (rt.get(unit)?.g?.U || 80)}px`;
       d.style.top = `${grid.offsetTop + f.y}px`;
       this.layers?.fx.appendChild(d);
       setTimeout(() => d.remove(), 900);
@@ -857,9 +998,9 @@
     zoom(unit, scale, dur) {
       const scene = this.layers?.scene;
       if (!scene?.animate || reduceMotion()) return;
-      const f = this.feet(unit);
+      const f = this.g(unit).face;
       const grid = this.grid();
-      scene.style.transformOrigin = `${grid.offsetLeft + f.x}px ${grid.offsetTop + f.y - (rt.get(unit)?.H || 200) * 0.6}px`;
+      scene.style.transformOrigin = `${grid.offsetLeft + f.x}px ${grid.offsetTop + f.y}px`;
       scene.animate([{ scale: "1" }, { scale: String(scale), offset: 0.25 }, { scale: String(scale), offset: 0.75 }, { scale: "1" }],
         { duration: dur, easing: "ease-in-out" });
     },
@@ -894,6 +1035,7 @@
       w.innerHTML = text ? `<span class="bw-icon">!</span><span>${esc(text)}</span>` : "";
       w.classList.toggle("on", !!text);
       this.layers.tint.classList.toggle("is-charging", !!text);
+      if (text) this.layout();
     },
 
     /* ----- zones ----- */
@@ -942,15 +1084,14 @@
             break;
           }
           case "circle": {
-            const c = s.at === "boss" ? this.feet(unit) : null;
+            const c = s.at === "boss" ? this.front(unit) : null;
             const x = c ? (c.x / gw) * 100 : at.x, y = c ? (c.y / gh) * 100 : at.y;
             out.push({ type: "circle", x, y, r: s.radius || 16 });
             break;
           }
           case "cone": {
-            const f = this.feet(unit);
-            const W = rt.get(unit)?.W || 200;
-            const ox = ((f.x - W * 0.3) / gw) * 100, oy = ((f.y - 8) / gh) * 100;
+            const f = this.front(unit);
+            const ox = (f.x / gw) * 100, oy = (f.y / gh) * 100;
             const dx = ((at.x - ox) / 100) * gw, dy = ((at.y - oy) / 100) * gh;
             out.push({ type: "cone", x: ox, y: oy, dir: Math.atan2(dy, dx), angle: s.angle || 50, range: s.range || 90 });
             break;
@@ -1085,6 +1226,9 @@
         this.setWarn(atk.banner || `${atk.name} charging — Guard!`);
         Sfx.siren();
       }
+      this.updateDanger(unit);
+      // wind-up: loom forward over the field (rear up for a whole-map attack)
+      this.lean(unit, atk.kind === "map" ? { deg: 1.6, x: 0.18, y: -0.12 } : { deg: -1.8, x: -0.3, y: 0.05 }, 800);
       await this.playWithFx(unit, "telegraph", zone, { fallbackMs: 900 });
 
       if (!p.turns) {
@@ -1128,7 +1272,11 @@
       window.BattleAttackNames?.showAttackName?.(atk.name, "ultimate");
       let impacted = false;
       const land = (k, n) => {
-        if (!impacted) { impacted = true; this.impact(unit, p, isMap); }
+        if (!impacted) {
+          impacted = true;
+          this.impact(unit, p, isMap);
+          this.lean(unit, isMap ? { deg: -2.4, x: -0.35, y: 0.1 } : { deg: -3, x: -0.5, y: 0.06 }, 160); // lunge into the hit
+        }
         else this.shake(isMap ? 10 : 6, 220);
         plans.forEach(pl => {
           if (pl.dodged && k === 0) window.StatusEffectUI?.popup?.(pl.t, "Dodged!", "#9fe8ff", "dodge");
@@ -1149,6 +1297,8 @@
       if (!impacted) land(0, 1);
       this.drawZone(null);
       if (isMap) this.setWarn(null);
+      this.lean(unit, {}, 900);
+      this.updateDanger(unit);
       await this.wait(450);
     },
 
@@ -1203,6 +1353,7 @@
         unit.stats.speed = Math.round((unit.baseSpeed || unit.stats.speed) * (Number(ph.speedMult) || 1));
         this.applyPhaseLook(unit);
         this.updateDisplay(unit, core);
+        this.updateDanger(unit);
         await this.roar(unit, 2600);
         await this.banner(`<span class="bb-kicker">Phase ${idx + 1}</span><span class="bb-title">${esc(ph.banner || ph.name || "")}</span>`, "is-phase", 1500);
       } finally {
@@ -1279,8 +1430,9 @@
       await this.roar(unit, 2200);
       r.el.classList.remove("is-rising");
       this.layers.hud.classList.remove("is-hidden");
-      this.layout();
       this.introDone = true;
+      this.layout();
+      this.updateDanger(unit);
     },
 
     async playKO(unit, core) {
@@ -1288,8 +1440,10 @@
       clearTimeout(r?.poll);
       this.drawZone(null);
       this.setWarn(null);
+      this.updateDanger(unit);
       Sfx.stopAmbient();
       if (!r) return;
+      this.lean(unit, {}, 400);
       r.el.dataset.dead = "true";
       r.el.style.pointerEvents = "none";
       Sfx.roar(1.6, 1.8);
