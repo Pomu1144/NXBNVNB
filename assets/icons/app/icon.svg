@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <!-- Naruto Shippuden: Ultimate Ninja Legends app icon (source for the PNGs in this folder).
+       Full-bleed square; everything important sits inside the 80% maskable safe zone. -->
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="46%" r="72%">
+      <stop offset="0" stop-color="#16414a"/>
+      <stop offset="0.55" stop-color="#0a2227"/>
+      <stop offset="1" stop-color="#03090b"/>
+    </radialGradient>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#ff7a1a" stop-opacity="0.8"/>
+      <stop offset="0.5" stop-color="#c8161e" stop-opacity="0.35"/>
+      <stop offset="1" stop-color="#c8161e" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fff1b8"/>
+      <stop offset="0.45" stop-color="#f1c65a"/>
+      <stop offset="1" stop-color="#a8741e"/>
+    </linearGradient>
+    <linearGradient id="blade" x1="0.15" y1="0" x2="0.85" y2="1">
+      <stop offset="0" stop-color="#ff5a3c"/>
+      <stop offset="0.5" stop-color="#c8141f"/>
+      <stop offset="1" stop-color="#6d0710"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" fill="url(#bg)"/>
+  <circle cx="256" cy="256" r="200" fill="url(#glow)"/>
+  <!-- gold ring -->
+  <circle cx="256" cy="256" r="182" fill="none" stroke="#03090b" stroke-opacity="0.6" stroke-width="22"/>
+  <circle cx="256" cy="256" r="182" fill="none" stroke="url(#gold)" stroke-width="14"/>
+  <circle cx="256" cy="256" r="165" fill="none" stroke="#f1c65a" stroke-opacity="0.35" stroke-width="2"/>
+  <!-- shuriken -->
+  <g transform="translate(6 8)" opacity="0.55"><path d="M217.8 217.8 Q235.7 174.5 273.1 92.9 Q298.0 183.3 294.2 217.8 Q337.5 235.7 419.1 273.1 Q328.7 298.0 294.2 294.2 Q276.3 337.5 238.9 419.1 Q214.0 328.7 217.8 294.2 Q174.5 276.3 92.9 238.9 Q183.3 214.0 217.8 217.8 Z" fill="#000"/></g>
+  <path d="M217.8 217.8 Q235.7 174.5 273.1 92.9 Q298.0 183.3 294.2 217.8 Q337.5 235.7 419.1 273.1 Q328.7 298.0 294.2 294.2 Q276.3 337.5 238.9 419.1 Q214.0 328.7 217.8 294.2 Q174.5 276.3 92.9 238.9 Q183.3 214.0 217.8 217.8 Z" fill="url(#blade)" stroke="url(#gold)" stroke-width="7" stroke-linejoin="round"/>
+  <!-- hub -->
+  <circle cx="256" cy="256" r="36" fill="#0a2227" stroke="url(#gold)" stroke-width="8"/>
+  <circle cx="256" cy="256" r="15" fill="url(#gold)"/>
+</svg>
