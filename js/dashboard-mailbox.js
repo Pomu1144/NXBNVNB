@@ -22,7 +22,7 @@ class DashboardMailbox {
         this.messages = [
           {
             id: 'welcome_001',
-            title: 'Welcome to Naruto Blazing!',
+            title: 'Welcome to Naruto Shippuden: Ultimate Ninja Legends!',
             message: 'Thank you for playing! Here are some starter rewards to help you begin your ninja journey.',
             date: new Date().toISOString(),
             read: false,
