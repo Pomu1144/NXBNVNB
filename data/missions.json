@@ -8340,6 +8340,348 @@
   }
  },
  {
+  "id": "si_gojo",
+  "category": "Super Impact",
+  "name": "Super Impact! Throughout Heaven and Earth",
+  "description": "SS Rank clear unlocks Gojo Satoru \"The Strongest\" (7★). Ranks unlock in order.",
+  "banner": "assets/missions/banners/si/si_gojo.webp",
+  "feature": "gojo_9005",
+  "sortOrder": -2,
+  "stamina": {"A": 30, "S": 40, "SS": 10},
+  "power": {"A": 183000, "S": 218200, "SS": 253400},
+  "clearRewards": {
+   "A": {
+    "firstTime": {"ninja_pearls": 3, "book_skill_3": 2},
+    "completion": {"ryo": 4800}
+   },
+   "S": {
+    "firstTime": {"ninja_pearls": 5, "beads_skill_4": 1},
+    "completion": {"ryo": 7800}
+   },
+   "SS": {
+    "firstTime": {"ninja_pearls": 5, "limit_break_crystal": 2},
+    "completion": {"ryo": 10000}
+   }
+  },
+  "difficulties": {
+   "A": [
+    {
+     "stage": 1,
+     "title": "The Strongest",
+     "map": "assets/maps/bg_060101_kouya.png",
+     "waves": [
+      {
+       "enemies": [
+        {"id": "zetsu_381", "hp": 34880, "atk": 2280, "def": 52, "speed": 147},
+        {"id": "zetsu_382", "hp": 34880, "atk": 2280, "def": 52, "speed": 184}
+       ]
+      },
+      {
+       "enemies": [
+        {"id": "zetsu_381", "hp": 34880, "atk": 2280, "def": 52, "speed": 147},
+        {"id": "zetsu_382", "hp": 34880, "atk": 2280, "def": 52, "speed": 184}
+       ]
+      },
+      {
+       "enemies": [
+        {"id": "gojo_9005", "hp": 104640, "atk": 3078, "def": 65, "speed": 195, "boss": true}
+       ]
+      }
+     ],
+     "boss": "gojo_9005",
+     "rewards": {"ryo": 19200, "book_skill_3": 1, "beads_skill_4": 1}
+    }
+   ],
+   "S": [
+    {
+     "stage": 1,
+     "title": "Limitless",
+     "map": "assets/maps/bg_060101_kouya.png",
+     "waves": [
+      {
+       "enemies": [
+        {"id": "zetsu_381", "hp": 41600, "atk": 2712, "def": 59, "speed": 147},
+        {"id": "zetsu_382", "hp": 41600, "atk": 2712, "def": 59, "speed": 184}
+       ]
+      },
+      {
+       "enemies": [
+        {"id": "zetsu_382", "hp": 41600, "atk": 2712, "def": 59, "speed": 184},
+        {"id": "zetsu_381", "hp": 41600, "atk": 2712, "def": 59, "speed": 147},
+        {"id": "zetsu_381", "hp": 41600, "atk": 2712, "def": 59, "speed": 147}
+       ]
+      }
+     ],
+     "rewards": {"ryo": 12480, "ramen_skill_5star": 1}
+    },
+    {
+     "stage": 2,
+     "title": "Throughout Heaven and Earth",
+     "map": "assets/maps/bg_060102_kouya.png",
+     "waves": [
+      {
+       "enemies": [
+        {"id": "zetsu_381", "hp": 41600, "atk": 2712, "def": 59, "speed": 147},
+        {"id": "zetsu_382", "hp": 41600, "atk": 2712, "def": 59, "speed": 184}
+       ]
+      },
+      {
+       "enemies": [
+        {"id": "zetsu_381", "hp": 41600, "atk": 2712, "def": 59, "speed": 147},
+        {"id": "zetsu_382", "hp": 41600, "atk": 2712, "def": 59, "speed": 184}
+       ]
+      },
+      {
+       "enemies": [
+        {"id": "gojo_9005", "hp": 124800, "atk": 3660, "def": 72, "speed": 216, "boss": true}
+       ]
+      }
+     ],
+     "boss": "gojo_9005",
+     "rewards": {"ryo": 31200, "book_skill_4": 2, "beads_skill_4": 1}
+    }
+   ],
+   "SS": [
+    {
+     "stage": 1,
+     "title": "Six Eyes",
+     "map": "assets/maps/bg_060101_kouya.png",
+     "waves": [
+      {
+       "enemies": [
+        {"id": "zetsu_381", "hp": 48320, "atk": 3144, "def": 67, "speed": 147},
+        {"id": "zetsu_382", "hp": 48320, "atk": 3144, "def": 67, "speed": 184}
+       ]
+      },
+      {
+       "enemies": [
+        {"id": "zetsu_382", "hp": 48320, "atk": 3144, "def": 67, "speed": 184},
+        {"id": "zetsu_381", "hp": 48320, "atk": 3144, "def": 67, "speed": 147},
+        {"id": "zetsu_381", "hp": 48320, "atk": 3144, "def": 67, "speed": 147}
+       ]
+      }
+     ],
+     "rewards": {"ryo": 16000, "ramen_skill_5star": 1}
+    },
+    {
+     "stage": 2,
+     "title": "Unlimited Void",
+     "map": "assets/maps/bg_060102_kouya.png",
+     "waves": [
+      {
+       "enemies": [
+        {"id": "zetsu_381", "hp": 48320, "atk": 3144, "def": 67, "speed": 147},
+        {"id": "zetsu_382", "hp": 48320, "atk": 3144, "def": 67, "speed": 184}
+       ]
+      },
+      {
+       "enemies": [
+        {"id": "zetsu_381", "hp": 48320, "atk": 3144, "def": 67, "speed": 147},
+        {"id": "zetsu_382", "hp": 48320, "atk": 3144, "def": 67, "speed": 184}
+       ]
+      },
+      {
+       "enemies": [
+        {"id": "gojo_9005", "hp": 144960, "atk": 4244, "def": 80, "speed": 236, "boss": true}
+       ]
+      }
+     ],
+     "boss": "gojo_9005",
+     "rewards": {
+      "ryo": 40000,
+      "limit_break_crystal": 1,
+      "characters": [
+       {"characterId": "gojo_9005", "tierCode": "7S", "quantity": 1}
+      ],
+      "book_skill_4": 2,
+      "beads_skill_4": 2
+     }
+    }
+   ]
+  },
+  "rankGate": true,
+  "featureArt": "assets/characters/gojo_9005/full_7S.webp",
+  "cast": {
+   "gojo_9005": {"name": "Gojo Satoru", "portrait": "assets/characters/gojo_9005/portrait_7S.webp"},
+   "zetsu_381": {"name": "Zetsu", "portrait": "assets/characters/zetsu_381/portrait_5S.webp"},
+   "zetsu_382": {"name": "Zetsu", "portrait": "assets/characters/zetsu_382/portrait_6S.webp"}
+  }
+ },
+ {
+  "id": "si_sukuna",
+  "category": "Super Impact",
+  "name": "Super Impact! Shinjuku Showdown",
+  "description": "SS Rank clear unlocks Ryomen Sukuna \"King of Curses\" (7★). Ranks unlock in order.",
+  "banner": "assets/missions/banners/si/si_sukuna.webp",
+  "feature": "sukuna_9006",
+  "sortOrder": -1,
+  "stamina": {"A": 30, "S": 40, "SS": 10},
+  "power": {"A": 183000, "S": 218200, "SS": 253400},
+  "clearRewards": {
+   "A": {
+    "firstTime": {"ninja_pearls": 3, "book_body_3": 2},
+    "completion": {"ryo": 4800}
+   },
+   "S": {
+    "firstTime": {"ninja_pearls": 5, "beads_body_4": 1},
+    "completion": {"ryo": 7800}
+   },
+   "SS": {
+    "firstTime": {"ninja_pearls": 5, "limit_break_crystal": 2},
+    "completion": {"ryo": 10000}
+   }
+  },
+  "difficulties": {
+   "A": [
+    {
+     "stage": 1,
+     "title": "King of Curses",
+     "map": "assets/maps/bg_050101_iwaba.png",
+     "waves": [
+      {
+       "enemies": [
+        {"id": "zetsu_381", "hp": 34880, "atk": 2280, "def": 52, "speed": 147},
+        {"id": "zetsu_382", "hp": 34880, "atk": 2280, "def": 52, "speed": 184}
+       ]
+      },
+      {
+       "enemies": [
+        {"id": "zetsu_381", "hp": 34880, "atk": 2280, "def": 52, "speed": 147},
+        {"id": "zetsu_382", "hp": 34880, "atk": 2280, "def": 52, "speed": 184}
+       ]
+      },
+      {
+       "enemies": [
+        {"id": "sukuna_9006", "hp": 104640, "atk": 3078, "def": 65, "speed": 195, "boss": true}
+       ]
+      }
+     ],
+     "boss": "sukuna_9006",
+     "rewards": {"ryo": 19200, "book_body_3": 1, "beads_body_4": 1}
+    }
+   ],
+   "S": [
+    {
+     "stage": 1,
+     "title": "Cleave",
+     "map": "assets/maps/bg_050101_iwaba.png",
+     "waves": [
+      {
+       "enemies": [
+        {"id": "zetsu_381", "hp": 41600, "atk": 2712, "def": 59, "speed": 147},
+        {"id": "zetsu_382", "hp": 41600, "atk": 2712, "def": 59, "speed": 184}
+       ]
+      },
+      {
+       "enemies": [
+        {"id": "zetsu_382", "hp": 41600, "atk": 2712, "def": 59, "speed": 184},
+        {"id": "zetsu_381", "hp": 41600, "atk": 2712, "def": 59, "speed": 147},
+        {"id": "zetsu_381", "hp": 41600, "atk": 2712, "def": 59, "speed": 147}
+       ]
+      }
+     ],
+     "rewards": {"ryo": 12480, "ramen_body_5star": 1}
+    },
+    {
+     "stage": 2,
+     "title": "Shinjuku Showdown",
+     "map": "assets/maps/bg_050102_iwaba.png",
+     "waves": [
+      {
+       "enemies": [
+        {"id": "zetsu_381", "hp": 41600, "atk": 2712, "def": 59, "speed": 147},
+        {"id": "zetsu_382", "hp": 41600, "atk": 2712, "def": 59, "speed": 184}
+       ]
+      },
+      {
+       "enemies": [
+        {"id": "zetsu_381", "hp": 41600, "atk": 2712, "def": 59, "speed": 147},
+        {"id": "zetsu_382", "hp": 41600, "atk": 2712, "def": 59, "speed": 184}
+       ]
+      },
+      {
+       "enemies": [
+        {"id": "sukuna_9006", "hp": 124800, "atk": 3660, "def": 72, "speed": 216, "boss": true}
+       ]
+      }
+     ],
+     "boss": "sukuna_9006",
+     "rewards": {"ryo": 31200, "book_body_4": 2, "beads_body_4": 1}
+    }
+   ],
+   "SS": [
+    {
+     "stage": 1,
+     "title": "Dismantle",
+     "map": "assets/maps/bg_050101_iwaba.png",
+     "waves": [
+      {
+       "enemies": [
+        {"id": "zetsu_381", "hp": 48320, "atk": 3144, "def": 67, "speed": 147},
+        {"id": "zetsu_382", "hp": 48320, "atk": 3144, "def": 67, "speed": 184}
+       ]
+      },
+      {
+       "enemies": [
+        {"id": "zetsu_382", "hp": 48320, "atk": 3144, "def": 67, "speed": 184},
+        {"id": "zetsu_381", "hp": 48320, "atk": 3144, "def": 67, "speed": 147},
+        {"id": "zetsu_381", "hp": 48320, "atk": 3144, "def": 67, "speed": 147}
+       ]
+      }
+     ],
+     "rewards": {"ryo": 16000, "ramen_body_5star": 1}
+    },
+    {
+     "stage": 2,
+     "title": "Malevolent Shrine",
+     "map": "assets/maps/bg_050102_iwaba.png",
+     "waves": [
+      {
+       "enemies": [
+        {"id": "zetsu_381", "hp": 48320, "atk": 3144, "def": 67, "speed": 147},
+        {"id": "zetsu_382", "hp": 48320, "atk": 3144, "def": 67, "speed": 184}
+       ]
+      },
+      {
+       "enemies": [
+        {"id": "zetsu_381", "hp": 48320, "atk": 3144, "def": 67, "speed": 147},
+        {"id": "zetsu_382", "hp": 48320, "atk": 3144, "def": 67, "speed": 184}
+       ]
+      },
+      {
+       "enemies": [
+        {"id": "sukuna_9007", "hp": 144960, "atk": 4244, "def": 80, "speed": 236}
+       ]
+      },
+      {
+       "enemies": [
+        {"id": "sukuna_9006", "hp": 144960, "atk": 4244, "def": 80, "speed": 236, "boss": true}
+       ]
+      }
+     ],
+     "boss": "sukuna_9006",
+     "rewards": {
+      "ryo": 40000,
+      "limit_break_crystal": 1,
+      "characters": [
+       {"characterId": "sukuna_9006", "tierCode": "7S", "quantity": 1}
+      ],
+      "book_body_4": 2,
+      "beads_body_4": 2
+     }
+    }
+   ]
+  },
+  "rankGate": true,
+  "featureArt": "assets/characters/sukuna_9006/full_7S.webp",
+  "cast": {
+   "sukuna_9006": {"name": "Ryomen Sukuna", "portrait": "assets/characters/sukuna_9006/portrait_7S.webp"},
+   "zetsu_381": {"name": "Zetsu", "portrait": "assets/characters/zetsu_381/portrait_5S.webp"},
+   "zetsu_382": {"name": "Zetsu", "portrait": "assets/characters/zetsu_382/portrait_6S.webp"},
+   "sukuna_9007": {"name": "Ryomen Sukuna", "portrait": "assets/characters/sukuna_9007/portrait_7S.webp"}
+  }
+ },
+ {
   "id": "si_raging_fourth_tail",
   "category": "Super Impact",
   "name": "Super Impact! The Raging Fourth Tail",
