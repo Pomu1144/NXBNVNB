@@ -49,6 +49,69 @@
     return metaCache.get(key);
   }
 
+  /* ----- canvas mode (opt-in: giant bosses) -----
+   * A huge sheet set as a CSS background can paint as nothing for a moment
+   * while the browser decodes it (first use, or after it dropped the decoded
+   * copy), so the boss blinks out on a sheet switch. Canvas players draw from
+   * ImageBitmaps decoded before the switch: the old frame stays up until the
+   * new sheet can be drawn. Bitmaps are scaled to the drawn size (at most 2x)
+   * and kept in a small LRU; evicted ones are closed to free their memory. */
+  const BITMAP_KEEP = 3;
+  const bitmaps = new Map(); // key -> { p: Promise<source>, bytes, used, wanted }
+  const held = new Map();    // key -> number of canvas players showing / awaiting it
+  let useTick = 0;
+  let peakBytes = 0;
+  const canvasDpr = () => Math.min(2, Math.max(1, window.devicePixelRatio || 1));
+  const hold = (key, d) => { const n = (held.get(key) || 0) + d; n > 0 ? held.set(key, n) : held.delete(key); };
+
+  /* Keep at most BITMAP_KEEP sheets: drop the least recently used one that is
+   * not held by a player (nor `keep`, the one just asked for), sparing sheets
+   * warmed for an upcoming play if we can. */
+  function trimBitmaps(keep) {
+    while (bitmaps.size > BITMAP_KEEP) {
+      const free = [...bitmaps].filter(([k]) => k !== keep && !held.has(k));
+      const pool = free.some(([, b]) => !b.wanted) ? free.filter(([, b]) => !b.wanted) : free;
+      const pick = pool.reduce((a, e) => (!a || e[1].used < a[1].used ? e : a), null);
+      if (!pick) return;
+      bitmaps.delete(pick[0]);
+      pick[1].p.then(src => src && src.close && src.close(), () => {});
+    }
+  }
+
+  /** Decoded sheet for frames drawn w x h css px: { key, p: Promise<ImageBitmap|img> }.
+   * When the sheet is bigger than needed, each frame is decoded at exactly the
+   * canvas size so drawing a frame is a 1:1 copy. */
+  function sheetBitmap(anim, w, h, { wanted = false } = {}) {
+    const rows = Math.ceil(anim.frames / anim.columns);
+    const cw = Math.round(w * canvasDpr()), ch = Math.round(h * canvasDpr());
+    const shrink = ch < anim.frameHeight && cw < anim.frameWidth;
+    const rw = anim.columns * (shrink ? cw : anim.frameWidth);
+    const rh = rows * (shrink ? ch : anim.frameHeight);
+    const key = `${anim.url}@${rw}x${rh}`;
+    let b = bitmaps.get(key);
+    if (b) {
+      b.used = ++useTick;
+      b.wanted = b.wanted || wanted;
+      return { key, p: b.p };
+    }
+    b = { used: ++useTick, wanted, bytes: rw * rh * 4 };
+    b.p = fetch(anim.url)
+      .then(r => { if (!r.ok) throw new Error(`missing ${anim.url}`); return r.blob(); })
+      .then(blob => createImageBitmap(blob, shrink ? { resizeWidth: rw, resizeHeight: rh, resizeQuality: 'high' } : {}))
+      .catch(() => new Promise((resolve, reject) => {
+        // no createImageBitmap (or it failed): draw from a decoded <img>
+        const img = new Image();
+        img.onload = () => Promise.resolve(img.decode?.()).catch(() => {}).then(() => resolve(img));
+        img.onerror = () => reject(new Error(`missing ${anim.url}`));
+        img.src = anim.url;
+      }));
+    b.p.catch(() => { if (bitmaps.get(key) === b) bitmaps.delete(key); });
+    bitmaps.set(key, b);
+    trimBitmaps(key);
+    peakBytes = Math.max(peakBytes, [...bitmaps.values()].reduce((s, e) => s + e.bytes, 0));
+    return { key, p: b.p };
+  }
+
   /* Sheets asked for before the page is shown keep the page loader
    * (js/page-loader.js) up until they have arrived. */
   function track(p, label) {
@@ -56,13 +119,24 @@
     return PL && !PL.revealed ? PL.track(p, `sprite ${label}`) : p;
   }
 
+  /* opts: { height, flip, canvas } - canvas: true draws into a <canvas> from
+   * pre-decoded bitmaps (see "canvas mode" above) instead of a CSS background. */
   function create(container, base, opts = {}) {
-    const el = document.createElement('div');
+    const useCanvas = !!opts.canvas;
+    const el = document.createElement(useCanvas ? 'canvas' : 'div');
     el.className = 'sprite-player';
-    el.style.backgroundRepeat = 'no-repeat';
+    if (useCanvas) el.style.display = 'block';
+    else el.style.backgroundRepeat = 'no-repeat';
     el.style.imageRendering = 'auto';
     if (opts.flip) el.style.transform = 'scaleX(-1)';
     container.appendChild(el);
+    // willReadFrequently keeps the canvas in CPU memory: only the drawn frame
+    // goes to the GPU, not a texture copy of every decoded sheet
+    const ctx = useCanvas ? el.getContext('2d', { willReadFrequently: true }) : null;
+    let shownKey = null; // canvas mode: bitmap on screen
+    let draw = null;     // canvas mode: draw(frameIndex) for the sheet on screen
+    let drawn;
+    const firstDraw = new Promise(res => { drawn = res; }); // resolves once a frame is on screen
 
     let timer = null;
     let token = 0;
@@ -106,10 +180,36 @@
       const s = h / anim.frameHeight;
       const w = Math.round(anim.frameWidth * s);
       const rows = Math.ceil(anim.frames / anim.columns);
+      if (useCanvas) {
+        // keep the current frame up until the new sheet is decoded
+        const bm = sheetBitmap(anim, w, h);
+        hold(bm.key, 1); // not evicted while this play waits for it
+        let src = null;
+        try { src = await bm.p; } catch (e) { /* sheet failed: keep the old frame */ }
+        if (my !== token || !src) {
+          hold(bm.key, -1);
+          if (!src && my === token) current = el.dataset.anim || null;
+          return;
+        }
+        if (shownKey) hold(shownKey, -1);
+        shownKey = bm.key;
+        const entry = bitmaps.get(bm.key);
+        if (entry) entry.wanted = false; // shown: an ordinary LRU entry from now on
+        const dpr = canvasDpr();
+        const cw = Math.round(w * dpr), ch = Math.round(h * dpr);
+        if (el.width !== cw || el.height !== ch) { el.width = cw; el.height = ch; }
+        const sw = src.width / anim.columns, sh = src.height / rows;
+        draw = i => {
+          ctx.clearRect(0, 0, cw, ch);
+          ctx.drawImage(src, (i % anim.columns) * sw, Math.floor(i / anim.columns) * sh, sw, sh, 0, 0, cw, ch);
+          el.dataset.frame = i;
+        };
+      } else {
+        el.style.backgroundImage = `url("${anim.url}")`;
+        el.style.backgroundSize = `${anim.columns * w}px ${rows * h}px`;
+      }
       el.style.width = `${w}px`;
       el.style.height = `${h}px`;
-      el.style.backgroundImage = `url("${anim.url}")`;
-      el.style.backgroundSize = `${anim.columns * w}px ${rows * h}px`;
       el.dataset.anim = name;
       applyAnchor(anim, w);
 
@@ -131,9 +231,9 @@
       const show = i => {
         if (i === lastShown) return;
         lastShown = i;
-        const col = i % anim.columns;
-        const row = Math.floor(i / anim.columns);
-        el.style.backgroundPosition = `${-col * w}px ${-row * h}px`;
+        if (useCanvas) draw(i);
+        else el.style.backgroundPosition = `${-(i % anim.columns) * w}px ${-Math.floor(i / anim.columns) * h}px`;
+        drawn();
         applyAnchor(anim, w); // facing may have changed since the last frame
       };
       const oneShot = !anim.loop || !!then;
@@ -168,6 +268,30 @@
     /** Metadata (frames, fps, hits, ...) of an animation, loading it if needed. */
     function meta(name) { return loadAnim(base, name); }
 
+    /* Show one frame of the sheet on screen and hold it (e.g. a KO's last frame). */
+    function showFrame(i) {
+      const name = el.dataset.anim;
+      if (!name) return;
+      loadAnim(base, name).then(anim => {
+        if (el.dataset.anim !== name) return;
+        const n = Math.max(0, Math.min(anim.frames - 1, i));
+        if (useCanvas) { if (draw) draw(n); return; }
+        const w = parseFloat(el.style.width), h = parseFloat(el.style.height);
+        el.style.backgroundPosition = `${-(n % anim.columns) * w}px ${-Math.floor(n / anim.columns) * h}px`;
+      }).catch(() => {});
+    }
+
+    /* Canvas mode: decode a sheet ahead of its play() so the switch is
+     * immediate. It is spared by the LRU until it has been shown. */
+    function warm(name) {
+      if (!useCanvas) return loadAnim(base, name).then(() => {});
+      return loadAnim(base, name).then(anim => {
+        const hs = Number(anim.heightScale) > 0 ? Number(anim.heightScale) : 1;
+        const h = Math.round(opts.height ? opts.height * hs : anim.frameHeight);
+        return sheetBitmap(anim, Math.round(anim.frameWidth * (h / anim.frameHeight)), h, { wanted: true }).p;
+      }).then(() => {}, () => {});
+    }
+
     /* Switch to a looping animation only if it isn't already the current one,
      * so callers can request a state every frame (e.g. on pointermove)
      * without restarting the sheet from frame 0. */
@@ -177,9 +301,16 @@
     }
 
     return {
-      el, play, setState, stop, meta,
+      el, play, setState, stop, meta, showFrame, warm, firstDraw,
       get current() { return current; },
-      destroy() { token++; current = null; stop(); el.remove(); },
+      destroy() {
+        token++; current = null; stop(); el.remove();
+        if (useCanvas) {
+          if (shownKey) hold(shownKey, -1); // plays still waiting release their own
+          shownKey = draw = null;
+          el.width = el.height = 0; // let the backing store go now
+        }
+      },
     };
   }
 
@@ -260,6 +391,8 @@
     kaguya_9003: 'assets/sprites/kaguya_9003', // Kaguya Otsutsuki "Progenitor of All Chakra" 7★
     pain_9004: 'assets/sprites/pain_9004', // Pain "God of Amegakure" 7★
     gojo_9005: 'assets/sprites/gojo_9005', // Gojo Satoru "The Strongest" 7★
+    sukuna_9006: 'assets/sprites/sukuna_9006', // Ryomen Sukuna "King of Curses" 7★
+    sukuna_9007: 'assets/sprites/sukuna_9007', // Ryomen Sukuna "Heian Era" 7★
     // </produce:registry>
   };
 
@@ -282,6 +415,12 @@
     preload: (base, name, { background = false } = {}) =>
       background ? loadAnim(base, name) : track(loadAnim(base, name), `${base}/${name}`),
     has: charId => !!REGISTRY[charId],
+    /* Decoded canvas-mode sheets alive now (and the most there ever were). */
+    bitmapStats: () => {
+      const mb = n => Math.round(n / 1048576);
+      return { count: bitmaps.size, mb: mb([...bitmaps.values()].reduce((s, e) => s + e.bytes, 0)), peakMb: mb(peakBytes),
+        sheets: [...bitmaps.keys()].map(k => k.replace(/^.*\//, '')) };
+    },
     /* Folder to animate a unit from: its equipped skin (js/skins.js) when it
      * has one, else its own folder. { skin: false } always gives the base
      * folder (e.g. enemy copies of a unit the player has skinned). */

@@ -6,7 +6,7 @@
   "chapter": 1,
   "name": "Graduation Exam",
   "description": "Naruto fails the Academy exam, then Mizuki tricks him into stealing the Scroll of Seals. Iruka takes the blow meant for him.",
-  "banner": "assets/missions/banners/arc_academy.webp",
+  "banner": "assets/missions/banners/story/sc1_01.webp",
   "feature": "mizuki_099",
   "sortOrder": 1,
   "rankNames": {"C": "Normal", "B": "Hard", "A": "Extreme"},
@@ -280,7 +280,7 @@
   "chapter": 2,
   "name": "Team 7 United",
   "description": "Kakashi's bell test: take a bell from the Copy Ninja before noon or go back to the Academy. Teamwork is the real test.",
-  "banner": "assets/missions/banners/arc_academy.webp",
+  "banner": "assets/missions/banners/story/sc1_02.webp",
   "feature": "kakashi_009",
   "sortOrder": 2,
   "rankNames": {"C": "Normal", "B": "Hard", "A": "Extreme"},
@@ -555,7 +555,7 @@
   "chapter": 3,
   "name": "Land of Waves",
   "description": "Escorting the bridge builder Tazuna turns deadly: the Demon of the Hidden Mist, Zabuza, and his masked partner Haku lie in wait.",
-  "banner": "assets/missions/banners/arc_land_of_waves.webp",
+  "banner": "assets/missions/banners/story/sc1_03.webp",
   "feature": "zabuza_145",
   "sortOrder": 3,
   "rankNames": {"C": "Normal", "B": "Hard", "A": "Extreme"},
@@ -964,7 +964,7 @@
   "chapter": 4,
   "name": "Exam Round 1",
   "description": "The Chunin Exams open. Get past the genjutsu guarding the exam room, meet Rock Lee, and survive Ibiki Morino's written test.",
-  "banner": "assets/missions/banners/arc_chunin_exams.webp",
+  "banner": "assets/missions/banners/story/sc1_04.webp",
   "feature": "ibiki_092",
   "sortOrder": 4,
   "rankNames": {"C": "Normal", "B": "Hard", "A": "Extreme"},
@@ -1324,7 +1324,7 @@
   "chapter": 5,
   "name": "Exam Round 2",
   "description": "The Forest of Death: fight rival teams for the Heaven and Earth scrolls while Orochimaru hunts Sasuke.",
-  "banner": "assets/missions/banners/arc_chunin_exams.webp",
+  "banner": "assets/missions/banners/story/sc1_05.webp",
   "feature": "orochimaru_074",
   "sortOrder": 5,
   "rankNames": {"C": "Normal", "B": "Hard", "A": "Extreme"},
@@ -1676,7 +1676,7 @@
   "chapter": 6,
   "name": "Preliminaries!",
   "description": "Too many genin passed, so the preliminary one-on-one bouts begin: Kiba, Neji and a terrifying Gaara of the Sand.",
-  "banner": "assets/missions/banners/arc_chunin_exams.webp",
+  "banner": "assets/missions/banners/story/sc1_06.webp",
   "feature": "gaara_050",
   "sortOrder": 6,
   "rankNames": {"C": "Normal", "B": "Hard", "A": "Extreme"},
@@ -2033,7 +2033,7 @@
   "chapter": 7,
   "name": "Exam Round 3",
   "description": "A month of training with the Toad Sage, then the finals in the stadium: Neji's destiny and Sasuke against Gaara.",
-  "banner": "assets/missions/banners/arc_chunin_exams.webp",
+  "banner": "assets/missions/banners/story/sc1_07.webp",
   "feature": "gaara_050",
   "sortOrder": 7,
   "rankNames": {"C": "Normal", "B": "Hard", "A": "Extreme"},
@@ -2370,7 +2370,7 @@
   "chapter": 8,
   "name": "Destruction of the Hidden Leaf",
   "description": "Sand and Sound invade mid-exam. The Third Hokage faces Orochimaru inside the Sound Four's barrier while Shukaku rises.",
-  "banner": "assets/missions/banners/arc_konoha_crush.webp",
+  "banner": "assets/missions/banners/story/sc1_08.webp",
   "feature": "gaara_051",
   "sortOrder": 8,
   "rankNames": {"C": "Normal", "B": "Hard", "A": "Extreme"},
@@ -2773,7 +2773,7 @@
   "chapter": 9,
   "name": "The Akatsuki Assault",
   "description": "Two Akatsuki members walk into the Leaf: Kisame of the Mist and Itachi Uchiha, come to take the Nine-Tails.",
-  "banner": "assets/missions/banners/arc_akatsuki.webp",
+  "banner": "assets/missions/banners/story/sc1_09.webp",
   "feature": "itachi_089",
   "sortOrder": 9,
   "rankNames": {"C": "Normal", "B": "Hard", "A": "Extreme"},
@@ -3125,7 +3125,7 @@
   "chapter": 10,
   "name": "Find Tsunade",
   "description": "Jiraiya and Naruto track down the Legendary Sucker. Orochimaru wants her to heal his arms, and three Sannin clash.",
-  "banner": "assets/missions/banners/arc_sannin.webp",
+  "banner": "assets/missions/banners/story/sc1_10.webp",
   "feature": "orochimaru_172",
   "sortOrder": 10,
   "rankNames": {"C": "Normal", "B": "Hard", "A": "Extreme"},
@@ -3417,7 +3417,7 @@
   "chapter": 11,
   "name": "Get Sasuke Back",
   "description": "Sasuke leaves with the Sound Four. Shikamaru's squad gives chase, and one by one they stay behind to hold the line.",
-  "banner": "assets/missions/banners/arc_final_valley.webp",
+  "banner": "assets/missions/banners/story/sc1_11.webp",
   "feature": "kidomaru_081",
   "sortOrder": 11,
   "rankNames": {"C": "Normal", "B": "Hard", "A": "Extreme"},
@@ -3754,7 +3754,7 @@
   "chapter": 12,
   "name": "The Final Valley",
   "description": "Tayuya, Ukon/Sakon and Kimimaro fall one by one. At the Valley of the End, Naruto finally catches up with Sasuke.",
-  "banner": "assets/missions/banners/arc_final_valley.webp",
+  "banner": "assets/missions/banners/story/sc1_12.webp",
   "feature": "sasuke_261",
   "sortOrder": 12,
   "rankNames": {"C": "Normal", "B": "Hard", "A": "Extreme"},
@@ -4087,7 +4087,7 @@
   "chapter": 13,
   "name": "The Third Great Ninja War",
   "description": "Years earlier: Kakashi, Obito and Rin's mission behind enemy lines at Kannabi Bridge, where a Sharingan is inherited.",
-  "banner": "assets/missions/banners/arc_kakashi_gaiden.webp",
+  "banner": "assets/missions/banners/story/sc1_13.webp",
   "feature": "kakkou_106",
   "sortOrder": 13,
   "rankNames": {"C": "Normal", "B": "Hard", "A": "Extreme"},
@@ -4362,7 +4362,7 @@
   "chapter": 14,
   "name": "Homecoming",
   "description": "Naruto returns after two and a half years with Jiraiya. Kakashi rings the bells for a rematch against Naruto and Sakura.",
-  "banner": "assets/missions/banners/arc_special_training.webp",
+  "banner": "assets/missions/banners/story/sc2_01.webp",
   "feature": "kakashi_314",
   "sortOrder": 14,
   "rankNames": {"C": "Normal", "B": "Hard", "A": "Extreme"},
@@ -4638,7 +4638,7 @@
   "chapter": 15,
   "name": "One Tail Under Attack",
   "description": "Deidara strikes the Hidden Sand from the sky and Gaara, now Kazekage, defends his village alone.",
-  "banner": "assets/missions/banners/arc_kazekage_rescue.webp",
+  "banner": "assets/missions/banners/story/sc2_02.webp",
   "feature": "sasori_221",
   "sortOrder": 15,
   "rankNames": {"C": "Normal", "B": "Hard", "A": "Extreme"},
@@ -4929,7 +4929,7 @@
   "chapter": 16,
   "name": "Hunt for the Kazekage",
   "description": "Team Kakashi and Team Guy race to the Akatsuki hideout, but Itachi and Kisame stand in the way.",
-  "banner": "assets/missions/banners/arc_kazekage_rescue.webp",
+  "banner": "assets/missions/banners/story/sc2_03.webp",
   "feature": "itachi_211",
   "sortOrder": 16,
   "rankNames": {"C": "Normal", "B": "Hard", "A": "Extreme"},
@@ -5219,7 +5219,7 @@
   "chapter": 17,
   "name": "Entrusted Feelings",
   "description": "Granny Chiyo and Sakura against Sasori and his Human Puppets, while Naruto and Kakashi chase Deidara.",
-  "banner": "assets/missions/banners/arc_kazekage_rescue.webp",
+  "banner": "assets/missions/banners/story/sc2_04.webp",
   "feature": "deidara_220",
   "sortOrder": 17,
   "rankNames": {"C": "Normal", "B": "Hard", "A": "Extreme"},
@@ -5504,7 +5504,7 @@
   "chapter": 18,
   "name": "The Foundation's Tangled Roots",
   "description": "Danzo's Root plants Sai in the new Team Kakashi. The Foundation tests them before the mission to Tenchi Bridge.",
-  "banner": "assets/missions/banners/arc_tenchi_bridge.webp",
+  "banner": "assets/missions/banners/story/sc2_05.webp",
   "feature": "danzo_373",
   "sortOrder": 18,
   "rankNames": {"C": "Normal", "B": "Hard", "A": "Extreme"},
@@ -5778,7 +5778,7 @@
   "chapter": 19,
   "name": "Battle at Tenchi Bridge",
   "description": "The meeting with Orochimaru's spy is a trap. Naruto loses control and the Fourth Tail breaks loose.",
-  "banner": "assets/missions/banners/arc_tenchi_bridge.webp",
+  "banner": "assets/missions/banners/story/sc2_06.webp",
   "feature": "naruto_282",
   "sortOrder": 19,
   "rankNames": {"C": "Normal", "B": "Hard", "A": "Extreme"},
@@ -6063,7 +6063,7 @@
   "chapter": 20,
   "name": "Distant Reunion",
   "description": "Inside Orochimaru's hideout Sai's true orders surface, and Team Kakashi finally finds Sasuke, colder than ever.",
-  "banner": "assets/missions/banners/arc_tenchi_bridge.webp",
+  "banner": "assets/missions/banners/story/sc2_07.webp",
   "feature": "sasuke_244",
   "sortOrder": 20,
   "rankNames": {"C": "Normal", "B": "Hard", "A": "Extreme"},
@@ -6335,7 +6335,7 @@
   "chapter": 21,
   "name": "Special Training",
   "description": "Kakashi and Yamato train Naruto to add wind chakra nature to the Rasengan with a thousand shadow clones.",
-  "banner": "assets/missions/banners/arc_special_training.webp",
+  "banner": "assets/missions/banners/story/sc2_08.webp",
   "feature": "kakashi_426",
   "sortOrder": 21,
   "rankNames": {"C": "Normal", "B": "Hard", "A": "Extreme"},
@@ -6625,7 +6625,7 @@
   "chapter": 22,
   "name": "The New Two",
   "description": "The immortal Akatsuki pair captures the Two-Tails and comes for the Fire Temple. Asuma's squad intercepts them.",
-  "banner": "assets/missions/banners/arc_immortals.webp",
+  "banner": "assets/missions/banners/story/sc2_09.webp",
   "feature": "hidan_321",
   "sortOrder": 22,
   "rankNames": {"C": "Normal", "B": "Hard", "A": "Extreme"},
@@ -6912,7 +6912,7 @@
   "chapter": 23,
   "name": "Shikamaru's Battle",
   "description": "Shikamaru avenges Asuma with Team 10, and Naruto debuts the Wind Style: Rasen Shuriken against Kakuzu.",
-  "banner": "assets/missions/banners/arc_immortals.webp",
+  "banner": "assets/missions/banners/story/sc2_10.webp",
   "feature": "kakuzu_324",
   "sortOrder": 23,
   "rankNames": {"C": "Normal", "B": "Hard", "A": "Extreme"},
@@ -7196,7 +7196,7 @@
   "chapter": 24,
   "name": "Pain's Assault",
   "description": "The Six Paths of Pain level the Hidden Leaf with Almighty Push. Naruto returns from Mount Myoboku in Sage Mode.",
-  "banner": "assets/missions/banners/arc_pain_assault.webp",
+  "banner": "assets/missions/banners/story/sc2_11.webp",
   "feature": "nagato_360",
   "sortOrder": 24,
   "rankNames": {"C": "Normal", "B": "Hard", "A": "Extreme"},
@@ -7486,7 +7486,7 @@
   "chapter": 25,
   "name": "Five Kage Summit",
   "description": "The five Kage meet in the Land of Iron under the samurai's watch, and Sasuke crashes the summit looking for Danzo.",
-  "banner": "assets/missions/banners/arc_kage_summit.webp",
+  "banner": "assets/missions/banners/story/sc2_12.webp",
   "feature": "sasuke_245",
   "sortOrder": 25,
   "rankNames": {"C": "Normal", "B": "Hard", "A": "Extreme"},
@@ -7778,7 +7778,7 @@
   "chapter": 26,
   "name": "The Fourth Great Ninja War",
   "description": "The Allied Shinobi Forces march against reanimated legends, the Gold and Silver Brothers and the masked man's army.",
-  "banner": "assets/missions/banners/arc_ninja_war.webp",
+  "banner": "assets/missions/banners/story/sc2_13.webp",
   "feature": "madara_333",
   "sortOrder": 26,
   "rankNames": {"C": "Normal", "B": "Hard", "A": "Extreme"},
@@ -8076,7 +8076,7 @@
   "chapter": 27,
   "name": "The Final Battle",
   "description": "The Infinite Tsukuyomi is cast and Kaguya Otsutsuki awakens. Naruto and Sasuke fight side by side, one last time.",
-  "banner": "assets/missions/banners/arc_final_battle.webp",
+  "banner": "assets/missions/banners/story/sc2_14.webp",
   "feature": "kaguya_513",
   "sortOrder": 27,
   "rankNames": {"C": "Normal", "B": "Hard", "A": "Extreme"},
@@ -8340,11 +8340,353 @@
   }
  },
  {
+  "id": "si_gojo",
+  "category": "Super Impact",
+  "name": "Super Impact! Throughout Heaven and Earth",
+  "description": "SS Rank clear unlocks Gojo Satoru \"The Strongest\" (7★). Ranks unlock in order.",
+  "banner": "assets/missions/banners/si/si_gojo.webp",
+  "feature": "gojo_9005",
+  "sortOrder": -2,
+  "stamina": {"A": 30, "S": 40, "SS": 10},
+  "power": {"A": 183000, "S": 218200, "SS": 253400},
+  "clearRewards": {
+   "A": {
+    "firstTime": {"ninja_pearls": 3, "book_skill_3": 2},
+    "completion": {"ryo": 4800}
+   },
+   "S": {
+    "firstTime": {"ninja_pearls": 5, "beads_skill_4": 1},
+    "completion": {"ryo": 7800}
+   },
+   "SS": {
+    "firstTime": {"ninja_pearls": 5, "limit_break_crystal": 2},
+    "completion": {"ryo": 10000}
+   }
+  },
+  "difficulties": {
+   "A": [
+    {
+     "stage": 1,
+     "title": "The Strongest",
+     "map": "assets/maps/bg_060101_kouya.png",
+     "waves": [
+      {
+       "enemies": [
+        {"id": "zetsu_381", "hp": 34880, "atk": 2280, "def": 52, "speed": 147},
+        {"id": "zetsu_382", "hp": 34880, "atk": 2280, "def": 52, "speed": 184}
+       ]
+      },
+      {
+       "enemies": [
+        {"id": "zetsu_381", "hp": 34880, "atk": 2280, "def": 52, "speed": 147},
+        {"id": "zetsu_382", "hp": 34880, "atk": 2280, "def": 52, "speed": 184}
+       ]
+      },
+      {
+       "enemies": [
+        {"id": "gojo_9005", "hp": 104640, "atk": 3078, "def": 65, "speed": 195, "boss": true}
+       ]
+      }
+     ],
+     "boss": "gojo_9005",
+     "rewards": {"ryo": 19200, "book_skill_3": 1, "beads_skill_4": 1}
+    }
+   ],
+   "S": [
+    {
+     "stage": 1,
+     "title": "Limitless",
+     "map": "assets/maps/bg_060101_kouya.png",
+     "waves": [
+      {
+       "enemies": [
+        {"id": "zetsu_381", "hp": 41600, "atk": 2712, "def": 59, "speed": 147},
+        {"id": "zetsu_382", "hp": 41600, "atk": 2712, "def": 59, "speed": 184}
+       ]
+      },
+      {
+       "enemies": [
+        {"id": "zetsu_382", "hp": 41600, "atk": 2712, "def": 59, "speed": 184},
+        {"id": "zetsu_381", "hp": 41600, "atk": 2712, "def": 59, "speed": 147},
+        {"id": "zetsu_381", "hp": 41600, "atk": 2712, "def": 59, "speed": 147}
+       ]
+      }
+     ],
+     "rewards": {"ryo": 12480, "ramen_skill_5star": 1}
+    },
+    {
+     "stage": 2,
+     "title": "Throughout Heaven and Earth",
+     "map": "assets/maps/bg_060102_kouya.png",
+     "waves": [
+      {
+       "enemies": [
+        {"id": "zetsu_381", "hp": 41600, "atk": 2712, "def": 59, "speed": 147},
+        {"id": "zetsu_382", "hp": 41600, "atk": 2712, "def": 59, "speed": 184}
+       ]
+      },
+      {
+       "enemies": [
+        {"id": "zetsu_381", "hp": 41600, "atk": 2712, "def": 59, "speed": 147},
+        {"id": "zetsu_382", "hp": 41600, "atk": 2712, "def": 59, "speed": 184}
+       ]
+      },
+      {
+       "enemies": [
+        {"id": "gojo_9005", "hp": 124800, "atk": 3660, "def": 72, "speed": 216, "boss": true}
+       ]
+      }
+     ],
+     "boss": "gojo_9005",
+     "rewards": {"ryo": 31200, "book_skill_4": 2, "beads_skill_4": 1}
+    }
+   ],
+   "SS": [
+    {
+     "stage": 1,
+     "title": "Six Eyes",
+     "map": "assets/maps/bg_060101_kouya.png",
+     "waves": [
+      {
+       "enemies": [
+        {"id": "zetsu_381", "hp": 48320, "atk": 3144, "def": 67, "speed": 147},
+        {"id": "zetsu_382", "hp": 48320, "atk": 3144, "def": 67, "speed": 184}
+       ]
+      },
+      {
+       "enemies": [
+        {"id": "zetsu_382", "hp": 48320, "atk": 3144, "def": 67, "speed": 184},
+        {"id": "zetsu_381", "hp": 48320, "atk": 3144, "def": 67, "speed": 147},
+        {"id": "zetsu_381", "hp": 48320, "atk": 3144, "def": 67, "speed": 147}
+       ]
+      }
+     ],
+     "rewards": {"ryo": 16000, "ramen_skill_5star": 1}
+    },
+    {
+     "stage": 2,
+     "title": "Unlimited Void",
+     "map": "assets/maps/bg_060102_kouya.png",
+     "waves": [
+      {
+       "enemies": [
+        {"id": "zetsu_381", "hp": 48320, "atk": 3144, "def": 67, "speed": 147},
+        {"id": "zetsu_382", "hp": 48320, "atk": 3144, "def": 67, "speed": 184}
+       ]
+      },
+      {
+       "enemies": [
+        {"id": "zetsu_381", "hp": 48320, "atk": 3144, "def": 67, "speed": 147},
+        {"id": "zetsu_382", "hp": 48320, "atk": 3144, "def": 67, "speed": 184}
+       ]
+      },
+      {
+       "enemies": [
+        {"id": "gojo_9005", "hp": 144960, "atk": 4244, "def": 80, "speed": 236, "boss": true}
+       ]
+      }
+     ],
+     "boss": "gojo_9005",
+     "rewards": {
+      "ryo": 40000,
+      "limit_break_crystal": 1,
+      "characters": [
+       {"characterId": "gojo_9005", "tierCode": "7S", "quantity": 1}
+      ],
+      "book_skill_4": 2,
+      "beads_skill_4": 2
+     }
+    }
+   ]
+  },
+  "rankGate": true,
+  "featureArt": "assets/characters/gojo_9005/full_7S.webp",
+  "cast": {
+   "gojo_9005": {"name": "Gojo Satoru", "portrait": "assets/characters/gojo_9005/portrait_7S.webp"},
+   "zetsu_381": {"name": "Zetsu", "portrait": "assets/characters/zetsu_381/portrait_5S.webp"},
+   "zetsu_382": {"name": "Zetsu", "portrait": "assets/characters/zetsu_382/portrait_6S.webp"}
+  }
+ },
+ {
+  "id": "si_sukuna",
+  "category": "Super Impact",
+  "name": "Super Impact! Shinjuku Showdown",
+  "description": "SS Rank clear unlocks Ryomen Sukuna \"King of Curses\" (7★). Ranks unlock in order.",
+  "banner": "assets/missions/banners/si/si_sukuna.webp",
+  "feature": "sukuna_9006",
+  "sortOrder": -1,
+  "stamina": {"A": 30, "S": 40, "SS": 10},
+  "power": {"A": 183000, "S": 218200, "SS": 253400},
+  "clearRewards": {
+   "A": {
+    "firstTime": {"ninja_pearls": 3, "book_body_3": 2},
+    "completion": {"ryo": 4800}
+   },
+   "S": {
+    "firstTime": {"ninja_pearls": 5, "beads_body_4": 1},
+    "completion": {"ryo": 7800}
+   },
+   "SS": {
+    "firstTime": {"ninja_pearls": 5, "limit_break_crystal": 2},
+    "completion": {"ryo": 10000}
+   }
+  },
+  "difficulties": {
+   "A": [
+    {
+     "stage": 1,
+     "title": "King of Curses",
+     "map": "assets/maps/bg_050101_iwaba.png",
+     "waves": [
+      {
+       "enemies": [
+        {"id": "zetsu_381", "hp": 34880, "atk": 2280, "def": 52, "speed": 147},
+        {"id": "zetsu_382", "hp": 34880, "atk": 2280, "def": 52, "speed": 184}
+       ]
+      },
+      {
+       "enemies": [
+        {"id": "zetsu_381", "hp": 34880, "atk": 2280, "def": 52, "speed": 147},
+        {"id": "zetsu_382", "hp": 34880, "atk": 2280, "def": 52, "speed": 184}
+       ]
+      },
+      {
+       "enemies": [
+        {"id": "sukuna_9006", "hp": 104640, "atk": 3078, "def": 65, "speed": 195, "boss": true}
+       ]
+      }
+     ],
+     "boss": "sukuna_9006",
+     "rewards": {"ryo": 19200, "book_body_3": 1, "beads_body_4": 1}
+    }
+   ],
+   "S": [
+    {
+     "stage": 1,
+     "title": "Cleave",
+     "map": "assets/maps/bg_050101_iwaba.png",
+     "waves": [
+      {
+       "enemies": [
+        {"id": "zetsu_381", "hp": 41600, "atk": 2712, "def": 59, "speed": 147},
+        {"id": "zetsu_382", "hp": 41600, "atk": 2712, "def": 59, "speed": 184}
+       ]
+      },
+      {
+       "enemies": [
+        {"id": "zetsu_382", "hp": 41600, "atk": 2712, "def": 59, "speed": 184},
+        {"id": "zetsu_381", "hp": 41600, "atk": 2712, "def": 59, "speed": 147},
+        {"id": "zetsu_381", "hp": 41600, "atk": 2712, "def": 59, "speed": 147}
+       ]
+      }
+     ],
+     "rewards": {"ryo": 12480, "ramen_body_5star": 1}
+    },
+    {
+     "stage": 2,
+     "title": "Shinjuku Showdown",
+     "map": "assets/maps/bg_050102_iwaba.png",
+     "waves": [
+      {
+       "enemies": [
+        {"id": "zetsu_381", "hp": 41600, "atk": 2712, "def": 59, "speed": 147},
+        {"id": "zetsu_382", "hp": 41600, "atk": 2712, "def": 59, "speed": 184}
+       ]
+      },
+      {
+       "enemies": [
+        {"id": "zetsu_381", "hp": 41600, "atk": 2712, "def": 59, "speed": 147},
+        {"id": "zetsu_382", "hp": 41600, "atk": 2712, "def": 59, "speed": 184}
+       ]
+      },
+      {
+       "enemies": [
+        {"id": "sukuna_9006", "hp": 124800, "atk": 3660, "def": 72, "speed": 216, "boss": true}
+       ]
+      }
+     ],
+     "boss": "sukuna_9006",
+     "rewards": {"ryo": 31200, "book_body_4": 2, "beads_body_4": 1}
+    }
+   ],
+   "SS": [
+    {
+     "stage": 1,
+     "title": "Dismantle",
+     "map": "assets/maps/bg_050101_iwaba.png",
+     "waves": [
+      {
+       "enemies": [
+        {"id": "zetsu_381", "hp": 48320, "atk": 3144, "def": 67, "speed": 147},
+        {"id": "zetsu_382", "hp": 48320, "atk": 3144, "def": 67, "speed": 184}
+       ]
+      },
+      {
+       "enemies": [
+        {"id": "zetsu_382", "hp": 48320, "atk": 3144, "def": 67, "speed": 184},
+        {"id": "zetsu_381", "hp": 48320, "atk": 3144, "def": 67, "speed": 147},
+        {"id": "zetsu_381", "hp": 48320, "atk": 3144, "def": 67, "speed": 147}
+       ]
+      }
+     ],
+     "rewards": {"ryo": 16000, "ramen_body_5star": 1}
+    },
+    {
+     "stage": 2,
+     "title": "Malevolent Shrine",
+     "map": "assets/maps/bg_050102_iwaba.png",
+     "waves": [
+      {
+       "enemies": [
+        {"id": "zetsu_381", "hp": 48320, "atk": 3144, "def": 67, "speed": 147},
+        {"id": "zetsu_382", "hp": 48320, "atk": 3144, "def": 67, "speed": 184}
+       ]
+      },
+      {
+       "enemies": [
+        {"id": "zetsu_381", "hp": 48320, "atk": 3144, "def": 67, "speed": 147},
+        {"id": "zetsu_382", "hp": 48320, "atk": 3144, "def": 67, "speed": 184}
+       ]
+      },
+      {
+       "enemies": [
+        {"id": "sukuna_9007", "hp": 144960, "atk": 4244, "def": 80, "speed": 236}
+       ]
+      },
+      {
+       "enemies": [
+        {"id": "sukuna_9006", "hp": 144960, "atk": 4244, "def": 80, "speed": 236, "boss": true}
+       ]
+      }
+     ],
+     "boss": "sukuna_9006",
+     "rewards": {
+      "ryo": 40000,
+      "limit_break_crystal": 1,
+      "characters": [
+       {"characterId": "sukuna_9006", "tierCode": "7S", "quantity": 1}
+      ],
+      "book_body_4": 2,
+      "beads_body_4": 2
+     }
+    }
+   ]
+  },
+  "rankGate": true,
+  "featureArt": "assets/characters/sukuna_9006/full_7S.webp",
+  "cast": {
+   "sukuna_9006": {"name": "Ryomen Sukuna", "portrait": "assets/characters/sukuna_9006/portrait_7S.webp"},
+   "zetsu_381": {"name": "Zetsu", "portrait": "assets/characters/zetsu_381/portrait_5S.webp"},
+   "zetsu_382": {"name": "Zetsu", "portrait": "assets/characters/zetsu_382/portrait_6S.webp"},
+   "sukuna_9007": {"name": "Ryomen Sukuna", "portrait": "assets/characters/sukuna_9007/portrait_7S.webp"}
+  }
+ },
+ {
   "id": "si_raging_fourth_tail",
   "category": "Super Impact",
   "name": "Super Impact! The Raging Fourth Tail",
   "description": "SS Rank clear unlocks Naruto Uzumaki \"Power of the Fourth Tail\" (6★), a unit that can be Blazing Awakened. Ranks unlock in order.",
-  "banner": "assets/missions/banners/cat_super_impact.webp",
+  "banner": "assets/missions/banners/si/si_raging_fourth_tail.webp",
   "feature": "naruto_281",
   "sortOrder": 0.05,
   "stamina": {"A": 30, "S": 40, "SS": 10},
@@ -8511,7 +8853,7 @@
   "category": "Super Impact",
   "name": "Super Impact! Nine-Tails Rampage",
   "description": "SS Rank clear unlocks Naruto Uzumaki \"Blind Rage\" (6★), a unit that can be Blazing Awakened. Ranks unlock in order.",
-  "banner": "assets/missions/banners/cat_super_impact.webp",
+  "banner": "assets/missions/banners/si/si_nine_tails.webp",
   "feature": "naruto_820",
   "sortOrder": 0.1,
   "stamina": {"A": 30, "S": 40, "SS": 10},
@@ -8680,7 +9022,7 @@
   "category": "Super Impact",
   "name": "Super Impact! Wrath of the Uchiha",
   "description": "SS Rank clear unlocks Itachi Uchiha \"The Promised Day\" (6★), a unit that can be Blazing Awakened. Ranks unlock in order.",
-  "banner": "assets/missions/banners/cat_super_impact.webp",
+  "banner": "assets/missions/banners/si/si_uchiha_wrath.webp",
   "feature": "itachi_2032",
   "sortOrder": 0.2,
   "stamina": {"A": 30, "S": 40, "SS": 10},
@@ -8847,7 +9189,7 @@
   "category": "Super Impact",
   "name": "Super Impact! Eight Gates Unleashed",
   "description": "SS Rank clear unlocks Rock Lee \"The Eight Gates\" (6★), a unit that can be Blazing Awakened. Ranks unlock in order.",
-  "banner": "assets/missions/banners/cat_super_impact.webp",
+  "banner": "assets/missions/banners/si/si_eight_gates.webp",
   "feature": "rock_149",
   "sortOrder": 0.2,
   "stamina": {"A": 30, "S": 40, "SS": 10},
@@ -9014,7 +9356,7 @@
   "category": "Super Impact",
   "name": "Super Impact! The Serpent's Curse",
   "description": "SS Rank clear unlocks Orochimaru \"Winds of Chaos\" (6★), a unit that can be Blazing Awakened. Ranks unlock in order.",
-  "banner": "assets/missions/banners/cat_super_impact.webp",
+  "banner": "assets/missions/banners/si/si_serpent_curse.webp",
   "feature": "orochimaru_600",
   "sortOrder": 0.3,
   "stamina": {"A": 30, "S": 40, "SS": 10},
@@ -9181,7 +9523,7 @@
   "category": "Super Impact",
   "name": "Super Impact! The Slug Princess",
   "description": "SS Rank clear unlocks Tsunade \"The Slug Ninja\" (6★), a unit that can be Blazing Awakened. Ranks unlock in order.",
-  "banner": "assets/missions/banners/cat_super_impact.webp",
+  "banner": "assets/missions/banners/si/si_slug_princess.webp",
   "feature": "tsunade_168",
   "sortOrder": 0.3,
   "stamina": {"A": 30, "S": 40, "SS": 10},
@@ -9348,7 +9690,7 @@
   "category": "Super Impact",
   "name": "Super Impact! Endless Cycle of Battle",
   "description": "SS Rank clear unlocks Madara Uchiha \"Path of Dreams\" (6★), a unit that can be Blazing Awakened. Ranks unlock in order.",
-  "banner": "assets/missions/banners/cat_super_impact.webp",
+  "banner": "assets/missions/banners/si/si_endless_cycle.webp",
   "feature": "madara_2098",
   "sortOrder": 0.4,
   "stamina": {"A": 30, "S": 40, "SS": 10},
@@ -9515,7 +9857,7 @@
   "category": "Super Impact",
   "name": "Super Impact! The Sand's Final Weapon",
   "description": "SS Rank clear unlocks Gaara \"The Sand's Final Weapon\" (6★), a unit that can be Blazing Awakened. Ranks unlock in order.",
-  "banner": "assets/missions/banners/cat_super_impact.webp",
+  "banner": "assets/missions/banners/si/si_sand_final_weapon.webp",
   "feature": "gaara_174",
   "sortOrder": 0.4,
   "stamina": {"A": 30, "S": 40, "SS": 10},
@@ -9682,7 +10024,7 @@
   "category": "Super Impact",
   "name": "Super Impact! Taboo-Breaking Frustration",
   "description": "SS Rank clear unlocks Kabuto Yakushi \"Creeping Ill-Intent\" (6★), a unit that can be Blazing Awakened. Ranks unlock in order.",
-  "banner": "assets/missions/banners/cat_super_impact.webp",
+  "banner": "assets/missions/banners/si/si_taboo_breaking.webp",
   "feature": "kabuto_2099",
   "sortOrder": 0.45,
   "stamina": {"A": 30, "S": 40, "SS": 10},
@@ -9849,7 +10191,7 @@
   "category": "Super Impact",
   "name": "Super Impact! Hollow Heart",
   "description": "SS Rank clear unlocks Obito Uchiha \"Hollow Heart\" (6★), a unit that can be Blazing Awakened. Ranks unlock in order.",
-  "banner": "assets/missions/banners/cat_super_impact.webp",
+  "banner": "assets/missions/banners/si/si_hollow_heart.webp",
   "feature": "obito_736",
   "sortOrder": 0.5,
   "stamina": {"A": 30, "S": 40, "SS": 10},
@@ -10017,7 +10359,7 @@
   "category": "Super Impact",
   "name": "Super Impact! All-Ending Thunderbolt",
   "description": "SS Rank clear unlocks Sasuke Uchiha \"All-Ending Thunderbolt\" (6★), a unit that can be Blazing Awakened. Ranks unlock in order.",
-  "banner": "assets/missions/banners/cat_super_impact.webp",
+  "banner": "assets/missions/banners/si/si_thunderbolt.webp",
   "feature": "sasuke_702",
   "sortOrder": 0.55,
   "stamina": {"A": 30, "S": 40, "SS": 10},
@@ -10185,7 +10527,7 @@
   "category": "Super Impact",
   "name": "Super Impact! One Step to Hokage",
   "description": "SS Rank clear unlocks Sasuke Uchiha \"One Step to Hokage\" (6★), a unit that can be Blazing Awakened. Ranks unlock in order.",
-  "banner": "assets/missions/banners/cat_super_impact.webp",
+  "banner": "assets/missions/banners/si/si_one_step.webp",
   "feature": "sasuke_667",
   "sortOrder": 0.6,
   "stamina": {"A": 30, "S": 40, "SS": 10},
@@ -10353,7 +10695,7 @@
   "category": "Super Impact",
   "name": "Super Impact! Boss Rush",
   "description": "SS Rank clear unlocks Orochimaru \"Endless Rebirth\" (6★), a unit that can be Blazing Awakened. Ranks unlock in order.",
-  "banner": "assets/missions/banners/cat_super_impact.webp",
+  "banner": "assets/missions/banners/si/si_001.webp",
   "feature": "orochimaru_888",
   "sortOrder": 1,
   "stamina": {"A": 30, "S": 40, "SS": 10},
@@ -10521,7 +10863,7 @@
   "category": "Super Impact",
   "name": "Super Impact! Catching up to You",
   "description": "SS Rank clear unlocks Naruto Uzumaki \"The Inheritor\" (6★), a unit that can be Blazing Awakened. Ranks unlock in order.",
-  "banner": "assets/missions/banners/cat_super_impact.webp",
+  "banner": "assets/missions/banners/si/si_002.webp",
   "feature": "naruto_665",
   "sortOrder": 2,
   "stamina": {"A": 30, "S": 40, "SS": 50},
@@ -10689,7 +11031,7 @@
   "category": "Super Impact",
   "name": "Super Impact! Destiny's Beginnings",
   "description": "SS Rank clear unlocks Indra \"Strength-Based Leadership\" (6★), a unit that can be Blazing Awakened. Ranks unlock in order.",
-  "banner": "assets/missions/banners/cat_super_impact.webp",
+  "banner": "assets/missions/banners/si/si_003.webp",
   "feature": "indra_2111",
   "sortOrder": 3,
   "stamina": {"A": 30, "S": 40, "SS": 10},
@@ -10857,7 +11199,7 @@
   "category": "Super Impact",
   "name": "Super Impact! Destruction of Self",
   "description": "SS Rank clear unlocks Naruto Uzumaki \"Blind Rage\" (6★), a unit that can be Blazing Awakened. Ranks unlock in order.",
-  "banner": "assets/missions/banners/cat_super_impact.webp",
+  "banner": "assets/missions/banners/si/si_004.webp",
   "feature": "naruto_819",
   "sortOrder": 4,
   "stamina": {"A": 30, "S": 40, "SS": 10},
@@ -11025,7 +11367,7 @@
   "category": "Super Impact",
   "name": "Super Impact! Empty Spectacle",
   "description": "SS Rank clear unlocks Obito Uchiha \"Hollow Heart\" (6★), a unit that can be Blazing Awakened. Ranks unlock in order.",
-  "banner": "assets/missions/banners/cat_super_impact.webp",
+  "banner": "assets/missions/banners/si/si_005.webp",
   "feature": "obito_736",
   "sortOrder": 5,
   "stamina": {"A": 30, "S": 40, "SS": 10},
@@ -11193,7 +11535,7 @@
   "category": "Super Impact",
   "name": "Super Impact! End of Retaliation",
   "description": "SS Rank clear unlocks Sasuke Uchiha \"All-Ending Thunderbolt\" (6★), a unit that can be Blazing Awakened. Ranks unlock in order.",
-  "banner": "assets/missions/banners/cat_super_impact.webp",
+  "banner": "assets/missions/banners/si/si_006.webp",
   "feature": "sasuke_702",
   "sortOrder": 6,
   "stamina": {"A": 30, "S": 40, "SS": 50},
@@ -11361,7 +11703,7 @@
   "category": "Super Impact",
   "name": "Super Impact! Eternal Life",
   "description": "SS Rank clear unlocks Orochimaru \"Endless Rebirth\" (6★), a unit that can be Blazing Awakened. Ranks unlock in order.",
-  "banner": "assets/missions/banners/cat_super_impact.webp",
+  "banner": "assets/missions/banners/si/si_007.webp",
   "feature": "orochimaru_888",
   "sortOrder": 7,
   "stamina": {"A": 30, "S": 40, "SS": 10},
@@ -11529,7 +11871,7 @@
   "category": "Super Impact",
   "name": "Super Impact! Farewell to the Past",
   "description": "SS Rank clear unlocks Sasuke Uchiha \"One Step to Hokage\" (6★), a unit that can be Blazing Awakened. Ranks unlock in order.",
-  "banner": "assets/missions/banners/cat_super_impact.webp",
+  "banner": "assets/missions/banners/si/si_008.webp",
   "feature": "sasuke_667",
   "sortOrder": 8,
   "stamina": {"A": 30, "S": 40, "SS": 50},
@@ -11697,7 +12039,7 @@
   "category": "Super Impact",
   "name": "Super Impact! Fate of Reincarnation",
   "description": "SS Rank clear unlocks Madara Uchiha \"Fortitude & Resolution\" (6★), a unit that can be Blazing Awakened. Ranks unlock in order.",
-  "banner": "assets/missions/banners/cat_super_impact.webp",
+  "banner": "assets/missions/banners/si/si_009.webp",
   "feature": "madara_859",
   "sortOrder": 9,
   "stamina": {"A": 30, "S": 40, "SS": 10},
@@ -11865,7 +12207,7 @@
   "category": "Super Impact",
   "name": "Super Impact! Fellow Evildoer",
   "description": "SS Rank clear unlocks Kinkaku/Ginkaku \"Cataclysm-Eaters\" (6★), a unit that can be Blazing Awakened. Ranks unlock in order.",
-  "banner": "assets/missions/banners/cat_super_impact.webp",
+  "banner": "assets/missions/banners/si/si_010.webp",
   "feature": "kinkaku_ginkaku_2082",
   "sortOrder": 10,
   "stamina": {"A": 30, "S": 40, "SS": 10},
@@ -12033,7 +12375,7 @@
   "category": "Super Impact",
   "name": "Super Impact! Giant Boss Rush",
   "description": "SS Rank clear unlocks Kisame Hoshigaki \"The Tailless Tailed Beast\" (6★), a unit that can be Blazing Awakened. Ranks unlock in order.",
-  "banner": "assets/missions/banners/cat_super_impact.webp",
+  "banner": "assets/missions/banners/si/si_011.webp",
   "feature": "kisame_719",
   "sortOrder": 11,
   "stamina": {"A": 30, "S": 40, "SS": 10},
@@ -12201,7 +12543,7 @@
   "category": "Super Impact",
   "name": "Super Impact! Inhabited Demise",
   "description": "SS Rank clear unlocks Obito Uchiha \"Inching Towards Perfection\" (6★), a unit that can be Blazing Awakened. Ranks unlock in order.",
-  "banner": "assets/missions/banners/cat_super_impact.webp",
+  "banner": "assets/missions/banners/si/si_012.webp",
   "feature": "obito_2071",
   "sortOrder": 12,
   "stamina": {"A": 30, "S": 40, "SS": 10},
@@ -12369,7 +12711,7 @@
   "category": "Super Impact",
   "name": "Super Impact! Madness Beneath the Mask",
   "description": "SS Rank clear unlocks Masked Man \"Evil Heart\" (6★), a unit that can be Blazing Awakened. Ranks unlock in order.",
-  "banner": "assets/missions/banners/cat_super_impact.webp",
+  "banner": "assets/missions/banners/si/si_013.webp",
   "feature": "masked_2102",
   "sortOrder": 13,
   "stamina": {"A": 30, "S": 40, "SS": 10},
@@ -12537,7 +12879,7 @@
   "category": "Super Impact",
   "name": "Super Impact! Master of Curls",
   "description": "SS Rank clear unlocks Killer Bee \"Let's \" (6★), a unit that can be Blazing Awakened. Ranks unlock in order.",
-  "banner": "assets/missions/banners/cat_super_impact.webp",
+  "banner": "assets/missions/banners/si/si_014.webp",
   "feature": "killer_1155",
   "sortOrder": 14,
   "stamina": {"A": 30, "S": 40, "SS": 50},
@@ -12704,7 +13046,7 @@
   "category": "Super Impact",
   "name": "Super Impact! Parting in the Rain",
   "description": "SS Rank clear unlocks Madara Uchiha \"At the Battle's End\" (6★), a unit that can be Blazing Awakened. Ranks unlock in order.",
-  "banner": "assets/missions/banners/cat_super_impact.webp",
+  "banner": "assets/missions/banners/si/si_015.webp",
   "feature": "madara_2059",
   "sortOrder": 15,
   "stamina": {"A": 30, "S": 40, "SS": 10},
@@ -12871,7 +13213,7 @@
   "category": "Super Impact",
   "name": "Super Impact! Resurrection of the Goddess",
   "description": "SS Rank clear unlocks Kaguya Otsutsuki \"Between Love and Madness\" (6★), a unit that can be Blazing Awakened. Ranks unlock in order.",
-  "banner": "assets/missions/banners/cat_super_impact.webp",
+  "banner": "assets/missions/banners/si/si_016.webp",
   "feature": "kaguya_749",
   "sortOrder": 16,
   "stamina": {"A": 30, "S": 40, "SS": 10},
@@ -13039,7 +13381,7 @@
   "category": "Super Impact",
   "name": "Super Impact! Return of the Prodigy",
   "description": "SS Rank clear unlocks Tobirama Senju \"Judicious Master\" (6★), a unit that can be Blazing Awakened. Ranks unlock in order.",
-  "banner": "assets/missions/banners/cat_super_impact.webp",
+  "banner": "assets/missions/banners/si/si_017.webp",
   "feature": "tobirama_762",
   "sortOrder": 17,
   "stamina": {"A": 30, "S": 40, "SS": 10},
@@ -13207,7 +13549,7 @@
   "category": "Super Impact",
   "name": "Super Impact! Revered Ninja",
   "description": "SS Rank clear unlocks Hashirama Senju \"Pursuit of a Dream\" (6★), a unit that can be Blazing Awakened. Ranks unlock in order.",
-  "banner": "assets/missions/banners/cat_super_impact.webp",
+  "banner": "assets/missions/banners/si/si_018.webp",
   "feature": "hashirama_2017",
   "sortOrder": 18,
   "stamina": {"A": 30, "S": 40, "SS": 10},
@@ -13375,7 +13717,7 @@
   "category": "Super Impact",
   "name": "Super Impact! Revolutionary Scheme",
   "description": "SS Rank clear unlocks Danzo Shimura \"Embodiment of Darkness\" (6★), a unit that can be Blazing Awakened. Ranks unlock in order.",
-  "banner": "assets/missions/banners/cat_super_impact.webp",
+  "banner": "assets/missions/banners/si/si_019.webp",
   "feature": "danzo_2034",
   "sortOrder": 19,
   "stamina": {"A": 30, "S": 40, "SS": 10},
@@ -13543,7 +13885,7 @@
   "category": "Super Impact",
   "name": "Super Impact! Sandstorm-Destroying Blaze!",
   "description": "SS Rank clear unlocks Deidara \"Magnum Opus\" (6★), a unit that can be Blazing Awakened. Ranks unlock in order.",
-  "banner": "assets/missions/banners/cat_super_impact.webp",
+  "banner": "assets/missions/banners/si/si_020.webp",
   "feature": "deidara_836",
   "sortOrder": 20,
   "stamina": {"A": 30, "S": 40, "SS": 10},
@@ -13711,7 +14053,7 @@
   "category": "Super Impact",
   "name": "Super Impact! Secrets of the Ninshu",
   "description": "SS Rank clear unlocks Ashura \"Devoted to Studies\" (6★), a unit that can be Blazing Awakened. Ranks unlock in order.",
-  "banner": "assets/missions/banners/cat_super_impact.webp",
+  "banner": "assets/missions/banners/si/si_021.webp",
   "feature": "ashura_789",
   "sortOrder": 21,
   "stamina": {"A": 30, "S": 40, "SS": 10},
@@ -13879,7 +14221,7 @@
   "category": "Super Impact",
   "name": "Super Impact! Six Paths Genealogy",
   "description": "SS Rank clear unlocks Hagoromo Otsutsuki \"Truth of the Divine Tree\" (6★), a unit that can be Blazing Awakened. Ranks unlock in order.",
-  "banner": "assets/missions/banners/cat_super_impact.webp",
+  "banner": "assets/missions/banners/si/si_022.webp",
   "feature": "hagoromo_2044",
   "sortOrder": 22,
   "stamina": {"A": 30, "S": 40, "SS": 10},
@@ -14047,7 +14389,7 @@
   "category": "Super Impact",
   "name": "Super Impact! The End of Salvation",
   "description": "SS Rank clear unlocks Obito Uchiha \"Wrapped in Mysteries\" (6★), a unit that can be Blazing Awakened. Ranks unlock in order.",
-  "banner": "assets/missions/banners/cat_super_impact.webp",
+  "banner": "assets/missions/banners/si/si_023.webp",
   "feature": "obito_804",
   "sortOrder": 23,
   "stamina": {"A": 30, "S": 40, "SS": 10},
@@ -14215,7 +14557,7 @@
   "category": "Super Impact",
   "name": "Super Impact! The Path to Awakening",
   "description": "SS Rank clear unlocks Kaguya Otsutsuki \"Forbidden Fruit\" (6★), a unit that can be Blazing Awakened. Ranks unlock in order.",
-  "banner": "assets/missions/banners/cat_super_impact.webp",
+  "banner": "assets/missions/banners/si/si_024.webp",
   "feature": "kaguya_2043",
   "sortOrder": 24,
   "stamina": {"A": 30, "S": 30, "SS": 40},
@@ -14382,7 +14724,7 @@
   "category": "Super Impact",
   "name": "Super Impact! Undesirable Reunion!",
   "description": "SS Rank clear unlocks Asuma Sarutobi \"Final Words\" (6★), a unit that can be Blazing Awakened. Ranks unlock in order.",
-  "banner": "assets/missions/banners/cat_super_impact.webp",
+  "banner": "assets/missions/banners/si/si_025.webp",
   "feature": "asuma_848",
   "sortOrder": 25,
   "stamina": {"A": 30, "S": 40, "SS": 10},
@@ -14550,7 +14892,7 @@
   "category": "Super Impact",
   "name": "Super Impact! Wandering Shark",
   "description": "SS Rank clear unlocks Kisame Hoshigaki \"The Tailless Tailed Beast\" (6★), a unit that can be Blazing Awakened. Ranks unlock in order.",
-  "banner": "assets/missions/banners/cat_super_impact.webp",
+  "banner": "assets/missions/banners/si/si_026.webp",
   "feature": "kisame_719",
   "sortOrder": 26,
   "stamina": {"A": 30, "S": 40, "SS": 50},
@@ -14718,7 +15060,7 @@
   "category": "Super Impact",
   "name": "Super Impact! Wings of Freedom",
   "description": "SS Rank clear unlocks Neji Hyuga \"Freedom of Choice\" (6★), a unit that can be Blazing Awakened. Ranks unlock in order.",
-  "banner": "assets/missions/banners/cat_super_impact.webp",
+  "banner": "assets/missions/banners/si/si_027.webp",
   "feature": "neji_2004",
   "sortOrder": 27,
   "stamina": {"A": 30, "S": 40, "SS": 10},
@@ -14886,7 +15228,7 @@
   "category": "Impact Missions",
   "name": "The Guiding Will of Fire",
   "description": "A much tougher mission. Defeat Iruka Umino \"Because of Trust\" and clear the top rank to recruit them.",
-  "banner": "assets/missions/banners/cat_impact.webp",
+  "banner": "assets/missions/banners/impact/m_029.webp",
   "feature": "iruka_871",
   "sortOrder": 1,
   "stamina": {"A": 30, "S": 40, "SS": 50},
@@ -15099,7 +15441,7 @@
   "category": "Impact Missions",
   "name": "A Flower of Bones, Blooming from Despair",
   "description": "A much tougher mission. Defeat Kimimaro \"The Strongest Spear\" and clear the top rank to recruit them.",
-  "banner": "assets/missions/banners/cat_impact.webp",
+  "banner": "assets/missions/banners/impact/m_030.webp",
   "feature": "kimimaro_274",
   "sortOrder": 2,
   "stamina": {"A": 30, "S": 40, "SS": 50},
@@ -15313,7 +15655,7 @@
   "category": "Impact Missions",
   "name": "The Shinobi Seeking Vindication",
   "description": "A much tougher mission. Defeat Izumo Kamizuki \"Certainly Capable\" and clear the top rank to recruit them.",
-  "banner": "assets/missions/banners/cat_impact.webp",
+  "banner": "assets/missions/banners/impact/m_031.webp",
   "feature": "izumo_844",
   "sortOrder": 3,
   "stamina": {"D": 10, "C": 10, "B": 20, "A": 30, "S": 40},
@@ -15587,7 +15929,7 @@
   "category": "Impact Missions",
   "name": "Immortal Warrior on the Battlefield",
   "description": "A much tougher mission. Defeat Kakuzu \"Powerhouse of Old\" and clear the top rank to recruit them.",
-  "banner": "assets/missions/banners/cat_impact.webp",
+  "banner": "assets/missions/banners/impact/m_032.webp",
   "feature": "kakuzu_694",
   "sortOrder": 4,
   "stamina": {"A": 30, "S": 40, "SS": 50},
@@ -15801,7 +16143,7 @@
   "category": "Impact Missions",
   "name": "Wise Warrior and Upholder of the Mightiest",
   "description": "A much tougher mission. Defeat Izuna Uchiha \"Wishing for Peace\" and clear the top rank to recruit them.",
-  "banner": "assets/missions/banners/cat_impact.webp",
+  "banner": "assets/missions/banners/impact/m_033.webp",
   "feature": "izuna_752",
   "sortOrder": 5,
   "stamina": {"D": 10, "C": 10, "B": 20, "A": 30, "S": 40},
@@ -16076,7 +16418,7 @@
   "category": "Impact Missions",
   "name": "Heartbreaking Happenings",
   "description": "A much tougher mission. Defeat Dan Kato \"Unfaltering Ambition\" and clear the top rank to recruit them.",
-  "banner": "assets/missions/banners/cat_impact.webp",
+  "banner": "assets/missions/banners/impact/m_034.webp",
   "feature": "dan_2066",
   "sortOrder": 6,
   "stamina": {"A": 30, "S": 40, "SS": 50},
@@ -16289,7 +16631,7 @@
   "category": "Impact Missions",
   "name": "Deadly Versatile Twinsword",
   "description": "A much tougher mission. Defeat Chojuro \"Successor of the Ninja Sword\" and clear the top rank to recruit them.",
-  "banner": "assets/missions/banners/cat_impact.webp",
+  "banner": "assets/missions/banners/impact/m_035.webp",
   "feature": "chojuro_367",
   "sortOrder": 7,
   "stamina": {"A": 30, "S": 40, "SS": 50},
@@ -16503,7 +16845,7 @@
   "category": "Impact Missions",
   "name": "Blood Mist’s Dark-Clad Giant",
   "description": "A much tougher mission. Defeat Fuguki Suikazan \"Darkness of the Blood Mist\" and clear the top rank to recruit them.",
-  "banner": "assets/missions/banners/cat_impact.webp",
+  "banner": "assets/missions/banners/impact/m_036.webp",
   "feature": "fuguki_597",
   "sortOrder": 8,
   "stamina": {"A": 30, "S": 40, "SS": 50},
@@ -16716,7 +17058,7 @@
   "category": "Impact Missions",
   "name": "Theater of Horrors",
   "description": "A much tougher mission. Defeat Kankuro \"Mechanical Puppeteer\" and clear the top rank to recruit them.",
-  "banner": "assets/missions/banners/cat_impact.webp",
+  "banner": "assets/missions/banners/impact/m_037.webp",
   "feature": "kankuro_189",
   "sortOrder": 9,
   "stamina": {"D": 10, "C": 10, "B": 20, "A": 30, "S": 40},
@@ -16990,7 +17332,7 @@
   "category": "Impact Missions",
   "name": "Secret Black Technique of the Dancing Red Sand",
   "description": "A much tougher mission. Defeat Kankuro \"A New Act\" and clear the top rank to recruit them.",
-  "banner": "assets/missions/banners/cat_impact.webp",
+  "banner": "assets/missions/banners/impact/m_038.webp",
   "feature": "kankuro_2056",
   "sortOrder": 10,
   "stamina": {"A": 30, "S": 40, "SS": 50},
@@ -17204,7 +17546,7 @@
   "category": "Impact Missions",
   "name": "Life-Giving Brushstrokes",
   "description": "A much tougher mission. Defeat Sai \"Ink Drawn from the Heart\" and clear the top rank to recruit them.",
-  "banner": "assets/missions/banners/cat_impact.webp",
+  "banner": "assets/missions/banners/impact/m_039.webp",
   "feature": "sai_500",
   "sortOrder": 11,
   "stamina": {"A": 30, "S": 40, "SS": 50},
@@ -17417,7 +17759,7 @@
   "category": "Impact Missions",
   "name": "The Sagely Ninja Monk",
   "description": "A much tougher mission. Defeat Chiriku \"Ultimate Training\" and clear the top rank to recruit them.",
-  "banner": "assets/missions/banners/cat_impact.webp",
+  "banner": "assets/missions/banners/impact/m_040.webp",
   "feature": "chiriku_326",
   "sortOrder": 12,
   "stamina": {"D": 10, "C": 10, "B": 20, "A": 30, "S": 40},
@@ -17692,7 +18034,7 @@
   "category": "Impact Missions",
   "name": "Living Puppet Show of Doom",
   "description": "A much tougher mission. Defeat Sasori \"Everlasting Being\" and clear the top rank to recruit them.",
-  "banner": "assets/missions/banners/cat_impact.webp",
+  "banner": "assets/missions/banners/impact/m_041.webp",
   "feature": "sasori_645",
   "sortOrder": 13,
   "stamina": {"A": 30, "S": 40, "SS": 50},
@@ -17906,7 +18248,7 @@
   "category": "Impact Missions",
   "name": "Underground Maw",
   "description": "A much tougher mission. Defeat Zetsu \"Black & White Shadow\" and clear the top rank to recruit them.",
-  "banner": "assets/missions/banners/cat_impact.webp",
+  "banner": "assets/missions/banners/impact/m_042.webp",
   "feature": "zetsu_381",
   "sortOrder": 14,
   "stamina": {"D": 10, "C": 10, "B": 20, "A": 30, "S": 40},
@@ -18179,7 +18521,7 @@
   "category": "Impact Missions",
   "name": "The Ends of Destruction",
   "description": "A much tougher mission. Defeat Jugo \"Scales of Ruin and Peace\" and clear the top rank to recruit them.",
-  "banner": "assets/missions/banners/cat_impact.webp",
+  "banner": "assets/missions/banners/impact/m_043.webp",
   "feature": "jugo_307",
   "sortOrder": 15,
   "stamina": {"A": 30, "S": 40, "SS": 50},
@@ -18393,7 +18735,7 @@
   "category": "Impact Missions",
   "name": "Will of the Fiery Powerhouse of Old",
   "description": "A much tougher mission. Defeat Hiruzen Sarutobi \"Looking into the Future\" and clear the top rank to recruit them.",
-  "banner": "assets/missions/banners/cat_impact.webp",
+  "banner": "assets/missions/banners/impact/m_044.webp",
   "feature": "hiruzen_799",
   "sortOrder": 16,
   "stamina": {"D": 10, "C": 10, "B": 20, "A": 30, "S": 40},
@@ -18668,7 +19010,7 @@
   "category": "Impact Missions",
   "name": "Reunion and Clash on the Golden Sands",
   "description": "A much tougher mission. Defeat Rasa \"Family Values\" and clear the top rank to recruit them.",
-  "banner": "assets/missions/banners/cat_impact.webp",
+  "banner": "assets/missions/banners/impact/m_045.webp",
   "feature": "rasa_443",
   "sortOrder": 17,
   "stamina": {"A": 30, "S": 40, "SS": 50},
@@ -18882,7 +19224,7 @@
   "category": "Impact Missions",
   "name": "Smoking Hammer Strike",
   "description": "A much tougher mission. Defeat Jinin Akebino \"Crushing Bluntsword\" and clear the top rank to recruit them.",
-  "banner": "assets/missions/banners/cat_impact.webp",
+  "banner": "assets/missions/banners/impact/m_046.webp",
   "feature": "jinin_582",
   "sortOrder": 18,
   "stamina": {"A": 30, "S": 40, "SS": 50},
@@ -19096,7 +19438,7 @@
   "category": "Impact Missions",
   "name": "Deadly Arts of Sublimation",
   "description": "A much tougher mission. Defeat Deidara \"True Arts\" and clear the top rank to recruit them.",
-  "banner": "assets/missions/banners/cat_impact.webp",
+  "banner": "assets/missions/banners/impact/m_047.webp",
   "feature": "deidara_351",
   "sortOrder": 19,
   "stamina": {"A": 30, "S": 40, "SS": 50},
@@ -19310,7 +19652,7 @@
   "category": "Impact Missions",
   "name": "Sharing a Common Destiny",
   "description": "A much tougher mission. Defeat Ukon/Sakon \"Brimming with Brutality\" and clear the top rank to recruit them.",
-  "banner": "assets/missions/banners/cat_impact.webp",
+  "banner": "assets/missions/banners/impact/m_048.webp",
   "feature": "ukonsakon_248",
   "sortOrder": 20,
   "stamina": {"A": 30, "S": 40, "SS": 50},
@@ -19523,7 +19865,7 @@
   "category": "Impact Missions",
   "name": "The Chakra-Devouring Warrior",
   "description": "A much tougher mission. Defeat Jirobo \"Brute Strength\" and clear the top rank to recruit them.",
-  "banner": "assets/missions/banners/cat_impact.webp",
+  "banner": "assets/missions/banners/impact/m_049.webp",
   "feature": "jirobo_227",
   "sortOrder": 21,
   "stamina": {"A": 30, "S": 40, "SS": 50},
@@ -19736,7 +20078,7 @@
   "category": "Impact Missions",
   "name": "A Massive Dancing Fan",
   "description": "A much tougher mission. Defeat Temari \"A Bold Analyzer\" and clear the top rank to recruit them.",
-  "banner": "assets/missions/banners/cat_impact.webp",
+  "banner": "assets/missions/banners/impact/m_050.webp",
   "feature": "temari_187",
   "sortOrder": 22,
   "stamina": {"A": 30, "S": 40, "SS": 50},
@@ -19949,7 +20291,7 @@
   "category": "Limited Time Event",
   "name": "Rookie Mission",
   "description": "Raid: defeat Sakura Haruno \"Dancing Cherry Blossoms\". Clearing the top rank recruits Sakura Haruno.",
-  "banner": "assets/missions/banners/cat_event.webp",
+  "banner": "assets/missions/banners/event/m_001.webp",
   "feature": "sakura_379",
   "sortOrder": 1,
   "stamina": {"C": 10, "B": 20, "A": 30},
@@ -20120,7 +20462,7 @@
   "category": "Limited Time Event",
   "name": "Road to Tenten",
   "description": "Raid: defeat Hanzo \"Steadfast Veteran\". Clearing the top rank recruits Menma Namikaze.",
-  "banner": "assets/missions/banners/cat_event.webp",
+  "banner": "assets/missions/banners/event/m_002.webp",
   "feature": "hanzo_450",
   "sortOrder": 2,
   "stamina": {"C": 10, "B": 20, "A": 30},
@@ -20292,7 +20634,7 @@
   "category": "Limited Time Event",
   "name": "Shinobi Life on the Battlefield",
   "description": "Raid: defeat Rock Lee \"Fighting Spirit Overflowing\". Clearing the top rank recruits Rock Lee.",
-  "banner": "assets/missions/banners/cat_event.webp",
+  "banner": "assets/missions/banners/event/m_003.webp",
   "feature": "rock_507",
   "sortOrder": 3,
   "stamina": {"C": 10, "B": 20, "A": 30},
@@ -20464,7 +20806,7 @@
   "category": "Limited Time Event",
   "name": "Hidden Leaf’s Secret Ultimate Taijutsu",
   "description": "Raid: defeat Kakashi Hatake \"The Best Teacher\". Clearing the top rank recruits Kakashi Hatake.",
-  "banner": "assets/missions/banners/cat_event.webp",
+  "banner": "assets/missions/banners/event/m_004.webp",
   "feature": "kakashi_008",
   "sortOrder": 4,
   "stamina": {"B": 20, "A": 30, "S": 40},
@@ -20656,7 +20998,7 @@
   "category": "Limited Time Event",
   "name": "Equanimous Shield",
   "description": "Raid: defeat Akatsuchi \"Unyielding Stone\". Clearing the top rank recruits Akatsuchi.",
-  "banner": "assets/missions/banners/cat_event.webp",
+  "banner": "assets/missions/banners/event/m_005.webp",
   "feature": "akatsuchi_2079",
   "sortOrder": 5,
   "stamina": {"C": 10, "B": 20, "A": 30},
@@ -20827,7 +21169,7 @@
   "category": "Limited Time Event",
   "name": "A Shadow Hiding in the Night",
   "description": "Raid: defeat Shikamaru Nara \"Beyond Silence\". Clearing the top rank recruits Soku.",
-  "banner": "assets/missions/banners/cat_event.webp",
+  "banner": "assets/missions/banners/event/m_006.webp",
   "feature": "shikamaru_291",
   "sortOrder": 6,
   "stamina": {"B": 20, "A": 30, "S": 40},
@@ -21020,7 +21362,7 @@
   "category": "Limited Time Event",
   "name": "You're On! Lightning Torrent!",
   "description": "Raid: defeat Fourth Raikage: Ay \"Solid Lightning\". Clearing the top rank recruits Fourth Raikage: Ay.",
-  "banner": "assets/missions/banners/cat_event.webp",
+  "banner": "assets/missions/banners/event/event_lt.webp",
   "feature": "fourth_467",
   "sortOrder": 7,
   "stamina": {"D": 5, "C": 10, "B": 20, "A": 30, "S": 40},
@@ -21295,7 +21637,7 @@
   "category": "Limited Time Event",
   "name": "Melody of the Demon Flute",
   "description": "Raid: defeat Tayuya \"A Bewitching Flute\". Clearing the top rank recruits Tayuya.",
-  "banner": "assets/missions/banners/cat_event.webp",
+  "banner": "assets/missions/banners/event/m_008.webp",
   "feature": "tayuya_257",
   "sortOrder": 8,
   "stamina": {"B": 20, "A": 30, "S": 40},
@@ -21487,7 +21829,7 @@
   "category": "Limited Time Event",
   "name": "Fearsome Threads, Drawing in Death",
   "description": "Raid: defeat Kidomaru \"A Cruel Game\". Clearing the top rank recruits Kidomaru.",
-  "banner": "assets/missions/banners/cat_event.webp",
+  "banner": "assets/missions/banners/event/m_009.webp",
   "feature": "kidomaru_233",
   "sortOrder": 9,
   "stamina": {"B": 20, "A": 30, "S": 40},
@@ -21679,7 +22021,7 @@
   "category": "Limited Time Event",
   "name": "Flight of the Resolute Butterfly",
   "description": "Raid: defeat Choji Akimichi \"Gentle Resolve\". Clearing the top rank recruits Choji Akimichi.",
-  "banner": "assets/missions/banners/cat_event.webp",
+  "banner": "assets/missions/banners/event/m_010.webp",
   "feature": "choji_2040",
   "sortOrder": 10,
   "stamina": {"C": 10, "B": 20, "A": 30},
@@ -21850,7 +22192,7 @@
   "category": "Limited Time Event",
   "name": "Crescent Moon Blade and the Dance of Leaves",
   "description": "Raid: defeat Hayate Gekko \"Composed Dexterity\". Clearing the top rank recruits Hayate Gekko.",
-  "banner": "assets/missions/banners/cat_event.webp",
+  "banner": "assets/missions/banners/event/m_011.webp",
   "feature": "hayate_779",
   "sortOrder": 11,
   "stamina": {"B": 20, "A": 30, "S": 40},
@@ -22043,7 +22385,7 @@
   "category": "Limited Time Event",
   "name": "Scorching Heroine",
   "description": "Raid: defeat Pakura \"Scorching Red\". Clearing the top rank recruits Pakura.",
-  "banner": "assets/missions/banners/cat_event.webp",
+  "banner": "assets/missions/banners/event/m_012.webp",
   "feature": "pakura_816",
   "sortOrder": 12,
   "stamina": {"B": 20, "A": 30, "S": 40},
@@ -22236,7 +22578,7 @@
   "category": "Limited Time Event",
   "name": "A Massive Dancing Fan",
   "description": "Raid: defeat Temari \"A Bold Analyzer\". Clearing the top rank recruits Temari.",
-  "banner": "assets/missions/banners/cat_event.webp",
+  "banner": "assets/missions/banners/event/m_013.webp",
   "feature": "temari_187",
   "sortOrder": 13,
   "stamina": {"B": 20, "A": 30, "S": 40},
@@ -22428,7 +22770,7 @@
   "category": "Limited Time Event",
   "name": "Mists of Deadly Poison",
   "description": "Raid: defeat Hanzo \"Hero of Purple Poison\". Clearing the top rank recruits Hanzo.",
-  "banner": "assets/missions/banners/cat_event.webp",
+  "banner": "assets/missions/banners/event/m_014.webp",
   "feature": "hanzo_342",
   "sortOrder": 14,
   "stamina": {"B": 20, "A": 30, "S": 40},
@@ -22621,7 +22963,7 @@
   "category": "Limited Time Event",
   "name": "Lurking Death Needle",
   "description": "Raid: defeat Kushimaru Kuriarare \"Needle Blade\". Clearing the top rank recruits Kushimaru Kuriarare.",
-  "banner": "assets/missions/banners/cat_event.webp",
+  "banner": "assets/missions/banners/event/m_015.webp",
   "feature": "kushimaru_546",
   "sortOrder": 15,
   "stamina": {"B": 20, "A": 30, "S": 40},
@@ -22814,7 +23156,7 @@
   "category": "Limited Time Event",
   "name": "Ruler of the Endless Sands",
   "description": "Raid: defeat Gaara \"The Strongest Shield\". Clearing the top rank recruits Gaara.",
-  "banner": "assets/missions/banners/cat_event.webp",
+  "banner": "assets/missions/banners/event/m_016.webp",
   "feature": "gaara_268",
   "sortOrder": 16,
   "stamina": {"B": 20, "A": 30, "S": 40},
@@ -23007,7 +23349,7 @@
   "category": "Limited Time Event",
   "name": "Behind the Ice Mask",
   "description": "Raid: defeat Haku \"The Icy Mask's Blades\". Clearing the top rank recruits Haku.",
-  "banner": "assets/missions/banners/cat_event.webp",
+  "banner": "assets/missions/banners/event/m_017.webp",
   "feature": "haku_137",
   "sortOrder": 17,
   "stamina": {"B": 20, "A": 30, "S": 40},
@@ -23199,7 +23541,7 @@
   "category": "Limited Time Event",
   "name": "The Power of Stone with Lava Style!",
   "description": "Raid: defeat Kurotsuchi \"The Fence-Sitter's Granddaughter\". Clearing the top rank recruits Kurotsuchi.",
-  "banner": "assets/missions/banners/cat_event.webp",
+  "banner": "assets/missions/banners/event/m_018.webp",
   "feature": "kurotsuchi_527",
   "sortOrder": 18,
   "stamina": {"A": 30, "S": 40, "SS": 50},
@@ -23412,7 +23754,7 @@
   "category": "Limited Time Event",
   "name": "Life-Draining Bloody Blade",
   "description": "Raid: defeat Juzo Biwa \"Bloody Existence\". Clearing the top rank recruits Juzo Biwa.",
-  "banner": "assets/missions/banners/cat_event.webp",
+  "banner": "assets/missions/banners/event/m_019.webp",
   "feature": "juzo_717",
   "sortOrder": 19,
   "stamina": {"A": 30, "S": 40, "SS": 50},
@@ -23626,7 +23968,7 @@
   "category": "Limited Time Event",
   "name": "Blade of the Roaring Storm",
   "description": "Raid: defeat Naruto Uzumaki \"Beyond Rasen\". Clearing the top rank recruits Naruto Uzumaki.",
-  "banner": "assets/missions/banners/cat_event.webp",
+  "banner": "assets/missions/banners/event/m_020.webp",
   "feature": "naruto_2000",
   "sortOrder": 20,
   "stamina": {"A": 30, "S": 40, "SS": 50},
@@ -23839,7 +24181,7 @@
   "category": "Limited Time Event",
   "name": "Incoming! Superalloy Envoy",
   "description": "Raid: defeat Mecha-Naruto \"Steel Heart\". Clearing the top rank recruits Mecha-Naruto.",
-  "banner": "assets/missions/banners/cat_event.webp",
+  "banner": "assets/missions/banners/event/m_021.webp",
   "feature": "mechanaruto_791",
   "sortOrder": 21,
   "stamina": {"A": 30, "S": 40, "SS": 50},
@@ -24052,7 +24394,7 @@
   "category": "Limited Time Event",
   "name": "Sign of a Silently Growing Calamity",
   "description": "Raid: defeat Fugaku Uchiha \"Prosperity and Faith\". Clearing the top rank recruits Fugaku Uchiha.",
-  "banner": "assets/missions/banners/cat_event.webp",
+  "banner": "assets/missions/banners/event/m_022.webp",
   "feature": "fugaku_2022",
   "sortOrder": 22,
   "stamina": {"A": 30, "S": 40, "SS": 50},
@@ -24265,7 +24607,7 @@
   "category": "Limited Time Event",
   "name": "The Creeping Joker",
   "description": "Raid: defeat Tobi \"Evil Eyes Behind the Mask\". Clearing the top rank recruits Tobi.",
-  "banner": "assets/missions/banners/cat_event.webp",
+  "banner": "assets/missions/banners/event/m_023.webp",
   "feature": "tobi_318",
   "sortOrder": 23,
   "stamina": {"A": 30, "S": 40, "SS": 50},
@@ -24479,7 +24821,7 @@
   "category": "Limited Time Event",
   "name": "An Unhealthy Sword Obsession",
   "description": "Raid: defeat Suigetsu Hozuki \"The Demon Lives On\". Clearing the top rank recruits Suigetsu Hozuki.",
-  "banner": "assets/missions/banners/cat_event.webp",
+  "banner": "assets/missions/banners/event/m_024.webp",
   "feature": "suigetsu_305",
   "sortOrder": 24,
   "stamina": {"A": 30, "S": 40, "SS": 50},
@@ -24692,7 +25034,7 @@
   "category": "Limited Time Event",
   "name": "Master Illusionist Supporting the Lightning",
   "description": "Raid: defeat Cee \"Earnest with Composure\". Clearing the top rank recruits Cee.",
-  "banner": "assets/missions/banners/cat_event.webp",
+  "banner": "assets/missions/banners/event/m_025.webp",
   "feature": "cee_880",
   "sortOrder": 25,
   "stamina": {"A": 30, "S": 40, "SS": 50},
@@ -24904,7 +25246,7 @@
   "category": "Limited Time Event",
   "name": "The All-Knowing Serpent",
   "description": "Raid: defeat Orochimaru \"Aspirations of Indulgence\". Clearing the top rank recruits Orochimaru.",
-  "banner": "assets/missions/banners/cat_event.webp",
+  "banner": "assets/missions/banners/event/m_026.webp",
   "feature": "orochimaru_832",
   "sortOrder": 26,
   "stamina": {"A": 30, "S": 40, "SS": 50},
@@ -25118,7 +25460,7 @@
   "category": "Limited Time Event",
   "name": "Shadow of the Vile Serpent",
   "description": "Raid: defeat Orochimaru \"The Snake Ninja\". Clearing the top rank recruits Orochimaru.",
-  "banner": "assets/missions/banners/cat_event.webp",
+  "banner": "assets/missions/banners/event/m_027.webp",
   "feature": "orochimaru_171",
   "sortOrder": 27,
   "stamina": {"A": 30, "S": 40, "SS": 50},
@@ -25331,7 +25673,7 @@
   "category": "Limited Time Event",
   "name": "Sublime Byakugan of the Mist",
   "description": "Raid: defeat Ao \"An Eye of Mist\". Clearing the top rank recruits Ao.",
-  "banner": "assets/missions/banners/cat_event.webp",
+  "banner": "assets/missions/banners/event/m_028.webp",
   "feature": "ao_766",
   "sortOrder": 28,
   "stamina": {"A": 30, "S": 40, "SS": 50},
@@ -25546,7 +25888,7 @@
   "arc": "EXP",
   "name": "Ramen Report: All Cups",
   "description": "Ichiraku is overflowing: clear waves of runaway ramen for bowls of EXP ramen of every element.",
-  "banner": "assets/missions/banners/cat_growth_exp.webp",
+  "banner": "assets/missions/banners/growth/growth_ramen.webp",
   "feature": "world_class_ramen_1188",
   "sortOrder": 1,
   "stamina": {"C": 6, "B": 12, "A": 20, "S": 50},
@@ -25785,7 +26127,7 @@
   "arc": "Ryo",
   "name": "Gama-chan's Hidden Hoard",
   "description": "A frog wallet stuffed with ryo has gone missing. Catch the Gama-chan and the whole hoard is yours.",
-  "banner": "assets/missions/banners/cat_growth_ryo.webp",
+  "banner": "assets/missions/banners/growth/growth_ryo.webp",
   "feature": "gamachan_1161",
   "sortOrder": 2,
   "stamina": {"C": 10, "B": 15, "A": 25, "S": 40},
@@ -26025,7 +26367,7 @@
   "arc": "Awakening",
   "name": "Searching for Heart Scrolls",
   "description": "Recover stolen Heart Awakening Scrolls (★1–★4) from the treasure-hoarding bandits.",
-  "banner": "assets/missions/banners/cat_growth_scrolls.webp",
+  "banner": "assets/missions/banners/growth/growth_scroll_heart.webp",
   "feature": "ultimate_1127",
   "sortOrder": 3,
   "stamina": {"C": 8, "B": 15, "A": 25, "S": 35},
@@ -26265,7 +26607,7 @@
   "arc": "Awakening",
   "name": "Searching for Skill Scrolls",
   "description": "Recover stolen Skill Awakening Scrolls (★1–★4) from the treasure-hoarding bandits.",
-  "banner": "assets/missions/banners/cat_growth_scrolls.webp",
+  "banner": "assets/missions/banners/growth/growth_scroll_skill.webp",
   "feature": "ultimate_1128",
   "sortOrder": 4,
   "stamina": {"C": 8, "B": 15, "A": 25, "S": 35},
@@ -26505,7 +26847,7 @@
   "arc": "Awakening",
   "name": "Searching for Body Scrolls",
   "description": "Recover stolen Body Awakening Scrolls (★1–★4) from the treasure-hoarding bandits.",
-  "banner": "assets/missions/banners/cat_growth_scrolls.webp",
+  "banner": "assets/missions/banners/growth/growth_scroll_body.webp",
   "feature": "ultimate_1129",
   "sortOrder": 5,
   "stamina": {"C": 8, "B": 15, "A": 25, "S": 35},
@@ -26745,7 +27087,7 @@
   "arc": "Awakening",
   "name": "Searching for Bravery Scrolls",
   "description": "Recover stolen Bravery Awakening Scrolls (★1–★4) from the treasure-hoarding bandits.",
-  "banner": "assets/missions/banners/cat_growth_scrolls.webp",
+  "banner": "assets/missions/banners/growth/growth_scroll_bravery.webp",
   "feature": "ultimate_1130",
   "sortOrder": 6,
   "stamina": {"C": 8, "B": 15, "A": 25, "S": 35},
@@ -26985,7 +27327,7 @@
   "arc": "Awakening",
   "name": "Searching for Wisdom Scrolls",
   "description": "Recover stolen Wisdom Awakening Scrolls (★1–★4) from the treasure-hoarding bandits.",
-  "banner": "assets/missions/banners/cat_growth_scrolls.webp",
+  "banner": "assets/missions/banners/growth/growth_scroll_wisdom.webp",
   "feature": "ultimate_1131",
   "sortOrder": 7,
   "stamina": {"C": 8, "B": 15, "A": 25, "S": 35},
@@ -27225,7 +27567,7 @@
   "arc": "Awakening",
   "name": "Searching for All Scrolls",
   "description": "A mixed cache of every element's Awakening Scrolls and Blazing Awakening beads. High risk, high reward.",
-  "banner": "assets/missions/banners/cat_growth_scrolls.webp",
+  "banner": "assets/missions/banners/growth/growth_scroll_all.webp",
   "feature": "ultimate_1131",
   "sortOrder": 8,
   "stamina": {"A": 30, "S": 45},

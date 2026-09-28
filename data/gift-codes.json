@@ -47,6 +47,20 @@
       }
     },
     {
+      "code": "KINGOFCURSES",
+      "description": "Developer Gift - 7-Star Ryomen Sukuna (King of Curses & Heian Era) at 7S",
+      "expiryDate": null,
+      "maxRedemptions": null,
+      "rewards": {
+        "characters": [
+          {"characterId": "sukuna_9006", "quantity": 1, "tierCode": "7S"},
+          {"characterId": "sukuna_9007", "quantity": 1, "tierCode": "7S"}
+        ],
+        "resources": [],
+        "message": "You've received Ryomen Sukuna — King of Curses and Heian Era (7S)! Check your present box to claim them."
+      }
+    },
+    {
       "code": "TKMA777",
       "description": "Special Gift - Taki & Mitsuha",
       "expiryDate": null,

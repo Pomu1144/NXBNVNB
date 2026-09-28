@@ -174,7 +174,7 @@ body.page-missions .mission-tabs .tab-btn { touch-action: pan-x; }
 
 .mission-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
   gap: 10px;
 }
 .mission-list-head {
@@ -289,23 +289,67 @@ body.page-missions .mission-tabs .tab-btn { touch-action: pan-x; }
   gap: 8px;
   pointer-events: none;
 }
-.mc-pips { display: flex; gap: 3px; margin-right: auto; }
-.mc-pip {
-  min-width: 22px;
-  height: 20px;
-  padding: 0 4px;
-  display: inline-flex; align-items: center; justify-content: center;
-  font-style: normal;
-  font-size: 11px;
-  font-weight: 800;
-  color: rgba(236, 230, 214, 0.75);
-  background: rgba(3, 10, 12, 0.8);
-  border: 1px solid rgba(201, 162, 78, 0.4);
+.mc-pips { display: flex; align-items: center; gap: 4px; margin-right: auto; }
+.mc-pip .rank-ic { --ric: 24px; }
+
+/* ---------- Rank icons (D–SSS lettering, assets/icons/pow_*.png) ----------
+   The source art is 500x500 with the letters in the middle ~half, so the img
+   is scaled up inside a box sized to the letters. --ric = letter height. */
+.rank-ic {
+  --ric: 22px;
+  position: relative;
+  display: inline-block;
+  flex: none;
+  width: calc(var(--ric) * 0.92);
+  height: var(--ric);
+  vertical-align: middle;
 }
-.mc-pip.is-clear {
-  color: #2a1a02;
-  background: linear-gradient(180deg, var(--jjk-gold-hi, #f1d98a), var(--jjk-gold, #c9a24e));
-  border-color: var(--jjk-gold-hi, #f1d98a);
+.rank-ic[data-rank="SS"] { width: calc(var(--ric) * 1.12); }
+.rank-ic[data-rank="SSS"] { width: calc(var(--ric) * 1.5); }
+.rank-ic img {
+  position: absolute;
+  left: 50%; top: 50%;
+  width: var(--ric); height: var(--ric);
+  transform: translate(-50%, -50%) scale(1.95);
+  pointer-events: none;
+  -webkit-user-select: none; user-select: none;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.85));
+}
+/* icon failed to load: plain letter */
+.rank-ic.is-text::after {
+  content: attr(data-rank);
+  display: flex; align-items: center; justify-content: center;
+  height: 100%;
+  font-family: var(--jjk-font-script);
+  font-size: calc(var(--ric) * 0.62);
+  color: var(--jjk-gold-hi, #f1d98a);
+  text-shadow: 0 1px 2px #000;
+}
+
+/* card chips: icon only; cleared = gold tick, locked = dimmed + lock */
+.mc-pip {
+  position: relative;
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 0 1px;
+  font-style: normal;
+}
+.mc-pip.is-locked .rank-ic { filter: saturate(0.3) brightness(0.62); }
+.mc-pip.is-clear::after,
+.mc-pip.is-locked::after {
+  content: "";
+  position: absolute;
+  right: -3px; bottom: -1px;
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  pointer-events: none;
+}
+.mc-pip.is-clear::after {
+  background: var(--jjk-gold-hi, #f1d98a) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2.5 6.2l2.3 2.3 4.7-5' fill='none' stroke='%232a1a02' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 100% no-repeat;
+  box-shadow: 0 0 0 1px #2a1a02, 0 0 6px rgba(241, 217, 138, 0.7);
+}
+.mc-pip.is-locked::after {
+  background: url("../assets/ui/jjk/medal_locked.webp") center / contain no-repeat;
+  filter: drop-shadow(0 1px 1px #000);
 }
 .mc-stat {
   display: inline-flex; align-items: center; gap: 4px;
@@ -335,6 +379,40 @@ body.page-missions .mission-tabs .tab-btn { touch-action: pan-x; }
   pointer-events: none;
 }
 .mission-card.mission-complete .mc-medal { display: none; }
+
+/* ---------- Banner cards: the 4:1 banner (lettering baked in) + a UI bar ---------- */
+.mission-card.mission-card--banner {
+  display: flex;
+  flex-direction: column;
+  aspect-ratio: auto;
+}
+.mission-card--banner .mc-art--banner {
+  position: relative;
+  inset: auto;
+  flex: none;
+  aspect-ratio: 4 / 1;
+}
+.mission-card--banner .mc-art--banner .mission-banner { object-position: center; }
+.mission-card--banner .mc-meta {
+  position: static;
+  flex: none;
+  min-height: 32px;
+  padding: 4px 8px;
+  background: linear-gradient(180deg, #11303a, #07151a);
+  border-top: 1px solid rgba(201, 162, 78, 0.55);
+}
+.mission-card--banner .mc-stamp { top: auto; bottom: 2px; right: auto; left: 46%; width: 50px; }
+.mission-card--banner .mc-meta .mc-lock {
+  position: static;
+  flex: 1 1 auto;
+  min-width: 0;
+  margin-right: auto;
+}
+.mission-card--banner .mc-lock img { width: 18px; }
+.mission-card--banner .mc-lock .mission-lock-note { font-size: 11.5px; }
+.mission-card.mission-locked.mission-card--banner .mc-meta { opacity: 1; }
+.mission-card.mission-locked.mission-card--banner .mc-stat { opacity: 0.55; }
+.md-hero.md-hero--banner { aspect-ratio: 4 / 1; }
 
 /* ---------- Locked ---------- */
 .mission-card.mission-locked .mc-art { filter: grayscale(0.8) brightness(0.62); }
@@ -446,23 +524,44 @@ body.page-missions .error-message {
   filter: none;
 }
 .md-rank-letter {
-  min-width: 30px; height: 28px;
+  position: relative;
+  width: 32px; height: 32px;
   display: inline-flex; align-items: center; justify-content: center;
-  font-family: var(--jjk-font-script);
-  font-size: 17px;
-  color: var(--jjk-gold-hi, #f1d98a);
-  background: rgba(3, 10, 12, 0.7);
-  border: 1px solid rgba(201, 162, 78, 0.6);
-  text-shadow: 0 1px 2px #000;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 38%, #fff8e4 0%, #eadbb4 55%, #b69656 100%);
+  border: 1px solid #5a4417;
 }
+.md-rank-letter .rank-ic { --ric: 21px; }
+.md-rank-letter .rank-ic[data-rank="SSS"] { --ric: 17px; }
 .md-rank-name { font-size: 13px; font-weight: 700; text-shadow: 0 1px 2px #000; }
-.md-rank.is-clear .md-rank-letter {
-  color: #2a1a02;
-  background: linear-gradient(180deg, var(--jjk-gold-hi, #f1d98a), var(--jjk-gold, #c9a24e));
-  text-shadow: none;
+/* selected: gold ring */
+.md-rank.active .md-rank-letter {
+  border-color: var(--jjk-gold-hi, #f1d98a);
+  box-shadow: 0 0 0 2px var(--jjk-gold-hi, #f1d98a), 0 0 12px rgba(241, 217, 138, 0.65);
 }
-.md-rank.is-locked { opacity: 0.55; }
-.md-rank.is-locked .md-rank-name::after { content: ' \1F512'; font-size: 10px; }
+/* cleared: gold tick badge */
+.md-rank.is-clear .md-rank-letter::after {
+  content: "";
+  position: absolute;
+  right: -3px; bottom: -3px;
+  width: 13px; height: 13px;
+  border-radius: 50%;
+  background: var(--jjk-gold-hi, #f1d98a) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2.5 6.2l2.3 2.3 4.7-5' fill='none' stroke='%232a1a02' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 100% no-repeat;
+  box-shadow: 0 0 0 1px #2a1a02;
+}
+/* locked: dimmed icon + lock badge */
+.md-rank.is-locked { filter: brightness(0.7); }
+.md-rank.is-locked .rank-ic { filter: saturate(0.25); opacity: 0.55; }
+.md-rank.is-locked .md-rank-letter { background: radial-gradient(circle at 50% 38%, #6b6a64, #3a3934 70%); }
+.md-rank.is-locked .md-rank-name { opacity: 0.7; }
+.md-rank.is-locked .md-rank-letter::after {
+  content: "";
+  position: absolute;
+  right: -4px; bottom: -4px;
+  width: 15px; height: 15px;
+  background: url("../assets/ui/jjk/medal_locked.webp") center / contain no-repeat;
+  filter: drop-shadow(0 1px 1px #000);
+}
 
 .md-facts { display: flex; flex-wrap: wrap; gap: 5px; }
 .md-facts .jjk-chip { font-size: 12px; }
@@ -621,22 +720,27 @@ body.page-missions .start-btn:disabled {
   .mission-tabs::-webkit-scrollbar { display: none; }
   .tab-btn { flex: none; min-width: 0; height: 30px; padding: 0 14px; font-size: 11.5px; }
   .mission-list-container { padding: 6px; }
-  .mission-list { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 6px; }
+  .mission-list { grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 6px; }
   .mission-list-head { font-size: 11px; }
   .mc-title { font-size: 17px; }
   .mc-kicker { font-size: 9.5px; }
   .mc-stat { font-size: 11px; padding: 0 6px; }
-  .mc-pip { min-width: 19px; height: 17px; font-size: 10px; }
+  .mc-pip .rank-ic { --ric: 21px; }
+  .mission-card--banner .mc-meta { min-height: 27px; padding: 3px 6px; gap: 6px; }
+  .mission-card--banner .mc-stamp { width: 40px; }
 
   .mission-modal { padding: 6px; }
   .mission-modal .md-sheet { height: 100%; width: 100%; gap: 10px; padding: 8px; grid-template-columns: minmax(0, 46%) minmax(0, 1fr); }
   .md-close { top: 2px; right: 2px; width: 34px; height: 34px; }
   .md-side { gap: 6px; }
   .md-hero { aspect-ratio: 3.2 / 1; }
+  .md-hero.md-hero--banner { aspect-ratio: 4 / 1; }
   .md-hero .mc-title { font-size: 17px; }
   .md-desc { font-size: 11.5px; line-height: 1.35; }
   .md-rank { height: 32px; padding: 0 10px 0 4px; }
-  .md-rank-letter { min-width: 24px; height: 22px; font-size: 13px; }
+  .md-rank-letter { width: 26px; height: 26px; }
+  .md-rank-letter .rank-ic { --ric: 17px; }
+  .md-rank-letter .rank-ic[data-rank="SSS"] { --ric: 14px; }
   .md-rank-name { font-size: 11.5px; }
   .md-facts .jjk-chip { font-size: 10.5px; padding: 1px 9px; }
   .md-rw-block { padding: 5px 6px; }

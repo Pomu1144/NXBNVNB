@@ -25,6 +25,29 @@
     return;
   }
 
+  // Only established players (tutorial finished or skipped) may open pages
+  // directly. Until then only the village and the page(s) of the current
+  // tutorial step open; anything else, e.g. a shared missions link, goes to
+  // the village, where the tutorial (js/tutorial.js) starts or resumes.
+  const TUTORIAL_KEY = 'blazing_tutorial_v1';
+  const page = (window.location.pathname.split('/').pop() || 'index.html').toLowerCase();
+  if (page !== 'village.html') {
+    let tut = null;
+    try { tut = JSON.parse(safeGet(TUTORIAL_KEY)); } catch (error) { tut = null; }
+    const finished = tut && (tut.status === 'done' || tut.status === 'skipped');
+    if (!finished) {
+      const allowed = tut && tut.status === 'active' && Array.isArray(tut.pages)
+        && tut.pages.some((p) => String(p).toLowerCase() === page);
+      if (!allowed) {
+        if (!tut) {
+          try { localStorage.setItem(TUTORIAL_KEY, JSON.stringify({ status: 'pending', updated: Date.now() })); } catch (error) { /* storage blocked */ }
+        }
+        window.location.replace('village.html');
+        return;
+      }
+    }
+  }
+
   // Apply stored username to the HUD when available.
   const username = safeGet(USERNAME_KEY);
   const applyUsername = () => {
