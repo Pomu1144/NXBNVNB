@@ -37,6 +37,30 @@
  },
  "pools": [
   {
+   "id": "feat_sukuna_9006",
+   "name": "King of Curses: Ryomen Sukuna",
+   "type": "featured",
+   "characters": [],
+   "featured": [
+    "sukuna_9006"
+   ],
+   "description": "Know your place, fool. Featured ★7 Ryomen Sukuna — King of Curses, with Domain Expansion: Malevolent Shrine.",
+   "image": "assets/banners/generated/banner_sukuna_9006.webp",
+   "includeStandardPool": true
+  },
+  {
+   "id": "feat_sukuna_9007",
+   "name": "Heian Era: Ryomen Sukuna",
+   "type": "featured",
+   "characters": [],
+   "featured": [
+    "sukuna_9007"
+   ],
+   "description": "The calamity of the golden age of jujutsu, in his true four-armed form. Featured ★7 Ryomen Sukuna — Heian Era.",
+   "image": "assets/banners/generated/banner_sukuna_9007.webp",
+   "includeStandardPool": true
+  },
+  {
    "id": "feat_gojo_9005",
    "name": "The Strongest: Gojo Satoru",
    "type": "featured",

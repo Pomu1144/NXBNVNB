@@ -391,6 +391,8 @@
     kaguya_9003: 'assets/sprites/kaguya_9003', // Kaguya Otsutsuki "Progenitor of All Chakra" 7★
     pain_9004: 'assets/sprites/pain_9004', // Pain "God of Amegakure" 7★
     gojo_9005: 'assets/sprites/gojo_9005', // Gojo Satoru "The Strongest" 7★
+    sukuna_9006: 'assets/sprites/sukuna_9006', // Ryomen Sukuna "King of Curses" 7★
+    sukuna_9007: 'assets/sprites/sukuna_9007', // Ryomen Sukuna "Heian Era" 7★
     // </produce:registry>
   };
 
