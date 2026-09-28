@@ -130701,6 +130701,330 @@
    "cardNumber": 9005,
    "maxLevel": 100,
    "hitCount": 12
+  },
+  "fx7": {
+   "aura": "assets/characters/gojo_9005/fx_aura.webp",
+   "glow": "assets/characters/gojo_9005/fx_glow.webp",
+   "particles": "assets/characters/gojo_9005/fx_particles.webp",
+   "color": "#8fd8ff",
+   "color2": "#8a4dff"
+  }
+ },
+ {
+  "id": "sukuna_9006",
+  "name": "Ryomen Sukuna",
+  "version": "King of Curses",
+  "element": "Body",
+  "rarity": 7,
+  "starMinCode": "7S",
+  "starMaxCode": "7S",
+  "lbEligible": false,
+  "portrait": "assets/characters/sukuna_9006/portrait_7S.webp",
+  "full": "assets/characters/sukuna_9006/full_7S.webp",
+  "ultimateAnimation": null,
+  "secretAnimation": null,
+  "artByTier": {
+   "7S": {
+    "portrait": "assets/characters/sukuna_9006/portrait_7S.webp",
+    "full": "assets/characters/sukuna_9006/full_7S.webp"
+   }
+  },
+  "statsBase": {
+   "hp": 27400,
+   "atk": 2700,
+   "speed": 199
+  },
+  "statsMax": {
+   "hp": 54800,
+   "atk": 5400,
+   "speed": 398
+  },
+  "growthCurve": {
+   "hp": 1,
+   "atk": 1,
+   "def": 1,
+   "speed": 1,
+   "chakra": 1
+  },
+  "powerRank": 18400,
+  "powerWeights": {
+   "hp": 0.3,
+   "atk": 0.4,
+   "def": 0.1,
+   "speed": 0.15,
+   "chakra": 0.05
+  },
+  "range": "Short",
+  "luck": {
+   "base": 10,
+   "max": 99
+  },
+  "cost": {
+   "base": 150,
+   "max": 60
+  },
+  "affiliation": [
+   "Cursed Spirits",
+   "King of Curses"
+  ],
+  "passiveIcons": {},
+  "skills": {
+   "fieldSkill": {
+    "name": "Field Skill",
+    "type": "Field",
+    "description": "King of Curses: boosts attack by 300-600 for all allies."
+   },
+   "buddySkill": {
+    "name": "Buddy Skill",
+    "type": "Buddy",
+    "description": "Boosts attack by 600 and critical rate by 10%."
+   },
+   "jutsu": {
+    "name": "Dismantle & Cleave",
+    "type": "Jutsu",
+    "byTier": {
+     "7S": {
+      "chakraCost": 5,
+      "chakraCostMax": 4,
+      "hits": 10,
+      "shape": "Circle",
+      "range": "Mid",
+      "position": "Center",
+      "shapeArgs": {
+       "radius": 175
+      },
+      "description": "Dismantle scatters invisible slashes and Cleave carves whatever they touch: 10x attack toward enemies in range, ignoring Substitution and Barrier.",
+      "effects": {
+       "multiplier": 10
+      }
+     }
+    }
+   },
+   "ultimate": {
+    "name": "Domain Expansion: Malevolent Shrine",
+    "type": "Ultimate",
+    "byTier": {
+     "7S": {
+      "chakraCost": 10,
+      "chakraCostMax": 9,
+      "hits": 12,
+      "shape": "Whole Map",
+      "range": "On-Screen",
+      "position": "Center",
+      "description": "Expands the domain Malevolent Shrine for 3 of your turns: 16x attack toward all enemies, ignoring Substitution and Perfect Dodge. The shrine has no barrier and never stops cutting: after each of your turns inside it, every enemy on the field is slashed for 1.5x attack that cannot be evaded. Inside the domain your attacks cannot miss and your attack rises by 20%.",
+      "effects": {
+       "multiplier": 16
+      }
+     }
+    },
+    "domain": {
+     "id": "malevolent_shrine",
+     "name": "Malevolent Shrine",
+     "kicker": "Domain Expansion",
+     "map": "assets/battle/domains/malevolent_shrine.webp",
+     "overlay": "assets/battle/domains/malevolent_shrine_overlay.webp",
+     "placeholder": "shrine",
+     "color": "#ff3b30",
+     "color2": "#ffb199",
+     "turns": 3,
+     "stun": null,
+     "tick": {
+      "atkPct": 150,
+      "hits": 4
+     },
+     "casterAtkPct": 20,
+     "sureHit": true,
+     "endOnCasterKO": true
+    }
+   }
+  },
+  "abilities": [
+   {
+    "name": "Ignore Substitution",
+    "description": "Dismantle: invisible slashes find every target. Ignores Substitution and does damage."
+   },
+   {
+    "name": "Nullifies damage reduction effects (Reduce Damage)",
+    "description": "Cleave: the cut adjusts itself to the target's toughness, ignoring damage reduction effects (Reduce Damage)."
+   },
+   {
+    "name": "Self-Healing",
+    "description": "Reverse Cursed Technique: restores health at the start of every turn."
+   },
+   {
+    "name": "Nullifies Jutsu Sealing",
+    "description": "Nullifies jutsu sealing (not Field Effects & F Skills)."
+   },
+   {
+    "name": "Attack Boost",
+    "description": "King of Curses: boosts attack by 600."
+   },
+   {
+    "name": "Damage Boost Against Skill",
+    "description": "Shinjuku showdown: deals more damage to Skill enemies."
+   }
+  ],
+  "metadata": {
+   "cardNumber": 9006,
+   "maxLevel": 100,
+   "hitCount": 12
+  },
+  "fx7": {
+   "aura": "assets/characters/sukuna_9006/fx_aura.webp",
+   "glow": "assets/characters/sukuna_9006/fx_glow.webp",
+   "particles": "assets/characters/sukuna_9006/fx_particles.webp",
+   "color": "#ff3b4a",
+   "color2": "#a0101e"
+  }
+ },
+ {
+  "id": "sukuna_9007",
+  "name": "Ryomen Sukuna",
+  "version": "Heian Era",
+  "element": "Bravery",
+  "rarity": 7,
+  "starMinCode": "7S",
+  "starMaxCode": "7S",
+  "lbEligible": false,
+  "portrait": "assets/characters/sukuna_9007/portrait_7S.webp",
+  "full": "assets/characters/sukuna_9007/full_7S.webp",
+  "ultimateAnimation": null,
+  "secretAnimation": null,
+  "artByTier": {
+   "7S": {
+    "portrait": "assets/characters/sukuna_9007/portrait_7S.webp",
+    "full": "assets/characters/sukuna_9007/full_7S.webp"
+   }
+  },
+  "statsBase": {
+   "hp": 28800,
+   "atk": 2780,
+   "speed": 186
+  },
+  "statsMax": {
+   "hp": 57600,
+   "atk": 5560,
+   "speed": 372
+  },
+  "growthCurve": {
+   "hp": 1,
+   "atk": 1,
+   "def": 1,
+   "speed": 1,
+   "chakra": 1
+  },
+  "powerRank": 18600,
+  "powerWeights": {
+   "hp": 0.3,
+   "atk": 0.4,
+   "def": 0.1,
+   "speed": 0.15,
+   "chakra": 0.05
+  },
+  "range": "Long",
+  "luck": {
+   "base": 10,
+   "max": 99
+  },
+  "cost": {
+   "base": 150,
+   "max": 60
+  },
+  "affiliation": [
+   "Cursed Spirits",
+   "King of Curses",
+   "Heian Era"
+  ],
+  "passiveIcons": {},
+  "skills": {
+   "fieldSkill": {
+    "name": "Field Skill",
+    "type": "Field",
+    "description": "Golden age of jujutsu: boosts critical rate by 10-15% for all allies."
+   },
+   "buddySkill": {
+    "name": "Buddy Skill",
+    "type": "Buddy",
+    "description": "Boosts attack by 500 and reduces damage taken by 10%."
+   },
+   "jutsu": {
+    "name": "Divine Flame: Open",
+    "type": "Jutsu",
+    "byTier": {
+     "7S": {
+      "chakraCost": 5,
+      "chakraCostMax": 4,
+      "hits": 8,
+      "shape": "Line",
+      "range": "Long",
+      "position": "Center",
+      "shapeArgs": {
+       "length": 760,
+       "width": 100
+      },
+      "description": "Draws a bow of flame and looses Divine Flame: Open, an arrow that bursts through a long line: 11x attack toward enemies in range, ignoring Substitution, with a 50% chance of slip damage for 2 turn(s).",
+      "effects": {
+       "multiplier": 11
+      }
+     }
+    }
+   },
+   "ultimate": {
+    "name": "World-Cutting Slash",
+    "type": "Ultimate",
+    "byTier": {
+     "7S": {
+      "chakraCost": 10,
+      "chakraCostMax": 9,
+      "hits": 12,
+      "shape": "Whole Map",
+      "range": "On-Screen",
+      "position": "Center",
+      "description": "The Dismantle that cuts the world itself: 22x attack toward all enemies, ignoring 100% of enemy defense and ignoring Substitution and Perfect Dodge.",
+      "effects": {
+       "multiplier": 22
+      }
+     }
+    }
+   }
+  },
+  "abilities": [
+   {
+    "name": "Ignore Perfect Dodge",
+    "description": "World-Cutting: a slash through space itself cannot be dodged. Ignores Perfect Dodge."
+   },
+   {
+    "name": "Ignore Barrier",
+    "description": "Dismantle cuts through any barrier. Ignores Barrier and does damage."
+   },
+   {
+    "name": "Reduce Damage",
+    "description": "True form: four arms and a second face guard every angle. Reduces damage taken by 30%."
+   },
+   {
+    "name": "Self-Healing",
+    "description": "Reverse Cursed Technique: restores health at the start of every turn."
+   },
+   {
+    "name": "Critical Rate Boost",
+    "description": "Boosts critical rate by 15%."
+   },
+   {
+    "name": "Attack Boost",
+    "description": "King of Curses in his prime: boosts attack by 800."
+   }
+  ],
+  "metadata": {
+   "cardNumber": 9007,
+   "maxLevel": 100,
+   "hitCount": 12
+  },
+  "fx7": {
+   "aura": "assets/characters/sukuna_9007/fx_aura.webp",
+   "glow": "assets/characters/sukuna_9007/fx_glow.webp",
+   "particles": "assets/characters/sukuna_9007/fx_particles.webp",
+   "color": "#ffa23b",
+   "color2": "#ff4a1a"
   }
  },
  {

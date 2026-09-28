@@ -610,8 +610,6 @@
       r.host.style.top = `${(g.oy + g.FH - c.t).toFixed(1)}px`;
       r.host.style.bottom = "auto";
       if (r.sprite && prevFH && Math.abs(prevFH - g.FH) > 0.5) {
-        r.sprite.destroy();
-        r.sprite = null;
         this.sheet("idle").then(m => this.attachArt(unit, m));
       }
       this.placeShadow(unit);
@@ -741,14 +739,26 @@
         this.idleMeta = idle;
         this.place(unit);
       }
-      if (r.sprite) { r.sprite.destroy(); r.sprite = null; }
+      // re-framed (resize / rotation): the old sprite stays up, out of the
+      // flex flow, until the new size has a frame on screen
+      const olds = (r.fading || []).concat(r.sprite ? [r.sprite] : []);
+      r.fading = olds;
+      if (r.sprite) {
+        r.sprite.stop();
+        Object.assign(r.sprite.el.style, { position: "absolute", left: `${-parseFloat(r.sprite.el.style.width) / 2 || 0}px`, bottom: "0" });
+      }
       const hs = Number(idle.heightScale) > 0 ? Number(idle.heightScale) : 1;
-      const sp = window.SpritePlayer.create(r.host, this.def.sprite, { height: r.g.FH / hs }); // art faces left: no flip
+      // canvas mode: sheet switches never blank (each sheet is decoded before it is shown)
+      const sp = window.SpritePlayer.create(r.host, this.def.sprite, { height: r.g.FH / hs, canvas: true }); // art faces left: no flip
       r.sprite = sp;
+      if (olds.length) sp.firstDraw.then(() => { olds.forEach(o => o.destroy()); if (r.fading === olds) r.fading = []; });
       sp.play("idle").catch(() => {});
       sp.meta("idle").then(() => {
+        if (r.sprite !== sp) return;
         r.art = true;
-        r.el.classList.add("has-art");
+        // the silhouette fades out once a real frame is on screen
+        sp.firstDraw.then(() => { if (r.sprite === sp) r.el.classList.add("has-art"); });
+        this.warm(unit, "hit");
         // Turn-bar icon: the boss's thumb.webp once it exists
         const thumb = new Image();
         thumb.onload = () => {
@@ -779,11 +789,8 @@
           onFrame,
         });
         if (onHit && !fired) onHit(0, 1);
-        if (hold && r.sprite.current === name) {
-          // keep the final frame (e.g. the collapsed boss) on screen
-          const w = parseFloat(r.sprite.el.style.width), h = parseFloat(r.sprite.el.style.height), last = meta.frames - 1;
-          r.sprite.el.style.backgroundPosition = `${-(last % meta.columns) * w}px ${-Math.floor(last / meta.columns) * h}px`;
-        }
+        // keep the final frame (e.g. the collapsed boss) on screen
+        if (hold && r.sprite.current === name) r.sprite.showFrame(meta.frames - 1);
         return;
       }
       const dur = this.ms(fallbackMs / speed);
@@ -794,6 +801,17 @@
       if (onHit) setTimeout(() => onHit(0, 1), dur * 0.45);
       await new Promise(res => setTimeout(res, dur));
       if (!/ko$/.test(name)) r.el.classList.remove(`ph-${name}`);
+    },
+
+    /**
+     * Decode a boss sheet ahead of its play (the sprite keeps ~3 decoded
+     * sheets, js/sprite-player.js canvas mode), so the switch is immediate.
+     */
+    warm(unit, name) {
+      const r = rt.get(unit);
+      if (!r?.sprite?.warm || !this.sheetList().includes(name)) return Promise.resolve();
+      const sp = r.sprite;
+      return this.sheet(name).then(m => (m && r.sprite === sp ? sp.warm(name) : null));
     },
 
     /**
@@ -885,7 +903,10 @@
       const phases = this.defOf(unit).phases || [];
       let idx = st.phase || 0;
       phases.forEach((ph, i) => { if (i > idx && hp / max <= (ph.hp ?? 1)) idx = i; });
-      if (idx > (st.phase || 0) && (st.phasePending == null || idx > st.phasePending)) st.phasePending = idx;
+      if (idx > (st.phase || 0) && (st.phasePending == null || idx > st.phasePending)) {
+        st.phasePending = idx;
+        this.warm(unit, "roar");
+      }
     },
 
     /** Flinch when hit (called by battle-hit-react.js instead of the portrait knockback). */
@@ -933,11 +954,13 @@
         if (st.pending === p) st.pending = null;
         if (this.over(core)) return;
       }
+      this.warm(unit, "telegraph"); // decodes during the lean shift
       this.updateDanger(unit);
       await this.shiftLean(unit);
       if (this.over(core)) return;
       await this.telegraph(unit, core);
       this.updateDanger(unit);
+      this.warm(unit, "hit"); // the players' turns come next
     },
 
     /* ----- looming: no walking, only breathing sway (CSS) + lean shifts ----- */
@@ -1219,6 +1242,7 @@
       const zone = atk.kind === "map" ? [{ type: "all" }] : this.resolveZone(unit, atk.shape);
       const p = { id, zone, turns: atk.telegraphTurns ?? 1, armed: false };
       st.pending = p;
+      this.warm(unit, atk.sheet || (atk.kind === "map" ? "attack_map" : "attack_area")); // the attack is known now
 
       Sfx.rumble(1.4, 0.4);
       this.drawZone(p);
@@ -1243,6 +1267,7 @@
       const atk = def.attacks?.[p.id];
       if (!atk) { this.drawZone(null); return; }
       const isMap = atk.kind === "map";
+      this.warm(unit, atk.sheet || (isMap ? "attack_map" : "attack_area")); // usually still warm from the telegraph
       const ph = (def.phases || [])[unit.bossState.phase || 0] || {};
       const mult = (Number(atk.mult) || 2) * (Number(ph.damageMult) || 1);
 
@@ -1416,6 +1441,7 @@
       Sfx.rumble(2.2, 0.5);
       await Promise.all([this.wait(2300), Promise.race([this.ready, new Promise(res => setTimeout(res, 6000))])]);
       await this.probeArt(unit);
+      await Promise.race([this.warm(unit, "roar"), this.wait(1500)]); // the reveal roars at once
       cut.classList.add("out");
       setTimeout(() => cut.remove(), 400);
 

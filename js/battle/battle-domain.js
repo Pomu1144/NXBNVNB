@@ -20,6 +20,14 @@
    *     "stun": { "status": "immobilize", "turns": 1, "chance": 1, "bossChance": 0.5 },
    *     "casterAtkPct": 15,                 caster's attack +N% while it holds
    *     "sureHit": true,                    caster's attacks can't be evaded
+   *     "tick": { "atkPct": 150, "hits": 4 },   optional: after each of the
+   *                                         caster's turns (not the cast turn)
+   *                                         the domain strikes every opponent
+   *                                         on the field for atkPct% of the
+   *                                         caster's attack (normal damage
+   *                                         roll, split into `hits` numbers,
+   *                                         always sure-hit), e.g. Malevolent
+   *                                         Shrine's endless slashes
    *     "endOnCasterKO": true,              collapses when the caster falls
    *     "music": null                       optional AudioManager track while it holds
    *   }
@@ -32,7 +40,8 @@
    * caster's own turns (the cast turn itself doesn't count), or early when
    * the caster is KO'd / leaves the field; the map then shrinks back into the
    * caster. A second cast refreshes the timer; another unit's domain replaces
-   * the current one.
+   * the current one with a short "Domain Clash" flash (the old domain stays
+   * up under the clash and title cards, then the new one spreads over it).
    *
    * State lives on the caster (unit.domainState = { id, kind, turnsLeft,
    * fresh }), so js/battle/battle-save.js snapshots it with the unit and a
@@ -51,11 +60,14 @@
     stun: null,
     casterAtkPct: 0,
     sureHit: false,
+    tick: null,
     endOnCasterKO: true,
     music: null
   };
   // Title card hold, black beat and sphere reveal (ms)
-  const T_TITLE = 1500, T_BLACK = 380, T_REVEAL = 950, T_COLLAPSE = 750;
+  const T_TITLE = 1500, T_BLACK = 380, T_REVEAL = 950, T_COLLAPSE = 750, T_CLASH = 1150;
+  // Per-turn strike: gap between its hits (ms)
+  const T_TICK_HIT = 140;
 
   const reducedMotion = () => {
     try { return window.matchMedia("(prefers-reduced-motion: reduce)").matches; } catch { return false; }
@@ -78,7 +90,10 @@
     defOf(skill) {
       const d = skill?.data?.domain || skill?.meta?.domain;
       if (!d || typeof d !== "object") return null;
-      return { ...DEFAULTS, ...d, stun: d.stun === undefined ? DEFAULTS.stun : d.stun };
+      const tick = d.tick && typeof d.tick === "object" && Number(d.tick.atkPct) > 0
+        ? { atkPct: Number(d.tick.atkPct), hits: Math.max(1, Math.min(8, Number(d.tick.hits) || 1)) }
+        : null;
+      return { ...DEFAULTS, ...d, stun: d.stun === undefined ? DEFAULTS.stun : d.stun, tick };
     },
 
     defFor(unit, kind) {
@@ -191,6 +206,7 @@
       const perks = [];
       if (this.def.sureHit) perks.push("sure-hit");
       if (this.def.casterAtkPct) perks.push(`ATK +${this.def.casterAtkPct}%`);
+      if (this.def.tick) perks.push("strikes every foe each turn");
       d.badge.title = `${this.def.kicker}: ${this.def.name} — ${c.name}${perks.length ? ` (${perks.join(", ")})` : ""}, ${st.turnsLeft} turn(s) left`;
       d.badge.setAttribute("aria-label", d.badge.title);
     },
@@ -214,7 +230,17 @@
 
     async _expand(caster, kind, def, core) {
       const refresh = this.isActive() && this.caster === caster && this.caster.domainState.id === def.id;
-      if (this.isActive() && !refresh) this.end("replaced", { quiet: true, instant: true });
+      // Another caster's domain is up: Domain Clash. The old one gives way
+      // (its timer is gone now) but stays on screen until the black beat.
+      let clash = null;
+      if (this.isActive() && !refresh && this.caster !== caster && this.dom?.layer.isConnected) {
+        clash = { def: this.def, caster: this.caster };
+        delete this.caster.domainState;
+        this.caster = null;
+        this.dom.badge.classList.remove("is-on");
+        if (clash.def?.music) this.stopMusic();
+        log(`Domain Clash: ${def.name} (${caster.name}) overwhelms ${clash.def?.name} (${clash.caster?.name})`);
+      } else if (this.isActive() && !refresh) this.end("replaced", { quiet: true, instant: true });
       if (!this.ensureDom(core)) return false;
 
       // Timer: the cast turn doesn't count when cast on the caster's own turn
@@ -229,25 +255,29 @@
       caster._actionBusy = true; // turn watchdogs wait for the sequence
       log(`${caster.name}: ${def.kicker} — ${def.name}${refresh ? " (refreshed)" : ""}, ${caster.domainState.turnsLeft} turn(s)`);
 
-      const painted = this.paint(def);
+      // In a clash the new art goes in under the black beat
+      const painted = clash ? null : this.paint(def);
       this.setOrigin(this.originOf(caster, core));
       try {
-        await this.playSequence(def, core, { refresh, painted });
+        await this.playSequence(def, core, { refresh, painted, clash });
       } finally {
         caster._actionBusy = wasBusy || false;
       }
       if (!caster.domainState) return false; // ended meanwhile (battle over)
       this.applyStun(caster, def, core);
       this.renderBadge();
-      window.BattleNarrator?.narrate?.(`${def.name} holds for ${caster.domainState.turnsLeft} of ${caster.name}'s turns.`, core);
+      window.BattleNarrator?.narrate?.(clash
+        ? `Domain Clash! ${def.name} overwhelms ${clash.def?.name || "the domain"} and holds for ${caster.domainState.turnsLeft} of ${caster.name}'s turns.`
+        : `${def.name} holds for ${caster.domainState.turnsLeft} of ${caster.name}'s turns.`, core);
       return true;
     },
 
     /**
-     * Title card → black → sphere reveal (refresh: title + pulse only).
-     * Tap skips to the end state. Reduced motion: fades only.
+     * [Domain Clash flash →] title card → black → sphere reveal (refresh:
+     * title + pulse only). Tap skips to the end state. Reduced motion:
+     * fades only.
      */
-    async playSequence(def, core, { refresh, painted }) {
+    async playSequence(def, core, { refresh, painted, clash }) {
       const d = this.dom, scene = d.scene;
       const rm = reducedMotion();
       const quick = document.hidden;
@@ -272,9 +302,30 @@
         ["mousedown", "touchstart", "click", "mouseup", "touchend", "pointerup"]
           .forEach(t => el.addEventListener(t, e => e.stopPropagation(), { passive: t.startsWith("touch") }));
       });
-      const cleanup = () => { veil.remove(); card.remove(); if (this._seq === seq) this._seq = null; };
+      let clashEl = null;
+      const cleanup = () => { veil.remove(); card.remove(); clashEl?.remove(); if (this._seq === seq) this._seq = null; };
 
       if (quick) { this.showInstant(core); cleanup(); return; }
+
+      // 0. Domain Clash: both names collide over the old domain, white flash
+      if (clash && titles) {
+        clashEl = document.createElement("div");
+        clashEl.className = `domain-clash${rm ? " is-rm" : ""}`;
+        clashEl.style.setProperty("--dom-c1", def.color);
+        clashEl.style.setProperty("--dom-old", clash.def?.color || "#9fe0ff");
+        clashEl.innerHTML = `<div class="dc-side dc-old"><span></span></div><div class="dc-side dc-new"><span></span></div><div class="dc-flash"></div><div class="dc-title">Domain Clash</div>`;
+        clashEl.querySelector(".dc-old span").textContent = clash.def?.name || "";
+        clashEl.querySelector(".dc-new span").textContent = def.name || "";
+        clashEl.addEventListener("pointerdown", skip);
+        ["mousedown", "touchstart", "click", "mouseup", "touchend", "pointerup"]
+          .forEach(t => clashEl.addEventListener(t, e => e.stopPropagation(), { passive: t.startsWith("touch") }));
+        scene.appendChild(clashEl);
+        await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
+        clashEl.classList.add("is-in");
+        this.duckMusic(rm ? 0.5 : 0.18);
+        await hold(rm ? 700 : T_CLASH);
+        clashEl.classList.add("is-out");
+      }
 
       // 1. Title card over a darkening veil
       scene.appendChild(veil);
@@ -300,6 +351,15 @@
       // 2. Black beat (map swapped under it)
       veil.classList.add("is-black");
       card.classList.remove("is-in"); card.classList.add("is-out");
+      if (!painted) {
+        // Clash: the old domain vanishes in the dark, the new art goes in
+        await wait(rm ? 60 : 220);
+        d.layer.classList.add("is-instant");
+        d.layer.classList.remove("is-on", "is-pulse", "is-collapsing");
+        scene.classList.remove("domain-on");
+        void d.layer.offsetWidth;
+        painted = this.paint(def);
+      }
       await Promise.race([painted, wait(250)]);
       await hold(rm ? 150 : T_BLACK);
       this.startMusic(def);
@@ -370,10 +430,94 @@
       if (this.checkCaster(core)) return;
       if (unit !== c) return;
       if (st.fresh) { st.fresh = false; return; }
+      if (this.def?.tick) {
+        try { this.strike(core, c, this.def); } catch (e) { console.error("[Domain] strike failed", e); }
+      }
       st.turnsLeft -= 1;
       log(`${this.def?.name}: ${st.turnsLeft} turn(s) left`);
       if (st.turnsLeft <= 0) this.end("expired");
       else this.renderBadge();
+    },
+
+    /**
+     * The domain's per-turn strike (def.tick): every opponent on the field
+     * takes atkPct% of the caster's attack (normal damage roll, never
+     * evaded), shown as slash flashes + `hits` damage numbers. HP drops at
+     * once (the next turn and a save see it); KOs show after the numbers.
+     */
+    strike(core, caster, def) {
+      core = core || window.BattleManager;
+      const C = window.BattleCombat, t = def?.tick;
+      if (!C?.calculateDamage || !t || !alive(caster)) return 0;
+      const foes = C.getOpponents?.(caster, core) || [];
+      if (!foes.length) return 0;
+      const hits = t.hits;
+      const plans = [];
+      let total = 0;
+      this._striking = true; // sure-hit (checkEvade hook)
+      try {
+        foes.forEach(f => {
+          const ctx = { ...(window.BattleBuffs?.attackCtx?.(caster, null, "domain") || {}), kind: "domain", ignoreSubstitution: true, ignorePerfectDodge: true };
+          const r = C.calculateDamage(caster, f, t.atkPct / 100, ctx);
+          const dmg = Math.max(0, Math.floor(r?.damage || 0));
+          if (dmg <= 0 || r?.dodged) return;
+          f.stats.hp = Math.max(0, f.stats.hp - dmg);
+          if (f.stats.hp <= 0) f.diedAtTurn = core?.turns?.globalTurn ?? 0;
+          total += dmg;
+          plans.push({ unit: f, slices: C.splitDamage ? C.splitDamage(dmg, hits) : [dmg], crit: !!r.isCritical });
+        });
+      } finally {
+        this._striking = false;
+      }
+      log(`${def.name} strikes ${plans.length} opponent(s) for ${total} (${t.atkPct}% ATK, ${hits} hit(s))`);
+      if (!plans.length) return 0;
+      window.BattleNarrator?.narrate?.(`${def.name} slashes every foe in range!`, core);
+
+      // The domain flares, slashes land on each target with its numbers
+      const d = this.dom, rm = reducedMotion(), hidden = document.hidden;
+      if (d && !rm && !hidden) {
+        d.layer.classList.remove("is-strike"); void d.layer.offsetWidth; d.layer.classList.add("is-strike");
+        setTimeout(() => d.layer.classList.remove("is-strike"), 700);
+      }
+      const A = window.BattleAnimations;
+      const refresh = u => { if (core?.units) core.units.updateUnitDisplay(u, core); else core?.updateUnitDisplay?.(u); };
+      plans.forEach(p => {
+        if (hidden) { refresh(p.unit); return; }
+        const sel = `.battle-unit[data-unit-id="${p.unit.id}"]`;
+        const el = core?.dom?.scene?.querySelector(`${sel} .unit-sprite`) || core?.dom?.scene?.querySelector(sel);
+        p.slices.forEach((amt, k) => setTimeout(() => {
+          if (el && !rm) this.slashAt(el, def, k);
+          if (A?.showComboHit && core?.dom) A.showComboHit(p.unit, amt, p.crit && k === 0, core.dom, k, hits);
+          else window.StatusEffectUI?.number?.(p.unit, amt, "region");
+        }, k * T_TICK_HIT));
+        // HP bar / KO once the numbers are out
+        setTimeout(() => refresh(p.unit), hits * T_TICK_HIT + 120);
+      });
+      core?.updateTeamHP?.();
+      if (plans.some(p => p.unit.stats.hp <= 0)) {
+        setTimeout(() => core?.checkBattleEnd?.(), hidden ? 0 : hits * T_TICK_HIT + 200);
+      }
+      return total;
+    },
+
+    /** One slash flash across a unit's body (domain strike). */
+    slashAt(el, def, k) {
+      const scene = this.dom?.scene;
+      if (!scene || !el?.isConnected) return;
+      const s = scene.getBoundingClientRect(), r = el.getBoundingClientRect();
+      if (!r.width || !r.height) return;
+      const fx = document.createElement("div");
+      fx.className = "domain-slash";
+      const len = Math.max(60, Math.min(460, Math.hypot(r.width, r.height) * 1.15));
+      const ang = (k % 2 ? 1 : -1) * (18 + Math.random() * 40) + (Math.random() < 0.25 ? 90 : 0);
+      fx.style.setProperty("--dom-c1", def.color);
+      fx.style.left = `${r.left - s.left + r.width * (0.3 + Math.random() * 0.4)}px`;
+      fx.style.top = `${r.top - s.top + r.height * (0.3 + Math.random() * 0.4)}px`;
+      fx.style.width = `${len}px`;
+      fx.style.height = `${Math.max(3, Math.min(7, len / 80)).toFixed(1)}px`; // thicker across a giant
+      fx.style.setProperty("--dom-rot", `${ang.toFixed(1)}deg`);
+      scene.appendChild(fx);
+      setTimeout(() => fx.remove(), 520);
     },
 
     /** Ends the domain if its caster is down or off the field. Returns true if it ended. */
@@ -505,6 +649,7 @@
         return out;
       });
       wrap(B, "checkEvade", orig => function (attacker, defender) {
+        if (self._striking) return null; // the domain's own strike always lands
         if (attacker && attacker === self.caster && attacker.domainState && self.def?.sureHit && defender && defender !== attacker) {
           return null;
         }

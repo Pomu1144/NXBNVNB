@@ -133,6 +133,8 @@
     {"id": "kaguya_9003", "tier": "7S", "label": "Kaguya (Progenitor of All Chakra)", "note": "Kaguya Ōtsutsuki \"Progenitor of All Chakra\" 7★ (kaguya_9003) — Ash Bones / Dimension Rift."},
     {"id": "pain_9004", "tier": "7S", "label": "Pain (God of Amegakure)", "note": "Pain Tendō \"God of Amegakure\" 7★ (pain_9004) — Shinra Tensei / Chibaku Tensei."},
     {"id": "gojo_9005", "tier": "7S", "label": "Gojo (The Strongest)", "note": "Gojo Satoru \"The Strongest\" 7★ (gojo_9005) — Hollow Technique: Purple / Domain Expansion: Unlimited Void."},
+    {"id": "sukuna_9006", "tier": "7S", "label": "Sukuna (King of Curses)", "note": "Ryomen Sukuna \"King of Curses\" 7★ (sukuna_9006) — Dismantle & Cleave / Domain Expansion: Malevolent Shrine."},
+    {"id": "sukuna_9007", "tier": "7S", "label": "Sukuna (Heian Era)", "note": "Ryomen Sukuna \"Heian Era\" 7★ (sukuna_9007) — Divine Flame: Open / World-Cutting Slash."},
     // </produce:units>
   ];
 

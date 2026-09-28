@@ -4,7 +4,8 @@
    under the boss tint / ground layers and the units; a title card and a
    black beat come first; a badge counts the caster's turns left.
    Colours come from the domain block (--dom-c1 glow, --dom-c2 accent).
-   The "void" placeholder is a CSS starfield used until the map art exists.
+   The "void" / "shrine" placeholders are CSS maps used until the map art exists;
+   a domain with a per-turn strike flares and draws slashes over its targets.
    =================================================== */
 
 /* ---------- Map layer (under .boss-arena-tint z3 / .boss-ground z4 / grid z5) ---------- */
@@ -133,6 +134,77 @@
 @keyframes domOverlay {
   from { transform: scale(1.02) translate3d(-1%, 0.5%, 0); opacity: 0.75; }
   to { transform: scale(1.08) translate3d(1%, -0.5%, 0); opacity: 1; }
+}
+
+/* ---------- Placeholder: Malevolent Shrine (dark crimson, slash-scored ground) ---------- */
+.domain-map.dom-ph-shrine {
+  background:
+    radial-gradient(ellipse 30% 26% at 50% 40%, rgba(255, 70, 50, 0.28), transparent 70%),
+    radial-gradient(ellipse 90% 40% at 50% 100%, rgba(120, 0, 8, 0.75), transparent 75%),
+    repeating-linear-gradient(0deg, rgba(0, 0, 0, 0) 0 22px, rgba(0, 0, 0, 0.22) 23px 24px),
+    radial-gradient(ellipse 120% 95% at 50% 45%, #4a060c 0%, #26030a 45%, #0a0103 85%);
+}
+/* the shrine's silhouette: a dark gabled mass behind the field */
+.domain-map.dom-ph-shrine::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 10%;
+  width: min(46%, 520px);
+  height: 42%;
+  transform: translateX(-50%);
+  background:
+    linear-gradient(180deg, transparent 0 38%, rgba(8, 0, 2, 0.92) 38% 100%),
+    conic-gradient(from 180deg at 50% 0%, transparent 0 58deg, rgba(8, 0, 2, 0.92) 58deg 302deg, transparent 302deg);
+  -webkit-clip-path: polygon(0 40%, 50% 0, 100% 40%, 88% 40%, 88% 100%, 12% 100%, 12% 40%);
+  clip-path: polygon(0 40%, 50% 0, 100% 40%, 88% 40%, 88% 100%, 12% 100%, 12% 40%);
+  box-shadow: 0 0 60px rgba(255, 40, 30, 0.35);
+  opacity: 0.85;
+}
+.domain-map.dom-ph-shrine::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 60% 30% at 50% 88%, rgba(255, 60, 30, 0.2), transparent 70%);
+  animation: domEmbers 3.2s ease-in-out infinite alternate;
+}
+@keyframes domEmbers { from { opacity: 0.5; } to { opacity: 1; } }
+/* Overlay: faint slash lines raking the field (placeholder) */
+.domain-overlay.dom-ov-shrine {
+  background:
+    repeating-linear-gradient(28deg, transparent 0 90px, rgba(255, 225, 220, 0.12) 91px 92px, transparent 93px 210px),
+    repeating-linear-gradient(-36deg, transparent 0 140px, rgba(255, 90, 80, 0.10) 141px 142px, transparent 143px 260px);
+  mix-blend-mode: screen;
+  animation: domRake 2.6s linear infinite;
+}
+@keyframes domRake {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-92px, 48px, 0); }
+}
+
+/* Per-turn strike (domain "tick"): the field flares in the domain colour */
+.domain-layer.is-strike .domain-map { animation: domStrike 0.65s ease-out; }
+@keyframes domStrike {
+  0% { filter: brightness(1); }
+  18% { filter: brightness(1.8) saturate(1.4); }
+  100% { filter: brightness(1); }
+}
+/* One slash across a unit (above the units, under the damage numbers) */
+.domain-slash {
+  position: absolute;
+  z-index: 31;
+  height: 3px;
+  border-radius: 50%;
+  pointer-events: none;
+  transform: translate(-50%, -50%) rotate(var(--dom-rot, -30deg)) scaleX(0);
+  background: linear-gradient(90deg, transparent, #fff 30%, #fff 70%, transparent);
+  box-shadow: 0 0 6px 2px var(--dom-c1, #ff3b30), 0 0 14px 3px color-mix(in srgb, var(--dom-c1, #ff3b30) 60%, transparent);
+  animation: domSlash 0.46s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
+}
+@keyframes domSlash {
+  0% { transform: translate(-50%, -50%) rotate(var(--dom-rot, -30deg)) scaleX(0); opacity: 1; }
+  35% { transform: translate(-50%, -50%) rotate(var(--dom-rot, -30deg)) scaleX(1); opacity: 1; }
+  100% { transform: translate(-50%, -50%) rotate(var(--dom-rot, -30deg)) scaleX(1.05) scaleY(0.3); opacity: 0; }
 }
 
 /* Boss battles: the boss tint lightens so the domain reads (pulses still show) */
@@ -266,6 +338,89 @@
 .domain-title.is-rm .dt-caster { transform: none; filter: none; letter-spacing: 0.06em; transition: opacity 0.2s ease; }
 .domain-title.is-rm .dt-kicker { letter-spacing: 0.34em; }
 
+/* ---------- Domain Clash: the two names collide, white flash ---------- */
+.domain-clash {
+  position: absolute;
+  inset: 0;
+  z-index: 906;
+  overflow: hidden;
+  pointer-events: auto;
+  cursor: pointer;
+  font-family: var(--jjk-font-script, 'Bebas Neue', serif);
+}
+.domain-clash .dc-side {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 58%;
+  display: flex;
+  align-items: center;
+  transition: transform 0.38s cubic-bezier(0.2, 0.9, 0.2, 1);
+}
+.domain-clash .dc-old {
+  left: 0;
+  justify-content: flex-start;
+  padding-left: 5%;
+  background: linear-gradient(90deg, rgba(2, 6, 20, 0.9), color-mix(in srgb, var(--dom-old) 30%, rgba(2, 6, 20, 0.85)));
+  -webkit-clip-path: polygon(0 0, 100% 0, 86% 100%, 0 100%);
+  clip-path: polygon(0 0, 100% 0, 86% 100%, 0 100%);
+  transform: translateX(-100%);
+}
+.domain-clash .dc-new {
+  right: 0;
+  justify-content: flex-end;
+  padding-right: 5%;
+  background: linear-gradient(270deg, rgba(20, 2, 4, 0.9), color-mix(in srgb, var(--dom-c1) 30%, rgba(20, 2, 4, 0.85)));
+  -webkit-clip-path: polygon(14% 0, 100% 0, 100% 100%, 0 100%);
+  clip-path: polygon(14% 0, 100% 0, 100% 100%, 0 100%);
+  transform: translateX(100%);
+}
+.domain-clash .dc-side span {
+  font-size: clamp(20px, min(8vh, 4.6vw), 64px);
+  line-height: 1;
+  white-space: nowrap;
+  color: #fff;
+  letter-spacing: 0.04em;
+}
+.domain-clash .dc-old span { text-shadow: 0 0 12px var(--dom-old), 0 0 28px var(--dom-old), 0 3px 0 rgba(0, 0, 0, 0.8); }
+.domain-clash .dc-new span { text-shadow: 0 0 12px var(--dom-c1), 0 0 28px var(--dom-c1), 0 3px 0 rgba(0, 0, 0, 0.8); }
+.domain-clash .dc-title {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) scale(2.2);
+  font-family: var(--jjk-font, 'Kaisei Tokumin', serif);
+  font-weight: 800;
+  font-size: clamp(12px, 4.2vh, 30px);
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--jjk-gold-hi, #f1d98a);
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.9), 0 2px 0 rgba(0, 0, 0, 0.8);
+  opacity: 0;
+  transition: opacity 0.2s ease 0.3s, transform 0.35s cubic-bezier(0.2, 0.9, 0.2, 1) 0.3s;
+}
+.domain-clash .dc-flash {
+  position: absolute;
+  inset: 0;
+  background: #fff;
+  opacity: 0;
+}
+.domain-clash.is-in .dc-old,
+.domain-clash.is-in .dc-new { transform: translateX(0); }
+.domain-clash.is-in .dc-flash { animation: domClashFlash 0.5s ease-out 0.3s; }
+.domain-clash.is-in .dc-title { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+.domain-clash.is-in .dc-old { animation: domClashShake 0.3s ease-in-out 0.34s 2; }
+.domain-clash.is-in .dc-new { animation: domClashShake 0.3s ease-in-out 0.34s 2 reverse; }
+.domain-clash.is-out { opacity: 0; transition: opacity 0.2s ease; }
+@keyframes domClashFlash { 0% { opacity: 0.9; } 100% { opacity: 0; } }
+@keyframes domClashShake { 25% { translate: -6px 0; } 75% { translate: 6px 0; } }
+.domain-clash.is-rm .dc-side { transition: none; transform: none; }
+.domain-clash.is-rm .dc-title { transition: opacity 0.2s ease; transform: translate(-50%, -50%); }
+.domain-clash.is-rm .dc-flash,
+.domain-clash.is-rm .dc-old,
+.domain-clash.is-rm .dc-new { animation: none; }
+
 /* ---------- Badge: domain name + caster turns left (top HUD, centre slot) ---------- */
 .domain-badge {
   display: none;
@@ -352,7 +507,9 @@
 @media (prefers-reduced-motion: reduce) {
   .domain-map.dom-ph-void::before,
   .domain-map.dom-ph-void::after,
+  .domain-map.dom-ph-shrine::after,
   .domain-overlay.dom-ov-void,
+  .domain-overlay.dom-ov-shrine,
   .domain-overlay.has-art,
   .domain-badge .db-ico,
   .domain-badge.is-last .db-turns b { animation: none; }

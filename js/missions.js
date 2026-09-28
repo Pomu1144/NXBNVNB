@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
     'Limited Time Event': 'Raids: defeat the featured shinobi for a chance to recruit a new unit.',
     'Growth Missions': 'EXP ramen, ryo and Awakening Scroll missions for building your team.'
   };
-  const RANK_ORDER = ['D', 'C', 'B', 'A', 'S', 'SS'];
+  const RANK_ORDER = ['D', 'C', 'B', 'A', 'S', 'SS', 'SSS'];
   const PROGRESS_KEY = 'blazing_mission_progress_v1';
   // Player EXP per clear (mirrors js/battle/battle-missions.js -> ExpRewards)
   const RANK_EXP = { D: 25, C: 25, B: 50, A: 100, S: 200, SS: 200 };
@@ -163,11 +163,29 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   const mergeMaps = (...maps) => (RF() ? RF().merge(...maps) : Object.assign({}, ...maps));
 
+  /* ---------------------------- rank icons ---------------------------- */
+  // The D–SSS lettering (assets/icons/pow_*.png). If an icon fails to load
+  // the chip falls back to the plain letter (CSS: .rank-ic.is-text).
+  function rankIcon(r) {
+    return `<span class="rank-ic" data-rank="${esc(r)}"><img src="assets/icons/pow_${esc(String(r).toLowerCase())}.png" alt="${esc(r)}" draggable="false" onerror="this.parentNode.classList.add('is-text');this.remove()"></span>`;
+  }
+
   /* ------------------------------ cards ----------------------------- */
-  // Banner = generated arc/category key art + the featured unit's full art
-  // (story arcs share an arc banner, so they get a small boss medallion
-  // instead of the full art that would cover the key art)
+  // Banner = the mission's own composited banner
+  // (assets/missions/banners/{si,impact,event,story,growth}/<id>.webp). Its
+  // lettering is baked in, so banner cards carry no HTML title (the button
+  // gets an aria-label instead). Missions without one (Boss Battles) keep the
+  // key art + featured unit + HTML title layout.
+  const hasOwnBanner = (m) => /\/banners\/(si|impact|event|story|growth)\//.test(m.banner || '');
+
   function bannerArt(mission) {
+    if (hasOwnBanner(mission)) {
+      return `
+      <div class="mc-art mc-art--banner">
+        <img class="mission-banner" src="${esc(mission.banner)}" alt="" loading="lazy"
+             onerror="this.classList.add('is-missing');this.removeAttribute('src')">
+      </div>`;
+    }
     const boss = mission.feature && mission.cast && mission.cast[mission.feature];
     let feat = '';
     if (mission.chapter && boss) {
@@ -226,22 +244,34 @@ document.addEventListener('DOMContentLoaded', () => {
       if (allClear) card.classList.add('mission-complete');
 
       const { kicker, title } = cardTitle(mission);
-      const pips = ranks.map(r => `<i class="mc-pip ${isCleared(mission.id, r) ? 'is-clear' : ''}" title="${esc(rankLabel(mission, r))}">${esc(r)}</i>`).join('');
+      const own = hasOwnBanner(mission);
+      const pips = ranks.map(r => {
+        const clear = isCleared(mission.id, r), open = isRankOpen(mission, r);
+        const state = clear ? 'Cleared' : open ? 'Open' : 'Locked';
+        return `<i class="mc-pip ${clear ? 'is-clear' : ''} ${open ? '' : 'is-locked'}" title="${esc(rankLabel(mission, r))} · ${state}">${rankIcon(r)}</i>`;
+      }).join('');
       const r0 = defaultRank(mission);
+      const lockNote = isLocked ? `<span class="mc-lock"><img src="assets/ui/jjk/medal_locked.webp" alt=""><span class="mission-lock-note">${esc(requirementText(mission))}</span></span>` : '';
 
+      if (own) {
+        card.classList.add('mission-card--banner');
+        card.setAttribute('aria-label', `${kicker ? kicker + ' ' : ''}${title}${isLocked ? ' (locked)' : allClear ? ' (cleared)' : ''}`);
+      }
       card.innerHTML = `
         ${bannerArt(mission)}
-        <div class="mc-text">
+        ${own ? '' : `<div class="mc-text">
           <span class="mc-kicker">${esc(kicker)}</span>
           <span class="mc-title">${esc(title)}</span>
-        </div>
+        </div>`}
         <div class="mc-meta">
           <span class="mc-pips">${pips}</span>
           <span class="mc-stat" title="Stamina"><i class="ic-stamina"></i>${esc(mission.stamina?.[r0] ?? '-')}</span>
           <span class="mc-stat" title="Recommended power"><i class="ic-power"></i>${esc(((mission.power?.[r0] || 0) / 1000).toFixed(1))}k</span>
         </div>
         ${allClear ? '<img class="mc-stamp" src="assets/ui/jjk/stamp_claimed.webp" alt="Cleared">' : ''}
-        ${isLocked ? `<span class="mc-lock"><img src="assets/ui/jjk/medal_locked.webp" alt=""><span class="mission-lock-note">${esc(requirementText(mission))}</span></span>` : ''}`;
+        ${isLocked && !own ? lockNote : ''}`;
+      // banner cards: the lock reason sits in the bar, clear of the lettering
+      if (isLocked && own) card.querySelector('.mc-pips').outerHTML = lockNote;
       card.addEventListener('click', () => openDetail(mission));
       listContainer.appendChild(card);
     });
@@ -290,11 +320,15 @@ document.addEventListener('DOMContentLoaded', () => {
       const repeat = mergeMaps(...stages.map(s => s.rewards || {}), clear.completion || {});
       const waves = stages.reduce((n, s) => n + (s.waves?.length || 0), 0);
 
-      const rankBtns = ranks.map(r => `
-        <button type="button" class="difficulty-icon-btn md-rank ${r === selected ? 'active' : ''} ${isRankOpen(mission, r) ? '' : 'is-locked'} ${isCleared(mission.id, r) ? 'is-clear' : ''}" data-difficulty="${esc(r)}">
-          <span class="md-rank-letter">${esc(r)}</span>
+      const rankBtns = ranks.map(r => {
+        const rOpen = isRankOpen(mission, r), rClear = isCleared(mission.id, r);
+        const state = rClear ? ', cleared' : rOpen ? '' : ', locked';
+        return `
+        <button type="button" class="difficulty-icon-btn md-rank ${r === selected ? 'active' : ''} ${rOpen ? '' : 'is-locked'} ${rClear ? 'is-clear' : ''}" data-difficulty="${esc(r)}" aria-pressed="${r === selected}" aria-label="${esc(rankLabel(mission, r))}${state}">
+          <span class="md-rank-letter">${rankIcon(r)}</span>
           <span class="md-rank-name">${esc(mission.rankNames?.[r] || 'Rank')}</span>
-        </button>`).join('');
+        </button>`;
+      }).join('');
 
       const stageRows = stages.map((s, i) => {
         // one chip per distinct enemy, boss last
@@ -336,12 +370,12 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="md-sheet jjk-panel">
           <button type="button" class="jjk-icon-btn md-close" data-close aria-label="Close"><img src="assets/ui/jjk/back_arrow.webp" alt=""></button>
           <div class="md-side">
-            <div class="md-hero${mission.giant ? ' mission-card--boss' : ''}">
+            <div class="md-hero${mission.giant ? ' mission-card--boss' : ''}${hasOwnBanner(mission) ? ' md-hero--banner' : ''}">
               ${bannerArt(mission)}
-              <div class="mc-text">
+              ${hasOwnBanner(mission) ? '' : `<div class="mc-text">
                 <span class="mc-kicker">${esc(cardTitle(mission).kicker)}</span>
                 <span class="mc-title">${esc(cardTitle(mission).title)}</span>
-              </div>
+              </div>`}
             </div>
             <p class="md-desc">${esc(mission.description || '')}</p>
             <div class="md-ranks difficulty-icons-container">${rankBtns}</div>
