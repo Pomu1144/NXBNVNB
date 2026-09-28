@@ -10,6 +10,9 @@ class DashboardMailbox {
     this.loadMessages();
     this._pruneGhostUnits();
     this.updateUnreadCount();
+    // Once the catalog is known, rewards for characters that aren't in the
+    // game yet stop counting as claimable (badge / Claim buttons).
+    this._catalog().then(cat => { if (cat) this._refreshBadge?.(); });
     console.log('✅ Dashboard Mailbox initialized - Unread messages:', this.unreadCount);
   }
 
@@ -21,11 +24,25 @@ class DashboardMailbox {
         this.messages = Array.isArray(parsed) ? parsed : [];
         // Saved mailboxes keep the pre-rename welcome title; update it in
         // place (read state and rewards untouched).
+        let changed = false;
         const welcome = this.messages.find(m => m && m.id === 'welcome_001');
         if (welcome && welcome.title === 'Welcome to Naruto Blazing!') {
           welcome.title = 'Welcome to Naruto Shippuden: Ultimate Ninja Legends!';
-          this.saveMessages();
+          changed = true;
         }
+        // Presents claimed before duplicate copies got their own keys
+        // ("char_<id>#2") were flagged allClaimed with the extra copies never
+        // delivered (e.g. SEVENSTARS' 7S units). Reopen exactly those: only
+        // when every unclaimed reward is such a duplicate-copy key.
+        this.messages.forEach(m => {
+          if (!m || !m.allClaimed) return;
+          const open = this._collectRewards(m).filter(it => !it.claimed);
+          if (open.length && open.every(it => it.key.includes('#'))) {
+            delete m.allClaimed;
+            changed = true;
+          }
+        });
+        if (changed) this.saveMessages();
       } else {
         this.messages = [
           {
@@ -138,6 +155,9 @@ class DashboardMailbox {
       : fetch('data/characters.json').then(r => r.json()).then(d => (Array.isArray(d) ? d : d.characters || []))
     ).then(list => {
       this._catalogMap = new Map(list.filter(c => c && c.id).map(c => [c.id, c]));
+      // Playable units only: characters.json also holds items (chests, beads,
+      // stat boosts...) with powerRank 0 — same rule as cleanupInvalidCharacters.
+      this._playable = [...this._catalogMap.values()].filter(c => (Number(c.powerRank) || 0) > 0);
       return this._catalogMap;
     }).catch(e => {
       console.error('[Mailbox] Could not load characters.json:', e);
@@ -216,7 +236,7 @@ class DashboardMailbox {
     });
 
     if (r.allCharacters) {
-      const n = this._catalogMap ? this._catalogMap.size : 0;
+      const n = this._playable ? this._playable.length : 0;
       out.push({
         key: 'all_characters', kind: 'character',
         name: n ? `All Units (${n})` : 'All Units',
@@ -236,7 +256,9 @@ class DashboardMailbox {
         qty: ch.quantity || 1,
         icon: `assets/characters/${ch.characterId}/portrait_${ch.tierCode || '3S'}.webp`,
         fallback: 'assets/icons/characters_icon.png',
-        claimed: claimed.includes(key)
+        claimed: claimed.includes(key),
+        // Character not in the game (yet): stays pending, can't be claimed.
+        unavailable: !!(this._catalogMap && !this._catalogMap.has(ch.characterId))
       });
     });
 
@@ -254,7 +276,7 @@ class DashboardMailbox {
   }
 
   _hasUnclaimed(msg) {
-    return !msg.allClaimed && this._collectRewards(msg).some(x => !x.claimed);
+    return !msg.allClaimed && this._collectRewards(msg).some(x => !x.claimed && !x.unavailable);
   }
 
   _imgTag(item, cls) {
@@ -531,9 +553,9 @@ class DashboardMailbox {
 
     const cat = this._catalogMap; // loaded by claimRewards / claimAll
 
-    // Developer "all units" reward: one copy of every character at its max tier.
+    // Developer "all units" reward: one copy of every playable unit at its max tier.
     if (r.allCharacters && !message.claimed.includes('all_characters') && cat && window.InventoryChar) {
-      window.InventoryChar.addMany([...cat.values()].map(c => ({
+      window.InventoryChar.addMany((this._playable || []).map(c => ({
         charId: c.id, level: 1, tierCode: c.starMaxCode || c.starMinCode || '3S'
       })));
       message.claimed.push('all_characters');
@@ -543,10 +565,13 @@ class DashboardMailbox {
     (r.characters || []).forEach((ch, i) => {
       const key = charKeys[i];
       if (message.claimed.includes(key)) return;
-      // Never add an id the game doesn't know (it would be an invisible "ghost" unit).
-      if (cat && !cat.has(ch.characterId)) {
-        console.warn(`[Mailbox] Skipped unknown character "${ch.characterId}" in "${message.title}"`);
-      } else if (window.InventoryChar) {
+      // Never add an id the game doesn't know (it would be an invisible "ghost"
+      // unit). Leave it unclaimed so it can still be delivered once it exists.
+      if (!cat || !cat.has(ch.characterId)) {
+        console.warn(`[Mailbox] "${ch.characterId}" in "${message.title}" isn't in the game yet — left unclaimed`);
+        return;
+      }
+      if (window.InventoryChar) {
         const copies = Array.from({ length: Number(ch.quantity) || 1 },
           () => ({ charId: ch.characterId, level: 1, tierCode: ch.tierCode || '3S' }));
         window.InventoryChar.addMany ? window.InventoryChar.addMany(copies)
@@ -570,15 +595,24 @@ class DashboardMailbox {
   }
 
   async claimRewards(index) {
-    await this._catalog();
+    const cat = await this._catalog();
     const message = this.messages[index];
     if (!message || !message.rewards) {
       this.showCustomAlert('No Rewards', 'This present has nothing to claim.', 'error');
       return;
     }
-    const pending = this._collectRewards(message).filter(it => !it.claimed);
+    if (!cat && this._hasCharacterRewards(message)) {
+      this.showCustomAlert('Try Again', "Couldn't load the character list. Check your connection and claim again.", 'error');
+      return;
+    }
+    const all = this._collectRewards(message).filter(it => !it.claimed);
+    const pending = all.filter(it => !it.unavailable);
     if (message.allClaimed || pending.length === 0) {
-      this.showCustomAlert('Already Claimed', 'You have already claimed this present.', 'error');
+      if (!message.allClaimed && all.length) {
+        this.showCustomAlert('Not Available Yet', "This present's ninja isn't in the game yet. It will stay here until it can be claimed.", 'info');
+      } else {
+        this.showCustomAlert('Already Claimed', 'You have already claimed this present.', 'error');
+      }
       return;
     }
     this._grant(message);
@@ -592,12 +626,15 @@ class DashboardMailbox {
   }
 
   async claimAll() {
-    await this._catalog();
+    const cat = await this._catalog();
     const totals = new Map();
     let hasChars = false;
+    let skippedNoCatalog = false;
     this.messages.forEach(msg => {
-      const pending = this._collectRewards(msg).filter(it => !it.claimed);
+      const pending = this._collectRewards(msg).filter(it => !it.claimed && !it.unavailable);
       if (!pending.length || msg.allClaimed) return;
+      // Without the character list, character presents can't be validated.
+      if (!cat && this._hasCharacterRewards(msg)) { skippedNoCatalog = true; return; }
       this._grant(msg);
       pending.forEach(it => {
         if (it.kind === 'character') hasChars = true;
@@ -608,13 +645,20 @@ class DashboardMailbox {
       });
     });
     if (!totals.size) {
-      this.showCustomAlert('Nothing to Claim', 'All presents have already been claimed.', 'info');
+      if (skippedNoCatalog) this.showCustomAlert('Try Again', "Couldn't load the character list. Check your connection and claim again.", 'error');
+      else this.showCustomAlert('Nothing to Claim', 'All presents have already been claimed.', 'info');
       return;
     }
     this.saveMessages();
     this._refreshBadge();
     if (document.getElementById('mailbox-modal')) this.showMailboxModal();
     this.showRewardReveal([...totals.values()], { note: hasChars ? 'New ninja added to your Characters.' : '' });
+  }
+
+  /** True if a present grants characters (needs the catalog to validate). */
+  _hasCharacterRewards(msg) {
+    const r = msg && msg.rewards;
+    return !!(r && (r.allCharacters || (Array.isArray(r.characters) && r.characters.length)));
   }
 
   /** Map a display name → Resources key */
