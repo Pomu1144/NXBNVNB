@@ -595,11 +595,11 @@
 
 /* ── In-game display fonts (self-hosted, Latin subset) ───────────── */
 @font-face {
-  font-family: 'Shojumaru';
+  font-family: 'Bebas Neue';
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('../assets/fonts/shojumaru-400.woff2') format('woff2');
+  src: url('../assets/fonts/bebas-neue-400.woff2') format('woff2');
 }
 @font-face {
   font-family: 'Rowdies';

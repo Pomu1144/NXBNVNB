@@ -221,7 +221,7 @@
 }
 .domain-title .dt-name {
   margin-top: 0.1em;
-  font-family: var(--jjk-font-script, 'Shojumaru', serif);
+  font-family: var(--jjk-font-script, 'Bebas Neue', serif);
   font-size: clamp(26px, min(11vh, 7.2vw), 96px);
   line-height: 1.05;
   white-space: nowrap;
@@ -325,7 +325,7 @@
   border-left: 1px solid rgba(201, 162, 78, 0.5);
 }
 .domain-badge .db-turns b {
-  font-family: var(--jjk-font-script, 'Shojumaru', serif);
+  font-family: var(--jjk-font-script, 'Bebas Neue', serif);
   font-weight: 400;
   font-size: 13px;
   color: var(--jjk-gold-hi, #f1d98a);

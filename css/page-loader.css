@@ -92,7 +92,7 @@ html.pl-active { background: #071418; }
   margin-left: 0.42em; /* balance the trailing letter-spacing */
 }
 #page-loader .pl-title {
-  font-family: 'Shojumaru', 'Kaisei Tokumin', serif;
+  font-family: 'Bebas Neue', 'Kaisei Tokumin', serif;
   font-size: 30px; line-height: 1.1;
   color: var(--pl-gold-hi);
   background: linear-gradient(180deg, #fff3c4 0%, var(--pl-gold-hi) 38%, var(--pl-gold) 70%, var(--pl-gold-lo) 100%);
@@ -178,7 +178,7 @@ html.pl-active { background: #071418; }
 #page-loader .pl-tip b { color: var(--pl-gold); font-weight: 700; }
 #page-loader .pl-tip.is-swapping { opacity: 0; }
 #page-loader .pl-pct {
-  font-family: 'Shojumaru', 'Kaisei Tokumin', serif;
+  font-family: 'Bebas Neue', 'Kaisei Tokumin', serif;
   font-size: 18px; color: var(--pl-gold-hi);
   text-shadow: 0 2px 0 rgba(0, 0, 0, 0.8);
   font-variant-numeric: tabular-nums;

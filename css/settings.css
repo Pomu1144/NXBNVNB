@@ -76,7 +76,7 @@ body.page-settings #full-bg[class*="bg-"]::after {
 .set-group {
   display: flex; align-items: center; gap: 12px;
   margin: 12px 0 4px;
-  font-family: var(--jjk-font-script); font-weight: 400; font-size: 16px;
+  font-family: var(--jjk-font-script); font-weight: 400; font-size: 20px;
   color: var(--jjk-gold-hi); letter-spacing: 0.04em;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
 }
@@ -243,7 +243,7 @@ body.page-settings #full-bg[class*="bg-"]::after {
 }
 .bg-preview-name {
   flex: 1 1 auto; min-width: 0; text-align: center;
-  font-family: var(--jjk-font-script); font-size: 16px; color: var(--jjk-gold-hi);
+  font-family: var(--jjk-font-script); font-size: 19px; color: var(--jjk-gold-hi);
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
@@ -321,7 +321,7 @@ html.is-mobile.is-landscape.is-compact .settings-tabs .jjk-tab {
   min-width: 0; width: 100%; height: 30px; padding: 0 8px; font-size: 12px; flex: none;
 }
 html.is-mobile.is-landscape.is-compact .settings-well { padding: 0 12px 8px; }
-html.is-mobile.is-landscape.is-compact .set-group { font-size: 13px; margin: 8px 0 0; }
+html.is-mobile.is-landscape.is-compact .set-group { font-size: 17px; margin: 8px 0 0; }
 html.is-mobile.is-landscape.is-compact .set-row { padding: 6px 2px; gap: 12px; }
 html.is-mobile.is-landscape.is-compact .set-label b { font-size: 13px; }
 html.is-mobile.is-landscape.is-compact .set-label small { font-size: 10.5px; }

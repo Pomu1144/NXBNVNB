@@ -18,7 +18,7 @@
   --jjk-good:       #f1d98a;   /* reward / success (gold, no green text) */
 
   --jjk-font:        'Kaisei Tokumin', 'Times New Roman', serif; /* UI labels, body */
-  --jjk-font-script: 'Shojumaru', 'Kaisei Tokumin', serif;       /* big section words */
+  --jjk-font-script: 'Bebas Neue', 'Kaisei Tokumin', serif;       /* big section words */
 
   --jjk-slant: 14px;  /* parallelogram cut size */
   --jjk-ease: cubic-bezier(.2,.8,.2,1);
