@@ -852,7 +852,7 @@ html.is-mobile.is-landscape.is-compact .page-characters .equip-divider img {
    ========================================================================== */
 html.is-mobile.is-landscape.is-compact .summon-banner-frame {
   display: block !important;
-  --sb-w: clamp(220px, 34vw, 300px);
+  --sb-w: clamp(180px, 25vw, 236px);
   --sb-h: calc(var(--sb-w) / 1.79);
   top: 58px;
   left: calc(12px + var(--safe-l));
@@ -900,9 +900,8 @@ html.is-mobile.is-landscape.is-compact .right-banner-panel .banner-button {
 }
 /* Arena + Ninja Road share the last row (their own art comes from the background) */
 html.is-mobile.is-landscape.is-compact .right-banner-panel .banner-button.arena { grid-column: 1; }
-html.is-mobile.is-landscape.is-compact .right-banner-panel .banner-button.ninja-road { grid-column: 2; grid-row: 4; background-position: 0 0, 18% 62%, 0 0; }
+html.is-mobile.is-landscape.is-compact .right-banner-panel .banner-button.ninja-road { grid-column: 2; grid-row: 4; }
 html.is-mobile.is-landscape.is-compact .right-banner-panel .banner-button.arena .banner-btn-img { display: none; }
-html.is-mobile.is-landscape.is-compact .banner-road-title { right: 7%; bottom: 14%; font-size: 13px; }
 /* touch feedback instead of the desktop hover slide */
 html.is-mobile.is-landscape.is-compact .right-banner-panel .banner-button:hover {
   transform: none;

@@ -247,35 +247,10 @@
     linear-gradient(135deg, rgba(61, 48, 32, 0.85), rgba(90, 74, 47, 0.9));
 }
 
-/* Ninja Road: no painted banner, so the road's final boss + the display face */
 .banner-button.ninja-road {
   background:
-    linear-gradient(270deg, rgba(8, 6, 6, 0.88) 0%, rgba(8, 6, 6, 0.5) 34%, rgba(8, 6, 6, 0) 62%),
-    url('../assets/sprites/bosses/nine_tails/portrait.webp') 30% 58% / cover no-repeat,
+    url('../assets/banners/ninja_road_banner.webp') center 42% / cover no-repeat,
     linear-gradient(135deg, rgba(61, 48, 32, 0.85), rgba(90, 74, 47, 0.9));
-}
-.banner-road-title {
-  position: absolute;
-  right: 5%;
-  bottom: 16%;
-  text-align: right;
-  font-family: var(--jjk-font, 'Kaisei Tokumin', serif);
-  font-weight: 800;
-  font-size: clamp(13px, 1.35vw, 19px);
-  line-height: 1;
-  letter-spacing: 0.04em;
-  text-transform: none;
-  white-space: nowrap;
-  color: var(--jjk-gold-hi, #f1d98a);
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.95), 0 0 10px rgba(0, 0, 0, 0.8);
-}
-.banner-road-title::before {
-  content: '';
-  display: block;
-  width: 26px;
-  height: 1px;
-  margin: 0 0 5px auto;
-  background: linear-gradient(270deg, var(--jjk-gold, #c9a24e), transparent);
 }
 
 /* Hide banner text overlays (PNGs already have text) */
@@ -487,8 +462,8 @@
    ========================================== */
 
 .summon-banner-frame {
-  --sb-w: 480px;
-  --sb-h: 268px;            /* 480 / 1.79 — matches banner art so nothing is cropped */
+  --sb-w: 380px;
+  --sb-h: 212px;            /* 380 / 1.79 — matches banner art so nothing is cropped */
   position: fixed;
   left: 20px;
   top: 92px;                /* sit clear below the top bar */
@@ -644,8 +619,8 @@
   }
 
   .summon-banner-frame {
-    --sb-w: 400px;
-    --sb-h: 224px;
+    --sb-w: 330px;
+    --sb-h: 184px;
   }
 }
 
