@@ -40,12 +40,12 @@ module.exports = defineConfig({
     {
       // Pure Node checks of data/ and assets/ (no browser is launched).
       name: 'data',
-      testMatch: /(data-integrity|sprite-registry)\.spec\.js$/,
+      testMatch: /(data-integrity|sprite-registry|difficulty)\.spec\.js$/,
     },
     {
       // Landscape phone (iPhone 14 Pro Max class) — the game's primary target.
       name: 'phone',
-      testIgnore: /(data-integrity|sprite-registry)\.spec\.js$/,
+      testIgnore: /(data-integrity|sprite-registry|difficulty)\.spec\.js$/,
       use: {
         browserName: 'chromium',
         viewport: { width: 932, height: 375 },
@@ -57,7 +57,7 @@ module.exports = defineConfig({
     },
     {
       name: 'desktop',
-      testIgnore: /(data-integrity|sprite-registry)\.spec\.js$/,
+      testIgnore: /(data-integrity|sprite-registry|difficulty)\.spec\.js$/,
       use: {
         browserName: 'chromium',
         viewport: { width: 1280, height: 800 },

@@ -93,6 +93,7 @@
 
     // ========== SPECIAL ITEMS ==========
     "acquisition_stone": { name: "Acquisition Stone", desc: "Can be exchanged for specific characters in the shop.", icon: "assets/items/acq_stone.png", category: "scrolls" },
+    "acquisition_stone_shard": { name: "Acquisition Stone Shard", desc: "Shard of an Acquisition Stone, sold by Granny Cat.", icon: "assets/characters/acquisition_1029/portrait_5S.webp", category: "scrolls" },
     "granny_coin": { name: "Granny Cat Coin", desc: "Special currency for Granny Cat Shop.", icon: "assets/items/granny_coin.png", category: "scrolls" },
     "character_stone": { name: "Character Stone", desc: "Generic material for ★7 and higher awakenings.", icon: "assets/items/character_stone.png", category: "awakening" },
 

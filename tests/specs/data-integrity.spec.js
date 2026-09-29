@@ -15,14 +15,10 @@ const DATA_DIR = path.join(REPO_ROOT, 'data');
 // Known issues (reported, not fixed here — tests must not change game data)
 // ---------------------------------------------------------------------------
 const KNOWN_ISSUES = {
-  // data/domains.json is a 1-byte file (just "\n"); js/battle/battle-field-controller.js
-  // fetches it and falls back to no domains.
-  unparsableJson: ['domains.json'],
+  unparsableJson: [],
   // Fusion recipes whose required units are not in data/characters.json.
   fusionMissingUnits: ['shikamaru_legacy_step1:asuma_104', 'darui_legacy_step1:raikage_166'],
-  // Shop item with no material definition in js/resources.js (buying it adds
-  // an id the inventory cannot name or use).
-  shopUnknownItems: ['granny:acquisition_stone_shard'],
+  shopUnknownItems: [],
 };
 
 // ---------------------------------------------------------------------------
@@ -240,11 +236,6 @@ test.describe('shop', () => {
     expect(unknownItems().filter((x) => !KNOWN_ISSUES.shopUnknownItems.includes(x))).toEqual([]);
   });
 
-  test('known issue: every shop item is a known resource', () => {
-    test.fail(true, 'shop sells ids js/resources.js does not define (reported)');
-    expect(unknownItems()).toEqual([]);
-  });
-
   test('shop costs use a supported currency with a positive price', () => {
     const bad = [];
     for (const [tab, items] of Object.entries(shop)) {
@@ -291,10 +282,5 @@ test.describe('pages', () => {
   test('script and stylesheet references resolve (except known issues)', () => {
     const known = KNOWN_MISSING_CODE.map((p) => p.replace(/^\//, ''));
     expect(missingRefs().filter((x) => !known.some((k) => x.endsWith(`: ${k}`)))).toEqual([]);
-  });
-
-  test('known issue: pages reference missing js/css files (character-evolution.js, battle-result-professional.css)', () => {
-    test.fail(true, 'reported; remove from KNOWN_MISSING_CODE in helpers.js once fixed');
-    expect(missingRefs()).toEqual([]);
   });
 });

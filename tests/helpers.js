@@ -76,7 +76,7 @@ const BENIGN_CONSOLE = [
  *  - battle.html (and "battle copy.html") link css/battle-result-professional.css,
  *    which is not in the repo.
  */
-const KNOWN_MISSING_CODE = ['/js/character-evolution.js', '/css/battle-result-professional.css'];
+const KNOWN_MISSING_CODE = [];
 
 /**
  * Collect uncaught page errors and console.error calls for a page.
