@@ -1,0 +1,2063 @@
+{
+ "version": 1,
+ "cast": {
+  "naruto": {
+   "name": "Naruto",
+   "id": "naruto_001",
+   "full": "assets/characters/naruto_001/full_3S.webp",
+   "portrait": "assets/characters/naruto_001/portrait_3S.webp"
+  },
+  "naruto_k": {
+   "name": "Naruto",
+   "id": "naruto_179",
+   "full": "assets/characters/naruto_179/full_4S.webp",
+   "portrait": "assets/characters/naruto_179/portrait_4S.webp"
+  },
+  "sasuke": {
+   "name": "Sasuke",
+   "id": "sasuke_004",
+   "full": "assets/characters/sasuke_004/full_3S.webp",
+   "portrait": "assets/characters/sasuke_004/portrait_3S.webp"
+  },
+  "sasuke_c": {
+   "name": "Sasuke",
+   "id": "sasuke_261",
+   "full": "assets/characters/sasuke_261/full_5S.webp",
+   "portrait": "assets/characters/sasuke_261/portrait_5S.webp"
+  },
+  "sakura": {
+   "name": "Sakura",
+   "id": "sakura_006",
+   "full": "assets/characters/sakura_006/full_3S.webp",
+   "portrait": "assets/characters/sakura_006/portrait_3S.webp"
+  },
+  "kakashi": {
+   "name": "Kakashi",
+   "id": "kakashi_008",
+   "full": "assets/characters/kakashi_008/full_4S.webp",
+   "portrait": "assets/characters/kakashi_008/portrait_4S.webp"
+  },
+  "iruka": {
+   "name": "Iruka",
+   "id": "iruka_022",
+   "full": "assets/characters/iruka_022/full_3S.webp",
+   "portrait": "assets/characters/iruka_022/portrait_3S.webp"
+  },
+  "mizuki": {
+   "name": "Mizuki",
+   "id": "mizuki_098",
+   "full": "assets/characters/mizuki_098/full_3S.webp",
+   "portrait": "assets/characters/mizuki_098/portrait_3S.webp"
+  },
+  "hiruzen": {
+   "name": "Third Hokage",
+   "id": "hiruzen_070",
+   "full": "assets/characters/hiruzen_070/full_4S.webp",
+   "portrait": "assets/characters/hiruzen_070/portrait_4S.webp"
+  },
+  "zabuza": {
+   "name": "Zabuza",
+   "id": "zabuza_144",
+   "full": "assets/characters/zabuza_144/full_4S.webp",
+   "portrait": "assets/characters/zabuza_144/portrait_4S.webp"
+  },
+  "haku": {
+   "name": "Haku",
+   "id": "haku_137",
+   "full": "assets/characters/haku_137/full_4S.webp",
+   "portrait": "assets/characters/haku_137/portrait_4S.webp"
+  },
+  "gozu": {
+   "name": "Gozu",
+   "id": "gozu_042",
+   "full": "assets/characters/gozu_042/full_3S.webp",
+   "portrait": "assets/characters/gozu_042/portrait_3S.webp"
+  },
+  "meizu": {
+   "name": "Meizu",
+   "id": "meizu_043",
+   "full": "assets/characters/meizu_043/full_3S.webp",
+   "portrait": "assets/characters/meizu_043/portrait_3S.webp"
+  },
+  "ibiki": {
+   "name": "Ibiki",
+   "id": "ibiki_092",
+   "full": "assets/characters/ibiki_092/full_3S.webp",
+   "portrait": "assets/characters/ibiki_092/portrait_3S.webp"
+  },
+  "anko": {
+   "name": "Anko",
+   "id": "anko_094",
+   "full": "assets/characters/anko_094/full_3S.webp",
+   "portrait": "assets/characters/anko_094/portrait_3S.webp"
+  },
+  "kotetsu": {
+   "name": "Kotetsu",
+   "id": "kotetsu_030",
+   "full": "assets/characters/kotetsu_030/full_3S.webp",
+   "portrait": "assets/characters/kotetsu_030/portrait_3S.webp"
+  },
+  "izumo": {
+   "name": "Izumo",
+   "id": "izumo_029",
+   "full": "assets/characters/izumo_029/full_3S.webp",
+   "portrait": "assets/characters/izumo_029/portrait_3S.webp"
+  },
+  "lee": {
+   "name": "Rock Lee",
+   "id": "rock_148",
+   "full": "assets/characters/rock_148/full_5S.webp",
+   "portrait": "assets/characters/rock_148/portrait_5S.webp"
+  },
+  "neji": {
+   "name": "Neji",
+   "id": "neji_066",
+   "full": "assets/characters/neji_066/full_4S.webp",
+   "portrait": "assets/characters/neji_066/portrait_4S.webp"
+  },
+  "hinata": {
+   "name": "Hinata",
+   "id": "hinata_016",
+   "full": "assets/characters/hinata_016/full_3S.webp",
+   "portrait": "assets/characters/hinata_016/portrait_3S.webp"
+  },
+  "kiba": {
+   "name": "Kiba",
+   "id": "kiba_018",
+   "full": "assets/characters/kiba_018/full_3S.webp",
+   "portrait": "assets/characters/kiba_018/portrait_3S.webp"
+  },
+  "gaara": {
+   "name": "Gaara",
+   "id": "gaara_050",
+   "full": "assets/characters/gaara_050/full_5S.webp",
+   "portrait": "assets/characters/gaara_050/portrait_5S.webp"
+  },
+  "gaara_b": {
+   "name": "Gaara",
+   "id": "gaara_051",
+   "full": "assets/characters/gaara_051/full_6S.webp",
+   "portrait": "assets/characters/gaara_051/portrait_6S.webp"
+  },
+  "temari": {
+   "name": "Temari",
+   "id": "temari_163",
+   "full": "assets/characters/temari_163/full_4S.webp",
+   "portrait": "assets/characters/temari_163/portrait_4S.webp"
+  },
+  "kankuro": {
+   "name": "Kankuro",
+   "id": "kankuro_165",
+   "full": "assets/characters/kankuro_165/full_4S.webp",
+   "portrait": "assets/characters/kankuro_165/portrait_4S.webp"
+  },
+  "baki": {
+   "name": "Baki",
+   "id": "baki_104",
+   "full": "assets/characters/baki_104/full_3S.webp",
+   "portrait": "assets/characters/baki_104/portrait_3S.webp"
+  },
+  "jiraiya": {
+   "name": "Jiraiya",
+   "id": "jiraiya_072",
+   "full": "assets/characters/jiraiya_072/full_4S.webp",
+   "portrait": "assets/characters/jiraiya_072/portrait_4S.webp"
+  },
+  "orochimaru": {
+   "name": "Orochimaru",
+   "id": "orochimaru_074",
+   "full": "assets/characters/orochimaru_074/full_4S.webp",
+   "portrait": "assets/characters/orochimaru_074/portrait_4S.webp"
+  },
+  "kabuto": {
+   "name": "Kabuto",
+   "id": "kabuto_076",
+   "full": "assets/characters/kabuto_076/full_4S.webp",
+   "portrait": "assets/characters/kabuto_076/portrait_4S.webp"
+  },
+  "dosu": {
+   "name": "Dosu",
+   "id": "dosu_033",
+   "full": "assets/characters/dosu_033/full_3S.webp",
+   "portrait": "assets/characters/dosu_033/portrait_3S.webp"
+  },
+  "yoroi": {
+   "name": "Yoroi",
+   "id": "yoroi_031",
+   "full": "assets/characters/yoroi_031/full_3S.webp",
+   "portrait": "assets/characters/yoroi_031/portrait_3S.webp"
+  },
+  "itachi": {
+   "name": "Itachi",
+   "id": "itachi_088",
+   "full": "assets/characters/itachi_088/full_4S.webp",
+   "portrait": "assets/characters/itachi_088/portrait_4S.webp"
+  },
+  "kisame": {
+   "name": "Kisame",
+   "id": "kisame_090",
+   "full": "assets/characters/kisame_090/full_4S.webp",
+   "portrait": "assets/characters/kisame_090/portrait_4S.webp"
+  },
+  "tsunade": {
+   "name": "Tsunade",
+   "id": "tsunade_167",
+   "full": "assets/characters/tsunade_167/full_5S.webp",
+   "portrait": "assets/characters/tsunade_167/portrait_5S.webp"
+  },
+  "shizune": {
+   "name": "Shizune",
+   "id": "shizune_102",
+   "full": "assets/characters/shizune_102/full_3S.webp",
+   "portrait": "assets/characters/shizune_102/portrait_3S.webp"
+  },
+  "shikamaru": {
+   "name": "Shikamaru",
+   "id": "shikamaru_010",
+   "full": "assets/characters/shikamaru_010/full_3S.webp",
+   "portrait": "assets/characters/shikamaru_010/portrait_3S.webp"
+  },
+  "choji": {
+   "name": "Choji",
+   "id": "choji_014",
+   "full": "assets/characters/choji_014/full_3S.webp",
+   "portrait": "assets/characters/choji_014/portrait_3S.webp"
+  },
+  "kimimaro": {
+   "name": "Kimimaro",
+   "id": "kimimaro_087",
+   "full": "assets/characters/kimimaro_087/full_5S.webp",
+   "portrait": "assets/characters/kimimaro_087/portrait_5S.webp"
+  },
+  "tayuya": {
+   "name": "Tayuya",
+   "id": "tayuya_078",
+   "full": "assets/characters/tayuya_078/full_4S.webp",
+   "portrait": "assets/characters/tayuya_078/portrait_4S.webp"
+  },
+  "sakon": {
+   "name": "Sakon",
+   "id": "sakon_083",
+   "full": "assets/characters/sakon_083/full_5S.webp",
+   "portrait": "assets/characters/sakon_083/portrait_5S.webp"
+  },
+  "jirobo": {
+   "name": "Jirobo",
+   "id": "jirobo_085",
+   "full": "assets/characters/jirobo_085/full_5S.webp",
+   "portrait": "assets/characters/jirobo_085/portrait_5S.webp"
+  },
+  "kidomaru": {
+   "name": "Kidomaru",
+   "id": "kidomaru_081",
+   "full": "assets/characters/kidomaru_081/full_5S.webp",
+   "portrait": "assets/characters/kidomaru_081/portrait_5S.webp"
+  },
+  "konohamaru": {
+   "name": "Konohamaru",
+   "id": "konohamaru_100",
+   "full": "assets/characters/konohamaru_100/full_3S.webp",
+   "portrait": "assets/characters/konohamaru_100/portrait_3S.webp"
+  },
+  "kakashi_y": {
+   "name": "Kakashi",
+   "id": "kakashi_255",
+   "full": "assets/characters/kakashi_255/full_5S.webp",
+   "portrait": "assets/characters/kakashi_255/portrait_5S.webp"
+  },
+  "obito_y": {
+   "name": "Obito",
+   "id": "obito_253",
+   "full": "assets/characters/obito_253/full_5S.webp",
+   "portrait": "assets/characters/obito_253/portrait_5S.webp"
+  },
+  "rin": {
+   "name": "Rin",
+   "id": "rin_251",
+   "full": "assets/characters/rin_251/full_5S.webp",
+   "portrait": "assets/characters/rin_251/portrait_5S.webp"
+  },
+  "minato": {
+   "name": "Minato",
+   "id": "minato_229",
+   "full": "assets/characters/minato_229/full_5S.webp",
+   "portrait": "assets/characters/minato_229/portrait_5S.webp"
+  },
+  "kakkou": {
+   "name": "Kakkou",
+   "id": "kakkou_106",
+   "full": "assets/characters/kakkou_106/full_3S.webp",
+   "portrait": "assets/characters/kakkou_106/portrait_3S.webp"
+  },
+  "taiseki": {
+   "name": "Taiseki",
+   "id": "taiseki_024",
+   "full": "assets/characters/taiseki_024/full_3S.webp",
+   "portrait": "assets/characters/taiseki_024/portrait_3S.webp"
+  },
+  "naruto_s": {
+   "name": "Naruto",
+   "id": "naruto_237",
+   "full": "assets/characters/naruto_237/full_5S.webp",
+   "portrait": "assets/characters/naruto_237/portrait_5S.webp"
+  },
+  "naruto_sg": {
+   "name": "Naruto",
+   "id": "naruto_348",
+   "full": "assets/characters/naruto_348/full_5S.webp",
+   "portrait": "assets/characters/naruto_348/portrait_5S.webp"
+  },
+  "naruto_w": {
+   "name": "Naruto",
+   "id": "naruto_427",
+   "full": "assets/characters/naruto_427/full_5S.webp",
+   "portrait": "assets/characters/naruto_427/portrait_5S.webp"
+  },
+  "naruto_4t": {
+   "name": "Naruto",
+   "id": "naruto_281",
+   "full": "assets/characters/naruto_281/full_5S.webp",
+   "portrait": "assets/characters/naruto_281/portrait_5S.webp"
+  },
+  "sasuke_s": {
+   "name": "Sasuke",
+   "id": "sasuke_244",
+   "full": "assets/characters/sasuke_244/full_5S.webp",
+   "portrait": "assets/characters/sasuke_244/portrait_5S.webp"
+  },
+  "sasuke_t": {
+   "name": "Sasuke",
+   "id": "sasuke_302",
+   "full": "assets/characters/sasuke_302/full_5S.webp",
+   "portrait": "assets/characters/sasuke_302/portrait_5S.webp"
+  },
+  "sasuke_w": {
+   "name": "Sasuke",
+   "id": "sasuke_429",
+   "full": "assets/characters/sasuke_429/full_5S.webp",
+   "portrait": "assets/characters/sasuke_429/portrait_5S.webp"
+  },
+  "sakura_s": {
+   "name": "Sakura",
+   "id": "sakura_235",
+   "full": "assets/characters/sakura_235/full_5S.webp",
+   "portrait": "assets/characters/sakura_235/portrait_5S.webp"
+  },
+  "sakura_w": {
+   "name": "Sakura",
+   "id": "sakura_398",
+   "full": "assets/characters/sakura_398/full_5S.webp",
+   "portrait": "assets/characters/sakura_398/portrait_5S.webp"
+  },
+  "kakashi_s": {
+   "name": "Kakashi",
+   "id": "kakashi_313",
+   "full": "assets/characters/kakashi_313/full_5S.webp",
+   "portrait": "assets/characters/kakashi_313/portrait_5S.webp"
+  },
+  "kakashi_w": {
+   "name": "Kakashi",
+   "id": "kakashi_425",
+   "full": "assets/characters/kakashi_425/full_5S.webp",
+   "portrait": "assets/characters/kakashi_425/portrait_5S.webp"
+  },
+  "konohamaru_s": {
+   "name": "Konohamaru",
+   "id": "konohamaru_346",
+   "full": "assets/characters/konohamaru_346/full_5S.webp",
+   "portrait": "assets/characters/konohamaru_346/portrait_5S.webp"
+  },
+  "gaara_k": {
+   "name": "Gaara",
+   "id": "gaara_283",
+   "full": "assets/characters/gaara_283/full_5S.webp",
+   "portrait": "assets/characters/gaara_283/portrait_5S.webp"
+  },
+  "gaara_w": {
+   "name": "Gaara",
+   "id": "gaara_436",
+   "full": "assets/characters/gaara_436/full_5S.webp",
+   "portrait": "assets/characters/gaara_436/portrait_5S.webp"
+  },
+  "kankuro_s": {
+   "name": "Kankuro",
+   "id": "kankuro_189",
+   "full": "assets/characters/kankuro_189/full_4S.webp",
+   "portrait": "assets/characters/kankuro_189/portrait_4S.webp"
+  },
+  "baki_s": {
+   "name": "Baki",
+   "id": "baki_105",
+   "full": "assets/characters/baki_105/full_4S.webp",
+   "portrait": "assets/characters/baki_105/portrait_4S.webp"
+  },
+  "chiyo": {
+   "name": "Chiyo",
+   "id": "chiyo_339",
+   "full": "assets/characters/chiyo_339/full_5S.webp",
+   "portrait": "assets/characters/chiyo_339/portrait_5S.webp"
+  },
+  "deidara": {
+   "name": "Deidara",
+   "id": "deidara_219",
+   "full": "assets/characters/deidara_219/full_5S.webp",
+   "portrait": "assets/characters/deidara_219/portrait_5S.webp"
+  },
+  "sasori": {
+   "name": "Sasori",
+   "id": "sasori_221",
+   "full": "assets/characters/sasori_221/full_5S.webp",
+   "portrait": "assets/characters/sasori_221/portrait_5S.webp"
+  },
+  "itachi_s": {
+   "name": "Itachi",
+   "id": "itachi_210",
+   "full": "assets/characters/itachi_210/full_5S.webp",
+   "portrait": "assets/characters/itachi_210/portrait_5S.webp"
+  },
+  "kisame_s": {
+   "name": "Kisame",
+   "id": "kisame_319",
+   "full": "assets/characters/kisame_319/full_5S.webp",
+   "portrait": "assets/characters/kisame_319/portrait_5S.webp"
+  },
+  "sai": {
+   "name": "Sai",
+   "id": "sai_239",
+   "full": "assets/characters/sai_239/full_5S.webp",
+   "portrait": "assets/characters/sai_239/portrait_5S.webp"
+  },
+  "yamato": {
+   "name": "Yamato",
+   "id": "yamato_271",
+   "full": "assets/characters/yamato_271/full_5S.webp",
+   "portrait": "assets/characters/yamato_271/portrait_5S.webp"
+  },
+  "danzo": {
+   "name": "Danzo",
+   "id": "danzo_373",
+   "full": "assets/characters/danzo_373/full_5S.webp",
+   "portrait": "assets/characters/danzo_373/portrait_5S.webp"
+  },
+  "kabuto_s": {
+   "name": "Kabuto",
+   "id": "kabuto_169",
+   "full": "assets/characters/kabuto_169/full_4S.webp",
+   "portrait": "assets/characters/kabuto_169/portrait_4S.webp"
+  },
+  "orochimaru_s": {
+   "name": "Orochimaru",
+   "id": "orochimaru_269",
+   "full": "assets/characters/orochimaru_269/full_5S.webp",
+   "portrait": "assets/characters/orochimaru_269/portrait_5S.webp"
+  },
+  "hidan": {
+   "name": "Hidan",
+   "id": "hidan_321",
+   "full": "assets/characters/hidan_321/full_5S.webp",
+   "portrait": "assets/characters/hidan_321/portrait_5S.webp"
+  },
+  "kakuzu": {
+   "name": "Kakuzu",
+   "id": "kakuzu_323",
+   "full": "assets/characters/kakuzu_323/full_5S.webp",
+   "portrait": "assets/characters/kakuzu_323/portrait_5S.webp"
+  },
+  "asuma": {
+   "name": "Asuma",
+   "id": "asuma_214",
+   "full": "assets/characters/asuma_214/full_4S.webp",
+   "portrait": "assets/characters/asuma_214/portrait_4S.webp"
+  },
+  "shikamaru_s": {
+   "name": "Shikamaru",
+   "id": "shikamaru_291",
+   "full": "assets/characters/shikamaru_291/full_5S.webp",
+   "portrait": "assets/characters/shikamaru_291/portrait_5S.webp"
+  },
+  "pain": {
+   "name": "Pain",
+   "id": "pain_352",
+   "full": "assets/characters/pain_352/full_5S.webp",
+   "portrait": "assets/characters/pain_352/portrait_5S.webp"
+  },
+  "konan": {
+   "name": "Konan",
+   "id": "konan_337",
+   "full": "assets/characters/konan_337/full_5S.webp",
+   "portrait": "assets/characters/konan_337/portrait_5S.webp"
+  },
+  "nagato": {
+   "name": "Nagato",
+   "id": "nagato_360",
+   "full": "assets/characters/nagato_360/full_5S.webp",
+   "portrait": "assets/characters/nagato_360/portrait_5S.webp"
+  },
+  "hinata_s": {
+   "name": "Hinata",
+   "id": "hinata_242",
+   "full": "assets/characters/hinata_242/full_5S.webp",
+   "portrait": "assets/characters/hinata_242/portrait_5S.webp"
+  },
+  "tsunade_s": {
+   "name": "Tsunade",
+   "id": "tsunade_375",
+   "full": "assets/characters/tsunade_375/full_5S.webp",
+   "portrait": "assets/characters/tsunade_375/portrait_5S.webp"
+  },
+  "raikage": {
+   "name": "Raikage",
+   "id": "fourth_356",
+   "full": "assets/characters/fourth_356/full_5S.webp",
+   "portrait": "assets/characters/fourth_356/portrait_5S.webp"
+  },
+  "mifune": {
+   "name": "Mifune",
+   "id": "mifune_472",
+   "full": "assets/characters/mifune_472/full_6S.webp",
+   "portrait": "assets/characters/mifune_472/portrait_6S.webp"
+  },
+  "darui": {
+   "name": "Darui",
+   "id": "darui_385",
+   "full": "assets/characters/darui_385/full_5S.webp",
+   "portrait": "assets/characters/darui_385/portrait_5S.webp"
+  },
+  "suigetsu": {
+   "name": "Suigetsu",
+   "id": "suigetsu_304",
+   "full": "assets/characters/suigetsu_304/full_5S.webp",
+   "portrait": "assets/characters/suigetsu_304/portrait_5S.webp"
+  },
+  "jugo": {
+   "name": "Jugo",
+   "id": "jugo_306",
+   "full": "assets/characters/jugo_306/full_5S.webp",
+   "portrait": "assets/characters/jugo_306/portrait_5S.webp"
+  },
+  "madara": {
+   "name": "Madara",
+   "id": "madara_333",
+   "full": "assets/characters/madara_333/full_5S.webp",
+   "portrait": "assets/characters/madara_333/portrait_5S.webp"
+  },
+  "madara_w": {
+   "name": "Madara",
+   "id": "madara_434",
+   "full": "assets/characters/madara_434/full_5S.webp",
+   "portrait": "assets/characters/madara_434/portrait_5S.webp"
+  },
+  "obito_m": {
+   "name": "Masked Man",
+   "id": "obito_394",
+   "full": "assets/characters/obito_394/full_5S.webp",
+   "portrait": "assets/characters/obito_394/portrait_5S.webp"
+  },
+  "obito_s": {
+   "name": "Obito",
+   "id": "obito_394",
+   "full": "assets/characters/obito_394/full_5S.webp",
+   "portrait": "assets/characters/obito_394/portrait_5S.webp"
+  },
+  "zabuza_r": {
+   "name": "Zabuza",
+   "id": "zabuza_415",
+   "full": "assets/characters/zabuza_415/full_5S.webp",
+   "portrait": "assets/characters/zabuza_415/portrait_5S.webp"
+  },
+  "kaguya": {
+   "name": "Kaguya",
+   "id": "kaguya_512",
+   "full": "assets/characters/kaguya_512/full_5S.webp",
+   "portrait": "assets/characters/kaguya_512/portrait_5S.webp"
+  },
+  "bee": {
+   "name": "Killer Bee",
+   "id": "killer_354",
+   "full": "assets/characters/killer_354/full_5S.webp",
+   "portrait": "assets/characters/killer_354/portrait_5S.webp"
+  },
+  "yugito": {
+   "name": "Yugito",
+   "id": "yugito_331",
+   "full": "assets/characters/yugito_331/full_5S.webp",
+   "portrait": "assets/characters/yugito_331/portrait_5S.webp"
+  },
+  "kinkaku": {
+   "name": "Kinkaku",
+   "id": "kinkaku_ginkaku_2082",
+   "full": "assets/characters/kinkaku_ginkaku_2082/full_6S.webp",
+   "portrait": "assets/characters/kinkaku_ginkaku_2082/portrait_6S.webp"
+  }
+ },
+ "missions": {
+  "sc1_01": {
+   "before": [
+    {
+     "side": "none",
+     "text": "The Academy graduation exam. Every student passes but one."
+    },
+    {
+     "who": "naruto",
+     "side": "left",
+     "text": "Three clones. That was all it took... and I couldn't even make one that stood up."
+    },
+    {
+     "who": "mizuki",
+     "side": "right",
+     "text": "Don't lose heart, Naruto. There's a make-up test — a secret one. Only the best ever hear about it."
+    },
+    {
+     "who": "naruto",
+     "side": "left",
+     "text": "Seriously?! What do I have to do?"
+    },
+    {
+     "who": "mizuki",
+     "side": "right",
+     "text": "Borrow the big scroll from the Hokage's tower. Learn one technique from it by tonight, and the headband is yours."
+    },
+    {
+     "who": "naruto",
+     "side": "left",
+     "text": "Heh. Sneaking past the whole village? That's the easy part!"
+    }
+   ],
+   "boss": [
+    {
+     "who": "mizuki",
+     "side": "right",
+     "text": "Still clutching that scroll? Let me tell you the rule nobody would — the fox that wrecked this village lives inside you."
+    },
+    {
+     "who": "iruka",
+     "side": "left",
+     "text": "That's enough, Mizuki! Naruto isn't the Nine-Tails. He's my student — a shinobi of the Leaf."
+    },
+    {
+     "who": "naruto",
+     "side": "left",
+     "text": "Lay one finger on Iruka-sensei again and I'll pay you back a thousand times over!"
+    }
+   ],
+   "after": [
+    {
+     "who": "iruka",
+     "side": "left",
+     "text": "A thousand clones on your first try... Close your eyes a second, Naruto."
+    },
+    {
+     "who": "naruto",
+     "side": "left",
+     "text": "Huh? Sensei, this is... your headband?"
+    },
+    {
+     "who": "iruka",
+     "side": "left",
+     "text": "Congratulations on graduating. Now how about ramen — my treat."
+    },
+    {
+     "who": "naruto",
+     "side": "left",
+     "text": "Watch me, everyone. One day I'm taking the Hokage's hat!"
+    }
+   ]
+  },
+  "sc1_02": {
+   "before": [
+    {
+     "who": "kakashi",
+     "side": "left",
+     "text": "My first impression of this squad? I don't much like you. Right — two bells, three of you."
+    },
+    {
+     "who": "kakashi",
+     "side": "left",
+     "text": "Take a bell before noon and you eat lunch. Whoever comes up empty goes back to the Academy."
+    },
+    {
+     "who": "sakura",
+     "side": "left",
+     "text": "But... there are only two bells. One of us fails no matter what!"
+    },
+    {
+     "who": "sasuke",
+     "side": "left",
+     "text": "Then I'll take one. Stay out of my way."
+    },
+    {
+     "who": "naruto",
+     "side": "left",
+     "text": "Forget sneaking around — I'll just beat him head-on!"
+    }
+   ],
+   "boss": [
+    {
+     "who": "kakashi",
+     "side": "right",
+     "text": "Every one of you is fighting alone. Is that really what you think this test is about?"
+    },
+    {
+     "who": "sakura",
+     "side": "left",
+     "text": "Alone...? Wait. Naruto, Sasuke — we have to do this together!"
+    }
+   ],
+   "after": [
+    {
+     "who": "kakashi",
+     "side": "left",
+     "text": "You shared your lunch when I told you not to. Good. You pass."
+    },
+    {
+     "who": "kakashi",
+     "side": "left",
+     "text": "A shinobi who bends the rules is trouble. One who leaves a teammate behind is far worse. Remember that."
+    },
+    {
+     "who": "naruto",
+     "side": "left",
+     "text": "We passed! Team 7 is official!"
+    },
+    {
+     "who": "sasuke",
+     "side": "left",
+     "text": "Tch. Don't get used to it."
+    }
+   ]
+  },
+  "sc1_03": {
+   "before": [
+    {
+     "side": "none",
+     "text": "A simple escort: bring the bridge builder Tazuna home to the Land of Waves."
+    },
+    {
+     "who": "kakashi",
+     "side": "left",
+     "text": "Those puddles on a dry road aren't puddles. Stay sharp — this C-rank just got complicated."
+    },
+    {
+     "who": "gozu",
+     "side": "right",
+     "text": "The old man comes with us. The rest of you can stay down in the dirt."
+    },
+    {
+     "who": "sasuke",
+     "side": "left",
+     "text": "Not happening."
+    },
+    {
+     "who": "naruto",
+     "side": "left",
+     "text": "I froze back there... Never again. I'm protecting the old man, no matter what!"
+    }
+   ],
+   "boss": [
+    {
+     "who": "zabuza",
+     "side": "right",
+     "text": "The mist is my home, Kakashi. Your little genin won't even see the blade coming."
+    },
+    {
+     "who": "haku",
+     "side": "right",
+     "text": "Forgive me. I fight for the one person who gave my life meaning."
+    },
+    {
+     "who": "naruto",
+     "side": "left",
+     "text": "Then I'll fight for mine too — and I'm not losing!"
+    }
+   ],
+   "after": [
+    {
+     "who": "haku",
+     "side": "right",
+     "text": "A tool that can't serve has no reason to remain... Take care of him, Naruto."
+    },
+    {
+     "who": "zabuza",
+     "side": "right",
+     "text": "Haku... You felt more than any of us. Let me go where you went."
+    },
+    {
+     "who": "naruto",
+     "side": "left",
+     "text": "Is that what a shinobi has to be? I'll find my own way. I swear it."
+    },
+    {
+     "side": "none",
+     "text": "The bridge is finished. The people name it the Great Naruto Bridge."
+    }
+   ]
+  },
+  "sc1_04": {
+   "before": [
+    {
+     "who": "kakashi",
+     "side": "left",
+     "text": "I've put you forward for the Chunin Exams. Go as a team or not at all."
+    },
+    {
+     "who": "kotetsu",
+     "side": "right",
+     "text": "Room 301 is off-limits. Genin this weak should turn around now."
+    },
+    {
+     "who": "sasuke",
+     "side": "left",
+     "text": "Drop the illusion. This is the second floor, not the third."
+    },
+    {
+     "who": "lee",
+     "side": "right",
+     "text": "You are Sasuke Uchiha? I am Rock Lee. I would like to test myself against you!"
+    }
+   ],
+   "boss": [
+    {
+     "who": "ibiki",
+     "side": "right",
+     "text": "The tenth question comes with a rule. Take it and fail, and you stay genin for life. Or walk out now."
+    },
+    {
+     "who": "sakura",
+     "side": "left",
+     "text": "Naruto's hand is shaking... He'll quit for all of us. Won't he?"
+    },
+    {
+     "who": "naruto",
+     "side": "left",
+     "text": "Don't underestimate me! Stay a genin forever? Fine — I'll still become Hokage!"
+    }
+   ],
+   "after": [
+    {
+     "who": "ibiki",
+     "side": "right",
+     "text": "Everyone still seated... passes. The tenth question was whether you'd accept the risk."
+    },
+    {
+     "who": "naruto",
+     "side": "left",
+     "text": "Ha! I didn't write a single answer and I still passed!"
+    },
+    {
+     "who": "anko",
+     "side": "right",
+     "text": "No time to celebrate, brats. Round two starts now — follow me to the forest."
+    }
+   ]
+  },
+  "sc1_05": {
+   "before": [
+    {
+     "who": "anko",
+     "side": "right",
+     "text": "Welcome to Training Ground 44. Most call it the Forest of Death. Grab a scroll, reach the tower, try not to die."
+    },
+    {
+     "who": "sakura",
+     "side": "left",
+     "text": "We need both the Heaven and the Earth scroll... and five days to get them."
+    },
+    {
+     "who": "orochimaru",
+     "side": "right",
+     "text": "Such fine eyes, Sasuke. I wonder how far they could carry you... with a little gift."
+    },
+    {
+     "who": "sasuke",
+     "side": "left",
+     "text": "My body won't move... who is this?"
+    },
+    {
+     "who": "naruto",
+     "side": "left",
+     "text": "Sasuke! Whatever you are, get away from him!"
+    }
+   ],
+   "boss": [
+    {
+     "who": "dosu",
+     "side": "right",
+     "text": "Our orders are simple. Wake Sasuke, and finish him."
+    },
+    {
+     "who": "sakura",
+     "side": "left",
+     "text": "I've been hiding behind them long enough. I'll protect them this time!"
+    }
+   ],
+   "after": [
+    {
+     "who": "sasuke",
+     "side": "left",
+     "text": "This power... it's flowing everywhere. Who did this to you, Sakura?"
+    },
+    {
+     "who": "sakura",
+     "side": "left",
+     "text": "Stop, Sasuke! That's not you!"
+    },
+    {
+     "who": "kabuto",
+     "side": "left",
+     "text": "You made it through. The tower is just ahead — though I'd keep an eye on that mark."
+    },
+    {
+     "who": "naruto",
+     "side": "left",
+     "text": "Round two, cleared! Nothing can stop Team 7 now!"
+    }
+   ]
+  },
+  "sc1_06": {
+   "before": [
+    {
+     "side": "none",
+     "text": "Too many passed. A preliminary round will cut the field — one-on-one."
+    },
+    {
+     "who": "yoroi",
+     "side": "right",
+     "text": "Sasuke Uchiha. Let's see how much chakra you have left."
+    },
+    {
+     "who": "sasuke",
+     "side": "left",
+     "text": "No Sharingan, no curse mark. I'll end this with my own strength."
+    },
+    {
+     "who": "kiba",
+     "side": "right",
+     "text": "Naruto?! Akamaru, this match is ours for sure!"
+    },
+    {
+     "who": "naruto",
+     "side": "left",
+     "text": "Keep laughing, dog breath. I've been waiting for this!"
+    }
+   ],
+   "boss": [
+    {
+     "who": "neji",
+     "side": "right",
+     "text": "Destiny decides who you are, Hinata. You were never meant to beat me."
+    },
+    {
+     "who": "hinata",
+     "side": "left",
+     "text": "I... won't go back on my word. Not in front of Naruto."
+    },
+    {
+     "who": "gaara",
+     "side": "right",
+     "text": "Your existence proves nothing. Mother wants your blood."
+    },
+    {
+     "who": "lee",
+     "side": "left",
+     "text": "Guy-sensei... I'm opening the gates!"
+    }
+   ],
+   "after": [
+    {
+     "who": "naruto",
+     "side": "left",
+     "text": "Hinata could barely stand and she kept getting up... Neji, I'm beating you in the finals."
+    },
+    {
+     "who": "lee",
+     "side": "left",
+     "text": "I... will not stop. Not while I can still stand."
+    },
+    {
+     "who": "kakashi",
+     "side": "left",
+     "text": "The finals are a month away. Use every day of it."
+    }
+   ]
+  },
+  "sc1_07": {
+   "before": [
+    {
+     "who": "jiraiya",
+     "side": "left",
+     "text": "Behold — the great sage of Mount Myoboku! And yes, I'll teach you. Summoning, first."
+    },
+    {
+     "who": "naruto",
+     "side": "left",
+     "text": "Pervy Sage, I've been dropped off a cliff for this. It better work!"
+    },
+    {
+     "who": "neji",
+     "side": "right",
+     "text": "The finals. Your clones are nothing to eyes that see everything."
+    },
+    {
+     "who": "naruto",
+     "side": "left",
+     "text": "Then see this — I'm changing Hinata's fate and yours too!"
+    }
+   ],
+   "boss": [
+    {
+     "who": "neji",
+     "side": "right",
+     "text": "The caged bird can't leave its cage. I was born into this."
+    },
+    {
+     "who": "naruto",
+     "side": "left",
+     "text": "You're not a failure, and you're not trapped. Quit hiding behind destiny!"
+    }
+   ],
+   "after": [
+    {
+     "who": "neji",
+     "side": "right",
+     "text": "Beaten... by a dropout. Maybe the cage was never locked."
+    },
+    {
+     "who": "kakashi",
+     "side": "left",
+     "text": "Feathers? This is a genjutsu — everyone, wake up!"
+    },
+    {
+     "who": "baki",
+     "side": "right",
+     "text": "Now. Begin the invasion."
+    },
+    {
+     "who": "naruto",
+     "side": "left",
+     "text": "Sasuke went after Gaara alone! I'm going too!"
+    }
+   ]
+  },
+  "sc1_08": {
+   "before": [
+    {
+     "side": "none",
+     "text": "Sand and Sound strike together. The Leaf is under attack."
+    },
+    {
+     "who": "orochimaru",
+     "side": "right",
+     "text": "Old teacher. Let us settle things inside a barrier no one can break."
+    },
+    {
+     "who": "hiruzen",
+     "side": "left",
+     "text": "I trained you, Orochimaru. Stopping you is the last lesson I owe this village."
+    },
+    {
+     "who": "kakashi",
+     "side": "left",
+     "text": "Naruto, Sakura, Shikamaru — go after Sasuke. Bring him back."
+    },
+    {
+     "who": "temari",
+     "side": "right",
+     "text": "You're not getting past us to Gaara."
+    }
+   ],
+   "boss": [
+    {
+     "who": "gaara_b",
+     "side": "right",
+     "text": "I fight only for myself. I love only myself. Prove your existence, Uzumaki!"
+    },
+    {
+     "who": "naruto",
+     "side": "left",
+     "text": "I know that loneliness. But the friends who pulled me out of it — I won't let you touch them!"
+    }
+   ],
+   "after": [
+    {
+     "who": "gaara_b",
+     "side": "right",
+     "text": "Why... do you fight this hard for others?"
+    },
+    {
+     "who": "naruto",
+     "side": "left",
+     "text": "Because they saved me from being alone. That's why."
+    },
+    {
+     "who": "hiruzen",
+     "side": "left",
+     "text": "The will of fire lives in the young ones now. I leave the village to them."
+    },
+    {
+     "side": "none",
+     "text": "Rain falls over the Leaf as the village mourns the Third Hokage."
+    }
+   ]
+  },
+  "sc1_09": {
+   "before": [
+    {
+     "who": "kisame",
+     "side": "right",
+     "text": "So this is the Leaf. The fox brat should be easy to find."
+    },
+    {
+     "who": "itachi",
+     "side": "right",
+     "text": "We're here for the Nine-Tails. Nothing more."
+    },
+    {
+     "who": "kakashi",
+     "side": "left",
+     "text": "Two members of the Akatsuki inside the village... I can't let you walk out of here."
+    }
+   ],
+   "boss": [
+    {
+     "who": "sasuke",
+     "side": "left",
+     "text": "Itachi! I've lived every day for this moment!"
+    },
+    {
+     "who": "itachi",
+     "side": "right",
+     "text": "You're still weak, little brother. You lack hatred."
+    },
+    {
+     "who": "naruto",
+     "side": "left",
+     "text": "Sasuke! Hang on!"
+    }
+   ],
+   "after": [
+    {
+     "who": "jiraiya",
+     "side": "left",
+     "text": "Frog Call — go ahead and try to leave. My stomach might keep you."
+    },
+    {
+     "who": "itachi",
+     "side": "right",
+     "text": "Kisame. We're leaving."
+    },
+    {
+     "who": "jiraiya",
+     "side": "left",
+     "text": "They'll be back. Naruto, pack your things — we're finding Tsunade."
+    }
+   ]
+  },
+  "sc1_10": {
+   "before": [
+    {
+     "who": "jiraiya",
+     "side": "left",
+     "text": "Spin, stop, burst. The Rasengan is all control. Keep popping those balloons."
+    },
+    {
+     "who": "naruto",
+     "side": "left",
+     "text": "Almost... I can feel it!"
+    },
+    {
+     "who": "tsunade",
+     "side": "right",
+     "text": "Hokage? Only fools want that title. Everyone who held it died for nothing."
+    },
+    {
+     "who": "naruto",
+     "side": "left",
+     "text": "Take that back! I'll prove it to you — give me a week!"
+    }
+   ],
+   "boss": [
+    {
+     "who": "kabuto",
+     "side": "right",
+     "text": "Your will is admirable, Naruto. But admiration won't save you."
+    },
+    {
+     "who": "tsunade",
+     "side": "left",
+     "text": "Blood... my hands won't stop shaking... No. Not today."
+    },
+    {
+     "who": "naruto",
+     "side": "left",
+     "text": "I don't give up. Ever. Rasengan!"
+    }
+   ],
+   "after": [
+    {
+     "who": "tsunade",
+     "side": "left",
+     "text": "You bet your life on that dream. Then I'll bet on you."
+    },
+    {
+     "who": "tsunade",
+     "side": "left",
+     "text": "Here. This necklace belonged to people I loved. It's yours."
+    },
+    {
+     "who": "shizune",
+     "side": "left",
+     "text": "Lady Tsunade... so it's decided. You're coming back as the Fifth."
+    }
+   ]
+  },
+  "sc1_11": {
+   "before": [
+    {
+     "who": "shikamaru",
+     "side": "left",
+     "text": "Sasuke's gone and the Sound Four are escorting him out. What a drag — I'm leading this?"
+    },
+    {
+     "who": "sakura",
+     "side": "left",
+     "text": "Naruto... please. Bring Sasuke back."
+    },
+    {
+     "who": "naruto",
+     "side": "left",
+     "text": "I promise. And I don't break promises."
+    },
+    {
+     "who": "tayuya",
+     "side": "right",
+     "text": "Leaf trash. You're too late, he's ours."
+    }
+   ],
+   "boss": [
+    {
+     "who": "jirobo",
+     "side": "right",
+     "text": "Five little genin. I'll crush you one by one."
+    },
+    {
+     "who": "choji",
+     "side": "left",
+     "text": "You go on ahead. I'll handle this one — I'm not scared anymore."
+    },
+    {
+     "who": "shikamaru",
+     "side": "left",
+     "text": "Everyone take one and catch up. Naruto — you go for Sasuke."
+    }
+   ],
+   "after": [
+    {
+     "who": "neji",
+     "side": "left",
+     "text": "Go. My eyes can see where he went."
+    },
+    {
+     "who": "kiba",
+     "side": "left",
+     "text": "Akamaru and I have got this guy. Get moving!"
+    },
+    {
+     "who": "naruto",
+     "side": "left",
+     "text": "Everybody's staying behind for me... I can't turn back now."
+    }
+   ]
+  },
+  "sc1_12": {
+   "before": [
+    {
+     "who": "kimimaro",
+     "side": "right",
+     "text": "Lord Orochimaru's vessel will not be taken. My bones are enough to stop you."
+    },
+    {
+     "who": "lee",
+     "side": "left",
+     "text": "Then I'll stand against them. Naruto, go!"
+    },
+    {
+     "who": "gaara",
+     "side": "left",
+     "text": "I've learned what it means to protect someone. Step aside, Lee."
+    },
+    {
+     "who": "tayuya",
+     "side": "right",
+     "text": "Wind girl. Tch."
+    }
+   ],
+   "boss": [
+    {
+     "who": "sasuke_c",
+     "side": "right",
+     "text": "You're my closest friend. That's exactly why I have to break it."
+    },
+    {
+     "who": "naruto_k",
+     "side": "left",
+     "text": "I don't care what you are. I'm dragging you home even if I break every bone you have!"
+    }
+   ],
+   "after": [
+    {
+     "side": "none",
+     "text": "At the Valley of the End, rain falls on two figures. Only one walks away."
+    },
+    {
+     "who": "kakashi",
+     "side": "left",
+     "text": "Naruto... You did everything you could."
+    },
+    {
+     "who": "naruto",
+     "side": "left",
+     "text": "I'm not done. I'll get stronger, and next time I'll bring him back."
+    },
+    {
+     "who": "jiraiya",
+     "side": "left",
+     "text": "Then come with me. We train properly — for as long as it takes."
+    }
+   ]
+  },
+  "sc1_13": {
+   "before": [
+    {
+     "side": "none",
+     "text": "Years ago, in the Third Great Ninja War."
+    },
+    {
+     "who": "minato",
+     "side": "left",
+     "text": "Kakashi, you're leading this mission. Obito, Rin — you follow him."
+    },
+    {
+     "who": "kakashi_y",
+     "side": "left",
+     "text": "Rules first. Personal feelings can wait."
+    },
+    {
+     "who": "obito_y",
+     "side": "left",
+     "text": "Rules, rules. Some people just want to be right."
+    }
+   ],
+   "boss": [
+    {
+     "who": "kakkou",
+     "side": "right",
+     "text": "The girl's a medic. We'll get what we need out of her."
+    },
+    {
+     "who": "obito_y",
+     "side": "left",
+     "text": "Rules mean nothing if we leave Rin behind. I'm going after her — with or without you!"
+    },
+    {
+     "who": "kakashi_y",
+     "side": "left",
+     "text": "Wait... Obito. I'm coming too."
+    }
+   ],
+   "after": [
+    {
+     "who": "obito_y",
+     "side": "left",
+     "text": "My left eye... Kakashi, take it. Watch over Rin — see everything I won't get to."
+    },
+    {
+     "who": "rin",
+     "side": "left",
+     "text": "Obito... no!"
+    },
+    {
+     "who": "kakashi_y",
+     "side": "left",
+     "text": "I won't let anyone else die in front of me. Not ever again."
+    }
+   ]
+  },
+  "sc2_01": {
+   "before": [
+    {
+     "who": "naruto_s",
+     "side": "left",
+     "text": "Two and a half years... The village looks exactly the same."
+    },
+    {
+     "who": "sakura_s",
+     "side": "left",
+     "text": "Naruto?! You got taller!"
+    },
+    {
+     "who": "konohamaru_s",
+     "side": "right",
+     "text": "Boss! I've got a new jutsu to show you!"
+    },
+    {
+     "who": "kakashi_s",
+     "side": "left",
+     "text": "Welcome home. How about the bell test — for old times' sake?"
+    }
+   ],
+   "boss": [
+    {
+     "who": "kakashi_s",
+     "side": "right",
+     "text": "Come at me like you mean to kill me. This time I won't be reading."
+    },
+    {
+     "who": "naruto_s",
+     "side": "left",
+     "text": "You sure you want to go all-out, Kakashi-sensei?"
+    }
+   ],
+   "after": [
+    {
+     "who": "kakashi_s",
+     "side": "left",
+     "text": "You've grown. Both of you. You're not my students anymore — we stand as equals."
+    },
+    {
+     "who": "sakura_s",
+     "side": "left",
+     "text": "Team Kakashi. Now we're strong enough to go after him."
+    }
+   ]
+  },
+  "sc2_02": {
+   "before": [
+    {
+     "side": "none",
+     "text": "The Hidden Sand. Its new Kazekage is the young Gaara."
+    },
+    {
+     "who": "deidara",
+     "side": "right",
+     "text": "True art lasts one brilliant instant. Today the One-Tails will be my masterpiece."
+    },
+    {
+     "who": "gaara_k",
+     "side": "left",
+     "text": "I won't let a single spark reach the village."
+    },
+    {
+     "who": "kankuro_s",
+     "side": "left",
+     "text": "He's taking Gaara! After him!"
+    }
+   ],
+   "boss": [
+    {
+     "who": "sasori",
+     "side": "right",
+     "text": "You work puppets, boy? Let me show you what a master sounds like."
+    },
+    {
+     "who": "kankuro_s",
+     "side": "left",
+     "text": "Sasori of the Red Sand... you're not getting past me."
+    }
+   ],
+   "after": [
+    {
+     "who": "kankuro_s",
+     "side": "left",
+     "text": "Poison... Call the Leaf. Gaara's been taken."
+    },
+    {
+     "who": "baki_s",
+     "side": "left",
+     "text": "Send word to Konoha at once. We need their help."
+    }
+   ]
+  },
+  "sc2_03": {
+   "before": [
+    {
+     "who": "naruto_s",
+     "side": "left",
+     "text": "Gaara's a Kage now, and they took him! We move now!"
+    },
+    {
+     "who": "chiyo",
+     "side": "left",
+     "text": "Old bones slow the pace, but these eyes still see puppets well."
+    },
+    {
+     "who": "itachi_s",
+     "side": "right",
+     "text": "Naruto. You've come a long way."
+    },
+    {
+     "who": "kakashi_s",
+     "side": "left",
+     "text": "Itachi... Everyone, don't look at his eyes."
+    }
+   ],
+   "boss": [
+    {
+     "who": "kisame_s",
+     "side": "right",
+     "text": "Another one of Guy's kids? You'll make fine fish food."
+    },
+    {
+     "who": "naruto_s",
+     "side": "left",
+     "text": "Get out of my way! Gaara doesn't have time for this!"
+    }
+   ],
+   "after": [
+    {
+     "who": "kakashi_s",
+     "side": "left",
+     "text": "A body-double. It was only a fraction of Itachi's strength."
+    },
+    {
+     "who": "naruto_s",
+     "side": "left",
+     "text": "Then the real fight's still ahead. Let's go."
+    }
+   ]
+  },
+  "sc2_04": {
+   "before": [
+    {
+     "who": "sakura_s",
+     "side": "left",
+     "text": "Lady Chiyo, I'll be your eyes. Just tell me when to move."
+    },
+    {
+     "who": "chiyo",
+     "side": "left",
+     "text": "You have my granddaughter's daring, girl. Good."
+    },
+    {
+     "who": "sasori",
+     "side": "right",
+     "text": "Grandmother. Still pulling strings after all these years."
+    },
+    {
+     "who": "deidara",
+     "side": "right",
+     "text": "Puppets that last forever? No, Master Sasori. Art should end in a flash."
+    }
+   ],
+   "boss": [
+    {
+     "who": "sasori",
+     "side": "right",
+     "text": "A body that never decays, never dies. This is eternal art."
+    },
+    {
+     "who": "sakura_s",
+     "side": "left",
+     "text": "Then I'll break it with my own two hands!"
+    }
+   ],
+   "after": [
+    {
+     "who": "chiyo",
+     "side": "left",
+     "text": "An old woman has one jutsu left. Gaara, take my life and live."
+    },
+    {
+     "who": "gaara_k",
+     "side": "left",
+     "text": "Naruto... everyone came for me."
+    },
+    {
+     "who": "naruto_s",
+     "side": "left",
+     "text": "Of course we did. You're my friend."
+    }
+   ]
+  },
+  "sc2_05": {
+   "before": [
+    {
+     "who": "yamato",
+     "side": "left",
+     "text": "Kakashi is resting, so I'm in charge. Call me Yamato."
+    },
+    {
+     "who": "sai",
+     "side": "right",
+     "text": "So you're Naruto. Loud, and not much else, from what I've read."
+    },
+    {
+     "who": "naruto_s",
+     "side": "left",
+     "text": "What did you just say?!"
+    },
+    {
+     "who": "danzo",
+     "side": "right",
+     "text": "Remember your true mission, Sai. Root sees everything."
+    }
+   ],
+   "boss": [
+    {
+     "who": "sai",
+     "side": "right",
+     "text": "Bonds are just weakness. I was trained to feel nothing."
+    },
+    {
+     "who": "naruto_s",
+     "side": "left",
+     "text": "Then why do you look like you're hiding something?"
+    }
+   ],
+   "after": [
+    {
+     "who": "yamato",
+     "side": "left",
+     "text": "Friction is expected. Now — the Tenchi Bridge. Orochimaru's spy will be waiting."
+    },
+    {
+     "who": "sakura_s",
+     "side": "left",
+     "text": "Could this lead us to Sasuke?"
+    }
+   ]
+  },
+  "sc2_06": {
+   "before": [
+    {
+     "who": "yamato",
+     "side": "left",
+     "text": "I'm wearing Sasori's face. Let's see who shows up."
+    },
+    {
+     "who": "kabuto_s",
+     "side": "right",
+     "text": "Sasori. My memories of your orders have finally returned."
+    },
+    {
+     "who": "orochimaru_s",
+     "side": "right",
+     "text": "Kabuto. And the Nine-Tails brat, too? How nostalgic."
+    }
+   ],
+   "boss": [
+    {
+     "who": "naruto_4t",
+     "side": "left",
+     "text": "Hand over Sasuke!"
+    },
+    {
+     "who": "orochimaru_s",
+     "side": "right",
+     "text": "Four tails already. How amusing."
+    },
+    {
+     "who": "sakura_s",
+     "side": "left",
+     "text": "Naruto, stop! You're hurting yourself!"
+    }
+   ],
+   "after": [
+    {
+     "who": "naruto_s",
+     "side": "left",
+     "text": "I... I hurt Sakura, didn't I?"
+    },
+    {
+     "who": "yamato",
+     "side": "left",
+     "text": "We track Sai from here. He went off with Orochimaru."
+    }
+   ]
+  },
+  "sc2_07": {
+   "before": [
+    {
+     "who": "sai",
+     "side": "right",
+     "text": "Danzo's orders were to kill Sasuke. But I want to understand bonds."
+    },
+    {
+     "who": "naruto_s",
+     "side": "left",
+     "text": "Then follow me. I'll show you."
+    },
+    {
+     "who": "kabuto_s",
+     "side": "right",
+     "text": "Sasuke is resting. You shouldn't disturb him."
+    }
+   ],
+   "boss": [
+    {
+     "who": "sasuke_s",
+     "side": "right",
+     "text": "Naruto. You're still chasing me?"
+    },
+    {
+     "who": "naruto_s",
+     "side": "left",
+     "text": "Always. I'm bringing you home."
+    },
+    {
+     "who": "sasuke_s",
+     "side": "right",
+     "text": "I cut our bond long ago. This time I'll finish you."
+    }
+   ],
+   "after": [
+    {
+     "who": "orochimaru_s",
+     "side": "right",
+     "text": "Not yet, Sasuke. We still need him alive for the time being."
+    },
+    {
+     "who": "sakura_s",
+     "side": "left",
+     "text": "He just... left."
+    },
+    {
+     "who": "naruto_s",
+     "side": "left",
+     "text": "I'm getting stronger. Then next time, I won't fail."
+    }
+   ]
+  },
+  "sc2_08": {
+   "before": [
+    {
+     "who": "kakashi_w",
+     "side": "left",
+     "text": "Your chakra is wind. Split this leaf with it alone — then we'll talk jutsu."
+    },
+    {
+     "who": "yamato",
+     "side": "left",
+     "text": "I'll hold the Nine-Tails down if it stirs. Train as hard as you like."
+    },
+    {
+     "who": "naruto_s",
+     "side": "left",
+     "text": "Clones means more training at once. Let's go, all of me!"
+    }
+   ],
+   "boss": [
+    {
+     "who": "kakashi_w",
+     "side": "right",
+     "text": "Face me with everything you've got. Wind and Rasengan together."
+    },
+    {
+     "who": "naruto_s",
+     "side": "left",
+     "text": "Feels like my arm might tear off... but I'll finish this!"
+    }
+   ],
+   "after": [
+    {
+     "who": "kakashi_w",
+     "side": "left",
+     "text": "Wind Style: Rasenshuriken. You've gone past me, Naruto."
+    },
+    {
+     "who": "naruto_s",
+     "side": "left",
+     "text": "Then I'm ready. Whoever Akatsuki sends, I'll face them."
+    }
+   ]
+  },
+  "sc2_09": {
+   "before": [
+    {
+     "who": "hidan",
+     "side": "right",
+     "text": "Lord Jashin wants a sacrifice. Lucky you."
+    },
+    {
+     "who": "kakuzu",
+     "side": "right",
+     "text": "His bounty is worth more than your prayers, Hidan."
+    },
+    {
+     "who": "asuma",
+     "side": "left",
+     "text": "Shikamaru, keep your head. We fight them smart."
+    }
+   ],
+   "boss": [
+    {
+     "who": "hidan",
+     "side": "right",
+     "text": "My blood, your pain. Isn't that beautiful?"
+    },
+    {
+     "who": "asuma",
+     "side": "left",
+     "text": "Shikamaru... I leave the king in your hands. Protect it."
+    }
+   ],
+   "after": [
+    {
+     "who": "shikamaru_s",
+     "side": "left",
+     "text": "I'll protect the King. I promise, Asuma."
+    },
+    {
+     "side": "none",
+     "text": "The Leaf loses one of its best. Shikamaru swears to hunt them down."
+    }
+   ]
+  },
+  "sc2_10": {
+   "before": [
+    {
+     "who": "shikamaru_s",
+     "side": "left",
+     "text": "I've read every move. They'll dance where I tell them."
+    },
+    {
+     "who": "hidan",
+     "side": "right",
+     "text": "You again? This time you die, kid."
+    },
+    {
+     "who": "kakashi_s",
+     "side": "left",
+     "text": "You get one, Shikamaru. The rest is our job."
+    }
+   ],
+   "boss": [
+    {
+     "who": "kakuzu",
+     "side": "right",
+     "text": "I've lived through ninety years of war. Five hearts, five lives."
+    },
+    {
+     "who": "naruto_s",
+     "side": "left",
+     "text": "Five hearts? I'll go through all of them!"
+    }
+   ],
+   "after": [
+    {
+     "who": "shikamaru_s",
+     "side": "left",
+     "text": "Your god never showed up, Hidan. Rest here forever."
+    },
+    {
+     "who": "naruto_s",
+     "side": "left",
+     "text": "Asuma-sensei... this is our win."
+    }
+   ]
+  },
+  "sc2_11": {
+   "before": [
+    {
+     "who": "pain",
+     "side": "right",
+     "text": "This village has known peace too long. I will teach it what loss feels like."
+    },
+    {
+     "who": "konan",
+     "side": "right",
+     "text": "The Leaf has hidden the Nine-Tails. We'll tear the village apart."
+    },
+    {
+     "who": "tsunade_s",
+     "side": "left",
+     "text": "Protect everyone! Hold the line until Naruto returns!"
+    }
+   ],
+   "boss": [
+    {
+     "who": "naruto_sg",
+     "side": "left",
+     "text": "Sage Mode. I'm done running."
+    },
+    {
+     "who": "hinata_s",
+     "side": "left",
+     "text": "I love you, Naruto. That's why I'm not afraid."
+    },
+    {
+     "who": "pain",
+     "side": "right",
+     "text": "Everything is on this side. Nothing will stop us."
+    }
+   ],
+   "after": [
+    {
+     "who": "nagato",
+     "side": "right",
+     "text": "You broke the cycle. Maybe your answer is the right one."
+    },
+    {
+     "who": "naruto_sg",
+     "side": "left",
+     "text": "Master Jiraiya believed in peace. I'll make it real."
+    },
+    {
+     "side": "none",
+     "text": "The whole village greets Naruto as a hero."
+    }
+   ]
+  },
+  "sc2_12": {
+   "before": [
+    {
+     "side": "none",
+     "text": "The five Kage meet in the Land of Iron."
+    },
+    {
+     "who": "mifune",
+     "side": "left",
+     "text": "This summit is neutral ground. Keep your weapons sheathed."
+    },
+    {
+     "who": "raikage",
+     "side": "right",
+     "text": "Sasuke's band dragged off my brother. I want the Uchiha brought before me!"
+    },
+    {
+     "who": "sasuke_t",
+     "side": "right",
+     "text": "Danzo. You ordered the death of my clan."
+    }
+   ],
+   "boss": [
+    {
+     "who": "danzo",
+     "side": "right",
+     "text": "A sacrifice for the village. That's all it ever was."
+    },
+    {
+     "who": "sasuke_t",
+     "side": "right",
+     "text": "Then die for your village."
+    }
+   ],
+   "after": [
+    {
+     "who": "naruto_s",
+     "side": "left",
+     "text": "Sasuke... I'm taking all of your hatred myself."
+    },
+    {
+     "who": "sasuke_t",
+     "side": "right",
+     "text": "You really don't give up."
+    },
+    {
+     "who": "darui",
+     "side": "right",
+     "text": "War is here, boss. It's coming either way."
+    }
+   ]
+  },
+  "sc2_13": {
+   "before": [
+    {
+     "who": "gaara_w",
+     "side": "left",
+     "text": "There is no Sand or Leaf here. We fight as one army!"
+    },
+    {
+     "who": "zabuza_r",
+     "side": "right",
+     "text": "Pulled back from the dead again. That's just annoying."
+    },
+    {
+     "who": "kinkaku",
+     "side": "right",
+     "text": "The Gold and Silver Brothers never lose!"
+    }
+   ],
+   "boss": [
+    {
+     "who": "madara",
+     "side": "right",
+     "text": "Is this the best the new world can do? Entertain me."
+    },
+    {
+     "who": "obito_m",
+     "side": "right",
+     "text": "The Moon's Eye Plan will come true. There will be no more loss."
+    }
+   ],
+   "after": [
+    {
+     "who": "naruto_w",
+     "side": "left",
+     "text": "All of us are connected. Nobody fights alone here."
+    },
+    {
+     "who": "kakashi_w",
+     "side": "left",
+     "text": "Obito... come home. It's still not too late."
+    }
+   ]
+  },
+  "sc2_14": {
+   "before": [
+    {
+     "who": "madara_w",
+     "side": "right",
+     "text": "The Infinite Tsukuyomi has begun. Sleep, world."
+    },
+    {
+     "who": "kaguya",
+     "side": "right",
+     "text": "This planet is mine. Mere mortals have no place on it."
+    },
+    {
+     "who": "sakura_w",
+     "side": "left",
+     "text": "Team 7, one last time."
+    },
+    {
+     "who": "sasuke_w",
+     "side": "left",
+     "text": "Don't drag behind, Naruto."
+    }
+   ],
+   "boss": [
+    {
+     "who": "kaguya",
+     "side": "right",
+     "text": "Why do these fragments of my chakra keep defying me?"
+    },
+    {
+     "who": "naruto_w",
+     "side": "left",
+     "text": "Sasuke — now!"
+    },
+    {
+     "who": "sasuke_w",
+     "side": "left",
+     "text": "Together!"
+    }
+   ],
+   "after": [
+    {
+     "side": "none",
+     "text": "The sun rises over a world set free."
+    },
+    {
+     "who": "sasuke_w",
+     "side": "left",
+     "text": "Naruto... you win."
+    },
+    {
+     "who": "naruto_w",
+     "side": "left",
+     "text": "We win. Let's go home together."
+    }
+   ]
+  }
+ }
+}

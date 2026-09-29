@@ -76,7 +76,12 @@
         // Boss Battles: { "giant": "<id>" } spawns the giant from data/bosses.json
         if (enemyData && typeof enemyData === 'object' && enemyData.giant && window.BattleBoss) {
           const boss = window.BattleBoss.createUnit(bm, enemyData.giant);
-          if (boss) return boss;
+          if (boss) {
+            // Ninja Road sizes its giants per floor: { giant, hp, atk }
+            if (Number(enemyData.hp) > 0) { boss.stats.hp = boss.stats.maxHP = Number(enemyData.hp); }
+            if (Number(enemyData.atk) > 0) boss.stats.atk = Number(enemyData.atk);
+            return boss;
+          }
         }
 
         let base;
@@ -134,6 +139,16 @@
           base = { ...base, stats: tuned };
         }
 
+        // Size story/event enemies to the mission's recommended power, rising
+        // through its stages, waves and ranks (js/battle/battle-difficulty.js).
+        if (window.BattleDifficulty && !bm.isArena && !bm.isNinjaRoad) {
+          const stages = bm.missionData?.difficulties?.[bm.difficulty] || [];
+          base = { ...base, stats: window.BattleDifficulty.enemyStats(bm, base, enemyData, {
+            stageIndex: bm.currentStageIndex || 0, stageCount: stages.length || 1,
+            waveIndex, waveCount: waves.length || 1,
+          }) };
+        }
+
         // Convert sprite to portrait for compatibility
         const portrait = base.portrait || base.sprite || "assets/characters/common/silhouette.png";
 
@@ -143,6 +158,9 @@
         const unit = bm.units ?
           bm.units.createCombatant({
             id: base.id,
+            // Arena rivals are real playable units: give them their character
+            // id so they fight with their battle animations instead of a card.
+            charId: (bm.isArena || bm.isNinjaRoad) ? base.id : undefined,
             name: base.name,
             portrait: portrait,
             isPlayer: false,
@@ -169,6 +187,8 @@
             chakraMode: "NONE"
           };
         unit._ref = { enemy: base, base };
+        // Marked bosses (mission data "boss": true) enrage at low HP (battle-combat AI)
+        if (enemyData && typeof enemyData === 'object' && enemyData.boss) unit.isMissionBoss = true;
 
         // Initialize passive abilities (if enemy has any)
         if (window.BattlePassives) {
@@ -233,7 +253,11 @@
         // Show wave transition message
         this.showWaveTransition(bm, bm.currentWaveIndex + 2, totalWaves);
 
-        setTimeout(() => {
+        setTimeout(async () => {
+          // Story missions: a short scene before the final (boss) wave
+          if (this.isFinalWave(bm, bm.currentStageIndex, bm.currentWaveIndex + 1)) {
+            await this.playStoryBeat(bm, "boss");
+          }
           this.loadWave(bm, currentStage.waves, bm.currentWaveIndex + 1);
         }, 2000);
       }
@@ -254,6 +278,9 @@
           if (window.BattleRewards) {
             await window.BattleRewards.collectStageChest(bm);
           }
+          if (this.isFinalWave(bm, bm.currentStageIndex + 1, 0)) {
+            await this.playStoryBeat(bm, "boss");
+          }
           this.loadStage(bm, bm.currentStageIndex + 1);
         }, 2500);
       }
@@ -262,7 +289,7 @@
         console.log("[Missions] All stages and waves complete!");
 
         // Award final stage chest (arena pays out via arena stars instead)
-        if (window.BattleRewards && !bm.isArena) {
+        if (window.BattleRewards && !bm.isArena && !bm.isNinjaRoad) {
           await window.BattleRewards.awardStageChest(currentStage, bm.currentStageIndex, bm);
           // There is no "next stage" to pick it up, so collect it here —
           // otherwise the last stage's rewards (e.g. an SS unit) are never granted
@@ -274,8 +301,10 @@
 
         setTimeout(async () => {
           await this.playOutcomeBanner(bm, true);
+          // Story missions: the closing scene, then the results
+          await this.playStoryBeat(bm, "after");
           // Show results screen with all collected chests
-          if (!bm.isArena && window.BattleRewards && window.BattleRewards.collectedChests.length > 0) {
+          if (!bm.isArena && !bm.isNinjaRoad && window.BattleRewards && window.BattleRewards.collectedChests.length > 0) {
             await window.BattleRewards.showResultsScreen(bm);
           } else {
             this.declareVictory(bm);
@@ -285,12 +314,43 @@
     },
 
     /**
+     * Is (stageIndex, waveIndex) the last wave of the mission?
+     * @param {Object} bm - BattleManager reference
+     */
+    isFinalWave(bm, stageIndex, waveIndex) {
+      const stages = bm.missionData?.difficulties?.[bm.difficulty] || [];
+      const stage = stages[stageIndex];
+      if (!stage || stageIndex !== stages.length - 1) return false;
+      return waveIndex === Math.max(0, (stage.waves?.length || 1) - 1);
+    },
+
+    /**
+     * Story missions: play the mission's 'before' / 'boss' / 'after' scene
+     * (js/story-dialogue.js, data/story-dialogue.json) once. Keeps the field
+     * paused while it is up; resolves when the player finishes or skips it.
+     * @param {Object} bm - BattleManager reference
+     * @param {string} part - 'before' | 'boss' | 'after'
+     */
+    async playStoryBeat(bm, part) {
+      const SD = window.StoryDialogue;
+      if (!SD || bm.isArena || !SD.isStory(bm.missionData)) return;
+      const wasPaused = bm.isPaused;
+      bm.isPaused = true;
+      try {
+        await SD.playFor(bm.missionData, part, { rank: bm.difficulty });
+      } catch (err) {
+        console.warn("[Missions] story scene failed:", err);
+      }
+      bm.isPaused = wasPaused;
+    },
+
+    /**
      * Persist mission completion and grant progression rewards.
      * Runs once per battle; arena fights don't count as missions.
      * @param {Object} bm - BattleManager reference
      */
     async recordMissionComplete(bm) {
-      if (bm._missionCompletionRecorded || bm.isArena) return;
+      if (bm._missionCompletionRecorded || bm.isArena || bm.isNinjaRoad) return;
       bm._missionCompletionRecorded = true;
 
       const missionId = bm.missionData?.id || localStorage.getItem("currentMissionId");
@@ -581,6 +641,7 @@
       if (bm.isArena) {
         this.recordArenaResult(bm, true);
       }
+      if (bm.isNinjaRoad) window.BattleNinjaRoad?.record(bm, true);
 
       // Calculate statistics
       const stats = this.calculateBattleStats(bm);
@@ -605,6 +666,7 @@
       if (bm.isArena) {
         this.recordArenaResult(bm, false);
       }
+      if (bm.isNinjaRoad) window.BattleNinjaRoad?.record(bm, false);
 
       // Calculate statistics
       const stats = this.calculateBattleStats(bm);
@@ -664,10 +726,13 @@
 
       // Create professional stats HTML
       const isArena = !!bm.isArena;
+      const isRoad = !!bm.isNinjaRoad;
       const subtitle = isArena
         ? (isVictory ? "Arena Victory" : "Arena Defeat")
-        : (isVictory ? "Mission Accomplished" : "Mission Failed");
-      const returnUrl = isArena ? 'arena.html' : 'missions.html';
+        : isRoad
+          ? (isVictory ? "Floor Cleared" : "Squad Defeated")
+          : (isVictory ? "Mission Accomplished" : "Mission Failed");
+      const returnUrl = isArena ? 'arena.html' : isRoad ? 'ninja-road.html' : 'missions.html';
 
       // Arena outcome rows (stars, streak, ryo)
       const arena = bm._arenaOutcome;
@@ -707,14 +772,14 @@
         <div class="result-stats">
           <!-- Mission Info -->
           <div class="stat-row">
-            <span class="stat-label">${isArena ? "Mode" : "Mission"}</span>
+            <span class="stat-label">${(isArena || isRoad) ? "Mode" : "Mission"}</span>
             <span class="stat-value gold">${bm.missionData.name}</span>
           </div>
 
-          <div class="stat-row">
+          ${isRoad ? '' : `<div class="stat-row">
             <span class="stat-label">Difficulty</span>
             <span class="stat-value gold">${bm.difficulty}-Rank</span>
-          </div>
+          </div>`}
 
           <div class="stat-divider"></div>
 
@@ -759,7 +824,7 @@
           <button class="result-btn primary" id="btn-continue-battle">
             ${isVictory ? "Continue" : "Return"}
           </button>
-          ${!isVictory ? '<button class="result-btn secondary" id="btn-retry-battle">Retry</button>' : ''}
+          ${(!isVictory && !isRoad) ? '<button class="result-btn secondary" id="btn-retry-battle">Retry</button>' : ''}
         </div>
       `;
 

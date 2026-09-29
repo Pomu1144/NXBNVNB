@@ -1,0 +1,14 @@
+{
+  "appId": "com.pomu1144.ninjalegends",
+  "appName": "Ninja Legends",
+  "webDir": "www",
+  "backgroundColor": "#101418",
+  "ios": {
+    "contentInset": "never",
+    "scrollEnabled": false,
+    "allowsLinkPreview": false
+  },
+  "android": {
+    "allowMixedContent": false
+  }
+}

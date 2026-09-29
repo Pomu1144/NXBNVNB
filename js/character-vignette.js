@@ -5,14 +5,16 @@
  *   HomeCharacter.set('minato_2101')   // switch (persists)
  *   HomeCharacter.openPicker()         // show the chooser
  *
- * Add a character by rendering a transparent full-body image into
- * assets/home/<charId>.webp and listing it in ROSTER below.
+ * Add a character by rendering a transparent image into
+ * assets/home/<charId>.webp and listing it in ROSTER below; `bust: true`
+ * marks half-body art (cut at the waist), which fills the screen height
+ * and tucks its cut edge under the bottom bar.
  */
 (function () {
   'use strict';
 
   const ROSTER = {
-    minato_2101: { name: 'Minato Namikaze', title: 'Raikosekka', img: 'assets/home/minato_2101.webp' },
+    minato_2101: { name: 'Minato Namikaze', title: 'Raikosekka', img: 'assets/home/minato_2101_bust.webp', bust: true },
   };
   const DEFAULT_ID = 'minato_2101';
   const STORE_KEY = 'blazing_home_character_v1';
@@ -38,6 +40,8 @@
     const el = document.createElement('div');
     el.className = 'home-char';
     el.dataset.charId = id;
+    // Half-body art stands bigger and runs down behind the bottom bar.
+    container.classList.toggle('is-bust', !!entry.bust);
     el.innerHTML = `
       <div class="home-char-glow" aria-hidden="true"></div>
       <div class="home-char-shadow" aria-hidden="true"></div>

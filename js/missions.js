@@ -225,9 +225,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const clearedCount = missionsToRender.filter(m => ranksOf(m).some(r => isCleared(m.id, r))).length;
     const head = document.createElement('div');
     head.className = 'mission-list-head';
+    const blurb = TAB_BLURB[categoryName];
     head.innerHTML = `
-      <span class="mlh-blurb">${esc(TAB_BLURB[categoryName] || '')}</span>
-      <span class="jjk-chip mlh-count">${clearedCount} / ${missionsToRender.length} cleared</span>`;
+      <span class="jjk-chip mlh-count">${clearedCount} / ${missionsToRender.length} cleared</span>
+      ${blurb && window.HelpTip ? window.HelpTip.button(categoryName, blurb) : ''}`;
     listContainer.appendChild(head);
 
     missionsToRender.forEach(mission => {
@@ -319,6 +320,9 @@ document.addEventListener('DOMContentLoaded', () => {
       const clear = mission.clearRewards?.[selected] || {};
       const repeat = mergeMaps(...stages.map(s => s.rewards || {}), clear.completion || {});
       const waves = stages.reduce((n, s) => n + (s.waves?.length || 0), 0);
+      // Cleared story missions can replay their scenes (js/story-dialogue.js)
+      const storyReplay = !!(window.StoryDialogue && window.StoryDialogue.isStory(mission)
+        && ranks.some(r => isCleared(mission.id, r)));
 
       const rankBtns = ranks.map(r => {
         const rOpen = isRankOpen(mission, r), rClear = isCleared(mission.id, r);
@@ -397,6 +401,7 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
             <div class="md-go">
               ${lockText ? `<span class="mission-lock-note">${esc(lockText)}</span>` : ''}
+              ${storyReplay ? '<button type="button" class="md-story-btn">Story</button>' : ''}
               <button type="button" class="start-btn" ${open ? '' : 'disabled'}>${open ? 'Start Mission' : 'Locked'}</button>
             </div>
           </div>
@@ -411,6 +416,8 @@ document.addEventListener('DOMContentLoaded', () => {
         selected = btn.dataset.difficulty;
         paint();
       }));
+      const storyBtn = modal.querySelector('.md-story-btn');
+      if (storyBtn) storyBtn.addEventListener('click', () => window.StoryDialogue.replay(mission, { rank: selected }));
       modal.querySelector('.start-btn').addEventListener('click', () => {
         if (!isRankOpen(mission, selected)) return;
         localStorage.setItem('currentMissionId', String(mission.id));

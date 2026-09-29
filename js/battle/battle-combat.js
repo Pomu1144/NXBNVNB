@@ -1950,8 +1950,22 @@
         return;
       }
 
-      const target = targets[Math.floor(Math.random() * targets.length)];
+      // Enemies play to win: they usually go after the most wounded unit and
+      // reach for their jutsu / ultimate whenever they can afford it.
+      const enemySide = !unit.isPlayer;
+      const pctHp = u => (u.stats.hp || 0) / Math.max(1, u.stats.maxHP || u.stats.hp || 1);
+      const target = enemySide && Math.random() < 0.55
+        ? targets.reduce((a, b) => (pctHp(b) < pctHp(a) ? b : a))
+        : targets[Math.floor(Math.random() * targets.length)];
       const skills = this.getUnitSkills(unit);
+
+      // A mission boss below 35% HP enrages once: +30% ATK for the rest of the fight.
+      if (enemySide && unit.isMissionBoss && !unit._enraged && pctHp(unit) < 0.35) {
+        unit._enraged = true;
+        unit.stats.atk = Math.round((unit.stats.atk || 0) * 1.3);
+        window.BattleNarrator?.narrate?.(`${unit.name} is enraged!`, core);
+        core.dom?.scene?.querySelector(`.battle-unit[data-unit-id="${unit.id}"]`)?.classList.add('is-enraged');
+      }
 
       console.log(`[Combat] AI selected target: ${target.name}, has skills:`, {
         jutsu: !!skills.jutsu,
@@ -1963,14 +1977,14 @@
                        this.isUltimateUnlocked(unit) &&
                        !this.isSkillSealed(unit, 'ultimate') &&
                        unit.chakra >= this.getSkillChakraCost(unit, skills.ultimate, 8) &&
-                       Math.random() > 0.7;
+                       Math.random() > (enemySide ? 0.35 : 0.7);
 
       // Check if jutsu is available and random chance
       const preferJut = skills.jutsu &&
                        this.isJutsuUnlocked(unit) &&
                        !this.isSkillSealed(unit, 'jutsu') &&
                        unit.chakra >= this.getSkillChakraCost(unit, skills.jutsu, 4) &&
-                       Math.random() > 0.5;
+                       Math.random() > (enemySide ? 0.25 : 0.5);
 
       // Execute chosen action — onDone fires when combat fully resolves
       if (preferUlt) {

@@ -23,6 +23,8 @@
   <link rel="stylesheet" href="css/bottombar.css" />
   <link rel="stylesheet" href="css/arena.css" />
   <link rel="stylesheet" href="css/mobile.css" />
+  <link rel="stylesheet" href="css/help-tip.css" />
+  <script src="js/help-tip.js"></script>
 </head>
 <body class="page-arena">
   <!-- Line icons (thin stroke, currentColor) -->
@@ -55,7 +57,6 @@
     <header class="wb-head">
       <a href="village.html" class="wb-icon-btn" aria-label="Back to village"><svg><use href="#i-back"/></svg></a>
       <div class="wb-title">
-        <span class="wb-kicker">Ranked PvP</span>
         <h1>Arena Showdown</h1>
       </div>
     </header>
@@ -99,18 +100,11 @@
         <div><dt>Best</dt><dd id="record-best">0</dd></div>
       </dl>
 
-      <button class="wb-line wb-rules-toggle" id="wb-rules-toggle" onclick="toggleArenaRules()" aria-expanded="false" aria-controls="wb-rules">
+      <div class="wb-line wb-rules-line">
         <i class="wb-diamond" aria-hidden="true"></i>
         <span class="wb-kicker">Special rules</span>
         <span class="wb-line-text" id="wb-rules-summary">Bonus star every 3rd win</span>
-        <svg class="wb-chev"><use href="#i-chev"/></svg>
-      </button>
-      <div class="wb-rules" id="wb-rules" hidden>
-        <ul>
-          <li><b>Victory</b><span>+1 <svg class="wb-star"><use href="#i-star"/></svg> plus rival bounty &mdash; Formidable +1, Elite +2</span></li>
-          <li><b>Streak</b><span>Every 3rd straight win adds a bonus <svg class="wb-star"><use href="#i-star"/></svg></span></li>
-          <li><b>Defeat</b><span>Above Chunin a loss costs 1 <svg class="wb-star"><use href="#i-star"/></svg></span></li>
-        </ul>
+        <button type="button" class="help-tip" aria-label="How this works" aria-expanded="false" data-help-title="Arena stars" data-help="Victory: +1 star, plus the rival&#39;s bounty (Formidable +1, Elite +2).&#10;Streak: every 3rd straight win adds a bonus star.&#10;Defeat: above Chunin a loss costs 1 star.">?</button>
       </div>
 
       <div class="wb-line wb-reward" id="al-status-foot">
@@ -140,7 +134,7 @@
       </div>
       <button class="wb-start" id="btn-battle-arena" onclick="openArenaBattle()">
         <span class="wb-start-label"><i class="wb-diamond" aria-hidden="true"></i>Start Battle</span>
-        <span class="wb-start-sub" id="al-start-sub">Three rivals near your rank</span>
+        <span class="wb-start-sub" id="al-start-sub" hidden></span>
       </button>
     </nav>
   </div>
@@ -151,7 +145,6 @@
     <div class="wb-sheet-panel">
       <header class="wb-sheet-head">
         <div>
-          <span class="wb-kicker">League</span>
           <h2 class="wb-sheet-title" id="ranking-title">Rank Ladder</h2>
         </div>
         <button class="wb-icon-btn" onclick="toggleRanksTable()" aria-label="Close"><svg><use href="#i-close"/></svg></button>
@@ -171,7 +164,6 @@
     <div class="wb-sheet-panel">
       <header class="wb-sheet-head">
         <div>
-          <span class="wb-kicker">Recent battles</span>
           <h2 class="wb-sheet-title" id="history-title">Battle Record</h2>
         </div>
         <button class="wb-icon-btn" onclick="toggleHistoryTable()" aria-label="Close"><svg><use href="#i-close"/></svg></button>
@@ -220,6 +212,7 @@
 
   <script src="js/audio-manager.js"></script>
   <script src="js/resources.js"></script>
+  <script src="js/sprite-player.js"></script>
   <script>
   // ── Star glyph — thin pale-gold star (svg sprite #i-star) ────────────────
   function starIco(px = 12) {
@@ -377,19 +370,6 @@
     }
   }
 
-  // ── Special rules: one line that expands over the panel ───────────────────
-  function toggleArenaRules(force) {
-    const box = document.getElementById('wb-rules');
-    const btn = document.getElementById('wb-rules-toggle');
-    const open = typeof force === 'boolean' ? force : box.hidden;
-    box.hidden = !open;
-    btn.setAttribute('aria-expanded', String(open));
-    document.getElementById('player-rank-card').classList.toggle('rules-open', open);
-  }
-  document.addEventListener('click', e => {
-    if (!e.target.closest?.('#wb-rules, #wb-rules-toggle')) toggleArenaRules(false);
-  });
-
   // ── Team chip stack (the featured art is the fixed Team 7 key art) ───────
   async function renderLobbyTeam() {
     const pool = await loadArenaCharPool();
@@ -456,8 +436,9 @@
 
     // Start Battle sub-line + rules summary track the streak bonus
     const toBonus = 3 - (rec.streak % 3);
-    document.getElementById('al-start-sub').textContent =
-      rec.streak >= 2 ? `${rec.streak}-win streak` : 'Three rivals near your rank';
+    const startSub = document.getElementById('al-start-sub');
+    startSub.textContent = rec.streak >= 2 ? `${rec.streak}-win streak` : '';
+    startSub.hidden = rec.streak < 2;
     document.getElementById('wb-rules-summary').textContent = toBonus === 1
       ? 'Bonus star on next win'
       : `Bonus star in ${toBonus} wins`;
@@ -639,6 +620,12 @@
     };
   }
 
+  function spritePool(pool) {
+    const SP = window.SpritePlayer;
+    if (!SP || typeof SP.has !== 'function') return [];
+    return pool.filter(c => SP.has(c.id));
+  }
+
   function generateRivals(pool) {
     const stars = getArenaStars();
     const rankList = buildRankList();
@@ -657,7 +644,27 @@
       const band = pool.slice(lo, Math.max(hi, lo + 8));
 
       const statMult = 0.85 + progress * 0.55 + tier.statScale;
-      const units = shuffle(band).slice(0, 4).map(c => buildRivalUnit(c, statMult));
+      // Rivals only field units that have battle animations (the rest would
+      // show up as flat portrait cards). The band above still sets how strong
+      // they are: each animated unit is scaled to the band's average power.
+      const animated = spritePool(pool);
+      let units;
+      if (animated.length >= 4) {
+        const target = band.reduce((s, c) => s + (Number(c.powerRank) || 0), 0) / Math.max(1, band.length);
+        const nearest = [...animated]
+          .sort((a, b) => Math.abs(a.powerRank - target) - Math.abs(b.powerRank - target))
+          .slice(0, 12);
+        // one of each character per team (variants share a name and face)
+        const seen = new Set();
+        const picks = shuffle(nearest).filter(c => !seen.has(c.name) && seen.add(c.name));
+        const four = picks.length >= 4 ? picks : shuffle(animated).filter(c => !seen.has(c.name) && seen.add(c.name));
+        units = picks.concat(four === picks ? [] : four).slice(0, 4).map(c => {
+          const scale = Math.min(1.2, Math.max(0.3, target / (Number(c.powerRank) || target)));
+          return buildRivalUnit(c, statMult * scale);
+        });
+      } else {
+        units = shuffle(band).slice(0, 4).map(c => buildRivalUnit(c, statMult));
+      }
 
       let name;
       do { name = RIVAL_NAMES[Math.floor(Math.random() * RIVAL_NAMES.length)]; }
@@ -728,7 +735,6 @@
         <div class="aos-header wb-screen-head">
           <button class="aos-close wb-icon-btn" onclick="document.getElementById('arena-opponent-select').remove()" aria-label="Back"><svg><use href="#i-back"/></svg></button>
           <div class="wb-title">
-            <span class="wb-kicker aos-desc">Three rivals near your rank</span>
             <div class="aos-title">Choose Your Rival</div>
           </div>
           <button class="aos-rescout wb-chip" onclick="rescoutOpponents()"><svg><use href="#i-scout"/></svg><span class="wb-chip-label">Scout Again</span></button>
@@ -813,7 +819,7 @@
       if (members.length === 0) {
         return `<div class="atp-team-card empty" data-team="${teamNum}">
           <div class="atp-team-head"><span class="atp-team-label">Team ${teamNum}</span></div>
-          <div class="atp-empty-msg">No characters assigned</div>
+          <div class="atp-empty-msg">Empty</div>
         </div>`;
       }
 
@@ -836,9 +842,6 @@
     }
 
     const title = mode === 'offense' ? 'Select Offense Team' : 'Select Defense Team';
-    const desc  = mode === 'offense'
-      ? 'Your lineup for this battle'
-      : 'The lineup rivals will face';
 
     document.getElementById('arena-team-picker')?.remove();
     const modal = document.createElement('div');
@@ -871,7 +874,6 @@
         <div class="atp-header wb-screen-head">
           <button class="atp-close wb-icon-btn" onclick="document.getElementById('arena-team-picker').remove()" aria-label="Back"><svg><use href="#i-back"/></svg></button>
           <div class="wb-title">
-            <span class="wb-kicker atp-desc">${desc}</span>
             <div class="atp-title">${title}</div>
           </div>
           <a href="teams.html" class="atp-link-btn wb-chip"><span class="wb-chip-label">Manage Teams</span></a>
@@ -918,8 +920,6 @@
     if (mode === 'defense') {
       localStorage.setItem('arena_defense_team', JSON.stringify(teamNum));
       modal.remove();
-      _showArenaInfoModal('Defense Team Set',
-        `<p class="aim-note ok">Team ${teamNum} is now your defense team.</p>`);
       renderActionTiles();
       renderLobbyTeam();
       return;
@@ -973,14 +973,13 @@
         <div class="arena-modal-header wb-screen-head">
           <button class="arena-modal-close wb-icon-btn" onclick="document.getElementById('arena-team-modal').remove()" aria-label="Back"><svg><use href="#i-back"/></svg></button>
           <div class="wb-title">
-            <span class="wb-kicker">Arena battle</span>
             <div class="arena-modal-title">Confirm Lineup</div>
           </div>
         </div>
         <div class="arena-modal-body">
           <div class="arena-teams-row">
             <div class="arena-team-col">
-              <div class="arena-team-label"><span class="wb-kicker">Your team</span></div>
+              <div class="arena-team-label"><span class="wb-kicker">You</span></div>
               <div class="arena-team-grid">${playerHTML}</div>
             </div>
             <div class="arena-vs-badge" aria-label="versus"><span>VS</span></div>
@@ -991,9 +990,6 @@
           </div>
         </div>
         <div class="arena-modal-foot">
-          <div class="arena-map-preview" style="background-image:url('${mapPath}')">
-            <span class="arena-map-label"><span class="wb-kicker">Battle map</span></span>
-          </div>
           <button class="arena-start-match-btn wb-start" onclick="startArenaBattle(${JSON.stringify(enemyTeam).replace(/"/g, '&quot;')}, '${mapPath}')">
             <span class="wb-start-label"><i class="wb-diamond" aria-hidden="true"></i>Fight</span>
           </button>
@@ -1070,8 +1066,7 @@
     const shinIcon  = '<img src="assets/icons/currency/shinobite.png" alt="">';
 
     _showArenaInfoModal('Season Rewards',
-      `<p class="sr-intro">Win battles to earn stars. Reach a rank to unlock its rewards.</p>
-       <div class="sr-list">
+      `<div class="sr-list">
          ${SEASON_REWARD_MILESTONES.map(r => {
            const isClaimed = claimed.includes(r.rank);
            const reached = milestoneReached(r.rank);
@@ -1099,15 +1094,14 @@
            </div>`;
          }).join('')}
        </div>
-       <div class="sr-footer"><span><span class="wb-kicker">Current rank</span> <strong>${rank.label}</strong></span><span class="sr-total">${stars} ${starIco(13)}</span></div>`,
-      'League milestones'
+       <div class="sr-footer"><span><span class="wb-kicker">Current rank</span> <strong>${rank.label}</strong></span><span class="sr-total">${stars} ${starIco(13)}</span></div>`
     );
     renderActionTiles();
   }
 
   function _injectArenaTeamPickerStyles() {}
 
-  function _showArenaInfoModal(title, bodyHTML, kicker = 'Arena') {
+  function _showArenaInfoModal(title, bodyHTML, kicker = '') {
     document.getElementById('arena-info-modal')?.remove();
     const modal = document.createElement('div');
     modal.id = 'arena-info-modal';
@@ -1116,7 +1110,7 @@
       <div class="aim-panel" role="dialog" aria-modal="true">
         <div class="aim-header">
           <div class="wb-title">
-            <span class="wb-kicker">${kicker}</span>
+            ${kicker ? `<span class="wb-kicker">${kicker}</span>` : ''}
             <span class="aim-title">${title}</span>
           </div>
           <button class="aim-close wb-icon-btn" onclick="document.getElementById('arena-info-modal').remove()" aria-label="Close"><svg><use href="#i-close"/></svg></button>

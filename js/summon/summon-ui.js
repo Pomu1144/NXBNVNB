@@ -110,10 +110,16 @@ class SummonUIController {
 
     if (this.elements.bannerName) {
       this.elements.bannerName.textContent = banner.name || 'Banner';
+      // The banner blurb sits behind a "?" instead of under the title
+      if (banner.description && window.HelpTip) {
+        this.elements.bannerName.insertAdjacentHTML('beforeend',
+          window.HelpTip.button(banner.name || 'Banner', banner.description));
+      }
     }
 
     if (this.elements.bannerDescription) {
-      this.elements.bannerDescription.textContent = banner.description || '';
+      this.elements.bannerDescription.textContent = '';
+      this.elements.bannerDescription.hidden = true;
     }
 
     // Update step progress if it's a step-up banner

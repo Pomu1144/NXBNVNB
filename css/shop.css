@@ -1098,3 +1098,14 @@ html.is-mobile.is-landscape.is-compact .lb-btn { height: 28px; font-size: 12px; 
 @media (prefers-reduced-motion: reduce) {
   .lb-card, .lb-btn { transition: none; }
 }
+
+/* Value line (EXP / pack contents) replaces the item paragraph */
+body.page-shop .shop-item .item-description.item-value {
+  display: flex;
+  align-items: center;
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  color: #f1d98a !important;
+}
+body.page-shop .shop-item .item-name .si-help { margin-left: auto; }

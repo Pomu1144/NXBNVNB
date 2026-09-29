@@ -85,6 +85,16 @@
   animation: homeCharPoke 0.45s cubic-bezier(.3,1.6,.5,1), homeCharBreathe 4.6s ease-in-out 0.45s infinite;
 }
 
+/* Half-body art: bigger, cut edge hidden behind the bottom icon bar */
+.character-vignette-container.home-char-stage.is-bust {
+  top: 6vh;
+  bottom: 0;
+}
+.home-char-stage.is-bust .home-char { margin-left: 2vw; }
+.home-char-stage.is-bust .home-char-shadow { display: none; }
+.home-char-stage.is-bust .home-char-glow { bottom: 18%; height: 70%; }
+.home-char-stage.is-bust .home-char-img { transform-origin: 50% 70%; }
+
 /* "Change character" plate at the character's feet */
 .home-char-switch {
   position: absolute;
@@ -107,6 +117,8 @@
   opacity: 0.88;
   transition: opacity 0.15s, filter 0.15s;
 }
+/* no feet to stand on: float the plate just above the bottom bar */
+.home-char-stage.is-bust .home-char-switch { bottom: calc(var(--vb-h, 50px) + 18px); }
 .home-char-switch:hover { opacity: 1; filter: brightness(1.15); }
 .home-char-switch-icon { color: var(--jjk-gold, #c9a24e); font-size: 15px; line-height: 1; }
 
@@ -201,4 +213,12 @@ html.is-mobile.is-landscape.is-compact .character-vignette-container.home-char-s
 html.is-mobile.is-landscape.is-compact .home-char { margin-left: 2vw; }
 html.is-mobile.is-landscape.is-compact .home-char-switch {
   font-size: 10px; padding: 3px 12px 3px 10px; gap: 5px; min-height: 24px;
+}
+/* half-body art on phones: fill the band and sink the waist under the dock */
+html.is-mobile.is-landscape.is-compact .character-vignette-container.home-char-stage.is-bust {
+  top: 46px;
+  bottom: -44px;
+}
+html.is-mobile.is-landscape.is-compact .home-char-stage.is-bust .home-char-switch {
+  bottom: calc(44px + var(--vb-h, 46px) + 10px);
 }

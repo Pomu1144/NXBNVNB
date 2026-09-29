@@ -218,18 +218,33 @@
 
   <!-- Ramen Selector Modal -->
   <div id="ramen-selector-modal" class="ramen-modal" aria-hidden="true">
-    <div class="ramen-modal-panel">
-      <h2 class="ramen-modal-title">Select Ramen to Feed</h2>
-      <div class="ramen-character-info">
-        <img id="ramen-char-portrait" class="ramen-char-img" src="" alt="">
-        <div class="ramen-char-details">
-          <div id="ramen-char-name" class="ramen-char-name"></div>
-          <div id="ramen-char-level" class="ramen-char-level"></div>
+    <div class="ramen-modal-panel jjk-panel" role="dialog" aria-modal="true" aria-labelledby="ramen-modal-title">
+      <div class="ramen-head">
+        <h2 class="ramen-modal-title jjk-title-plate" id="ramen-modal-title">Level Up</h2>
+        <div class="ramen-character-info">
+          <img id="ramen-char-portrait" class="ramen-char-img" src="" alt="">
+          <div class="ramen-char-details">
+            <div id="ramen-char-name" class="ramen-char-name"></div>
+            <div class="ramen-char-level-row">
+              <span id="ramen-char-level" class="ramen-char-level"></span>
+              <span id="ramen-level-preview" class="ramen-level-preview"></span>
+            </div>
+            <div class="ramen-lv-bar"><span id="ramen-lv-fill-now"></span><span id="ramen-lv-fill-new"></span></div>
+          </div>
         </div>
       </div>
       <div class="ramen-grid" id="ramen-grid"></div>
-      <div class="ramen-modal-actions">
-        <button class="btn-dark" id="ramen-modal-cancel">Cancel</button>
+      <div class="ramen-footer">
+        <div class="ramen-total">
+          <span class="ramen-total-label">Total</span>
+          <span id="ramen-total-exp" class="ramen-total-exp">+0 EXP</span>
+          <span id="ramen-total-hint" class="ramen-total-hint">Tap a ramen to add it</span>
+        </div>
+        <div class="ramen-modal-actions">
+          <button class="jjk-btn ramen-btn" type="button" id="ramen-modal-clear">Clear</button>
+          <button class="jjk-btn ramen-btn" type="button" id="ramen-modal-cancel">Cancel</button>
+          <button class="jjk-btn ramen-btn is-primary" type="button" id="ramen-modal-feed" disabled>Feed</button>
+        </div>
       </div>
     </div>
   </div>
@@ -304,7 +319,6 @@
   <script src="js/daily-missions.js"></script>
   <script src="js/awakening.js"></script>
   <script src="js/awakening-animation.js"></script>
-  <script src="js/character-evolution.js"></script>
   <script src="js/modal-manager.js?v=2"></script>
   <script src="js/lb-crystals.js"></script>
   <script src="js/limit-break.js"></script>

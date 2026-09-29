@@ -25,6 +25,8 @@
   <link rel="stylesheet" href="css/background.css" />
   <link rel="stylesheet" href="css/bottombar.css" />
   <link rel="stylesheet" href="css/mobile.css" />
+  <link rel="stylesheet" href="css/help-tip.css" />
+  <script src="js/help-tip.js"></script>
 </head>
 <body class="page-fusion">
   <!-- Quiet ink-teal screen background (shared JJK look) -->
@@ -109,8 +111,7 @@
           <div class="fu-perf" aria-hidden="true"></div>
 
           <aside class="fu-ticket-stub">
-            <h3 class="fu-stub-title">Requirements</h3>
-            <p class="altar-hint">Pick a recipe, or tap a slot to place a unit.</p>
+            <h3 class="fu-stub-title">Requirements<button type="button" class="help-tip" aria-label="How this works" aria-expanded="false" data-help-title="Fusion" data-help="Pick a recipe, or tap a slot to place a unit.&#10;Fusing uses up both units and the listed cost.">?</button></h3>
             <div id="fusion-requirements" class="fusion-requirements" style="display:none;">
               <div id="requirements-grid" class="requirements-grid"></div>
             </div>

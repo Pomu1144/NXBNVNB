@@ -299,17 +299,26 @@
       }
       const tierHTML = tier ? `<span class="item-tier">${tier}</span>` : '';
 
-      // Build exp display if exists
-      const expInfo = item.exp ? ` (+${item.exp.toLocaleString()} EXP)` : '';
+      // One short value line instead of a paragraph: EXP for ramen, the
+      // contents of a pack; everything else keeps its description behind "?".
+      const fmtN = (n) => Number(n || 0).toLocaleString();
+      const resName = (id) => (window.Resources?.getMaterialInfo?.(id)?.name) || id;
+      let valueLine = '';
+      if (item.exp) valueLine = `+${fmtN(item.exp)} EXP`;
+      else if (item.value && typeof item.value === 'object') {
+        valueLine = Object.entries(item.value).map(([id, n]) => `+${fmtN(n)} ${resName(id)}`).join(' · ');
+      }
+      const helpHTML = (!valueLine && item.description && window.HelpTip)
+        ? window.HelpTip.button(item.name, item.description, 'si-help') : '';
 
       card.innerHTML = `
         <div class="si-inner">
-          <div class="item-name">${tierHTML}<span class="item-name-text">${item.name}</span></div>
+          <div class="item-name">${tierHTML}<span class="item-name-text">${item.name}</span>${helpHTML}</div>
           <div class="si-body">
             <div class="item-icon">
               <img src="${item.icon}" alt="${item.name}" onerror="this.src='assets/characters/common/silhouette.png'">
             </div>
-            <div class="item-description">${item.description}${expInfo}</div>
+            ${valueLine ? `<div class="item-description item-value">${valueLine}</div>` : ''}
           </div>
           <div class="item-footer">
             ${costHTML}

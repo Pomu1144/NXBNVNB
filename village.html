@@ -174,6 +174,7 @@
     <div class="banner-button arena">
       <img src="assets/6_icon/arena_banner_btn.png" alt="Arena" class="banner-btn-img">
     </div>
+    <div class="banner-button ninja-road" role="button" aria-label="Ninja Road"></div>
   </div>
 
   <!-- Bottom Icon Bar (10 Utility Icons) -->
@@ -345,7 +346,7 @@
         if (loginResult.ok && !loginResult.alreadyClaimed) {
           const reward = loginResult.reward || {};
           const items = window.RewardFormat ? window.RewardFormat.items(reward) : [];
-          const streak = loginResult.loginStreak > 1 ? `${loginResult.loginStreak}-day streak — come back tomorrow for more.` : 'Come back tomorrow for more rewards.';
+          const streak = loginResult.loginStreak > 1 ? `${loginResult.loginStreak}-day streak` : '';
           if (items.length && window.DashboardMailbox && typeof window.DashboardMailbox.showRewardReveal === 'function') {
             window.DashboardMailbox.showRewardReveal(items, { title: `Login Bonus · Day ${loginResult.loginDay}`, note: streak });
           } else if (window.ModalManager) {
@@ -484,6 +485,9 @@
               break;
             case 'arena':
               navigateTo('arena.html');
+              break;
+            case 'ninja-road':
+              navigateTo('ninja-road.html');
               break;
           }
         });

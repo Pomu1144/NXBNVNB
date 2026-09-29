@@ -957,3 +957,38 @@ svg.wb-star {
 @media (min-width: 1100px) {
   .atp-teams { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 }
+
+/* Short landscape phones (Safari with its bars, smaller iPhones): the league
+   card tightens and is capped above the action row so the two never overlap;
+   on the shortest screens the W/L strip (also in Record) and the Start
+   caption drop out. */
+@media (max-height: 400px) {
+  :root {
+    --wb-top: 8px;
+    --wb-chip-h: 34px;
+    --wb-start-h: 40px;
+    --wb-medal: 36px;
+    --wb-display-size: 19px;
+    --wb-num-size: 16px;
+  }
+  .wb-panel {
+    padding: 8px 12px 0;
+    max-height: calc(100% - var(--wb-top) - var(--wb-start-h) - 22px);
+    overflow-y: auto;
+  }
+  .wb-progress { margin-top: 6px; }
+  .wb-stats { margin-top: 6px; padding: 4px 0; }
+  .wb-line { min-height: 24px; }
+  .wb-cta { bottom: 8px; }
+  .wb-start { height: var(--wb-start-h); }
+}
+@media (max-height: 360px) {
+  .wb-stats { display: none; }
+  .wb-start-sub { display: none; }
+}
+.wb-start-sub[hidden] { display: none; }
+.arena-modal-foot { justify-content: flex-end; }
+.wb-rules-line { min-height: 40px; border-bottom: 1px solid var(--wb-hair-soft); }
+.wb-rules-line .wb-line-text { color: var(--wb-dim); flex: 1 1 auto; }
+.wb-rules-line .help-tip { margin-left: auto; }
+@media (max-height: 400px) { .wb-rules-line { min-height: 24px; } }
