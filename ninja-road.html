@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Ultimate Ninja Legends — Ninja Road</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <link rel="stylesheet" href="css/page-loader.css" />
+  <script src="js/session-gate.js"></script>
+  <script src="js/page-loader.js"></script>
+  <script src="js/device-detect.js"></script>
+  <link rel="manifest" href="manifest.json" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-fullscreen" />
+  <meta name="apple-mobile-web-app-title" content="Ninja Legends" />
+  <meta name="theme-color" content="#000000" />
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/app/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/app/favicon-32.png" />
+  <script src="js/pwa-register.js"></script>
+  <link rel="stylesheet" href="css/fonts.css" />
+  <link rel="stylesheet" href="css/theme-jjk.css" />
+  <link rel="stylesheet" href="css/ninja-road.css" />
+  <link rel="stylesheet" href="css/help-tip.css" />
+  <script src="js/help-tip.js"></script>
+</head>
+<body class="page-ninja-road">
+  <svg class="nr-sprite" aria-hidden="true" focusable="false">
+    <symbol id="i-back" viewBox="0 0 24 24"><path d="M14.5 5.5 8 12l6.5 6.5"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/></symbol>
+    <symbol id="i-reward" viewBox="0 0 24 24"><path d="M4.5 10.5h15v9h-15zM3.5 7.5h17v3h-17zM12 7.5v12M12 7.5C10.6 4.6 7 4.4 7 6.3c0 1.2 2.2 1.2 5 1.2zm0 0c1.4-2.9 5-3.1 5-1.2 0 1.2-2.2 1.2-5 1.2z"/></symbol>
+    <symbol id="i-reset" viewBox="0 0 24 24"><path d="M5.5 12a6.5 6.5 0 1 0 1.9-4.6M5.5 5v3.4h3.4"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M6 12.5l3.8 3.8L18 8"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 6v12M6 12h12"/></symbol>
+    <symbol id="i-skull" viewBox="0 0 24 24"><path d="M12 3.5a7 7 0 0 0-7 7c0 2.3 1.1 4 2.8 5v3.5h8.4V15.5c1.7-1 2.8-2.7 2.8-5a7 7 0 0 0-7-7zM10.5 19v-2.2M13.5 19v-2.2"/><circle cx="9.2" cy="11" r="1.7" fill="currentColor" stroke="none"/><circle cx="14.8" cy="11" r="1.7" fill="currentColor" stroke="none"/></symbol>
+  </svg>
+
+  <div class="nr-bg" aria-hidden="true"><div class="nr-bg-map"></div><div class="nr-bg-scrim"></div></div>
+
+  <main class="nr-page" id="nr-page">
+    <header class="nr-head">
+      <a href="village.html" class="nr-icon-btn" aria-label="Back to village"><svg><use href="#i-back"/></svg></a>
+      <h1 class="nr-title">Ninja Road</h1>
+      <button type="button" class="help-tip" aria-label="How Ninja Road works" aria-expanded="false"
+        data-help-title="Ninja Road"
+        data-help="10 floors. Floors 5 and 10 hold a boss.&#10;Field up to 3 squads from your teams. A unit can only be in one squad.&#10;HP, chakra and cooldowns carry over between floors. Fallen units stay down; a squad with no one standing is out.&#10;Beating a boss grants +20% ATK for the next 2 floors.&#10;Rare floors pay extra Granny Coins, spent in the Shop.&#10;The road resets every 14 days.">?</button>
+      <span class="nr-head-gap"></span>
+      <span class="nr-coins" title="Granny Coins"><i class="nr-coin" aria-hidden="true"></i><b id="nr-coins">0</b></span>
+      <button type="button" class="nr-chip" id="nr-btn-rewards"><svg><use href="#i-reward"/></svg><span class="nr-chip-label">Rewards</span></button>
+      <button type="button" class="nr-chip" id="nr-btn-reset"><svg><use href="#i-reset"/></svg><span class="nr-chip-label">Reset</span></button>
+    </header>
+
+    <div class="nr-mid">
+      <section class="nr-road-wrap" aria-label="Road progress">
+        <ol class="nr-road" id="nr-road"></ol>
+      </section>
+      <section class="nr-squads" id="nr-squads" aria-label="Squads"></section>
+    </div>
+
+    <footer class="nr-foot">
+      <div class="nr-floor" id="nr-floor"></div>
+      <button type="button" class="nr-start" id="nr-start">
+        <span class="nr-start-label" id="nr-start-label"><i class="nr-diamond" aria-hidden="true"></i>Enter Floor 1</span>
+        <span class="nr-start-sub" id="nr-start-sub"></span>
+      </button>
+    </footer>
+  </main>
+
+  <script src="js/resources.js"></script>
+  <script src="js/sprite-player.js"></script>
+  <script src="js/battle/battle-ninja-road.js"></script>
+  <script src="js/ninja-road.js"></script>
+</body>
+</html>
