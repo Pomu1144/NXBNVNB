@@ -1,0 +1,20 @@
+{
+  "frameWidth": 300,
+  "frameHeight": 300,
+  "frames": 16,
+  "columns": 8,
+  "fps": 12,
+  "loop": false,
+  "hits": [
+    3,
+    5,
+    7,
+    9,
+    11,
+    13
+  ],
+  "fxOnly": true,
+  "groundY": 0.9,
+  "centerX": 0.5,
+  "heightUnits": 1.9
+}
