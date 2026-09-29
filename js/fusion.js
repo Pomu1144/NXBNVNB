@@ -674,7 +674,6 @@
           <div class="rc-empty">
             <img class="rc-empty-art" src="assets/ui/recipes/scroll_closed.webp" alt="">
             <h3>No recipes yet</h3>
-            <p>Fusion needs a recipe scroll. Get recipe scrolls from <b>Summon</b> or the <b>Shop</b>.</p>
             <div class="rc-empty-actions">
               <a class="jjk-btn is-primary" href="summon.html?tab=recipes">Summon</a>
               <a class="jjk-btn" href="shop.html?tab=recipes">Shop</a>

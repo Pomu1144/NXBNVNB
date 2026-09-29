@@ -1,4 +1,4 @@
-const CACHE = 'blazing-shell-v72';
+const CACHE = 'blazing-shell-v73';
 const BASE = new URL('./', self.location.href).pathname;
 const SHELL = [
   'index.html',

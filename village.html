@@ -345,7 +345,7 @@
         if (loginResult.ok && !loginResult.alreadyClaimed) {
           const reward = loginResult.reward || {};
           const items = window.RewardFormat ? window.RewardFormat.items(reward) : [];
-          const streak = loginResult.loginStreak > 1 ? `${loginResult.loginStreak}-day streak — come back tomorrow for more.` : 'Come back tomorrow for more rewards.';
+          const streak = loginResult.loginStreak > 1 ? `${loginResult.loginStreak}-day streak` : '';
           if (items.length && window.DashboardMailbox && typeof window.DashboardMailbox.showRewardReveal === 'function') {
             window.DashboardMailbox.showRewardReveal(items, { title: `Login Bonus · Day ${loginResult.loginDay}`, note: streak });
           } else if (window.ModalManager) {

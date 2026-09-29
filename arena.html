@@ -23,6 +23,8 @@
   <link rel="stylesheet" href="css/bottombar.css" />
   <link rel="stylesheet" href="css/arena.css" />
   <link rel="stylesheet" href="css/mobile.css" />
+  <link rel="stylesheet" href="css/help-tip.css" />
+  <script src="js/help-tip.js"></script>
 </head>
 <body class="page-arena">
   <!-- Line icons (thin stroke, currentColor) -->
@@ -98,18 +100,11 @@
         <div><dt>Best</dt><dd id="record-best">0</dd></div>
       </dl>
 
-      <button class="wb-line wb-rules-toggle" id="wb-rules-toggle" onclick="toggleArenaRules()" aria-expanded="false" aria-controls="wb-rules">
+      <div class="wb-line wb-rules-line">
         <i class="wb-diamond" aria-hidden="true"></i>
         <span class="wb-kicker">Special rules</span>
         <span class="wb-line-text" id="wb-rules-summary">Bonus star every 3rd win</span>
-        <svg class="wb-chev"><use href="#i-chev"/></svg>
-      </button>
-      <div class="wb-rules" id="wb-rules" hidden>
-        <ul>
-          <li><b>Victory</b><span>+1 <svg class="wb-star"><use href="#i-star"/></svg> plus rival bounty &mdash; Formidable +1, Elite +2</span></li>
-          <li><b>Streak</b><span>Every 3rd straight win adds a bonus <svg class="wb-star"><use href="#i-star"/></svg></span></li>
-          <li><b>Defeat</b><span>Above Chunin a loss costs 1 <svg class="wb-star"><use href="#i-star"/></svg></span></li>
-        </ul>
+        <button type="button" class="help-tip" aria-label="How this works" aria-expanded="false" data-help-title="Arena stars" data-help="Victory: +1 star, plus the rival&#39;s bounty (Formidable +1, Elite +2).&#10;Streak: every 3rd straight win adds a bonus star.&#10;Defeat: above Chunin a loss costs 1 star.">?</button>
       </div>
 
       <div class="wb-line wb-reward" id="al-status-foot">
@@ -374,19 +369,6 @@
       lootEl.innerHTML = '';
     }
   }
-
-  // ── Special rules: one line that expands over the panel ───────────────────
-  function toggleArenaRules(force) {
-    const box = document.getElementById('wb-rules');
-    const btn = document.getElementById('wb-rules-toggle');
-    const open = typeof force === 'boolean' ? force : box.hidden;
-    box.hidden = !open;
-    btn.setAttribute('aria-expanded', String(open));
-    document.getElementById('player-rank-card').classList.toggle('rules-open', open);
-  }
-  document.addEventListener('click', e => {
-    if (!e.target.closest?.('#wb-rules, #wb-rules-toggle')) toggleArenaRules(false);
-  });
 
   // ── Team chip stack (the featured art is the fixed Team 7 key art) ───────
   async function renderLobbyTeam() {

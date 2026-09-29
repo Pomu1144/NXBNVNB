@@ -225,9 +225,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const clearedCount = missionsToRender.filter(m => ranksOf(m).some(r => isCleared(m.id, r))).length;
     const head = document.createElement('div');
     head.className = 'mission-list-head';
+    const blurb = TAB_BLURB[categoryName];
     head.innerHTML = `
-      <span class="mlh-blurb">${esc(TAB_BLURB[categoryName] || '')}</span>
-      <span class="jjk-chip mlh-count">${clearedCount} / ${missionsToRender.length} cleared</span>`;
+      <span class="jjk-chip mlh-count">${clearedCount} / ${missionsToRender.length} cleared</span>
+      ${blurb && window.HelpTip ? window.HelpTip.button(categoryName, blurb) : ''}`;
     listContainer.appendChild(head);
 
     missionsToRender.forEach(mission => {

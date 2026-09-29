@@ -988,3 +988,7 @@ svg.wb-star {
 }
 .wb-start-sub[hidden] { display: none; }
 .arena-modal-foot { justify-content: flex-end; }
+.wb-rules-line { min-height: 40px; border-bottom: 1px solid var(--wb-hair-soft); }
+.wb-rules-line .wb-line-text { color: var(--wb-dim); flex: 1 1 auto; }
+.wb-rules-line .help-tip { margin-left: auto; }
+@media (max-height: 400px) { .wb-rules-line { min-height: 24px; } }

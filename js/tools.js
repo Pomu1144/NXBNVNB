@@ -382,7 +382,7 @@
     $('tools-clear').disabled = !filled.length;
     const ul = $('tools-equipped-list');
     if (!filled.length) {
-      ul.innerHTML = '<li class="tl-equipped-empty">Nothing equipped. Tap a slot to equip a card.</li>';
+      ul.innerHTML = '<li class="tl-equipped-empty">Nothing equipped</li>';
       return;
     }
     ul.innerHTML = filled.map(k => {
