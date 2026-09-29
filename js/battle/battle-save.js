@@ -215,17 +215,18 @@
 
   /* ===== Battle identity ===== */
 
-  function teamKey() {
+  function teamKey(bm) {
     let team = {};
     try {
       const t = JSON.parse(lsGet("blazing_teams_v1") || "{}");
-      team = t[1] || t["1"] || {};
+      team = bm?.playerTeamSlots || t[1] || t["1"] || {};
     } catch (e) { team = {}; }
     const slots = ["front-1", "front-2", "front-3", "front-4", "back-1", "back-2", "back-3", "back-4", "commander"];
     return slots.map(s => `${s}=${team[s]?.uid || ""}`).join("|");
   }
 
   function stageKey(bm) {
+    if (bm.isNinjaRoad) return window.BattleNinjaRoad?.stageKey() || null;
     if (bm.isArena) {
       return `arena:${hash32((lsGet("arena_enemies") || "") + "@" + (lsGet("arena_map") || "")).toString(36)}`;
     }
@@ -271,7 +272,7 @@
       this.bm = bm;
       lsDel(INTENT_KEY);
       const sk = stageKey(bm);
-      const tk = teamKey();
+      const tk = teamKey(bm);
       if (!sk) return orig.call(M, bm); // unknown battle type: no saving
 
       this.stageKey = sk;
@@ -490,6 +491,7 @@
         missionName: bm.missionData?.name || "",
         difficulty: bm.difficulty,
         isArena: !!bm.isArena,
+        isNinjaRoad: !!bm.isNinjaRoad,
         stageIndex: bm.currentStageIndex || 0,
         waveIndex: bm.currentWaveIndex || 0,
         acting: acting ? (refs.get(acting) || null) : null,
@@ -607,6 +609,19 @@
         if ((intended || nt === "reload" || nt === "back_forward") && arenaKey === snap.stageKey) {
           lsSet("arena_battle_mode", "1");
           log("re-armed arena battle for resume");
+        }
+      }
+    } catch (e) { /* no resume */ }
+    // Same for a Ninja Road floor (flag: js/battle/battle-ninja-road.js)
+    try {
+      const snap = Store.read();
+      const NR = window.BattleNinjaRoad;
+      if (snap?.isNinjaRoad && NR && lsGet(NR.FLAG_KEY) !== "1") {
+        const nt = navType();
+        const intended = lsGet(INTENT_KEY) === snap.battleId;
+        if ((intended || nt === "reload" || nt === "back_forward") && NR.stageKey() === snap.stageKey) {
+          lsSet(NR.FLAG_KEY, "1");
+          log("re-armed Ninja Road battle for resume");
         }
       }
     } catch (e) { /* no resume */ }

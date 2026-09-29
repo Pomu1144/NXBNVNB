@@ -143,6 +143,8 @@
       this.setupEventListeners();
 
       const isArenaBattle = localStorage.getItem("arena_battle_mode") === "1";
+      // Ninja Road floor (js/battle/battle-ninja-road.js): consumes its flag
+      const ninjaRoad = !isArenaBattle ? (window.BattleNinjaRoad?.take() || null) : null;
       // Music starts while the stage loads; boss fights switch below
       window.AudioManager?.playMusic(isArenaBattle ? "arena" : "battle");
       const missionId = localStorage.getItem("currentMissionId") || "m_001";
@@ -211,6 +213,19 @@
           this.dom.scene.style.backgroundSize = 'cover';
           this.dom.scene.style.backgroundPosition = 'center';
           console.log("[BattleCore] 🏟️ Arena map loaded:", arenaMap);
+        }
+      } else if (ninjaRoad) {
+        // ── Ninja Road floor: squad, enemies and carried state from the launch
+        this.isNinjaRoad = true;
+        this.ninjaRoad = ninjaRoad;
+        this.playerTeamSlots = ninjaRoad.slots || {};
+        this.missionData = window.BattleNinjaRoad.buildMission(ninjaRoad);
+        this.difficulty = "C";
+        if (this.dom.missionTitle) this.dom.missionTitle.textContent = this.missionData.name;
+        if (this.dom.scene) {
+          this.dom.scene.style.backgroundImage = `url('${ninjaRoad.map}')`;
+          this.dom.scene.style.backgroundSize = 'cover';
+          this.dom.scene.style.backgroundPosition = 'center';
         }
       } else {
         // ── Normal mission mode ──────────────────────────────────────────
@@ -383,7 +398,8 @@
     loadPlayerTeamFromStorage() {
       const teamsData = JSON.parse(localStorage.getItem("blazing_teams_v1") || "{}");
       const currentTeamNum = 1;
-      const teamSlots = teamsData[currentTeamNum] || {};
+      // Ninja Road fields its own squad (living units only, see battle-ninja-road.js)
+      const teamSlots = this.playerTeamSlots || teamsData[currentTeamNum] || {};
 
       console.log("[BattleCore] Loading team slots:", teamSlots);
       console.log("[BattleCore] window.InventoryChar available?", !!window.InventoryChar);
@@ -523,6 +539,9 @@
       if (this.commander && this.commanderBuffs.length > 0) {
         this.applyCommanderBuffs();
       }
+
+      // Ninja Road: HP, chakra and cooldowns carried over from earlier floors
+      if (this.isNinjaRoad) window.BattleNinjaRoad?.applyCarry(this);
 
       // Fallback if no team loaded
       if (this.activeTeam.length === 0) {
