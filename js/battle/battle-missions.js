@@ -139,6 +139,16 @@
           base = { ...base, stats: tuned };
         }
 
+        // Size story/event enemies to the mission's recommended power, rising
+        // through its stages, waves and ranks (js/battle/battle-difficulty.js).
+        if (window.BattleDifficulty && !bm.isArena && !bm.isNinjaRoad) {
+          const stages = bm.missionData?.difficulties?.[bm.difficulty] || [];
+          base = { ...base, stats: window.BattleDifficulty.enemyStats(bm, base, enemyData, {
+            stageIndex: bm.currentStageIndex || 0, stageCount: stages.length || 1,
+            waveIndex, waveCount: waves.length || 1,
+          }) };
+        }
+
         // Convert sprite to portrait for compatibility
         const portrait = base.portrait || base.sprite || "assets/characters/common/silhouette.png";
 
@@ -177,6 +187,8 @@
             chakraMode: "NONE"
           };
         unit._ref = { enemy: base, base };
+        // Marked bosses (mission data "boss": true) enrage at low HP (battle-combat AI)
+        if (enemyData && typeof enemyData === 'object' && enemyData.boss) unit.isMissionBoss = true;
 
         // Initialize passive abilities (if enemy has any)
         if (window.BattlePassives) {

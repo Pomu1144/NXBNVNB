@@ -2779,7 +2779,7 @@
   "rankNames": {"C": "Normal", "B": "Hard", "A": "Extreme"},
   "rankGate": true,
   "stamina": {"C": 13, "B": 17, "A": 26},
-  "power": {"C": 24400, "B": 38600, "A": 79200},
+  "power": {"C": 30100, "B": 47600, "A": 92800},
   "clearRewards": {
    "C": {
     "firstTime": {"ninja_pearls": 3, "ryo": 3250},
@@ -3760,7 +3760,7 @@
   "rankNames": {"C": "Normal", "B": "Hard", "A": "Extreme"},
   "rankGate": true,
   "stamina": {"C": 16, "B": 20, "A": 30},
-  "power": {"C": 32400, "B": 51300, "A": 105100},
+  "power": {"C": 38100, "B": 60300, "A": 117700},
   "clearRewards": {
    "C": {
     "firstTime": {"ninja_pearls": 3, "ryo": 4400},
@@ -4935,7 +4935,7 @@
   "rankNames": {"C": "Normal", "B": "Hard", "A": "Extreme"},
   "rankGate": true,
   "stamina": {"C": 20, "B": 25, "A": 38},
-  "power": {"C": 42400, "B": 67100, "A": 137500},
+  "power": {"C": 54200, "B": 85700, "A": 167300},
   "clearRewards": {
    "C": {
     "firstTime": {"ninja_pearls": 3, "ryo": 6350},
@@ -5225,7 +5225,7 @@
   "rankNames": {"C": "Normal", "B": "Hard", "A": "Extreme"},
   "rankGate": true,
   "stamina": {"C": 20, "B": 25, "A": 38},
-  "power": {"C": 56800, "B": 89700, "A": 175100},
+  "power": {"C": 56900, "B": 90000, "A": 175700},
   "clearRewards": {
    "C": {
     "firstTime": {"ninja_pearls": 3, "ryo": 6300},
@@ -5510,7 +5510,7 @@
   "rankNames": {"C": "Normal", "B": "Hard", "A": "Extreme"},
   "rankGate": true,
   "stamina": {"C": 20, "B": 25, "A": 38},
-  "power": {"C": 59300, "B": 93700, "A": 182900},
+  "power": {"C": 59700, "B": 94500, "A": 184500},
   "clearRewards": {
    "C": {
     "firstTime": {"ninja_pearls": 3, "ryo": 6200},
@@ -5784,7 +5784,7 @@
   "rankNames": {"C": "Normal", "B": "Hard", "A": "Extreme"},
   "rankGate": true,
   "stamina": {"C": 20, "B": 25, "A": 38},
-  "power": {"C": 48400, "B": 76600, "A": 157000},
+  "power": {"C": 62700, "B": 99200, "A": 193700},
   "clearRewards": {
    "C": {
     "firstTime": {"ninja_pearls": 3, "ryo": 6200},
@@ -6069,7 +6069,7 @@
   "rankNames": {"C": "Normal", "B": "Hard", "A": "Extreme"},
   "rankGate": true,
   "stamina": {"C": 20, "B": 25, "A": 38},
-  "power": {"C": 52400, "B": 82900, "A": 169900},
+  "power": {"C": 65800, "B": 104200, "A": 203400},
   "clearRewards": {
    "C": {
     "firstTime": {"ninja_pearls": 3, "ryo": 6300},
@@ -6341,7 +6341,7 @@
   "rankNames": {"C": "Normal", "B": "Hard", "A": "Extreme"},
   "rankGate": true,
   "stamina": {"C": 20, "B": 25, "A": 38},
-  "power": {"C": 54400, "B": 86000, "A": 176400},
+  "power": {"C": 69100, "B": 109400, "A": 213600},
   "clearRewards": {
    "C": {
     "firstTime": {"ninja_pearls": 3, "ryo": 6200},
@@ -6631,7 +6631,7 @@
   "rankNames": {"C": "Normal", "B": "Hard", "A": "Extreme"},
   "rankGate": true,
   "stamina": {"C": 20, "B": 25, "A": 38},
-  "power": {"C": 56400, "B": 89200, "A": 182900},
+  "power": {"C": 72600, "B": 114900, "A": 224300},
   "clearRewards": {
    "C": {
     "firstTime": {"ninja_pearls": 3, "ryo": 6300},
@@ -6918,7 +6918,7 @@
   "rankNames": {"C": "Normal", "B": "Hard", "A": "Extreme"},
   "rankGate": true,
   "stamina": {"C": 20, "B": 25, "A": 38},
-  "power": {"C": 60400, "B": 95500, "A": 195800},
+  "power": {"C": 76200, "B": 120600, "A": 235500},
   "clearRewards": {
    "C": {
     "firstTime": {"ninja_pearls": 3, "ryo": 6300},
@@ -7202,7 +7202,7 @@
   "rankNames": {"C": "Normal", "B": "Hard", "A": "Extreme"},
   "rankGate": true,
   "stamina": {"C": 22, "B": 27, "A": 40},
-  "power": {"C": 62400, "B": 98700, "A": 202300},
+  "power": {"C": 80000, "B": 126600, "A": 247300},
   "clearRewards": {
    "C": {
     "firstTime": {"ninja_pearls": 3, "ryo": 7000},
@@ -7492,7 +7492,7 @@
   "rankNames": {"C": "Normal", "B": "Hard", "A": "Extreme"},
   "rankGate": true,
   "stamina": {"C": 23, "B": 28, "A": 42},
-  "power": {"C": 82300, "B": 130000, "A": 253800},
+  "power": {"C": 84000, "B": 132900, "A": 259700},
   "clearRewards": {
    "C": {
     "firstTime": {"ninja_pearls": 3, "ryo": 7250},
@@ -7784,7 +7784,7 @@
   "rankNames": {"C": "Normal", "B": "Hard", "A": "Extreme"},
   "rankGate": true,
   "stamina": {"C": 25, "B": 30, "A": 45},
-  "power": {"C": 84800, "B": 134100, "A": 261700},
+  "power": {"C": 88200, "B": 139500, "A": 272700},
   "clearRewards": {
    "C": {
     "firstTime": {"ninja_pearls": 3, "ryo": 8000},
@@ -8082,7 +8082,7 @@
   "rankNames": {"C": "Normal", "B": "Hard", "A": "Extreme"},
   "rankGate": true,
   "stamina": {"C": 25, "B": 30, "A": 45},
-  "power": {"C": 68400, "B": 108200, "A": 221700},
+  "power": {"C": 92600, "B": 146500, "A": 286300},
   "clearRewards": {
    "C": {
     "firstTime": {"ninja_pearls": 3, "ryo": 8500},
