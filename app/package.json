@@ -1,0 +1,23 @@
+{
+  "name": "ninja-legends-app",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Native iOS / Android shell for the web game (Capacitor). The game itself lives one folder up and is copied in by scripts/copy-web.mjs.",
+  "scripts": {
+    "copy-web": "node scripts/copy-web.mjs",
+    "sync": "npm run copy-web && cap sync",
+    "open:ios": "cap open ios",
+    "open:android": "cap open android",
+    "android:debug": "npm run sync && cd android && ./gradlew assembleDebug",
+    "icons": "capacitor-assets generate --iconBackgroundColor '#101418' --splashBackgroundColor '#101418'"
+  },
+  "dependencies": {
+    "@capacitor/android": "^8.0.0",
+    "@capacitor/core": "^8.0.0",
+    "@capacitor/ios": "^8.0.0"
+  },
+  "devDependencies": {
+    "@capacitor/assets": "^3.0.5",
+    "@capacitor/cli": "^8.0.0"
+  }
+}
