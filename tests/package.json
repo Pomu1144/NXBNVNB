@@ -1,0 +1,14 @@
+{
+  "name": "blazing-tests",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Automated regression tests (Playwright) for the static game at the repo root",
+  "scripts": {
+    "test": "playwright test",
+    "test:data": "playwright test specs/data-integrity.spec.js specs/sprite-registry.spec.js --project=desktop",
+    "report": "playwright show-report"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.56.1"
+  }
+}
