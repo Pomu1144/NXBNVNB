@@ -54,6 +54,7 @@
       this.targetMarkers.forEach(el => el.classList.remove('is-range-target', 'is-range-combo'));
       this.targetMarkers.clear();
       this.currentTargets = [];
+      document.querySelectorAll('.battle-unit.is-link-ready').forEach(el => el.classList.remove('is-link-ready'));
     },
 
     /** Sync the glow classes with a prediction from predictRange(). */
@@ -65,6 +66,7 @@
         if (!next.has(id)) this.removeTargetMarker({ id });
       });
       next.forEach(([u, combo]) => this.createTargetMarker(u, core, combo));
+      window.BattleLinkCombo?.markLinks(this.draggingUnit, pred, core);
       this.currentTargets = pred.main.slice();
     },
 
@@ -711,6 +713,7 @@
       targets.fromRange = true;   // BattleCombat: hit these, don't add others
       const combo = pred.combo;
       const doEndTurn = () => {
+        delete unit._comboBoost;
         if (core.turns?.currentUnit === unit) core.turns.endTurn(core);
       };
       const justMove = () => {
@@ -722,26 +725,38 @@
       if (!targets.length || !window.BattleCombat) return justMove();
       const C = window.BattleCombat;
 
-      if (action === "ultimate") {
-        if (C.performUltimate(unit, targets, core, doEndTurn) === false) justMove();
-        return;
-      }
-      if (action === "jutsu") {
-        if (combo.length) {
-          if (C.performMultiJutsu(unit, targets, core) === false) return justMove();
-          setTimeout(() => C.performProximityCombo(unit, combo, core, doEndTurn), 600);
-        } else if (C.performMultiJutsu(unit, targets, core, doEndTurn) === false) {
-          justMove();
+      const fire = () => {
+        if (action === "ultimate") {
+          if (C.performUltimate(unit, targets, core, doEndTurn) === false) justMove();
+          return;
         }
-        return;
-      }
-      // basic attack (armed or a plain drag with enemies in range)
-      if (combo.length) {
-        C.performMultiAttack(unit, targets, core);
-        setTimeout(() => C.performProximityCombo(unit, combo, core, doEndTurn), 400);
-      } else {
-        C.performMultiAttack(unit, targets, core, doEndTurn);
-      }
+        if (action === "jutsu") {
+          if (combo.length) {
+            if (C.performMultiJutsu(unit, targets, core) === false) return justMove();
+            setTimeout(() => C.performProximityCombo(unit, combo, core, doEndTurn), 600);
+          } else if (C.performMultiJutsu(unit, targets, core, doEndTurn) === false) {
+            justMove();
+          }
+          return;
+        }
+        // basic attack (armed or a plain drag with enemies in range)
+        if (combo.length) {
+          C.performMultiAttack(unit, targets, core);
+          setTimeout(() => C.performProximityCombo(unit, combo, core, doEndTurn), 400);
+        } else {
+          C.performMultiAttack(unit, targets, core, doEndTurn);
+        }
+      };
+
+      // Allies next to the struck enemy link in with their normal attacks
+      // first (battle-link-combo.js), then this unit finishes.
+      const linked = window.BattleLinkCombo?.chain(unit, targets, core, res => {
+        if (res?.targetsDown) return justMove();
+        const live = targets.filter(t => t.stats.hp > 0);
+        targets.length = 0; targets.push(...live);
+        fire();
+      });
+      if (!linked) fire();
     },
 
     /**
