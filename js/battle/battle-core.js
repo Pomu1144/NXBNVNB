@@ -292,6 +292,12 @@
       }
       releaseLoader();
 
+      // Story missions: the pre-battle scene (js/story-dialogue.js). Not on a
+      // resumed battle — that one already had its scene.
+      if (!this.isArena && window.BattleMissions?.playStoryBeat && !window.BattleSave?.resumed) {
+        await window.BattleMissions.playStoryBeat(this, "before");
+      }
+
       // Play entrance animations if available
       if (window.BattleEntrance) {
         await window.BattleEntrance.playEntranceSequence(this);

@@ -236,7 +236,11 @@
         // Show wave transition message
         this.showWaveTransition(bm, bm.currentWaveIndex + 2, totalWaves);
 
-        setTimeout(() => {
+        setTimeout(async () => {
+          // Story missions: a short scene before the final (boss) wave
+          if (this.isFinalWave(bm, bm.currentStageIndex, bm.currentWaveIndex + 1)) {
+            await this.playStoryBeat(bm, "boss");
+          }
           this.loadWave(bm, currentStage.waves, bm.currentWaveIndex + 1);
         }, 2000);
       }
@@ -256,6 +260,9 @@
           // Collect chest before next stage
           if (window.BattleRewards) {
             await window.BattleRewards.collectStageChest(bm);
+          }
+          if (this.isFinalWave(bm, bm.currentStageIndex + 1, 0)) {
+            await this.playStoryBeat(bm, "boss");
           }
           this.loadStage(bm, bm.currentStageIndex + 1);
         }, 2500);
@@ -277,6 +284,8 @@
 
         setTimeout(async () => {
           await this.playOutcomeBanner(bm, true);
+          // Story missions: the closing scene, then the results
+          await this.playStoryBeat(bm, "after");
           // Show results screen with all collected chests
           if (!bm.isArena && window.BattleRewards && window.BattleRewards.collectedChests.length > 0) {
             await window.BattleRewards.showResultsScreen(bm);
@@ -285,6 +294,37 @@
           }
         }, 400);
       }
+    },
+
+    /**
+     * Is (stageIndex, waveIndex) the last wave of the mission?
+     * @param {Object} bm - BattleManager reference
+     */
+    isFinalWave(bm, stageIndex, waveIndex) {
+      const stages = bm.missionData?.difficulties?.[bm.difficulty] || [];
+      const stage = stages[stageIndex];
+      if (!stage || stageIndex !== stages.length - 1) return false;
+      return waveIndex === Math.max(0, (stage.waves?.length || 1) - 1);
+    },
+
+    /**
+     * Story missions: play the mission's 'before' / 'boss' / 'after' scene
+     * (js/story-dialogue.js, data/story-dialogue.json) once. Keeps the field
+     * paused while it is up; resolves when the player finishes or skips it.
+     * @param {Object} bm - BattleManager reference
+     * @param {string} part - 'before' | 'boss' | 'after'
+     */
+    async playStoryBeat(bm, part) {
+      const SD = window.StoryDialogue;
+      if (!SD || bm.isArena || !SD.isStory(bm.missionData)) return;
+      const wasPaused = bm.isPaused;
+      bm.isPaused = true;
+      try {
+        await SD.playFor(bm.missionData, part, { rank: bm.difficulty });
+      } catch (err) {
+        console.warn("[Missions] story scene failed:", err);
+      }
+      bm.isPaused = wasPaused;
     },
 
     /**
