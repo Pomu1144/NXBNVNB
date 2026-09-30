@@ -155,7 +155,8 @@
         fetchJSON("data/enemies.json", []),
         fetchJSON("data/characters.json", []),
         fetchJSON("data/cards.json", null).then(d => d || fetchJSON("data/jutsu_cards.json", { cards: [] })),
-        fetchJSON("data/bosses.json", {})
+        fetchJSON("data/bosses.json", {}),
+        window.Magatama?.load?.()
       ]);
 
       this.enemiesData = enemies;
@@ -814,6 +815,12 @@
     },
 
     computeStatsFallback(char, instance) {
+      const stats = this._computeStatsFallback(char, instance);
+      // Magatama beset into the unit's tools (js/magatama.js)
+      return window.Magatama ? window.Magatama.applyToStats(stats, instance) : stats;
+    },
+
+    _computeStatsFallback(char, instance) {
       const cardBonuses = this._getCardStatBonuses(instance?.equippedJutsu);
 
       if (window.Progression?.computeEffectiveStatsLoreTier) {

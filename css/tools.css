@@ -460,6 +460,25 @@ html.is-mobile.is-landscape.is-compact .tl-eq-sub { font-size: 9px; }
 html.is-mobile.is-landscape.is-compact .tl-eq-x { flex-basis: 26px; font-size: 16px; }
 html.is-mobile.is-landscape.is-compact .tl-equipped-empty { font-size: 11px; }
 html.is-mobile.is-landscape.is-compact .tl-actions { padding: 6px; gap: 4px; }
+/* Short phones: stats in two columns, the equipped list scrolls between the
+   stats and the pinned buttons so nothing sits on the panel frame. */
+html.is-mobile.is-landscape.is-compact .tl-side { overflow: hidden; }
+html.is-mobile.is-landscape.is-compact .tl-stats { display: grid; grid-template-columns: 1fr 1fr; flex: 0 0 auto; }
+html.is-mobile.is-landscape.is-compact .tl-stat { grid-template-columns: 1fr; row-gap: 0; min-width: 0; }
+html.is-mobile.is-landscape.is-compact .tl-stat dt { font-size: 9px; line-height: 1.2; }
+html.is-mobile.is-landscape.is-compact .tl-stat dd { justify-content: flex-start; gap: 4px; flex-wrap: wrap; line-height: 1.15; }
+html.is-mobile.is-landscape.is-compact .tl-stat--power { grid-column: 1 / -1; grid-template-columns: auto 1fr; align-items: center; padding: 3px 6px 0; }
+html.is-mobile.is-landscape.is-compact .tl-stat--power dd { justify-content: flex-end; }
+html.is-mobile.is-landscape.is-compact .tl-panel-head--sub { flex: 0 0 auto; }
+html.is-mobile.is-landscape.is-compact .tl-equipped { flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: var(--jjk-gold-lo) transparent; }
+html.is-mobile.is-landscape.is-compact .tl-eq { flex: 0 0 auto; }
+html.is-mobile.is-landscape.is-compact .tl-actions { position: static; flex: 0 0 auto; margin-top: 0; border-top: 1px solid var(--tl-line-soft); background: none; }
+@media (max-height: 360px) {
+  /* 932x340: the tool slots already show what is equipped */
+  html.is-mobile.is-landscape.is-compact .tl-panel-head--sub,
+  html.is-mobile.is-landscape.is-compact .tl-equipped { display: none; }
+  html.is-mobile.is-landscape.is-compact .tl-actions { margin-top: auto; }
+}
 html.is-mobile.is-landscape.is-compact .tl-act { height: 32px; font-size: 12px; padding: 0 6px; }
 
 /* Picker on phones */
