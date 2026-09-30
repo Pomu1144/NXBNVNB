@@ -1,0 +1,147 @@
+{
+  "version": 1,
+  "source": "Naruto Online (Oasis) magatama, levels 1-9: Attack / Life / Defense / Ninjutsu / Resistance lines. Shapes per level follow the in-game icons (1 droplet, 2 comma, 3 pierced comma, 4 double tomoe, 5 triple tomoe, 6 hooked pinwheel, 7 lightning spiral, 8 vortex orb, 9 lightning orb). 4 of one level combine into 1 of the next.",
+  "socketsPerTool": 5,
+  "combineCount": 4,
+  "splitCount": 4,
+  "maxLevel": 9,
+  "types": [
+    {
+      "id": "attack",
+      "name": "Attack",
+      "color": "#e0563a",
+      "stat": "atk",
+      "statLabel": "ATK",
+      "wiki": [
+        10,
+        30,
+        46,
+        71,
+        109,
+        168,
+        258,
+        397,
+        611
+      ],
+      "values": [
+        4,
+        10,
+        15,
+        21,
+        28,
+        36,
+        46,
+        58,
+        72
+      ]
+    },
+    {
+      "id": "life",
+      "name": "Life",
+      "color": "#3fb46a",
+      "stat": "hp",
+      "statLabel": "HP",
+      "wiki": [
+        15,
+        45,
+        69,
+        106,
+        162,
+        251,
+        384,
+        592,
+        911
+      ],
+      "values": [
+        10,
+        25,
+        38,
+        53,
+        70,
+        90,
+        115,
+        145,
+        180
+      ]
+    },
+    {
+      "id": "defense",
+      "name": "Defense",
+      "color": "#e0a126",
+      "stat": "def",
+      "statLabel": "DEF",
+      "wiki": [
+        6,
+        18,
+        30,
+        46,
+        71,
+        110,
+        169,
+        259,
+        398
+      ],
+      "values": [
+        3,
+        6,
+        9,
+        13,
+        17,
+        22,
+        28,
+        35,
+        43
+      ]
+    },
+    {
+      "id": "ninjutsu",
+      "name": "Ninjutsu",
+      "color": "#9d62e0",
+      "stat": "nin",
+      "statLabel": "Jutsu DMG",
+      "unit": "%",
+      "values": [
+        0.5,
+        1,
+        1.5,
+        2,
+        2.5,
+        3,
+        3.5,
+        4,
+        5
+      ]
+    },
+    {
+      "id": "resistance",
+      "name": "Resistance",
+      "color": "#3aa6e0",
+      "stat": "res",
+      "statLabel": "Jutsu RES",
+      "unit": "%",
+      "values": [
+        0.5,
+        1,
+        1.5,
+        2,
+        2.5,
+        3,
+        3.5,
+        4,
+        5
+      ]
+    }
+  ],
+  "shop": {
+    "currency": "ryo",
+    "levels": {
+      "1": 2000,
+      "2": 7500,
+      "3": 28000
+    }
+  },
+  "caps": {
+    "nin": 60,
+    "res": 50
+  }
+}

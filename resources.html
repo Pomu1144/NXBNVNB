@@ -206,6 +206,24 @@
         min-width: 64px;
       }
     }
+
+    /* Landscape phones: small title, two items per row */
+    @media (max-height: 540px) and (orientation: landscape) {
+      body {
+        padding: 8px max(12px, env(safe-area-inset-right, 0px)) 76px max(12px, env(safe-area-inset-left, 0px));
+      }
+      .page-title { font-size: 18px; margin: 4px 0 10px; letter-spacing: 1.5px; }
+      .resources-container { max-width: none; padding: 0; }
+      .resource-category { padding: 10px 12px; margin-bottom: 10px; }
+      .category-title { font-size: 13px; margin-bottom: 8px; }
+      .resource-category > .resource-item { margin-bottom: 0; }
+      .resource-category { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
+      .resource-category > .category-title { grid-column: 1 / -1; margin-bottom: 2px; }
+      .resource-item { padding: 6px 10px; }
+      .resource-name { font-size: 13px; margin-bottom: 1px; }
+      .resource-desc { font-size: 10px; }
+      .resource-amount { font-size: 16px; min-width: 48px; }
+    }
   </style>
   <!-- Hide scrollbar but keep functionality -->
   <style>

@@ -100,16 +100,49 @@
   };
   C.performAttack._spriteAttack = true;
 
+  /* A normal attack that reaches several enemies plays the whole attack
+   * sheet on each of them in turn (dash, strike, back), instead of one
+   * animation with every enemy taking damage at once. The first strike runs
+   * the original multi-attack (chakra, Last Stand count, ...), the others
+   * only deal their hit. */
+  function strikeOnly(attacker, target, core, done) {
+    try {
+      const { damage, isCritical, breakdown, dodged } = C.calculateDamage(attacker, target, 1.0);
+      target.stats.hp = Math.max(0, target.stats.hp - damage);
+      if (!dodged) window.BattleBuffs?.onNormalHit?.(core, attacker, target, damage);
+      window.BattlePhysics?.applyKnockback(target, attacker, 35, core);
+      if (!dodged) window.BattleAnimations?.showDamage(target, damage, isCritical, core.dom, false, breakdown);
+      if (core.units) core.units.updateUnitDisplay(target, core); else core.updateUnitDisplay?.(target);
+      core.updateTeamHP?.();
+    } catch (e) {
+      console.warn('[SpriteAttack] follow-up strike failed', e);
+    }
+    setTimeout(() => { core.checkBattleEnd?.(); done?.(); }, 350);
+  }
+
   const origMulti = C.performMultiAttack;
   if (typeof origMulti === 'function') {
     C.performMultiAttack = function (attacker, targets, core, onDone, ...rest) {
-      const first = (targets || []).find(alive);
-      if (!canAnimate(attacker) || !first || !core?.dom) {
+      const list = (targets || []).filter(alive);
+      if (!canAnimate(attacker) || !list.length || !core?.dom) {
         return origMulti.call(this, attacker, targets, core, onDone, ...rest);
       }
-      // No onDone given (a proximity combo follows and ends the turn): don't
-      // hold anything back, just animate.
-      animated(attacker, first, core, onDone, cb => origMulti.call(this, attacker, targets, core, cb, ...rest));
+      const self = this;
+      (async () => {
+        for (let i = 0; i < list.length; i++) {
+          const t = list[i];
+          if (!alive(attacker) || !alive(t)) continue;
+          await new Promise(resolve => animated(attacker, t, core, resolve, cb => {
+            if (i === 0) {
+              const one = [t]; one.fromRange = true;
+              origMulti.call(self, attacker, one, core, cb, ...rest);
+            } else {
+              strikeOnly(attacker, t, core, cb);
+            }
+          }));
+        }
+        onDone?.();
+      })();
     };
     C.performMultiAttack._spriteAttack = true;
   }

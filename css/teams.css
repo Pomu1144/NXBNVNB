@@ -1709,3 +1709,16 @@ html.is-mobile.is-landscape.is-compact .team-slot.drag-over::after { font-size: 
   border-color: #fff3c4;
 }
 .team-slot .slot-card .slot-link svg { width: 14px; height: 14px; }
+
+/* Phones: cards sit edge to edge, so the 7★ lightning stays inside each card
+   instead of spilling over its neighbours (in the unit list the spill covered
+   the name of the card above, making names look attached to the wrong card). */
+html.is-mobile.is-compact .team-char-card.is-7star,
+html.is-mobile.is-compact .slot-card.is-7star { overflow: hidden; }
+html.is-mobile.is-compact .team-char-card.is-7star .seven-star-fx,
+html.is-mobile.is-compact .slot-card.is-7star .seven-star-fx,
+html.is-mobile.is-compact .team-workspace .slot-card.is-7star .seven-star-fx {
+  top: 0; left: 0; transform: none;
+  width: 100%; height: 100%;
+  border-radius: inherit;
+}

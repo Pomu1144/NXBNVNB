@@ -161,14 +161,19 @@
   function computeAll(inst, c) {
     const b = baseStats(inst, c);
     const x = cardBonuses(inst);
+    // Magatama beset into the unit's tools (js/magatama.js)
+    const m = window.Magatama ? window.Magatama.bonusForEquipped(inst.equippedJutsu) : null;
+    if (m) { x.hp += m.hp; x.atk += m.atk; x.def += m.def; x.magatama = m; }
     const hp = b.hp + x.hp, atk = b.atk + x.atk, spd = b.speed + x.spd;
     return { base: b, bonus: x, hp, atk, spd, def: b.def + x.def, power: hp + atk + spd };
   }
   const powerCache = {};
+  let magaStamp = 0;
+  window.addEventListener('magatama:change', () => { magaStamp++; });
   function powerOf(inst) {
     const c = getBase(inst.charId);
     if (!c) return 0;
-    const key = inst.uid + '|' + inst.level + '|' + inst.tierCode + '|' + JSON.stringify(inst.equippedJutsu || {});
+    const key = inst.uid + '|' + inst.level + '|' + inst.tierCode + '|' + JSON.stringify(inst.equippedJutsu || {}) + '|' + magaStamp;
     if (!powerCache[key]) powerCache[key] = computeAll(inst, c).power;
     return powerCache[key];
   }
@@ -630,7 +635,9 @@
     });
   }
 
-  document.addEventListener('DOMContentLoaded', async () => {
+  let ready = null;
+  document.addEventListener('DOMContentLoaded', () => { ready = boot(); });
+  async function boot() {
     syncDock();
     loadPrefs();
     await Promise.all([loadCharactersData(), loadCardsData()]);
@@ -651,7 +658,8 @@
     }
     syncDock();
     setTimeout(syncDock, 400);
-  });
+    document.dispatchEvent(new CustomEvent('tools:ready'));
+  }
 
   // Public API (kept from the previous version)
   window.CharacterTools = {
@@ -661,6 +669,10 @@
       const saved = localStorage.getItem(`character_power_${uid}`);
       return saved ? JSON.parse(saved) : null;
     },
-    equip, unequip, openPicker
+    equip, unequip, openPicker,
+    refresh: afterChange,
+    getCard: (id) => cardsById[id] || null,
+    cardPath, cardLevel, toast,
+    ready: () => ready
   };
 })();

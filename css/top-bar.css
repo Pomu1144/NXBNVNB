@@ -364,8 +364,8 @@ body {
   .currency-item { --cur-h: 28px; }
 }
 
-/* Landscape mobile (iPhone SE, iPhone 8, iPhone 12 mini, etc.) — max 420px tall */
-@media (max-height: 420px) and (orientation: landscape) {
+/* Landscape phones (up to 540px tall, incl. 430px-tall Pro Max full screen) */
+@media (max-height: 540px) and (orientation: landscape) {
   body {
     padding-top: 44px;
   }

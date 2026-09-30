@@ -44,6 +44,12 @@
      * Uses Progression system if available, otherwise base stats
      */
     computeStats(char, instance) {
+      const stats = this._baseStats(char, instance);
+      // Magatama beset into the unit's tools (js/magatama.js)
+      return window.Magatama ? window.Magatama.applyToStats(stats, instance) : stats;
+    },
+
+    _baseStats(char, instance) {
       if (window.Progression?.computeEffectiveStatsLoreTier) {
         const tier = instance?.tierCode || char?.starMinCode || "5S";
         const lvl = Number(instance?.level || 1);

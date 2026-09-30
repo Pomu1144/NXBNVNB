@@ -285,6 +285,11 @@ html.is-mobile.is-landscape.is-compact body .bottom-bar #btn-summon {
   gap: 1px !important;
   z-index: 2;
 }
+/* iOS Safari paints background-attachment:fixed on its own layer, above
+   modal overlays (the raised Summon tab showed through dimmed popups). */
+html.is-ios.is-mobile.is-landscape.is-compact body .bottom-bar #btn-summon {
+  background-attachment: scroll !important;
+}
 /* its own gold edges replace the rules on either side */
 html.is-mobile.is-landscape.is-compact body .bottom-bar #btn-summon::before,
 html.is-mobile.is-landscape.is-compact body .bottom-bar #btn-summon + .hud-button::before {
@@ -877,7 +882,7 @@ html.is-mobile.is-landscape.is-compact .summon-carousel-arrow {
 
 html.is-mobile.is-landscape.is-compact .right-banner-panel {
   /* one grid row scales with the band height (~49px on a 375px-tall phone) */
-  --rb-row: clamp(38px, calc((var(--app-vh, 100vh) - 44px - var(--m-dock-h)) / 5.6), 52px);
+  --rb-row: clamp(34px, min(calc((var(--app-vh, 100vh) - 44px - var(--m-dock-h)) / 5.6), 5.2vw), 52px);
   --rb-gap: 5px;
   display: grid !important;
   top: calc(44px + (var(--app-vh, 100vh) - 44px - var(--m-dock-h) - (var(--rb-row) * 4 + var(--rb-gap) * 3 + 8px)) / 2);

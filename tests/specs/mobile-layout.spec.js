@@ -2,24 +2,26 @@
 const { test, expect } = require('@playwright/test');
 const { seedSave, collectErrors, waitForLoader, dismissLoginBonus } = require('../helpers');
 
-const HEIGHTS = [375, 340];
+// Safari with and without its bars (932x375 / 932x340) and full-screen
+// home-screen apps on 430- and 390-tall iPhones.
+const SIZES = [[932, 375], [932, 340], [932, 430], [844, 390]];
 
 test.describe('village layout on landscape phones', () => {
   test.beforeEach(({}, testInfo) => {
     test.skip(testInfo.project.name !== 'phone', 'phone layout only');
   });
 
-  for (const height of HEIGHTS) {
-    test(`932x${height}: right banner panel and bottom icon bar fit and do not overlap`, async ({ page }) => {
+  for (const [width, height] of SIZES) {
+    test(`${width}x${height}: right banner panel and bottom icon bar fit and do not overlap`, async ({ page }) => {
       const errors = collectErrors(page);
-      await page.setViewportSize({ width: 932, height });
+      await page.setViewportSize({ width, height });
       await seedSave(page);
       await page.goto('/village.html');
       await waitForLoader(page);
       await dismissLoginBonus(page);
       await page.waitForTimeout(500); // late layout (fonts, images)
 
-      const vp = { width: 932, height };
+      const vp = { width, height };
       const box = async (sel) => {
         const loc = page.locator(sel).first();
         await expect(loc, `${sel} visible`).toBeVisible();
@@ -64,6 +66,32 @@ test.describe('village layout on landscape phones', () => {
       expect(scrollW).toBeLessThanOrEqual(vp.width + 1);
 
       errors.assertClean(`village ${height}`);
+    });
+  }
+});
+
+test.describe('summon page on landscape phones', () => {
+  test.beforeEach(({}, testInfo) => {
+    test.skip(testInfo.project.name !== 'phone', 'phone layout only');
+  });
+
+  for (const [width, height] of SIZES) {
+    test(`${width}x${height}: title, tabs and banner list are clear of each other and the bottom bar`, async ({ page }) => {
+      const errors = collectErrors(page);
+      await page.setViewportSize({ width, height });
+      await seedSave(page);
+      await page.goto('/summon.html');
+      await waitForLoader(page);
+      await page.waitForTimeout(500);
+      const rect = (sel) => page.locator(sel).first().evaluate((e) => e.getBoundingClientRect().toJSON());
+      const title = await rect('.summon-title');
+      const tabs = await rect('.summon-tabs');
+      expect(tabs.left, 'tabs start after the title plate').toBeGreaterThanOrEqual(title.right - 1);
+      const rail = await rect('.banner-rail-col');
+      const bar = await rect('.bottom-bar');
+      expect(rail.height, 'banner list visible').toBeGreaterThan(80);
+      expect(rail.bottom, 'banner list above the bottom bar').toBeLessThanOrEqual(bar.top + 1);
+      errors.assertClean();
     });
   }
 });

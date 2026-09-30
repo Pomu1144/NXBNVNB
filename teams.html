@@ -335,6 +335,9 @@
       #prebattle-footer .ctx { color:#d9b362; font-weight:700; white-space:nowrap; }
       #btn-start-battle[disabled]{ opacity:.5; cursor:not-allowed; }
       .team-content{ padding-bottom: calc(var(--bottom-bar-h) + 90px); }
+      /* phones: the page itself scrolls; keep the last row clear of the bar */
+      html.is-mobile.is-compact body{ padding-bottom: calc(var(--bottom-bar-h) + 64px); }
+      html.is-mobile.is-compact #prebattle-footer{ padding: 7px 16px; }
     `;
     document.head.appendChild(css);
 

@@ -1,0 +1,112 @@
+/* In-battle menu (js/battle/battle-menu.js) + the trimmed top HUD. */
+
+/* Top HUD: only the wave count and the menu button (Team HP and the
+   mission name are gone). */
+.battle-hud { background: none; border-bottom: 0; justify-content: flex-end; }
+.battle-hud .hud-left,
+.battle-hud #mission-title { display: none; }
+/* menu button with the wave count tucked under it (clear of the turn track) */
+.battle-hud .hud-right {
+  flex-direction: column-reverse; align-items: center; gap: 2px;
+  align-self: flex-start; pointer-events: auto;
+}
+.battle-hud .wave {
+  margin: 0;
+  font-family: var(--jjk-font, 'Kaisei Tokumin', serif);
+  font-size: 9px; font-weight: 700; letter-spacing: 0.06em; white-space: nowrap;
+  color: var(--jjk-gold-hi, #f1d98a);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.95), 0 0 6px rgba(0, 0, 0, 0.8);
+}
+
+.battle-hud-buttons { display: flex; align-items: center; gap: 6px; margin-top: 8px; }
+.battle-quick { display: flex; gap: 6px; }
+.bq-btn {
+  height: 30px; min-width: 40px; padding: 0 8px;
+  border: 1px solid rgba(201, 162, 78, 0.75); border-radius: 6px;
+  background: rgba(7, 21, 25, 0.82);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.55), inset 0 0 0 1px rgba(0, 0, 0, 0.5);
+  color: var(--jjk-gold-hi, #f1d98a);
+  font-family: var(--jjk-font, 'Kaisei Tokumin', serif); font-size: 12px; font-weight: 800; letter-spacing: 0.04em;
+  cursor: pointer; -webkit-tap-highlight-color: transparent;
+}
+.bq-btn.is-on {
+  color: #2a220c; border-color: var(--jjk-gold-hi, #f1d98a);
+  background: linear-gradient(180deg, var(--jjk-gold-hi, #f1d98a), var(--jjk-gold, #c9a24e));
+}
+.bq-btn:active { transform: scale(0.94); }
+#btn-battle-menu {
+  width: 30px; height: 30px; padding: 0;
+  display: grid; place-items: center;
+  border: 1px solid rgba(201, 162, 78, 0.75);
+  border-radius: 6px;
+  background: rgba(7, 21, 25, 0.82);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.55), inset 0 0 0 1px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+#btn-battle-menu svg { width: 16px; height: 16px; fill: none; stroke: var(--jjk-gold-hi, #f1d98a); stroke-width: 2.2; stroke-linecap: round; }
+#btn-battle-menu:active { transform: scale(0.94); filter: brightness(1.15); }
+
+.battle-menu-overlay {
+  position: fixed; inset: 0; z-index: 3000;
+  display: flex; align-items: center; justify-content: center;
+  padding: max(10px, env(safe-area-inset-top, 0px)) max(14px, env(safe-area-inset-right, 0px)) max(10px, env(safe-area-inset-bottom, 0px)) max(14px, env(safe-area-inset-left, 0px));
+  background: rgba(3, 9, 11, 0.72);
+}
+.battle-menu {
+  width: min(420px, 100%);
+  max-height: 100%;
+  display: flex; flex-direction: column;
+  padding: 14px 18px;
+  box-sizing: border-box;
+  font-family: var(--jjk-font, 'Kaisei Tokumin', serif);
+  color: var(--jjk-text, #ece6d6);
+}
+.battle-menu .bm-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+.battle-menu .bm-title { margin: 0; font-size: 20px; font-weight: 800; color: var(--jjk-gold-hi, #f1d98a); letter-spacing: 0.06em; }
+.battle-menu .bm-close {
+  width: 30px; height: 30px; border: 0; background: none; cursor: pointer;
+  color: var(--jjk-muted, #93a3a3); font-size: 18px;
+}
+.battle-menu .bm-body { display: flex; flex-direction: column; gap: 2px; overflow-y: auto; min-height: 0; }
+.battle-menu .bm-row {
+  display: grid; grid-template-columns: 96px 1fr auto; align-items: center; gap: 10px;
+  min-height: 40px; padding: 2px 0;
+  border-bottom: 1px solid rgba(201, 162, 78, 0.14);
+  font-size: 14px; font-weight: 700;
+}
+.battle-menu .bm-row:last-child { border-bottom: 0; }
+.battle-menu .bm-row > :nth-child(2):last-child { grid-column: 2 / 4; justify-self: end; }
+.battle-menu .bm-val { min-width: 28px; text-align: right; font-size: 13px; color: var(--jjk-gold, #c9a24e); }
+.battle-menu .bm-range { width: 100%; accent-color: var(--jjk-gold, #c9a24e); height: 28px; }
+.battle-menu .bm-segs { display: flex; gap: 4px; }
+.battle-menu .bm-seg,
+.battle-menu .bm-toggle {
+  min-width: 46px; height: 30px; padding: 0 12px;
+  border: 1px solid rgba(201, 162, 78, 0.45); border-radius: 4px;
+  background: rgba(7, 21, 25, 0.8);
+  color: var(--jjk-muted, #93a3a3);
+  font-family: inherit; font-size: 13px; font-weight: 800; cursor: pointer;
+}
+.battle-menu .bm-seg.is-on,
+.battle-menu .bm-toggle.is-on {
+  color: #2a220c; border-color: var(--jjk-gold-hi, #f1d98a);
+  background: linear-gradient(180deg, var(--jjk-gold-hi, #f1d98a), var(--jjk-gold, #c9a24e));
+}
+.battle-menu .bm-foot { display: flex; justify-content: space-between; gap: 10px; margin-top: 12px; }
+.battle-menu .bm-foot .jjk-btn { flex: 1 1 0; min-height: 40px; }
+.battle-menu .bm-retreat.is-armed { color: #ffd2c8; border-color: rgba(220, 80, 60, 0.8); }
+
+/* Short landscape phones: two columns so the whole menu fits */
+@media (max-height: 520px) and (orientation: landscape) {
+  .battle-menu { width: min(560px, 100%); padding: 10px 14px; }
+  .battle-menu .bm-head { margin-bottom: 4px; }
+  .battle-menu .bm-title { font-size: 17px; }
+  .battle-menu .bm-row { min-height: 36px; font-size: 13px; grid-template-columns: 84px 1fr auto; }
+  .battle-menu .bm-foot { margin-top: 8px; }
+  .battle-menu .bm-foot .jjk-btn { min-height: 34px; }
+}
+
+/* The turn-order track stops short of the top-right buttons */
+#speed-gauge-track { width: min(88%, 1180px, calc(100% - 330px)); left: calc(50% - 60px); }
+html.is-mobile #speed-gauge-track { width: auto; left: max(3%, env(safe-area-inset-left, 0px)); right: 168px; transform: none; }

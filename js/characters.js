@@ -506,6 +506,9 @@
         out.critDmg  += parseFloat(card.stats.crit_dmg_bonus  ?? card.stats.critDmg ?? 0) || 0;
         out.evaRate  += parseFloat(card.stats.eva_rate_bonus  ?? card.stats.eva ?? 0)   || 0;
       }
+      // Magatama beset into the unit's tools (js/magatama.js)
+      const m = window.Magatama?.bonusForEquipped(inst.equippedJutsu);
+      if (m) { out.hp += m.hp; out.atk += m.atk; out.def += m.def; }
     } catch (e) {
       console.error('[characters] getEquippedCardBonuses error:', e);
     }
