@@ -1894,8 +1894,8 @@
     const buddy = supportText(c.buddySkill || c.skills?.buddySkill, tier);
     if (field || buddy) {
       out.push(`<h4 class="cx-kicker">Field &amp; Buddy</h4><div class="cx-pas-list">`);
-      if (field) out.push(passRow(`<span class="cx-seal cx-seal--field" aria-hidden="true">F</span>`, "Field Skill", esc(field)));
-      if (buddy) out.push(passRow(`<span class="cx-seal cx-seal--buddy" aria-hidden="true">B</span>`, "Buddy Skill", esc(buddy)));
+      if (field) out.push(passRow(`<img class="cx-pas-ico" src="assets/icons/skill_field.webp" alt="" draggable="false">`, "Field Skill", esc(field)));
+      if (buddy) out.push(passRow(`<img class="cx-pas-ico" src="assets/icons/skill_buddy.webp" alt="" draggable="false">`, "Buddy Skill", esc(buddy)));
       out.push(`</div>`);
     }
 
