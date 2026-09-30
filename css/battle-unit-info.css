@@ -256,3 +256,9 @@ button.bui-tab:focus-visible { outline: 2px solid var(--jjk-gold-hi, #f1d98a); o
 @media (prefers-reduced-motion: reduce) {
   .bui-overlay, .bui-panel, .bui-hold { animation: none; }
 }
+
+/* Stat icons (assets/ui/stats) and the paired tabs sitting edge to edge */
+.bui-stat dt .bui-stat-ic { width: 18px; height: 18px; object-fit: contain; align-self: center; filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.8)); }
+.bui-tabrow { gap: 0; }
+.bui-tabrow > .bui-plate + .bui-plate { margin-left: -12px; }
+.bui-tabrow > button.bui-tab.is-active { z-index: 1; }
