@@ -229,11 +229,11 @@
       ov.querySelector('.rc-picker-close').addEventListener('click', close);
       ov.addEventListener('click', (e) => { if (e.target === ov) close(); });
       ov.querySelectorAll('.rscroll').forEach(card => {
-        const pick = () => {
+        const pick = async () => {
           const fusion = data.fusions.find(f => f.id === card.dataset.fusionId);
           if (!fusion) return;
           if (book.fragments() < price) { alert(`Not enough Recipe Fragments (${book.fragments()} / ${price}).`); return; }
-          if (!confirm(`Trade ${price} Recipe Fragments for "${fusion.name}"?`)) return;
+          if (!(await window.ModalManager.ask(`Trade ${price} Recipe Fragments for "${fusion.name}"?`, { title: 'Trade Fragments', confirmText: 'Trade' }))) return;
           if (!book.spendFragments(price)) return;
           const res = book.grant(fusion.id, 'shop-choice');
           close();
@@ -496,17 +496,21 @@
 
     showSuccessModal(item, quantity) {
       const modal = document.getElementById('success-modal');
-      const message = document.getElementById('success-message');
-
-      if (message) {
-        let itemInfo = `${quantity}x ${item.name}`;
+      const icon = document.getElementById('success-item-icon');
+      const qty = document.getElementById('success-item-qty');
+      const name = document.getElementById('success-message');
+      if (icon) icon.src = item.icon || '';
+      if (qty) qty.textContent = `×${quantity}`;
+      if (name) {
+        name.textContent = item.name;
         if (item.exp) {
-          itemInfo += ` (Total: ${(item.exp * quantity).toLocaleString()} EXP)`;
+          const exp = document.createElement('small');
+          exp.textContent = `${(item.exp * quantity).toLocaleString()} EXP`;
+          name.appendChild(exp);
         }
-        message.innerHTML = `You successfully purchased:<br><strong style="color: #ffd700;">${itemInfo}</strong>`;
       }
-
       modal.classList.remove('hidden');
+      document.getElementById('btn-close-success')?.focus();
     },
 
     closeModal(modalId) {

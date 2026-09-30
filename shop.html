@@ -9,6 +9,7 @@
   <script src="js/session-gate.js"></script>
   <script src="js/page-loader.js"></script>
   <script src="js/device-detect.js"></script>
+  <script src="js/modal-manager.js?v=3"></script>
   <!-- PWA App Container -->
   <link rel="manifest" href="manifest.json" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -149,8 +150,8 @@
         <button type="button" class="lb-el" data-el="Bravery" aria-pressed="false"><img src="assets/ui/jjk/orb_bravery.webp" alt="" width="22" height="22">Bravery</button>
         <button type="button" class="lb-el" data-el="Wisdom" aria-pressed="false"><img src="assets/ui/jjk/orb_wisdom.webp" alt="" width="22" height="22">Wisdom</button>
         <span class="lb-count" id="lb-count" aria-live="polite"></span>
+        <button type="button" class="help-tip" aria-label="How crystals work" data-help-title="Limit Break Crystals" data-help="Each crystal fits one character, in every version. Blue ★5 crystals work at 6★ tiers; gold ★6 crystals work at every tier. They are spent before generic Limit Break Crystals.">?</button>
       </div>
-      <p class="lb-rule">Each crystal fits one character, in every version. Blue ★5 crystals work at 6★ tiers; gold ★6 crystals work at every tier. They are spent before generic Limit Break Crystals.</p>
       <div class="lb-grid" id="limitbreak-grid"></div>
       <div class="lb-empty" id="lb-empty" hidden>
         <img src="assets/items/limitbreakcrystal_portrait.webp" alt="" width="72" height="72">
@@ -162,46 +163,52 @@
 
     <!-- Skins Tab: cosmetic skins (js/skins.js, js/skin-shop.js) -->
     <div class="shop-tab-content" id="tab-skins">
-      <p class="lb-rule">Skins change how a unit looks in battle and on its info screen. Stats stay the same. Equip skins from the unit's info screen in Shinobi.</p>
+      <div class="help-row"><button type="button" class="help-tip" aria-label="How skins work" data-help-title="Skins" data-help="Skins change how a unit looks in battle and on its info screen. Stats stay the same. Equip skins from the unit's info screen in Shinobi.">?</button></div>
       <div class="skin-grid" id="skins-grid"></div>
       <p class="lb-rule" id="skins-empty" hidden>No skins on sale yet.</p>
     </div>
   </main>
 
-  <!-- Purchase Confirmation Modal -->
-  <div id="purchase-modal" class="modal hidden">
-    <div class="modal-content">
-      <h2 class="modal-title">Confirm Purchase</h2>
-      <div class="purchase-preview">
-        <img id="purchase-item-icon" src="" alt="Item">
-        <div class="purchase-details">
-          <div class="purchase-item-name" id="purchase-item-name"></div>
-          <div class="purchase-item-desc" id="purchase-item-desc"></div>
+  <!-- Purchase confirm / result: themed dialog (css/modal-system.css), shop layout in css/shop.css (.sp-*) -->
+  <div id="purchase-modal" class="modal sp-modal hidden">
+    <div class="modal-container modal-show sp-dialog" role="dialog" aria-modal="true" aria-labelledby="sp-confirm-title">
+      <div class="modal-header"><h3 class="modal-title" id="sp-confirm-title">Purchase</h3></div>
+      <div class="modal-body sp-body">
+        <div class="sp-item">
+          <span class="sp-icon"><img id="purchase-item-icon" src="" alt=""></span>
+          <div class="sp-text">
+            <div class="sp-name" id="purchase-item-name"></div>
+            <div class="sp-desc" id="purchase-item-desc"></div>
+          </div>
+        </div>
+        <div class="sp-row">
+          <div class="quantity-selector sp-qty">
+            <button type="button" class="qty-btn" id="qty-minus" aria-label="Fewer">&minus;</button>
+            <input type="number" id="qty-input" value="1" min="1" max="99" aria-label="Quantity">
+            <button type="button" class="qty-btn" id="qty-plus" aria-label="More">+</button>
+          </div>
+          <div class="sp-cost"><span id="purchase-total-cost"></span></div>
         </div>
       </div>
-      <div class="quantity-selector">
-        <label>Quantity:</label>
-        <button class="qty-btn" id="qty-minus">-</button>
-        <input type="number" id="qty-input" value="1" min="1" max="99">
-        <button class="qty-btn" id="qty-plus">+</button>
-      </div>
-      <div class="purchase-cost">
-        <span>Total Cost:</span>
-        <span id="purchase-total-cost"></span>
-      </div>
-      <div class="modal-buttons">
-        <button class="btn-confirm" id="btn-confirm-purchase">Purchase</button>
-        <button class="btn-cancel" id="btn-cancel-purchase">Cancel</button>
+      <div class="modal-footer">
+        <button type="button" class="modal-btn modal-btn-secondary" id="btn-cancel-purchase">Cancel</button>
+        <button type="button" class="modal-btn modal-btn-primary jjk-btn" id="btn-confirm-purchase">Buy</button>
       </div>
     </div>
   </div>
 
-  <!-- Success Modal -->
-  <div id="success-modal" class="modal hidden">
-    <div class="modal-content success-content">
-      <h2 class="success-title">Purchase Successful!</h2>
-      <div class="success-message" id="success-message"></div>
-      <button class="btn-confirm" id="btn-close-success">OK</button>
+  <div id="success-modal" class="modal sp-modal hidden">
+    <div class="modal-container modal-show sp-dialog sp-done" role="dialog" aria-modal="true" aria-labelledby="sp-done-title">
+      <div class="modal-header"><h3 class="modal-title" id="sp-done-title">Obtained</h3></div>
+      <div class="modal-body sp-body">
+        <div class="sp-reward">
+          <span class="sp-icon is-big"><img id="success-item-icon" src="" alt=""><b class="sp-count" id="success-item-qty"></b></span>
+          <div class="sp-name" id="success-message"></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="modal-btn modal-btn-primary jjk-btn" id="btn-close-success">OK</button>
+      </div>
     </div>
   </div>
 
