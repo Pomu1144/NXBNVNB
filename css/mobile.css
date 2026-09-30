@@ -223,9 +223,7 @@ html.is-mobile #rotate-device-overlay .rdo-text {
    - slim, icon-first segments with small labels
    - group boundaries use a stronger straight gold rule (‖) instead of the
      thin slanted one
-   - Summon is the primary tab: a wider segment that rises a few px above
-     the strip on the same texture (fixed-attachment, so the pattern stays
-     continuous), gold-edged top, bigger icon, gold label
+   - Summon is an ordinary tab: only the current page is highlighted
    Same art (navstrip*.webp, Kaisei Tokumin). */
 html.is-mobile.is-landscape.is-compact {
   --dock-h: calc(var(--m-dock-h) - 6px);
@@ -234,9 +232,7 @@ html.is-mobile.is-landscape.is-compact {
   --dock-label: 8px;
   --dock-radius: 13px;
   --dock-safe-b: calc(var(--safe-b) * 0.45);
-  --dock-raise: 7px;                        /* how far Summon rises       */
 }
-/* let the raised Summon segment break out of the band + strip */
 html.is-mobile.is-landscape.is-compact body .bottom-bar {
   overflow: visible !important;
 }
@@ -265,59 +261,6 @@ html.is-mobile.is-landscape.is-compact body .bottom-bar #btn-missions::before {
   -webkit-mask-image: linear-gradient(180deg, transparent, #000 12%, #000 88%, transparent) !important;
   mask-image: linear-gradient(180deg, transparent, #000 12%, #000 88%, transparent) !important;
 }
-/* Summon: the raised primary segment */
-html.is-mobile.is-landscape.is-compact body .bottom-bar #btn-summon {
-  flex-grow: 1.4 !important;
-  margin-top: calc(var(--dock-raise) * -1) !important;
-  background-color: #0b1c20 !important;
-  background-image: url('../assets/ui/jjk/navstrip.webp') !important;
-  background-repeat: repeat-x !important;
-  background-size: var(--dock-tex-size) !important;
-  background-position: var(--dock-tex-pos) !important;
-  background-attachment: fixed !important;
-  border: 1px solid rgba(226, 194, 112, 0.95) !important;
-  border-bottom: 0 !important;
-  border-radius: 11px 11px 0 0 !important;
-  box-shadow:
-    0 -3px 8px rgba(241, 217, 138, 0.22),
-    inset 0 1px 0 rgba(255, 238, 180, 0.35),
-    inset 0 -8px 12px rgba(0, 0, 0, 0.3) !important;
-  gap: 1px !important;
-  z-index: 2;
-}
-/* iOS Safari paints background-attachment:fixed on its own layer, above
-   modal overlays (the raised Summon tab showed through dimmed popups). */
-html.is-ios.is-mobile.is-landscape.is-compact body .bottom-bar #btn-summon {
-  background-attachment: scroll !important;
-}
-/* its own gold edges replace the rules on either side */
-html.is-mobile.is-landscape.is-compact body .bottom-bar #btn-summon::before,
-html.is-mobile.is-landscape.is-compact body .bottom-bar #btn-summon + .hud-button::before {
-  opacity: 0 !important;
-}
-html.is-mobile.is-landscape.is-compact body .bottom-bar #btn-summon img {
-  width: 27px !important;
-  height: 27px !important;
-}
-html.is-mobile.is-landscape.is-compact body .bottom-bar #btn-summon::after {
-  font-size: 9.5px !important;
-  font-weight: 800;
-  color: var(--jjk-gold-hi, #f1d98a);
-}
-html.is-mobile.is-landscape.is-compact body .bottom-bar #btn-summon:hover {
-  background-image: linear-gradient(180deg, rgba(241, 217, 138, 0.16), rgba(241, 217, 138, 0.04)), url('../assets/ui/jjk/navstrip.webp') !important;
-}
-/* Summon as the current page / pressed: gold segment, still raised */
-html.is-mobile.is-landscape.is-compact body .bottom-bar #btn-summon.active,
-html.is-mobile.is-landscape.is-compact body .bottom-bar #btn-summon:active {
-  background-color: #b89a52 !important;
-  background-image: url('../assets/ui/jjk/navstrip_active.webp') !important;
-  box-shadow:
-    0 -3px 8px rgba(241, 217, 138, 0.3),
-    inset 0 0 0 1px rgba(255, 244, 205, 0.35),
-    inset 0 3px 7px rgba(90, 62, 12, 0.55) !important;
-}
-html.is-mobile.is-landscape.is-compact body .bottom-bar #btn-summon.active::after,
 html.is-mobile.is-landscape.is-compact body .bottom-bar .hud-button.active::after {
   color: #2a220c;
 }
