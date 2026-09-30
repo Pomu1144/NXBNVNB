@@ -26,11 +26,14 @@
     const list = tools();
     return list.find(t => t.slot === ui.slot) || list[0] || null;
   }
+  const pct = v => String(Math.round(v * 10) / 10);
   function bonusText(b, sep = ' ') {
     const parts = [];
     if (b.hp) parts.push(`+${fmt(b.hp)} HP`);
     if (b.atk) parts.push(`+${fmt(b.atk)} ATK`);
     if (b.def) parts.push(`+${fmt(b.def)} DEF`);
+    if (b.nin) parts.push(`+${pct(b.nin)}% Jutsu DMG`);
+    if (b.res) parts.push(`+${pct(b.res)}% Jutsu RES`);
     return parts.join(sep);
   }
   function gem(k, extra = '') {
@@ -90,9 +93,10 @@
       }).join('');
     }
     const s2 = selected();
-    const b = s2 ? M().bonusForEquipped(s2.inst.equippedJutsu) : { hp: 0, atk: 0, def: 0 };
-    $('mg-total').innerHTML = ['hp', 'atk', 'def'].map(k =>
-      `<div class="${b[k] ? 'has' : ''}" data-stat="${k}"><dt>${k.toUpperCase()}</dt><dd>+${fmt(b[k])}</dd></div>`).join('');
+    const b = s2 ? M().bonusForEquipped(s2.inst.equippedJutsu) : { hp: 0, atk: 0, def: 0, nin: 0, res: 0 };
+    const LABEL = { hp: 'HP', atk: 'ATK', def: 'DEF', nin: 'NIN', res: 'RES' };
+    $('mg-total').innerHTML = M().STATS.map(k =>
+      `<div class="${b[k] ? 'has' : ''}" data-stat="${k}"><dt>${LABEL[k]}</dt><dd>+${k === 'nin' || k === 'res' ? pct(b[k]) + '%' : fmt(b[k])}</dd></div>`).join('');
   }
 
   function renderStage() {
@@ -118,7 +122,7 @@
       const x = 50 + 39 * Math.cos(a), y = 50 + 39 * Math.sin(a);
       const i2 = k && M().info(k);
       return `<button type="button" class="mg-socket${k ? ' is-filled' : ''}${ui.socket === i ? ' is-picked' : ''}" style="left:${x.toFixed(2)}%;top:${y.toFixed(2)}%${i2 ? `;--c:${i2.color}` : ''}" data-socket="${i}"
-        aria-label="${k ? `${i2.name} Lv${i2.level}, +${i2.value} ${i2.statLabel}. Tap to remove` : 'Empty socket'}">${k ? gem(k) : ''}</button>`;
+        aria-label="${k ? `${i2.name} Lv${i2.level}, ${i2.text}. Tap to remove` : 'Empty socket'}">${k ? gem(k) : ''}</button>`;
     }).join('');
   }
 
@@ -153,7 +157,7 @@
     grid.innerHTML = keys.map(k => {
       const i = M().info(k);
       return `<button type="button" class="mg-cell${ui.sel === k ? ' is-sel' : ''}" role="option" aria-selected="${ui.sel === k}" data-key="${k}" style="--c:${i.color}"
-        title="${i.name} Lv${i.level} +${i.value} ${i.statLabel}">${gem(k, `<span class="mg-n">&times;${M().count(k)}</span>`)}</button>`;
+        title="${i.name} Lv${i.level} ${i.text}">${gem(k, `<span class="mg-n">&times;${M().count(k)}</span>`)}</button>`;
     }).join('');
   }
 
@@ -169,7 +173,7 @@
       return;
     }
     box.innerHTML = `<span class="mg-sel-ic" style="--c:${i.color}">${gem(k)}</span>
-      <span class="mg-sel-meta"><b>${esc(i.name)} Lv${i.level}</b><em>+${fmt(i.value)} ${i.statLabel}</em></span>
+      <span class="mg-sel-meta"><b>${esc(i.name)} Lv${i.level}</b><em>${i.text}</em></span>
       <span class="mg-sel-n">&times;${M().count(k)}</span>`;
   }
 
@@ -205,7 +209,7 @@
       const price = M().priceOf(lv) * ui.shopQty;
       return `<div class="mg-offer" style="--c:${i.color}">
         <span class="mg-offer-ic">${gem(k)}</span>
-        <span class="mg-offer-meta"><b>${esc(i.name)} Lv${lv}</b><em>+${fmt(i.value)} ${i.statLabel}</em><small>Owned ${M().count(k)}</small></span>
+        <span class="mg-offer-meta"><b>${esc(i.name)} Lv${lv}</b><em>${i.text}</em><small>Owned ${M().count(k)}</small></span>
         <button type="button" class="jjk-btn tl-mini mg-offer-buy${have >= price ? ' is-primary' : ''}" data-buy="${lv}" ${have >= price ? '' : 'disabled'}>
           <img src="assets/icons/currency/ryo.png" alt="">${fmt(price)}</button>
       </div>`;

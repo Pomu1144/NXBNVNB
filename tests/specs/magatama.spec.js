@@ -25,7 +25,7 @@ test('embedded magatama table matches data/magatama.json', () => {
   expect([d.socketsPerTool, d.combineCount, d.splitCount, d.maxLevel]).toEqual([DATA.socketsPerTool, DATA.combineCount, DATA.splitCount, DATA.maxLevel]);
   for (const t of DATA.types) {
     expect(t.values).toHaveLength(10);
-    for (let tier = 1; tier <= 4; tier++) expect(fs.existsSync(path.join(REPO_ROOT, `assets/magatama/${t.id}_${tier}.webp`))).toBe(true);
+    for (let lv = 1; lv <= 10; lv++) expect(fs.existsSync(path.join(REPO_ROOT, `assets/magatama/${t.id}_${lv}.webp`))).toBe(true);
   }
 });
 
@@ -112,7 +112,7 @@ test('socketed magatama raise the unit stats in battle', async ({ page }) => {
     currentMissionId: mission.id,
     currentDifficulty: rank,
     blazing_story_seen_v1: allStorySeen(),
-    blazing_magatama_v1: { bag: {}, sockets: { [TOOLS[0]]: ['attack:10', 'life:10', 'attack:5', null, null], [TOOLS[1]]: ['resistance:9', null, null, null, null] } },
+    blazing_magatama_v1: { bag: {}, sockets: { [TOOLS[0]]: ['attack:10', 'life:10', 'attack:5', null, null], [TOOLS[1]]: ['defense:9', 'ninjutsu:10', 'resistance:8', null, null] } },
   });
   await page.goto('/battle.html');
   await waitForLoader(page, 45_000);
@@ -127,7 +127,7 @@ test('socketed magatama raise the unit stats in battle', async ({ page }) => {
       return { charId: u.charId, maga: u.stats.magatama || null, maxHP: u.stats.maxHP, atk: u.stats.atk, def: u.stats.def, plain };
     });
   });
-  const expected = { hp: val('life', 10), atk: val('attack', 10) + val('attack', 5), def: val('resistance', 9) };
+  const expected = { hp: val('life', 10), atk: val('attack', 10) + val('attack', 5), def: val('defense', 9), nin: val('ninjutsu', 10), res: val('resistance', 8) };
   expect(r[0].maga).toEqual(expected);
   expect(r[0].maxHP).toBe(r[0].plain.maxHP + expected.hp);
   expect(r[0].def).toBe(r[0].plain.def + expected.def);

@@ -299,6 +299,15 @@
       if (sm.vulnPct) damage *= (1 + sm.vulnPct / 100);
       if (sm.dmgPct) damage *= (1 + sm.dmgPct / 100);
 
+      // Magatama: Ninjutsu raises jutsu / ultimate damage dealt, Resistance
+      // lowers jutsu / ultimate damage taken (percentages, js/magatama.js)
+      if (ctx.kind && ctx.kind !== 'attack') {
+        const nin = Number(attacker.stats.magatama?.nin) || 0;
+        const res = Number(defender.stats.magatama?.res) || 0;
+        if (nin) damage *= 1 + nin / 100;
+        if (res) damage *= Math.max(0, 1 - res / 100);
+      }
+
       // Random variance (90% - 110%)
       damage *= (0.9 + Math.random() * 0.2);
 

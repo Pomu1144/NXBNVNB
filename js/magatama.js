@@ -1,8 +1,10 @@
 // js/magatama.js — Magatama (Naruto Online "Beset Magatama") core.
 //
-// Each tool card has 5 sockets. Magatama are Attack (ATK), Life (HP) or
-// Resistance (DEF) jewels, levels 1-10 (data/magatama.json). Four of one
-// level combine into one of the next; splitting reverses that.
+// Each tool card has 5 sockets. Magatama are Attack (ATK), Life (HP),
+// Defense (DEF), Ninjutsu (+% jutsu/ultimate damage dealt) or Resistance
+// (-% jutsu/ultimate damage taken) jewels, levels 1-10, each level its own
+// shape (data/magatama.json). Four of one level combine into one of the
+// next; splitting reverses that.
 //
 // Save (localStorage "blazing_magatama_v1"):
 //   { bag: { "attack:3": 2, ... }, sockets: { [cardId]: ["life:4", null, ...] } }
@@ -19,11 +21,13 @@
   let DATA = {
     socketsPerTool: 5, combineCount: 4, splitCount: 4, maxLevel: 10,
     types: [
-      { id: 'attack', name: 'Attack', color: '#d8423a', stat: 'atk', statLabel: 'ATK', values: [4, 10, 15, 21, 28, 36, 46, 58, 72, 90] },
-      { id: 'life', name: 'Life', color: '#3fb46a', stat: 'hp', statLabel: 'HP', values: [10, 25, 38, 53, 70, 90, 115, 145, 180, 225] },
-      { id: 'resistance', name: 'Resistance', color: '#3f7fd8', stat: 'def', statLabel: 'DEF', values: [3, 6, 9, 13, 17, 22, 28, 35, 43, 54] }
+      {id: 'attack', name: 'Attack', color: '#d8423a', stat: 'atk', statLabel: 'ATK', values: [4, 10, 15, 21, 28, 36, 46, 58, 72, 90]},
+      {id: 'life', name: 'Life', color: '#3fb46a', stat: 'hp', statLabel: 'HP', values: [10, 25, 38, 53, 70, 90, 115, 145, 180, 225]},
+      {id: 'defense', name: 'Defense', color: '#e8892a', stat: 'def', statLabel: 'DEF', values: [3, 6, 9, 13, 17, 22, 28, 35, 43, 54]},
+      {id: 'ninjutsu', name: 'Ninjutsu', color: '#9b5de5', stat: 'nin', statLabel: 'Jutsu DMG', unit: '%', values: [0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 5, 6]},
+      {id: 'resistance', name: 'Resistance', color: '#3f7fd8', stat: 'res', statLabel: 'Jutsu RES', unit: '%', values: [0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 5, 6]}
     ],
-    tiers: [{ tier: 1, from: 1, to: 3 }, { tier: 2, from: 4, to: 6 }, { tier: 3, from: 7, to: 9 }, { tier: 4, from: 10, to: 10 }],
+    caps: { nin: 60, res: 50 },
     shop: { currency: 'ryo', levels: { 1: 2000, 2: 7500, 3: 28000 } }
   };
   let typesById = {};
@@ -50,8 +54,7 @@
     if (!typesById[type] || !(level >= 1 && level <= DATA.maxLevel)) return null;
     return { type, level };
   }
-  const tierOf = (level) => (DATA.tiers.find(t => level >= t.from && level <= t.to) || DATA.tiers[0]).tier;
-  const iconFor = (type, level) => `assets/magatama/${type}_${tierOf(level)}.webp`;
+  const iconFor = (type, level) => `assets/magatama/${type}_${level}.webp`;
   function valueOf(type, level) {
     const t = typesById[type];
     return t ? Number(t.values[level - 1]) || 0 : 0;
@@ -62,7 +65,8 @@
     const t = typesById[p.type];
     return {
       key: k, type: p.type, level: p.level, name: t.name, color: t.color,
-      stat: t.stat, statLabel: t.statLabel, value: valueOf(p.type, p.level), icon: iconFor(p.type, p.level)
+      stat: t.stat, statLabel: t.statLabel, unit: t.unit || '', value: valueOf(p.type, p.level),
+      text: `+${valueOf(p.type, p.level)}${t.unit || ''} ${t.statLabel}`, icon: iconFor(p.type, p.level)
     };
   }
 
@@ -106,12 +110,13 @@
 
   /* ───────── Which types a tool accepts ─────────
      Naruto Online ties each magatama type to a gear slot. Here the card's
-     type decides: Attack cards take Attack + Life, Defense cards take
-     Resistance + Life, Skill cards Attack + Resistance, others take any. */
+     type decides: Attack cards take Attack / Ninjutsu / Life, Defense cards
+     Defense / Resistance / Life, Skill cards Ninjutsu / Attack / Resistance,
+     others take any. */
   const FIT = {
-    Attack: ['attack', 'life'],
-    Defense: ['resistance', 'life'],
-    Skill: ['attack', 'resistance']
+    Attack: ['attack', 'ninjutsu', 'life'],
+    Defense: ['defense', 'resistance', 'life'],
+    Skill: ['ninjutsu', 'attack', 'resistance']
   };
   function fits(card) {
     const f = card && FIT[card.cardType];
@@ -216,15 +221,17 @@
   }
 
   /* ───────── Stat bonuses ───────── */
+  const zero = () => ({ hp: 0, atk: 0, def: 0, nin: 0, res: 0 });
+  const STATS = ['hp', 'atk', 'def', 'nin', 'res'];
   function bonusForCard(cardId) {
-    const out = { hp: 0, atk: 0, def: 0 };
+    const out = zero();
     const row = get().sockets[cardId];
     if (!row) return out;
     row.forEach(k => { const i = k && info(k); if (i) out[i.stat] += i.value; });
     return out;
   }
   function bonusForEquipped(equippedJutsu) {
-    const out = { hp: 0, atk: 0, def: 0 };
+    const out = zero();
     if (!equippedJutsu) return out;
     const seen = new Set();
     TOOL_SLOTS.forEach(slot => {
@@ -232,15 +239,19 @@
       if (!id || seen.has(id)) return;
       seen.add(id);
       const b = bonusForCard(id);
-      out.hp += b.hp; out.atk += b.atk; out.def += b.def;
+      STATS.forEach(k => { out[k] += b[k]; });
     });
     return out;
   }
   // Adds the bonus to a battle stats object ({ hp, maxHP, atk, def }).
+  // Ninjutsu / Resistance stay as percentages on stats.magatama and are
+  // applied to jutsu and ultimate damage (battle-combat.js calculateDamage).
   function applyToStats(stats, instance) {
     if (!stats || !instance) return stats;
     const b = bonusForEquipped(instance.equippedJutsu);
-    if (!(b.hp || b.atk || b.def)) return stats;
+    if (!STATS.some(k => b[k])) return stats;
+    b.nin = Math.min(b.nin, DATA.caps?.nin ?? 60);
+    b.res = Math.min(b.res, DATA.caps?.res ?? 50);
     stats.hp = (Number(stats.hp) || 0) + b.hp;
     if ('maxHP' in stats) stats.maxHP = (Number(stats.maxHP) || 0) + b.hp;
     stats.atk = (Number(stats.atk) || 0) + b.atk;
@@ -254,6 +265,6 @@
     load, reload, get, data: () => DATA, types: () => DATA.types.slice(),
     key, parse, info, iconFor, valueOf, priceOf, count, socketsOf, fits,
     buy, beset, remove, removeAll, oneClick, combine, split,
-    bonusForCard, bonusForEquipped, applyToStats
+    bonusForCard, bonusForEquipped, applyToStats, STATS
   };
 })(window);
