@@ -1,0 +1,16 @@
+{
+  "frameWidth": 254,
+  "frameHeight": 271,
+  "frames": 25,
+  "columns": 12,
+  "fps": 12,
+  "loop": false,
+  "hits": [],
+  "heightScale": 1.0586,
+  "anchorX": 0.519,
+  "fx": {
+    "sheet": "ultimate_fx",
+    "at": "targets",
+    "startFrame": 12
+  }
+}
