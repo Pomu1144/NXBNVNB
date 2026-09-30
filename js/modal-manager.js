@@ -35,7 +35,9 @@
       // Close on overlay click
       this.overlay.addEventListener('click', (e) => {
         if (e.target === this.overlay) {
+          const onDismiss = this._onDismiss;
           this.close();
+          if (onDismiss) onDismiss();
         }
       });
     },
@@ -147,11 +149,11 @@
      * @param {Function} onSubmit - Callback with input value
      * @param {Function} onCancel - Callback when cancelled
      */
-    showPrompt(message, defaultValue = '', onSubmit, onCancel) {
+    showPrompt(message, defaultValue = '', onSubmit, onCancel, opts = {}) {
       const modal = this.createModal('prompt');
       modal.innerHTML = `
         <div class="modal-header modal-prompt">
-          <h3 class="modal-title">Input Required</h3>
+          <h3 class="modal-title">${this.escapeHtml(opts.title || 'Enter')}</h3>
         </div>
         <div class="modal-body">
           <p class="modal-message">${this.escapeHtml(message)}</p>
@@ -159,7 +161,7 @@
         </div>
         <div class="modal-footer">
           <button class="modal-btn modal-btn-secondary" id="modal-cancel-btn">Cancel</button>
-          <button class="modal-btn modal-btn-primary jjk-btn" id="modal-confirm-btn">Submit</button>
+          <button class="modal-btn modal-btn-primary jjk-btn" id="modal-confirm-btn">${this.escapeHtml(opts.confirmText || 'OK')}</button>
         </div>
       `;
 
@@ -242,9 +244,14 @@
      * @param {Object} callbacks - Object with onConfirm, onCancel, onSubmit, onSelect callbacks
      */
     show(modal, onClose, callbacks = {}) {
+      if (!this.overlay) this.createOverlay();
       if (this.isOpen) {
         this.close();
       }
+      // A dialog opened straight after another closes (Confirm -> Success)
+      // must not be wiped by the previous close's delayed cleanup
+      clearTimeout(this._closeTimer);
+      this._onDismiss = callbacks.onCancel || null;
 
       this.currentModal = modal;
       this.isOpen = true;
@@ -303,6 +310,7 @@
      */
     close() {
       if (!this.isOpen) return;
+      this.isOpen = false;
 
       // Stop a closed dialog's ESC handler from firing its onCancel later
       if (this._escHandler) {
@@ -314,12 +322,68 @@
         this.currentModal.classList.remove('modal-show');
       }
 
-      setTimeout(() => {
+      this._closeTimer = setTimeout(() => {
         this.overlay.style.display = 'none';
         this.overlay.innerHTML = '';
         this.currentModal = null;
         this.isOpen = false;
       }, 300);
+    },
+
+    /**
+     * In-game replacement for window.alert: picks the header from a leading
+     * status mark and drops emoji so the text reads like game copy
+     */
+    /**
+     * Buttons dialog as a promise: resolves the chosen button's value, or
+     * null when dismissed (ESC / tap outside)
+     * @param {string} message
+     * @param {Array<{label:string,value:*,primary?:boolean}>} buttons
+     * @param {Object} [opts] - { title }
+     */
+    pick(message, buttons, opts = {}) {
+      return new Promise((resolve) => {
+        const modal = this.createModal('confirm');
+        modal.innerHTML = `
+          <div class="modal-header modal-confirm">
+            <h3 class="modal-title">${this.escapeHtml(opts.title || 'Confirm')}</h3>
+          </div>
+          <div class="modal-body">
+            <p class="modal-message">${this.escapeHtml(message)}</p>
+          </div>
+          <div class="modal-footer">
+            ${buttons.map((b, i) => `<button class="modal-btn ${b.primary ? 'modal-btn-primary jjk-btn' : 'modal-btn-secondary'}" data-i="${i}">${this.escapeHtml(b.label)}</button>`).join('')}
+          </div>
+        `;
+        this.show(modal, null, { onCancel: () => resolve(null) });
+        modal.querySelectorAll('[data-i]').forEach((btn) => btn.addEventListener('click', () => {
+          this.close();
+          resolve(buttons[Number(btn.dataset.i)].value);
+        }));
+      });
+    },
+
+    /** Yes/no as a promise (dismiss counts as no) */
+    ask(message, opts = {}) {
+      return this.pick(message, [
+        { label: opts.cancelText || 'Cancel', value: false },
+        { label: opts.confirmText || 'Confirm', value: true, primary: true }
+      ], opts).then(v => v === true);
+    },
+
+    /** Text input as a promise: resolves the text, or null when cancelled */
+    askText(message, defaultValue = '', opts = {}) {
+      return new Promise((resolve) => {
+        this.showPrompt(message, defaultValue, (v) => resolve(v), () => resolve(null), opts);
+      });
+    },
+
+    notify(message) {
+      const raw = String(message == null ? '' : message);
+      const clean = raw.replace(/\p{Extended_Pictographic}\uFE0F?/gu, '').replace(/^[ \t]+/gm, '').trim();
+      if (/^\s*❌/.test(raw)) this.showError(clean, null, { title: 'Error' });
+      else if (/^\s*✅/.test(raw)) this.showSuccess(clean, null, { title: 'Success' });
+      else this.showInfo(clean, null, { title: 'Notice' });
     },
 
     /**
@@ -343,5 +407,14 @@
 
   // Expose globally
   global.ModalManager = ModalManager;
+
+  // Popups use the game's own dialog, never the browser's "<site> says" box
+  global.alert = (message) => ModalManager.notify(message);
+  if (!document.querySelector('link[href*="modal-system.css"]')) {
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = 'css/modal-system.css?v=3';
+    document.head.appendChild(link);
+  }
 
 })(window);

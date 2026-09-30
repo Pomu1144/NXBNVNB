@@ -109,16 +109,9 @@
             window.ModalManager.showError('Invalid username. Please try again.\n\n- Must be 1-20 characters\n- Cannot be empty');
           }
         },
-        null
+        null,
+        { title: 'Username', confirmText: 'Save' }
       );
-    } else {
-      const newName = prompt(`Enter new username (max 20 characters):\nCurrent: ${_username}`, _username);
-      if (newName === null) return;
-      if (setUsername(newName)) {
-        alert(`Username updated to: ${getUsername()}`);
-      } else {
-        alert('Invalid username. Must be 1–20 characters and not empty.');
-      }
     }
   }
 

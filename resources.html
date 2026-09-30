@@ -9,6 +9,7 @@
   <script src="js/session-gate.js"></script>
   <script src="js/page-loader.js"></script>
   <script src="js/device-detect.js"></script>
+  <script src="js/modal-manager.js?v=3"></script>
   <script src="js/dev-mode.js"></script>
   <script src="js/backgrounds.js"></script>
   <!-- PWA App Container -->
@@ -393,8 +394,8 @@
       alert(`Added ${amount.toLocaleString()} Ryo!`);
     }
 
-    function resetMaterials() {
-      if (!confirm("Reset all materials to default values?")) return;
+    async function resetMaterials() {
+      if (!(await ModalManager.ask("Reset all materials to default values?", { title: 'Reset Materials', confirmText: 'Reset' }))) return;
 
       localStorage.removeItem("blazing_resources_v1");
       location.reload();

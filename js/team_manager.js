@@ -307,9 +307,9 @@
     }
   }
 
-  function renameCurrentTeam() {
+  async function renameCurrentTeam() {
     const current = teamNames[currentTeam] || `Team ${currentTeam}`;
-    const newName = prompt(`New name for Team ${currentTeam}:`, current);
+    const newName = await window.ModalManager.askText(`New name for Team ${currentTeam}:`, current, { title: 'Rename Team', confirmText: 'Save' });
     if (!newName || !newName.trim() || newName.trim() === current) return;
     const trimmed = newName.trim().substring(0, 24);
     teamNames[currentTeam] = trimmed;

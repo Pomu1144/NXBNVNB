@@ -136,10 +136,10 @@ class DevPanel {
     this.showFeedback(`+${amount} ${type}`);
   }
 
-  resetCurrency() {
+  async resetCurrency() {
     if (!window.Resources) return;
 
-    if (confirm('Reset all currency to 0?')) {
+    if (await window.ModalManager.ask('Reset all currency to 0?', { title: 'Reset Currency', confirmText: 'Reset' })) {
       window.Resources.set('ninja_pearls', 0);
       window.Resources.set('ryo', 0);
       window.Resources.set('shinobites', 0);

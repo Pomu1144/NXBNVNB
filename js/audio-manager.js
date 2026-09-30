@@ -566,7 +566,7 @@
       };
     },
 
-    /** 0-100 for the village settings prompt ('bgm' = music). */
+    /** 0-100 for the settings page ('bgm' = music). */
     getVolumePercent(kind) {
       const v = this.volumes[kind === 'bgm' ? 'music' : kind];
       return Math.round((v ?? 0) * 100);
