@@ -110,8 +110,8 @@
   function getPowerGradeElement(grade) {
     const gradeLower = grade.toLowerCase();
 
-    // LR and UR: try PNG first, fall back to animated CSS badge
-    if (grade === 'LR' || grade === 'UR') {
+    // LR: animated badge (UR and D … SSS use their PNGs below)
+    if (grade === 'LR') {
       const glowColor = grade === 'LR' ? '#ff3c00' : '#a855f7';
       const textColor = grade === 'LR' ? '#ff7c44' : '#d8b4fe';
       return `<div class="power-grade-animated power-grade-${gradeLower}" style="
@@ -131,7 +131,7 @@
       </div>`;
     }
 
-    // Use PNG for other grades
+    // D … SSS and UR: brushed-letter PNGs
     return `<img class="power-grade-img" src="assets/icons/pow_${gradeLower}.png" alt="${grade}" onerror="this.outerHTML='<div style=\\'display:flex;align-items:center;justify-content:center;width:80px;height:80px;font-size:32px;font-weight:900;color:#ffd700;\\'>${grade}</div>';" />`;
   }
   window.getPowerGradeElement = getPowerGradeElement;
