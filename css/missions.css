@@ -808,3 +808,7 @@ body.page-missions .tab-btn[data-category="boss-battles"] { --cat: #ff3a2a; }
   animation: bossEyes 2.2s ease-in-out infinite;
 }
 @keyframes bossEyes { 0%, 100% { opacity: 1; } 45% { opacity: 0.5; } 50% { opacity: 1; } }
+
+/* Chronicle boss unit drop on the mission sheet: gold edge when guaranteed */
+.md-boss-drop.is-sure img { box-shadow: 0 0 0 2px var(--jjk-gold-hi, #f1d98a), 0 0 10px rgba(241, 217, 138, 0.55); }
+.md-boss-drop.is-sure b { color: var(--jjk-gold-hi, #f1d98a); }

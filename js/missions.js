@@ -161,6 +161,27 @@ document.addEventListener('DOMContentLoaded', () => {
         <small>${esc(it.name)}</small>
       </span>`).join('');
   }
+  // Shinobi Chronicles: the chapter boss unit (js/mission-progress.js rolls
+  // it). Hardest rank, first clear: guaranteed; lower first clears and
+  // replays of the harder ranks: a chance.
+  function bossTile(mission, rank, first) {
+    const MP = window.MissionProgress;
+    if (!mission || !mission.feature || !/^Shinobi Chronicles/i.test(String(mission.category || '')) || !MP?.CHRONICLE_DROP) return '';
+    const ranks = Object.keys(mission.rankNames || mission.power || {});
+    const hardest = rank === ranks[ranks.length - 1];
+    const chance = first ? (hardest ? 1 : MP.CHRONICLE_DROP.firstClear[rank]) : MP.CHRONICLE_DROP.replay[rank];
+    if (!(chance > 0)) return '';
+    const cast = mission.cast && mission.cast[mission.feature];
+    const tier = ((cast && cast.portrait) || '').match(/portrait_(\w+)\./)?.[1] || '';
+    const name = (cast && cast.name) || 'Boss';
+    const tag = `${Math.round(chance * 100)}%`;
+    return `
+      <span class="mr-tile is-unit md-boss-drop${chance >= 1 ? ' is-sure' : ''}" title="${esc(name)}: ${chance >= 1 ? 'guaranteed' : tag + ' chance'}">
+        <img src="${esc((cast && cast.portrait) || 'assets/characters/common/silhouette.png')}" alt="" loading="lazy" onerror="this.onerror=null;this.src='assets/characters/common/silhouette.png'">
+        <b>${esc(tag)}</b>
+        <small>${esc(name)}</small>
+      </span>`;
+  }
   const mergeMaps = (...maps) => (RF() ? RF().merge(...maps) : Object.assign({}, ...maps));
 
   /* ---------------------------- rank icons ---------------------------- */
@@ -392,11 +413,11 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="md-rewards">
               <div class="md-rw-block ${cleared ? 'is-claimed' : ''}">
                 <span class="md-label">First Clear${cleared ? ' · Claimed' : ''}</span>
-                <div class="md-tiles">${rewardTiles(clear.firstTime) || '<span class="md-none">—</span>'}</div>
+                <div class="md-tiles">${bossTile(mission, selected, true)}${rewardTiles(clear.firstTime) || '<span class="md-none">—</span>'}</div>
               </div>
               <div class="md-rw-block">
                 <span class="md-label">Every Clear</span>
-                <div class="md-tiles">${rewardTiles(repeat) || '<span class="md-none">—</span>'}</div>
+                <div class="md-tiles">${bossTile(mission, selected, false)}${rewardTiles(repeat) || '<span class="md-none">—</span>'}</div>
               </div>
             </div>
             <div class="md-go">

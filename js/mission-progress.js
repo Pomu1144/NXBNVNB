@@ -184,12 +184,58 @@
       });
     }
 
+    // Shinobi Chronicles: the chapter's featured boss unit
+    const unit = await rollChronicleUnit(missionId, difficulty, isFirstClear);
+    if (unit) totalRewards = { ...totalRewards, characters: [unit] };
+
     return {
       ok: true,
       rewards: totalRewards,
       isFirstClear,
-      newObjectives
+      newObjectives,
+      unitDrop: unit
     };
+  }
+
+  // ---------- Shinobi Chronicles boss unit drop ----------
+  // First clear of the hardest rank always gives the chapter's featured unit.
+  // First clears of the lower ranks give only a chance at it, and so do
+  // replays of the harder ranks (a Normal replay gives nothing).
+  const CHRONICLE_DROP = {
+    firstClear: { C: 0.15, B: 0.30 },
+    replay: { B: 0.08, A: 0.12 }
+  };
+  let _charsPromise = null;
+  function loadCharacters() {
+    if (!_charsPromise) {
+      _charsPromise = fetch("data/characters.json")
+        .then(r => (r.ok ? r.json() : []))
+        .then(j => (Array.isArray(j) ? j : (j.characters || [])))
+        .catch(() => []);
+    }
+    return _charsPromise;
+  }
+
+  async function rollChronicleUnit(missionId, difficulty, isFirstClear, rand = Math.random) {
+    const missions = await loadMissions();
+    const mission = (Array.isArray(missions) ? missions : []).find(m => m.id === missionId);
+    if (!mission || !mission.feature || !/^Shinobi Chronicles/i.test(String(mission.category || ""))) return null;
+    const ranks = Object.keys(mission.rankNames || mission.power || {});
+    const hardest = ranks[ranks.length - 1];
+    const guaranteed = isFirstClear && difficulty === hardest;
+    const chance = guaranteed ? 1
+      : (isFirstClear ? CHRONICLE_DROP.firstClear : CHRONICLE_DROP.replay)[difficulty] || 0;
+    if (!(chance > 0) || (!guaranteed && rand() >= chance)) return null;
+
+    const chars = await loadCharacters();
+    const c = chars.find(x => x.id === mission.feature);
+    if (!c) return null;
+    const tiers = Object.keys(c.artByTier || {});
+    const tierCode = tiers.includes(`${c.rarity}S`) ? `${c.rarity}S` : (tiers[0] || `${c.rarity || 5}S`);
+    if (global.InventoryChar && typeof global.InventoryChar.addCopy === "function") {
+      global.InventoryChar.addCopy(c.id, 1, tierCode);
+    }
+    return { characterId: c.id, tierCode, quantity: 1, guaranteed };
   }
 
   // ---------- Helper: Combine Rewards ----------
@@ -235,6 +281,8 @@
     getCompletedObjectives,
     getRewards,
     completeMission,
+    rollChronicleUnit,
+    CHRONICLE_DROP,
     getMissionSummary,
     resetProgress
   };
