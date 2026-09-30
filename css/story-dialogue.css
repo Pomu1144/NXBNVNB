@@ -48,32 +48,29 @@
     linear-gradient(180deg, rgba(0, 0, 0, 0) 45%, rgba(2, 7, 9, 0.8) 100%);
 }
 
-/* actors: square art, vignetted into the stage */
+/* actors: cut-out art standing on the stage, lower body behind the box */
 .sd-actor {
   position: absolute;
   bottom: 0;
-  width: var(--sd-actor);
-  height: var(--sd-actor);
+  width: var(--sd-actor-w, min(44vw, 620px));
+  height: var(--sd-actor-h, 104vh);
   margin: 0;
   pointer-events: none;
-  overflow: hidden;
-  -webkit-mask-image: radial-gradient(ellipse 50% 50% at 50% 48%, #000 46%, transparent 98%);
-  mask-image: radial-gradient(ellipse 50% 50% at 50% 48%, #000 46%, transparent 98%);
   transition: filter 0.25s ease, transform 0.25s ease, opacity 0.25s ease;
   filter: brightness(0.4) saturate(0.5);
-  transform: scale(0.96);
+  transform: scale(0.97);
   transform-origin: 50% 100%;
 }
-.sd-actor.is-left  { left: calc(var(--sd-safe-l) + 1vw); }
-.sd-actor.is-right { right: calc(var(--sd-safe-r) + 1vw); }
+.sd-actor.is-left  { left: calc(var(--sd-safe-l) + 2vw); }
+.sd-actor.is-right { right: calc(var(--sd-safe-r) + 2vw); }
 .sd-actor.is-empty { opacity: 0; }
 .sd-actor img {
   display: block;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  transform: scale(1.42);
-  transform-origin: 50% 46%;
+  object-fit: contain;
+  object-position: 50% 100%;
+  filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.55));
 }
 .sd-actor.is-speaking { filter: none; transform: none; }
 .sd-root.is-narration .sd-actor { filter: brightness(0.32) saturate(0.4); }
@@ -200,7 +197,7 @@
 
 /* portrait phones: art above, box full width */
 @media (max-aspect-ratio: 1/1) {
-  .sd-root { --sd-actor: min(62vw, 58vh); }
+  .sd-root { --sd-actor-w: 62vw; --sd-actor-h: 58vh; }
   .sd-actor { bottom: 22vh; }
   .sd-text { font-size: clamp(14px, 3.9vw, 18px); }
   .sd-name { font-size: clamp(13px, 4vw, 18px); }

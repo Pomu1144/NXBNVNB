@@ -119,7 +119,14 @@
     const c = (line.who && cast && cast[line.who]) || null;
     const name = line.speaker || (c && c.name) || '';
     const srcs = [];
-    const push = (s) => { if (s && !srcs.includes(s)) srcs.push(s); };
+    const add = (s) => { if (s && !srcs.includes(s)) srcs.push(s); };
+    // Cut-out art (assets/story/<id>_<tier>.webp, card scenery removed)
+    // comes first; the card art is the fallback.
+    const push = (s) => {
+      const m = s && /assets\/characters\/([^/]+)\/(?:full|portrait)_([0-9A-Z]+)\.(?:png|webp)$/.exec(s);
+      if (m) add(`assets/story/${m[1]}_${m[2]}.webp`);
+      add(s);
+    };
     push(line.portrait);
     if (c) { push(c.full); push(c.portrait); }
     const id = line.charId || (c && c.id);
