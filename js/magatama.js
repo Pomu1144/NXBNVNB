@@ -2,7 +2,7 @@
 //
 // Each tool card has 5 sockets. Magatama are Attack (ATK), Life (HP),
 // Defense (DEF), Ninjutsu (+% jutsu/ultimate damage dealt) or Resistance
-// (-% jutsu/ultimate damage taken) jewels, levels 1-10, each level its own
+// (-% jutsu/ultimate damage taken) jewels, levels 1-9 as in game, each level its own
 // shape (data/magatama.json). Four of one level combine into one of the
 // next; splitting reverses that.
 //
@@ -19,13 +19,13 @@
   // Same numbers as data/magatama.json so battle stats never wait on a fetch.
   // load() refreshes from the JSON (tests keep the two in sync).
   let DATA = {
-    socketsPerTool: 5, combineCount: 4, splitCount: 4, maxLevel: 10,
+    socketsPerTool: 5, combineCount: 4, splitCount: 4, maxLevel: 9,
     types: [
-      {id: 'attack', name: 'Attack', color: '#e0563a', stat: 'atk', statLabel: 'ATK', values: [4, 10, 15, 21, 28, 36, 46, 58, 72, 90]},
-      {id: 'life', name: 'Life', color: '#3fb46a', stat: 'hp', statLabel: 'HP', values: [10, 25, 38, 53, 70, 90, 115, 145, 180, 225]},
-      {id: 'defense', name: 'Defense', color: '#e0a126', stat: 'def', statLabel: 'DEF', values: [3, 6, 9, 13, 17, 22, 28, 35, 43, 54]},
-      {id: 'ninjutsu', name: 'Ninjutsu', color: '#9d62e0', stat: 'nin', statLabel: 'Jutsu DMG', unit: '%', values: [0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 5, 6]},
-      {id: 'resistance', name: 'Resistance', color: '#3aa6e0', stat: 'res', statLabel: 'Jutsu RES', unit: '%', values: [0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 5, 6]}
+      {id: 'attack', name: 'Attack', color: '#e0563a', stat: 'atk', statLabel: 'ATK', values: [4, 10, 15, 21, 28, 36, 46, 58, 72]},
+      {id: 'life', name: 'Life', color: '#3fb46a', stat: 'hp', statLabel: 'HP', values: [10, 25, 38, 53, 70, 90, 115, 145, 180]},
+      {id: 'defense', name: 'Defense', color: '#e0a126', stat: 'def', statLabel: 'DEF', values: [3, 6, 9, 13, 17, 22, 28, 35, 43]},
+      {id: 'ninjutsu', name: 'Ninjutsu', color: '#9d62e0', stat: 'nin', statLabel: 'Jutsu DMG', unit: '%', values: [0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 5]},
+      {id: 'resistance', name: 'Resistance', color: '#3aa6e0', stat: 'res', statLabel: 'Jutsu RES', unit: '%', values: [0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 5]}
     ],
     caps: { nin: 60, res: 50 },
     shop: { currency: 'ryo', levels: { 1: 2000, 2: 7500, 3: 28000 } }
@@ -77,11 +77,18 @@
     try { s = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null'); } catch (e) { s = null; }
     if (!s || typeof s !== 'object') s = {};
     const bag = {};
-    Object.entries(s.bag || {}).forEach(([k, n]) => { n = Math.floor(Number(n) || 0); if (parse(k) && n > 0) bag[k] = n; });
+    // Older saves had a level 10; the game tops out at 9, so each one
+    // splits back into four level 9s (socketed ones become a level 9).
+    const cap = (k) => (typeof k === 'string' && /:10$/.test(k) ? k.replace(/:10$/, ':' + DATA.maxLevel) : k);
+    Object.entries(s.bag || {}).forEach(([k, n]) => {
+      n = Math.floor(Number(n) || 0);
+      if (cap(k) !== k) { k = cap(k); n *= DATA.splitCount; }
+      if (parse(k) && n > 0) bag[k] = (bag[k] || 0) + n;
+    });
     const sockets = {};
     Object.entries(s.sockets || {}).forEach(([card, arr]) => {
       if (!Array.isArray(arr)) return;
-      const row = new Array(DATA.socketsPerTool).fill(null).map((_, i) => (parse(arr[i]) ? arr[i] : null));
+      const row = new Array(DATA.socketsPerTool).fill(null).map((_, i) => (parse(cap(arr[i])) ? cap(arr[i]) : null));
       if (row.some(Boolean)) sockets[card] = row;
     });
     return { bag, sockets };

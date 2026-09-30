@@ -1,10 +1,10 @@
 {
   "version": 1,
-  "source": "Naruto Online (Oasis) magatama: Attack / Life / Defense / Ninjutsu / Resistance lines. Shapes per level follow the in-game icons (1 droplet, 2 comma, 3 pierced comma, 4 double tomoe, 5 triple tomoe, 6 hooked pinwheel, 7 lightning spiral, 8 vortex orb, 9 lightning orb); 10 drawn in the same style. 4 of one level combine into 1 of the next.",
+  "source": "Naruto Online (Oasis) magatama, levels 1-9: Attack / Life / Defense / Ninjutsu / Resistance lines. Shapes per level follow the in-game icons (1 droplet, 2 comma, 3 pierced comma, 4 double tomoe, 5 triple tomoe, 6 hooked pinwheel, 7 lightning spiral, 8 vortex orb, 9 lightning orb). 4 of one level combine into 1 of the next.",
   "socketsPerTool": 5,
   "combineCount": 4,
   "splitCount": 4,
-  "maxLevel": 10,
+  "maxLevel": 9,
   "types": [
     {
       "id": "attack",
@@ -21,8 +21,7 @@
         168,
         258,
         397,
-        611,
-        940
+        611
       ],
       "values": [
         4,
@@ -33,8 +32,7 @@
         36,
         46,
         58,
-        72,
-        90
+        72
       ]
     },
     {
@@ -52,8 +50,7 @@
         251,
         384,
         592,
-        911,
-        1403
+        911
       ],
       "values": [
         10,
@@ -64,8 +61,7 @@
         90,
         115,
         145,
-        180,
-        225
+        180
       ]
     },
     {
@@ -83,8 +79,7 @@
         110,
         169,
         259,
-        398,
-        612
+        398
       ],
       "values": [
         3,
@@ -95,8 +90,7 @@
         22,
         28,
         35,
-        43,
-        54
+        43
       ]
     },
     {
@@ -115,8 +109,7 @@
         3,
         3.5,
         4,
-        5,
-        6
+        5
       ]
     },
     {
@@ -135,8 +128,7 @@
         3,
         3.5,
         4,
-        5,
-        6
+        5
       ]
     }
   ],
