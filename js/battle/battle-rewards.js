@@ -248,7 +248,7 @@
         <div class="mr-burst"><div class="mr-rays"></div><div class="mr-flare"></div></div>
         <div class="mr-card">
           <div class="mr-banner"><span>Mission Complete</span></div>
-          ${rank ? `<div class="mr-rank" title="${esc(rank)}-Rank"><span>${esc(rank)}</span></div>` : ''}
+          ${rank ? `<div class="mr-rank" title="${esc(rank)}-Rank"><img src="assets/icons/pow_${esc(String(rank).toLowerCase())}.png" alt="${esc(rank)}" draggable="false" onerror="this.replaceWith(Object.assign(document.createElement('span'),{textContent:'${esc(rank)}'}))"></div>` : ''}
           <div class="mr-head">
             ${mission.name ? `<div class="mr-mission">${esc(mission.name)}</div>` : ''}
             <div class="mr-meta">
