@@ -720,7 +720,7 @@ body.page-missions .start-btn:disabled {
   .mission-tabs::-webkit-scrollbar { display: none; }
   .tab-btn { flex: none; min-width: 0; height: 30px; padding: 0 14px; font-size: 11.5px; }
   .mission-list-container { padding: 6px; }
-  .mission-list { grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 6px; }
+  .mission-list { grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 6px; }
   .mission-list-head { font-size: 11px; }
   .mc-title { font-size: 17px; }
   .mc-kicker { font-size: 9.5px; }

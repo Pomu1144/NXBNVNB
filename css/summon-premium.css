@@ -1352,3 +1352,14 @@ html.is-mobile.is-landscape.is-compact .rc-banner { width: calc(100% - 60px); }
   .summon-tab, .summon-tab.jjk-tab { min-width: 0; height: 30px; padding: 0 12px; font-size: 12px; letter-spacing: 0.5px; }
   .summon-topbar .summon-tabs { justify-self: center; }
 }
+
+/* Short phones (Safari with bars, ~340px tall): shrink the tickets so the
+   Rates / Featured / Contents row stays inside the draw column. */
+@media (max-width: 1000px) and (max-height: 360px) and (orientation: landscape) {
+  .draw-col, .jutsu-draw-col { gap: 4px; padding-top: 4px; padding-bottom: 4px; }
+  .draw-col #banner-name { font-size: 12.5px; }
+  .draw-col .tkt-single, .jutsu-draw-col .tkt-single { width: 50%; }
+  .draw-col .tkt-multi, .jutsu-draw-col .tkt-multi { width: 56%; }
+  .draw-col .summon-buttons, .jutsu-draw-col .summon-buttons { gap: 4px; }
+  .summon-info-btn, .draw-col .summon-info-btn { height: 24px; }
+}
