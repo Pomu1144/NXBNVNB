@@ -91,6 +91,13 @@
     "scroll_basic": { name: "Basic Scroll", desc: "Retired: converted to ★1 element Awakening Scrolls.", icon: "assets/icons/materials/scroll_basic.png", category: "legacy" },
     "scroll_advanced": { name: "Advanced Scroll", desc: "Retired: converted to ★2 element Awakening Scrolls.", icon: "assets/icons/materials/scroll_advanced.png", category: "legacy" },
 
+    // ========== GEAR UPGRADE SCROLLS (js/gear.js promotion) ==========
+    "gear_scroll_2": { name: "2★ Upgrade Scroll", desc: "Promotes gear from Green to Blue.", icon: "assets/gear/scroll_2.webp", category: "scrolls", group: "gear", rarity: 2 },
+    "gear_scroll_3": { name: "3★ Upgrade Scroll", desc: "Promotes gear from Blue to Purple.", icon: "assets/gear/scroll_3.webp", category: "scrolls", group: "gear", rarity: 3 },
+    "gear_scroll_4": { name: "4★ Upgrade Scroll", desc: "Promotes gear from Purple to Orange.", icon: "assets/gear/scroll_4.webp", category: "scrolls", group: "gear", rarity: 4 },
+    "gear_scroll_5": { name: "5★ Upgrade Scroll", desc: "Promotes gear from Orange to Red.", icon: "assets/gear/scroll_5.webp", category: "scrolls", group: "gear", rarity: 5 },
+    "gear_scroll_6": { name: "6★ Upgrade Scroll", desc: "Promotes gear from Red to Red Shiny.", icon: "assets/gear/scroll_6.webp", category: "scrolls", group: "gear", rarity: 6 },
+
     // ========== SPECIAL ITEMS ==========
     "acquisition_stone": { name: "Acquisition Stone", desc: "Can be exchanged for specific characters in the shop.", icon: "assets/items/acq_stone.png", category: "scrolls" },
     "acquisition_stone_shard": { name: "Acquisition Stone Shard", desc: "Shard of an Acquisition Stone, sold by Granny Cat.", icon: "assets/characters/acquisition_1029/portrait_5S.webp", category: "scrolls" },

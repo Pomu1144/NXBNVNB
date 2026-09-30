@@ -1,21 +1,20 @@
-// Character Tools System — equip jutsu cards / tools onto owned shinobi.
+// Character Tools System — gear pieces and jutsu cards on owned shinobi.
 //
-// Data model (shared with characters.html, unchanged):
-//   • inst.equippedJutsu = { jutsu1..3, ultimate, equipment1..5 } on each
-//     InventoryChar instance, persisted by InventoryChar.updateInstance()
-//     (localStorage "blazing_inventory_v2").
+// Data model (shared with characters.html):
+//   • inst.equippedJutsu = { jutsu1..3, ultimate } on each InventoryChar
+//     instance, persisted by InventoryChar.updateInstance()
+//     (localStorage "blazing_inventory_v2"). The old Tool card slots
+//     equipment1..5 are now the fixed gear pieces of js/gear.js (helmet,
+//     weapon, armor, scroll, necklace; localStorage "blazing_gear_v1") and
+//     stay null; js/tools-gear.js draws and upgrades them.
 //   • character_power_<uid>  → { uid, power, health, attack, speed, lastUpdated }
 //   • character_equipment    → { [uid]: equippedJutsu } legacy mirror
 //   • Card ownership / levels come from JutsuInventory + CardSystem.
 (function () {
   'use strict';
 
-  const SLOT_KEYS = ['jutsu1', 'jutsu2', 'jutsu3', 'ultimate',
-                     'equipment1', 'equipment2', 'equipment3', 'equipment4', 'equipment5'];
-  const SLOT_LABEL = {
-    jutsu1: 'Jutsu I', jutsu2: 'Jutsu II', jutsu3: 'Jutsu III', ultimate: 'Ultimate',
-    equipment1: 'Tool 1', equipment2: 'Tool 2', equipment3: 'Tool 3', equipment4: 'Tool 4', equipment5: 'Tool 5'
-  };
+  const SLOT_KEYS = ['jutsu1', 'jutsu2', 'jutsu3', 'ultimate'];
+  const SLOT_LABEL = { jutsu1: 'Jutsu I', jutsu2: 'Jutsu II', jutsu3: 'Jutsu III', ultimate: 'Ultimate' };
   const CARD_TYPES = ['All', 'Attack', 'Defense', 'Skill', 'Utility', 'Assist'];
   const STAR_BY_TIER = { "1S":1,"2S":2,"3S":3,"4S":4,"5S":5,"6S":6,"6SB":6,"7S":7,"7SL":7,"8S":8,"8SM":8,"9S":9,"9ST":9,"10SO":10 };
   const PREFS_KEY = 'tools_ui_prefs_v1';
@@ -98,15 +97,24 @@
     if (window.LimitBreak && inst.limitBreakLevel > 0) return window.LimitBreak.getExtendedLevelCap(tier, inst.limitBreakLevel);
     return P && P.levelCapForCode ? P.levelCapForCode(tier) : null;
   }
-  // SS→D letter grade from a unit's power rank (matches team/character screens).
-  function gradeOf(baseChar) {
-    const p = Number(baseChar && baseChar.powerRank) || 0;
-    if (p >= 10000) return 'SS';
-    if (p >= 8000)  return 'S';
-    if (p >= 6000)  return 'A';
-    if (p >= 4000)  return 'B';
-    if (p >= 2000)  return 'C';
+  // D→LR grade from total power, as characters.js calculatePowerGrade
+  // (each unlocked ability adds 30,000).
+  const ABILITY_POWER = 30000;
+  const abilityCount = (inst) => ((inst && inst.unlockedAbilities) || []).length;
+  function gradeOf(total) {
+    if (total >= 400000) return 'LR';
+    if (total >= 300000) return 'UR';
+    if (total >= 250000) return 'SSS';
+    if (total >= 200000) return 'SS';
+    if (total >= 150000) return 'S';
+    if (total >= 90000) return 'A';
+    if (total >= 70000) return 'B';
+    if (total >= 50000) return 'C';
     return 'D';
+  }
+  function gradeArt(g) {
+    if (g === 'LR') return '<video class="tl-grade-art" src="assets/icons/pow_lr.mp4" autoplay muted loop playsinline aria-label="LR"></video>';
+    return `<img class="tl-grade-art" src="assets/icons/pow_${g.toLowerCase()}.png" alt="${g}" draggable="false">`;
   }
   const cardPath = (p) => (window.CardSystem ? window.CardSystem.resolveCardPath(p) : p);
   const cardLevel = (id) => (window.CardSystem ? window.CardSystem.getCardLevel(id) : 1);
@@ -161,15 +169,17 @@
   function computeAll(inst, c) {
     const b = baseStats(inst, c);
     const x = cardBonuses(inst);
-    // Magatama beset into the unit's tools (js/magatama.js)
-    const m = window.Magatama ? window.Magatama.bonusForEquipped(inst.equippedJutsu) : null;
-    if (m) { x.hp += m.hp; x.atk += m.atk; x.def += m.def; x.magatama = m; }
+    // Gear pieces + the magatama beset in them (js/gear.js, js/magatama.js)
+    const g = window.Gear ? window.Gear.totalFor(inst.uid) : { hp: 0, atk: 0, def: 0, nin: 0, res: 0 };
+    x.hp += g.hp; x.atk += g.atk; x.def += g.def; x.nin = g.nin; x.res = g.res; x.gear = g;
     const hp = b.hp + x.hp, atk = b.atk + x.atk, spd = b.speed + x.spd;
-    return { base: b, bonus: x, hp, atk, spd, def: b.def + x.def, power: hp + atk + spd };
+    const power = hp + atk + spd;
+    return { base: b, bonus: x, hp, atk, spd, def: b.def + x.def, power, total: power + abilityCount(inst) * ABILITY_POWER };
   }
   const powerCache = {};
   let magaStamp = 0;
   window.addEventListener('magatama:change', () => { magaStamp++; });
+  window.addEventListener('gear:change', () => { magaStamp++; });
   function powerOf(inst) {
     const c = getBase(inst.charId);
     if (!c) return 0;
@@ -239,7 +249,7 @@
         <span class="tl-row-meta">
           <span class="tl-row-name">${esc(c.name || 'Unknown')}</span>
           <span class="tl-row-ver">${esc(c.version || '')}</span>
-          <span class="tl-row-stars" aria-label="${stars} stars"><i class="tl-star"></i><b>${stars}</b>${gear ? `<span class="tl-row-gear" title="${gear} equipped">&#9670; ${gear}</span>` : ''}</span>
+          <span class="tl-row-stars" aria-label="${stars} stars"><i class="tl-star"></i><b>${stars}</b>${gear ? `<span class="tl-row-gear" title="${gear} jutsu equipped">&#9670; ${gear}</span>` : ''}</span>
         </span>
         <span class="tl-row-lv"><small>Lv</small>${Number(inst.level) || 1}</span>
       </button>`;
@@ -306,6 +316,7 @@
     renderSlots();
     calculatePower();
     renderEquippedList();
+    if (window.ToolsGear) window.ToolsGear.render();
   }
 
   function renderSlots() {
@@ -336,10 +347,11 @@
     const s = computeAll(inst, baseChar);
     const x = s.bonus;
 
-    $('power-value').textContent = fmt(s.power);
-    const g = gradeOf(baseChar);
+    $('power-value').textContent = fmt(s.total);
+    const g = gradeOf(s.total);
     const gEl = $('tools-grade');
-    gEl.textContent = g; gEl.dataset.grade = g;
+    if (gEl.dataset.grade !== g) { gEl.innerHTML = gradeArt(g); gEl.dataset.grade = g; }
+    gEl.title = `Power grade ${g}`;
 
     const contrib = window.CardSystem ? window.CardSystem.getEquippedContributions(inst.equippedJutsu) : null;
     $('tools-set-bonus').hidden = !(contrib && contrib.setBonus);
@@ -351,19 +363,21 @@
       ['DEF', s.base.def, x.def, 'def'],
       ['CRIT', null, x.critRate, 'cri', '%'],
       ['EVA', null, x.evaRate, 'eva', '%'],
+      ['NIN', null, x.nin, 'nin', '%'],
+      ['RES', null, x.res, 'res', '%'],
     ];
     const maxBar = Math.max(1, s.hp);
     $('stats-display').innerHTML = rows.filter(r => r[3] !== 'def' || (r[1] + r[2]) > 0).map(([label, base, bonus, k, pct]) => {
       const total = (base || 0) + bonus;
       const has = bonus > 0;
-      const val = pct ? `${total.toFixed(1)}%` : fmt(total);
+      const val = pct ? `${(Math.round(total * 10) / 10).toFixed(1)}%` : fmt(total);
       const bar = pct ? Math.min(100, total) : Math.min(100, (total / (k === 'hp' ? maxBar : Math.max(s.atk * 1.6, s.def, 1))) * 100);
       return `<div class="tl-stat${has ? ' has-bonus' : ''}" data-stat="${k}">
         <dt>${label}</dt>
         <dd><b>${val}</b>${has ? `<span class="tl-bonus">+${pct ? bonus.toFixed(1) + '%' : fmt(bonus)}</span>` : ''}</dd>
         <div class="jjk-progress tl-bar"><i style="width:${Math.max(2, bar).toFixed(1)}%"></i></div>
       </div>`;
-    }).join('') + `<div class="tl-stat tl-stat--power"><dt>Power</dt><dd><b>${fmt(s.power)}</b>${(x.hp + x.atk + x.spd) > 0 ? `<span class="tl-bonus">+${fmt(x.hp + x.atk + x.spd)}</span>` : ''}</dd></div>`;
+    }).join('') + `<div class="tl-stat tl-stat--power"><dt>Power</dt><dd><b>${fmt(s.total)}</b>${(x.hp + x.atk + x.spd) > 0 ? `<span class="tl-bonus">+${fmt(x.hp + x.atk + x.spd)}</span>` : ''}</dd></div>`;
 
     savePowerData(s);
   }
@@ -449,7 +463,7 @@
     const used = new Set(Object.values(eq).filter(Boolean));
     const pool = eligibleOwnedCards(inst).filter(c => !used.has(c.id)).sort((a, b) => cardScore(b) - cardScore(a));
     // Fill the ultimate slot first (x3.5 multiplier), then the rest.
-    const order = ['ultimate', 'jutsu1', 'jutsu2', 'jutsu3', 'equipment1', 'equipment2', 'equipment3', 'equipment4', 'equipment5'];
+    const order = ['ultimate', 'jutsu1', 'jutsu2', 'jutsu3'];
     let added = 0;
     order.forEach(k => { if (!eq[k] && pool.length) { eq[k] = pool.shift().id; added++; } });
     if (!added) {
@@ -631,7 +645,7 @@
     window.addEventListener('resize', syncDock);
     // Another tab (e.g. characters.html) changed the inventory.
     window.addEventListener('storage', e => {
-      if (e.key === 'blazing_inventory_v2' || e.key === 'blazing_card_levels_v1') location.reload();
+      if (e.key === 'blazing_inventory_v2' || e.key === 'blazing_card_levels_v1' || e.key === 'blazing_gear_v1') location.reload();
     });
   }
 
@@ -645,7 +659,9 @@
     setupEventListeners();
     renderRoster();
 
-    // Restore last selection, else pick the first row.
+    // ?uid= from the Shinobi screen, else the last selection, else the first row.
+    const q = new URLSearchParams(location.search).get('uid');
+    if (q && window.InventoryChar && window.InventoryChar.getByUid(q)) prefs.uid = q;
     const saved = prefs.uid && window.InventoryChar && window.InventoryChar.getByUid(prefs.uid);
     if (saved && getBase(saved.charId)) {
       selectCharacter(saved, getBase(saved.charId));
@@ -673,6 +689,7 @@
     refresh: afterChange,
     getCard: (id) => cardsById[id] || null,
     cardPath, cardLevel, toast,
+    computeAll: (inst) => { const c = getBase(inst.charId); return c ? computeAll(inst, c) : null; },
     ready: () => ready
   };
 })();

@@ -3517,3 +3517,23 @@ html.is-mobile.is-landscape.is-compact body.page-characters .limitbreak-info { p
 /* slot art already has transparent corners; multiply only darkened it on the ink ticket */
 body.page-characters .cx-equip .jutsu-slot-bg,
 body.page-characters .cx-equip .ultimate-slot-bg { mix-blend-mode: normal; filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.6)); }
+
+/* Gear pieces on the Status tab (js/gear.js): links to the Tools page */
+body.page-characters .cx-gear {
+  position: relative; display: block; width: 58px; height: 58px; flex: 0 0 auto;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.6); transition: transform .12s;
+}
+body.page-characters .cx-gear:hover { transform: translateY(-2px); }
+body.page-characters .cx-gear img { width: 100%; height: 100%; display: block; }
+body.page-characters .cx-gear span {
+  position: absolute; right: 4px; bottom: 3px; padding: 0 3px;
+  font-size: 10px; font-weight: 800; line-height: 13px; color: #fff; background: rgba(0,0,0,0.78);
+}
+body.page-characters .cx-gear.is-shiny { box-shadow: 0 0 0 2px #f3cf6a, 0 0 10px rgba(242,180,60,0.6); }
+body.page-characters .cx-gear-row { gap: 8px !important; }
+html.is-mobile.is-landscape.is-compact body.page-characters .cx-gear { width: 36px; height: 36px; }
+html.is-mobile.is-landscape.is-compact body.page-characters .cx-gear span { font-size: 8px; line-height: 10px; right: 2px; bottom: 2px; }
+/* Jutsu DMG / RES start the second row of the minor stats */
+body.page-characters .cx-minors .cx-minor:nth-child(3n+1) { border-left: 0; padding-left: 2px; }
+body.page-characters .cx-minors .cx-minor:nth-child(n+4) { margin-top: 8px; }
+html.is-mobile.is-landscape.is-compact body.page-characters .cx-minors .cx-minor:nth-child(n+4) { margin-top: 4px; }

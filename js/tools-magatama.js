@@ -1,31 +1,31 @@
 // js/tools-magatama.js — "Magatama" view of the Tools page.
-// Left: the selected shinobi's tools. Centre: the tool on a tomoe ring with
-// 5 sockets. Right: Besetable / Backpack grids. Logic lives in js/magatama.js.
+// Left: the selected shinobi's 5 gear pieces. Centre: the piece on a tomoe
+// ring with 5 sockets. Right: Besetable / Backpack grids. Logic lives in
+// js/magatama.js; each type fits one piece (Magatama.FIT). The view switch
+// and the selected piece live in js/tools-gear.js.
 (function () {
   'use strict';
 
   const M = () => window.Magatama;
   const T = () => window.CharacterTools;
+  const G = () => window.Gear;
+  const TG = () => window.ToolsGear;
   const $ = (id) => document.getElementById(id);
   const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
   const fmt = (n) => Math.round(Number(n) || 0).toLocaleString();
-  const SLOT_NAME = { equipment1: 'T1', equipment2: 'T2', equipment3: 'T3', equipment4: 'T4', equipment5: 'T5' };
-  const VIEW_KEY = 'tools_ui_view_v1';
-
-  const ui = { view: 'gear', slot: null, socket: -1, tab: 'fit', sel: null, shopType: 'attack', shopQty: 1 };
+  const ui = { socket: -1, tab: 'fit', sel: null, shopType: 'attack', shopQty: 1 };
 
   /* ───────── Helpers ───────── */
   function selected() { const s = T() && T().getSelectedCharacter(); return s || null; }
-  function tools() {
-    const s = selected();
-    if (!s) return [];
-    const eq = s.inst.equippedJutsu || {};
-    return M().TOOL_SLOTS.map(slot => ({ slot, card: eq[slot] ? T().getCard(eq[slot]) : null })).filter(t => t.card);
-  }
+  const uid = () => { const s = selected(); return s ? s.inst.uid : null; };
+  // The piece being beset: { slot, info } for the selected shinobi
   function currentTool() {
-    const list = tools();
-    return list.find(t => t.slot === ui.slot) || list[0] || null;
+    const id = uid();
+    if (!id || !G()) return null;
+    const slot = (TG() && TG().slot()) || 'helmet';
+    return { slot, info: G().info(id, slot) };
   }
+  const typeName = (id) => (M().data().types.find(x => x.id === id) || {}).name || id;
   const pct = v => String(Math.round(v * 10) / 10);
   function bonusText(b, sep = ' ') {
     const parts = [];
@@ -43,26 +43,9 @@
   function toast(msg) { if (T() && T().toast) T().toast(msg); }
   function ryo() { return window.Resources ? window.Resources.get('ryo') : 0; }
 
-  /* ───────── View switch ───────── */
-  function setView(v) {
-    ui.view = v === 'maga' ? 'maga' : 'gear';
-    try { localStorage.setItem(VIEW_KEY, ui.view); } catch (e) { /* ignore */ }
-    const maga = ui.view === 'maga';
-    document.body.classList.toggle('is-maga', maga);
-    $('tools-app').hidden = maga;
-    $('maga-app').hidden = !maga;
-    $('mg-ryo').hidden = !maga;
-    document.querySelectorAll('.tl-view').forEach(b => {
-      const on = b.dataset.view === ui.view;
-      b.classList.toggle('active', on);
-      b.setAttribute('aria-selected', on);
-    });
-    if (maga) render(); else if (T()) T().refresh();
-  }
-
   /* ───────── Render ───────── */
   function render() {
-    if (ui.view !== 'maga' || !M()) return;
+    if (!M() || !TG() || TG().view() !== 'maga') return;
     $('mg-ryo-val').textContent = fmt(ryo());
     renderTools();
     renderStage();
@@ -71,33 +54,33 @@
   }
 
   function renderTools() {
-    const s = selected();
-    $('mg-who').textContent = s ? (s.baseChar.name || '') : '';
-    const list = tools();
+    $('mg-who').textContent = who();
     const box = $('mg-tool-list');
-    if (!list.length) {
-      box.innerHTML = `<div class="mg-none">No tools equipped<button type="button" class="jjk-btn tl-mini" data-goto="gear">Equip</button></div>`;
+    const id = uid();
+    const cur = currentTool();
+    if (!id) {
+      box.innerHTML = '<div class="mg-none">Select a shinobi in Gear</div>';
     } else {
-      const cur = currentTool();
-      box.innerHTML = list.map(t => {
-        const row = M().socketsOf(t.card.id);
-        const on = cur && cur.slot === t.slot;
-        return `<button type="button" class="mg-tool${on ? ' is-active' : ''}" role="option" aria-selected="${on}" data-slot="${t.slot}">
-          <span class="mg-tool-ic"><img src="${esc(T().cardPath(t.card.icon))}" alt="" loading="lazy" onerror="this.onerror=null;this.src='assets/placeholder.png'"></span>
+      box.innerHTML = G().SLOTS.map(slot => {
+        const i = G().info(id, slot);
+        const row = M().socketsOf(id, slot);
+        const on = cur && cur.slot === slot;
+        return `<button type="button" class="mg-tool${on ? ' is-active' : ''}" role="option" aria-selected="${on}" data-slot="${slot}">
+          <span class="mg-tool-ic">${TG().tile(slot, i.tier)}</span>
           <span class="mg-tool-meta">
-            <span class="mg-tool-nm">${esc(t.card.jutsuName || t.card.name)}</span>
+            <span class="mg-tool-nm">${esc(i.name)}</span>
             <span class="mg-pips">${row.map(k => k ? `<i style="--c:${M().info(k).color}"></i>` : '<i></i>').join('')}</span>
           </span>
-          <span class="mg-tool-lv"><small>${SLOT_NAME[t.slot]}</small>Lv${T().cardLevel(t.card.id)}</span>
+          <span class="mg-tool-lv"><small>${esc(typeName(M().FIT[slot]))}</small>Lv${i.level}</span>
         </button>`;
       }).join('');
     }
-    const s2 = selected();
-    const b = s2 ? M().bonusForEquipped(s2.inst.equippedJutsu) : { hp: 0, atk: 0, def: 0, nin: 0, res: 0 };
+    const b = id ? M().bonusForUnit(id) : { hp: 0, atk: 0, def: 0, nin: 0, res: 0 };
     const LABEL = { hp: 'HP', atk: 'ATK', def: 'DEF', nin: 'NIN', res: 'RES' };
     $('mg-total').innerHTML = M().STATS.map(k =>
       `<div class="${b[k] ? 'has' : ''}" data-stat="${k}"><dt>${LABEL[k]}</dt><dd>+${k === 'nin' || k === 'res' ? pct(b[k]) + '%' : fmt(b[k])}</dd></div>`).join('');
   }
+  function who() { const s = selected(); return s ? (s.baseChar.name || '') : ''; }
 
   function renderStage() {
     const t = currentTool();
@@ -110,12 +93,12 @@
       sockets.innerHTML = '';
       return;
     }
-    ui.slot = t.slot;
-    $('mg-tool-name').textContent = t.card.jutsuName || t.card.name;
-    const b = M().bonusForCard(t.card.id);
-    $('mg-tool-bonus').textContent = bonusText(b) || M().fits(t.card).map(id => M().data().types.find(x => x.id === id).statLabel).join(' / ');
-    core.innerHTML = `<img src="${esc(T().cardPath(t.card.icon))}" alt="" onerror="this.onerror=null;this.src='assets/placeholder.png'">`;
-    const row = M().socketsOf(t.card.id);
+    const id = uid();
+    $('mg-tool-name').textContent = t.info.name;
+    const b = M().bonusForPiece(id, t.slot);
+    $('mg-tool-bonus').textContent = bonusText(b) || `${typeName(M().FIT[t.slot])} only`;
+    core.innerHTML = TG().tile(t.slot, t.info.tier);
+    const row = M().socketsOf(id, t.slot);
     if (ui.socket >= 0 && row[ui.socket]) ui.socket = -1;
     sockets.innerHTML = row.map((k, i) => {
       const a = (-90 + i * 72) * Math.PI / 180;
@@ -131,7 +114,7 @@
     let keys = Object.keys(bag).filter(k => bag[k] > 0 && M().parse(k));
     if (ui.tab === 'fit') {
       const t = currentTool();
-      const allowed = t ? M().fits(t.card) : [];
+      const allowed = t ? M().fits(t.slot) : [];
       keys = keys.filter(k => allowed.includes(M().parse(k).type));
     }
     const order = M().data().types.map(x => x.id);
@@ -151,7 +134,7 @@
     const grid = $('mg-grid');
     if (ui.sel && !M().count(ui.sel)) ui.sel = null;
     if (!keys.length) {
-      grid.innerHTML = `<div class="mg-empty">${ui.tab === 'fit' && Object.keys(M().get().bag).length ? 'Nothing fits this tool' : 'Empty'}<button type="button" class="jjk-btn tl-mini" data-open-shop>Buy</button></div>`;
+      grid.innerHTML = `<div class="mg-empty">${ui.tab === 'fit' && Object.keys(M().get().bag).length ? 'Nothing fits this piece' : 'Empty'}<button type="button" class="jjk-btn tl-mini" data-open-shop>Buy</button></div>`;
       return;
     }
     grid.innerHTML = keys.map(k => {
@@ -182,8 +165,8 @@
 
   function besetKey(k) {
     const t = currentTool();
-    if (!t) return toast('Equip a tool first');
-    const res = M().beset(t.card.id, k, ui.socket, t.card);
+    if (!t) return toast('Select a shinobi first');
+    const res = M().beset(uid(), t.slot, k, ui.socket);
     if (res.ok) ui.socket = -1;
     report(res);
   }
@@ -191,8 +174,8 @@
   function onSocket(i) {
     const t = currentTool();
     if (!t) return;
-    const row = M().socketsOf(t.card.id);
-    if (row[i]) { ui.socket = -1; return report(M().remove(t.card.id, i)); }
+    const row = M().socketsOf(uid(), t.slot);
+    if (row[i]) { ui.socket = -1; return report(M().remove(uid(), t.slot, i)); }
     ui.socket = ui.socket === i ? -1 : i;
     renderStage();
   }
@@ -250,13 +233,10 @@
 
   /* ───────── Wiring ───────── */
   function wire() {
-    document.querySelectorAll('.tl-view').forEach(b => b.addEventListener('click', () => setView(b.dataset.view)));
-
     $('mg-tool-list').addEventListener('click', e => {
-      if (e.target.closest('[data-goto]')) return setView('gear');
       const row = e.target.closest('.mg-tool');
       if (!row) return;
-      ui.slot = row.dataset.slot; ui.socket = -1;
+      TG().setSlot(row.dataset.slot); ui.socket = -1;
       render();
     });
     $('mg-sockets').addEventListener('click', e => {
@@ -276,7 +256,7 @@
     $('mg-buy').addEventListener('click', openShop);
     $('mg-split').addEventListener('click', () => { if (ui.sel) { const k = ui.sel; const p = M().parse(k); const r = M().split(k); if (r.ok) ui.sel = M().count(k) ? k : M().key(p.type, p.level - 1); report(r); } });
     $('mg-combine').addEventListener('click', () => { if (ui.sel) { const k = ui.sel; const p = M().parse(k); const r = M().combine(k); if (r.ok && !M().count(k)) ui.sel = M().key(p.type, p.level + 1); report(r); } });
-    $('mg-oneclick').addEventListener('click', () => { const t = currentTool(); if (t) { ui.socket = -1; report(M().oneClick(t.card.id, t.card)); } });
+    $('mg-oneclick').addEventListener('click', () => { const t = currentTool(); if (t) { ui.socket = -1; report(M().oneClick(uid(), t.slot)); } });
 
     $('mg-shop').addEventListener('click', onShopClick);
     $('mg-shop-close').addEventListener('click', closeShop);
@@ -285,18 +265,14 @@
     // Another tab changed the save
     window.addEventListener('storage', e => { if (e.key === M().STORAGE_KEY) { M().reload(); render(); } });
     // The roster selection lives in the Gear view; follow it.
-    document.getElementById('tools-roster-list').addEventListener('click', () => { ui.slot = null; ui.socket = -1; });
+    document.getElementById('tools-roster-list').addEventListener('click', () => { ui.socket = -1; });
   }
 
   function start() {
     if (!M() || !T()) return;
     wire();
-    let v = 'gear';
-    try { v = localStorage.getItem(VIEW_KEY) || 'gear'; } catch (e) { /* ignore */ }
-    if (/[?&]view=maga/.test(location.search)) v = 'maga';
-    M().load().then(() => setView(v));
   }
   document.addEventListener('tools:ready', start, { once: true });
 
-  window.ToolsMagatama = { setView, render, openShop };
+  window.ToolsMagatama = { render, openShop };
 })();

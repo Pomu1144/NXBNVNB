@@ -485,14 +485,17 @@
 
   /* ---------- STATUS tab ---------- */
 
-  // Sum stat bonuses from all equipped cards (jutsu + equipment slots)
+  // Sum stat bonuses from equipped jutsu cards, gear pieces and the magatama
+  // beset in them (js/gear.js; the old Tool card slots equipment1..5 are
+  // the fixed gear pieces now)
   function getEquippedCardBonuses(uid) {
-    const out = { hp: 0, atk: 0, def: 0, spd: 0, critRate: 0, critDmg: 0, evaRate: 0 };
+    const out = { hp: 0, atk: 0, def: 0, spd: 0, critRate: 0, critDmg: 0, evaRate: 0, nin: 0, res: 0, uid };
     try {
+      const g = window.Gear?.totalFor(uid);
+      if (g) { out.hp += g.hp; out.atk += g.atk; out.def += g.def; out.nin = g.nin; out.res = g.res; }
       const inst = window.InventoryChar?.getByUid(uid);
       if (!inst?.equippedJutsu) return out;
-      const slots = ['jutsu1', 'jutsu2', 'jutsu3', 'ultimate',
-                     'equipment1', 'equipment2', 'equipment3', 'equipment4', 'equipment5'];
+      const slots = ['jutsu1', 'jutsu2', 'jutsu3', 'ultimate'];
       for (const slotKey of slots) {
         const cardId = inst.equippedJutsu[slotKey];
         if (!cardId || !window.getJutsuCardById) continue;
@@ -506,9 +509,6 @@
         out.critDmg  += parseFloat(card.stats.crit_dmg_bonus  ?? card.stats.critDmg ?? 0) || 0;
         out.evaRate  += parseFloat(card.stats.eva_rate_bonus  ?? card.stats.eva ?? 0)   || 0;
       }
-      // Magatama beset into the unit's tools (js/magatama.js)
-      const m = window.Magatama?.bonusForEquipped(inst.equippedJutsu);
-      if (m) { out.hp += m.hp; out.atk += m.atk; out.def += m.def; }
     } catch (e) {
       console.error('[characters] getEquippedCardBonuses error:', e);
     }
@@ -533,6 +533,17 @@
          <img src="assets/ui/jutsuslotempty.png" class="jutsu-slot-bg" alt="">
          <img src="" class="jutsu-slot-icon" style="display:none" alt="">
        </button>`;
+  // Gear pieces (js/gear.js): icon, level; tap opens them on the Tools page
+  function gearRowHTML(uid) {
+    const G = window.Gear;
+    if (!G || !uid) return '';
+    return G.SLOTS.map(slot => {
+      const i = G.info(uid, slot);
+      return `<a class="cx-gear${i.shiny ? ' is-shiny' : ''}" href="tools.html?uid=${encodeURIComponent(uid)}&view=gear" title="${i.name} Lv${i.level}" aria-label="${i.name}, level ${i.level}">
+        <img src="${i.icon}" alt="" draggable="false"><span>Lv${i.level}</span></a>`;
+    }).join('');
+  }
+  const pctTxt = (v) => `${(Math.round((+v || 0) * 10) / 10).toFixed(1)}%`;
   function statusPanelHTML(hp, atk, spd, b) {
     const major = (key, label, val) => `
       <div class="cx-stat cx-stat--${key}">
@@ -553,6 +564,8 @@
         ${minor("Crit Rate", `${(+b.critRate || 0).toFixed(2)}%`)}
         ${minor("Crit Damage", `${(+b.critDmg || 0).toFixed(1)}%`)}
         ${minor("Evasion", `${(+b.evaRate || 0).toFixed(2)}%`)}
+        ${minor("Jutsu DMG", pctTxt(b.nin))}
+        ${minor("Jutsu RES", pctTxt(b.res))}
       </div>
       <h4 class="cx-kicker">Equipment</h4>
       <div class="stat-equip-rows cx-equip">
@@ -563,12 +576,9 @@
           ${slotBtn("jutsu3", "Jutsu Slot 3")}
           ${slotBtn("ultimate", "Ultimate Slot", true)}
         </div>
-        <div class="stat-equip-row">
+        <div class="stat-equip-row cx-gear-row">
           <span class="cx-equip-tag">Gear</span>
-          ${slotBtn("equipment1", "Equipment Slot 1")}
-          ${slotBtn("equipment2", "Equipment Slot 2")}
-          ${slotBtn("equipment3", "Equipment Slot 3")}
-          ${slotBtn("equipment4", "Equipment Slot 4")}
+          ${gearRowHTML(b.uid)}
         </div>
       </div>`;
   }
