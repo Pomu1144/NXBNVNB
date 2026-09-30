@@ -165,10 +165,8 @@
     const zero = { hp: 0, atk: 0, cri: 0, critDmg: 0, eva: 0, setBonus: false };
     if (!equippedJutsu) return zero;
 
-    const slots = [
-      "jutsu1", "jutsu2", "jutsu3", "ultimate",
-      "equipment1", "equipment2", "equipment3", "equipment4", "equipment5"
-    ];
+    // equipment1..5 are the fixed gear pieces now (js/gear.js), not cards
+    const slots = ["jutsu1", "jutsu2", "jutsu3", "ultimate"];
 
     let totalHp = 0, totalAtk = 0, totalCri = 0, totalCp = 0, totalEva = 0;
     const equippedRarities = [];

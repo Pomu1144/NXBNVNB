@@ -134,6 +134,56 @@
           "pearls": 3
         },
         "stock": "unlimited"
+      },
+      {
+        "id": "gear_scroll_2",
+        "name": "2\u2605 Upgrade Scroll",
+        "description": "Promotes gear from Green to Blue. 3 per promotion.",
+        "icon": "assets/gear/scroll_2.webp",
+        "cost": {
+          "ryo": 8000
+        },
+        "stock": "unlimited"
+      },
+      {
+        "id": "gear_scroll_3",
+        "name": "3\u2605 Upgrade Scroll",
+        "description": "Promotes gear from Blue to Purple. 3 per promotion.",
+        "icon": "assets/gear/scroll_3.webp",
+        "cost": {
+          "ryo": 25000
+        },
+        "stock": "unlimited"
+      },
+      {
+        "id": "gear_scroll_4",
+        "name": "4\u2605 Upgrade Scroll",
+        "description": "Promotes gear from Purple to Orange. 3 per promotion.",
+        "icon": "assets/gear/scroll_4.webp",
+        "cost": {
+          "ryo": 60000
+        },
+        "stock": "unlimited"
+      },
+      {
+        "id": "gear_scroll_5",
+        "name": "5\u2605 Upgrade Scroll",
+        "description": "Promotes gear from Orange to Red. 3 per promotion.",
+        "icon": "assets/gear/scroll_5.webp",
+        "cost": {
+          "ryo": 120000
+        },
+        "stock": "unlimited"
+      },
+      {
+        "id": "gear_scroll_6",
+        "name": "6\u2605 Upgrade Scroll",
+        "description": "Promotes gear from Red to Red Shiny. 3 per promotion.",
+        "icon": "assets/gear/scroll_6.webp",
+        "cost": {
+          "ryo": 250000
+        },
+        "stock": "unlimited"
       }
     ],
     "resources": [

@@ -1,20 +1,24 @@
 // js/magatama.js — Magatama (Naruto Online "Beset Magatama") core.
 //
-// Each tool card has 5 sockets. Magatama are Attack (ATK), Life (HP),
-// Defense (DEF), Ninjutsu (+% jutsu/ultimate damage dealt) or Resistance
-// (-% jutsu/ultimate damage taken) jewels, levels 1-9 as in game, each level its own
-// shape (data/magatama.json). Four of one level combine into one of the
-// next; splitting reverses that.
+// Each gear piece (js/gear.js) has 5 sockets. Magatama are Attack (ATK),
+// Life (HP), Defense (DEF), Ninjutsu (+% jutsu/ultimate damage dealt) or
+// Resistance (-% jutsu/ultimate damage taken) jewels, levels 1-9 as in game,
+// each level its own shape (data/magatama.json). Four of one level combine
+// into one of the next; splitting reverses that.
+//
+// Each type fits one piece only: Life → helmet, Attack → weapon,
+// Defense → armor, Ninjutsu → scroll, Resistance → necklace.
 //
 // Save (localStorage "blazing_magatama_v1"):
-//   { bag: { "attack:3": 2, ... }, sockets: { [cardId]: ["life:4", null, ...] } }
-// Socketed stats apply to any unit that has the card in a Tools slot
-// (equipment1..5): tools.js stat panel, characters.js, and battle stats.
+//   { bag: { "attack:3": 2, ... }, gear: { [uid]: { helmet: ["life:4", null, ...] } } }
+// Older saves socketed magatama per tool card ("sockets": { [cardId]: [...] });
+// those go back into the bag on load.
 (function (global) {
   'use strict';
 
   const STORAGE_KEY = 'blazing_magatama_v1';
-  const TOOL_SLOTS = ['equipment1', 'equipment2', 'equipment3', 'equipment4', 'equipment5'];
+  const SLOTS = ['helmet', 'weapon', 'armor', 'scroll', 'necklace'];
+  const FIT = { helmet: 'life', weapon: 'attack', armor: 'defense', scroll: 'ninjutsu', necklace: 'resistance' };
 
   // Same numbers as data/magatama.json so battle stats never wait on a fetch.
   // load() refreshes from the JSON (tests keep the two in sync).
@@ -85,13 +89,27 @@
       if (cap(k) !== k) { k = cap(k); n *= DATA.splitCount; }
       if (parse(k) && n > 0) bag[k] = (bag[k] || 0) + n;
     });
-    const sockets = {};
-    Object.entries(s.sockets || {}).forEach(([card, arr]) => {
+    // Old per-card sockets: everything goes back into the bag
+    Object.values(s.sockets || {}).forEach(arr => {
       if (!Array.isArray(arr)) return;
-      const row = new Array(DATA.socketsPerTool).fill(null).map((_, i) => (parse(cap(arr[i])) ? cap(arr[i]) : null));
-      if (row.some(Boolean)) sockets[card] = row;
+      arr.forEach(k => { k = cap(k); if (parse(k)) bag[k] = (bag[k] || 0) + 1; });
     });
-    return { bag, sockets };
+    const gear = {};
+    Object.entries(s.gear || {}).forEach(([uid, pieces]) => {
+      if (!pieces || typeof pieces !== 'object') return;
+      Object.entries(pieces).forEach(([slot, arr]) => {
+        if (!FIT[slot] || !Array.isArray(arr)) return;
+        const row = new Array(DATA.socketsPerTool).fill(null).map((_, i) => {
+          const k = cap(arr[i]);
+          const p = parse(k);
+          if (!p) return null;
+          if (p.type !== FIT[slot]) { bag[k] = (bag[k] || 0) + 1; return null; }
+          return k;
+        });
+        if (row.some(Boolean)) (gear[uid] = gear[uid] || {})[slot] = row;
+      });
+    });
+    return { bag, gear };
   }
   function get() { if (!state) state = read(); return state; }
   function save() {
@@ -106,29 +124,19 @@
     s.bag[k] = (s.bag[k] || 0) + n;
     if (s.bag[k] <= 0) delete s.bag[k];
   }
-  function socketsOf(cardId) {
-    const row = get().sockets[cardId];
+  function socketsOf(uid, slot) {
+    const row = (get().gear[uid] || {})[slot];
     return row ? row.slice() : new Array(DATA.socketsPerTool).fill(null);
   }
-  function setSockets(cardId, row) {
+  function setSockets(uid, slot, row) {
     const s = get();
-    if (row.some(Boolean)) s.sockets[cardId] = row; else delete s.sockets[cardId];
+    const g = s.gear[uid] || (s.gear[uid] = {});
+    if (row.some(Boolean)) g[slot] = row; else delete g[slot];
+    if (!Object.keys(g).length) delete s.gear[uid];
   }
 
-  /* ───────── Which types a tool accepts ─────────
-     Naruto Online ties each magatama type to a gear slot. Here the card's
-     type decides: Attack cards take Attack / Ninjutsu / Life, Defense cards
-     Defense / Resistance / Life, Skill cards Ninjutsu / Attack / Resistance,
-     others take any. */
-  const FIT = {
-    Attack: ['attack', 'ninjutsu', 'life'],
-    Defense: ['defense', 'resistance', 'life'],
-    Skill: ['ninjutsu', 'attack', 'resistance']
-  };
-  function fits(card) {
-    const f = card && FIT[card.cardType];
-    return f ? f.slice() : DATA.types.map(t => t.id);
-  }
+  /* ───────── Which type a gear piece accepts ───────── */
+  function fits(slot) { return FIT[slot] ? [FIT[slot]] : []; }
 
   /* ───────── Actions (return { ok, msg }) ───────── */
   const R = () => global.Resources;
@@ -146,59 +154,59 @@
     return { ok: true, msg: `+${qty} ${typesById[type].name} Lv${level}` };
   }
 
-  function beset(cardId, k, idx, card) {
+  function beset(uid, slot, k, idx) {
     const p = parse(k);
-    if (!cardId || !p) return { ok: false, msg: 'Pick a magatama' };
+    if (!uid || !FIT[slot] || !p) return { ok: false, msg: 'Pick a magatama' };
     if (count(k) < 1) return { ok: false, msg: 'None left' };
-    if (card && !fits(card).includes(p.type)) return { ok: false, msg: `${typesById[p.type].name} does not fit this tool` };
-    const row = socketsOf(cardId);
+    if (FIT[slot] !== p.type) return { ok: false, msg: `${typesById[p.type].name} does not fit this piece` };
+    const row = socketsOf(uid, slot);
     if (idx == null || idx < 0) idx = row.indexOf(null);
     if (idx < 0) return { ok: false, msg: 'All 5 sockets are full' };
     if (row[idx]) addBag(row[idx], 1);          // swap the old one back
     row[idx] = k;
     addBag(k, -1);
-    setSockets(cardId, row);
+    setSockets(uid, slot, row);
     save();
     return { ok: true, msg: `Beset ${typesById[p.type].name} Lv${p.level}` };
   }
 
-  function remove(cardId, idx) {
-    const row = socketsOf(cardId);
+  function remove(uid, slot, idx) {
+    const row = socketsOf(uid, slot);
     const k = row[idx];
     if (!k) return { ok: false, msg: 'Empty socket' };
     row[idx] = null;
     addBag(k, 1);
-    setSockets(cardId, row);
+    setSockets(uid, slot, row);
     save();
     return { ok: true, msg: 'Removed' };
   }
 
-  function removeAll(cardId) {
-    const row = socketsOf(cardId);
+  function removeAll(uid, slot) {
+    const row = socketsOf(uid, slot);
     const n = row.filter(Boolean).length;
     if (!n) return { ok: false, msg: 'No magatama beset' };
     row.forEach(k => { if (k) addBag(k, 1); });
-    setSockets(cardId, row.map(() => null));
+    setSockets(uid, slot, row.map(() => null));
     save();
     return { ok: true, msg: `Removed ${n}` };
   }
 
   // Fill empty sockets with the highest-level fitting magatama in the bag.
-  function oneClick(cardId, card) {
-    const row = socketsOf(cardId);
-    const allowed = fits(card);
+  function oneClick(uid, slot) {
+    const row = socketsOf(uid, slot);
+    const type = FIT[slot];
     let added = 0;
-    for (let i = 0; i < row.length; i++) {
+    for (let i = 0; i < row.length && type; i++) {
       if (row[i]) continue;
       const best = Object.keys(get().bag)
-        .map(parse).filter(p => p && allowed.includes(p.type) && count(key(p.type, p.level)) > 0)
-        .sort((a, b) => b.level - a.level || allowed.indexOf(a.type) - allowed.indexOf(b.type))[0];
+        .map(parse).filter(p => p && p.type === type && count(key(p.type, p.level)) > 0)
+        .sort((a, b) => b.level - a.level)[0];
       if (!best) break;
       const k = key(best.type, best.level);
       row[i] = k; addBag(k, -1); added++;
     }
     if (!added) return { ok: false, msg: row.every(Boolean) ? 'All 5 sockets are full' : 'No fitting magatama' };
-    setSockets(cardId, row);
+    setSockets(uid, slot, row);
     save();
     return { ok: true, msg: `Beset ${added}` };
   }
@@ -230,32 +238,30 @@
   /* ───────── Stat bonuses ───────── */
   const zero = () => ({ hp: 0, atk: 0, def: 0, nin: 0, res: 0 });
   const STATS = ['hp', 'atk', 'def', 'nin', 'res'];
-  function bonusForCard(cardId) {
+  function bonusForPiece(uid, slot) {
     const out = zero();
-    const row = get().sockets[cardId];
+    const row = (get().gear[uid] || {})[slot];
     if (!row) return out;
     row.forEach(k => { const i = k && info(k); if (i) out[i.stat] += i.value; });
     return out;
   }
-  function bonusForEquipped(equippedJutsu) {
+  function bonusForUnit(uid) {
     const out = zero();
-    if (!equippedJutsu) return out;
-    const seen = new Set();
-    TOOL_SLOTS.forEach(slot => {
-      const id = equippedJutsu[slot];
-      if (!id || seen.has(id)) return;
-      seen.add(id);
-      const b = bonusForCard(id);
+    if (!uid) return out;
+    SLOTS.forEach(slot => {
+      const b = bonusForPiece(uid, slot);
       STATS.forEach(k => { out[k] += b[k]; });
     });
     return out;
   }
   // Adds the bonus to a battle stats object ({ hp, maxHP, atk, def }).
+  // With js/gear.js loaded this is Gear.applyToStats (gear + magatama);
   // Ninjutsu / Resistance stay as percentages on stats.magatama and are
   // applied to jutsu and ultimate damage (battle-combat.js calculateDamage).
   function applyToStats(stats, instance) {
-    if (!stats || !instance) return stats;
-    const b = bonusForEquipped(instance.equippedJutsu);
+    if (global.Gear) return global.Gear.applyToStats(stats, instance);
+    if (!stats || !instance || !instance.uid) return stats;
+    const b = bonusForUnit(instance.uid);
     if (!STATS.some(k => b[k])) return stats;
     b.nin = Math.min(b.nin, DATA.caps?.nin ?? 60);
     b.res = Math.min(b.res, DATA.caps?.res ?? 50);
@@ -268,10 +274,10 @@
   }
 
   global.Magatama = {
-    STORAGE_KEY, TOOL_SLOTS,
+    STORAGE_KEY, SLOTS, FIT,
     load, reload, get, data: () => DATA, types: () => DATA.types.slice(),
     key, parse, info, iconFor, valueOf, priceOf, count, socketsOf, fits,
     buy, beset, remove, removeAll, oneClick, combine, split,
-    bonusForCard, bonusForEquipped, applyToStats, STATS
+    bonusForPiece, bonusForUnit, applyToStats, STATS
   };
 })(window);

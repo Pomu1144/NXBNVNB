@@ -96,6 +96,14 @@
       flex: 1;
     }
 
+    .resource-icon {
+      width: 44px;
+      height: 44px;
+      object-fit: contain;
+      margin-right: 12px;
+      flex: 0 0 auto;
+    }
+
     .resource-name {
       font-size: 16px;
       font-weight: 600;
@@ -312,6 +320,7 @@
       "★7 Awakening Stones": ["awakening_stone_6", "awakening_stone_7", "awakening_stone_8", "awakening_stone_9"],
       "Limit Break Materials": ["limit_break_crystal", "dupe_crystal"],
       "Element Scrolls": ["scroll_body", "scroll_skill", "scroll_bravery", "scroll_wisdom", "scroll_heart"],
+      "Gear Upgrade Scrolls": ["gear_scroll_2", "gear_scroll_3", "gear_scroll_4", "gear_scroll_5", "gear_scroll_6"],
       "Character Materials": ["character_stone"],
       "Currency": ["ryo"]
     };
@@ -343,8 +352,11 @@
           const amount = window.Resources.get(matId);
           const info = window.Resources.getMaterialInfo(matId);
 
+          const icon = /^gear_scroll_/.test(matId) && info.icon
+            ? `<img class="resource-icon" src="${info.icon}" alt="" loading="lazy" onerror="this.remove()">` : "";
           html += `
             <div class="resource-item">
+              ${icon}
               <div class="resource-info">
                 <div class="resource-name">${info.name}</div>
                 <div class="resource-desc">${info.desc}</div>

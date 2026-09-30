@@ -195,6 +195,13 @@
         rewards[randomMat] = 1;
       }
 
+      // Small chance for a gear upgrade scroll (js/gear.js promotion);
+      // harder ranks drop the higher-star scrolls
+      const gearScrollByDifficulty = { D: 2, C: 2, B: 3, A: 4, S: 5, SS: 6 };
+      if (Math.random() < 0.2) {
+        rewards[`gear_scroll_${gearScrollByDifficulty[difficulty] || 2}`] = 1;
+      }
+
       // Chance for ramen (tier scales with difficulty)
       if (Math.random() < 0.3) {
         const tier = ramenTierByDifficulty[difficulty] || 1;
