@@ -25,7 +25,7 @@
   <link rel="stylesheet" href="css/background.css" />
   <link rel="stylesheet" href="css/bottombar.css" />
   <link rel="stylesheet" href="css/settings.css" />
-  <link rel="stylesheet" href="css/modal-system.css?v=2" />
+  <link rel="stylesheet" href="css/modal-system.css?v=3" />
   <!-- Hide scrollbar but keep functionality -->
   <style>
     /* Hide scrollbar for Chrome, Safari and Opera */
@@ -230,7 +230,7 @@
   </div>
 
   <script src="js/vendor/howler.min.js"></script>
-  <script src="js/modal-manager.js?v=2"></script>
+  <script src="js/modal-manager.js?v=3"></script>
   <script src="js/audio-manager.js"></script>
   <script src="js/username.js"></script>
   <script src="js/character_inv.js?v=3"></script>
@@ -547,7 +547,7 @@
 
     // Batch Add All Characters
     document.getElementById('batch-add-all-button')?.addEventListener('click', async () => {
-      if (!confirm('This will add all 19 characters (evolved + unevolved) to your roster. Continue?')) {
+      if (!(await ModalManager.ask('This will add all 19 characters (evolved + unevolved) to your roster. Continue?', { title: 'Add Characters', confirmText: 'Add' }))) {
         return;
       }
 
@@ -630,7 +630,7 @@
 
     // Clean Up Invalid Characters
     document.getElementById('cleanup-characters-button').addEventListener('click', async () => {
-      if (!confirm('This will remove all characters with invalid IDs from your inventory. Continue?')) {
+      if (!(await ModalManager.ask('This will remove all characters with invalid IDs from your inventory. Continue?', { title: 'Clean Up', confirmText: 'Remove' }))) {
         return;
       }
 
@@ -679,12 +679,15 @@
       const file = e.target.files[0];
       if (!file) return;
 
-      const mergeChoice = confirm(
-        'Import Options:\n\n' +
-        'OK = Merge with existing data (add to current save)\n' +
-        'Cancel = Overwrite existing data (replace current save)\n\n' +
-        'Choose wisely!'
+      const mergeChoice = await ModalManager.pick(
+        'Merge adds the file to your current save. Overwrite replaces your current save with the file.',
+        [
+          { label: 'Overwrite', value: false },
+          { label: 'Merge', value: true, primary: true }
+        ],
+        { title: 'Import Save' }
       );
+      if (mergeChoice === null) { e.target.value = ''; return; }
 
       try {
         const result = await window.PlayerSaveSystem.uploadSaveFile(file, mergeChoice);

@@ -816,8 +816,9 @@
 
     computeStatsFallback(char, instance) {
       const stats = this._computeStatsFallback(char, instance);
-      // Magatama beset into the unit's tools (js/magatama.js)
-      return window.Magatama ? window.Magatama.applyToStats(stats, instance) : stats;
+      // Gear pieces + the magatama beset in them (js/gear.js, js/magatama.js)
+      return window.Gear ? window.Gear.applyToStats(stats, instance)
+        : (window.Magatama ? window.Magatama.applyToStats(stats, instance) : stats);
     },
 
     _computeStatsFallback(char, instance) {

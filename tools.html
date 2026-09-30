@@ -9,6 +9,7 @@
   <script src="js/session-gate.js"></script>
   <script src="js/page-loader.js"></script>
   <script src="js/device-detect.js"></script>
+  <script src="js/modal-manager.js?v=3"></script>
   <!-- PWA App Container -->
   <link rel="manifest" href="manifest.json" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -22,6 +23,7 @@
   <link rel="stylesheet" href="css/theme-jjk.css" />
   <link rel="stylesheet" href="css/tools.css" />
   <link rel="stylesheet" href="css/magatama.css" />
+  <link rel="stylesheet" href="css/gear.css" />
   <link rel="stylesheet" href="css/background.css" />
   <link rel="stylesheet" href="css/bottombar.css" />
   <link rel="stylesheet" href="css/mobile.css" />
@@ -34,6 +36,8 @@
   <div class="tl-views" role="tablist" aria-label="Tools view">
     <span class="jjk-chip mg-ryo" id="mg-ryo" hidden><img src="assets/icons/currency/ryo.png" alt="" /><b id="mg-ryo-val">0</b></span>
     <button type="button" class="jjk-tab tl-view active" role="tab" aria-selected="true" data-view="gear" id="view-gear">Gear</button>
+    <button type="button" class="jjk-tab tl-view" role="tab" aria-selected="false" data-view="str" id="view-str">Strengthen</button>
+    <button type="button" class="jjk-tab tl-view" role="tab" aria-selected="false" data-view="up" id="view-up">Upgrade</button>
     <button type="button" class="jjk-tab tl-view" role="tab" aria-selected="false" data-view="maga" id="view-maga">Magatama</button>
   </div>
   <main class="tl-app" id="tools-app">
@@ -66,29 +70,33 @@
             <option value="6">6&#9733;</option>
             <option value="5">5&#9733;</option>
             <option value="4">&le;4&#9733;</option>
-            <option value="geared">Geared</option>
-            <option value="empty">No gear</option>
+            <option value="geared">Jutsu set</option>
+            <option value="empty">No jutsu</option>
           </select>
         </label>
       </div>
       <div class="tl-roster-list" id="tools-roster-list" role="listbox" aria-label="Characters"></div>
     </section>
 
-    <!-- CENTER: art, identity, slots -->
+    <!-- CENTER: gear pieces around the art, jutsu slots below -->
     <section class="tl-stage jjk-panel" aria-label="Selected character">
-      <div class="tl-art-frame" id="tools-art-frame">
-        <img id="character-full-image" class="tl-art" src="" alt="" hidden />
-        <div class="tl-empty" id="tools-empty-hint">Select a shinobi from the roster</div>
-        <div class="tl-ident" id="selected-character-info" hidden>
-          <div class="tl-stars" id="tools-star-row"></div>
-          <div class="tl-name" id="character-name"></div>
-          <div class="tl-version" id="character-version"></div>
+      <div class="tl-stage-main">
+        <div class="gp-col gp-col--l" id="gear-left" aria-label="Helmet, weapon, armor"></div>
+        <div class="tl-art-frame" id="tools-art-frame">
+          <img id="character-full-image" class="tl-art" src="" alt="" hidden />
+          <div class="tl-empty" id="tools-empty-hint">Select a shinobi from the roster</div>
+          <div class="tl-ident" id="selected-character-info" hidden>
+            <div class="tl-stars" id="tools-star-row"></div>
+            <div class="tl-name" id="character-name"></div>
+            <div class="tl-version" id="character-version"></div>
+          </div>
+          <div class="tl-power" id="tools-power-badge" hidden>
+            <span class="tl-grade" id="tools-grade"></span>
+            <span class="tl-power-txt"><small>Power</small><b id="power-value">&mdash;</b></span>
+          </div>
+          <div class="tl-level jjk-chip" id="tools-level-chip" hidden></div>
         </div>
-        <div class="tl-power" id="tools-power-badge" hidden>
-          <span class="tl-grade" id="tools-grade">&mdash;</span>
-          <span class="tl-power-txt"><small>Power</small><b id="power-value">&mdash;</b></span>
-        </div>
-        <div class="tl-level jjk-chip" id="tools-level-chip" hidden></div>
+        <div class="gp-col gp-col--r" id="gear-right" aria-label="Scroll, necklace"></div>
       </div>
 
       <div class="tl-slots" id="equipment-container" hidden>
@@ -99,16 +107,6 @@
             <button type="button" class="tl-slot" data-slot="jutsu2"></button>
             <button type="button" class="tl-slot" data-slot="jutsu3"></button>
             <button type="button" class="tl-slot tl-slot--ult" data-slot="ultimate"></button>
-          </div>
-        </div>
-        <div class="tl-slot-group">
-          <div class="tl-group-label">Tools</div>
-          <div class="tl-slot-row">
-            <button type="button" class="tl-slot" data-slot="equipment1"></button>
-            <button type="button" class="tl-slot" data-slot="equipment2"></button>
-            <button type="button" class="tl-slot" data-slot="equipment3"></button>
-            <button type="button" class="tl-slot" data-slot="equipment4"></button>
-            <button type="button" class="tl-slot" data-slot="equipment5"></button>
           </div>
         </div>
       </div>
@@ -123,7 +121,7 @@
       <dl class="tl-stats" id="stats-display"></dl>
       <div class="tl-panel-head tl-panel-head--sub">
         <h2 class="tl-panel-title">Equipped</h2>
-        <span class="jjk-chip tl-count" id="tools-equip-count">0/9</span>
+        <span class="jjk-chip tl-count" id="tools-equip-count">0/4</span>
       </div>
       <ul class="tl-equipped" id="tools-equipped-list"></ul>
       <div class="tl-actions">
@@ -133,14 +131,66 @@
     </section>
   </main>
 
-  <!-- MAGATAMA: beset jewels into the selected shinobi's tools -->
-  <main class="mg-app" id="maga-app" hidden>
-    <section class="mg-tools jjk-panel" aria-label="Tools">
+  <!-- STRENGTHEN: level all five gear pieces with Ryo -->
+  <main class="gs-app" id="str-app" hidden>
+    <section class="gs-panel jjk-panel" aria-label="Equipment strengthening">
       <div class="tl-panel-head">
-        <h2 class="tl-panel-title">Tools</h2>
+        <h2 class="tl-panel-title">Strengthen</h2>
+        <span class="jjk-chip tl-count gs-who" id="gs-who"></span>
+      </div>
+      <div class="gs-head" aria-hidden="true"><span></span><span>Gear</span><span>Level</span><span>Stat</span><span>Cost</span><span></span></div>
+      <div class="gs-rows" id="gs-rows"></div>
+      <div class="gs-foot">
+        <span class="gs-total" id="gs-total"></span>
+        <button type="button" class="jjk-btn is-primary gs-all" id="gs-auto-all">Auto All</button>
+      </div>
+    </section>
+  </main>
+
+  <!-- UPGRADE: promote a piece to the next tier at its level cap -->
+  <main class="gu-app" id="up-app" hidden>
+    <section class="gu-pieces jjk-panel" aria-label="Gear">
+      <div class="tl-panel-head">
+        <h2 class="tl-panel-title">Gear</h2>
+        <span class="jjk-chip tl-count gs-who" id="gu-who"></span>
+      </div>
+      <div class="gu-list" id="gu-list" role="listbox" aria-label="Gear pieces"></div>
+    </section>
+    <section class="gu-main jjk-panel" aria-label="Equipment upgrading">
+      <div class="gu-top">
+        <div class="gu-preview" id="gu-preview"></div>
+        <div class="gu-stat" id="gu-stat"></div>
+      </div>
+      <div class="gu-use">
+        <div class="gu-use-head">Use</div>
+        <div class="gu-mats" id="gu-mats"></div>
+      </div>
+      <div class="gu-go">
+        <span class="gu-note" id="gu-note"></span>
+        <button type="button" class="jjk-btn is-primary gu-btn" id="gu-upgrade">Upgrade</button>
+      </div>
+    </section>
+  </main>
+
+  <!-- Gear piece: quick strengthen / promote -->
+  <div class="tl-modal" id="gp-modal" hidden>
+    <div class="tl-modal-card jjk-panel gp-card" role="dialog" aria-modal="true" aria-labelledby="gp-title">
+      <div class="tl-modal-head">
+        <h2 id="gp-title">Gear</h2>
+        <button type="button" class="tl-x" id="gp-close" aria-label="Close">&times;</button>
+      </div>
+      <div class="gp-body" id="gp-body"></div>
+    </div>
+  </div>
+
+  <!-- MAGATAMA: beset jewels into the selected shinobi's gear -->
+  <main class="mg-app" id="maga-app" hidden>
+    <section class="mg-tools jjk-panel" aria-label="Gear">
+      <div class="tl-panel-head">
+        <h2 class="tl-panel-title">Gear</h2>
         <span class="jjk-chip tl-count mg-who" id="mg-who"></span>
       </div>
-      <div class="mg-tool-list" id="mg-tool-list" role="listbox" aria-label="Equipped tools"></div>
+      <div class="mg-tool-list" id="mg-tool-list" role="listbox" aria-label="Gear pieces"></div>
       <dl class="mg-total" id="mg-total"></dl>
     </section>
 
@@ -252,7 +302,9 @@
   <script src="js/card-levels.js"></script>
   <script src="js/jutsu-inventory.js"></script>
   <script src="js/magatama.js"></script>
+  <script src="js/gear.js"></script>
   <script src="js/tools.js"></script>
+  <script src="js/tools-gear.js"></script>
   <script src="js/tools-magatama.js"></script>
   <script src="js/navigation.js"></script>
 </body>

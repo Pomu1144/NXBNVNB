@@ -183,7 +183,8 @@ class PlayerSaveSystem {
       skinsEquipped: localStorage.getItem('blazing_skins_equipped_v1'),
       skinsOwned: localStorage.getItem('blazing_skins_owned_v1'),
       tutorial: localStorage.getItem('blazing_tutorial_v1'),
-      magatama: localStorage.getItem('blazing_magatama_v1')
+      magatama: localStorage.getItem('blazing_magatama_v1'),
+      gear: localStorage.getItem('blazing_gear_v1')
     };
   }
 
@@ -257,7 +258,8 @@ class PlayerSaveSystem {
         skinsEquipped: 'blazing_skins_equipped_v1',
         skinsOwned: 'blazing_skins_owned_v1',
         tutorial: 'blazing_tutorial_v1',
-        magatama: 'blazing_magatama_v1'
+        magatama: 'blazing_magatama_v1',
+        gear: 'blazing_gear_v1'
       };
       Object.entries(keyMap).forEach(([field, storageKey]) => {
         if (data[field] !== null && data[field] !== undefined) {

@@ -27713,7 +27713,7 @@
   "name": "Boss Battle! Nine-Tailed Fox",
   "giant": "nine_tails",
   "description": "The Nine-Tailed Fox tears through the village. It stomps across the whole field, rakes rows with its claws and charges a Tailed Beast Bomb that hits everyone. Watch the red zones.",
-  "banner": "assets/sprites/bosses/nine_tails/portrait.webp",
+  "banner": "assets/missions/banners/boss/boss_nine_tails.webp",
   "sortOrder": 1,
   "stamina": {
    "S": 30,
@@ -27807,7 +27807,7 @@
   "name": "Boss Battle! Perfect Susanoo",
   "giant": "susanoo_perfect",
   "description": "A winged, armoured giant of blue chakra. Its blades sweep whole rows and columns, Yasaka Magatama rain on your shinobi, and Heaven Splitter cuts the entire field.",
-  "banner": "assets/sprites/bosses/susanoo_perfect/portrait.webp",
+  "banner": "assets/missions/banners/boss/boss_susanoo_perfect.webp",
   "sortOrder": 2,
   "stamina": {
    "S": 30,

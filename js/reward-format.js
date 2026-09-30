@@ -53,7 +53,12 @@
     scroll_3star: '3★ Awakening Stone',
     scroll_4star: '4★ Awakening Stone',
     scroll_5star: '5★ Awakening Stone',
-    limit_break_crystal: 'Limit Break Crystal'
+    limit_break_crystal: 'Limit Break Crystal',
+    gear_scroll_2: '2★ Upgrade Scroll',
+    gear_scroll_3: '3★ Upgrade Scroll',
+    gear_scroll_4: '4★ Upgrade Scroll',
+    gear_scroll_5: '5★ Upgrade Scroll',
+    gear_scroll_6: '6★ Upgrade Scroll'
   };
 
   // Icons that exist on disk
@@ -202,6 +207,9 @@
     if (n.includes('shinobite')) return ICONS.shinobites;
     if (n.includes('ryo')) return ICONS.ryo;
 
+    // Gear upgrade scrolls (js/gear.js): square cards with the star frame baked in
+    const gs = c.match(/^gear_scroll_([2-6])$/);
+    if (gs) return `assets/gear/scroll_${gs[1]}.webp`;
     const i = info(c);
     if (i && i.icon && i.icon.indexOf(WIKI_ICON_DIR) === 0) return i.icon;
     if (WIKI_MATERIAL_RE.test(c)) return WIKI_ICON_DIR + c + '.webp';

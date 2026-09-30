@@ -552,31 +552,30 @@
   display: none;
 }
 
-/* Arrows: small gold chevrons, revealed on hover */
+/* Arrows: thin gold chevrons straight on the art (no box), revealed on hover */
 .summon-carousel-arrow {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  z-index: 4;
-  width: 26px;
-  height: 44px;
+  z-index: 8;
+  width: 30px;
+  height: 56px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 14px;
-  line-height: 1;
   color: var(--jjk-gold-hi, #f1d98a);
-  background: rgba(5, 14, 17, 0.72);
-  border: 1px solid rgba(201, 162, 78, 0.6);
   cursor: pointer;
   opacity: 0;
-  transition: opacity 0.2s ease, background 0.2s ease;
+  transition: opacity 0.2s ease, transform 0.2s ease;
   user-select: none;
 }
-.summon-carousel-arrow.left  { left: 6px; }
-.summon-carousel-arrow.right { right: 6px; }
-.summon-banner-carousel:hover .summon-carousel-arrow { opacity: 1; }
-.summon-carousel-arrow:hover { background: rgba(19, 48, 57, 0.9); }
+.summon-carousel-arrow svg { width: 13px; height: 26px; overflow: visible; }
+.summon-carousel-arrow.left  { left: 4px; }
+.summon-carousel-arrow.right { right: 4px; }
+.summon-banner-carousel:hover .summon-carousel-arrow { opacity: 0.9; }
+.summon-carousel-arrow:hover { opacity: 1; }
+.summon-carousel-arrow.left:hover  { transform: translate(-2px, -50%); }
+.summon-carousel-arrow.right:hover { transform: translate(2px, -50%); }
 
 /* Dots: tiny gold diamonds along the bottom edge */
 .summon-carousel-dots {

@@ -500,12 +500,14 @@
       // Create navigation arrows
       const leftArrow = document.createElement('div');
       leftArrow.className = 'summon-carousel-arrow left';
-      leftArrow.innerHTML = '◀';
+      leftArrow.innerHTML = '<svg viewBox="0 0 12 24" aria-hidden="true"><path d="M10 2 2 12l8 10" fill="none" stroke="#0a0604" stroke-width="4.5" stroke-linecap="square"/><path d="M10 2 2 12l8 10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg>';
+      leftArrow.setAttribute('aria-label', 'Previous banner');
       carousel.appendChild(leftArrow);
 
       const rightArrow = document.createElement('div');
       rightArrow.className = 'summon-carousel-arrow right';
-      rightArrow.innerHTML = '▶';
+      rightArrow.innerHTML = '<svg viewBox="0 0 12 24" aria-hidden="true"><path d="M2 2l8 10-8 10" fill="none" stroke="#0a0604" stroke-width="4.5" stroke-linecap="square"/><path d="M2 2l8 10-8 10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"/></svg>';
+      rightArrow.setAttribute('aria-label', 'Next banner');
       carousel.appendChild(rightArrow);
 
       // Create navigation dots

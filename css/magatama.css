@@ -8,7 +8,7 @@
 /* ── View switch (top right) ─────────────────────────────────── */
 .tl-views {
   position: absolute; z-index: 900; top: 16px;
-  right: max(var(--tl-pad, 16px), env(safe-area-inset-right, 0px));
+  right: max(var(--tl-pad, 16px), var(--safe-r, env(safe-area-inset-right, 0px)));
   display: flex; align-items: center; gap: 6px;
 }
 .tl-view { min-width: 108px; height: 38px; padding: 0 16px; font-size: 14px; }
@@ -22,8 +22,8 @@
   position: fixed;
   top: var(--tl-top);
   bottom: calc(var(--tl-dock) + 10px);
-  left: max(var(--tl-pad), env(safe-area-inset-left, 0px));
-  right: max(var(--tl-pad), env(safe-area-inset-right, 0px));
+  left: max(var(--tl-pad), var(--safe-l, env(safe-area-inset-left, 0px)));
+  right: max(var(--tl-pad), var(--safe-r, env(safe-area-inset-right, 0px)));
   display: grid;
   grid-template-columns: minmax(230px, 290px) minmax(0, 1fr) minmax(270px, 340px);
   gap: var(--tl-gap);
@@ -229,7 +229,7 @@
 /* ── Compact landscape phones (844x390, 932x430, 932x340) ────── */
 html.is-mobile.is-landscape.is-compact .tl-views {
   top: calc(6px + env(safe-area-inset-top, 0px));
-  right: max(8px, env(safe-area-inset-right, 0px));
+  right: max(8px, var(--safe-r, env(safe-area-inset-right, 0px)));
   gap: 4px;
 }
 html.is-mobile.is-landscape.is-compact .tl-view { min-width: 0; height: 32px; padding: 0 12px; font-size: 12px; }

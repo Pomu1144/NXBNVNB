@@ -21,16 +21,18 @@
   const HOLD_MS = 450;
   const CUE_DELAY = 140;   // ms before the hold ring appears (quick taps never see it)
   const MOVE_TOL = 10;     // px of travel that turns a hold into a drag
-  const ELEMENTS = ["body", "bravery", "heart", "skill", "wisdom"];
 
   const esc = v => String(v ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   const core = () => window.BattleManager || null;
   const alive = u => u && u.stats && u.stats.hp > 0;
 
   // Line glyphs for the stat rows (currentColor)
+  // Stat icons (assets/ui/stats, same set as the Shinobi screen); Range keeps its glyph.
+  const statImg = (n) => `<img class="bui-stat-ic" src="assets/ui/stats/${n}.webp" alt="" aria-hidden="true" draggable="false">`;
   const ICONS = {
-    hp: '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 14.2 2.3 8.6A3.4 3.4 0 0 1 8 4a3.4 3.4 0 0 1 5.7 4.6z" fill="currentColor"/></svg>',
-    atk: '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M13.8 1.5 6.9 8.4l.7.7-1.4 1.4-1.1-1.1-2.4 2.4 1.5 1.5 2.4-2.4-1.1-1.1 1.4-1.4.7.7 6.9-6.9.3-2.2z" fill="currentColor"/></svg>',
+    hp: statImg('health'),
+    atk: statImg('attack'),
+    spd: statImg('speed'),
     range: '<svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="8" cy="8" r="2.6" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 0v3.5M8 12.5V16M0 8h3.5M12.5 8H16" stroke="currentColor" stroke-width="1.6"/></svg>',
   };
 
@@ -250,6 +252,7 @@
         maxHP: Math.round(unit.stats.maxHP || unit.stats.hp),
         atk: Math.round(effAtk),
         atkDelta: Math.round(effAtk - baseAtk),
+        speed: Math.round(Number(unit.stats.speed) || 0),
         range: rangeUp?.element || range || "—",
         rangeBoosted: !!(rangeUp?.element && rangeUp.element !== range),
       };
@@ -287,10 +290,7 @@
     html(unit) {
       const ch = this.charOf(unit);
       const st = this.stats(unit, ch);
-      const tier = this.tierOf(unit, ch);
-      const stars = parseInt(tier, 10) || Number(ch.rarity) || 0;
       const lvl = unit._ref?.inst?.level ?? unit._ref?.base?.level ?? null;
-      const el = (window.BattleBuffs?.elementOf?.(unit) || String(ch.element || "")).toLowerCase();
       const title = ch.version || "";
       const side = unit.isPlayer ? "Ally" : "Enemy";
       const delta = (n) => `<span class="bui-delta${n > 0 ? " is-up" : n < 0 ? " is-down" : ""}">(${n >= 0 ? "+" : "−"}${Math.abs(n).toLocaleString()})</span>`;
@@ -319,8 +319,6 @@
               <div class="bui-face bui-side-${side.toLowerCase()}">
                 <div class="bui-portrait"><img src="${esc(unit.portrait)}" alt="" draggable="false"
                   onerror="this.onerror=null;this.src='assets/characters/common/silhouette.png'"></div>
-                ${ELEMENTS.includes(el) ? `<img class="bui-el" src="assets/ui/jjk/orb_${el}.webp" alt="${esc(el)}" title="${esc(el[0].toUpperCase() + el.slice(1))}" draggable="false">` : ""}
-                ${stars ? `<span class="bui-stars" aria-label="${stars} star"><img src="assets/ui/jjk/star_gold.webp" alt="" draggable="false">${stars}</span>` : ""}
                 ${lvl != null ? `<span class="bui-lv">Lv ${esc(lvl)}</span>` : ""}
               </div>
               <div class="bui-id">
@@ -330,6 +328,7 @@
                 <dl class="bui-stats">
                   <div class="bui-stat bui-stat-hp"><dt>${ICONS.hp}Health</dt><dd><b>${st.hp.toLocaleString()}</b><small>/${st.maxHP.toLocaleString()}</small>${delta(0)}</dd></div>
                   <div class="bui-stat bui-stat-atk"><dt>${ICONS.atk}Strength</dt><dd><b>${st.atk.toLocaleString()}</b>${delta(st.atkDelta)}</dd></div>
+                  <div class="bui-stat bui-stat-spd"><dt>${ICONS.spd}Speed</dt><dd><b>${st.speed.toLocaleString()}</b></dd></div>
                   <div class="bui-stat bui-stat-range"><dt>${ICONS.range}Range</dt><dd><b class="${st.rangeBoosted ? "is-up" : ""}">${esc(st.range)}</b></dd></div>
                 </dl>
               </div>

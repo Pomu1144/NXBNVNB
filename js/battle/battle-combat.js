@@ -299,8 +299,9 @@
       if (sm.vulnPct) damage *= (1 + sm.vulnPct / 100);
       if (sm.dmgPct) damage *= (1 + sm.dmgPct / 100);
 
-      // Magatama: Ninjutsu raises jutsu / ultimate damage dealt, Resistance
-      // lowers jutsu / ultimate damage taken (percentages, js/magatama.js)
+      // Gear scroll / necklace + magatama: Ninjutsu raises jutsu / ultimate
+      // damage dealt, Resistance lowers jutsu / ultimate damage taken
+      // (capped percentage totals on stats.magatama, js/gear.js totalFor)
       if (ctx.kind && ctx.kind !== 'attack') {
         const nin = Number(attacker.stats.magatama?.nin) || 0;
         const res = Number(defender.stats.magatama?.res) || 0;
