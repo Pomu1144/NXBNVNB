@@ -18,8 +18,24 @@
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.95), 0 0 6px rgba(0, 0, 0, 0.8);
 }
 
+.battle-hud-buttons { display: flex; align-items: center; gap: 6px; margin-top: 8px; }
+.battle-quick { display: flex; gap: 6px; }
+.bq-btn {
+  height: 30px; min-width: 40px; padding: 0 8px;
+  border: 1px solid rgba(201, 162, 78, 0.75); border-radius: 6px;
+  background: rgba(7, 21, 25, 0.82);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.55), inset 0 0 0 1px rgba(0, 0, 0, 0.5);
+  color: var(--jjk-gold-hi, #f1d98a);
+  font-family: var(--jjk-font, 'Kaisei Tokumin', serif); font-size: 12px; font-weight: 800; letter-spacing: 0.04em;
+  cursor: pointer; -webkit-tap-highlight-color: transparent;
+}
+.bq-btn.is-on {
+  color: #2a220c; border-color: var(--jjk-gold-hi, #f1d98a);
+  background: linear-gradient(180deg, var(--jjk-gold-hi, #f1d98a), var(--jjk-gold, #c9a24e));
+}
+.bq-btn:active { transform: scale(0.94); }
 #btn-battle-menu {
-  width: 30px; height: 30px; margin-top: 8px; padding: 0;
+  width: 30px; height: 30px; padding: 0;
   display: grid; place-items: center;
   border: 1px solid rgba(201, 162, 78, 0.75);
   border-radius: 6px;
@@ -90,3 +106,7 @@
   .battle-menu .bm-foot { margin-top: 8px; }
   .battle-menu .bm-foot .jjk-btn { min-height: 34px; }
 }
+
+/* The turn-order track stops short of the top-right buttons */
+#speed-gauge-track { width: min(88%, 1180px, calc(100% - 330px)); left: calc(50% - 60px); }
+html.is-mobile #speed-gauge-track { width: auto; left: max(3%, env(safe-area-inset-left, 0px)); right: 168px; transform: none; }

@@ -28,7 +28,41 @@
     btn.setAttribute('aria-label', 'Battle menu');
     btn.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>';
     btn.addEventListener('click', e => { e.stopPropagation(); open(); });
-    hudRight.appendChild(btn);
+
+    // Quick toggles beside the menu: battle speed and auto battle.
+    const quick = document.createElement('div');
+    quick.className = 'battle-quick';
+    quick.innerHTML = `
+      <button type="button" id="btn-quick-speed" class="bq-btn" aria-label="Battle speed">×1</button>
+      <button type="button" id="btn-quick-auto" class="bq-btn" aria-label="Auto battle">AUTO</button>`;
+    quick.querySelector('#btn-quick-speed').addEventListener('click', e => {
+      e.stopPropagation();
+      const bm = core(); if (!bm?.turns) return;
+      bm.turns.changeSpeedMultiplier(bm);
+      syncQuick();
+    });
+    quick.querySelector('#btn-quick-auto').addEventListener('click', e => {
+      e.stopPropagation();
+      const bm = core(); if (!bm?.turns) return;
+      bm.turns.toggleAutoMode(bm);
+      syncQuick();
+    });
+    const row = document.createElement('div');
+    row.className = 'battle-hud-buttons';
+    row.append(quick, btn);
+    hudRight.appendChild(row);
+    syncQuick();
+    // the action panel's own Auto / ×N buttons change the same state
+    document.addEventListener('click', () => setTimeout(syncQuick, 0), true);
+    setTimeout(syncQuick, 1500); // a resumed battle restores its speed after init
+  }
+
+  function syncQuick() {
+    const bm = core();
+    const sp = document.getElementById('btn-quick-speed');
+    const au = document.getElementById('btn-quick-auto');
+    if (sp) { const m = bm?.speedMultiplier || 1; sp.textContent = `×${m}`; sp.classList.toggle('is-on', m > 1); }
+    if (au) au.classList.toggle('is-on', !!bm?.turns?.autoMode);
   }
 
   function speedButtons(bm) {
@@ -96,6 +130,7 @@
       bm2.speedMultiplier = Number(b.dataset.speed);
       if (bm2.dom?.btnSpeed) bm2.dom.btnSpeed.textContent = `×${bm2.speedMultiplier}`;
       panel.querySelectorAll('.bm-seg').forEach(x => x.classList.toggle('is-on', x === b));
+      syncQuick();
     }));
     panel.querySelector('[data-act="mute"]').addEventListener('click', e => {
       const muted = A?.toggleMute?.();
@@ -107,6 +142,7 @@
       bm2.turns.toggleAutoMode(bm2);
       e.currentTarget.classList.toggle('is-on', bm2.turns.autoMode);
       e.currentTarget.textContent = bm2.turns.autoMode ? 'On' : 'Off';
+      syncQuick();
     });
     panel.querySelector('[data-act="resume"]').addEventListener('click', close);
     panel.querySelector('[data-act="retreat"]').addEventListener('click', e => confirmRetreat(e.currentTarget));
