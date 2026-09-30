@@ -90,7 +90,7 @@
   top: 6vh;
   bottom: 0;
 }
-.home-char-stage.is-bust .home-char { margin-left: 2vw; }
+.home-char-stage.is-bust .home-char { margin-left: 0; left: var(--hc-offset, 2vw); }
 .home-char-stage.is-bust .home-char-shadow { display: none; }
 .home-char-stage.is-bust .home-char-glow { bottom: 18%; height: 70%; }
 .home-char-stage.is-bust .home-char-img { transform-origin: 50% 70%; }
@@ -211,6 +211,7 @@ html.is-mobile.is-landscape.is-compact .character-vignette-container.home-char-s
   bottom: 58px;
 }
 html.is-mobile.is-landscape.is-compact .home-char { margin-left: 2vw; }
+html.is-mobile.is-landscape.is-compact .home-char-stage.is-bust .home-char { margin-left: 0; }
 html.is-mobile.is-landscape.is-compact .home-char-switch {
   font-size: 10px; padding: 3px 12px 3px 10px; gap: 5px; min-height: 24px;
 }

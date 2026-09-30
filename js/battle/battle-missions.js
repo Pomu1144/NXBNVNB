@@ -482,63 +482,12 @@
      * @param {number} totalWaves - Total waves in stage
      */
     showWaveTransition(bm, nextWave, totalWaves) {
-      if (!bm.dom.scene) return;
-
-      const transition = document.createElement('div');
-      transition.className = 'wave-transition';
-      transition.style.position = 'absolute';
-      transition.style.inset = '0';
-      transition.style.display = 'flex';
-      transition.style.flexDirection = 'column';
-      transition.style.alignItems = 'center';
-      transition.style.justifyContent = 'center';
-      transition.style.background =
-        "linear-gradient(rgba(6,8,16,0.58), rgba(6,8,16,0.72)), " +
-        "url('assets/ui/generated/wave_clear_bg.webp') center center / cover no-repeat, " +
-        "rgba(10, 15, 30, 0.95)";
-      transition.style.zIndex = '999';
-      transition.style.animation = 'fadeInOut 2s ease-in-out';
-      transition.style.backdropFilter = 'blur(8px)';
-
-      transition.innerHTML = `
-        <div style="
-          font-family: 'Cinzel', serif;
-          font-size: 1.2rem;
-          font-weight: 600;
-          color: rgba(212, 175, 55, 0.8);
-          letter-spacing: 0.3em;
-          text-transform: uppercase;
-          margin-bottom: 1rem;
-        ">
-          Wave
-        </div>
-        <div style="
-          font-family: 'Cinzel', serif;
-          font-size: 5rem;
-          font-weight: 700;
-          color: #d4af37;
-          text-shadow:
-            0 0 20px rgba(212, 175, 55, 0.4),
-            0 0 40px rgba(212, 175, 55, 0.2),
-            0 4px 8px rgba(0, 0, 0, 0.8);
-          letter-spacing: 0.1em;
-        ">
-          ${nextWave}
-        </div>
-        <div style="
-          font-family: 'Cinzel', serif;
-          font-size: 1rem;
-          color: rgba(212, 175, 55, 0.6);
-          margin-top: 0.5rem;
-          letter-spacing: 0.2em;
-        ">
-          ${nextWave} of ${totalWaves}
-        </div>
-      `;
-
-      bm.dom.scene.appendChild(transition);
-
-      setTimeout(() => transition.remove(), 2000);
+      this.showTransitionBand(bm, {
+        kicker: 'Wave clear',
+        title: `Wave ${nextWave}`,
+        sub: `${nextWave} / ${totalWaves}`,
+        duration: 2000,
+      });
     },
 
     /**
@@ -548,81 +497,45 @@
      * @param {number} totalStages - Total stages in mission
      */
     showStageTransition(bm, nextStage, totalStages) {
-      if (!bm.dom.scene) return;
+      const stage = bm.missionData?.difficulties?.[bm.difficulty]?.[nextStage - 1];
+      const band = this.showTransitionBand(bm, {
+        kicker: 'Stage clear',
+        title: `Stage ${nextStage}`,
+        sub: `${stage?.title ? stage.title + ' · ' : ''}${nextStage} / ${totalStages}`,
+        duration: 2500,
+      });
+      // The stage's reward chest rides at the end of the band (it used to
+      // float in the middle of the screen, over the text) until it is collected.
+      const chest = bm.dom.scene?.querySelector('.reward-chest');
+      const slot = band?.querySelector('.tb-chest');
+      if (chest && slot) {
+        chest.style.cssText += ';position:static;transform:none;left:auto;top:auto;width:52px;height:52px;animation:none;';
+        slot.appendChild(chest);
+      }
+    },
 
-      const transition = document.createElement('div');
-      transition.className = 'stage-transition';
-      transition.style.position = 'absolute';
-      transition.style.inset = '0';
-      transition.style.display = 'flex';
-      transition.style.flexDirection = 'column';
-      transition.style.alignItems = 'center';
-      transition.style.justifyContent = 'center';
-      transition.style.background =
-        "linear-gradient(rgba(6,8,16,0.55), rgba(6,8,16,0.70)), " +
-        "url('assets/ui/generated/wave_clear_bg.webp') center center / cover no-repeat, " +
-        "rgba(10, 15, 30, 0.95)";
-      transition.style.zIndex = '999';
-      transition.style.animation = 'fadeInOut 2.5s ease-in-out';
-      transition.style.backdropFilter = 'blur(10px)';
-
-      transition.innerHTML = `
-        <div style="
-          font-family: 'Cinzel', serif;
-          font-size: 1.5rem;
-          font-weight: 600;
-          color: #b8985f;
-          letter-spacing: 0.2em;
-          text-transform: uppercase;
-          margin-bottom: 2rem;
-          text-shadow: 0 0 15px rgba(184, 152, 95, 0.4);
-        ">
-          Stage Complete
-        </div>
-        <div style="
-          width: 120px;
-          height: 2px;
-          background: linear-gradient(90deg, transparent, #d4af37, transparent);
-          margin-bottom: 2rem;
-        "></div>
-        <div style="
-          font-family: 'Cinzel', serif;
-          font-size: 1.2rem;
-          font-weight: 600;
-          color: rgba(212, 175, 55, 0.8);
-          letter-spacing: 0.3em;
-          text-transform: uppercase;
-          margin-bottom: 1rem;
-        ">
-          Next Stage
-        </div>
-        <div style="
-          font-family: 'Cinzel', serif;
-          font-size: 6rem;
-          font-weight: 700;
-          color: #d4af37;
-          text-shadow:
-            0 0 25px rgba(212, 175, 55, 0.5),
-            0 0 50px rgba(212, 175, 55, 0.3),
-            0 6px 12px rgba(0, 0, 0, 0.9);
-          letter-spacing: 0.1em;
-        ">
-          ${nextStage}
-        </div>
-        <div style="
-          font-family: 'Cinzel', serif;
-          font-size: 1rem;
-          color: rgba(212, 175, 55, 0.6);
-          margin-top: 1rem;
-          letter-spacing: 0.2em;
-        ">
-          ${nextStage} of ${totalStages}
-        </div>
-      `;
-
-      bm.dom.scene.appendChild(transition);
-
-      setTimeout(() => transition.remove(), 2500);
+    /**
+     * Between waves / stages: a gold-trimmed ink band across the field with
+     * a small kicker, the next wave or stage and a sub line. Returns the band.
+     */
+    showTransitionBand(bm, { kicker, title, sub, duration }) {
+      if (!bm.dom.scene) return null;
+      bm.dom.scene.querySelectorAll('.transition-band').forEach(el => el.remove());
+      const el = document.createElement('div');
+      el.className = 'transition-band';
+      el.style.setProperty('--tb-dur', `${duration}ms`);
+      el.innerHTML = `
+        <div class="tb-strip">
+          <div class="tb-text">
+            <span class="tb-kicker">${kicker}</span>
+            <span class="tb-title">${title}</span>
+            <span class="tb-sub">${sub}</span>
+          </div>
+          <div class="tb-chest"></div>
+        </div>`;
+      bm.dom.scene.appendChild(el);
+      setTimeout(() => el.remove(), duration);
+      return el;
     },
 
     /**
@@ -899,13 +812,53 @@
       }
     }
 
-    .wave-transition, .stage-transition {
-      animation: fadeInOut 2s ease-in-out;
+    /* Wave / stage transition band (showTransitionBand) */
+    .transition-band {
+      position: absolute; inset: 0; z-index: 999;
+      display: flex; align-items: center; justify-content: center;
+      pointer-events: none;
+      background: rgba(3, 9, 11, 0.38);
+      animation: tbFade var(--tb-dur, 2.5s) ease-in-out both;
     }
-
-    .wave-transition > div:nth-child(2),
-    .stage-transition > div:nth-child(4) {
-      animation: fadeInOut 2s ease-in-out, goldShimmer 1.5s ease-in-out infinite;
+    .transition-band .tb-strip {
+      position: relative; width: 100%;
+      display: flex; align-items: center; justify-content: center; gap: 22px;
+      padding: 14px 24px;
+      background: linear-gradient(90deg, transparent 0%, rgba(7, 21, 25, 0.94) 18%, rgba(7, 21, 25, 0.94) 82%, transparent 100%);
+      animation: tbStrip var(--tb-dur, 2.5s) cubic-bezier(.2, .8, .2, 1) both;
+    }
+    .transition-band .tb-strip::before, .transition-band .tb-strip::after {
+      content: ''; position: absolute; left: 10%; right: 10%; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--jjk-gold, #c9a24e) 20%, var(--jjk-gold-hi, #f1d98a) 50%, var(--jjk-gold, #c9a24e) 80%, transparent);
+    }
+    .transition-band .tb-strip::before { top: 0; }
+    .transition-band .tb-strip::after { bottom: 0; }
+    .transition-band .tb-text {
+      display: flex; flex-direction: column; align-items: center; gap: 2px;
+      font-family: var(--jjk-font, 'Kaisei Tokumin', serif);
+      text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
+    }
+    .transition-band .tb-kicker {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.32em; text-transform: uppercase;
+      color: var(--jjk-gold, #c9a24e);
+    }
+    .transition-band .tb-title {
+      font-size: 34px; font-weight: 800; line-height: 1.1; letter-spacing: 0.04em;
+      color: var(--jjk-gold-hi, #f1d98a);
+    }
+    .transition-band .tb-sub { font-size: 13px; color: var(--jjk-text, #ece6d6); opacity: 0.85; letter-spacing: 0.06em; }
+    .transition-band .tb-chest:empty { display: none; }
+    .transition-band .tb-chest .reward-chest { filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.6)); }
+    @keyframes tbFade { 0% { opacity: 0; } 12% { opacity: 1; } 85% { opacity: 1; } 100% { opacity: 0; } }
+    @keyframes tbStrip { 0% { clip-path: inset(0 50% 0 50%); } 14% { clip-path: inset(0 0 0 0); } 100% { clip-path: inset(0 0 0 0); } }
+    @media (max-height: 520px) {
+      .transition-band .tb-strip { padding: 9px 20px; }
+      .transition-band .tb-title { font-size: 26px; }
+      .transition-band .tb-kicker { font-size: 10px; }
+      .transition-band .tb-sub { font-size: 12px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .transition-band, .transition-band .tb-strip { animation: tbFade var(--tb-dur, 2.5s) linear both; clip-path: none; }
     }
   `;
   document.head.appendChild(style);

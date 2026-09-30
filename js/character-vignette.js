@@ -140,12 +140,28 @@
     }, { passive: true });
   }
 
+  /* Stand the character in the open space between the featured banner and
+   * the menu banners (on short phones the menu grows and would cover him). */
+  function centerInGap() {
+    if (!container) return;
+    const left = document.querySelector('.summon-banner-frame');
+    const right = document.querySelector('.right-banner-panel');
+    const lr = left && left.offsetParent ? left.getBoundingClientRect() : null;
+    const rr = right && right.offsetParent ? right.getBoundingClientRect() : null;
+    if (!lr || !rr || rr.left <= lr.right) { container.style.removeProperty('--hc-offset'); return; }
+    const gapCenter = (lr.right + rr.left) / 2;
+    container.style.setProperty('--hc-offset', `${Math.round(gapCenter - window.innerWidth / 2)}px`);
+  }
+
   function init() {
     container = document.querySelector('.character-vignette-container');
     if (!container) return;
     container.classList.add('home-char-stage');
     render(savedId());
     initParallax();
+    centerInGap();
+    window.addEventListener('resize', centerInGap);
+    window.addEventListener('load', centerInGap);
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closePicker(); });
   }
 
