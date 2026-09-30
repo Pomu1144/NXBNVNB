@@ -875,10 +875,11 @@ html.is-mobile.is-landscape.is-compact .summon-banner-frame::after {
 }
 /* no hover on touch: keep the carousel arrows faintly visible */
 html.is-mobile.is-landscape.is-compact .summon-carousel-arrow {
-  opacity: 0.55;
-  width: 20px;
-  height: 34px;
+  opacity: 0.8;
+  width: 22px;
+  height: 40px;
 }
+html.is-mobile.is-landscape.is-compact .summon-carousel-arrow svg { width: 9px; height: 18px; }
 
 html.is-mobile.is-landscape.is-compact .right-banner-panel {
   /* one grid row scales with the band height (~49px on a 375px-tall phone) */
