@@ -21,11 +21,11 @@
   let DATA = {
     socketsPerTool: 5, combineCount: 4, splitCount: 4, maxLevel: 10,
     types: [
-      {id: 'attack', name: 'Attack', color: '#d8423a', stat: 'atk', statLabel: 'ATK', values: [4, 10, 15, 21, 28, 36, 46, 58, 72, 90]},
+      {id: 'attack', name: 'Attack', color: '#e0563a', stat: 'atk', statLabel: 'ATK', values: [4, 10, 15, 21, 28, 36, 46, 58, 72, 90]},
       {id: 'life', name: 'Life', color: '#3fb46a', stat: 'hp', statLabel: 'HP', values: [10, 25, 38, 53, 70, 90, 115, 145, 180, 225]},
-      {id: 'defense', name: 'Defense', color: '#e8892a', stat: 'def', statLabel: 'DEF', values: [3, 6, 9, 13, 17, 22, 28, 35, 43, 54]},
-      {id: 'ninjutsu', name: 'Ninjutsu', color: '#9b5de5', stat: 'nin', statLabel: 'Jutsu DMG', unit: '%', values: [0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 5, 6]},
-      {id: 'resistance', name: 'Resistance', color: '#3f7fd8', stat: 'res', statLabel: 'Jutsu RES', unit: '%', values: [0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 5, 6]}
+      {id: 'defense', name: 'Defense', color: '#e0a126', stat: 'def', statLabel: 'DEF', values: [3, 6, 9, 13, 17, 22, 28, 35, 43, 54]},
+      {id: 'ninjutsu', name: 'Ninjutsu', color: '#9d62e0', stat: 'nin', statLabel: 'Jutsu DMG', unit: '%', values: [0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 5, 6]},
+      {id: 'resistance', name: 'Resistance', color: '#3aa6e0', stat: 'res', statLabel: 'Jutsu RES', unit: '%', values: [0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 5, 6]}
     ],
     caps: { nin: 60, res: 50 },
     shop: { currency: 'ryo', levels: { 1: 2000, 2: 7500, 3: 28000 } }

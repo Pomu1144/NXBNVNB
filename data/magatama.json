@@ -9,7 +9,7 @@
     {
       "id": "attack",
       "name": "Attack",
-      "color": "#d8423a",
+      "color": "#e0563a",
       "stat": "atk",
       "statLabel": "ATK",
       "wiki": [
@@ -71,7 +71,7 @@
     {
       "id": "defense",
       "name": "Defense",
-      "color": "#e8892a",
+      "color": "#e0a126",
       "stat": "def",
       "statLabel": "DEF",
       "wiki": [
@@ -102,7 +102,7 @@
     {
       "id": "ninjutsu",
       "name": "Ninjutsu",
-      "color": "#9b5de5",
+      "color": "#9d62e0",
       "stat": "nin",
       "statLabel": "Jutsu DMG",
       "unit": "%",
@@ -122,7 +122,7 @@
     {
       "id": "resistance",
       "name": "Resistance",
-      "color": "#3f7fd8",
+      "color": "#3aa6e0",
       "stat": "res",
       "statLabel": "Jutsu RES",
       "unit": "%",

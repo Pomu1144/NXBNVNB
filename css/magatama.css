@@ -160,8 +160,10 @@
 }
 .mg-cell {
   position: relative; aspect-ratio: 1; padding: 0; cursor: pointer;
-  background: linear-gradient(160deg, color-mix(in srgb, var(--c) 18%, #0f2a33), #061116);
+  /* type-coloured glow behind the jewel, as the in-game item cells */
+  background: radial-gradient(circle at 50% 50%, color-mix(in srgb, var(--c) 42%, #07090c) 0%, color-mix(in srgb, var(--c) 14%, #07090c) 48%, #05080a 78%);
   border: 1px solid rgba(201,162,78,0.35);
+  box-shadow: inset 0 0 0 2px rgba(0,0,0,0.55);
   transition: border-color .15s, transform .12s var(--jjk-ease);
 }
 .mg-cell:hover { border-color: var(--jjk-gold); }
@@ -180,7 +182,7 @@
   padding: 8px 10px; border-top: 1px solid var(--tl-line-soft); background: rgba(3,10,12,0.55);
 }
 .mg-hint { color: var(--jjk-muted); font-size: 13px; }
-.mg-sel-ic { position: relative; width: 40px; height: 40px; flex: 0 0 auto; }
+.mg-sel-ic { position: relative; width: 40px; height: 40px; flex: 0 0 auto; background: radial-gradient(circle, color-mix(in srgb, var(--c) 38%, #07090c), #05080a 75%); }
 .mg-sel-ic .mg-gem { width: 100%; height: 100%; }
 .mg-sel-ic .mg-lv { display: none; }
 .mg-sel-meta { display: flex; flex-direction: column; min-width: 0; flex: 1; }
@@ -205,7 +207,7 @@
   padding: 6px 8px; background: linear-gradient(90deg, color-mix(in srgb, var(--c) 14%, #0f2a33), rgba(6,17,21,0.9));
   border: 1px solid rgba(201,162,78,0.3);
 }
-.mg-offer-ic { position: relative; width: 52px; height: 52px; }
+.mg-offer-ic { position: relative; width: 52px; height: 52px; background: radial-gradient(circle, color-mix(in srgb, var(--c) 38%, #07090c), #05080a 75%); border: 1px solid rgba(0,0,0,0.6); }
 .mg-offer-ic .mg-gem { width: 100%; height: 100%; }
 .mg-offer-ic .mg-lv { right: -2px; bottom: 0; }
 .mg-offer-meta { display: flex; flex-direction: column; min-width: 0; }
