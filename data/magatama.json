@@ -1,0 +1,47 @@
+{
+  "version": 1,
+  "source": "Naruto Online (Oasis) magatama: Life / Attack / Resistance lines, levels 1-8 from narutoguides.com Magatama Guide; 4 of one level combine into 1 of the next. Levels 9-10 extrapolated with the same ~1.54x step.",
+  "socketsPerTool": 5,
+  "combineCount": 4,
+  "splitCount": 4,
+  "maxLevel": 10,
+  "types": [
+    {
+      "id": "attack",
+      "name": "Attack",
+      "color": "#d8423a",
+      "stat": "atk",
+      "statLabel": "ATK",
+      "wiki": [10, 30, 46, 71, 109, 168, 258, 397, 611, 940],
+      "values": [4, 10, 15, 21, 28, 36, 46, 58, 72, 90]
+    },
+    {
+      "id": "life",
+      "name": "Life",
+      "color": "#3fb46a",
+      "stat": "hp",
+      "statLabel": "HP",
+      "wiki": [15, 45, 69, 106, 162, 251, 384, 592, 911, 1403],
+      "values": [10, 25, 38, 53, 70, 90, 115, 145, 180, 225]
+    },
+    {
+      "id": "resistance",
+      "name": "Resistance",
+      "color": "#3f7fd8",
+      "stat": "def",
+      "statLabel": "DEF",
+      "wiki": [6, 18, 30, 46, 71, 110, 169, 259, 398, 612],
+      "values": [3, 6, 9, 13, 17, 22, 28, 35, 43, 54]
+    }
+  ],
+  "tiers": [
+    { "tier": 1, "from": 1, "to": 3 },
+    { "tier": 2, "from": 4, "to": 6 },
+    { "tier": 3, "from": 7, "to": 9 },
+    { "tier": 4, "from": 10, "to": 10 }
+  ],
+  "shop": {
+    "currency": "ryo",
+    "levels": { "1": 2000, "2": 7500, "3": 28000 }
+  }
+}

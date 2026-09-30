@@ -21,6 +21,7 @@
   <link rel="stylesheet" href="css/fonts.css" />
   <link rel="stylesheet" href="css/theme-jjk.css" />
   <link rel="stylesheet" href="css/tools.css" />
+  <link rel="stylesheet" href="css/magatama.css" />
   <link rel="stylesheet" href="css/background.css" />
   <link rel="stylesheet" href="css/bottombar.css" />
   <link rel="stylesheet" href="css/mobile.css" />
@@ -30,6 +31,11 @@
     <a class="jjk-icon-btn jjk-back" href="village.html" aria-label="Back to Village"><img src="assets/ui/jjk/back_arrow.webp" alt="" /></a>
     <h1 class="jjk-title-plate">Tools</h1>
   </header>
+  <div class="tl-views" role="tablist" aria-label="Tools view">
+    <span class="jjk-chip mg-ryo" id="mg-ryo" hidden><img src="assets/icons/currency/ryo.png" alt="" /><b id="mg-ryo-val">0</b></span>
+    <button type="button" class="jjk-tab tl-view active" role="tab" aria-selected="true" data-view="gear" id="view-gear">Gear</button>
+    <button type="button" class="jjk-tab tl-view" role="tab" aria-selected="false" data-view="maga" id="view-maga">Magatama</button>
+  </div>
   <main class="tl-app" id="tools-app">
 
     <!-- LEFT: owned roster -->
@@ -127,6 +133,81 @@
     </section>
   </main>
 
+  <!-- MAGATAMA: beset jewels into the selected shinobi's tools -->
+  <main class="mg-app" id="maga-app" hidden>
+    <section class="mg-tools jjk-panel" aria-label="Tools">
+      <div class="tl-panel-head">
+        <h2 class="tl-panel-title">Tools</h2>
+        <span class="jjk-chip tl-count mg-who" id="mg-who"></span>
+      </div>
+      <div class="mg-tool-list" id="mg-tool-list" role="listbox" aria-label="Equipped tools"></div>
+      <dl class="mg-total" id="mg-total"></dl>
+    </section>
+
+    <section class="mg-stage jjk-panel" aria-label="Beset">
+      <div class="mg-stage-head">
+        <span class="mg-tool-name" id="mg-tool-name"></span>
+        <span class="mg-tool-bonus" id="mg-tool-bonus"></span>
+      </div>
+      <div class="mg-ring-wrap">
+        <div class="mg-ring" id="mg-ring">
+          <svg class="mg-ring-art" viewBox="0 0 200 200" aria-hidden="true">
+            <defs>
+              <radialGradient id="mgFace" cx="50%" cy="50%" r="50%">
+                <stop offset="0" stop-color="#1b4f86"/>
+                <stop offset=".62" stop-color="#0c2a52"/>
+                <stop offset="1" stop-color="#061631"/>
+              </radialGradient>
+              <linearGradient id="mgRim" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#9fd4ff"/>
+                <stop offset=".5" stop-color="#2f78c8"/>
+                <stop offset="1" stop-color="#bfe3ff"/>
+              </linearGradient>
+              <path id="mgTomoe" d="M0 -10A10 10 0 1 1 -9.5 3Q-13 -9 -25 -15Q-9 -21 0 -10Z"/>
+            </defs>
+            <circle cx="100" cy="100" r="96" fill="url(#mgFace)" stroke="url(#mgRim)" stroke-width="3"/>
+            <circle cx="100" cy="100" r="88" fill="none" stroke="#5aa6e8" stroke-opacity=".35" stroke-width="1"/>
+            <circle cx="100" cy="100" r="64" fill="none" stroke="#5aa6e8" stroke-opacity=".55" stroke-width="1.4" stroke-dasharray="2 5"/>
+            <g transform="translate(100 100)"><g class="mg-tomoe" fill="#2a64a8" fill-opacity=".45">
+              <use href="#mgTomoe" transform="rotate(0) translate(0 -45) scale(.95)"/>
+              <use href="#mgTomoe" transform="rotate(120) translate(0 -45) scale(.95)"/>
+              <use href="#mgTomoe" transform="rotate(240) translate(0 -45) scale(.95)"/>
+            </g></g>
+            <circle cx="100" cy="100" r="30" fill="#07152b" stroke="url(#mgRim)" stroke-width="2"/>
+          </svg>
+          <div class="mg-core" id="mg-core"></div>
+          <div class="mg-sockets" id="mg-sockets"></div>
+        </div>
+      </div>
+      <div class="mg-actions">
+        <button type="button" class="jjk-btn mg-act" id="mg-buy">Buy</button>
+        <button type="button" class="jjk-btn mg-act" id="mg-split">Split</button>
+        <button type="button" class="jjk-btn mg-act" id="mg-combine">Combine</button>
+        <button type="button" class="jjk-btn mg-act is-primary" id="mg-oneclick">One-Click Beset</button>
+      </div>
+    </section>
+
+    <section class="mg-bag jjk-panel" aria-label="Magatama">
+      <div class="mg-tabs" role="tablist">
+        <button type="button" class="jjk-tab mg-tab active" role="tab" aria-selected="true" data-tab="fit" id="mg-tab-fit">Besetable</button>
+        <button type="button" class="jjk-tab mg-tab" role="tab" aria-selected="false" data-tab="bag" id="mg-tab-bag">Backpack</button>
+      </div>
+      <div class="mg-grid" id="mg-grid" role="listbox" aria-label="Magatama"></div>
+      <div class="mg-sel" id="mg-sel"></div>
+    </section>
+  </main>
+
+  <!-- Buy magatama -->
+  <div class="tl-modal" id="mg-shop" hidden>
+    <div class="tl-modal-card jjk-panel mg-shop-card" role="dialog" aria-modal="true" aria-labelledby="mg-shop-title">
+      <div class="tl-modal-head">
+        <h2 id="mg-shop-title">Buy Magatama</h2>
+        <button type="button" class="tl-x" id="mg-shop-close" aria-label="Close">&times;</button>
+      </div>
+      <div class="mg-shop-body" id="mg-shop-body"></div>
+    </div>
+  </div>
+
   <!-- Card picker (themed modal) -->
   <div class="tl-modal" id="tools-picker" hidden>
     <div class="tl-modal-card jjk-panel" role="dialog" aria-modal="true" aria-labelledby="tools-picker-title">
@@ -170,7 +251,9 @@
   <script src="js/limit-break.js"></script>
   <script src="js/card-levels.js"></script>
   <script src="js/jutsu-inventory.js"></script>
+  <script src="js/magatama.js"></script>
   <script src="js/tools.js"></script>
+  <script src="js/tools-magatama.js"></script>
   <script src="js/navigation.js"></script>
 </body>
 </html>
