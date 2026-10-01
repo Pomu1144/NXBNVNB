@@ -1,0 +1,299 @@
+/* css/glass/shop.css — Glass style for shop.html (all tabs, purchase dialogs,
+   currency bar). Loaded right after css/ui-glass.css; every rule is scoped to
+   html[data-ui="glass"], so Classic is untouched. Tokens: css/ui-glass.css. */
+
+/* ── Currency bar: dark glass chips with Oswald numbers ─────────────── */
+html[data-ui="glass"] body.page-shop .resource-item {
+  background: var(--g-glass-2);
+  -webkit-backdrop-filter: var(--g-blur); backdrop-filter: var(--g-blur);
+  border-radius: var(--g-pill);
+  box-shadow: inset 0 0 0 1px var(--g-line);
+  filter: none;
+  padding: 0 12px 0 6px; gap: 6px;
+}
+html[data-ui="glass"] body.page-shop .resource-bar .resource-value {
+  font-family: var(--g-cond); font-weight: 500; font-size: 16px; letter-spacing: 0.04em;
+  color: var(--g-text) !important; text-shadow: none;
+}
+html[data-ui="glass"].is-mobile.is-landscape.is-compact body.page-shop .resource-item { padding: 0 8px 0 4px; gap: 4px; }
+html[data-ui="glass"].is-mobile.is-landscape.is-compact body.page-shop .resource-bar .resource-value { font-size: 13px !important; }
+
+/* ── Tabs: dark segments, selected = white block ────────────────────── */
+html[data-ui="glass"] body.page-shop .shop-tabs { gap: 4px; }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) body.page-shop .shop-tab {
+  border: 0; border-image: none; border-radius: var(--g-pill); filter: none; transform: none;
+  min-width: 0; height: 36px; padding: 0 18px;
+  background: var(--g-glass-2);
+  -webkit-backdrop-filter: var(--g-blur); backdrop-filter: var(--g-blur);
+  box-shadow: inset 0 0 0 1px var(--g-line);
+  font-family: var(--g-cond); font-weight: 500; font-size: 15px; letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--g-dim); text-shadow: none;
+}
+html[data-ui="glass"]:not(._g):not(._l):not(._s) body.page-shop .shop-tab:hover { color: var(--g-text); }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) body.page-shop .shop-tab.active {
+  background: var(--g-sel); color: var(--g-on-sel); box-shadow: none; font-weight: 500;
+}
+html[data-ui="glass"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compact body.page-shop .shop-tab {
+  min-width: 0; height: 28px !important; padding: 0 12px !important; font-size: 12.5px !important;
+}
+
+/* ── Item cards: glass slabs, no gold, no brackets ──────────────────── */
+html[data-ui="glass"] body.page-shop .shop-item {
+  background: var(--g-glass);
+  -webkit-backdrop-filter: var(--g-blur); backdrop-filter: var(--g-blur);
+  border: 0; border-radius: var(--g-radius);
+  box-shadow: inset 0 0 0 1px var(--g-line), 0 10px 26px rgba(0, 0, 0, 0.3);
+  transition: background 0.15s;
+}
+html[data-ui="glass"] body.page-shop .shop-item::before,
+html[data-ui="glass"] body.page-shop .shop-item::after { display: none; }
+html[data-ui="glass"] body.page-shop .shop-item:hover {
+  transform: none; background: var(--g-glass-hi); box-shadow: inset 0 0 0 1px var(--g-line-2), 0 10px 26px rgba(0, 0, 0, 0.3);
+}
+html[data-ui="glass"] body.page-shop .shop-item .item-name,
+html[data-ui="glass"] body.page-shop .shop-item .item-name-text {
+  font-family: var(--g-cond); font-weight: 500; font-size: 19px; letter-spacing: 0.03em;
+  color: var(--g-text) !important; text-shadow: none;
+}
+html[data-ui="glass"] body.page-shop .shop-item .item-tier {
+  clip-path: none; border: 0; border-radius: var(--g-pill);
+  background: rgba(255, 255, 255, 0.1); box-shadow: inset 0 0 0 1px var(--g-line-2);
+  font-family: var(--g-cond); font-weight: 500; font-size: 12px; letter-spacing: 0.04em;
+  color: var(--g-text) !important; text-shadow: none; padding: 1px 7px;
+}
+html[data-ui="glass"] body.page-shop .item-icon {
+  background: rgba(0, 0, 0, 0.28); border-radius: var(--g-radius-sm);
+  box-shadow: inset 0 0 0 1px var(--g-line);
+}
+html[data-ui="glass"] body.page-shop .item-icon img { width: 80%; height: 80%; }
+html[data-ui="glass"] body.page-shop .shop-item .item-description {
+  font-family: var(--g-sans); color: var(--g-dim) !important;
+}
+html[data-ui="glass"] body.page-shop .shop-item .item-description.item-value {
+  font-family: var(--g-cond); font-weight: 500; font-size: 20px; letter-spacing: 0.03em;
+  color: var(--g-text) !important;
+}
+html[data-ui="glass"] body.page-shop .item-footer { border-top: 1px solid var(--g-line); }
+html[data-ui="glass"] body.page-shop .shop-item .item-cost,
+html[data-ui="glass"] body.page-shop .shop-item .item-cost span {
+  font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.03em;
+  color: var(--g-text) !important; text-shadow: none;
+}
+/* Buy: dark glass button, white block on hover (the yellow block is kept
+   for the confirm inside the purchase dialog) */
+html[data-ui="glass"] body.page-shop .btn-buy,
+html[data-ui="glass"] body.page-shop .lb-btn {
+  border: 0; border-image: none; border-radius: var(--g-pill); filter: none;
+  background: var(--g-glass-2);
+  box-shadow: inset 0 0 0 1px var(--g-line-2);
+  font-family: var(--g-cond); font-weight: 500; font-size: 15px; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--g-text); text-shadow: none;
+  transition: background 0.15s, color 0.15s;
+}
+html[data-ui="glass"] body.page-shop .btn-buy:hover:not(:disabled),
+html[data-ui="glass"] body.page-shop .lb-btn:hover:not(:disabled) {
+  background: var(--g-sel); color: var(--g-on-sel); box-shadow: none; filter: none;
+}
+html[data-ui="glass"] body.page-shop .btn-buy:disabled,
+html[data-ui="glass"] body.page-shop .lb-btn:disabled {
+  border-image: none; background: rgba(14, 19, 24, 0.5); color: var(--g-faint);
+  box-shadow: inset 0 0 0 1px var(--g-line);
+}
+html[data-ui="glass"].is-mobile.is-landscape.is-compact body.page-shop .btn-buy { font-size: 13px; }
+
+/* Recipe Scrolls status line */
+html[data-ui="glass"] body.page-shop .rc-shop-status {
+  font-family: var(--g-cond); font-weight: 500; font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--g-dim);
+}
+html[data-ui="glass"] body.page-shop .rc-shop-status b { color: var(--g-text); font-weight: 500; }
+
+/* ── Limit Break toolbar: search, grade segments, sort, element filters ── */
+html[data-ui="glass"] body.page-shop .lb-toolbar,
+html[data-ui="glass"] body.page-shop .lb-sort { font-family: var(--g-cond); }
+html[data-ui="glass"] body.page-shop .lb-search-icon { stroke: var(--g-dim); }
+html[data-ui="glass"] body.page-shop .lb-search input {
+  clip-path: none; background-image: none !important;
+  box-shadow: inset 0 0 0 1px var(--g-line-2); border: 0;
+  font: 400 14px var(--g-sans); color: var(--g-text);
+}
+html[data-ui="glass"] body.page-shop .lb-search input::placeholder { color: var(--g-faint); }
+html[data-ui="glass"] body.page-shop .lb-search input:focus { box-shadow: inset 0 0 0 1px var(--g-text); }
+html[data-ui="glass"] body.page-shop .lb-search-clear { color: var(--g-dim); }
+html[data-ui="glass"] body.page-shop .lb-search-clear:hover { color: var(--g-text); }
+html[data-ui="glass"] body.page-shop .lb-seg { gap: 4px; }
+html[data-ui="glass"] body.page-shop .lb-seg-btn,
+html[data-ui="glass"] body.page-shop .lb-el {
+  border: 0; border-image: none; border-radius: var(--g-pill); filter: none;
+  background: var(--g-glass-2);
+  -webkit-backdrop-filter: var(--g-blur); backdrop-filter: var(--g-blur);
+  box-shadow: inset 0 0 0 1px var(--g-line);
+  font: 500 14px var(--g-cond); letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--g-dim); text-shadow: none;
+}
+html[data-ui="glass"] body.page-shop .lb-seg-btn:hover,
+html[data-ui="glass"] body.page-shop .lb-el:hover { color: var(--g-text); }
+html[data-ui="glass"] body.page-shop .lb-seg-btn.is-on,
+html[data-ui="glass"] body.page-shop .lb-el[aria-pressed="true"] {
+  background: var(--g-sel); color: var(--g-on-sel); box-shadow: none;
+}
+html[data-ui="glass"] body.page-shop .lb-el img { filter: none; }
+html[data-ui="glass"] body.page-shop .lb-seg-btn:focus-visible,
+html[data-ui="glass"] body.page-shop .lb-el:focus-visible,
+html[data-ui="glass"] body.page-shop .lb-btn:focus-visible,
+html[data-ui="glass"] body.page-shop .lb-sort select:focus-visible { outline: 2px solid var(--g-accent); }
+html[data-ui="glass"] body.page-shop .lb-sort { font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--g-dim); }
+html[data-ui="glass"] body.page-shop .lb-sort select {
+  border: 0; box-shadow: inset 0 0 0 1px var(--g-line-2);
+  background: rgba(10, 13, 17, 0.72) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23f3f2ee' stroke-width='1.6'/%3E%3C/svg%3E") right 10px center / 10px 6px no-repeat !important;
+  font: 500 14px var(--g-cond) !important; letter-spacing: 0.06em; text-transform: uppercase; color: var(--g-text);
+}
+html[data-ui="glass"] body.page-shop .lb-sort select option { background: #12171c; color: var(--g-text); }
+html[data-ui="glass"] body.page-shop .lb-count {
+  font: 500 13px var(--g-cond); letter-spacing: 0.06em; color: var(--g-dim);
+}
+html[data-ui="glass"] body.page-shop .lb-rule { font-family: var(--g-sans); color: var(--g-dim); }
+html[data-ui="glass"].is-mobile.is-landscape.is-compact body.page-shop .lb-seg-btn,
+html[data-ui="glass"].is-mobile.is-landscape.is-compact body.page-shop .lb-el,
+html[data-ui="glass"].is-mobile.is-landscape.is-compact body.page-shop .lb-sort select { font-size: 12.5px !important; }
+html[data-ui="glass"].is-mobile.is-landscape.is-compact body.page-shop .lb-search input { font-size: 13px; }
+
+/* ── Crystal + skin cards ───────────────────────────────────────────── */
+html[data-ui="glass"] body.page-shop .lb-card,
+html[data-ui="glass"] body.page-shop .skin-card {
+  background: var(--g-glass);
+  -webkit-backdrop-filter: var(--g-blur); backdrop-filter: var(--g-blur);
+  border: 0; border-radius: var(--g-radius);
+  box-shadow: inset 0 0 0 1px var(--g-line), 0 10px 26px rgba(0, 0, 0, 0.3);
+  font-family: var(--g-sans);
+}
+html[data-ui="glass"] body.page-shop .lb-card::before,
+html[data-ui="glass"] body.page-shop .lb-card::after,
+html[data-ui="glass"] body.page-shop .skin-card::before,
+html[data-ui="glass"] body.page-shop .skin-card::after { display: none; }
+html[data-ui="glass"] body.page-shop .lb-card:hover {
+  transform: none; background: var(--g-glass-hi);
+  box-shadow: inset 0 0 0 1px var(--g-line-2), 0 10px 26px rgba(0, 0, 0, 0.3);
+}
+html[data-ui="glass"] body.page-shop .lb-art,
+html[data-ui="glass"] body.page-shop .lb-card.is-gold .lb-art,
+html[data-ui="glass"] body.page-shop .skin-card-art {
+  border: 0; border-radius: var(--g-radius-sm);
+  background: radial-gradient(circle at 50% 55%, rgba(255, 255, 255, 0.07), rgba(0, 0, 0, 0) 65%), rgba(0, 0, 0, 0.3);
+  box-shadow: inset 0 0 0 1px var(--g-line);
+}
+/* grade tag: square chip, rarity colour kept as the text colour */
+html[data-ui="glass"] body.page-shop .lb-grade,
+html[data-ui="glass"] body.page-shop .skin-card-tag {
+  clip-path: none; border: 0; border-radius: var(--g-pill);
+  background: rgba(10, 13, 17, 0.85); box-shadow: inset 0 0 0 1px var(--g-line-2);
+  font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase;
+}
+html[data-ui="glass"] body.page-shop .lb-grade { color: #9fdcf0; box-shadow: inset 0 0 0 1px rgba(79, 179, 217, 0.6); padding: 1px 10px; }
+html[data-ui="glass"] body.page-shop .lb-card.is-gold .lb-grade { color: var(--g-gold); box-shadow: inset 0 0 0 1px rgba(227, 192, 108, 0.65); }
+html[data-ui="glass"] body.page-shop .skin-card-tag { color: var(--g-text); }
+html[data-ui="glass"] body.page-shop .lb-name,
+html[data-ui="glass"] body.page-shop .skin-card-name {
+  font-family: var(--g-cond); font-weight: 500; font-size: 16px; letter-spacing: 0.03em; color: var(--g-text); text-shadow: none;
+}
+html[data-ui="glass"] body.page-shop .lb-name small { font-family: var(--g-cond); font-weight: 400; color: var(--g-dim); }
+html[data-ui="glass"] body.page-shop .skin-card-unit { font-family: var(--g-sans); color: var(--g-dim); }
+html[data-ui="glass"] body.page-shop .lb-elem {
+  clip-path: none; border: 0; border-radius: var(--g-pill);
+  background: rgba(10, 13, 17, 0.7); box-shadow: inset 0 0 0 1px var(--g-line);
+  padding: 1px 10px 1px 3px;
+  font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--g-dim);
+}
+html[data-ui="glass"] body.page-shop .lb-foot,
+html[data-ui="glass"] body.page-shop .skin-card-foot { border-top: 1px solid var(--g-line); }
+html[data-ui="glass"] body.page-shop .lb-price,
+html[data-ui="glass"] body.page-shop .skin-card-price {
+  font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.03em; color: var(--g-text);
+}
+html[data-ui="glass"] body.page-shop .lb-owned { font-family: var(--g-cond); letter-spacing: 0.08em; text-transform: uppercase; color: var(--g-faint); }
+html[data-ui="glass"] body.page-shop .lb-owned b { font-weight: 500; color: var(--g-text); }
+html[data-ui="glass"] body.page-shop .lb-buy { gap: 4px; }
+/* Buy ×1 reads slightly brighter than ×10 */
+html[data-ui="glass"] body.page-shop .lb-btn.is-primary { background: rgba(255, 255, 255, 0.1); }
+html[data-ui="glass"] body.page-shop .lb-btn.is-primary:hover:not(:disabled) { background: var(--g-sel); color: var(--g-on-sel); }
+html[data-ui="glass"] body.page-shop .skin-card-buy { white-space: nowrap; font-size: 13px; padding: 0 10px; min-width: 0; height: 32px; }
+html[data-ui="glass"] body.page-shop .skin-card-soon { font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--g-dim); }
+html[data-ui="glass"].is-mobile.is-landscape.is-compact body.page-shop .lb-name,
+html[data-ui="glass"].is-mobile.is-landscape.is-compact body.page-shop .skin-card-name { font-size: 13.5px; }
+html[data-ui="glass"].is-mobile.is-landscape.is-compact body.page-shop .lb-btn { font-size: 12px; }
+html[data-ui="glass"].is-mobile.is-landscape.is-compact body.page-shop .skin-card-buy { height: 28px; font-size: 11.5px; }
+
+/* "No crystals match" */
+html[data-ui="glass"] body.page-shop .lb-empty {
+  position: relative;
+  background: var(--g-glass);
+  -webkit-backdrop-filter: var(--g-blur); backdrop-filter: var(--g-blur);
+  border: 0; border-radius: var(--g-radius);
+  box-shadow: inset 0 0 0 1px var(--g-line);
+  font-family: var(--g-sans);
+}
+html[data-ui="glass"] body.page-shop .lb-empty::before {
+  content: ''; position: absolute; left: 14px; top: 0; width: 22px; height: 2px; border-radius: 2px; background: var(--g-accent);
+}
+html[data-ui="glass"] body.page-shop .lb-empty-title {
+  font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--g-text);
+}
+html[data-ui="glass"] body.page-shop .lb-empty-sub { color: var(--g-dim); }
+
+/* ── Recipe picker ("Chosen Recipe") ────────────────────────────────── */
+html[data-ui="glass"] .rc-picker { background: rgba(2, 4, 6, 0.62); }
+html[data-ui="glass"] .rc-picker-panel {
+  position: relative;
+  background: var(--g-glass-2);
+  -webkit-backdrop-filter: var(--g-blur); backdrop-filter: var(--g-blur);
+  border: 0; border-radius: var(--g-radius);
+  box-shadow: inset 0 0 0 1px var(--g-line), 0 24px 60px rgba(0, 0, 0, 0.6);
+  font-family: var(--g-sans);
+}
+html[data-ui="glass"] .rc-picker-panel::before {
+  content: ''; position: absolute; left: 16px; top: 0; width: 34px; height: 3px; border-radius: 2px; background: var(--g-accent);
+}
+html[data-ui="glass"] .rc-picker-head { border-bottom: 1px solid var(--g-line); }
+html[data-ui="glass"] .rc-picker-head h2 { font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.08em; font-size: 18px; color: var(--g-text); }
+html[data-ui="glass"] .rc-picker-bal { font-family: var(--g-cond); letter-spacing: 0.06em; color: var(--g-dim); }
+html[data-ui="glass"] .rc-picker-bal b { color: var(--g-text); font-weight: 500; }
+html[data-ui="glass"] .rc-picker-close {
+  border: 0; border-radius: 50%; background: var(--g-glass-2);
+  box-shadow: inset 0 0 0 1px var(--g-line-2); color: var(--g-text);
+}
+html[data-ui="glass"] .rc-picker-note { color: var(--g-dim); }
+
+/* ── Purchase confirm / "Obtained" dialogs (.sp-*) ──────────────────── */
+html[data-ui="glass"] .sp-modal { background: rgba(2, 4, 6, 0.62); }
+html[data-ui="glass"] body.page-shop .sp-dialog .modal-title { color: var(--g-text); }
+html[data-ui="glass"] body.page-shop .sp-icon {
+  border: 0; border-radius: var(--g-radius-sm);
+  background: rgba(0, 0, 0, 0.3); box-shadow: inset 0 0 0 1px var(--g-line-2);
+}
+html[data-ui="glass"] body.page-shop .sp-icon img { width: 88%; height: 88%; }
+html[data-ui="glass"] body.page-shop .sp-name {
+  font-family: var(--g-cond); font-weight: 500; font-size: 19px; letter-spacing: 0.03em; color: var(--g-text);
+}
+html[data-ui="glass"] body.page-shop .sp-reward .sp-name small {
+  margin-top: 2px; font-family: var(--g-cond); font-size: 14px; font-weight: 500; letter-spacing: 0.06em; color: var(--g-accent);
+}
+html[data-ui="glass"] body.page-shop .sp-desc { font-family: var(--g-sans); color: var(--g-dim); }
+html[data-ui="glass"] body.page-shop .sp-row { border-top: 1px solid var(--g-line); }
+html[data-ui="glass"] body.page-shop .sp-qty .qty-btn,
+html[data-ui="glass"] body.page-shop .sp-qty #qty-input {
+  border: 0; border-radius: 0;
+  background: rgba(10, 13, 17, 0.72); box-shadow: inset 0 0 0 1px var(--g-line-2);
+  font-family: var(--g-cond); font-weight: 500; color: var(--g-text);
+}
+html[data-ui="glass"] body.page-shop .sp-qty .qty-btn:first-child { border-radius: var(--g-pill) 0 0 var(--g-pill); }
+html[data-ui="glass"] body.page-shop .sp-qty .qty-btn:last-child { border-radius: 0 var(--g-pill) var(--g-pill) 0; }
+html[data-ui="glass"] body.page-shop .sp-qty .qty-btn:hover { background: var(--g-sel); color: var(--g-on-sel); box-shadow: none; }
+html[data-ui="glass"] body.page-shop .sp-qty #qty-input { box-shadow: inset 0 1px 0 var(--g-line-2), inset 0 -1px 0 var(--g-line-2); }
+html[data-ui="glass"] body.page-shop .sp-cost,
+html[data-ui="glass"] body.page-shop #purchase-total-cost,
+html[data-ui="glass"] body.page-shop .sp-cost span {
+  font-family: var(--g-cond); font-weight: 500; font-size: 20px; letter-spacing: 0.03em; color: var(--g-text);
+}
+html[data-ui="glass"] body.page-shop .sp-count {
+  font-family: var(--g-cond); font-weight: 500; right: 4px; bottom: 2px;
+}
