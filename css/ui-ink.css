@@ -228,3 +228,90 @@ html[data-skin="ink"][data-ui="glass"]:not(._g):not(._l):not(._s) body .tkt .tkt
 html[data-skin="ink"][data-ui="glass"]:not(._g):not(._l):not(._s) body .tkt .tkt-stub { padding-left: 10px !important; }
 html[data-skin="ink"][data-ui="glass"]:not(._g):not(._l):not(._s) body .summon-info-btn,
 html[data-skin="ink"][data-ui="glass"]:not(._g):not(._l):not(._s) body .summon-info-btn.x { font-size: 10px !important; padding: 0 6px !important; letter-spacing: 0.02em !important; }
+
+/* ══ Ink pages: shared frame ═══════════════════════════════════════════
+   The bottom nav becomes the reference's left rail on every page. Pages
+   reserve its width through --ink-rail-w (left offset) and get the full
+   height back (--m-dock-h / --dock-h are 0). Per-page layout lives in
+   css/ink/<page>.css. */
+html[data-skin="ink"] { --ink-rail-w: 196px; --m-dock-h: 0px; --dock-h: 0px; --dock-safe-b: 0px; --nav-reserve: 8px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact { --ink-rail-w: calc(104px + var(--safe-l, 0px)); --m-dock-h: 0px; --dock-h: 0px; }
+
+/* Page backdrop: the ink wash plate, very dark, behind everything */
+html[data-skin="ink"] body { background: #0a0a0b !important; }
+html[data-skin="ink"] body::before {
+  content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(10, 10, 11, 0.96) 0, rgba(10, 10, 11, 0.86) 45%, rgba(10, 10, 11, 0.7)),
+    url('../assets/ui/ink/bg.webp') 70% 40% / cover no-repeat;
+}
+
+/* Rail */
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body .bottom-bar {
+  left: 0 !important; top: 0 !important; bottom: 0 !important; right: auto !important;
+  width: var(--ink-rail-w) !important; height: auto !important;
+  padding: max(14px, var(--safe-t, 0px)) 0 14px var(--safe-l, 0px) !important;
+  align-items: stretch !important; justify-content: flex-start !important; flex-direction: column !important;
+  background: linear-gradient(90deg, rgba(8, 8, 9, 0.97), rgba(8, 8, 9, 0.88)) !important;
+  box-shadow: inset -1px 0 0 var(--g-line) !important;
+  -webkit-backdrop-filter: none !important; backdrop-filter: none !important;
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body .bottom-bar::before {
+  content: 'Naruto  Blazing' !important; display: block !important; position: static !important;
+  padding: 4px 18px 16px 58px; min-height: 30px; box-sizing: border-box;
+  font-family: 'Cinzel', serif; font-size: 9.5px; letter-spacing: 0.4em; text-transform: uppercase; line-height: 1.5; color: var(--g-dim);
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48' fill='none' stroke='%23f1ebdc' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M24 6c-9 0-16 7-16 16 0 6 4 11 9 13M24 6c6 0 11 4 12 10M36 16c-5-3-12-1-14 4s1 10 6 10 8-5 5-9'/%3E%3Cpath d='M17 35l-6 7h24'/%3E%3C/svg%3E") 18px 2px / 30px 30px no-repeat;
+  width: auto !important; height: auto !important; border: 0 !important; transform: none !important;
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body .bottom-bar .bottom-bar-content {
+  flex-direction: column !important; align-items: stretch !important; justify-content: flex-start !important;
+  width: 100% !important; height: auto !important; max-width: none !important; margin: 0 !important; gap: 2px !important;
+  background: none !important; border: 0 !important; border-radius: 0 !important; box-shadow: none !important;
+  overflow-y: auto !important; overflow-x: hidden !important;
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body .bottom-bar .hud-button {
+  flex: 0 0 auto !important; flex-direction: row !important; justify-content: flex-start !important; align-items: center !important;
+  gap: 14px !important; height: 40px !important; padding: 0 12px 0 24px !important; margin: 0 !important;
+  border-radius: 0 !important; background: none !important; box-shadow: none !important;
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body .bottom-bar .hud-button::before { display: none !important; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body .bottom-bar .hud-button img {
+  width: 18px !important; height: 18px !important; filter: grayscale(1) brightness(1.6) sepia(0.25) !important; opacity: 0.8;
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body .bottom-bar .hud-button::after {
+  font-family: var(--g-sans) !important; font-size: 13px !important; font-weight: 500 !important;
+  letter-spacing: 0.04em !important; text-transform: none !important; color: var(--g-dim) !important;
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body .bottom-bar .hud-button:hover::after { color: var(--g-text) !important; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body .bottom-bar .hud-button.active {
+  border-radius: 0 !important; margin: 0 !important;
+  background: linear-gradient(90deg, rgba(201, 162, 78, 0.38), rgba(201, 162, 78, 0.06) 80%, transparent) !important;
+  box-shadow: inset 2px 0 0 var(--g-accent), inset 0 1px 0 rgba(226, 204, 150, 0.32), inset 0 -1px 0 rgba(226, 204, 150, 0.32) !important;
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body .bottom-bar .hud-button.active::after { color: #fff6dc !important; font-weight: 600 !important; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body .bottom-bar .hud-button.active img { filter: sepia(0.6) brightness(1.5) !important; opacity: 1; }
+/* phone: compact rail */
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body .bottom-bar::before {
+  padding: 2px 8px 8px 40px; min-height: 24px; font-size: 6.5px; letter-spacing: 0.3em; background-size: 22px 22px; background-position: 12px 0;
+}
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body .bottom-bar { padding-top: 8px !important; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body .bottom-bar .hud-button {
+  height: 34px !important; gap: 9px !important; padding: 0 6px 0 calc(14px + var(--safe-l, 0px)) !important;
+}
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body .bottom-bar .hud-button img { width: 15px !important; height: 15px !important; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body .bottom-bar .hud-button::after { font-size: 11px !important; }
+
+/* Page header sits to the right of the rail; serif title, no ink plate */
+html[data-skin="ink"]:not(._g):not(._l):not(._s) .jjk-page-header { left: calc(var(--ink-rail-w) + 18px) !important; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s) .jjk-page-header .jjk-icon-btn { display: none !important; }
+html[data-skin="ink"] .jjk-page-header .jjk-title-plate,
+html[data-skin="ink"] .jjk-title-plate {
+  font-family: var(--ink-jp); font-weight: 600; font-size: 26px; letter-spacing: 0.16em; text-transform: none; padding-left: 0;
+}
+html[data-skin="ink"] .jjk-title-plate::before { display: none; }
+html[data-skin="ink"] .jjk-title-plate::after {
+  content: attr(data-ink-sub); display: block; margin-top: 4px;
+  font-family: var(--ink-cinzel); font-size: 9px; font-weight: 400; letter-spacing: 0.34em; text-transform: uppercase; color: var(--g-dim);
+}
+html[data-skin="ink"].is-mobile.is-landscape.is-compact .jjk-page-header .jjk-title-plate { font-size: 18px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact .jjk-title-plate::after { font-size: 7px; margin-top: 2px; }
