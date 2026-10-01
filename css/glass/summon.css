@@ -490,6 +490,9 @@ html[data-ui="glass"]:not(._g):not(._l):not(._s) .summon-modal .sr-summary span 
 }
 html[data-ui="glass"]:not(._g):not(._l):not(._s) .summon-modal .sr-summary b { font-family: var(--g-cond); font-weight: 500; color: var(--g-text); }
 html[data-ui="glass"]:not(._g):not(._l):not(._s) .summon-modal .sr-summary .is-featured { color: var(--g-accent); box-shadow: inset 0 0 0 1px rgba(212, 168, 74, 0.5); }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .summon-modal.sr-revealed .result-grid:not(.single) {
+  border-radius: var(--g-radius-sm); background: rgba(0, 0, 0, 0.28); box-shadow: inset 0 0 0 1px var(--g-line);
+}
 /* cards keep their rarity bezel; the face goes neutral */
 html[data-ui="glass"]:not(._g):not(._l):not(._s) .summon-modal .result-card { --face: linear-gradient(180deg, #1a2026 0%, #0f1317 62%, #0a0d10 100%); border-radius: var(--g-radius-sm); }
 html[data-ui="glass"]:not(._g):not(._l):not(._s) .summon-modal .result-card-info { border-top-color: var(--g-line); }

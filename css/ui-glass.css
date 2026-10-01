@@ -346,7 +346,7 @@ html[data-ui="glass"] .modal-container {
   font-family: var(--g-sans); padding-top: 62px;
 }
 html[data-ui="glass"] .modal-container::before {
-  content: ''; position: absolute; inset: auto; left: 0; top: 0; width: 34px; height: 3px;
+  content: ''; position: absolute; inset: auto; left: 18px; top: 0; width: 34px; height: 3px; border-radius: 0 0 3px 3px;
   background: var(--g-accent); z-index: 2;
 }
 html[data-ui="glass"] .modal-header { left: 24px; top: 20px; }
