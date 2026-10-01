@@ -7,9 +7,6 @@
    I! = html[data-skin="ink"]:not(._g):not(._l):not(._s). */
 
 html[data-skin="ink"] body.page-teams #team-bg { background: none; filter: none; }
-html[data-skin="ink"] body.page-teams .jjk-page-header .jjk-title-plate {
-  flex-direction: column; align-items: flex-start; justify-content: center; min-height: 0;
-}
 
 /* ── Frame ───────────────────────────────────────────────────────── */
 html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-teams .team-content {

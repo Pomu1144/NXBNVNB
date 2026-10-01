@@ -17,9 +17,6 @@ html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-tools .mg-app {
   left: calc(var(--ink-rail-w) + 22px); right: max(22px, var(--safe-r, 0px));
 }
 html[data-skin="ink"] body.page-tools { background: #0a0a0b; }
-html[data-skin="ink"] body.page-tools .jjk-page-header .jjk-title-plate {
-  flex-direction: column; align-items: flex-start; justify-content: center; min-height: 0;
-}
 
 /* ── View switch: serif tabs, the open one gets the rail's gold bar ──── */
 html[data-skin="ink"] body.page-tools .tl-views { gap: 2px; right: max(22px, var(--safe-r, 0px)); top: 18px; }
@@ -114,7 +111,8 @@ html[data-skin="ink"] body.page-tools .tl-art { object-fit: cover; object-positi
   mask-image: linear-gradient(90deg, transparent, #000 16%, #000 84%, transparent), linear-gradient(180deg, transparent, #000 8%);
   mask-composite: intersect;
 }
-html[data-skin="ink"] body.page-tools .tl-ident { max-width: calc(100% - 104px); }
+html[data-skin="ink"] body.page-tools .tl-ident { max-width: calc(100% - 28px); }
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-tools .tl-level { top: auto !important; bottom: 14px !important; right: 14px; }
 html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-tools .tl-name { font-size: 22px; }
 html[data-skin="ink"] body.page-tools .tl-name { font-family: var(--ink-jp); font-weight: 600; letter-spacing: 0.08em; color: #fff7e2; text-shadow: 0 2px 12px #000; }
 html[data-skin="ink"] body.page-tools .tl-version {
@@ -286,7 +284,8 @@ html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compa
 html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-tools .tl-view::before { font-size: 12.5px; }
 html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-tools .tl-panel-title { font-size: 8px; letter-spacing: 0.28em; }
 html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-tools .tl-panel-head { margin-bottom: 4px; }
-html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-tools .tl-ident { max-width: calc(100% - 76px); }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-tools .tl-ident { max-width: calc(100% - 16px); }
+html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compact body.page-tools .tl-level { bottom: 8px !important; right: 6px; }
 html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compact body.page-tools .tl-name { font-size: 15px; }
 html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-tools .tl-version { font-size: 7px; letter-spacing: 0.22em; }
 html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-tools .tl-modal-head h2 { font-size: 16px; }

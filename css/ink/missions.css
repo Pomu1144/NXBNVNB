@@ -100,7 +100,7 @@ html[data-skin="ink"] body.page-missions .mission-page-container::after { displa
 html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-missions .jjk-page-header {
   left: calc(var(--ink-rail-w) + 28px) !important; top: max(18px, var(--safe-t, 0px));
 }
-html[data-skin="ink"] body.page-missions .jjk-page-header .jjk-title-plate { display: block; min-width: 0; min-height: 0; padding: 0; text-shadow: none; }
+html[data-skin="ink"] body.page-missions .jjk-page-header .jjk-title-plate { min-width: 0; min-height: 0; padding: 0; text-shadow: none; }
 html[data-skin="ink"] body.page-missions .jjk-title-plate::after { max-width: var(--ink-col); white-space: normal; line-height: 1.6; }
 
 /* ── Categories: a quiet serif list ─────────────────────────────────── */
