@@ -251,8 +251,29 @@ html[data-skin="ink"] body.page-characters .growth-buttons:has(#btn-limitbreak:n
   background: rgba(9, 9, 10, 0.55); color: var(--g-text); box-shadow: inset 0 0 0 1px var(--g-line-2); font-style: normal; font-weight: 500;
 }
 html[data-skin="ink"] body.page-characters .growth-btn:disabled { background: transparent; color: var(--g-faint); box-shadow: inset 0 0 0 1px var(--g-line); }
-html[data-skin="ink"] body.page-characters .limitbreak-info { border-radius: 0; background: linear-gradient(90deg, rgba(217, 96, 79, 0.1), transparent 70%); box-shadow: inset 2px 0 0 var(--g-red); }
-html[data-skin="ink"] body.page-characters .lb-level { font-family: var(--ink-cinzel); letter-spacing: 0.22em; }
+/* Limit break: one quiet hairline row (caption, serif count, dim note) */
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-characters .limitbreak-info:not([style*="none"]) {
+  display: flex !important; align-items: baseline; flex-wrap: wrap; gap: 4px 14px;
+  margin: 2px 0 0; padding: 7px 2px !important; border: 0; border-radius: 0; background: none;
+  box-shadow: inset 0 -1px 0 var(--g-line), inset 0 1px 0 var(--g-line);
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-characters .lb-level {
+  display: inline-flex; align-items: baseline; gap: 2px; margin: 0;
+  font-size: 0; color: var(--g-text); letter-spacing: 0;
+}
+html[data-skin="ink"] body.page-characters .lb-level::before {
+  content: '限界突破  ·  LIMIT BREAK'; white-space: pre; margin-right: 10px;
+  font-family: var(--ink-cinzel); font-size: 9.5px; font-weight: 600; letter-spacing: 0.26em; color: var(--g-accent);
+}
+html[data-skin="ink"] body.page-characters .lb-level span { font-family: var(--ink-jp); font-weight: 600; font-size: 15px; color: #fff7e2; }
+html[data-skin="ink"] body.page-characters .lb-level #lb-current::after { content: ' /'; margin-right: 3px; color: var(--g-faint); font-weight: 400; }
+html[data-skin="ink"] body.page-characters .lb-level #lb-max { font-size: 12px; font-weight: 400; color: var(--g-dim); }
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-characters .lb-bonus {
+  margin-left: auto; font-family: var(--g-sans); font-style: italic; font-size: 11.5px; letter-spacing: 0.02em; color: var(--g-dim);
+}
+html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-characters .lb-level::before { font-size: 8px; letter-spacing: 0.2em; margin-right: 8px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-characters .lb-level span { font-size: 13px; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compact body.page-characters .lb-bonus { font-size: 10px; }
 html[data-skin="ink"] body.page-characters .material-amount,
 html[data-skin="ink"] body.page-characters .material-amount b { font-family: var(--ink-jp); }
 
