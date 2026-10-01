@@ -292,7 +292,7 @@ html[data-skin="ink"]:not(._g):not(._l):not(._s) body .bottom-bar .hud-button.ac
 html[data-skin="ink"]:not(._g):not(._l):not(._s) body .bottom-bar .hud-button.active img { filter: sepia(0.6) brightness(1.5) !important; opacity: 1; }
 /* phone: compact rail */
 html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body .bottom-bar::before {
-  padding: 2px 8px 8px 40px; min-height: 24px; font-size: 6.5px; letter-spacing: 0.3em; background-size: 22px 22px; background-position: 12px 0;
+  padding: 2px 8px 8px 40px; min-height: 24px; font-size: 8px; letter-spacing: 0.22em; background-size: 22px 22px; background-position: 12px 0;
 }
 html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body .bottom-bar { padding-top: 8px !important; }
 html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body .bottom-bar .hud-button {
