@@ -296,3 +296,4 @@ html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-tools .mg-act.
 html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-tools .mg-actions { grid-template-columns: 1fr 1fr 1fr 1.7fr; gap: 4px; }
 html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compact body.page-tools .mg-tab.jjk-tab { font-size: 10.5px; padding: 0 4px; height: 26px; }
 html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compact body.page-tools .mg-stype.jjk-tab { font-size: 11px; }
+html[data-skin="ink"] body.page-tools .mg-act.jjk-btn { letter-spacing: 0.02em; padding: 0 6px; }
