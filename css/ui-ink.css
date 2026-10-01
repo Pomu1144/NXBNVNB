@@ -307,6 +307,7 @@ html[data-skin="ink"]:not(._g):not(._l):not(._s) .jjk-page-header .jjk-icon-btn 
 html[data-skin="ink"] .jjk-page-header .jjk-title-plate,
 html[data-skin="ink"] .jjk-title-plate {
   font-family: var(--ink-jp); font-weight: 600; font-size: 26px; letter-spacing: 0.16em; text-transform: none; padding-left: 0;
+  flex-direction: column; align-items: flex-start;
 }
 html[data-skin="ink"] .jjk-title-plate::before { display: none; }
 html[data-skin="ink"] .jjk-title-plate::after {
