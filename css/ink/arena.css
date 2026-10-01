@@ -266,12 +266,20 @@ html[data-skin="ink"] .aos-bounty { font-family: var(--ink-cinzel); }
 
 /* ══ Desktop (arena.css zooms the lobby blocks ×1.4 here) ═════════ */
 @media (min-width: 1100px) and (min-height: 620px) {
-  html[data-skin="ink"] { --wb-gx-l: calc(var(--ink-rail-w) + 40px); --wb-col: 460px; }
+  html[data-skin="ink"] { --wb-gx-l: calc(var(--ink-rail-w) + 40px); --wb-col: 540px; }
   html[data-skin="ink"] .wb-head > * { zoom: 1; }
   html[data-skin="ink"] .wb-head { top: 22px; }
-  html[data-skin="ink"] .wb-panel { right: 44px; }
-  html[data-skin="ink"] .wb-cta { right: 44px; bottom: 44px; }
-  html[data-skin="ink"] .wb-cta::after { width: 290px; bottom: -24px; font-size: 8px; }
+  html[data-skin="ink"] .wb-panel { right: 44px; top: 40px; transform: none; }
+  html[data-skin="ink"] .wb-cta > * { zoom: 1; }
+  html[data-skin="ink"] .wb-cta { right: 44px; bottom: 50px; gap: 18px; }
+  html[data-skin="ink"] .wb-chip { height: 56px; padding: 0 20px; gap: 10px; font-size: 15px; }
+  html[data-skin="ink"] .wb-chip svg { width: 18px; height: 18px; }
+  html[data-skin="ink"] .wb-stack svg { height: 28px; }
+  html[data-skin="ink"] #btn-battle-arena { height: 64px; width: 340px; padding: 0 20px 0 28px; }
+  html[data-skin="ink"] #btn-battle-arena .wb-start-label { font-size: 27px; }
+  html[data-skin="ink"] #btn-battle-arena::after { font-size: 20px; }
+  html[data-skin="ink"] #btn-battle-arena .wb-start-sub { font-size: 10.5px; right: 56px; }
+  html[data-skin="ink"] .wb-cta::after { width: 340px; bottom: -26px; font-size: 12px; }
   html[data-skin="ink"] .wb-vtitle { font-size: 104px; bottom: 120px; }
   html[data-skin="ink"] .wb-feature { bottom: 120px; }
   html[data-skin="ink"] .wb-trio { height: 86%; top: 12%; left: 4%; }
@@ -285,7 +293,7 @@ html[data-skin="ink"].is-mobile.is-landscape.is-compact {
 html[data-skin="ink"][data-ui]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compact .wb-head { top: max(10px, var(--safe-t, 0px)); }
 html[data-skin="ink"].is-mobile.is-landscape.is-compact .wb-head .wb-title h1 { font-size: 18px; }
 html[data-skin="ink"].is-mobile.is-landscape.is-compact .wb-head .wb-title h1::after { font-size: 7px; margin-top: 2px; }
-html[data-skin="ink"].is-mobile.is-landscape.is-compact .wb-vtitle { font-size: 34px; bottom: 74px; left: calc(var(--ink-rail-w) + 6px); }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact .wb-vtitle { font-size: 28px; bottom: 74px; left: calc(var(--ink-rail-w) + 6px); }
 html[data-skin="ink"].is-mobile.is-landscape.is-compact .wb-trio { height: 88%; top: 14%; left: 4%; }
 html[data-skin="ink"].is-mobile.is-landscape.is-compact .wb-panel { top: max(8px, var(--safe-t, 0px)); right: max(12px, var(--safe-r, 0px)); padding: 10px 14px 0; }
 html[data-skin="ink"].is-mobile.is-landscape.is-compact .wb-cta { right: max(12px, var(--safe-r, 0px)); bottom: max(20px, calc(var(--safe-b, 0px) + 16px)); gap: 10px; }
@@ -303,3 +311,9 @@ html[data-skin="ink"].is-mobile.is-landscape.is-compact .wb-sheet-title,
 html[data-skin="ink"].is-mobile.is-landscape.is-compact .aim-title { font-size: 17px; }
 html[data-skin="ink"].is-mobile.is-landscape.is-compact .wb-sheet-head .wb-icon-btn,
 html[data-skin="ink"].is-mobile.is-landscape.is-compact .aim-header .wb-icon-btn { width: 30px; height: 30px; }
+
+/* full-screen flows cover the rail: they keep the plain side margin */
+html[data-skin="ink"] .wb-screen { --wb-gx-l: max(20px, var(--safe-l, 0px)); }
+@media (min-width: 1100px) and (min-height: 620px) {
+  html[data-skin="ink"] .wb-screen { --wb-gx-l: 48px; }
+}

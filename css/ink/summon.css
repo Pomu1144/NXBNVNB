@@ -39,6 +39,7 @@ html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .sum
 html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-topbar #btn-back-to-home { display: none; }
 html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-title.jjk-title-plate {
   min-height: 0; padding: 0; font-size: 28px; line-height: 1.1; text-shadow: 0 2px 10px #000;
+  flex-direction: column; align-items: flex-start; justify-content: center;
 }
 html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-title.jjk-title-plate { padding: 0; font-size: 19px; }
 
@@ -112,7 +113,7 @@ html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gac
 /* character views: art + stats over the middle of the sheet */
 html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .featured-stage[data-view="char6"] .stage-view-char,
 html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .featured-stage[data-view="char5"] .stage-view-char {
-  left: var(--sx-list); right: 0; top: var(--sx-head); bottom: var(--sx-foot); padding: 0 var(--sx-pad); gap: 16px; z-index: 4;
+  left: var(--sx-list); right: 0; top: calc(var(--sx-head) + 80px); bottom: calc(var(--sx-foot) + 70px); padding: 0 var(--sx-pad); gap: 16px; z-index: 4;
 }
 html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage #featured-art { height: 100%; max-width: 58%; }
 html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .char-stats {
@@ -141,7 +142,7 @@ html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._
 html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .stage-tier-badge,
 html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .featured-stage[data-view="char5"] .stage-tier-badge { font-size: 8px; }
 html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .featured-stage[data-view="char6"] .stage-view-char,
-html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .featured-stage[data-view="char5"] .stage-view-char { padding: 0 8px 0 40%; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .featured-stage[data-view="char5"] .stage-view-char { top: var(--sx-head); bottom: var(--sx-foot); padding: 0 8px 0 40%; }
 
 /* view controls: ‹ ━ ━ ━ › bottom-left of the art */
 html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .stage-arrow {
@@ -193,7 +194,11 @@ html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .rc-
 html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .rc-stage .rail-heading::before { content: '巻物'; font-size: 15px; }
 html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .rc-stage .rail-heading::after { content: 'Scrolls'; }
 
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage #banner-preview-scroll { gap: 0; padding: 0; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage #banner-preview-scroll,
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .rc-stage .rc-rail {
+  gap: 0; padding: 0 0 24px;
+  -webkit-mask-image: linear-gradient(0deg, transparent 0, #000 36px); mask-image: linear-gradient(0deg, transparent 0, #000 36px);
+}
 html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage #banner-preview-scroll .preview-item {
   counter-increment: sxb;
   position: relative; display: flex; align-items: center; gap: 10px;
@@ -293,6 +298,7 @@ html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gac
 html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .pickup-ver { font-style: italic; }
 html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .pickup-stars { font-family: var(--ink-cinzel); color: var(--g-accent-2); }
 html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .rc-seal-sm { border-radius: 0; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .featured-stage:not([data-view="banner"]) ~ .draw-col .pickup { display: none; }
 
 /* step / pity line: above the slips */
 html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .step-progress {
@@ -382,7 +388,7 @@ html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) body
 html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) body .summon-page .summon-info-btn + .summon-info-btn { box-shadow: inset 1px 0 0 var(--g-line-2); }
 html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) body .summon-page .summon-info-btn:hover { background: rgba(226, 204, 150, 0.08); color: var(--g-text); }
 html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) body .summon-page .summon-info-btn,
-html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) body .summon-page .summon-info-btn.x { height: 18px; font-size: 7.5px !important; letter-spacing: 0.16em !important; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) body .summon-page .summon-info-btn.x { height: 18px; font-size: 8px !important; letter-spacing: 0.14em !important; }
 
 /* phones */
 html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .draw-col .banner-info-section,
@@ -417,7 +423,6 @@ html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .rc-
   mask-image: linear-gradient(0deg, transparent 0, #000 26%);
 }
 html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .rc-stage .rc-banner .rcb { border-radius: 0; }
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .rc-stage .rc-rail { gap: 0; padding: 0; }
 html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .rc-stage .rc-rail-item {
   aspect-ratio: auto; height: 38px; display: flex; align-items: center; padding: 0 10px 0 var(--sx-pad); box-sizing: border-box;
   border: 0; border-radius: 0; outline: 0; background: none; box-shadow: none;
@@ -439,6 +444,14 @@ html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .rc-
 html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .rc-stage .rc-rail-foot { display: grid; margin: 8px var(--sx-pad) 0; padding: 8px 0 0; border-top: 1px solid var(--g-line); font-family: var(--ink-cinzel); font-size: 8.5px; letter-spacing: 0.24em; }
 html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .rc-stage .rc-rail-foot b { font-family: var(--g-sans); font-size: 13px; letter-spacing: 0.02em; }
 html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .rc-stage .pickup { display: none; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .rc-stage .rc-banner { top: calc(var(--sx-head) * 0.4); height: calc(100% - var(--sx-head) * 0.4); }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .rc-hero .rcb-hero-name { display: none; }   /* sits in the cropped right edge; the title block names the banner */
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .rc-hero .rcb-kicker.banner-kicker {
+  padding: 0; border-radius: 0; background: none; box-shadow: inset 0 -1px 0 var(--g-line-2);
+  font-family: var(--ink-cinzel); font-weight: 400; letter-spacing: 0.34em; color: var(--g-dim);
+}
+/* the banner's mini recipe scroll moves up under its title, clear of the title block */
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .rc-hero .rcb-strip { top: 45%; bottom: auto; left: 5%; width: 30%; }
 html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .rc-stage .rc-rail-item { height: 30px; padding-right: 6px; }
 html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .rc-stage .rc-rail-label { font-size: 10.5px; }
 html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .rc-stage .rc-rail-foot { margin-top: 4px; padding-top: 4px; font-size: 6.5px; gap: 2px; }
@@ -476,8 +489,8 @@ html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jut
   position: absolute; left: var(--sx-pad); right: auto; top: calc(var(--sx-head) + 2px); bottom: auto; z-index: 5;
   max-width: 44%; align-items: flex-start; text-align: left; padding: 0; border-radius: 0; background: none;
 }
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-show-name { font-family: var(--g-sans); font-weight: 600; font-size: 18px; letter-spacing: 0.04em; text-transform: none; color: #fff6dc; text-shadow: 0 2px 10px #000; }
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-show-type { font-family: var(--ink-cinzel); font-size: 9px; letter-spacing: 0.32em; text-transform: uppercase; color: var(--g-dim); }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-show-name { font-family: var(--g-sans); font-weight: 600; font-size: 18px; letter-spacing: 0.04em; text-transform: none; color: #fff6dc; text-shadow: 0 0 2px #000, 0 2px 10px #000, 0 0 18px rgba(0, 0, 0, 0.8); }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-show-type { font-family: var(--ink-cinzel); font-size: 9px; letter-spacing: 0.32em; text-transform: uppercase; color: var(--g-text); text-shadow: 0 0 2px #000, 0 1px 6px #000; }
 html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-show-stars { color: var(--g-accent-2); letter-spacing: 0.1em; }
 html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .stage-arrow.right { left: calc(var(--sx-list) + var(--sx-pad) + 36px); right: auto; }
 html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .stage-arrow.right { left: calc(var(--sx-list) + var(--sx-pad) + 30px); }

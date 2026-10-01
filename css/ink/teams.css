@@ -1,0 +1,289 @@
+/* css/ink/teams.css — Ink style for teams.html (team tabs, formation, roster
+   picker, unit preview, pre-battle footer at teams.html?mode=prebattle).
+   Ink sits on top of Glass (css/glass/teams.css still applies). Content
+   starts right of the rail and uses the full height; the pre-battle footer
+   (which measured the bottom bar, now the full-height rail) is pinned to the
+   bottom edge right of the rail.
+   I! = html[data-skin="ink"]:not(._g):not(._l):not(._s). */
+
+html[data-skin="ink"] body.page-teams #team-bg { background: none; filter: none; }
+html[data-skin="ink"] body.page-teams .jjk-page-header .jjk-title-plate {
+  flex-direction: column; align-items: flex-start; justify-content: center; min-height: 0;
+}
+
+/* ── Frame ───────────────────────────────────────────────────────── */
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-teams .team-content {
+  max-width: none; margin: 0;
+  padding: calc(var(--jjk-header-h) - 6px) max(22px, var(--safe-r, 0px)) 24px calc(var(--ink-rail-w) + 22px) !important;
+}
+
+/* ── Team tabs: one row of serif tabs, the open one gets the gold bar ── */
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-teams .team-selector {
+  flex-direction: row; flex-wrap: nowrap; justify-content: flex-start; align-items: center;
+  gap: 14px !important; margin: 0 0 14px !important;
+  box-shadow: inset 0 -1px 0 var(--g-line);
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-teams .team-tabs-row { gap: 0 !important; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; min-width: 0; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-teams .team-tab.jjk-tab {
+  min-width: 0 !important; height: 36px !important; padding: 0 16px !important; flex: 0 0 auto;
+  border-radius: 0; background: none; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none;
+  font-family: var(--g-sans); font-weight: 500; font-size: 13px !important; letter-spacing: 0.06em; text-transform: none;
+  color: var(--g-faint);
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-teams .team-tab.jjk-tab:hover { color: var(--g-text); box-shadow: none; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-teams .team-tab.jjk-tab.active {
+  color: #fff6dc; font-weight: 600;
+  background: linear-gradient(90deg, rgba(201, 162, 78, 0.34), rgba(201, 162, 78, 0.06) 85%, transparent);
+  box-shadow: inset 2px 0 0 var(--g-accent), inset 0 1px 0 rgba(226, 204, 150, 0.3), inset 0 -1px 0 rgba(226, 204, 150, 0.3);
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-teams .btn-rename-team {
+  flex: 0 0 auto; margin: 0 0 0 auto !important; min-height: 0; height: 28px; padding: 0 12px !important;
+  border-radius: 0; background: none; box-shadow: none;
+  font-family: var(--g-sans); font-style: italic; font-weight: 500; font-size: 12px !important; letter-spacing: 0.06em; text-transform: none;
+  color: var(--g-dim);
+  display: inline-flex; align-items: center; gap: 8px;
+}
+html[data-skin="ink"] body.page-teams .btn-rename-team::after { content: ''; width: 22px; height: 1px; background: currentColor; opacity: 0.7; }
+html[data-skin="ink"] body.page-teams .btn-rename-team:hover { background: none; color: var(--g-text); }
+
+/* ── Panels: translucent charcoal, hairline, no tick ─────────────── */
+html[data-skin="ink"] body.page-teams .team-formation,
+html[data-skin="ink"] body.page-teams .char-selection {
+  border-radius: 2px;
+  background: linear-gradient(180deg, rgba(18, 17, 15, 0.66), rgba(10, 10, 11, 0.76));
+  -webkit-backdrop-filter: none; backdrop-filter: none;
+  box-shadow: inset 0 0 0 1px var(--g-line);
+}
+html[data-skin="ink"] body.page-teams .team-formation::before,
+html[data-skin="ink"] body.page-teams .char-selection::before { content: none; }
+html[data-skin="ink"] body.page-teams .formation-header { border-bottom-color: var(--g-line); align-items: baseline; }
+html[data-skin="ink"] body.page-teams .formation-header h2,
+html[data-skin="ink"] body.page-teams .selection-header h2 {
+  font-family: var(--ink-jp); font-weight: 600; font-size: 20px; letter-spacing: 0.12em; text-transform: none; color: #fff7e2;
+}
+html[data-skin="ink"] body.page-teams .formation-header h2::after {
+  content: '陣形'; margin-left: 10px; font-size: 0.62em; letter-spacing: 0.1em; color: var(--g-accent);
+}
+html[data-skin="ink"] body.page-teams .formation-header { flex-wrap: nowrap; gap: 12px; }
+html[data-skin="ink"] body.page-teams .formation-header h2 { white-space: nowrap; }
+html[data-skin="ink"] body.page-teams .team-stats span { white-space: nowrap; }
+html[data-skin="ink"] body.page-teams .team-stats { font-family: var(--ink-cinzel); font-size: 10px; letter-spacing: 0.22em; color: var(--g-faint); }
+html[data-skin="ink"] body.page-teams .team-stats strong { font-family: var(--ink-jp); font-size: 1.45em; letter-spacing: 0.04em; font-weight: 600; color: var(--g-text); }
+html[data-skin="ink"] body.page-teams .team-stats strong#total-cost { color: var(--g-accent-2); }
+
+/* section labels: Japanese word + Cinzel caption + a hairline running out */
+html[data-skin="ink"] body.page-teams .section-label {
+  display: flex; align-items: center; gap: 10px; text-align: left;
+  font-family: var(--ink-cinzel); font-weight: 600; font-size: 9.5px; letter-spacing: 0.34em; color: var(--g-accent);
+}
+html[data-skin="ink"] body.page-teams .section-label::before {
+  font-family: var(--ink-jp); font-size: 14px; font-weight: 600; letter-spacing: 0.1em; color: var(--g-text);
+}
+html[data-skin="ink"] body.page-teams .section-label::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, var(--g-line-2), transparent); }
+html[data-skin="ink"] body.page-teams .formation-section:nth-of-type(2) .section-label::before { content: '前列'; }
+html[data-skin="ink"] body.page-teams .formation-section:nth-of-type(3) .section-label::before { content: '後列'; }
+html[data-skin="ink"] body.page-teams .commander-section .section-label::before { content: '指揮'; }
+html[data-skin="ink"] body.page-teams .synergy-section .section-label::before { content: '連携'; }
+html[data-skin="ink"] body.page-teams .synergy-sub { font-family: var(--ink-cinzel); letter-spacing: 0.2em; color: var(--g-faint); }
+
+/* ── Slots: square hairline frames; empty = faint 空 seal ────────── */
+html[data-skin="ink"] body.page-teams .team-slot {
+  border-radius: 0; background: rgba(8, 8, 9, 0.4);
+  box-shadow: inset 0 0 0 1px var(--g-line);
+}
+html[data-skin="ink"] body.page-teams .team-slot:hover { box-shadow: inset 0 0 0 1px var(--g-line-2); }
+html[data-skin="ink"] body.page-teams .team-slot.active {
+  background: linear-gradient(0deg, rgba(201, 162, 78, 0.16), rgba(8, 8, 9, 0.4) 70%);
+  box-shadow: inset 0 0 0 1px var(--g-line-2), inset 0 -2px 0 var(--g-accent);
+}
+html[data-skin="ink"] body.page-teams .slot-empty {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+  font-family: var(--ink-cinzel); font-size: 9px; letter-spacing: 0.34em; color: var(--g-faint);
+}
+html[data-skin="ink"] body.page-teams .slot-empty::before {
+  content: '空'; font-family: var(--ink-jp); font-size: 22px; letter-spacing: 0; color: rgba(241, 235, 220, 0.16);
+}
+html[data-skin="ink"] body.page-teams .slot-card { border-radius: 0; }
+html[data-skin="ink"] body.page-teams .slot-card .portrait img { border-radius: 0; box-shadow: inset 0 0 0 1px var(--g-line), 0 4px 12px rgba(0, 0, 0, 0.5); }
+html[data-skin="ink"] body.page-teams .slot-card .portrait .lv-badge {
+  border-radius: 0; background: rgba(8, 8, 9, 0.8); box-shadow: inset 0 1px 0 var(--g-line-2);
+  font-family: var(--ink-cinzel); letter-spacing: 0.18em;
+}
+html[data-skin="ink"] body.page-teams .slot-card .rail { border-radius: 0; background: none; box-shadow: inset 0 1px 0 var(--g-line); }
+/* the stat rail: one column of hairline rows (two serif columns overflowed) */
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-teams .team-workspace .slot-card .rail { grid-template-columns: 1fr; gap: 0; padding: 4px 6px; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-teams .team-workspace .rail .stat {
+  display: flex; justify-content: space-between; align-items: baseline; gap: 6px; padding: 1px 0; box-shadow: inset 0 -1px 0 rgba(226, 204, 150, 0.08);
+}
+html[data-skin="ink"] body.page-teams .rail .stat .k { font-family: var(--g-sans); font-size: 8.5px; letter-spacing: 0.06em; text-transform: uppercase; white-space: nowrap; }
+html[data-skin="ink"] body.page-teams .rail .stat .v { font-family: var(--ink-jp); font-weight: 600; font-size: 10.5px; white-space: nowrap; }
+html[data-skin="ink"] body.page-teams .slot-remove { border-radius: 0; background: rgba(8, 8, 9, 0.85); }
+html[data-skin="ink"] body.page-teams .team-slot .slot-card .slot-link { border-radius: 0; }
+html[data-skin="ink"] body.page-teams .team-slot .slot-card .slot-link.is-active { background: var(--g-accent); color: var(--g-on-accent); }
+
+/* commander + synergies: hairline rows, gold bar when active */
+html[data-skin="ink"] body.page-teams .commander-section { border-top-color: var(--g-line); }
+html[data-skin="ink"] body.page-teams .commander-buffs,
+html[data-skin="ink"] body.page-teams .commander-ultimate { border-radius: 0; background: none; box-shadow: inset 0 0 0 1px var(--g-line); }
+html[data-skin="ink"] body.page-teams .commander-info h4 { font-family: var(--ink-cinzel); font-weight: 600; font-size: 10px; letter-spacing: 0.32em; color: var(--g-accent); }
+html[data-skin="ink"] body.page-teams .buff-item { border-radius: 0; background: linear-gradient(90deg, rgba(201, 162, 78, 0.14), transparent 80%); }
+html[data-skin="ink"] body.page-teams .ultimate-name { font-family: var(--ink-jp); font-weight: 600; font-size: 18px; letter-spacing: 0.1em; color: #fff7e2; }
+html[data-skin="ink"] body.page-teams .ultimate-stat-badge { border-radius: 0; background: none; font-family: var(--g-sans); }
+html[data-skin="ink"] body.page-teams .ultimate-image-container { border-radius: 0; }
+html[data-skin="ink"] body.page-teams .synergy-empty { border-radius: 0; border-color: var(--g-line); }
+html[data-skin="ink"] body.page-teams .synergy-pair { border-radius: 0; background: none; box-shadow: inset 0 -1px 0 var(--g-line); }
+html[data-skin="ink"] body.page-teams .synergy-pair.is-active {
+  background: linear-gradient(90deg, rgba(201, 162, 78, 0.22), transparent 75%);
+  box-shadow: inset 2px 0 0 var(--g-accent), inset 0 -1px 0 var(--g-line);
+}
+html[data-skin="ink"] body.page-teams .synergy-icon { border-radius: 0; }
+html[data-skin="ink"] body.page-teams .synergy-pair.is-active .synergy-icon { background: none; color: var(--g-accent-2); box-shadow: inset 0 0 0 1px var(--g-line-2); }
+html[data-skin="ink"] body.page-teams .synergy-name { font-family: var(--ink-jp); font-weight: 600; letter-spacing: 0.06em; }
+html[data-skin="ink"] body.page-teams .synergy-state { font-family: var(--ink-cinzel); letter-spacing: 0.24em; }
+html[data-skin="ink"] body.page-teams .synergy-pair.is-active .synergy-state { color: var(--g-accent-2); }
+
+/* ── Buttons: Save (or Start) = cream paper slip, the rest hairline ── */
+html[data-skin="ink"] body.page-teams .btn-darkgold,
+html[data-skin="ink"] body.page-teams .btn-dark {
+  border-radius: 0; font-family: var(--g-sans); font-weight: 500; letter-spacing: 0.06em; text-transform: none;
+}
+html[data-skin="ink"] body.page-teams .btn-darkgold,
+html[data-skin="ink"] body.page-teams .btn-darkgold:hover {
+  background: linear-gradient(180deg, #f3ead2, #e2d4ae); color: var(--g-on-accent);
+  box-shadow: inset 0 0 0 1px rgba(120, 96, 40, 0.5), 0 8px 20px rgba(0, 0, 0, 0.45);
+  font-style: italic; font-weight: 700; font-size: 15px;
+}
+html[data-skin="ink"] body.page-teams .btn-darkgold[disabled] { background: linear-gradient(180deg, #f3ead2, #e2d4ae); opacity: 0.4; box-shadow: none; }
+html[data-skin="ink"] body.page-teams .btn-dark { background: rgba(8, 8, 9, 0.5); -webkit-backdrop-filter: none; backdrop-filter: none; box-shadow: inset 0 0 0 1px var(--g-line-2); }
+html[data-skin="ink"] body.page-teams .btn-dark:hover { background: rgba(241, 235, 220, 0.06); box-shadow: inset 0 0 0 1px var(--g-accent); }
+html[data-skin="ink"] body.page-teams:has(#prebattle-footer) #btn-save-team {
+  background: rgba(8, 8, 9, 0.5); color: var(--g-text); box-shadow: inset 0 0 0 1px var(--g-line-2); font-style: normal; font-weight: 500;
+}
+
+/* ── Roster picker ───────────────────────────────────────────────── */
+html[data-skin="ink"] body.page-teams .roster-count { font-family: var(--ink-cinzel); font-size: 11px; letter-spacing: 0.2em; }
+html[data-skin="ink"] body.page-teams #char-filter {
+  border-radius: 0 !important; border: 0 !important; background: none !important;
+  box-shadow: inset 0 -1px 0 var(--g-line-2);
+}
+html[data-skin="ink"] body.page-teams #char-filter:focus { box-shadow: inset 0 -1px 0 var(--g-accent); }
+html[data-skin="ink"] body.page-teams .sort-btn {
+  border-radius: 0; background: none; box-shadow: inset 0 0 0 1px var(--g-line-2);
+  font-family: var(--g-sans); font-weight: 500; letter-spacing: 0.04em; text-transform: none;
+}
+html[data-skin="ink"] body.page-teams .sort-btn.open { background: var(--g-sel); color: var(--g-on-sel); }
+html[data-skin="ink"] body.page-teams .sort-menu {
+  border-radius: 0; background: linear-gradient(180deg, rgba(22, 21, 19, 0.98), rgba(10, 10, 11, 0.98));
+  -webkit-backdrop-filter: none; backdrop-filter: none; box-shadow: inset 0 0 0 1px var(--g-line-2), 0 18px 40px rgba(0, 0, 0, 0.6);
+}
+html[data-skin="ink"] body.page-teams .sort-menu-title { font-family: var(--ink-cinzel); letter-spacing: 0.3em; }
+html[data-skin="ink"] body.page-teams .sort-opt { border-radius: 0; font-family: var(--g-sans); letter-spacing: 0.04em; text-transform: none; }
+html[data-skin="ink"] body.page-teams .sort-opt.active {
+  background: linear-gradient(90deg, rgba(201, 162, 78, 0.34), rgba(201, 162, 78, 0.05) 85%); color: #fff6dc;
+  box-shadow: inset 2px 0 0 var(--g-accent);
+}
+html[data-skin="ink"] body.page-teams .filter-reset { border-radius: 0; }
+html[data-skin="ink"] body.page-teams .f-chip { border-radius: 0; background: none; font-family: var(--ink-jp); }
+html[data-skin="ink"] body.page-teams .f-chip[aria-pressed="true"] {
+  background: linear-gradient(0deg, rgba(201, 162, 78, 0.34), rgba(201, 162, 78, 0.06)); color: #fff6dc;
+  box-shadow: inset 0 0 0 1px var(--g-line-2), inset 0 -2px 0 var(--g-accent);
+}
+html[data-skin="ink"] body.page-teams .filter-bar { border-bottom-color: var(--g-line); }
+html[data-skin="ink"] body.page-teams .team-char-card { border-radius: 0; }
+html[data-skin="ink"] body.page-teams .team-char-card-name { font-family: var(--ink-jp); font-weight: 600; letter-spacing: 0.02em; }
+html[data-skin="ink"] body.page-teams .tcc-power { border-radius: 0; background: none; box-shadow: none; font-family: var(--ink-jp); }
+html[data-skin="ink"] body.page-teams .team-char-card.assigned::after {
+  border-radius: 0; background: rgba(8, 8, 9, 0.85); box-shadow: inset 0 0 0 1px var(--g-line-2);
+  font-family: var(--ink-cinzel); font-weight: 600; letter-spacing: 0.2em; color: var(--g-accent-2);
+}
+html[data-skin="ink"] body.page-teams .drag-hint { font-style: italic; }
+html[data-skin="ink"] .team-slot.drag-over::after,
+html[data-skin="ink"] .remove-drop-badge,
+html[data-skin="ink"] #team-toast { border-radius: 0; font-family: var(--g-sans); text-transform: none; letter-spacing: 0.04em; }
+html[data-skin="ink"] .team-slot.drag-over::after { background: linear-gradient(180deg, #f3ead2, #e2d4ae); }
+html[data-skin="ink"] .drag-ghost { border-radius: 0; box-shadow: 0 0 0 1px var(--g-accent), 0 12px 28px rgba(0, 0, 0, 0.7); }
+
+/* ── Unit preview: a small dossier (art left, record right) ──────── */
+html[data-skin="ink"] #char-preview-modal { background: rgba(7, 7, 8, 0.82); }
+html[data-skin="ink"] .preview-panel {
+  border-radius: 0; overflow: hidden;
+  background: linear-gradient(90deg, rgba(10, 10, 11, 0.2), rgba(14, 13, 12, 0.98) 46%);
+  -webkit-backdrop-filter: none; backdrop-filter: none;
+  box-shadow: inset 0 0 0 1px var(--g-line-2), 0 30px 70px rgba(0, 0, 0, 0.7);
+}
+html[data-skin="ink"] #preview-img {
+  border-radius: 0;
+  -webkit-mask-image: linear-gradient(90deg, #000 70%, transparent); mask-image: linear-gradient(90deg, #000 70%, transparent);
+}
+html[data-skin="ink"] .preview-close { border-radius: 0; background: rgba(8, 8, 9, 0.6); }
+html[data-skin="ink"] .preview-info h3 {
+  font-family: var(--ink-jp); font-weight: 600; font-size: 24px; letter-spacing: 0.08em; text-transform: none; color: #fff7e2;
+}
+html[data-skin="ink"] .preview-info p#preview-version {
+  font-family: var(--ink-cinzel); font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--g-dim);
+}
+html[data-skin="ink"] .preview-stat { border-radius: 0; background: none; box-shadow: inset 0 -1px 0 var(--g-line); }
+html[data-skin="ink"] .preview-stat-label { font-family: var(--ink-cinzel); font-size: 10px; letter-spacing: 0.22em; }
+html[data-skin="ink"] .preview-stat-value { font-family: var(--ink-jp); font-weight: 600; font-size: 16px; }
+
+/* ── Pre-battle footer: bottom edge, right of the rail ───────────── */
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-teams #prebattle-footer {
+  left: var(--ink-rail-w) !important; right: 0 !important; bottom: 0 !important;
+  justify-content: flex-end; gap: 18px;
+  padding: 10px max(22px, var(--safe-r, 0px)) max(10px, var(--safe-b, 0px)) 22px !important;
+  background: linear-gradient(0deg, rgba(8, 8, 9, 0.97), rgba(8, 8, 9, 0.86));
+  -webkit-backdrop-filter: none; backdrop-filter: none;
+  box-shadow: inset 0 1px 0 var(--g-line-2);
+}
+html[data-skin="ink"] body.page-teams #prebattle-footer .ctx {
+  font-family: var(--ink-cinzel); font-weight: 600; font-size: 11px; letter-spacing: 0.26em; color: var(--g-dim);
+}
+html[data-skin="ink"] body.page-teams #prebattle-footer .ctx::before {
+  content: '出陣'; margin-right: 12px; font-family: var(--ink-jp); font-size: 17px; letter-spacing: 0.12em; color: #fff7e2;
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-teams #btn-start-battle {
+  min-width: 230px; height: 42px; padding: 0 18px 0 22px;
+  display: inline-flex; align-items: center; justify-content: space-between; gap: 14px;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 9px 100%, 0 calc(100% - 9px));
+  font-family: 'Cinzel', serif; font-size: 16px;
+}
+html[data-skin="ink"] body.page-teams #btn-start-battle::after { content: '—  →'; font-style: normal; font-weight: 400; letter-spacing: 0; opacity: 0.8; }
+/* keep the end of the page clear of the footer */
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-teams:has(#prebattle-footer) { padding-bottom: 0 !important; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-teams:has(#prebattle-footer) .team-content { padding-bottom: 86px !important; }
+
+/* ── Phone landscape ──────────────────────────────────────────────── */
+html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compact body.page-teams .team-content {
+  padding: calc(var(--jjk-header-h) - 8px) max(10px, var(--safe-r, 0px)) 12px calc(var(--ink-rail-w) + 10px) !important;
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compact body.page-teams .team-selector { margin-bottom: 8px !important; gap: 6px !important; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compact body.page-teams .team-tab.jjk-tab {
+  height: 26px !important; padding: 0 9px !important; font-size: 11px !important;
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compact body.page-teams .btn-rename-team { height: 24px; padding: 0 4px !important; font-size: 10.5px !important; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-teams .btn-rename-team::after { width: 14px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-teams .formation-header h2 { font-size: 15px; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compact body.page-teams .team-stats { font-size: 7px !important; letter-spacing: 0.12em; gap: 8px !important; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-teams .team-stats strong { font-size: 1.6em; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-teams .formation-header h2::after { margin-left: 6px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-teams .f-chip { padding: 0 3px; min-width: 24px; font-size: 10.5px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-teams .section-label { font-size: 7.5px; letter-spacing: 0.28em; gap: 7px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-teams .section-label::before { font-size: 11.5px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-teams .slot-empty { font-size: 7px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-teams .slot-empty::before { font-size: 16px; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compact body.page-teams .char-selection {
+  height: calc(var(--app-vh, 100vh) - 8px);
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compact body.page-teams:has(#prebattle-footer) .char-selection {
+  height: calc(var(--app-vh, 100vh) - 62px);
+}
+html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-teams .btn-darkgold { font-size: 13px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact .preview-info h3 { font-size: 18px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact .preview-info p#preview-version { font-size: 8px; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compact body.page-teams #prebattle-footer {
+  padding: 6px max(10px, var(--safe-r, 0px)) max(6px, var(--safe-b, 0px)) 14px !important; gap: 12px;
+}
+html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-teams #prebattle-footer .ctx { font-size: 8.5px; letter-spacing: 0.2em; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-teams #prebattle-footer .ctx::before { font-size: 13px; margin-right: 8px; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compact body.page-teams #btn-start-battle { min-width: 180px; height: 34px; font-size: 13px; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compact body.page-teams:has(#prebattle-footer) .team-content { padding-bottom: 60px !important; }

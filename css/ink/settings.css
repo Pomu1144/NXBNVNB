@@ -1,0 +1,274 @@
+/* css/ink/settings.css — Ink style for settings.html (Audio / Display /
+   Account / Data). Loaded after css/ui-ink.css; every rule is scoped to
+   html[data-skin="ink"], so Classic and Glass are untouched. Ink inherits
+   css/glass/settings.css and re-skins it: the panel opens up right of the
+   left rail, section tabs become a vertical index (gold bar + wash on the
+   open one, like the rail), rows are hairline-ruled, and the Interface Style
+   picker is three large swatch cards so switching style stays obvious.
+   On wide screens Minato's cut-out bleeds in from the right edge. */
+
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-settings {
+  --ink-gx: calc(var(--ink-rail-w) + 18px);
+  --ink-gr: max(24px, var(--safe-r, 0px));
+  --ink-top: 92px;
+  --ink-bot: 22px;
+}
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-settings {
+  --ink-gr: max(12px, var(--safe-r, 0px));
+  --ink-top: calc(50px + var(--safe-t, 0px));
+  --ink-bot: max(8px, var(--safe-b, 0px));
+}
+/* Backdrop: the ink wash (the chosen village art stays on the village) */
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-settings #full-bg {
+  overflow: hidden;
+  background:
+    linear-gradient(90deg, rgba(10, 10, 11, 0.97) 0, rgba(10, 10, 11, 0.88) 46%, rgba(10, 10, 11, 0.6)),
+    url('../../assets/ui/ink/bg.webp') 72% 40% / cover no-repeat,
+    #0a0a0b !important;
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-settings #full-bg::after {
+  content: ''; position: absolute; inset: auto 0 0 auto; width: min(60vw, 740px); height: 116%;
+  background: url('../../assets/ui/ink/echo.webp') right top / contain no-repeat;
+  mix-blend-mode: screen; opacity: 0.13; pointer-events: none;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 50%);
+  mask-image: linear-gradient(90deg, transparent, #000 50%);
+}
+/* wide screens: the hero cut-out takes the right edge, the panel stops short of it */
+@media (min-width: 1100px) {
+  html[data-skin="ink"]:not(._g):not(._l):not(._s):not(.is-compact) body.page-settings { --ink-gr: clamp(260px, 24vw, 420px); }
+  html[data-skin="ink"]:not(._g):not(._l):not(._s):not(.is-compact) body.page-settings #full-bg::after {
+    right: -6%; bottom: 0; width: auto; height: 100%; aspect-ratio: 1153 / 1400;
+    background: url('../../assets/ui/ink/hero.webp') right bottom / contain no-repeat;
+    mix-blend-mode: normal; opacity: 0.9;
+    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 35%), linear-gradient(0deg, transparent 0, #000 22%);
+    -webkit-mask-composite: source-in; mask-composite: intersect;
+    mask-image: linear-gradient(90deg, transparent 0, #000 35%), linear-gradient(0deg, transparent 0, #000 22%);
+  }
+}
+
+/* Header: Japanese title over the Cinzel caption */
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-settings .jjk-page-header { top: 18px; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-settings .jjk-page-header .jjk-title-plate {
+  display: inline-flex; flex-direction: column; align-items: flex-start; justify-content: center;
+  min-width: 0; min-height: 0; padding: 0; line-height: 1.15;
+}
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-settings .jjk-page-header { top: calc(8px + var(--safe-t, 0px)); }
+
+/* ── Panel: no frame, an index column + a ruled well ────────────────── */
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-settings .settings-panel {
+  top: var(--ink-top); bottom: var(--ink-bot); left: var(--ink-gx); right: var(--ink-gr);
+  width: auto; transform: none; flex-direction: row; gap: 0; padding: 0;
+  background: none; border: 0; border-radius: 0; box-shadow: none;
+  -webkit-backdrop-filter: none; backdrop-filter: none;
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-settings .settings-panel::before { display: none !important; }
+
+/* Section index (vertical tabs) */
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-settings .settings-tabs {
+  flex: none; flex-direction: column; flex-wrap: nowrap; justify-content: flex-start;
+  width: 176px; margin: 0; gap: 2px; padding: 6px 0; overflow-y: auto;
+  box-shadow: inset -1px 0 0 var(--g-line);
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-settings .settings-tabs .jjk-tab {
+  position: relative; flex: none; width: 100%; min-width: 0; height: 44px; padding: 0 16px 0 20px;
+  display: flex; align-items: center; justify-content: space-between;
+  background: none; border-radius: 0; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none;
+  font: 500 14px var(--g-sans); letter-spacing: 0.06em; text-transform: none; color: var(--g-dim);
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-settings .settings-tabs .jjk-tab::after {
+  font: 400 13px var(--ink-jp); letter-spacing: 0; color: var(--g-faint);
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-settings .settings-tabs [data-tab="audio"]::after { content: '音'; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-settings .settings-tabs [data-tab="display"]::after { content: '画'; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-settings .settings-tabs [data-tab="account"]::after { content: '名'; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-settings .settings-tabs [data-tab="data"]::after { content: '録'; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-settings .settings-tabs [data-tab="dev"]::after { content: '工'; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-settings .settings-tabs .jjk-tab:hover { color: var(--g-text); }
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-settings .settings-tabs .jjk-tab.active,
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-settings .settings-tabs .jjk-tab[aria-selected="true"] {
+  color: #fff6dc; font-weight: 600;
+  background: linear-gradient(90deg, rgba(201, 162, 78, 0.38), rgba(201, 162, 78, 0.06) 80%, transparent);
+  box-shadow: inset 2px 0 0 var(--g-accent), inset 0 1px 0 rgba(226, 204, 150, 0.32), inset 0 -1px 0 rgba(226, 204, 150, 0.32);
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-settings .settings-tabs .jjk-tab.active::after { color: var(--g-accent-2); }
+
+/* Well */
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-settings .settings-well {
+  padding: 4px 28px 18px; border: 0; border-radius: 0;
+  background: linear-gradient(90deg, rgba(14, 13, 12, 0.6), rgba(10, 10, 11, 0.32));
+  box-shadow: none;
+  scrollbar-color: rgba(201, 162, 78, 0.4) transparent;
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-settings .set-group {
+  margin: 18px 0 6px; gap: 12px;
+  font: 600 17px var(--ink-jp); letter-spacing: 0.16em; text-transform: none; color: var(--g-text);
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-settings .set-group::before {
+  content: ''; flex: none; width: 6px; height: 6px; transform: rotate(45deg); background: var(--g-accent);
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-settings .set-group::after { background: linear-gradient(90deg, var(--g-line-2), transparent); }
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-settings .set-row { padding: 12px 4px; border-bottom: 1px solid var(--g-line); }
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-settings .set-label b { font: 600 14.5px var(--ink-jp); letter-spacing: 0.05em; color: var(--g-text); }
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-settings .set-label small { font-size: 12px; font-style: italic; color: var(--g-faint); }
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-settings .set-name { font: 600 16px var(--ink-jp); letter-spacing: 0.08em; color: #fff6dc; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-settings .set-id { font-family: var(--ink-cinzel); letter-spacing: 0.06em; color: var(--g-accent-2); }
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-settings .set-value {
+  min-width: 52px; border-radius: 0; background: none; box-shadow: none;
+  font: 500 14px var(--ink-cinzel); letter-spacing: 0.04em; color: #fff6dc;
+}
+
+/* Slider: hairline track, gold ink fill, a small cream diamond */
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-settings .set-slider {
+  height: 2px; border-radius: 0;
+  background: linear-gradient(90deg, rgba(201, 162, 78, 0.5), var(--g-accent)) 0 0 / var(--pct) 100% no-repeat, rgba(226, 204, 150, 0.2);
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-settings .set-slider::-webkit-slider-runnable-track { height: 2px; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-settings .set-slider::-webkit-slider-thumb {
+  width: 14px; height: 14px; margin-top: -6px; border-radius: 0; transform: rotate(45deg);
+  background: linear-gradient(180deg, #f6eed8, #e3d4ad); border: 0;
+  box-shadow: 0 0 0 1px rgba(120, 96, 40, 0.6), 0 2px 6px rgba(0, 0, 0, 0.6);
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-settings .set-slider::-moz-range-thumb {
+  width: 12px; height: 12px; border-radius: 0; transform: rotate(45deg);
+  background: linear-gradient(180deg, #f6eed8, #e3d4ad); border: 0; box-shadow: 0 0 0 1px rgba(120, 96, 40, 0.6);
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-settings .set-slider::-moz-range-track { height: 2px; }
+
+/* Switch: two joined slips, the live one is cream paper */
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-settings .set-switch {
+  border-radius: 0; background: rgba(8, 8, 10, 0.6); box-shadow: inset 0 0 0 1px var(--g-line-2);
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-settings .set-switch > span {
+  font: italic 600 13px var(--ink-cinzel); letter-spacing: 0.04em; text-transform: none; color: var(--g-faint);
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-settings .set-switch[aria-checked="true"] > .is-on,
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-settings .set-switch[aria-checked="false"] > .is-off {
+  background: linear-gradient(180deg, #f3ead2, #e2d4ae); color: var(--g-on-accent);
+}
+
+/* Buttons + fields */
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-settings .settings-panel .jjk-btn {
+  border-radius: 0; background: rgba(8, 8, 10, 0.55); box-shadow: inset 0 0 0 1px var(--g-line-2);
+  font: italic 600 14px var(--ink-cinzel); letter-spacing: 0.04em; text-transform: none; color: var(--g-text);
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-settings .settings-panel .jjk-btn:hover:not(:disabled) {
+  background: linear-gradient(180deg, #f3ead2, #e2d4ae); color: var(--g-on-accent); box-shadow: inset 0 0 0 1px rgba(120, 96, 40, 0.5); filter: none;
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-settings .settings-panel .jjk-btn.is-primary {
+  background: linear-gradient(180deg, #f6eed8, #e3d4ad); color: #17130b;
+  box-shadow: inset 0 0 0 1px rgba(120, 96, 40, 0.5), 0 8px 20px rgba(0, 0, 0, 0.4);
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-settings .set-field,
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-settings .set-select {
+  border: 0 !important; border-radius: 0 !important; background-color: transparent !important;
+  box-shadow: inset 0 -1px 0 var(--g-line-2); font: 400 14px var(--g-sans) !important; letter-spacing: 0.06em; color: var(--g-text);
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-settings .set-field:focus { box-shadow: inset 0 -1px 0 var(--g-accent), 0 1px 0 var(--g-accent); }
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-settings .set-field::placeholder { font-style: italic; color: var(--g-faint); }
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-settings .set-label code { border-radius: 0; color: var(--g-accent-2); }
+
+/* ── Interface Style: three swatch cards, unmistakable ──────────────── */
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-settings #pane-display > .set-row:first-of-type {
+  flex-direction: column; align-items: stretch; gap: 12px;
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-settings #pane-display > .set-row:first-of-type .set-label small { max-width: 640px; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-settings .set-control[role="radiogroup"] {
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px;
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-settings [data-ui-style] {
+  position: relative; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 4px;
+  width: 100%; min-width: 0; height: 74px; padding: 0 12px 0 76px;
+  border: 0; border-radius: 0; filter: none;
+  background: linear-gradient(180deg, rgba(24, 22, 19, 0.82), rgba(10, 10, 11, 0.9));
+  box-shadow: inset 0 0 0 1px var(--g-line); -webkit-backdrop-filter: none; backdrop-filter: none;
+  font: 600 17px var(--ink-jp); letter-spacing: 0.1em; text-transform: none; color: var(--g-dim); text-align: left;
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-settings [data-ui-style]::before {
+  content: ''; position: absolute; left: 12px; top: 50%; width: 50px; height: 50px; margin-top: -25px; box-sizing: border-box;
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-settings [data-ui-style]::after {
+  display: block; font: 400 8.5px var(--ink-cinzel); letter-spacing: 0.26em; text-transform: uppercase; color: var(--g-faint);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%;
+}
+/* Classic: teal ink with a crimson title plate and gold trim */
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-settings [data-ui-style="classic"]::before {
+  background:
+    linear-gradient(#8e1b1b, #8e1b1b) 6px 8px / 26px 8px no-repeat,
+    linear-gradient(rgba(201, 162, 78, 0.7), rgba(201, 162, 78, 0.7)) 6px 34px / 38px 2px no-repeat,
+    linear-gradient(135deg, #1b4952, #071418);
+  box-shadow: inset 0 0 0 1px rgba(201, 162, 78, 0.75);
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-settings [data-ui-style="classic"]::after { content: '古典 · Original'; }
+/* Glass: frosted slate, white hairline, yellow tick */
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-settings [data-ui-style="glass"]::before {
+  border-radius: 8px;
+  background:
+    linear-gradient(#d4a84a, #d4a84a) 8px 0 / 14px 3px no-repeat,
+    linear-gradient(#f4f4f1, #f4f4f1) 8px 30px / 22px 8px no-repeat,
+    linear-gradient(135deg, #3c4b58, #0e1318);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.35);
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-settings [data-ui-style="glass"]::after { content: '硝子 · Tactical glass'; }
+/* Ink: charcoal wash, cream paper slip, gold bar */
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-settings [data-ui-style="ink"]::before {
+  background:
+    linear-gradient(180deg, #f6eed8, #e3d4ad) 14px 31px / 30px 9px no-repeat,
+    linear-gradient(#c9a24e, #c9a24e) 0 6px / 2px 14px no-repeat,
+    linear-gradient(160deg, rgba(10, 10, 11, 0.35), rgba(10, 10, 11, 0.85)) 0 0 / 100% 100% no-repeat,
+    url('../../assets/ui/ink/bg.webp') 60% 40% / cover no-repeat,
+    #1a1814;
+  box-shadow: inset 0 0 0 1px rgba(226, 204, 150, 0.5);
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-settings [data-ui-style="ink"]::after { content: '墨 · Brush & paper'; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-settings [data-ui-style]:hover { color: var(--g-text); box-shadow: inset 0 0 0 1px var(--g-line-2); }
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-settings [data-ui-style].active,
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-settings [data-ui-style][aria-checked="true"] {
+  color: #fff6dc;
+  background: linear-gradient(90deg, rgba(201, 162, 78, 0.38), rgba(201, 162, 78, 0.08) 80%, rgba(10, 10, 11, 0.6));
+  box-shadow: inset 2px 0 0 var(--g-accent), inset 0 0 0 1px rgba(226, 204, 150, 0.55);
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-settings [data-ui-style].active::after { color: var(--g-accent-2); }
+
+/* Village background picker */
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-settings .bg-preview-frame { border-radius: 0; box-shadow: inset 0 0 0 1px var(--g-line-2), 0 10px 26px rgba(0, 0, 0, 0.5); }
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-settings .bg-preview-name { font: 600 15px var(--ink-jp); letter-spacing: 0.1em; color: var(--g-text); }
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-settings .set-step {
+  border-radius: 0; background: rgba(8, 8, 10, 0.6); box-shadow: inset 0 0 0 1px var(--g-line-2); color: var(--g-accent-2); font-size: 12px;
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-settings .set-step:hover { background: linear-gradient(180deg, #f3ead2, #e2d4ae); color: var(--g-on-accent); }
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-settings .bg-thumb { border-radius: 0; box-shadow: inset 0 0 0 1px var(--g-line); }
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-settings .bg-thumb.active { box-shadow: inset 0 0 0 1px var(--g-accent), inset 3px 0 0 var(--g-accent); }
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-settings .bg-thumb span { font: 500 10.5px var(--g-sans); letter-spacing: 0.04em; background: linear-gradient(0deg, rgba(8, 8, 9, 0.92), rgba(8, 8, 9, 0.3)); }
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-settings .bg-thumb.active span { color: var(--g-accent-2); }
+
+/* ── Phones ─────────────────────────────────────────────────────────── */
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-settings .settings-panel { padding: 0; gap: 0; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-settings .settings-tabs { width: 112px; padding: 2px 0; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-settings .settings-tabs .jjk-tab { height: 34px; padding: 0 10px 0 12px; font-size: 12px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-settings .settings-tabs .jjk-tab::after { font-size: 11px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-settings .settings-well { padding: 0 14px 10px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-settings .set-group { font-size: 14px; margin: 10px 0 2px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-settings .set-row { padding: 7px 2px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-settings .set-label b { font-size: 13px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-settings .set-label small { font-size: 10.5px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-settings .settings-panel .jjk-btn { font-size: 12px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-settings .set-switch > span { font-size: 11.5px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-settings #pane-display > .set-row:first-of-type { gap: 8px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-settings .set-control[role="radiogroup"] { gap: 6px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-settings [data-ui-style] { height: 52px; padding: 0 8px 0 52px; font-size: 14px; gap: 2px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-settings [data-ui-style]::before {
+  left: 8px; width: 36px; height: 36px; margin-top: -18px;
+}
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-settings [data-ui-style="classic"]::before {
+  background-position: 4px 6px, 4px 25px, 0 0; background-size: 18px 6px, 28px 2px, auto;
+}
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-settings [data-ui-style="glass"]::before {
+  border-radius: 6px; background-position: 6px 0, 6px 22px, 0 0; background-size: 10px 2px, 16px 6px, auto;
+}
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-settings [data-ui-style="ink"]::before {
+  background-position: 10px 22px, 0 4px, 0 0, 60% 40%, 0 0; background-size: 22px 7px, 2px 10px, 100% 100%, cover, auto;
+}
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-settings [data-ui-style]::after { font-size: 7px; letter-spacing: 0.14em; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-settings .set-control.is-wide { flex: 0 1 360px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-settings .bg-preview-name { font-size: 12.5px; }
