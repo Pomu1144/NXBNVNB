@@ -9,6 +9,7 @@
   <script src="js/session-gate.js"></script>
   <script src="js/page-loader.js"></script>
   <script src="js/device-detect.js"></script>
+  <script src="js/ui-theme.js"></script>
   <script src="js/dev-mode.js"></script>
   <script src="js/backgrounds.js"></script>
   <!-- PWA App Container -->
@@ -43,6 +44,7 @@
   </style>
   <link rel="stylesheet" href="css/tutorial.css" />
   <link rel="stylesheet" href="css/mobile.css" />
+  <link rel="stylesheet" href="css/ui-glass.css" />
 </head>
 
 <body class="page-settings">
@@ -91,6 +93,14 @@
 
       <!-- Display -->
       <section class="settings-pane" id="pane-display" role="tabpanel">
+        <h2 class="set-group">Interface Style</h2>
+        <div class="set-row">
+          <div class="set-label"><b>Style</b><small>Classic is the original look. Glass uses frosted panels and pill buttons.</small></div>
+          <div class="set-control" role="radiogroup" aria-label="Interface style">
+            <button type="button" class="jjk-tab" role="radio" data-ui-style="classic">Classic</button>
+            <button type="button" class="jjk-tab" role="radio" data-ui-style="glass">Glass</button>
+          </div>
+        </div>
         <h2 class="set-group">Village Background</h2>
         <div class="bg-picker">
           <!-- Live preview: same art, crop and screen shape as the village -->
