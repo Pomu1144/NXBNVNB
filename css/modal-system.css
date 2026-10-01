@@ -5,7 +5,7 @@
 
 @import url("fonts.css");
 
-.modal-overlay {
+#modal-overlay {
   --mm-gold: var(--jjk-gold, #c9a24e);
   --mm-gold-hi: var(--jjk-gold-hi, #f1d98a);
   --mm-line: rgba(201, 162, 78, 0.5);
@@ -27,7 +27,7 @@
   opacity: 0;
   transition: opacity 0.25s ease;
 }
-.modal-overlay.modal-open { opacity: 1; }
+#modal-overlay.modal-open { opacity: 1; }
 
 /* Panel */
 .modal-container {
@@ -73,7 +73,7 @@
 .modal-container.modal-show { transform: scale(1); opacity: 1; }
 
 /* Header: crimson brush title plate pinned top-left */
-.modal-header {
+.modal-container .modal-header {
   position: absolute;
   left: -10px;
   top: 18px;
@@ -81,7 +81,7 @@
   padding: 0;
   max-width: calc(100% - 10px);
 }
-.modal-title {
+.modal-container .modal-title {
   display: flex;
   align-items: center;
   box-sizing: border-box;
@@ -273,8 +273,8 @@
     max-height: 92dvh;
     padding-top: 56px;
   }
-  .modal-header { top: 10px; }
-  .modal-title { height: 38px; min-width: 170px; font-size: 18px; padding: 0 46px 0 18px; }
+  .modal-container .modal-header { top: 10px; }
+  .modal-container .modal-title { height: 38px; min-width: 170px; font-size: 18px; padding: 0 46px 0 18px; }
   .modal-body { padding: 4px 18px 6px; font-size: 14.5px; }
   .modal-footer { padding: 6px 16px 14px; }
   .modal-btn { height: 38px; min-width: 120px; font-size: 15px; }
@@ -288,6 +288,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .modal-overlay, .modal-container { transition: none; }
-  .modal-title { animation: none; }
+  #modal-overlay, .modal-container { transition: none; }
+  .modal-container .modal-title { animation: none; }
 }

@@ -337,7 +337,7 @@ html[data-ui="glass"].is-mobile.is-landscape.is-compact .hv-missions .hv-x b { f
 html[data-ui="glass"].is-mobile.is-landscape.is-compact .hv-go { height: 26px; margin-top: 6px; font-size: 12px; padding: 0 6px 0 10px; }
 
 /* ── In-game dialogs (js/modal-manager.js) ──────────────────────── */
-html[data-ui="glass"] .modal-overlay { background: rgba(2, 4, 6, 0.62); }
+html[data-ui="glass"] #modal-overlay { background: rgba(2, 4, 6, 0.62); }
 html[data-ui="glass"] .modal-container {
   background: var(--g-glass-2);
   -webkit-backdrop-filter: var(--g-blur); backdrop-filter: var(--g-blur);
@@ -349,8 +349,8 @@ html[data-ui="glass"] .modal-container::before {
   content: ''; position: absolute; inset: auto; left: 18px; top: 0; width: 34px; height: 3px; border-radius: 0 0 3px 3px;
   background: var(--g-accent); z-index: 2;
 }
-html[data-ui="glass"] .modal-header { left: 24px; top: 20px; }
-html[data-ui="glass"] .modal-title {
+html[data-ui="glass"] .modal-container .modal-header { left: 24px; top: 20px; }
+html[data-ui="glass"] .modal-container .modal-title {
   background: none; filter: none; animation: none;
   min-width: 0; height: auto; padding: 0;
   font-family: var(--g-cond); font-weight: 500; font-size: 24px; letter-spacing: 0.04em; text-transform: uppercase;

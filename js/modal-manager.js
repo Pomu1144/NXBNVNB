@@ -413,7 +413,7 @@
   if (!document.querySelector('link[href*="modal-system.css"]')) {
     const link = document.createElement('link');
     link.rel = 'stylesheet';
-    link.href = 'css/modal-system.css?v=3';
+    link.href = 'css/modal-system.css?v=4';
     document.head.appendChild(link);
   }
 
