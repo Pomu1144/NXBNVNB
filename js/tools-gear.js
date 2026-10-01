@@ -244,7 +244,7 @@
       : `<figure class="gu-fig">${tile(i.slot, i.tier)}<figcaption>${esc(i.name)} <small>Lv${i.level}</small></figcaption></figure>
          ${ARROW}
          <figure class="gu-fig">${tile(i.slot, nextTier)}<figcaption>${esc(G().nameOf(i.slot, nextTier))}</figcaption></figure>`;
-    $('gu-stat').innerHTML = `<span>${esc(i.statLabel)}</span><b>${statTxt(i, i.value)}</b>${nextTier == null ? '' : `<i>&#10148;</i><b class="is-up">${statTxt(i, G().statValue(i.slot, nextTier, i.level))}</b>`}`;
+    $('gu-stat').innerHTML = `<span class="gu-k">${esc(i.statLabel)}</span><span class="gu-v"></span><b>${statTxt(i, i.value)}</b>${nextTier == null ? '' : `<i>&#10148;</i><b class="is-up">${statTxt(i, G().statValue(i.slot, nextTier, i.level))}</b>`}`;
     const btn = $('gu-upgrade'), note = $('gu-note');
     if (nextTier == null) {
       $('gu-mats').innerHTML = '';
@@ -253,8 +253,13 @@
     }
     const need = G().PROMOTE[i.tier];
     const have = window.Resources ? window.Resources.get(need.scroll) : 0;
-    $('gu-mats').innerHTML = matCell(scrollIc(need.scroll), have, need.count, scrollName(need.scroll)) +
-      matCell(`<img src="${RYO}" alt="">`, ryo(), need.ryo, 'Ryo', true);
+    const short = (ok) => (ok ? 'is-ok' : 'is-short');
+    $('gu-mats').innerHTML =
+      `<div class="gu-row"><span class="gu-k">Scroll</span><span class="gu-ic">${scrollIc(need.scroll)}</span>` +
+        `<span class="gu-v">${esc(scrollName(need.scroll))}</span>` +
+        `<b class="gu-n"><em class="${short(have >= need.count)}">${fmt(have)}</em> / ${need.count}</b></div>` +
+      `<div class="gu-row"><span class="gu-k">Ryo</span><span class="gu-ic is-coin"><img src="${RYO}" alt="" draggable="false"></span>` +
+        `<span class="gu-v"></span><b class="gu-n"><em class="${short(ryo() >= need.ryo)}">${fmt(need.ryo)}</em></b></div>`;
     const enough = have >= need.count && ryo() >= need.ryo;
     btn.disabled = !(i.atCap && enough);
     note.textContent = i.atCap ? '' : `Reach Lv ${i.cap}`;
