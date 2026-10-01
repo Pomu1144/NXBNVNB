@@ -37,7 +37,7 @@ html[data-ui="glass"] .gs-st em { color: var(--g-accent); }
 html[data-ui="glass"] .gs-lv i,
 html[data-ui="glass"] .gs-st i { color: var(--g-faint); }
 html[data-ui="glass"] .tl-row-port,
-html[data-ui="glass"] .mg-tool-ic { border-color: var(--g-line-2); border-radius: 2px; }
+html[data-ui="glass"] .mg-tool-ic { border-color: var(--g-line-2); border-radius: var(--g-radius-sm); }
 
 /* ── Character stage ─────────────────────────────────────────────── */
 html[data-ui="glass"] .tl-art-frame {
@@ -59,7 +59,7 @@ html[data-ui="glass"] .tl-power-txt b { font-family: var(--g-cond); font-weight:
 html[data-ui="glass"] .tl-group-label { font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.16em; color: var(--g-dim); }
 html[data-ui="glass"] .tl-group-label::after { background: linear-gradient(90deg, var(--g-line-2), transparent); }
 html[data-ui="glass"] .tl-slot {
-  background: var(--g-glass-2); border-radius: 2px; color: var(--g-text);
+  background: var(--g-glass-2); border-radius: var(--g-radius-sm); color: var(--g-text);
   box-shadow: inset 0 0 0 1px var(--g-line-2);
 }
 html[data-ui="glass"] .tl-slot--ult { box-shadow: inset 0 0 0 1px rgba(255, 106, 90, 0.7); }
@@ -105,7 +105,7 @@ html[data-ui="glass"] .gu-row > i { color: var(--g-faint); }
 html[data-ui="glass"] .gu-fig figcaption { font-family: var(--g-sans); font-weight: 600; }
 html[data-ui="glass"] .gp-row,
 html[data-ui="glass"] .gp-stat,
-html[data-ui="glass"] .gp-cost { border-radius: 2px; border-color: var(--g-line) !important; background: rgba(10, 13, 17, 0.6) !important; }
+html[data-ui="glass"] .gp-cost { border-radius: var(--g-radius-sm); border-color: var(--g-line) !important; background: rgba(10, 13, 17, 0.6) !important; }
 
 /* ── Magatama view ───────────────────────────────────────────────── */
 html[data-ui="glass"] .mg-tool-name { font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.02em; color: var(--g-text); }

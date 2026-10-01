@@ -31,7 +31,9 @@ html[data-ui="glass"] {
   --g-red: #ff6a5a;
   --g-cond: 'Oswald', 'Bebas Neue', 'Arial Narrow', sans-serif;
   --g-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --g-radius: 3px;
+  --g-radius: 12px;
+  --g-radius-sm: 8px;
+  --g-pill: 999px;
   --g-blur: blur(14px) saturate(1.15);
   --jjk-font: var(--g-sans);
 }
@@ -59,7 +61,7 @@ html[data-ui="glass"] .jjk-title-plate::before {
   content: ''; position: absolute; left: 0; top: 18%; bottom: 18%; width: 3px; background: var(--g-accent);
 }
 html[data-ui="glass"] .jjk-icon-btn {
-  width: 40px; height: 40px; border-radius: var(--g-radius);
+  width: 40px; height: 40px; border-radius: 50%;
   background: var(--g-glass-2);
   -webkit-backdrop-filter: var(--g-blur); backdrop-filter: var(--g-blur);
   box-shadow: inset 0 0 0 1px var(--g-line-2);
@@ -80,7 +82,8 @@ html[data-ui="glass"] .jjk-panel {
 /* the yellow tick: top-left of every main panel */
 html[data-ui="glass"]:not(._g):not(._l):not(._s) .jjk-panel::before {
   display: block !important; content: '' !important; position: absolute; left: 0 !important; top: 0 !important;
-  width: 22px !important; height: 2px !important; border: 0 !important; background: var(--g-accent) !important;
+  width: 22px !important; height: 2px !important; border: 0 !important; border-radius: 2px !important; background: var(--g-accent) !important;
+  left: 14px !important;
 }
 html[data-ui="glass"] .jjk-panel::after { display: none; }
 html[data-ui="glass"] .jjk-row {
@@ -94,7 +97,7 @@ html[data-ui="glass"] .set-group {
 
 /* ── Buttons: yellow block = main action, dark glass = everything else ── */
 html[data-ui="glass"] .jjk-btn {
-  border: 0; border-image: none; border-radius: var(--g-radius);
+  border: 0; border-image: none; border-radius: var(--g-pill);
   background: var(--g-glass-2);
   -webkit-backdrop-filter: var(--g-blur); backdrop-filter: var(--g-blur);
   box-shadow: inset 0 0 0 1px var(--g-line-2);
@@ -119,7 +122,7 @@ html[data-ui="glass"] .jjk-btn.is-primary.is-disabled {
 
 /* ── Tabs: dark segments, the selected one is a white block ─────── */
 html[data-ui="glass"] .jjk-tab {
-  border: 0; border-image: none; border-radius: var(--g-radius); filter: none;
+  border: 0; border-image: none; border-radius: var(--g-pill); filter: none;
   min-width: 0; height: 32px; padding: 0 16px;
   background: var(--g-glass-2);
   -webkit-backdrop-filter: var(--g-blur); backdrop-filter: var(--g-blur);
@@ -136,7 +139,7 @@ html[data-ui="glass"].is-mobile.is-landscape.is-compact .jjk-tab { height: 28px;
 
 /* ── Chips / progress ────────────────────────────────────────────── */
 html[data-ui="glass"] .jjk-chip {
-  clip-path: none; border: 0; border-radius: var(--g-radius);
+  clip-path: none; border: 0; border-radius: var(--g-pill);
   background: rgba(10, 13, 17, 0.7); box-shadow: inset 0 0 0 1px var(--g-line);
   font-family: var(--g-cond); font-weight: 500; font-size: 12.5px; letter-spacing: 0.04em; color: var(--g-dim);
 }
@@ -147,7 +150,7 @@ html[data-ui="glass"] .jjk-progress > i { background: var(--g-accent); }
 html[data-ui="glass"] input[type="search"],
 html[data-ui="glass"] input[type="text"],
 html[data-ui="glass"] select {
-  border-radius: var(--g-radius) !important;
+  border-radius: var(--g-radius-sm) !important;
   border-color: var(--g-line-2) !important;
   background-color: rgba(10, 13, 17, 0.72) !important;
   font-family: var(--g-sans) !important;
@@ -164,7 +167,7 @@ html[data-ui="glass"]:not(._g):not(._l):not(._s) body .bottom-bar .bottom-bar-co
   background-image: none !important;
   -webkit-backdrop-filter: var(--g-blur) !important; backdrop-filter: var(--g-blur) !important;
   border: 0 !important;
-  border-radius: var(--g-radius) !important;
+  border-radius: 16px !important;
   box-shadow: inset 0 0 0 1px var(--g-line), 0 8px 24px rgba(0, 0, 0, 0.45) !important;
 }
 html[data-ui="glass"]:not(._g):not(._l):not(._s) body .bottom-bar .hud-button + .hud-button::before {
@@ -181,7 +184,8 @@ html[data-ui="glass"]:not(._g):not(._l):not(._s) body .bottom-bar .hud-button im
 html[data-ui="glass"]:not(._g):not(._l):not(._s) body .bottom-bar .hud-button.active {
   background: var(--g-sel) !important;
   background-image: none !important;
-  border-radius: 0 !important;
+  border-radius: 10px !important;
+  margin: 3px 0 !important;
   box-shadow: none !important;
 }
 html[data-ui="glass"]:not(._g):not(._l):not(._s) body .bottom-bar .hud-button.active img {
@@ -201,7 +205,7 @@ html[data-ui="glass"] .top-bar::after { display: none !important; }
 html[data-ui="glass"] .currency-item {
   background: var(--g-glass-2) !important;
   -webkit-backdrop-filter: var(--g-blur); backdrop-filter: var(--g-blur);
-  border: 0 !important; border-radius: var(--g-radius) !important;
+  border: 0 !important; border-radius: var(--g-pill) !important;
   box-shadow: inset 0 0 0 1px var(--g-line) !important;
 }
 html[data-ui="glass"] .currency-item::before,
@@ -211,14 +215,14 @@ html[data-ui="glass"] .currency-amount {
   color: var(--g-text) !important; text-shadow: none !important;
 }
 html[data-ui="glass"] .currency-add {
-  border: 0 !important; border-radius: 2px !important;
+  border: 0 !important; border-radius: 50% !important;
   background: rgba(255, 255, 255, 0.14) !important; color: var(--g-text) !important;
 }
 html[data-ui="glass"]:not(._g):not(._l):not(._s) .bottom-icon-bar {
   background: var(--g-glass-2) !important;
   background-image: none !important;
   -webkit-backdrop-filter: var(--g-blur); backdrop-filter: var(--g-blur);
-  border: 0 !important; border-radius: var(--g-radius) !important;
+  border: 0 !important; border-radius: 16px !important;
   box-shadow: inset 0 0 0 1px var(--g-line), 0 8px 24px rgba(0, 0, 0, 0.45) !important;
 }
 html[data-ui="glass"]:not(._g):not(._l):not(._s) .bottom-icon-bar::before,
@@ -248,7 +252,7 @@ html[data-ui="glass"] .hv-menu {
     "a b missions"
     "c d missions"
     "road road missions";
-  transform: translateY(-50%) perspective(1100px) rotateY(-11deg);
+  transform: translateY(-50%) perspective(1400px) rotateY(-6deg);
   transform-origin: right center;
 }
 html[data-ui="glass"] .hv-t {
@@ -314,7 +318,7 @@ html[data-ui="glass"] .hv-summon:hover svg,
 html[data-ui="glass"] .hv-missions:hover svg { stroke: var(--g-text); }
 html[data-ui="glass"] .hv-go {
   margin-top: 10px; display: flex; align-items: center; justify-content: space-between;
-  height: 34px; padding: 0 10px 0 14px; border-radius: var(--g-radius);
+  height: 34px; padding: 0 10px 0 16px; border-radius: var(--g-pill);
   background: var(--g-accent); color: var(--g-on-accent);
   font-family: var(--g-cond); font-weight: 600; font-size: 15px; letter-spacing: 0.1em; text-transform: uppercase;
 }
@@ -354,7 +358,7 @@ html[data-ui="glass"] .modal-title {
 }
 html[data-ui="glass"] .modal-message { font-family: var(--g-sans); font-size: 14.5px; color: var(--g-dim); text-shadow: none; }
 html[data-ui="glass"] .modal-btn {
-  border-image: none; border-radius: var(--g-radius);
+  border-image: none; border-radius: var(--g-pill);
   font-family: var(--g-cond); font-weight: 500; font-size: 15px; letter-spacing: 0.08em; text-transform: uppercase;
 }
 html[data-ui="glass"] .modal-btn.modal-btn-secondary {
@@ -364,7 +368,7 @@ html[data-ui="glass"] .modal-btn.modal-btn-secondary {
 html[data-ui="glass"] .modal-input { border-radius: var(--g-radius); border-color: var(--g-line-2); font-family: var(--g-sans); }
 
 /* help "?" popovers (js/help-tip.js) */
-html[data-ui="glass"] .help-tip { border-radius: 2px; border-color: var(--g-line-2); background: var(--g-glass-2); color: var(--g-text); }
+html[data-ui="glass"] .help-tip { border-radius: 50%; border-color: var(--g-line-2); background: var(--g-glass-2); color: var(--g-text); }
 html[data-ui="glass"] .help-pop {
   border: 0; border-radius: var(--g-radius); background: var(--g-glass-2);
   -webkit-backdrop-filter: var(--g-blur); backdrop-filter: var(--g-blur);

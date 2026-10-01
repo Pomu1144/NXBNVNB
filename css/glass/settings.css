@@ -6,29 +6,29 @@ html[data-ui="glass"] .set-group {
 html[data-ui="glass"] .set-group::after { background: linear-gradient(90deg, var(--g-line-2), transparent); }
 html[data-ui="glass"] .set-row { border-bottom-color: var(--g-line); }
 html[data-ui="glass"] .set-label b { font-weight: 600; }
-html[data-ui="glass"] .set-label code { color: var(--g-accent); border-color: var(--g-line); border-radius: 2px; }
+html[data-ui="glass"] .set-label code { color: var(--g-accent); border-color: var(--g-line); border-radius: var(--g-radius-sm); }
 html[data-ui="glass"] .set-name { font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.04em; color: var(--g-text); }
 html[data-ui="glass"] .set-value { font-family: var(--g-cond); color: var(--g-text); }
 
 /* slider: thin white track, yellow fill, square white thumb */
 html[data-ui="glass"] .set-slider {
-  height: 4px; border: 0; border-radius: 0; box-shadow: none;
+  height: 4px; border: 0; border-radius: 4px; box-shadow: none;
   background: linear-gradient(90deg, var(--g-accent), var(--g-accent)) 0 0 / var(--pct) 100% no-repeat, rgba(255, 255, 255, 0.16);
 }
 html[data-ui="glass"] .set-slider::-webkit-slider-runnable-track { height: 4px; }
 html[data-ui="glass"] .set-slider::-webkit-slider-thumb {
-  width: 14px; height: 22px; margin-top: -9px; border-radius: 2px;
+  width: 14px; height: 22px; margin-top: -9px; border-radius: var(--g-radius-sm);
   background: var(--g-sel); border: 0; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
 }
 html[data-ui="glass"] .set-slider::-moz-range-track { height: 4px; }
 html[data-ui="glass"] .set-slider::-moz-range-thumb {
-  width: 14px; height: 22px; border-radius: 2px; background: var(--g-sel); border: 0; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+  width: 14px; height: 22px; border-radius: var(--g-radius-sm); background: var(--g-sel); border: 0; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
 }
 html[data-ui="glass"] .set-slider:focus-visible { box-shadow: 0 0 0 2px var(--g-accent); }
 
 /* switch: two segments, the live one is a white block */
 html[data-ui="glass"] .set-switch {
-  padding: 0; gap: 0; border: 0; border-radius: var(--g-radius); overflow: hidden;
+  padding: 0; gap: 0; border: 0; border-radius: var(--g-pill); overflow: hidden;
   background: var(--g-glass-2); box-shadow: inset 0 0 0 1px var(--g-line-2);
 }
 html[data-ui="glass"] .set-switch > span {
@@ -43,7 +43,7 @@ html[data-ui="glass"] .set-switch[aria-checked="false"] > .is-off {
 
 /* village background picker */
 html[data-ui="glass"] .bg-preview-frame { border: 0; border-radius: var(--g-radius); box-shadow: inset 0 0 0 1px var(--g-line-2), 0 8px 20px rgba(0, 0, 0, 0.5); }
-html[data-ui="glass"] .bg-thumb { border: 0; border-radius: 2px; box-shadow: inset 0 0 0 1px var(--g-line); }
+html[data-ui="glass"] .bg-thumb { border: 0; border-radius: var(--g-radius-sm); box-shadow: inset 0 0 0 1px var(--g-line); }
 html[data-ui="glass"] .bg-thumb:hover { box-shadow: inset 0 0 0 1px var(--g-line-2); }
 html[data-ui="glass"] .bg-thumb.active { border: 0; box-shadow: inset 0 0 0 2px var(--g-accent); }
 html[data-ui="glass"] .bg-thumb.active span { color: var(--g-accent); }
