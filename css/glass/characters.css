@@ -1,0 +1,471 @@
+/* css/glass/characters.css — Glass style for characters.html (Shinobi roster
+   + unit detail modal + its pickers). Every rule is scoped to
+   html[data-ui="glass"]; Classic is untouched. Tokens: css/ui-glass.css. */
+
+/* ── Roster grid ─────────────────────────────────────────────────── */
+html[data-ui="glass"] body.page-characters #char-bg {
+  background:
+    linear-gradient(180deg, rgba(6, 9, 12, 0.55), rgba(6, 9, 12, 0.82)),
+    url('../../assets/ui/jjk/ink_bg.webp') center / cover no-repeat,
+    #080b0e;
+  filter: grayscale(0.65);
+}
+html[data-ui="glass"] body.page-characters .char-grid .char-slot {
+  border: 0; border-radius: var(--g-radius-sm);
+  background: var(--g-glass);
+  -webkit-backdrop-filter: var(--g-blur); backdrop-filter: var(--g-blur);
+  box-shadow: inset 0 0 0 1px var(--g-line), 0 6px 16px rgba(0, 0, 0, 0.35);
+}
+html[data-ui="glass"] body.page-characters .char-grid .char-slot:hover {
+  box-shadow: inset 0 0 0 1px var(--g-line-2), 0 8px 20px rgba(0, 0, 0, 0.45);
+}
+/* 7★ / maxed auras are rarity effects: keep their own glow */
+html[data-ui="glass"] body.page-characters .char-grid .char-slot.is-7star,
+html[data-ui="glass"] body.page-characters .char-grid .char-slot.is-maxed { background: rgba(14, 19, 24, 0.5); }
+html[data-ui="glass"] body.page-characters .char-grid .char-card-level {
+  background: var(--g-glass-2); background-image: none;
+  border: 0; border-radius: var(--g-pill);
+  box-shadow: inset 0 0 0 1px var(--g-line);
+  font-family: var(--g-cond); font-weight: 500; font-size: 14px; letter-spacing: 0.04em;
+  color: var(--g-text); text-shadow: none;
+}
+html[data-ui="glass"] body.page-characters .char-grid .char-card-level .lv {
+  font-size: 0.82em; letter-spacing: 0.08em; text-transform: uppercase; color: var(--g-dim); font-weight: 500;
+}
+html[data-ui="glass"] body.page-characters .char-grid .char-card-level .max { color: var(--g-accent); font-weight: 500; }
+html[data-ui="glass"] body.page-characters .char-grid .char-card-level .limit-break,
+html[data-ui="glass"] body.page-characters .char-grid .char-card-level .limit-break-max { color: var(--g-red) !important; font-weight: 500; }
+html[data-ui="glass"] body.page-characters .empty-msg { font-family: var(--g-sans); color: var(--g-dim); }
+
+/* ── Detail modal: one dark glass sheet ──────────────────────────── */
+html[data-ui="glass"] body.page-characters #char-modal {
+  background: rgba(2, 4, 6, 0.62);
+  -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+}
+html[data-ui="glass"] body.page-characters .char-modal-panel {
+  background: var(--g-glass-2);
+  -webkit-backdrop-filter: var(--g-blur); backdrop-filter: var(--g-blur);
+  border: 0; border-radius: var(--g-radius);
+  box-shadow: inset 0 0 0 1px var(--g-line), 0 24px 60px rgba(0, 0, 0, 0.6);
+}
+/* the gold corner brackets become the yellow tick */
+html[data-ui="glass"] body.page-characters .char-modal-panel::before {
+  top: 0; left: 14px; width: 34px; height: 3px; border: 0; border-radius: 2px; background: var(--g-accent); z-index: 3;
+}
+html[data-ui="glass"] body.page-characters .char-modal-panel::after { content: none; }
+
+/* art column: plain glass frame around the unit's own art */
+html[data-ui="glass"] body.page-characters .char-modal-art {
+  border: 0; outline: 0; border-radius: var(--g-radius);
+  background: rgba(6, 9, 12, 0.9);
+  box-shadow: inset 0 0 0 1px var(--g-line);
+}
+html[data-ui="glass"] body.page-characters .char-modal-art::after {
+  background: linear-gradient(0deg, rgba(6, 9, 12, 0.88) 0%, rgba(6, 9, 12, 0.3) 18%, transparent 34%);
+  box-shadow: inset 0 0 0 1px var(--g-line);
+}
+/* power plate: glass block, grade seal kept */
+html[data-ui="glass"] .cm-power {
+  clip-path: none; border-radius: var(--g-radius-sm);
+  padding: 5px 16px 5px 6px;
+  background: var(--g-glass-2);
+  -webkit-backdrop-filter: var(--g-blur); backdrop-filter: var(--g-blur);
+  box-shadow: inset 0 0 0 1px var(--g-line);
+}
+html[data-ui="glass"] .cm-power-txt { font-family: var(--g-cond); }
+html[data-ui="glass"] .cm-power-txt small {
+  font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.14em; color: var(--g-dim);
+}
+html[data-ui="glass"] .cm-power-txt b {
+  font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.03em; color: var(--g-text); text-shadow: none;
+}
+html[data-ui="glass"].is-mobile.is-landscape.is-compact .cm-power { padding: 3px 10px 3px 3px; clip-path: none; }
+/* skins button */
+html[data-ui="glass"] body.page-characters .skin-btn {
+  border: 0; border-radius: var(--g-pill);
+  background: var(--g-glass-2);
+  -webkit-backdrop-filter: var(--g-blur); backdrop-filter: var(--g-blur);
+  box-shadow: inset 0 0 0 1px var(--g-line-2);
+  font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--g-text);
+}
+html[data-ui="glass"] body.page-characters .skin-btn-count {
+  border: 0; border-radius: var(--g-pill);
+  background: var(--g-accent); color: var(--g-on-accent);
+  font-family: var(--g-cond); font-weight: 500;
+}
+html[data-ui="glass"] body.page-characters .skin-btn.is-worn { background: var(--g-sel); color: var(--g-on-sel); box-shadow: none; }
+
+/* info column: flat glass, no washi ticket, no gold hairline */
+html[data-ui="glass"] body.page-characters .char-modal-info { filter: none; }
+html[data-ui="glass"] body.page-characters .char-modal-info::before {
+  border: 0; border-image: none; filter: none;
+  border-radius: var(--g-radius);
+  background: rgba(255, 255, 255, 0.025);
+  box-shadow: inset 0 0 0 1px var(--g-line);
+}
+html[data-ui="glass"] body.page-characters .char-modal-info::after { content: none; }
+
+/* name header */
+html[data-ui="glass"] body.page-characters .nameplate-name {
+  font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase;
+  color: var(--g-text); text-shadow: none;
+}
+html[data-ui="glass"] body.page-characters .nameplate-version {
+  font-family: var(--g-sans); font-weight: 500; letter-spacing: 0.02em; color: var(--g-dim); text-shadow: none;
+}
+
+/* tabs: dim labels, the open one is a white block */
+html[data-ui="glass"] body.page-characters .char-modal-info .char-tabs { gap: 4px; }
+html[data-ui="glass"] body.page-characters .char-modal-info .char-tabs .tab-btn {
+  height: 30px; padding: 0 14px;
+  border-radius: var(--g-pill);
+  background: rgba(255, 255, 255, 0.04);
+  box-shadow: inset 0 0 0 1px var(--g-line);
+  font-family: var(--g-cond); font-weight: 500; font-size: 14px; letter-spacing: 0.08em;
+  color: var(--g-dim); text-shadow: none;
+}
+html[data-ui="glass"] body.page-characters .char-modal-info .char-tabs .tab-btn:hover { color: var(--g-text); }
+html[data-ui="glass"] body.page-characters .char-modal-info .char-tabs .tab-btn.is-active {
+  background: var(--g-sel); color: var(--g-on-sel); font-weight: 500; box-shadow: none;
+}
+html[data-ui="glass"] body.page-characters .char-modal-info .char-tabs .tab-btn.is-active::before,
+html[data-ui="glass"] body.page-characters .char-modal-info .char-tabs .tab-btn.is-active::after { content: none; }
+html[data-ui="glass"] body.page-characters .char-modal-info .char-tabs .tab-btn:focus-visible { outline: 1px solid var(--g-accent); }
+html[data-ui="glass"].is-mobile.is-landscape.is-compact body.page-characters .char-modal-info .char-tabs { gap: 3px !important; }
+html[data-ui="glass"].is-mobile.is-landscape.is-compact body.page-characters .char-modal-info .char-tabs .tab-btn {
+  height: 22px !important; padding: 0 9px !important; font-size: 11px !important; letter-spacing: 0.06em;
+}
+/* perforation -> hairline */
+html[data-ui="glass"] .cx-perf::before {
+  left: 26px; right: 26px; height: 1px; margin-top: 0; background: var(--g-line);
+}
+html[data-ui="glass"] .cx-perf::after { content: none; }
+html[data-ui="glass"].is-mobile.is-landscape.is-compact .cx-perf::before { left: 16px; right: 16px; }
+
+/* section headers */
+html[data-ui="glass"] .cx-kicker,
+html[data-ui="glass"] body.page-characters .materials-title {
+  font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.14em; color: var(--g-dim);
+  border-bottom-color: var(--g-line);
+}
+html[data-ui="glass"] .cx-count { font-family: var(--g-cond); color: var(--g-faint); }
+html[data-ui="glass"] .cx-empty { font-family: var(--g-sans); color: var(--g-dim); }
+
+/* ── Status tab ──────────────────────────────────────────────────── */
+html[data-ui="glass"] .cx-stat { border-bottom-color: var(--g-line); font-family: var(--g-sans); }
+html[data-ui="glass"] .cx-stat-ico {
+  border: 0; border-radius: 50%; transform: none;
+  background: rgba(255, 255, 255, 0.05); box-shadow: inset 0 0 0 1px var(--g-line);
+}
+html[data-ui="glass"] .cx-stat-ico img { transform: translate(-50%, -50%); width: 24px; height: 24px; }
+html[data-ui="glass"].is-mobile.is-landscape.is-compact .cx-stat-ico img { width: 16px; height: 16px; }
+html[data-ui="glass"] .cx-stat-label {
+  font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--g-dim);
+}
+html[data-ui="glass"] .cx-stat-val {
+  font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.03em; color: var(--g-text); text-shadow: none;
+}
+html[data-ui="glass"] .cx-minor { font-family: var(--g-cond); }
+html[data-ui="glass"] .cx-minor + .cx-minor { border-left-color: var(--g-line); }
+html[data-ui="glass"] .cx-minor span { font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.1em; color: var(--g-faint); }
+html[data-ui="glass"] .cx-minor b { font-family: var(--g-cond); font-weight: 500; color: var(--g-text); }
+html[data-ui="glass"] .cx-equip-tag { font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.14em; color: var(--g-faint); }
+html[data-ui="glass"] body.page-characters .cx-gear { box-shadow: inset 0 0 0 1px var(--g-line), 0 2px 6px rgba(0, 0, 0, 0.5); }
+html[data-ui="glass"] body.page-characters .cx-gear span { font-family: var(--g-cond); font-weight: 500; }
+
+/* ── Ninjutsu tab ────────────────────────────────────────────────── */
+html[data-ui="glass"] .cx-stub { font-family: var(--g-sans); }
+html[data-ui="glass"] .cx-stub + .cx-stub::before { height: 1px; top: 0; background: var(--g-line); }
+html[data-ui="glass"] .cx-chip {
+  clip-path: none; border: 0; border-radius: var(--g-pill); padding-left: 9px; padding-right: 9px;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--kc) 55%, transparent);
+  font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.12em;
+}
+html[data-ui="glass"] .cx-stub-name {
+  font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.03em; color: var(--g-text); text-shadow: none;
+}
+html[data-ui="glass"] .cx-stub.is-locked .cx-stub-name { color: var(--g-faint); }
+html[data-ui="glass"] .cx-lock { font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.1em; color: var(--g-red); }
+html[data-ui="glass"] .cx-chakra b { font-family: var(--g-cond); font-weight: 500; }
+html[data-ui="glass"] .cx-chakra em,
+html[data-ui="glass"] .cx-facts { font-family: var(--g-sans); color: var(--g-faint); letter-spacing: 0.02em; }
+html[data-ui="glass"] .cx-facts b { font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.04em; color: var(--g-text); }
+html[data-ui="glass"] .cx-stub-desc { color: var(--g-dim); }
+/* preview ▶: square glass key with a white triangle */
+html[data-ui="glass"] .cx-play {
+  border: 0; border-radius: 50%;
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow: inset 0 0 0 1px var(--g-line-2);
+}
+html[data-ui="glass"] .cx-play::before { border-left-color: var(--g-text); filter: none; }
+html[data-ui="glass"] .cx-play:hover { background: var(--g-sel); box-shadow: none; }
+html[data-ui="glass"] .cx-play:hover::before { border-left-color: var(--g-on-sel); }
+html[data-ui="glass"] .cx-play:focus-visible { outline-color: var(--g-accent); }
+
+/* ── Passives tab ────────────────────────────────────────────────── */
+html[data-ui="glass"] .cx-pas { border-bottom-color: var(--g-line); font-family: var(--g-sans); }
+html[data-ui="glass"] .cx-seal,
+html[data-ui="glass"] .cx-seal--buddy {
+  border: 0; border-radius: 50%;
+  background: rgba(255, 255, 255, 0.05);
+  box-shadow: inset 0 0 0 1px var(--g-line-2);
+  font-family: var(--g-cond); font-weight: 500; color: var(--g-text);
+}
+html[data-ui="glass"] .cx-pas-name {
+  font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.03em; color: var(--g-text);
+}
+html[data-ui="glass"] .cx-pas-desc { color: var(--g-dim); }
+html[data-ui="glass"] .cx-pas.is-locked .cx-pas-name { color: var(--g-faint); }
+html[data-ui="glass"] .cx-pas.is-locked .cx-pas-desc { color: rgba(243, 242, 238, 0.32); }
+
+/* ── Awakening tab ───────────────────────────────────────────────── */
+html[data-ui="glass"] body.page-characters .growth-ops { font-family: var(--g-sans); }
+html[data-ui="glass"] body.page-characters .level-badge {
+  clip-path: none; border-radius: var(--g-pill);
+  padding: 5px 16px;
+  background: rgba(255, 255, 255, 0.05);
+  box-shadow: inset 0 0 0 1px var(--g-line);
+  font-family: var(--g-cond); text-shadow: none;
+}
+html[data-ui="glass"] body.page-characters .level-badge .lv { font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.12em; color: var(--g-dim); }
+html[data-ui="glass"] body.page-characters #status-level { font-family: var(--g-cond); font-weight: 500; color: var(--g-text); }
+html[data-ui="glass"] body.page-characters #status-level.max { color: var(--g-accent); }
+html[data-ui="glass"] body.page-characters #status-level.limit-break,
+html[data-ui="glass"] body.page-characters #status-level.limit-break-max { color: var(--g-red) !important; }
+html[data-ui="glass"] body.page-characters .level-badge .cap-sep,
+html[data-ui="glass"] body.page-characters #status-cap { font-family: var(--g-cond); font-weight: 500; color: var(--g-faint); }
+html[data-ui="glass"].is-mobile.is-landscape.is-compact body.page-characters .level-badge { clip-path: none; padding: 3px 10px; }
+html[data-ui="glass"] body.page-characters .tip-line { font-family: var(--g-sans); color: var(--g-dim); }
+html[data-ui="glass"] body.page-characters .tip-line:not(:empty)::before { transform: none; width: 3px; height: 12px; background: var(--g-accent); }
+html[data-ui="glass"].is-mobile.is-landscape.is-compact body.page-characters .tip-line:not(:empty)::before { width: 2px; height: 9px; }
+/* growth buttons: glass; the one action you can take next is the yellow block
+   (Level Up, or Awaken / Limit Break once they unlock) */
+html[data-ui="glass"] body.page-characters .growth-btn { filter: none; letter-spacing: 0.08em; text-transform: uppercase; }
+html[data-ui="glass"] body.page-characters .growth-btn:hover:not(:disabled) { filter: brightness(1.08); }
+html[data-ui="glass"] body.page-characters #btn-levelup:not(:disabled),
+html[data-ui="glass"] body.page-characters #btn-awaken:not(:disabled),
+html[data-ui="glass"] body.page-characters #btn-limitbreak:not(:disabled) {
+  background: var(--g-accent); color: var(--g-on-accent); box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+}
+html[data-ui="glass"] body.page-characters .growth-buttons:has(#btn-awaken:not(:disabled)) #btn-levelup:not(:disabled),
+html[data-ui="glass"] body.page-characters .growth-buttons:has(#btn-awaken:not(:disabled)) #btn-limitbreak:not(:disabled),
+html[data-ui="glass"] body.page-characters .growth-buttons:has(#btn-limitbreak:not(:disabled)) #btn-levelup:not(:disabled) {
+  background: var(--g-glass-2); color: var(--g-text); box-shadow: inset 0 0 0 1px var(--g-line-2);
+}
+html[data-ui="glass"] body.page-characters .growth-btn:disabled,
+html[data-ui="glass"] body.page-characters .char-close-btn:disabled {
+  background: rgba(14, 19, 24, 0.5); color: var(--g-faint); text-shadow: none;
+  box-shadow: inset 0 0 0 1px var(--g-line);
+}
+html[data-ui="glass"].is-mobile.is-landscape.is-compact body.page-characters .growth-btn { height: 28px; font-size: 12.5px; }
+/* limit break line: red left bar */
+html[data-ui="glass"] body.page-characters .limitbreak-info {
+  padding: 6px 12px; border: 0;
+  background: rgba(255, 106, 90, 0.06); border-radius: var(--g-radius-sm);
+  box-shadow: inset 2px 0 0 var(--g-red);
+  font-family: var(--g-sans);
+}
+html[data-ui="glass"] body.page-characters .lb-level { font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.12em; color: var(--g-red); }
+html[data-ui="glass"] body.page-characters .lb-bonus { color: var(--g-dim); }
+/* materials list */
+html[data-ui="glass"] body.page-characters .materials-display.jjk-panel {
+  background: none; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none;
+}
+html[data-ui="glass"]:not(._g):not(._l):not(._s) body.page-characters .materials-display.jjk-panel::before { display: none !important; }
+html[data-ui="glass"] body.page-characters .material-item.jjk-row,
+html[data-ui="glass"] body.page-characters .material-item.jjk-row.insufficient {
+  background: none; box-shadow: none; border-radius: 0; border-bottom: 1px solid var(--g-line);
+}
+html[data-ui="glass"] body.page-characters .material-item.jjk-row.insufficient { box-shadow: inset 2px 0 0 var(--g-red); padding-left: 8px; }
+html[data-ui="glass"] body.page-characters .material-name { font-family: var(--g-sans); font-weight: 500; color: var(--g-text); }
+html[data-ui="glass"] body.page-characters .material-amount,
+html[data-ui="glass"] body.page-characters .material-amount.sufficient,
+html[data-ui="glass"] body.page-characters .material-amount.insufficient {
+  font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.04em; text-shadow: none; color: var(--g-dim);
+}
+html[data-ui="glass"] body.page-characters .material-amount b { font-weight: 500; color: var(--g-text); }
+html[data-ui="glass"] body.page-characters .material-amount.sufficient b { color: var(--g-accent); }
+html[data-ui="glass"] body.page-characters .material-amount.insufficient b { color: var(--g-red); }
+html[data-ui="glass"] body.page-characters .material-amount i,
+html[data-ui="glass"] body.page-characters .material-amount span { color: var(--g-faint); }
+html[data-ui="glass"] body.page-characters .no-requirements { font-family: var(--g-sans); color: var(--g-dim); }
+
+/* close */
+html[data-ui="glass"] body.page-characters .char-close-btn.jjk-btn,
+html[data-ui="glass"] body.page-characters .char-close-btn.jjk-btn:hover { filter: none; }
+
+/* ── Pickers: level-up ramen, jutsu cards, dupes, replacement ────── */
+html[data-ui="glass"] .ramen-modal,
+html[data-ui="glass"] .card-inventory-modal,
+html[data-ui="glass"] .dupe-modal,
+html[data-ui="glass"] .jutsu-replacement-modal { background: rgba(2, 4, 6, 0.62); }
+html[data-ui="glass"] .ramen-modal-panel,
+html[data-ui="glass"] .card-inventory-panel { font-family: var(--g-sans); color: var(--g-text); background: var(--g-glass-2); }
+html[data-ui="glass"] .ramen-char-img { border-radius: 6px; }
+html[data-ui="glass"] .ramen-char-name { font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; color: var(--g-text); }
+html[data-ui="glass"] .ramen-char-level-row { font-family: var(--g-cond); letter-spacing: 0.04em; }
+html[data-ui="glass"] .ramen-char-level { color: var(--g-dim); }
+html[data-ui="glass"] .ramen-level-preview,
+html[data-ui="glass"] .ramen-level-preview.is-max { color: var(--g-accent); font-weight: 500; }
+html[data-ui="glass"] .ramen-lv-bar { border: 0; border-radius: var(--g-pill); overflow: hidden; background: rgba(255, 255, 255, 0.12); box-shadow: none; }
+html[data-ui="glass"] #ramen-lv-fill-now { background: var(--g-sel); }
+html[data-ui="glass"] #ramen-lv-fill-new { background: var(--g-accent); }
+html[data-ui="glass"] .ramen-grid,
+html[data-ui="glass"] .card-inventory-grid {
+  border: 0; border-radius: var(--g-radius-sm);
+  background: rgba(0, 0, 0, 0.25);
+  box-shadow: inset 0 0 0 1px var(--g-line);
+  scrollbar-color: var(--g-line-2) transparent;
+}
+html[data-ui="glass"] .ramen-card {
+  border: 0; border-radius: var(--g-radius-sm);
+  background: rgba(255, 255, 255, 0.04);
+  box-shadow: inset 0 0 0 1px var(--g-line), inset 2px 0 0 var(--rc-tint);
+}
+html[data-ui="glass"] .ramen-card:hover { box-shadow: inset 0 0 0 1px var(--g-line-2), inset 2px 0 0 var(--rc-tint); }
+html[data-ui="glass"] .ramen-card.is-selected {
+  background: rgba(212, 168, 74, 0.08);
+  box-shadow: inset 0 0 0 1px var(--g-accent), inset 2px 0 0 var(--rc-tint);
+}
+html[data-ui="glass"] .ramen-name { font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.03em; }
+html[data-ui="glass"] .ramen-exp { font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.03em; color: var(--g-accent); }
+html[data-ui="glass"] .ramen-exp::after { font-family: var(--g-cond); font-weight: 400; color: var(--g-faint); }
+html[data-ui="glass"] .ramen-quantity { color: var(--g-faint); }
+html[data-ui="glass"] .ramen-card.is-full .ramen-quantity { color: var(--g-accent); }
+html[data-ui="glass"] .ramen-counter {
+  border: 0; border-radius: var(--g-pill); box-shadow: none;
+  background: var(--g-accent); color: var(--g-on-accent);
+  font-family: var(--g-cond); font-weight: 600;
+}
+html[data-ui="glass"] .ramen-minus {
+  border: 0; border-radius: 50%;
+  background: var(--g-glass-2); box-shadow: inset 0 0 0 1px var(--g-line-2); color: var(--g-text);
+}
+html[data-ui="glass"] .ramen-total-label { font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.12em; color: var(--g-dim); }
+html[data-ui="glass"] .ramen-total-exp { font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.03em; color: var(--g-accent); }
+html[data-ui="glass"] .ramen-total-hint { color: var(--g-faint); }
+html[data-ui="glass"] .ramen-empty-text,
+html[data-ui="glass"] .ci-empty-title { font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--g-text); }
+html[data-ui="glass"] .ramen-empty-subtext,
+html[data-ui="glass"] .ci-empty-text { color: var(--g-dim); }
+html[data-ui="glass"] .ci-empty-text b { color: var(--g-text); }
+
+/* jutsu card picker */
+html[data-ui="glass"] .card-inventory-sub { color: var(--g-dim); }
+html[data-ui="glass"] .ci-card {
+  border: 0; border-radius: var(--g-radius-sm);
+  background: rgba(255, 255, 255, 0.04);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ci-tint) 55%, transparent);
+}
+html[data-ui="glass"] .ci-card:hover:not(.is-equipped) { box-shadow: inset 0 0 0 1px var(--ci-tint), 0 6px 16px rgba(0, 0, 0, 0.45); }
+html[data-ui="glass"] .ci-card.is-selected { box-shadow: inset 0 0 0 2px var(--g-accent); }
+html[data-ui="glass"] .ci-card.is-selected::after {
+  border: 0; border-radius: 50%; box-shadow: none;
+  background: var(--g-accent); color: var(--g-on-accent);
+}
+html[data-ui="glass"] .ci-art { background: #07090c; }
+html[data-ui="glass"] .ci-icon { border: 0; border-radius: 6px; background: var(--g-glass-2); box-shadow: inset 0 0 0 1px var(--g-line-2); }
+html[data-ui="glass"] .ci-tag {
+  clip-path: none; border-radius: var(--g-pill); background: var(--g-red); color: #fff;
+  font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase;
+}
+html[data-ui="glass"] .ci-body { background: none; }
+html[data-ui="glass"] .ci-name { font-family: var(--g-sans); font-weight: 600; color: var(--g-text); }
+html[data-ui="glass"] .ci-type {
+  border: 0; border-radius: var(--g-pill); background: rgba(255, 255, 255, 0.06); box-shadow: inset 0 0 0 1px var(--g-line);
+  font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.06em; color: var(--g-text);
+}
+html[data-ui="glass"] .ci-lv { font-family: var(--g-cond); color: var(--g-dim); }
+html[data-ui="glass"] .ci-hint { color: var(--g-dim); }
+html[data-ui="glass"] .ci-detail-name { font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.04em; color: var(--g-text); }
+html[data-ui="glass"] .ci-stat { font-family: var(--g-cond); color: var(--g-text); }
+html[data-ui="glass"] .ci-stat i { color: var(--g-faint); }
+
+/* dupe picker + jutsu replacement popup */
+html[data-ui="glass"] .dupe-modal-panel,
+html[data-ui="glass"] .jutsu-replacement-popup {
+  position: relative;
+  background: var(--g-glass-2); background-image: none;
+  -webkit-backdrop-filter: var(--g-blur); backdrop-filter: var(--g-blur);
+  border: 0; border-radius: var(--g-radius);
+  box-shadow: inset 0 0 0 1px var(--g-line), 0 24px 60px rgba(0, 0, 0, 0.6);
+  font-family: var(--g-sans);
+}
+html[data-ui="glass"] .jutsu-replacement-popup { min-height: 0; padding: 28px 28px 22px; }
+html[data-ui="glass"] .dupe-modal-panel::before,
+html[data-ui="glass"] .jutsu-replacement-popup::before {
+  content: ''; position: absolute; left: 14px; top: 0; width: 34px; height: 3px; border-radius: 2px; background: var(--g-accent);
+}
+html[data-ui="glass"] .dupe-modal-title,
+html[data-ui="glass"] .replacement-title {
+  font-family: var(--g-cond); font-weight: 500; font-size: 22px; letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--g-text); text-shadow: none;
+}
+html[data-ui="glass"] .replacement-message { font-family: var(--g-sans); font-size: 14px; color: var(--g-dim); }
+html[data-ui="glass"] .dupe-card,
+html[data-ui="glass"] .replacement-option {
+  border: 0; border-radius: var(--g-radius-sm);
+  background: rgba(255, 255, 255, 0.04);
+  box-shadow: inset 0 0 0 1px var(--g-line);
+}
+html[data-ui="glass"] .dupe-card:hover,
+html[data-ui="glass"] .replacement-option:hover {
+  background: rgba(255, 255, 255, 0.08); box-shadow: inset 0 0 0 1px var(--g-line-2);
+}
+html[data-ui="glass"] .dupe-card-portrait { border-radius: 6px; }
+html[data-ui="glass"] .dupe-card-level,
+html[data-ui="glass"] .replacement-option-name { font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.04em; color: var(--g-text); }
+html[data-ui="glass"] body.page-characters .btn-dark {
+  min-height: 40px; border: 0; border-image: none; border-radius: var(--g-pill);
+  background: var(--g-glass-2);
+  box-shadow: inset 0 0 0 1px var(--g-line-2);
+  font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--g-text); text-shadow: none;
+}
+
+/* skin picker (js/skin-picker.js) */
+html[data-ui="glass"] .skin-picker { background: rgba(2, 4, 6, 0.62); font-family: var(--g-sans); }
+html[data-ui="glass"] .skin-picker-panel {
+  background: var(--g-glass-2);
+  -webkit-backdrop-filter: var(--g-blur); backdrop-filter: var(--g-blur);
+  border: 0; border-radius: var(--g-radius);
+  box-shadow: inset 0 0 0 1px var(--g-line), 0 24px 60px rgba(0, 0, 0, 0.6);
+}
+html[data-ui="glass"] .skin-picker-panel::before {
+  top: 0; left: 14px; width: 34px; height: 3px; border: 0; border-radius: 2px; background: var(--g-accent);
+}
+html[data-ui="glass"] .skin-picker-panel::after { content: none; }
+html[data-ui="glass"] .skin-picker-head { border-bottom-color: var(--g-line); }
+html[data-ui="glass"] .skin-picker-title {
+  font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--g-text); text-shadow: none;
+}
+html[data-ui="glass"] .skin-picker-unit { color: var(--g-dim); }
+html[data-ui="glass"] .skin-picker-close {
+  border: 0; border-radius: 50%; background: var(--g-glass-2);
+  box-shadow: inset 0 0 0 1px var(--g-line-2); color: var(--g-text);
+}
+html[data-ui="glass"] .skin-picker-close:hover { background: var(--g-sel); color: var(--g-on-sel); }
+html[data-ui="glass"] .skin-opt {
+  border: 0; border-radius: var(--g-radius-sm);
+  background: rgba(255, 255, 255, 0.04); box-shadow: inset 0 0 0 1px var(--g-line);
+}
+html[data-ui="glass"] .skin-opt.is-worn { box-shadow: inset 0 0 0 1px var(--g-sel); }
+html[data-ui="glass"] .skin-opt-stage,
+html[data-ui="glass"] .skin-opt.is-worn .skin-opt-stage {
+  background: radial-gradient(ellipse at 50% 92%, rgba(0, 0, 0, 0.5) 0 18%, transparent 19%),
+    radial-gradient(circle at 50% 60%, rgba(255, 255, 255, 0.08), transparent 68%);
+}
+html[data-ui="glass"] .skin-opt-name { font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; color: var(--g-text); }
+html[data-ui="glass"] .skin-opt-note,
+html[data-ui="glass"] .skin-picker-hint { color: var(--g-faint); }
+html[data-ui="glass"] .skin-opt-btn {
+  border-image: none; border-radius: var(--g-pill);
+  background: var(--g-accent); color: var(--g-on-accent); text-shadow: none;
+  font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase;
+}
+html[data-ui="glass"] .skin-opt-btn:disabled {
+  border-image: none; background: rgba(14, 19, 24, 0.5); color: var(--g-faint); box-shadow: inset 0 0 0 1px var(--g-line);
+}
+html[data-ui="glass"] .skin-opt.is-worn .skin-opt-btn:disabled { border-image: none; background: var(--g-sel); color: var(--g-on-sel); box-shadow: none; }

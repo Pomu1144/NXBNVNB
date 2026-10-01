@@ -1,0 +1,228 @@
+/* css/glass/missions.css — Glass style for missions.html (Settings › Display).
+   Every rule is scoped to html[data-ui="glass"]; Classic is untouched.
+   Loaded right after css/ui-glass.css. */
+
+/* ── Page wash + main panel ─────────────────────────────────────── */
+html[data-ui="glass"] body.page-missions { font-family: var(--g-sans); color: var(--g-text); }
+html[data-ui="glass"] body.page-missions::after {
+  background: linear-gradient(180deg, rgba(4, 6, 8, 0.8) 0%, rgba(4, 6, 8, 0.4) 20%, rgba(4, 6, 8, 0.5) 80%, rgba(4, 6, 8, 0.85) 100%);
+}
+html[data-ui="glass"] body.page-missions .mission-page-container {
+  background: var(--g-glass);
+  -webkit-backdrop-filter: var(--g-blur); backdrop-filter: var(--g-blur);
+  border: 0; border-radius: var(--g-radius);
+  box-shadow: inset 0 0 0 1px var(--g-line), 0 14px 34px rgba(0, 0, 0, 0.35);
+}
+/* the corner brackets become the single yellow tick */
+html[data-ui="glass"] body.page-missions .mission-page-container::before {
+  top: 0; left: 14px; width: 22px; height: 2px; border: 0; border-radius: 2px; background: var(--g-accent);
+}
+html[data-ui="glass"] body.page-missions .mission-page-container::after { display: none; }
+
+/* ── Category tabs: dark segments, selected = white block ───────── */
+html[data-ui="glass"]:not(._g):not(._l):not(._s) body.page-missions .tab-btn {
+  border: 0; border-image: none; border-radius: var(--g-pill); filter: none;
+  background: var(--g-glass-2);
+  -webkit-backdrop-filter: var(--g-blur); backdrop-filter: var(--g-blur);
+  box-shadow: inset 0 0 0 1px var(--g-line);
+  font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--g-dim); text-shadow: none;
+}
+html[data-ui="glass"]:not(._g):not(._l):not(._s) body.page-missions .mission-tabs { gap: 4px; }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) body.page-missions .tab-btn:hover { color: var(--g-text); }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) body.page-missions .tab-btn.active {
+  background: var(--g-sel); color: var(--g-on-sel); box-shadow: none; font-weight: 500;
+}
+/* category colour: a short underline, kept as the only colour on the tab */
+html[data-ui="glass"]:not(._g):not(._l):not(._s) body.page-missions .tab-btn::after { bottom: 3px; height: 2px; opacity: 0.85; }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) body.page-missions .tab-btn.active::after { opacity: 0; }
+html[data-ui="glass"].is-mobile.is-landscape.is-compact:not(._g) body.page-missions .mission-tabs .tab-btn {
+  margin: 0 2px 0 0 !important; padding: 0 12px !important; font-size: 12px !important; height: 26px !important;
+}
+
+/* ── List well + head ──────────────────────────────────────────── */
+html[data-ui="glass"] body.page-missions .mission-list-container {
+  background: rgba(4, 6, 8, 0.32); border: 0; border-radius: var(--g-radius-sm);
+  box-shadow: inset 0 0 0 1px var(--g-line);
+  scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+}
+html[data-ui="glass"] body.page-missions .mission-list-head .mlh-count { color: var(--g-text); }
+
+/* ── Mission cards ─────────────────────────────────────────────── */
+html[data-ui="glass"] body.page-missions .mission-card {
+  border: 0; border-radius: var(--g-radius);
+  background: var(--g-glass-2);
+  box-shadow: inset 0 0 0 1px var(--g-line-2), 0 6px 18px rgba(0, 0, 0, 0.4);
+}
+html[data-ui="glass"] body.page-missions .mission-card::after {
+  content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  box-shadow: inset 0 0 0 1px var(--g-line-2);
+}
+html[data-ui="glass"] body.page-missions .mission-card:hover { filter: brightness(1.1); }
+html[data-ui="glass"] body.page-missions .mission-card:hover::after { box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.6); }
+html[data-ui="glass"] body.page-missions .mission-card:focus-visible { outline: 2px solid var(--g-sel); }
+html[data-ui="glass"] body.page-missions .mc-shade {
+  background:
+    linear-gradient(90deg, rgba(6, 8, 10, 0.88) 0%, rgba(6, 8, 10, 0.5) 38%, rgba(6, 8, 10, 0) 62%),
+    linear-gradient(0deg, rgba(6, 8, 10, 0.9) 0%, rgba(6, 8, 10, 0) 42%);
+}
+html[data-ui="glass"] body.page-missions .mc-kicker {
+  font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.12em; color: var(--g-dim);
+}
+html[data-ui="glass"] body.page-missions .mc-title {
+  font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.03em; text-transform: uppercase;
+  color: var(--g-text); text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+}
+html[data-ui="glass"] body.page-missions .mc-art .mc-medal {
+  border: 0; border-radius: var(--g-radius-sm);
+  box-shadow: 0 0 0 1px var(--g-line-2), 0 2px 8px rgba(0, 0, 0, 0.6);
+}
+/* banner cards: the UI strip under the art */
+html[data-ui="glass"] body.page-missions .mission-card--banner .mc-meta {
+  background: var(--g-glass-2); border-top: 1px solid var(--g-line);
+}
+html[data-ui="glass"] body.page-missions .mc-stat {
+  border: 0; border-radius: var(--g-pill);
+  background: rgba(255, 255, 255, 0.06); box-shadow: inset 0 0 0 1px var(--g-line);
+  font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.04em; color: var(--g-text); text-shadow: none;
+}
+html[data-ui="glass"] body.page-missions .ic-stamina,
+html[data-ui="glass"] body.page-missions .ic-power { background: var(--g-accent); }
+html[data-ui="glass"] body.page-missions .mc-pip.is-clear::after {
+  background-color: var(--g-accent); box-shadow: 0 0 0 1px var(--g-on-accent);
+}
+html[data-ui="glass"] body.page-missions .mission-lock-note {
+  font-family: var(--g-sans); font-weight: 600; color: var(--g-text); text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
+}
+html[data-ui="glass"] body.page-missions .mission-card.mission-locked .mc-title { color: var(--g-dim); }
+
+/* giant boss cards: a red hairline + a flat red tag, no glow */
+html[data-ui="glass"] body.page-missions .mission-card.mission-card--boss {
+  box-shadow: inset 0 0 0 1px rgba(255, 106, 90, 0.7), 0 6px 18px rgba(0, 0, 0, 0.45);
+}
+html[data-ui="glass"] body.page-missions .mission-card.mission-card--boss::after { box-shadow: inset 0 0 0 1px rgba(255, 106, 90, 0.7); }
+html[data-ui="glass"] body.page-missions .mission-card--boss .mc-kicker { color: var(--g-red); }
+html[data-ui="glass"] body.page-missions .mission-card--boss .mc-art::after {
+  border-radius: var(--g-pill); background: var(--g-red); color: var(--g-on-accent); box-shadow: none;
+  font-family: var(--g-cond); font-weight: 600; letter-spacing: 0.14em;
+}
+
+/* ── Detail sheet ──────────────────────────────────────────────── */
+html[data-ui="glass"] .mission-modal { font-family: var(--g-sans); color: var(--g-text); }
+html[data-ui="glass"] .mission-modal .md-backdrop {
+  background: rgba(2, 4, 6, 0.66);
+  -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px);
+}
+html[data-ui="glass"] .mission-modal .md-sheet.jjk-panel {
+  background: var(--g-glass-2);
+  box-shadow: inset 0 0 0 1px var(--g-line), 0 24px 60px rgba(0, 0, 0, 0.6);
+}
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .mission-modal .md-sheet.jjk-panel::before { width: 34px !important; height: 3px !important; z-index: 2; }
+html[data-ui="glass"] .mission-modal .md-close { top: 8px; right: 8px; width: 32px; height: 32px; }
+html[data-ui="glass"] .mission-modal .md-close img { width: 46%; }
+html[data-ui="glass"] .md-side,
+html[data-ui="glass"] .md-main { scrollbar-color: rgba(255, 255, 255, 0.3) transparent; }
+html[data-ui="glass"] .md-main { padding-right: 42px; }
+html[data-ui="glass"] .md-hero { border: 0; border-radius: var(--g-radius-sm); box-shadow: inset 0 0 0 1px var(--g-line-2); }
+html[data-ui="glass"] .md-hero::after {
+  content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  box-shadow: inset 0 0 0 1px var(--g-line-2);
+}
+html[data-ui="glass"] .md-desc { font-family: var(--g-sans); color: var(--g-dim); }
+html[data-ui="glass"] .md-label {
+  font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.12em; color: var(--g-dim);
+}
+
+/* rank selector: dark glass buttons, the selected rank is a white block */
+html[data-ui="glass"] .md-ranks { gap: 4px; }
+html[data-ui="glass"] .md-rank {
+  border: 0; border-image: none; border-radius: var(--g-pill); filter: none;
+  background: var(--g-glass);
+  box-shadow: inset 0 0 0 1px var(--g-line-2);
+  font-family: var(--g-cond); color: var(--g-text);
+}
+html[data-ui="glass"] .md-rank:hover { box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.5); }
+html[data-ui="glass"] .md-rank.active { background: var(--g-sel); color: var(--g-on-sel); box-shadow: none; }
+html[data-ui="glass"] .md-rank-letter {
+  border: 0; border-radius: 50%;
+  background: rgba(8, 10, 12, 0.85);
+  box-shadow: inset 0 0 0 1px var(--g-line);
+}
+html[data-ui="glass"] .md-rank.active .md-rank-letter { border: 0; box-shadow: none; background: var(--g-on-sel); }
+html[data-ui="glass"] .md-rank-name {
+  font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; text-shadow: none;
+}
+html[data-ui="glass"] .md-rank.is-clear .md-rank-letter::after {
+  border-radius: 50%; background-color: var(--g-accent); box-shadow: 0 0 0 1px var(--g-on-accent);
+}
+html[data-ui="glass"] .md-rank.is-locked { filter: none; opacity: 0.62; }
+html[data-ui="glass"] .md-rank.is-locked .md-rank-letter { background: rgba(8, 10, 12, 0.85); }
+
+/* reward blocks + tiles */
+html[data-ui="glass"] .md-rw-block {
+  border: 0; border-radius: var(--g-radius-sm);
+  background: rgba(255, 255, 255, 0.035); box-shadow: inset 0 0 0 1px var(--g-line);
+}
+html[data-ui="glass"] .md-none { color: var(--g-faint); }
+html[data-ui="glass"] .mr-tile img {
+  border: 0; border-radius: var(--g-radius-sm);
+  background: rgba(8, 10, 12, 0.7); box-shadow: inset 0 0 0 1px var(--g-line);
+  outline: 1px solid var(--g-line-2); outline-offset: -1px;
+}
+html[data-ui="glass"] .mr-tile.is-unit img { outline-color: rgba(255, 255, 255, 0.55); box-shadow: none; }
+html[data-ui="glass"] .mr-tile b {
+  border-radius: var(--g-pill); font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.02em;
+  color: var(--g-text); background: rgba(6, 8, 10, 0.88); text-shadow: none;
+}
+html[data-ui="glass"] .mr-tile small { font-family: var(--g-sans); color: var(--g-dim); }
+/* guaranteed boss drop: yellow edge (a gain), no glow */
+html[data-ui="glass"] .md-boss-drop.is-sure img { outline: 2px solid var(--g-accent); outline-offset: -1px; box-shadow: none; }
+html[data-ui="glass"] .md-boss-drop.is-sure b { color: var(--g-accent); }
+
+/* Start: the one yellow block */
+html[data-ui="glass"] .md-go { background: linear-gradient(180deg, rgba(10, 13, 17, 0), rgba(10, 13, 17, 0.96) 30%); }
+html[data-ui="glass"] .md-go .mission-lock-note { color: var(--g-red); text-shadow: none; }
+html[data-ui="glass"] body.page-missions .start-btn {
+  border: 0; border-image: none; border-radius: var(--g-pill);
+  background: var(--g-accent); color: var(--g-on-accent); text-shadow: none;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+  font-family: var(--g-cond); font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+}
+html[data-ui="glass"] body.page-missions .start-btn:disabled {
+  background: rgba(14, 19, 24, 0.5); color: var(--g-faint); box-shadow: inset 0 0 0 1px var(--g-line);
+}
+html[data-ui="glass"] body.page-missions .md-story-btn {
+  border: 0; border-radius: var(--g-pill); clip-path: none;
+  background: var(--g-glass-2); box-shadow: inset 0 0 0 1px var(--g-line-2);
+  color: var(--g-text);
+  font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase;
+}
+
+/* stage rows */
+html[data-ui="glass"] .md-stage {
+  border: 0; border-radius: var(--g-radius-sm);
+  background: var(--g-glass); box-shadow: inset 0 0 0 1px var(--g-line);
+}
+html[data-ui="glass"] .md-stage.is-boss-stage {
+  background: linear-gradient(90deg, rgba(255, 106, 90, 0.12), rgba(14, 19, 24, 0.66) 45%);
+  box-shadow: inset 2px 0 0 var(--g-red), inset 0 0 0 1px var(--g-line);
+}
+html[data-ui="glass"] .md-stage-no {
+  border: 0; border-radius: 50%;
+  background: rgba(255, 255, 255, 0.07); box-shadow: inset 0 0 0 1px var(--g-line-2);
+  font-family: var(--g-cond); font-weight: 500; color: var(--g-text);
+}
+html[data-ui="glass"] .md-stage-title { font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.03em; }
+html[data-ui="glass"] .md-stage-title em {
+  border-radius: var(--g-pill); font-family: var(--g-cond); font-weight: 600;
+  background: var(--g-red); color: var(--g-on-accent);
+}
+html[data-ui="glass"] .md-stage-sub { color: var(--g-dim); }
+html[data-ui="glass"] .md-foe img { border: 0; border-radius: var(--g-radius-sm); outline: 1px solid var(--g-line-2); outline-offset: -1px; }
+html[data-ui="glass"] .md-foe.is-boss img { border: 0; outline: 2px solid var(--g-red); outline-offset: -2px; box-shadow: none; }
+html[data-ui="glass"] .md-foe b { border-radius: var(--g-pill); font-family: var(--g-cond); font-weight: 500; }
+
+@media (max-height: 540px) {
+  html[data-ui="glass"] .mission-modal .md-close { top: 6px; right: 6px; width: 28px; height: 28px; }
+  html[data-ui="glass"] .md-main { padding-right: 34px; }
+}

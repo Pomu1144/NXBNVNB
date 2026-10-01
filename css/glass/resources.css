@@ -1,0 +1,113 @@
+/* css/glass/resources.css — Glass style for resources.html (Resources &
+   Materials list). Loaded right after css/ui-glass.css; every rule is scoped
+   to html[data-ui="glass"]. Tokens: css/ui-glass.css.
+
+   The page has no .jjk-page-header, so in Glass its own markup is turned
+   into one with CSS only: the "Back to Main Menu" link at the bottom becomes
+   the round back button at the top-left, and .page-title becomes the
+   condensed title with the yellow bar, both placed where the shared header
+   sits on every other page. */
+
+html[data-ui="glass"] body.page-resources {
+  background:
+    radial-gradient(ellipse at 50% 35%, rgba(24, 40, 48, 0.25), rgba(3, 5, 7, 0.9) 78%),
+    url('../../assets/ui/jjk/ink_bg.webp') center / cover fixed no-repeat,
+    #07090b;
+  font-family: var(--g-sans);
+  color: var(--g-text);
+  padding-top: calc(var(--jjk-header-h, 78px) - 4px);
+}
+
+/* ── Header: back button + title (same metrics as .jjk-page-header) ─── */
+html[data-ui="glass"] body.page-resources .back-button {
+  position: absolute; z-index: 900; top: 12px; left: 16px;
+  width: 40px; height: 40px; margin: 0; padding: 0;
+  border: 0; border-radius: 50%;
+  background: var(--g-glass-2);
+  -webkit-backdrop-filter: var(--g-blur); backdrop-filter: var(--g-blur);
+  box-shadow: inset 0 0 0 1px var(--g-line-2);
+  font-size: 0; color: transparent; overflow: hidden;
+  transform: none;
+}
+html[data-ui="glass"] body.page-resources .back-button::before {
+  content: ''; position: absolute; inset: 0;
+  background: url('../../assets/ui/jjk/back_arrow.webp') center / 46% auto no-repeat;
+  filter: grayscale(1) brightness(1.6);
+}
+html[data-ui="glass"] body.page-resources .back-button:hover {
+  background: var(--g-glass-hi); transform: none; filter: brightness(1.08);
+}
+html[data-ui="glass"] body.page-resources .page-title {
+  position: absolute; z-index: 900; top: 12px; left: calc(16px + 40px + 12px);
+  height: 40px; margin: 0; padding: 0 0 0 12px;
+  display: flex; align-items: center;
+  font-family: var(--g-cond); font-weight: 500; font-size: 26px; letter-spacing: 0.04em; line-height: 1;
+  text-transform: uppercase; text-align: left;
+  color: var(--g-text); text-shadow: 0 2px 12px rgba(0, 0, 0, 0.7);
+}
+html[data-ui="glass"] body.page-resources .page-title::before {
+  content: ''; position: absolute; left: 0; top: calc(50% - 0.35em); bottom: calc(50% - 0.35em); width: 3px; background: var(--g-accent);
+}
+
+/* ── Category panels ────────────────────────────────────────────────── */
+html[data-ui="glass"] body.page-resources .resource-category,
+html[data-ui="glass"] body.page-resources .dev-controls {
+  position: relative;
+  background: var(--g-glass);
+  -webkit-backdrop-filter: var(--g-blur); backdrop-filter: var(--g-blur);
+  border: 0; border-radius: var(--g-radius);
+  box-shadow: inset 0 0 0 1px var(--g-line), 0 14px 34px rgba(0, 0, 0, 0.3);
+}
+html[data-ui="glass"] body.page-resources .resource-category::before {
+  content: ''; position: absolute; left: 14px; top: 0; width: 22px; height: 2px; border-radius: 2px; background: var(--g-accent);
+}
+html[data-ui="glass"] body.page-resources .category-title {
+  display: flex; align-items: center; gap: 10px;
+  font-family: var(--g-cond); font-weight: 500; font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--g-dim);
+}
+html[data-ui="glass"] body.page-resources .category-title::after {
+  content: ''; flex: 1; height: 1px; background: var(--g-line);
+}
+
+/* ── Rows ───────────────────────────────────────────────────────────── */
+html[data-ui="glass"] body.page-resources .resource-item {
+  background: rgba(255, 255, 255, 0.035);
+  border: 0; border-radius: var(--g-radius-sm);
+  box-shadow: inset 0 0 0 1px var(--g-line);
+}
+html[data-ui="glass"] body.page-resources .resource-name {
+  font-family: var(--g-sans); font-weight: 600; color: var(--g-text);
+}
+html[data-ui="glass"] body.page-resources .resource-desc {
+  font-family: var(--g-sans); font-style: normal; color: var(--g-faint);
+}
+html[data-ui="glass"] body.page-resources .resource-amount {
+  font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.03em; color: var(--g-text);
+}
+
+/* Developer controls (only with ?dev=1) */
+html[data-ui="glass"] body.page-resources .dev-controls h3 {
+  font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; font-size: 14px; color: var(--g-dim);
+}
+html[data-ui="glass"] body.page-resources .dev-button {
+  border: 0; border-radius: var(--g-pill);
+  background: var(--g-glass-2); box-shadow: inset 0 0 0 1px var(--g-line-2);
+  font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--g-text);
+}
+html[data-ui="glass"] body.page-resources .dev-button:hover { background: var(--g-sel); color: var(--g-on-sel); transform: none; }
+
+/* ── Phones (landscape) ─────────────────────────────────────────────── */
+html[data-ui="glass"].is-mobile.is-landscape.is-compact body.page-resources {
+  padding-top: calc(var(--jjk-header-h, 50px) + env(safe-area-inset-top, 0px));
+}
+html[data-ui="glass"].is-mobile.is-landscape.is-compact body.page-resources .back-button {
+  top: calc(6px + env(safe-area-inset-top, 0px)); left: max(10px, env(safe-area-inset-left, 0px));
+  width: 32px; height: 32px;
+}
+html[data-ui="glass"].is-mobile.is-landscape.is-compact body.page-resources .page-title {
+  top: calc(6px + env(safe-area-inset-top, 0px)); left: calc(max(10px, env(safe-area-inset-left, 0px)) + 32px + 12px);
+  height: 32px; padding-left: 10px; font-size: 19px; letter-spacing: 0.04em;
+}
+html[data-ui="glass"].is-mobile.is-landscape.is-compact body.page-resources .category-title { font-size: 12px; }
+html[data-ui="glass"].is-mobile.is-landscape.is-compact body.page-resources .resource-amount { font-size: 17px; }

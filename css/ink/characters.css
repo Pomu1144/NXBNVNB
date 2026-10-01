@@ -1,0 +1,399 @@
+/* css/ink/characters.css — Ink style for characters.html (Shinobi roster,
+   the unit dossier modal, its tabs and pickers). Ink is a skin on top of
+   Glass (css/glass/characters.css still applies); these rules re-lay it out
+   in the reference look: charcoal ink wash, the art as the hero, serif names
+   with tiny Cinzel captions, hairline rows, a cream paper slip for the one
+   main action. Scope: html[data-skin="ink"]; I! = …:not(._g):not(._l):not(._s)
+   beats the long !important selectors of css/mobile.css. */
+
+html[data-skin="ink"] body.page-characters .jjk-page-header .jjk-title-plate { text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8); }
+html[data-skin="ink"] body.page-characters #char-bg { background: none; filter: none; }
+
+/* ── Roster grid: right of the rail, full height ─────────────────────── */
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-characters .char-content {
+  min-height: 100vh; box-sizing: border-box;
+  padding: calc(var(--jjk-header-h) + 6px) max(22px, var(--safe-r, 0px)) 28px calc(var(--ink-rail-w) + 26px) !important;
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-characters .char-grid {
+  grid-template-columns: repeat(auto-fill, minmax(132px, 156px)) !important;
+  justify-content: start !important; gap: 14px !important; padding: 14px 0 0 !important;
+  border-top: 1px solid var(--g-line);
+}
+html[data-skin="ink"] body.page-characters .char-grid .char-slot {
+  border: 0; border-radius: 2px;
+  background: linear-gradient(180deg, rgba(20, 19, 17, 0.75), rgba(10, 10, 11, 0.85));
+  -webkit-backdrop-filter: none; backdrop-filter: none;
+  box-shadow: inset 0 0 0 1px var(--g-line);
+  transition: box-shadow 0.15s, background 0.15s;
+}
+html[data-skin="ink"] body.page-characters .char-grid .char-slot:hover,
+html[data-skin="ink"] body.page-characters .char-grid .char-slot:focus-visible {
+  outline: 0;
+  background: linear-gradient(0deg, rgba(201, 162, 78, 0.22), rgba(20, 19, 17, 0.75) 60%);
+  box-shadow: inset 0 0 0 1px var(--g-line-2), inset 0 -2px 0 var(--g-accent);
+}
+html[data-skin="ink"] body.page-characters .char-grid .char-card-level {
+  border: 0; border-radius: 0; background: none;
+  box-shadow: inset 0 1px 0 var(--g-line);
+  font-family: var(--ink-jp); font-weight: 600; font-size: 15px; letter-spacing: 0.06em;
+  color: var(--g-text);
+}
+html[data-skin="ink"] body.page-characters .char-grid .char-card-level .lv {
+  font-family: var(--ink-cinzel); font-size: 9px; letter-spacing: 0.24em; color: var(--g-dim);
+}
+
+/* ══ Dossier modal ═════════════════════════════════════════════════════
+   Full-bleed sheet: art bleeds off the left edge into a charcoal wash,
+   the record sits on the right in hairline rows. */
+html[data-skin="ink"] body.page-characters #char-modal {
+  background:
+    linear-gradient(90deg, rgba(9, 9, 10, 0.55), rgba(9, 9, 10, 0.97) 52%),
+    url('../../assets/ui/ink/bg.webp') 30% 40% / cover no-repeat,
+    #0a0a0b;
+  -webkit-backdrop-filter: none; backdrop-filter: none;
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-characters .char-modal-panel {
+  grid-template-columns: minmax(0, 46fr) minmax(0, 54fr) !important;
+  gap: 0 !important;
+  width: 100vw !important; height: var(--app-vh, 100vh) !important; max-height: none !important;
+  padding: 0 !important;
+  border: 0; border-radius: 0; background: none;
+  -webkit-backdrop-filter: none; backdrop-filter: none; box-shadow: none;
+}
+html[data-skin="ink"] body.page-characters .char-modal-panel::before,
+html[data-skin="ink"] body.page-characters .char-modal-panel::after { content: none; }
+
+/* art: no frame, bigger, feathered into the wash on the right and bottom */
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-characters .char-modal-art {
+  margin: 0 !important; border: 0; outline: 0; border-radius: 0; box-shadow: none;
+  background: none; overflow: hidden;
+}
+html[data-skin="ink"] body.page-characters .char-modal-art::before {
+  inset: -40px; filter: blur(28px) brightness(0.32) saturate(0.7);
+  -webkit-mask-image: linear-gradient(90deg, #000 40%, transparent 95%); mask-image: linear-gradient(90deg, #000 40%, transparent 95%);
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-characters #char-modal-img {
+  top: 47%; left: -6%; right: auto; width: 112%; max-height: none !important; padding: 0 !important;
+  -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 7%, #000 84%, transparent 100%);
+  mask-image: linear-gradient(180deg, transparent 0, #000 7%, #000 84%, transparent 100%);
+  filter: drop-shadow(0 16px 30px rgba(0, 0, 0, 0.6));
+}
+html[data-skin="ink"] body.page-characters .char-modal-art::after {
+  box-shadow: none;
+  background:
+    linear-gradient(90deg, transparent 62%, rgba(9, 9, 10, 0.92) 100%),
+    linear-gradient(0deg, rgba(9, 9, 10, 0.95) 0%, rgba(9, 9, 10, 0.4) 20%, transparent 38%),
+    linear-gradient(180deg, rgba(9, 9, 10, 0.55), transparent 18%);
+}
+/* latent ability seals: a thin column of square hairline keys */
+html[data-skin="ink"] body.page-characters .char-modal-art .passive-icons-right { top: 18px; right: 18px; gap: 6px; }
+html[data-skin="ink"] body.page-characters .char-modal-art .passive-icon {
+  width: 34px; height: 34px; padding: 3px; border: 0; border-radius: 2px;
+  background: rgba(9, 9, 10, 0.72); box-shadow: inset 0 0 0 1px var(--g-line-2);
+}
+/* power: a caption over a serif figure, a gold hairline on its left */
+html[data-skin="ink"] body.page-characters #char-power-holder-container { left: 28px; right: 28px; bottom: 22px; }
+html[data-skin="ink"] .cm-power {
+  clip-path: none !important; border-radius: 0; gap: 8px;
+  padding: 2px 14px 2px 4px !important; background: none;
+  -webkit-backdrop-filter: none; backdrop-filter: none;
+  box-shadow: inset 2px 0 0 var(--g-accent);
+}
+html[data-skin="ink"] .cm-power-txt small { font-family: var(--ink-cinzel); font-size: 9px; letter-spacing: 0.34em; color: var(--g-dim); }
+html[data-skin="ink"] .cm-power-txt b { font-family: var(--ink-jp); font-weight: 600; font-size: 26px; letter-spacing: 0.06em; color: #fff7e2; text-shadow: 0 2px 10px #000; }
+/* skins: square hairline key */
+html[data-skin="ink"] body.page-characters .skin-btn {
+  border-radius: 2px; background: rgba(9, 9, 10, 0.72); -webkit-backdrop-filter: none; backdrop-filter: none;
+  box-shadow: inset 0 0 0 1px var(--g-line-2);
+  font-family: var(--ink-cinzel); font-weight: 600; font-size: 11px; letter-spacing: 0.22em;
+}
+html[data-skin="ink"] body.page-characters .skin-btn:hover { background: var(--g-sel); color: var(--g-on-sel); }
+html[data-skin="ink"] body.page-characters .skin-btn-count { border-radius: 0; font-family: var(--ink-cinzel); }
+
+/* record column: no card, just type and hairlines */
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-characters .char-modal-info {
+  position: relative; margin: 0 !important;
+  padding: max(26px, var(--safe-t, 0px)) max(34px, var(--safe-r, 0px)) 18px 14px !important;
+}
+html[data-skin="ink"] body.page-characters .char-modal-info::before { content: none; }
+
+/* name: serif display, Cinzel caption, a dossier kicker above */
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-characters .char-modal-info .nameplate {
+  margin: 0 !important; padding: 0 96px 12px 0 !important; min-height: 0 !important; max-width: none !important;
+  align-items: flex-end;
+}
+html[data-skin="ink"] body.page-characters .nameplate::before { content: none; }
+html[data-skin="ink"] body.page-characters .nameplate::after {
+  background: linear-gradient(90deg, var(--g-line-2), var(--g-line) 60%, transparent);
+}
+html[data-skin="ink"] body.page-characters .nameplate-main::before {
+  content: '忍者記録  ·  Shinobi record'; display: block; margin-bottom: 6px;
+  font-family: var(--ink-cinzel); font-size: 9px; letter-spacing: 0.34em; text-transform: uppercase; color: var(--g-accent);
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-characters .nameplate-name {
+  font-family: var(--ink-jp) !important; font-weight: 600; font-size: 36px !important; line-height: 1.1;
+  letter-spacing: 0.08em; text-transform: none; color: #fff7e2;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.8);
+}
+html[data-skin="ink"] body.page-characters .nameplate-sub { gap: 10px; margin-top: 6px; align-items: center; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-characters .nameplate-version {
+  margin-top: 0; font-family: var(--ink-cinzel) !important; font-size: 10px !important; font-weight: 400;
+  letter-spacing: 0.3em; text-transform: uppercase; color: var(--g-dim);
+}
+html[data-skin="ink"] .cx-elem-orb { width: 20px; height: 20px; filter: drop-shadow(0 1px 2px #000); }
+html[data-skin="ink"] body.page-characters .nameplate-stars { --bz-star-size: 18px; margin-bottom: 4px; filter: sepia(0.25); }
+
+/* tabs: Japanese label + Cinzel word; the open one gets the rail's gold bar */
+html[data-skin="ink"] body.page-characters .char-modal-info .char-tabs { gap: 2px; padding: 12px 0 0; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-characters .char-modal-info .char-tabs .tab-btn {
+  position: relative; flex: 0 0 auto !important; height: 38px !important; padding: 0 18px 0 14px !important;
+  display: inline-flex; align-items: center; gap: 8px;
+  border-radius: 0; background: none; box-shadow: none;
+  font-family: var(--ink-cinzel); font-weight: 400; font-size: 10.5px !important; letter-spacing: 0.24em; text-transform: uppercase;
+  color: var(--g-faint);
+}
+html[data-skin="ink"] body.page-characters .char-modal-info .char-tabs .tab-btn::before {
+  content: ''; position: static; width: auto; height: auto; margin: 0; transform: none; box-shadow: none; background: none;
+  font-family: var(--ink-jp); font-size: 15px; font-weight: 600; letter-spacing: 0.08em; text-transform: none; color: var(--g-dim);
+}
+html[data-skin="ink"] body.page-characters .char-modal-info .char-tabs .tab-btn[data-tab="status"]::before { content: '能力'; }
+html[data-skin="ink"] body.page-characters .char-modal-info .char-tabs .tab-btn[data-tab="awakening"]::before { content: '覚醒'; }
+html[data-skin="ink"] body.page-characters .char-modal-info .char-tabs .tab-btn[data-tab="skills"]::before { content: '忍術'; }
+html[data-skin="ink"] body.page-characters .char-modal-info .char-tabs .tab-btn[data-tab="support"]::before { content: '秘伝'; }
+html[data-skin="ink"] body.page-characters .char-modal-info .char-tabs .tab-btn::after { content: none; }
+html[data-skin="ink"] body.page-characters .char-modal-info .char-tabs .tab-btn:hover { color: var(--g-text); }
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-characters .char-modal-info .char-tabs .tab-btn.is-active {
+  color: #fff6dc; font-weight: 600;
+  background: linear-gradient(90deg, rgba(201, 162, 78, 0.34), rgba(201, 162, 78, 0.06) 80%, transparent);
+  box-shadow: inset 2px 0 0 var(--g-accent), inset 0 1px 0 rgba(226, 204, 150, 0.3), inset 0 -1px 0 rgba(226, 204, 150, 0.3);
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-characters .char-modal-info .char-tabs .tab-btn.is-active::before {
+  position: static !important; width: auto !important; height: auto !important; margin: 0 !important; transform: none; box-shadow: none; background: none; color: #fff6dc;
+}
+html[data-skin="ink"] .cx-perf { height: 10px; }
+html[data-skin="ink"] .cx-perf::before { left: 0; right: 0; background: var(--g-line); }
+
+/* panels */
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-characters .char-modal-info .tab-panels {
+  padding: 8px 10px 6px 0 !important; scrollbar-color: var(--g-line-2) transparent;
+}
+html[data-skin="ink"] body.page-characters .tab-panels::-webkit-scrollbar-thumb { background: var(--g-line-2); border-radius: 0; }
+html[data-skin="ink"] .cx-kicker,
+html[data-skin="ink"] body.page-characters .materials-title {
+  display: flex; align-items: center; gap: 12px; border-bottom: 0; padding-bottom: 6px;
+  font-family: var(--ink-cinzel); font-weight: 600; font-size: 9.5px; letter-spacing: 0.36em; color: var(--g-accent);
+}
+html[data-skin="ink"] .cx-kicker::after { content: ''; order: 1; flex: 1; height: 1px; background: linear-gradient(90deg, var(--g-line-2), transparent); }
+html[data-skin="ink"] .cx-kicker .cx-count { order: 2; font-family: var(--ink-cinzel); }
+
+/* Status: hairline rows — Cinzel label left, serif figure right */
+html[data-skin="ink"] .cx-stat {
+  grid-template-columns: 22px minmax(0, 1fr) auto; gap: 12px; padding: 9px 0;
+  border-bottom: 1px solid var(--g-line);
+}
+html[data-skin="ink"] .cx-stat-ico { width: 22px; height: 22px; background: none; box-shadow: none; }
+html[data-skin="ink"] .cx-stat-ico img { width: 20px; height: 20px; filter: grayscale(0.35) sepia(0.2); }
+html[data-skin="ink"] .cx-stat-label { font-family: var(--ink-cinzel); font-weight: 400; font-size: 11px; letter-spacing: 0.26em; color: var(--g-dim); }
+html[data-skin="ink"] .cx-stat-val { font-family: var(--ink-jp); font-weight: 600; font-size: 24px; letter-spacing: 0.04em; color: #fff7e2; }
+html[data-skin="ink"] .cx-minors { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 28px; padding: 2px 0 0; }
+html[data-skin="ink"] .cx-minor,
+html[data-skin="ink"] .cx-minor:first-child {
+  flex-direction: row; align-items: center; justify-content: space-between; gap: 8px;
+  padding: 7px 0; border-bottom: 1px solid var(--g-line);
+}
+html[data-skin="ink"] .cx-minor + .cx-minor { border-left: 0; }
+html[data-skin="ink"] .cx-minor span { font-family: var(--ink-cinzel); font-weight: 400; font-size: 9.5px; letter-spacing: 0.22em; color: var(--g-faint); }
+html[data-skin="ink"] .cx-minor b { font-family: var(--ink-jp); font-weight: 600; font-size: 15px; color: var(--g-text); }
+html[data-skin="ink"] .cx-equip-tag { font-family: var(--ink-cinzel); font-weight: 400; letter-spacing: 0.28em; color: var(--g-faint); }
+html[data-skin="ink"] body.page-characters .cx-gear { border-radius: 2px; box-shadow: inset 0 0 0 1px var(--g-line-2); }
+html[data-skin="ink"] body.page-characters .cx-gear span { font-family: var(--ink-cinzel); }
+
+/* Ninjutsu */
+html[data-skin="ink"] .cx-stub + .cx-stub::before { background: var(--g-line); }
+html[data-skin="ink"] .cx-chip { border-radius: 0; font-family: var(--ink-cinzel); font-size: 8.5px; letter-spacing: 0.24em; }
+html[data-skin="ink"] .cx-stub-name { font-family: var(--ink-jp); font-weight: 600; letter-spacing: 0.04em; color: #fff7e2; }
+html[data-skin="ink"] .cx-facts b,
+html[data-skin="ink"] .cx-chakra b { font-family: var(--ink-jp); font-weight: 600; }
+html[data-skin="ink"] .cx-lock { font-family: var(--ink-cinzel); letter-spacing: 0.24em; }
+html[data-skin="ink"] .cx-play { border-radius: 2px; background: rgba(9, 9, 10, 0.6); box-shadow: inset 0 0 0 1px var(--g-line-2); }
+
+/* Passives */
+html[data-skin="ink"] .cx-pas { border-bottom-color: var(--g-line); }
+html[data-skin="ink"] .cx-pas-name { font-family: var(--ink-jp); font-weight: 600; letter-spacing: 0.04em; color: #fff7e2; }
+html[data-skin="ink"] .cx-seal, html[data-skin="ink"] .cx-seal--buddy { border-radius: 2px; }
+
+/* Awakening: level readout, growth actions (cream slip = the next step) */
+html[data-skin="ink"] body.page-characters .level-badge {
+  border-radius: 0; padding: 4px 14px 4px 10px; background: none;
+  box-shadow: inset 2px 0 0 var(--g-accent);
+}
+html[data-skin="ink"] body.page-characters .level-badge .lv { font-family: var(--ink-cinzel); font-size: 10px; letter-spacing: 0.3em; }
+html[data-skin="ink"] body.page-characters #status-level { font-family: var(--ink-jp); font-weight: 600; font-size: 24px; }
+html[data-skin="ink"] body.page-characters .level-badge .cap-sep,
+html[data-skin="ink"] body.page-characters #status-cap { font-family: var(--ink-jp); }
+html[data-skin="ink"] body.page-characters .tip-line:not(:empty)::before { width: 14px; height: 1px; background: var(--g-accent); }
+html[data-skin="ink"] body.page-characters .growth-btn {
+  border-radius: 0; background: rgba(9, 9, 10, 0.55); box-shadow: inset 0 0 0 1px var(--g-line-2);
+  font-family: var(--g-sans); font-weight: 500; font-size: 13px; letter-spacing: 0.08em; text-transform: none; color: var(--g-text);
+  -webkit-backdrop-filter: none; backdrop-filter: none;
+}
+html[data-skin="ink"] body.page-characters .growth-btn:hover:not(:disabled) { filter: none; box-shadow: inset 0 0 0 1px var(--g-accent); }
+html[data-skin="ink"] body.page-characters #btn-levelup:not(:disabled),
+html[data-skin="ink"] body.page-characters #btn-awaken:not(:disabled),
+html[data-skin="ink"] body.page-characters #btn-limitbreak:not(:disabled) {
+  background: linear-gradient(180deg, #f3ead2, #e2d4ae); color: var(--g-on-accent);
+  box-shadow: inset 0 0 0 1px rgba(120, 96, 40, 0.5), 0 8px 20px rgba(0, 0, 0, 0.4);
+  font-style: italic; font-weight: 700; letter-spacing: 0.04em;
+}
+html[data-skin="ink"] body.page-characters .growth-buttons:has(#btn-awaken:not(:disabled)) #btn-levelup:not(:disabled),
+html[data-skin="ink"] body.page-characters .growth-buttons:has(#btn-awaken:not(:disabled)) #btn-limitbreak:not(:disabled),
+html[data-skin="ink"] body.page-characters .growth-buttons:has(#btn-limitbreak:not(:disabled)) #btn-levelup:not(:disabled) {
+  background: rgba(9, 9, 10, 0.55); color: var(--g-text); box-shadow: inset 0 0 0 1px var(--g-line-2); font-style: normal; font-weight: 500;
+}
+html[data-skin="ink"] body.page-characters .growth-btn:disabled { background: transparent; color: var(--g-faint); box-shadow: inset 0 0 0 1px var(--g-line); }
+html[data-skin="ink"] body.page-characters .limitbreak-info { border-radius: 0; background: linear-gradient(90deg, rgba(217, 96, 79, 0.1), transparent 70%); box-shadow: inset 2px 0 0 var(--g-red); }
+html[data-skin="ink"] body.page-characters .lb-level { font-family: var(--ink-cinzel); letter-spacing: 0.22em; }
+html[data-skin="ink"] body.page-characters .material-amount,
+html[data-skin="ink"] body.page-characters .material-amount b { font-family: var(--ink-jp); }
+
+/* Close: a small square key in the top-right corner of the record */
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-characters .char-modal-info .char-modal-actions {
+  position: absolute; top: max(22px, var(--safe-t, 0px)); right: max(30px, var(--safe-r, 0px)); margin: 0 !important; z-index: 6;
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-characters .char-close-btn.jjk-btn {
+  width: auto !important; min-width: 0; height: 32px !important; padding: 0 14px 0 12px !important;
+  display: inline-flex; align-items: center; gap: 8px;
+  border-radius: 0; background: rgba(9, 9, 10, 0.6); box-shadow: inset 0 0 0 1px var(--g-line-2);
+  font-family: var(--ink-cinzel); font-weight: 600; font-size: 10.5px !important; letter-spacing: 0.26em; text-transform: uppercase;
+  color: var(--g-text); filter: none;
+}
+html[data-skin="ink"] body.page-characters .char-close-btn.jjk-btn::before { content: '×'; font-family: var(--g-sans); font-size: 17px; letter-spacing: 0; line-height: 1; }
+html[data-skin="ink"] body.page-characters .char-close-btn.jjk-btn:hover { background: var(--g-sel); color: var(--g-on-sel); }
+
+/* ── Phone landscape ──────────────────────────────────────────────── */
+html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compact body.page-characters .char-content {
+  padding: calc(var(--jjk-header-h) - 4px) max(12px, var(--safe-r, 0px)) 16px calc(var(--ink-rail-w) + 14px) !important;
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compact body.page-characters .char-grid {
+  grid-template-columns: repeat(auto-fill, minmax(88px, 1fr)) !important; gap: 8px !important; padding-top: 8px !important;
+}
+html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-characters .char-grid .char-card-level { font-size: 12px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-characters .char-grid .char-card-level .lv { font-size: 7.5px; }
+
+html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compact body.page-characters .char-modal-panel {
+  grid-template-columns: minmax(0, 40fr) minmax(0, 60fr) !important;
+}
+html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-characters .char-modal-art .passive-icons-right { top: 8px; right: 6px; gap: 3px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-characters .char-modal-art .passive-icon { width: 24px; height: 24px; padding: 2px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-characters #char-power-holder-container { left: calc(12px + var(--safe-l, 0px)); right: 10px; bottom: 10px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact .cm-power { padding: 1px 10px 1px 2px !important; gap: 4px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact .cm-power-txt small { font-size: 6.5px; letter-spacing: 0.3em; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact .cm-power-txt b { font-size: 17px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-characters .skin-btn { font-size: 8.5px; letter-spacing: 0.18em; }
+
+html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compact body.page-characters .char-modal-info {
+  padding: max(10px, var(--safe-t, 0px)) max(14px, var(--safe-r, 0px)) 6px 8px !important;
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compact body.page-characters .char-modal-info .nameplate {
+  padding: 0 74px 6px 0 !important; gap: 8px;
+}
+html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-characters .nameplate-main::before { font-size: 6.5px; margin-bottom: 2px; letter-spacing: 0.3em; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compact body.page-characters .nameplate-name { font-size: 21px !important; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compact body.page-characters .nameplate-version { font-size: 7.5px !important; letter-spacing: 0.24em; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-characters .nameplate-sub { margin-top: 3px; gap: 6px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact .cx-elem-orb { width: 14px; height: 14px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-characters .nameplate-stars { --bz-star-size: 12px; margin-bottom: 2px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-characters .char-modal-info .char-tabs { padding: 5px 0 0 !important; gap: 0 !important; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compact body.page-characters .char-modal-info .char-tabs .tab-btn {
+  height: 26px !important; padding: 0 10px 0 8px !important; gap: 5px; font-size: 7.5px !important; letter-spacing: 0.18em;
+}
+html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-characters .char-modal-info .char-tabs .tab-btn::before { font-size: 11.5px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact .cx-perf { height: 6px; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compact body.page-characters .char-modal-info .tab-panels { padding: 4px 6px 2px 0 !important; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact .cx-kicker { font-size: 7px; padding-bottom: 3px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact .cx-stat { grid-template-columns: 16px minmax(0, 1fr) auto; gap: 8px; padding: 4px 0; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact .cx-stat-ico { width: 16px; height: 16px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact .cx-stat-ico img { width: 15px; height: 15px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact .cx-stat-label { font-size: 9.5px; letter-spacing: 0.2em; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact .cx-stat-val { font-size: 16px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact .cx-minors { column-gap: 16px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact .cx-minor,
+html[data-skin="ink"].is-mobile.is-landscape.is-compact .cx-minor:first-child { padding: 3px 0; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact .cx-minor span { font-family: var(--g-sans); font-size: 8.5px; letter-spacing: 0.08em; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact .cx-minor b { font-size: 11.5px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-characters #status-level { font-size: 17px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-characters .growth-btn { font-size: 11px; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compact body.page-characters .char-modal-info .char-modal-actions {
+  top: max(8px, var(--safe-t, 0px)); right: max(12px, var(--safe-r, 0px));
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compact body.page-characters .char-close-btn.jjk-btn {
+  height: 26px !important; padding: 0 10px 0 8px !important; gap: 5px; font-size: 8px !important; letter-spacing: 0.2em;
+}
+html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-characters .char-close-btn.jjk-btn::before { font-size: 14px; }
+
+/* ══ Pickers: level-up ramen, jutsu cards, dupes, replacement, skins ══ */
+html[data-skin="ink"] .ramen-modal,
+html[data-skin="ink"] .card-inventory-modal,
+html[data-skin="ink"] .dupe-modal,
+html[data-skin="ink"] .jutsu-replacement-modal,
+html[data-skin="ink"] .skin-picker { background: rgba(7, 7, 8, 0.82); }
+html[data-skin="ink"] .ramen-modal-panel,
+html[data-skin="ink"] .card-inventory-panel,
+html[data-skin="ink"] .dupe-modal-panel,
+html[data-skin="ink"] .jutsu-replacement-popup,
+html[data-skin="ink"] .skin-picker-panel {
+  border: 0; border-radius: 2px;
+  background: linear-gradient(180deg, rgba(22, 21, 19, 0.97), rgba(10, 10, 11, 0.98));
+  -webkit-backdrop-filter: none; backdrop-filter: none;
+  box-shadow: inset 0 0 0 1px var(--g-line-2), 0 30px 70px rgba(0, 0, 0, 0.7);
+}
+/* the Glass yellow tick becomes a short gold hairline under the title */
+html[data-skin="ink"]:not(._g):not(._l):not(._s) .ramen-modal-panel.jjk-panel::before,
+html[data-skin="ink"]:not(._g):not(._l):not(._s) .card-inventory-panel.jjk-panel::before { display: none !important; }
+html[data-skin="ink"] .dupe-modal-panel::before,
+html[data-skin="ink"] .jutsu-replacement-popup::before,
+html[data-skin="ink"] .skin-picker-panel::before { content: none; }
+html[data-skin="ink"] .ramen-modal-title.jjk-title-plate,
+html[data-skin="ink"] .card-inventory-title.jjk-title-plate,
+html[data-skin="ink"] .dupe-modal-title,
+html[data-skin="ink"] .replacement-title,
+html[data-skin="ink"] .skin-picker-title {
+  font-family: var(--ink-jp); font-weight: 600; font-size: 22px; letter-spacing: 0.12em; text-transform: none; color: #fff7e2;
+}
+html[data-skin="ink"] .ramen-modal-title.jjk-title-plate::after { content: '兵糧  ·  Ramen'; }
+html[data-skin="ink"] .card-inventory-title.jjk-title-plate::after { content: '巻物  ·  Jutsu cards'; }
+html[data-skin="ink"] .ramen-modal-title.jjk-title-plate,
+html[data-skin="ink"] .card-inventory-title.jjk-title-plate { display: inline-flex; flex-direction: column; align-items: flex-start; }
+html[data-skin="ink"] .ramen-grid,
+html[data-skin="ink"] .card-inventory-grid { border-radius: 0; background: rgba(0, 0, 0, 0.22); box-shadow: inset 0 0 0 1px var(--g-line); }
+html[data-skin="ink"] .ramen-card,
+html[data-skin="ink"] .dupe-card,
+html[data-skin="ink"] .replacement-option,
+html[data-skin="ink"] .skin-opt { border-radius: 2px; }
+html[data-skin="ink"] .ramen-card.is-selected { background: linear-gradient(90deg, rgba(201, 162, 78, 0.22), transparent 80%); box-shadow: inset 0 0 0 1px var(--g-line-2), inset 2px 0 0 var(--g-accent); }
+html[data-skin="ink"] .ramen-name,
+html[data-skin="ink"] .ramen-char-name,
+html[data-skin="ink"] .ci-detail-name,
+html[data-skin="ink"] .dupe-card-level,
+html[data-skin="ink"] .replacement-option-name,
+html[data-skin="ink"] .skin-opt-name { font-family: var(--ink-jp); font-weight: 600; letter-spacing: 0.04em; text-transform: none; }
+html[data-skin="ink"] .ramen-exp,
+html[data-skin="ink"] .ramen-total-exp { font-family: var(--ink-jp); color: var(--g-accent-2); }
+html[data-skin="ink"] .ramen-total-label { font-family: var(--ink-cinzel); letter-spacing: 0.3em; }
+html[data-skin="ink"] .ramen-counter { border-radius: 0; background: var(--g-sel); color: var(--g-on-sel); }
+html[data-skin="ink"] .ramen-minus { border-radius: 2px; }
+html[data-skin="ink"] .ramen-lv-bar { border-radius: 0; height: 3px; background: rgba(241, 235, 220, 0.12); }
+html[data-skin="ink"] .ci-card { border-radius: 2px; }
+html[data-skin="ink"] .ci-card.is-selected { box-shadow: inset 0 0 0 1px var(--g-accent), inset 0 -2px 0 var(--g-accent); }
+html[data-skin="ink"] .ci-card.is-selected::after { border-radius: 0; background: var(--g-sel); color: var(--g-on-sel); }
+html[data-skin="ink"] .ci-type,
+html[data-skin="ink"] .ci-tag { border-radius: 0; font-family: var(--ink-cinzel); }
+html[data-skin="ink"] .ci-empty-title,
+html[data-skin="ink"] .ramen-empty-text { font-family: var(--ink-jp); font-weight: 600; letter-spacing: 0.1em; text-transform: none; }
+html[data-skin="ink"] body.page-characters .btn-dark { border-radius: 0; font-family: var(--g-sans); font-weight: 500; letter-spacing: 0.08em; text-transform: none; }
+html[data-skin="ink"] .skin-picker-close { border-radius: 2px; }
+html[data-skin="ink"] .skin-opt.is-worn { box-shadow: inset 0 0 0 1px var(--g-accent); }
+html[data-skin="ink"] .skin-opt-btn { border-radius: 0; background: linear-gradient(180deg, #f3ead2, #e2d4ae); color: var(--g-on-accent); font-family: var(--g-sans); font-style: italic; font-weight: 700; letter-spacing: 0.06em; text-transform: none; }
+html[data-skin="ink"] .skin-opt.is-worn .skin-opt-btn:disabled { background: transparent; color: var(--g-accent-2); box-shadow: inset 0 0 0 1px var(--g-line-2); }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact .ramen-modal-title.jjk-title-plate,
+html[data-skin="ink"].is-mobile.is-landscape.is-compact .card-inventory-title.jjk-title-plate { font-size: 16px; }

@@ -1,0 +1,290 @@
+/* css/glass/fusion.css — Glass style for fusion.html (Settings › Display › Glass).
+   Recipe list = glass cards, the fusion "ticket" = one glass panel with a
+   hairline divider, Fuse = the one yellow pill. Every selector is scoped to
+   html[data-ui="glass"], so Classic is untouched. The :not(._g):not(._l):not(._s)
+   prefix beats the compact-landscape rules in css/fusion.css. */
+
+/* ── Page ground ─────────────────────────────────────────────────── */
+html[data-ui="glass"],
+html[data-ui="glass"] body.page-fusion { background: #07090b; }
+html[data-ui="glass"] .fu-bg {
+  background:
+    radial-gradient(ellipse 80% 70% at 50% 42%, rgba(40, 48, 56, 0.3), rgba(4, 6, 8, 0.92) 100%),
+    url('../../assets/ui/jjk/ink_bg.webp') center / cover no-repeat,
+    #07090b;
+  filter: grayscale(1);
+}
+html[data-ui="glass"] body.page-fusion { font-family: var(--g-sans); color: var(--g-text); }
+
+/* ── Header: back + title | tabs | ryo ──────────────────────────── */
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .fusion-titlebar { gap: 12px; }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .fusion-titlebar .jjk-icon-btn { border-radius: 50%; }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .fusion-titlebar .fusion-title.jjk-title-plate {
+  min-width: 0; min-height: 0; padding: 0 0 0 12px; font-size: 24px;
+}
+html[data-ui="glass"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) .fusion-titlebar { gap: 10px; }
+html[data-ui="glass"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) .fusion-titlebar .jjk-icon-btn { width: 32px; height: 32px; }
+html[data-ui="glass"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) .fusion-titlebar .fusion-title.jjk-title-plate { padding: 0 0 0 10px; font-size: 19px; }
+
+/* tabs: one glass pill track, selected segment = white pill */
+html[data-ui="glass"] .fusion-tabs {
+  gap: 2px; padding: 3px; border-radius: var(--g-pill);
+  background: var(--g-glass-2);
+  -webkit-backdrop-filter: var(--g-blur); backdrop-filter: var(--g-blur);
+  box-shadow: inset 0 0 0 1px var(--g-line);
+}
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .fusion-tab.jjk-tab {
+  min-width: 0; height: 32px; padding: 0 20px;
+  border-radius: var(--g-pill); background: transparent; box-shadow: none;
+  font-size: 14px; letter-spacing: 0.08em;
+}
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .fusion-tab.jjk-tab:hover:not(.active) { background: rgba(255, 255, 255, 0.06); }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .fusion-tab.jjk-tab.active { background: var(--g-sel); color: var(--g-on-sel); }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .fusion-tab:focus-visible { outline: 2px solid var(--g-text); outline-offset: 2px; }
+html[data-ui="glass"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) .fusion-tab.jjk-tab { height: 26px; padding: 0 14px; font-size: 12px; }
+
+/* ryo: glass pill */
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .fusion-currency {
+  min-width: 0; height: 32px; padding: 0 14px 0 8px; gap: 8px;
+  clip-path: none; border-radius: var(--g-pill);
+  background: var(--g-glass-2);
+  -webkit-backdrop-filter: var(--g-blur); backdrop-filter: var(--g-blur);
+  box-shadow: inset 0 0 0 1px var(--g-line);
+  font-family: var(--g-cond); font-weight: 500; font-size: 15px; letter-spacing: 0.04em; color: var(--g-text);
+}
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .fusion-currency img { width: 18px; height: 18px; margin-right: 0; }
+html[data-ui="glass"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) .fusion-currency { height: 28px; font-size: 13.5px; padding: 0 12px 0 6px; gap: 6px; }
+
+/* ── Panels: recipe list, exchanges ─────────────────────────────── */
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .fusion-recipes-panel,
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .exchange-panel {
+  border: 0; border-radius: var(--g-radius); overflow: hidden;
+  background: var(--g-glass);
+  -webkit-backdrop-filter: var(--g-blur); backdrop-filter: var(--g-blur);
+  box-shadow: inset 0 0 0 1px var(--g-line), 0 14px 34px rgba(0, 0, 0, 0.35);
+}
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .fusion-recipes-panel::after,
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .exchange-panel::after { display: none; }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .fusion-recipes-panel::before,
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .exchange-panel::before {
+  top: 0; left: 14px; width: 22px; height: 2px; border: 0; border-radius: 2px; background: var(--g-accent);
+}
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .panel-title {
+  font-family: var(--g-cond); font-weight: 500; font-size: 13px; letter-spacing: 0.14em;
+  color: var(--g-dim); border-bottom-color: var(--g-line);
+}
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .rc-count { font-family: var(--g-cond); font-weight: 500; font-size: 12px; letter-spacing: 0.08em; color: var(--g-text); }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .fusions-grid,
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .exchange-groups,
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .units-grid { scrollbar-color: var(--g-line-2) transparent; }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .fusions-grid::-webkit-scrollbar-thumb { background: var(--g-line-2); border-radius: 2px; }
+html[data-ui="glass"] .rc-more { font-family: var(--g-sans); color: var(--g-dim); }
+html[data-ui="glass"] .rc-more a { color: var(--g-text); border-bottom-color: var(--g-line-2); }
+
+/* empty state */
+html[data-ui="glass"] .rc-empty { font-family: var(--g-sans); }
+html[data-ui="glass"] .rc-empty-art { opacity: 0.4; filter: grayscale(1) drop-shadow(0 8px 12px rgba(0, 0, 0, 0.6)); }
+html[data-ui="glass"] .rc-empty h3 { font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; color: var(--g-text); }
+html[data-ui="glass"] .rc-empty p { font-family: var(--g-sans); color: var(--g-dim); }
+
+/* ── Recipe cards: the scroll art becomes a glass card ─────────── */
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .fusions-grid .rscroll {
+  --ink: var(--g-text); --ink-soft: var(--g-dim); --ink-faint: var(--g-faint); --hanko: var(--g-accent);
+  aspect-ratio: 975 / 380;
+  border-radius: var(--g-radius-sm);
+  background: rgba(255, 255, 255, 0.04);
+  box-shadow: inset 0 0 0 1px var(--g-line);
+  filter: none;
+  font-family: var(--g-sans);
+  transition: background-color 0.15s ease;
+}
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .fusions-grid .rscroll[role="button"]:hover { transform: none; filter: none; background: rgba(255, 255, 255, 0.08); }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .fusions-grid .rscroll.selected {
+  filter: none; background: rgba(255, 255, 255, 0.1); box-shadow: inset 0 0 0 1.5px var(--g-sel);
+}
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .fusions-grid .rscroll.selected::before {
+  content: ''; position: absolute; left: 0; top: 14px; bottom: 14px; width: 3px; border-radius: 0 2px 2px 0; background: var(--g-accent);
+}
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .fusions-grid .rscroll:focus-visible { outline: 2px solid var(--g-text); outline-offset: 2px; }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .fusions-grid .rs-paper { inset: 0; padding: 3.6cqw 4.2cqw 3cqw 5cqw; }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .fusions-grid .rs-kicker { font-family: var(--g-cond); font-weight: 500; font-size: 2.2cqw; letter-spacing: 0.14em; }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .fusions-grid .rs-title {
+  font-family: var(--g-cond); font-weight: 500; font-size: 5.2cqw; letter-spacing: 0.03em; text-transform: uppercase; text-shadow: none;
+}
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .fusions-grid .rs-title::after { display: none; }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .fusions-grid .rs-grade { font-family: var(--g-cond); font-weight: 500; font-size: 2.1cqw; }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .fusions-grid .rs-cord { box-shadow: none; }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .fusions-grid .rs-mats { margin-top: 1.4cqw; }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .fusions-grid .rs-portrait { filter: none; }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .fusions-grid .rs-unit-txt b { font-family: var(--g-cond); font-weight: 500; font-size: 2.8cqw; letter-spacing: 0.02em; }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .fusions-grid .rs-unit-txt span,
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .fusions-grid .rs-unit-txt i { font-size: 2.1cqw; }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .fusions-grid .rs-plus { font-family: var(--g-cond); font-weight: 400; font-size: 4cqw; color: var(--g-faint); transform: none; }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .fusions-grid .rs-req { font-style: normal; font-size: 2.3cqw; color: var(--g-dim); }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .fusions-grid .rs-req-mark { border-color: var(--g-line-2); color: var(--g-text); opacity: 1; }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .fusions-grid .rs-result-cap em { font-family: var(--g-cond); font-weight: 500; font-size: 1.9cqw; letter-spacing: 0.16em; }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .fusions-grid .rs-result-cap b { font-family: var(--g-cond); font-weight: 500; font-size: 2.6cqw; letter-spacing: 0.02em; }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .fusions-grid .rs-result-cap small { font-size: 2cqw; }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .fusions-grid .rs-seal {
+  border: 0; outline: 0; border-radius: var(--g-radius-sm); padding: 0;
+  background: none; box-shadow: 0 0 0 1px var(--g-line-2); transform: none;
+}
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .fusions-grid .rs-seal::after { display: none; }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .fusions-grid .rs-seal-in { border-radius: var(--g-radius-sm); background: #0b0e11; }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .fusions-grid .rs-seal-in img { filter: none; }
+html[data-ui="glass"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) .fusions-grid { gap: 6px; }
+
+/* ── The fusion "ticket": one glass panel, hairline divider ─────── */
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .fu-ticket {
+  border-radius: var(--g-radius);
+  background: var(--g-glass);
+  -webkit-backdrop-filter: var(--g-blur); backdrop-filter: var(--g-blur);
+  box-shadow: inset 0 0 0 1px var(--g-line), 0 14px 34px rgba(0, 0, 0, 0.35);
+  filter: none;
+}
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .fu-ticket::before {
+  inset: 0 auto auto 14px; width: 22px; height: 2px; z-index: 1;
+  border: 0; border-image: none; border-radius: 2px; background: var(--g-accent); filter: none;
+}
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .fu-ticket::after,
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .fu-perf::after { display: none; }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .fu-perf::before {
+  width: 1px; top: 14px; bottom: 14px; background: var(--g-line);
+}
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .fu-kicker {
+  font-family: var(--g-cond); font-weight: 500; font-size: 12px; letter-spacing: 0.18em; color: var(--g-dim);
+}
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .fu-ticket-title {
+  font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase;
+  color: var(--g-text); text-shadow: none;
+}
+html[data-ui="glass"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) .fu-kicker { font-size: 10px; letter-spacing: 0.16em; }
+html[data-ui="glass"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) .fu-ticket-title { font-size: 17px; }
+
+/* slots */
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .fusion-slot {
+  border: 1px dashed var(--g-line-2); border-radius: var(--g-radius-sm);
+  background: rgba(255, 255, 255, 0.03);
+  overflow: hidden;
+}
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .fusion-slot:hover { border-color: var(--g-text); background: rgba(255, 255, 255, 0.07); }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .fusion-slot:focus-visible { outline: 2px solid var(--g-text); }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .fusion-slot.filled { border: 1px solid var(--g-line-2); background: rgba(255, 255, 255, 0.04); }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .fusion-slot img { border-radius: 5px; }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .result-slot:hover { border-color: var(--g-line-2); background: rgba(255, 255, 255, 0.03); }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .result-slot.filled,
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .result-slot.filled:hover {
+  border: 1.5px solid var(--g-sel); box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.06);
+}
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .slot-placeholder { color: var(--g-faint); }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .slot-icon { font-family: var(--g-cond); font-weight: 400; color: var(--g-dim); opacity: 1; }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .slot-label { font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.14em; }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .fu-op { font-family: var(--g-cond); font-weight: 400; color: var(--g-faint); }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .fu-op--arrow::before { background: linear-gradient(90deg, transparent, var(--g-line-2)); }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .fu-op--arrow::after { border-left-color: var(--g-dim); }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .fusion-slot-info .unit-name { font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.03em; color: var(--g-text); }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .result-info .unit-name { color: var(--g-text); }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .fusion-slot-info .unit-meta { font-family: var(--g-sans); color: var(--g-dim); }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .unit-bonus { font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.03em; color: var(--g-accent); }
+
+/* stub: requirements + actions */
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .fu-stub-title {
+  display: flex; align-items: center; gap: 8px;
+  font-family: var(--g-cond); font-weight: 500; font-size: 12px; letter-spacing: 0.14em;
+  color: var(--g-dim); border-bottom-color: var(--g-line);
+}
+html[data-ui="glass"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) .fu-stub-title { font-size: 10.5px; letter-spacing: 0.12em; }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .altar-hint { font-family: var(--g-sans); color: var(--g-dim); }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .requirement-item { border-bottom-color: var(--g-line); font-family: var(--g-sans); }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .requirement-label { color: var(--g-text); }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .requirement-value { font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.03em; }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .requirement-item.met .requirement-value { color: var(--g-accent); }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .requirement-item.not-met .requirement-value,
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .requirement-none { color: var(--g-red); }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .requirement-item.not-met .requirement-label { color: var(--g-dim); }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .is-cost { border-top-color: var(--g-line); }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .requirement-item.is-cost.met .requirement-value { color: var(--g-text); }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .fusion-actions .fuse-btn { letter-spacing: 0.16em; }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .fusion-actions .jjk-btn:focus-visible { outline: 2px solid var(--g-text); }
+
+/* ── Exchanges ──────────────────────────────────────────────────── */
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .exchange-desc { font-family: var(--g-sans); color: var(--g-dim); }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .modal-search,
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .modal-tier-filter {
+  border-radius: var(--g-radius-sm) !important; color: var(--g-text);
+}
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .modal-search:focus,
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .modal-tier-filter:focus { border-color: var(--g-text) !important; }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .modal-search::placeholder { color: var(--g-faint); }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .exchange-group {
+  border: 0; border-radius: var(--g-radius-sm);
+  background: rgba(255, 255, 255, 0.04); box-shadow: inset 0 0 0 1px var(--g-line);
+}
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .exchange-group-name { font-family: var(--g-cond); font-weight: 500; font-size: 15px; letter-spacing: 0.03em; color: var(--g-text); }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .exchange-group-count { font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.06em; color: var(--g-dim); }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .exchange-unit-card { border: 1px solid var(--g-line); border-radius: 6px; }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .exchange-unit-card:hover { border-color: var(--g-line-2); }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .exchange-unit-card.selected { border: 2px solid var(--g-sel); }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .exchange-unit-tier { border-radius: 4px 0 0 0; font-family: var(--g-cond); }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .exchange-selection { border-top-color: var(--g-line); }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .exchange-sel-title { font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--g-text); }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .exchange-sel-unit img { border: 1px solid var(--g-line-2); border-radius: 6px; }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .exchange-sel-remove { border: 0; background: var(--g-red); }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .exchange-cost-label { font-family: var(--g-cond); letter-spacing: 0.08em; text-transform: uppercase; color: var(--g-dim); }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .exchange-cost-value { font-family: var(--g-cond); font-weight: 500; color: var(--g-text); }
+html[data-ui="glass"] .exchange-groups:empty::before { font-family: var(--g-sans); color: var(--g-dim); }
+
+/* ── Unit picker + success modal ────────────────────────────────── */
+/* css/modal-system.css (injected by js/modal-manager.js) leaves every
+   .modal-overlay at opacity 0 unless it has .modal-open — fusion's own
+   overlays use .open, so show them in Glass */
+html[data-ui="glass"]:not(._g):not(._l):not(._s) #unit-selector-modal.open,
+html[data-ui="glass"]:not(._g):not(._l):not(._s) #fusion-success-modal.open { opacity: 1; }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) #unit-selector-modal,
+html[data-ui="glass"]:not(._g):not(._l):not(._s) #fusion-success-modal { box-sizing: border-box; }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .modal-panel {
+  border: 0; border-radius: var(--g-radius);
+  background: var(--g-glass-2);
+  -webkit-backdrop-filter: var(--g-blur); backdrop-filter: var(--g-blur);
+  box-shadow: inset 0 0 0 1px var(--g-line), 0 24px 60px rgba(0, 0, 0, 0.6);
+  font-family: var(--g-sans);
+}
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .modal-panel::after { display: none; }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .modal-panel::before {
+  top: 0; left: 18px; width: 34px; height: 3px; border: 0; border-radius: 0 0 2px 2px; background: var(--g-accent);
+}
+/* modal-system.css also styles .modal-header / .modal-title / .modal-footer
+   (absolute header, 48px plate title) — put fusion's own back in flow */
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .modal-panel .modal-header {
+  position: static; left: auto; top: auto; max-width: none; margin: 0 0 12px; padding: 0;
+}
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .modal-panel .modal-footer { padding: 12px 0 0; }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .modal-panel .modal-title {
+  display: block; min-width: 0; height: auto;
+  margin: 0 0 12px; padding: 0 0 10px; font-size: 20px; letter-spacing: 0.05em;
+  border-bottom: 1px solid var(--g-line);
+}
+html[data-ui="glass"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) .modal-panel .modal-title { font-size: 16px; margin-bottom: 8px; padding-bottom: 6px; }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .unit-card {
+  border: 0; border-radius: var(--g-radius-sm); overflow: hidden;
+  background: rgba(255, 255, 255, 0.04); box-shadow: inset 0 0 0 1px var(--g-line);
+}
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .unit-card:hover { background: rgba(255, 255, 255, 0.09); box-shadow: inset 0 0 0 1.5px var(--g-sel); }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .unit-card-name { font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.03em; color: var(--g-text); }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .unit-card-meta { font-family: var(--g-sans); color: var(--g-dim); }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .fu-empty { font-family: var(--g-sans); color: var(--g-dim); }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .modal-footer { border-top-color: var(--g-line); }
+
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .success-title {
+  font-family: var(--g-cond); font-weight: 500; font-size: 14px; letter-spacing: 0.2em; color: var(--g-dim);
+}
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .success-art {
+  padding: 0; border: 0; border-radius: var(--g-radius); overflow: hidden;
+  box-shadow: 0 0 0 1.5px var(--g-sel), 0 0 0 6px rgba(255, 255, 255, 0.06);
+}
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .success-name {
+  font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; color: var(--g-text);
+}
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .success-meta { font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.08em; color: var(--g-dim); }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .success-legacy { border-top-color: var(--g-line); color: var(--g-accent); font-family: var(--g-sans); }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .success-note { color: var(--g-text); }

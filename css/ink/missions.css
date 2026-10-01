@@ -1,0 +1,538 @@
+/* css/ink/missions.css — Ink style for missions.html (Settings › Display).
+   Loaded after css/ui-ink.css; every rule is scoped to html[data-skin="ink"].
+   Ink inherits every Glass rule (css/glass/missions.css) and re-lays it out:
+     • left column under the page title = the categories, a quiet serif list
+       with a gold left bar + underline on the selected one;
+     • story chapters = cinematic full-bleed arc art cards with a Japanese
+       chapter title, a vertical chapter numeral and a small English caption;
+     • the mission sheet = an editorial panel right of the rail with the
+       cream "Enter"-style Start slip.
+   The heavy prefix (P) beats the long !important selectors of mobile.css /
+   css/glass/missions.css. */
+
+/* ── Per-chapter art + decorative Japanese captions ──────────────────
+   --ink-arc   wide arc key art (assets/missions/banners/arc_*.webp)
+   --ink-pos   horizontal crop, so chapters sharing an arc differ
+   --ink-ja    Japanese chapter title (decoration; the English name stays
+               in the caption and the card's aria-label)
+   --ink-no    vertical chapter numeral    --ink-en  English caption */
+html[data-skin="ink"] .mission-card[data-mission-id="sc1_01"],
+html[data-skin="ink"] .md-hero:has(img[src$="/sc1_01.webp"]) { --ink-arc: url('../../assets/missions/banners/arc_academy.webp'); --ink-pos: 20%; --ink-ja: "卒業試験"; --ink-no: "第一章"; --ink-en: "Chapter 1 · Graduation Exam"; }
+html[data-skin="ink"] .mission-card[data-mission-id="sc1_02"],
+html[data-skin="ink"] .md-hero:has(img[src$="/sc1_02.webp"]) { --ink-arc: url('../../assets/missions/banners/arc_academy.webp'); --ink-pos: 85%; --ink-ja: "第七班、結成"; --ink-no: "第二章"; --ink-en: "Chapter 2 · Team 7 United"; }
+html[data-skin="ink"] .mission-card[data-mission-id="sc1_03"],
+html[data-skin="ink"] .md-hero:has(img[src$="/sc1_03.webp"]) { --ink-arc: url('../../assets/missions/banners/arc_land_of_waves.webp'); --ink-pos: 70%; --ink-ja: "波の国"; --ink-no: "第三章"; --ink-en: "Chapter 3 · Land of Waves"; }
+html[data-skin="ink"] .mission-card[data-mission-id="sc1_04"],
+html[data-skin="ink"] .md-hero:has(img[src$="/sc1_04.webp"]) { --ink-arc: url('../../assets/missions/banners/arc_chunin_exams.webp'); --ink-pos: 10%; --ink-ja: "第一の試験"; --ink-no: "第四章"; --ink-en: "Chapter 4 · Exam Round 1"; }
+html[data-skin="ink"] .mission-card[data-mission-id="sc1_05"],
+html[data-skin="ink"] .md-hero:has(img[src$="/sc1_05.webp"]) { --ink-arc: url('../../assets/missions/banners/arc_chunin_exams.webp'); --ink-pos: 0%; --ink-ja: "死の森"; --ink-no: "第五章"; --ink-en: "Chapter 5 · Exam Round 2"; }
+html[data-skin="ink"] .mission-card[data-mission-id="sc1_06"],
+html[data-skin="ink"] .md-hero:has(img[src$="/sc1_06.webp"]) { --ink-arc: url('../../assets/missions/banners/arc_chunin_exams.webp'); --ink-pos: 60%; --ink-ja: "予選"; --ink-no: "第六章"; --ink-en: "Chapter 6 · Preliminaries!"; }
+html[data-skin="ink"] .mission-card[data-mission-id="sc1_07"],
+html[data-skin="ink"] .md-hero:has(img[src$="/sc1_07.webp"]) { --ink-arc: url('../../assets/missions/banners/arc_chunin_exams.webp'); --ink-pos: 100%; --ink-ja: "本選"; --ink-no: "第七章"; --ink-en: "Chapter 7 · Exam Round 3"; }
+html[data-skin="ink"] .mission-card[data-mission-id="sc1_08"],
+html[data-skin="ink"] .md-hero:has(img[src$="/sc1_08.webp"]) { --ink-arc: url('../../assets/missions/banners/arc_konoha_crush.webp'); --ink-pos: 70%; --ink-ja: "木ノ葉崩し"; --ink-no: "第八章"; --ink-en: "Chapter 8 · Destruction of the Hidden Leaf"; }
+html[data-skin="ink"] .mission-card[data-mission-id="sc1_09"],
+html[data-skin="ink"] .md-hero:has(img[src$="/sc1_09.webp"]) { --ink-arc: url('../../assets/missions/banners/arc_akatsuki.webp'); --ink-pos: 40%; --ink-ja: "暁、襲来"; --ink-no: "第九章"; --ink-en: "Chapter 9 · The Akatsuki Assault"; }
+html[data-skin="ink"] .mission-card[data-mission-id="sc1_10"],
+html[data-skin="ink"] .md-hero:has(img[src$="/sc1_10.webp"]) { --ink-arc: url('../../assets/missions/banners/arc_sannin.webp'); --ink-pos: 80%; --ink-ja: "綱手を捜せ"; --ink-no: "第十章"; --ink-en: "Chapter 10 · Find Tsunade"; }
+html[data-skin="ink"] .mission-card[data-mission-id="sc1_11"],
+html[data-skin="ink"] .md-hero:has(img[src$="/sc1_11.webp"]) { --ink-arc: url('../../assets/missions/banners/arc_final_valley.webp'); --ink-pos: 30%; --ink-ja: "サスケ奪還"; --ink-no: "第十一章"; --ink-en: "Chapter 11 · Get Sasuke Back"; }
+html[data-skin="ink"] .mission-card[data-mission-id="sc1_12"],
+html[data-skin="ink"] .md-hero:has(img[src$="/sc1_12.webp"]) { --ink-arc: url('../../assets/missions/banners/arc_final_valley.webp'); --ink-pos: 55%; --ink-ja: "終末の谷"; --ink-no: "第十二章"; --ink-en: "Chapter 12 · The Final Valley"; }
+html[data-skin="ink"] .mission-card[data-mission-id="sc1_13"],
+html[data-skin="ink"] .md-hero:has(img[src$="/sc1_13.webp"]) { --ink-arc: url('../../assets/missions/banners/arc_kakashi_gaiden.webp'); --ink-pos: 55%; --ink-ja: "第三次忍界大戦"; --ink-no: "第十三章"; --ink-en: "Chapter 13 · The Third Great Ninja War"; }
+html[data-skin="ink"] .mission-card[data-mission-id="sc2_01"],
+html[data-skin="ink"] .md-hero:has(img[src$="/sc2_01.webp"]) { --ink-arc: url('../../assets/missions/banners/arc_academy.webp'); --ink-pos: 0%; --ink-ja: "帰郷"; --ink-no: "第十四章"; --ink-en: "Chapter 14 · Homecoming"; }
+html[data-skin="ink"] .mission-card[data-mission-id="sc2_02"],
+html[data-skin="ink"] .md-hero:has(img[src$="/sc2_02.webp"]) { --ink-arc: url('../../assets/missions/banners/arc_kazekage_rescue.webp'); --ink-pos: 75%; --ink-ja: "一尾、狙わる"; --ink-no: "第十五章"; --ink-en: "Chapter 15 · One Tail Under Attack"; }
+html[data-skin="ink"] .mission-card[data-mission-id="sc2_03"],
+html[data-skin="ink"] .md-hero:has(img[src$="/sc2_03.webp"]) { --ink-arc: url('../../assets/missions/banners/arc_kazekage_rescue.webp'); --ink-pos: 30%; --ink-ja: "風影奪還"; --ink-no: "第十六章"; --ink-en: "Chapter 16 · Hunt for the Kazekage"; }
+html[data-skin="ink"] .mission-card[data-mission-id="sc2_04"],
+html[data-skin="ink"] .md-hero:has(img[src$="/sc2_04.webp"]) { --ink-arc: url('../../assets/missions/banners/arc_kazekage_rescue.webp'); --ink-pos: 100%; --ink-ja: "託された想い"; --ink-no: "第十七章"; --ink-en: "Chapter 17 · Entrusted Feelings"; }
+html[data-skin="ink"] .mission-card[data-mission-id="sc2_05"],
+html[data-skin="ink"] .md-hero:has(img[src$="/sc2_05.webp"]) { --ink-arc: url('../../assets/missions/banners/arc_tenchi_bridge.webp'); --ink-pos: 15%; --ink-ja: "根の暗躍"; --ink-no: "第十八章"; --ink-en: "Chapter 18 · The Foundation's Tangled Roots"; }
+html[data-skin="ink"] .mission-card[data-mission-id="sc2_06"],
+html[data-skin="ink"] .md-hero:has(img[src$="/sc2_06.webp"]) { --ink-arc: url('../../assets/missions/banners/arc_tenchi_bridge.webp'); --ink-pos: 60%; --ink-ja: "天地橋の戦い"; --ink-no: "第十九章"; --ink-en: "Chapter 19 · Battle at Tenchi Bridge"; }
+html[data-skin="ink"] .mission-card[data-mission-id="sc2_07"],
+html[data-skin="ink"] .md-hero:has(img[src$="/sc2_07.webp"]) { --ink-arc: url('../../assets/missions/banners/arc_tenchi_bridge.webp'); --ink-pos: 90%; --ink-ja: "遠き再会"; --ink-no: "第二十章"; --ink-en: "Chapter 20 · Distant Reunion"; }
+html[data-skin="ink"] .mission-card[data-mission-id="sc2_08"],
+html[data-skin="ink"] .md-hero:has(img[src$="/sc2_08.webp"]) { --ink-arc: url('../../assets/missions/banners/arc_special_training.webp'); --ink-pos: 80%; --ink-ja: "修行"; --ink-no: "第二十一章"; --ink-en: "Chapter 21 · Special Training"; }
+html[data-skin="ink"] .mission-card[data-mission-id="sc2_09"],
+html[data-skin="ink"] .md-hero:has(img[src$="/sc2_09.webp"]) { --ink-arc: url('../../assets/missions/banners/arc_immortals.webp'); --ink-pos: 35%; --ink-ja: "不死コンビ"; --ink-no: "第二十二章"; --ink-en: "Chapter 22 · The New Two"; }
+html[data-skin="ink"] .mission-card[data-mission-id="sc2_10"],
+html[data-skin="ink"] .md-hero:has(img[src$="/sc2_10.webp"]) { --ink-arc: url('../../assets/missions/banners/arc_immortals.webp'); --ink-pos: 95%; --ink-ja: "シカマルの戦い"; --ink-no: "第二十三章"; --ink-en: "Chapter 23 · Shikamaru's Battle"; }
+html[data-skin="ink"] .mission-card[data-mission-id="sc2_11"],
+html[data-skin="ink"] .md-hero:has(img[src$="/sc2_11.webp"]) { --ink-arc: url('../../assets/missions/banners/arc_pain_assault.webp'); --ink-pos: 50%; --ink-ja: "ペイン襲来"; --ink-no: "第二十四章"; --ink-en: "Chapter 24 · Pain's Assault"; }
+html[data-skin="ink"] .mission-card[data-mission-id="sc2_12"],
+html[data-skin="ink"] .md-hero:has(img[src$="/sc2_12.webp"]) { --ink-arc: url('../../assets/missions/banners/arc_kage_summit.webp'); --ink-pos: 40%; --ink-ja: "五影会談"; --ink-no: "第二十五章"; --ink-en: "Chapter 25 · Five Kage Summit"; }
+html[data-skin="ink"] .mission-card[data-mission-id="sc2_13"],
+html[data-skin="ink"] .md-hero:has(img[src$="/sc2_13.webp"]) { --ink-arc: url('../../assets/missions/banners/arc_ninja_war.webp'); --ink-pos: 70%; --ink-ja: "第四次忍界大戦"; --ink-no: "第二十六章"; --ink-en: "Chapter 26 · The Fourth Great Ninja War"; }
+html[data-skin="ink"] .mission-card[data-mission-id="sc2_14"],
+html[data-skin="ink"] .md-hero:has(img[src$="/sc2_14.webp"]) { --ink-arc: url('../../assets/missions/banners/arc_final_battle.webp'); --ink-pos: 60%; --ink-ja: "最後の戦い"; --ink-no: "第二十七章"; --ink-en: "Chapter 27 · The Final Battle"; }
+html[data-skin="ink"] .mission-card[data-mission-id="boss_nine_tails"],
+html[data-skin="ink"] .md-hero:has(img[src$="/boss_nine_tails.webp"]) { --ink-ja: "九尾"; --ink-no: "巨大討伐"; }
+html[data-skin="ink"] .mission-card[data-mission-id="boss_susanoo_perfect"],
+html[data-skin="ink"] .md-hero:has(img[src$="/boss_susanoo_perfect.webp"]) { --ink-ja: "完成体・須佐能乎"; --ink-no: "巨大討伐"; }
+
+/* ── Page frame ─────────────────────────────────────────────────────── */
+html[data-skin="ink"] body.page-missions { --ink-col: 236px; --ink-card-h: 150px; }
+html[data-skin="ink"] body.page-missions::after {
+  background: linear-gradient(90deg, rgba(10, 10, 11, 0.55), rgba(10, 10, 11, 0) 60%);
+}
+html[data-skin="ink"] body.page-missions #full-bg { display: none; }
+
+/* the panel is no longer a box: a two-column layout right of the rail */
+html[data-skin="ink"][data-ui]:not(._g):not(._l):not(._s):not(._x) body.page-missions .mission-page-container {
+  position: fixed !important;
+  top: max(14px, var(--safe-t, 0px)) !important; bottom: max(14px, var(--safe-b, 0px)) !important;
+  left: calc(var(--ink-rail-w) + 28px) !important; right: max(24px, var(--safe-r, 0px)) !important;
+  max-width: none; margin: 0;
+  display: grid !important; grid-template-columns: var(--ink-col) minmax(0, 1fr); column-gap: 28px;
+  padding: 0 !important;
+  background: none; box-shadow: none; border: 0;
+  -webkit-backdrop-filter: none; backdrop-filter: none;
+}
+html[data-skin="ink"] body.page-missions .mission-page-container::before,
+html[data-skin="ink"] body.page-missions .mission-page-container::after { display: none; }
+
+/* page title sits on top of the category column */
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-missions .jjk-page-header {
+  left: calc(var(--ink-rail-w) + 28px) !important; top: max(18px, var(--safe-t, 0px));
+}
+html[data-skin="ink"] body.page-missions .jjk-page-header .jjk-title-plate { min-width: 0; min-height: 0; padding: 0; text-shadow: none; }
+html[data-skin="ink"] body.page-missions .jjk-title-plate::after { max-width: var(--ink-col); white-space: normal; line-height: 1.6; }
+
+/* ── Categories: a quiet serif list ─────────────────────────────────── */
+html[data-skin="ink"][data-ui]:not(._g):not(._l):not(._s):not(._x) body.page-missions .mission-tabs {
+  position: relative !important; top: auto; left: auto; right: auto; height: auto;
+  grid-column: 1; grid-row: 1;
+  display: flex !important; flex-direction: column !important; flex-wrap: nowrap !important;
+  align-items: stretch !important; justify-content: flex-start !important; gap: 2px !important;
+  margin: 0 !important; padding: 92px 0 0 !important;
+  overflow-x: hidden; overflow-y: auto; touch-action: pan-y;
+  -webkit-mask-image: none; mask-image: none;
+}
+html[data-skin="ink"][data-ui]:not(._g):not(._l):not(._s):not(._x) body.page-missions .mission-tabs::before {
+  content: '巻 · Chapters & Events'; display: block; margin: 0 0 10px; padding-bottom: 8px;
+  border-bottom: 1px solid var(--g-line);
+  font-family: var(--ink-cinzel); font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--g-faint);
+}
+html[data-skin="ink"][data-ui]:not(._g):not(._l):not(._s):not(._x) body.page-missions .mission-tabs .tab-btn {
+  flex: none !important; position: relative;
+  min-width: 0 !important; width: 100%; height: auto !important; min-height: 40px;
+  margin: 0 !important; padding: 8px 10px 8px 18px !important;
+  display: flex; align-items: center; text-align: left; white-space: normal; line-height: 1.3;
+  background: none; border: 0; border-radius: 0; box-shadow: none; filter: none;
+  -webkit-backdrop-filter: none; backdrop-filter: none;
+  font-family: var(--g-sans); font-weight: 500; font-size: 14px !important; letter-spacing: 0.04em; text-transform: none;
+  color: var(--g-dim); text-shadow: none;
+  touch-action: pan-y;
+  transition: color 0.15s, background 0.15s;
+}
+html[data-skin="ink"][data-ui]:not(._g):not(._l):not(._s):not(._x) body.page-missions .mission-tabs .tab-btn::after {
+  content: ''; display: block; position: absolute; left: 18px; bottom: 6px; top: auto;
+  width: 0; height: 1px; margin: 0; opacity: 1; background: var(--g-accent);
+  transition: width 0.25s;
+}
+html[data-skin="ink"][data-ui]:not(._g):not(._l):not(._s):not(._x) body.page-missions .mission-tabs .tab-btn:hover { color: var(--g-text); }
+html[data-skin="ink"][data-ui]:not(._g):not(._l):not(._s):not(._x) body.page-missions .mission-tabs .tab-btn.active {
+  color: #fff6dc; font-weight: 600;
+  background: linear-gradient(90deg, rgba(201, 162, 78, 0.3), rgba(201, 162, 78, 0.05) 80%, transparent);
+  box-shadow: inset 2px 0 0 var(--g-accent);
+}
+html[data-skin="ink"][data-ui]:not(._g):not(._l):not(._s):not(._x) body.page-missions .mission-tabs .tab-btn.active::after { width: 28px; }
+html[data-skin="ink"] body.page-missions .mission-tabs .tab-btn:focus-visible { outline: 1px solid var(--g-accent-2); outline-offset: -1px; }
+
+/* ── List: the only scroller, no well ───────────────────────────────── */
+html[data-skin="ink"] body.page-missions .mission-list-container {
+  grid-column: 2; grid-row: 1; min-height: 0;
+  padding: 0 6px 0 0; background: none; border: 0; border-radius: 0; box-shadow: none;
+  scrollbar-color: rgba(226, 204, 150, 0.3) transparent;
+}
+html[data-skin="ink"] body.page-missions .mission-list { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+html[data-skin="ink"] body.page-missions .mission-list:is([data-category^="shinobi-chronicles"], [data-category="boss-battles"]) {
+  grid-template-columns: minmax(0, 1fr); gap: 12px;
+}
+html[data-skin="ink"] body.page-missions .mission-list-head {
+  justify-content: flex-start; gap: 12px; min-height: 28px; padding: 6px 0 4px;
+  border-bottom: 1px solid var(--g-line);
+}
+html[data-skin="ink"] body.page-missions .mission-list-head .mlh-count {
+  padding: 0; background: none; box-shadow: none; border-radius: 0;
+  font-family: var(--ink-cinzel); font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--g-dim);
+}
+html[data-skin="ink"] body.page-missions .mission-list-head .help-tip { margin-left: auto; border-radius: 2px; }
+
+/* ── Mission cards: shared frame ────────────────────────────────────── */
+html[data-skin="ink"] body.page-missions .mission-card {
+  border: 0; border-radius: 0; background: #0b0b0c;
+  box-shadow: inset 0 0 0 1px var(--g-line-2), 0 10px 26px rgba(0, 0, 0, 0.45);
+}
+html[data-skin="ink"] body.page-missions .mission-card::after { border-radius: 0; box-shadow: inset 0 0 0 1px var(--g-line-2); }
+html[data-skin="ink"] body.page-missions .mission-card:hover { filter: brightness(1.08); }
+html[data-skin="ink"] body.page-missions .mission-card:hover::after { box-shadow: inset 0 0 0 1px rgba(232, 207, 140, 0.75); }
+html[data-skin="ink"] body.page-missions .mission-card:focus-visible { outline: 1px solid var(--g-accent-2); outline-offset: 2px; }
+html[data-skin="ink"] body.page-missions .mission-card--banner .mc-meta {
+  background: rgba(10, 10, 12, 0.92); border-top: 1px solid var(--g-line);
+}
+html[data-skin="ink"] body.page-missions .mc-stat {
+  gap: 5px; padding: 0 0 0 10px; border-radius: 0; background: none;
+  box-shadow: inset 1px 0 0 var(--g-line);
+  font-family: var(--ink-cinzel); font-weight: 600; font-size: 12px; letter-spacing: 0.06em; color: var(--g-text);
+}
+html[data-skin="ink"] body.page-missions .mc-stat:first-of-type { box-shadow: none; }
+html[data-skin="ink"] body.page-missions .ic-stamina,
+html[data-skin="ink"] body.page-missions .ic-power { background: var(--g-accent); }
+html[data-skin="ink"] body.page-missions .mc-pip.is-clear::after { background-color: var(--g-accent); box-shadow: 0 0 0 1px #17130b; }
+html[data-skin="ink"] body.page-missions .mission-lock-note { font-family: var(--g-sans); font-weight: 500; color: var(--g-dim); letter-spacing: 0.04em; }
+html[data-skin="ink"] body.page-missions .mc-lock img { filter: grayscale(1) brightness(1.3) drop-shadow(0 1px 2px #000); opacity: 0.8; }
+html[data-skin="ink"] body.page-missions .mc-stamp { filter: sepia(0.5) saturate(0.8); opacity: 0.85; }
+
+/* ── Story chapters: cinematic art cards ─────────────────────────────
+   Arc art bleeds edge to edge, black → transparent from the left, the
+   Japanese title + English caption sit on the dark side, a play disc on
+   the right, ranks / stamina / power in a hairline row under the caption. */
+html[data-skin="ink"] body.page-missions .mission-card--banner:is([data-mission-id^="sc1_"], [data-mission-id^="sc2_"]) {
+  display: block; height: var(--ink-card-h); aspect-ratio: auto;
+}
+html[data-skin="ink"] body.page-missions .mission-card--banner:is([data-mission-id^="sc1_"], [data-mission-id^="sc2_"]) .mc-art--banner,
+html[data-skin="ink"] .md-hero.md-hero--banner:has(img[src*="/story/"]) .mc-art--banner {
+  position: absolute; inset: 0; aspect-ratio: auto;
+  background: var(--ink-arc) var(--ink-pos, 50%) 38% / cover no-repeat #141210;
+  transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+html[data-skin="ink"] body.page-missions .mission-card--banner:is([data-mission-id^="sc1_"], [data-mission-id^="sc2_"]):hover .mc-art--banner { transform: scale(1.03); }
+/* the composited banner (English lettering baked in) gives way to the arc art */
+html[data-skin="ink"] body.page-missions .mission-card--banner:is([data-mission-id^="sc1_"], [data-mission-id^="sc2_"]) .mission-banner,
+html[data-skin="ink"] .md-hero.md-hero--banner:has(img[src*="/story/"]) .mission-banner { visibility: hidden; }
+/* ink grade: dark left side for the type, soft floor */
+html[data-skin="ink"] body.page-missions .mission-card--banner:is([data-mission-id^="sc1_"], [data-mission-id^="sc2_"]) .mc-art--banner::after,
+html[data-skin="ink"] .md-hero.md-hero--banner:has(img[src*="/story/"]) .mc-art--banner::after {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(9, 9, 10, 0.96) 0%, rgba(9, 9, 10, 0.82) 28%, rgba(9, 9, 10, 0.3) 58%, rgba(9, 9, 10, 0) 80%),
+    linear-gradient(0deg, rgba(9, 9, 10, 0.55), rgba(9, 9, 10, 0) 45%);
+}
+/* vertical chapter numeral on the left edge */
+html[data-skin="ink"] body.page-missions .mission-card--banner:is([data-mission-id^="sc1_"], [data-mission-id^="sc2_"]) .mc-art--banner::before,
+html[data-skin="ink"] .md-hero.md-hero--banner:has(img[src*="/story/"]) .mc-art--banner::before {
+  content: var(--ink-no, ''); position: absolute; z-index: 1; left: 0; top: 0; bottom: 0; width: 34px;
+  /* one glyph per line (writing-mode would need vertical font metrics) */
+  display: flex; flex-direction: column; justify-content: center; box-sizing: border-box;
+  padding: 0 calc((34px - 1em) / 2); word-break: break-all; line-height: 1.3; text-align: center;
+  font-family: var(--ink-jp); font-size: 12px; color: var(--g-accent-2);
+  border-right: 1px solid var(--g-line); background: rgba(9, 9, 10, 0.55);
+}
+/* Japanese title + English caption */
+html[data-skin="ink"] body.page-missions .mission-card--banner:is([data-mission-id^="sc1_"], [data-mission-id^="sc2_"])::before,
+html[data-skin="ink"] .md-hero.md-hero--banner:has(img[src*="/story/"])::before {
+  content: var(--ink-ja, ''); position: absolute; z-index: 2; left: 58px; top: 22px; right: 30%;
+  font-family: var(--ink-jp); font-weight: 700; font-size: 34px; line-height: 1.15; letter-spacing: 0.08em;
+  color: #fff7e2; text-shadow: 0 2px 14px rgba(0, 0, 0, 0.8); white-space: nowrap; pointer-events: none;
+}
+html[data-skin="ink"] body.page-missions .mission-card--banner:is([data-mission-id^="sc1_"], [data-mission-id^="sc2_"])::after,
+html[data-skin="ink"] .md-hero.md-hero--banner:has(img[src*="/story/"])::after {
+  content: var(--ink-en, ''); position: absolute; z-index: 2; inset: auto auto auto 58px; top: 70px; right: 30%;
+  display: flex; align-items: center; gap: 12px; box-shadow: none; border-radius: 0;
+  font-family: var(--ink-cinzel); font-size: 10px; line-height: 1.4; letter-spacing: 0.26em; text-transform: uppercase;
+  color: var(--g-dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; pointer-events: none;
+}
+/* the hairline frame moves to the card itself */
+html[data-skin="ink"] body.page-missions .mission-card--banner:is([data-mission-id^="sc1_"], [data-mission-id^="sc2_"]) {
+  box-shadow: inset 0 0 0 1px var(--g-line-2), 0 10px 26px rgba(0, 0, 0, 0.45);
+}
+html[data-skin="ink"] body.page-missions .mission-card--banner:is([data-mission-id^="sc1_"], [data-mission-id^="sc2_"]) > * { position: absolute; }
+html[data-skin="ink"] body.page-missions .mission-card--banner:is([data-mission-id^="sc1_"], [data-mission-id^="sc2_"]) .mc-meta {
+  z-index: 3; left: 58px; right: 64px; bottom: 16px; top: auto;
+  min-height: 0; padding: 0; gap: 12px;
+  background: none; border: 0; opacity: 1;
+}
+html[data-skin="ink"] body.page-missions .mission-card--banner:is([data-mission-id^="sc1_"], [data-mission-id^="sc2_"]) .mc-pips { margin-right: 6px; gap: 6px; }
+html[data-skin="ink"] body.page-missions .mission-card--banner:is([data-mission-id^="sc1_"], [data-mission-id^="sc2_"]) .mc-meta .mc-lock { flex: 0 1 auto; margin-right: 6px; }
+/* play disc (the reference's feature-card button) */
+html[data-skin="ink"] body.page-missions .mission-card--banner:is([data-mission-id^="sc1_"], [data-mission-id^="sc2_"]) .mc-meta::after {
+  content: ''; position: absolute; right: -44px; bottom: 50%; transform: translateY(50%);
+  width: 30px; height: 30px; border-radius: 50%; background: rgba(241, 235, 220, 0.88);
+}
+html[data-skin="ink"] body.page-missions .mission-card--banner:is([data-mission-id^="sc1_"], [data-mission-id^="sc2_"]) .mc-meta::before {
+  content: ''; position: absolute; z-index: 1; right: -33px; bottom: 50%; transform: translateY(50%);
+  border-left: 9px solid #17130b; border-top: 6px solid transparent; border-bottom: 6px solid transparent;
+}
+html[data-skin="ink"] body.page-missions .mission-card--banner:is([data-mission-id^="sc1_"], [data-mission-id^="sc2_"]) .mc-stamp {
+  left: auto; right: 64px; top: 12px; bottom: auto; width: 54px; transform: rotate(-8deg);
+}
+html[data-skin="ink"] body.page-missions .mission-card--banner.mission-locked:is([data-mission-id^="sc1_"], [data-mission-id^="sc2_"]) .mc-art--banner { filter: grayscale(0.85) brightness(0.55); }
+html[data-skin="ink"] body.page-missions .mission-card--banner.mission-locked:is([data-mission-id^="sc1_"], [data-mission-id^="sc2_"])::before { color: rgba(241, 235, 220, 0.62); }
+html[data-skin="ink"] body.page-missions .mission-card--banner.mission-locked:is([data-mission-id^="sc1_"], [data-mission-id^="sc2_"]) .mc-meta::after { background: rgba(241, 235, 220, 0.3); }
+
+/* ── Boss Battles: the same cinematic card, red hairline ─────────────── */
+html[data-skin="ink"] body.page-missions .mission-card.mission-card--boss {
+  aspect-ratio: auto; height: calc(var(--ink-card-h) + 30px);
+  box-shadow: inset 0 0 0 1px rgba(217, 96, 79, 0.55), 0 10px 26px rgba(0, 0, 0, 0.45);
+}
+html[data-skin="ink"] body.page-missions .mission-card.mission-card--boss::after { box-shadow: inset 0 0 0 1px rgba(217, 96, 79, 0.55); }
+html[data-skin="ink"] body.page-missions .mission-card--boss .mission-banner,
+html[data-skin="ink"] .md-hero.mission-card--boss .mission-banner { object-position: 70% 40%; }
+html[data-skin="ink"] body.page-missions .mission-card--boss .mc-shade,
+html[data-skin="ink"] .md-hero.mission-card--boss .mc-shade {
+  background:
+    linear-gradient(90deg, rgba(9, 9, 10, 0.96) 0%, rgba(9, 9, 10, 0.8) 28%, rgba(9, 9, 10, 0.25) 60%, rgba(9, 9, 10, 0) 80%),
+    linear-gradient(0deg, rgba(9, 9, 10, 0.6), rgba(9, 9, 10, 0) 45%);
+}
+html[data-skin="ink"] body.page-missions .mission-card--boss::before,
+html[data-skin="ink"] .md-hero.mission-card--boss::before {
+  content: var(--ink-ja, ''); position: absolute; z-index: 2; left: 26px; top: 46px; right: 30%;
+  font-family: var(--ink-jp); font-weight: 700; font-size: 38px; line-height: 1.1; letter-spacing: 0.08em;
+  color: #fff7e2; text-shadow: 0 2px 14px rgba(0, 0, 0, 0.8); white-space: nowrap; pointer-events: none;
+}
+html[data-skin="ink"] body.page-missions .mission-card--boss .mc-text,
+html[data-skin="ink"] .md-hero.mission-card--boss .mc-text {
+  left: 26px; top: 20px; right: 30%; flex-direction: column; gap: 0;
+}
+html[data-skin="ink"] body.page-missions .mission-card--boss .mc-kicker,
+html[data-skin="ink"] .md-hero.mission-card--boss .mc-kicker {
+  font-family: var(--ink-cinzel); font-weight: 600; font-size: 10px; letter-spacing: 0.3em; color: var(--g-red); text-shadow: none;
+}
+/* English name: the small caption under the Japanese title */
+html[data-skin="ink"] body.page-missions .mission-card--boss .mc-title,
+html[data-skin="ink"] .md-hero.mission-card--boss .mc-title {
+  position: absolute; top: 76px; left: 0; white-space: nowrap;
+  font-family: var(--ink-cinzel); font-weight: 400; font-size: 10px; letter-spacing: 0.26em; text-transform: uppercase;
+  color: var(--g-dim); text-shadow: none; -webkit-line-clamp: 1;
+}
+html[data-skin="ink"] body.page-missions .mission-card--boss .mc-art::after,
+html[data-skin="ink"] .md-hero.mission-card--boss .mc-art::after {
+  content: '巨大 · Giant Boss'; top: 14px; right: 14px; padding: 4px 10px;
+  border-radius: 0; background: rgba(9, 9, 10, 0.7); box-shadow: inset 0 0 0 1px rgba(217, 96, 79, 0.7);
+  font-family: var(--ink-cinzel); font-weight: 600; font-size: 9px; letter-spacing: 0.24em; color: #f0b4a8;
+}
+html[data-skin="ink"] body.page-missions .mission-card--boss .mc-meta { left: 26px; right: 18px; bottom: 16px; gap: 12px; }
+
+/* ── Other categories (Super Impact, Impact, Events, Growth) ─────────
+   Their banners carry their own lettering: keep the art, frame it in a
+   hairline and let the stats strip read as a quiet caption line. */
+html[data-skin="ink"] body.page-missions .mission-card--banner .mc-meta { min-height: 30px; padding: 4px 10px; gap: 10px; }
+
+/* ══ Detail sheet: an editorial panel right of the rail ═══════════════ */
+html[data-skin="ink"] .mission-modal { padding: max(12px, var(--safe-t, 0px)) max(16px, var(--safe-r, 0px)) max(12px, var(--safe-b, 0px)) calc(var(--ink-rail-w) + 16px) !important; }
+html[data-skin="ink"] .mission-modal .md-backdrop {
+  background: linear-gradient(90deg, rgba(6, 6, 7, 0.6), rgba(6, 6, 7, 0.82) 30%);
+  -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px);
+}
+html[data-skin="ink"] .mission-modal .md-sheet.jjk-panel {
+  width: min(1120px, 100%); height: min(720px, 100%);
+  grid-template-columns: minmax(0, 46%) minmax(0, 1fr); gap: 0;
+  padding: 0; border-radius: 0;
+  background: linear-gradient(180deg, rgba(16, 15, 14, 0.96), rgba(9, 9, 10, 0.97));
+  box-shadow: inset 0 0 0 1px var(--g-line-2), 0 30px 70px rgba(0, 0, 0, 0.7);
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) .mission-modal .md-sheet.jjk-panel::before {
+  left: 0 !important; top: 0 !important; width: 2px !important; height: 64px !important; border-radius: 0 !important; background: var(--g-accent) !important;
+}
+html[data-skin="ink"] .mission-modal .md-close {
+  top: 10px; right: 10px; width: 34px; height: 34px; border-radius: 0;
+  background: rgba(9, 9, 10, 0.7); box-shadow: inset 0 0 0 1px var(--g-line-2);
+}
+html[data-skin="ink"] .mission-modal .md-close:hover { background: var(--g-sel); }
+html[data-skin="ink"] .mission-modal .md-close:hover img { filter: brightness(0.15); }
+html[data-skin="ink"] .md-side { gap: 12px; padding: 0 0 0; border-right: 1px solid var(--g-line); }
+html[data-skin="ink"] .md-side > :not(.md-hero) { margin-left: 22px; margin-right: 20px; }
+html[data-skin="ink"] .md-main { padding: 22px 54px 18px 24px; }
+
+/* hero: the chapter art, full bleed across the top of the left column */
+html[data-skin="ink"] .md-hero,
+html[data-skin="ink"] .md-hero.md-hero--banner {
+  aspect-ratio: auto; height: 190px; flex: none; border: 0; border-radius: 0;
+  box-shadow: inset 0 -1px 0 var(--g-line-2);
+}
+html[data-skin="ink"] .md-hero::after { border-radius: 0; box-shadow: none; }
+html[data-skin="ink"] .md-hero.md-hero--banner:has(img[src*="/story/"])::before { top: 52px; left: 56px; font-size: 32px; right: 18px; }
+html[data-skin="ink"] .md-hero.md-hero--banner:has(img[src*="/story/"])::after { top: 98px; left: 56px; right: 18px; }
+html[data-skin="ink"] .md-hero.mission-card--boss { box-shadow: inset 0 -1px 0 rgba(217, 96, 79, 0.6); }
+html[data-skin="ink"] .md-hero.mission-card--boss::before { top: 70px; }
+html[data-skin="ink"] .md-hero.mission-card--boss .mc-text { top: 44px; }
+html[data-skin="ink"] .md-hero.mission-card--boss .mc-title { top: 76px; }
+
+html[data-skin="ink"] .md-desc { font-family: var(--g-sans); font-size: 13px; line-height: 1.7; letter-spacing: 0.02em; color: var(--g-dim); }
+html[data-skin="ink"] .md-label {
+  font-family: var(--ink-cinzel); font-weight: 600; font-size: 10px; letter-spacing: 0.28em; text-transform: uppercase; color: var(--g-accent-2);
+}
+
+/* rank selector: a hairline segmented row, the chosen rank gets the gold */
+html[data-skin="ink"] .md-ranks { gap: 0; flex-wrap: nowrap; box-shadow: inset 0 0 0 1px var(--g-line); }
+html[data-skin="ink"] .md-rank {
+  flex: 1 1 0; min-width: 0; height: 44px; justify-content: center; gap: 8px; padding: 0 10px;
+  border-radius: 0; background: none; box-shadow: none;
+  font-family: var(--g-sans); color: var(--g-dim);
+}
+html[data-skin="ink"] .md-rank + .md-rank { box-shadow: inset 1px 0 0 var(--g-line); }
+html[data-skin="ink"] .md-rank:hover { box-shadow: inset 0 0 0 1px var(--g-line-2); color: var(--g-text); }
+html[data-skin="ink"] .md-rank.active {
+  color: #fff6dc;
+  background: linear-gradient(180deg, rgba(201, 162, 78, 0.06), rgba(201, 162, 78, 0.28));
+  box-shadow: inset 0 -2px 0 var(--g-accent), inset 0 0 0 1px rgba(226, 204, 150, 0.4);
+}
+html[data-skin="ink"] .md-rank-letter,
+html[data-skin="ink"] .md-rank.active .md-rank-letter,
+html[data-skin="ink"] .md-rank.is-locked .md-rank-letter {
+  width: 26px; height: 26px; border-radius: 0; border: 0; background: none; box-shadow: none;
+}
+html[data-skin="ink"] .md-rank-name { font-size: 12.5px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; text-shadow: none; }
+html[data-skin="ink"] .md-rank.active .md-rank-name { font-weight: 600; }
+html[data-skin="ink"] .md-rank.is-clear .md-rank-letter::after { border-radius: 50%; background-color: var(--g-accent); box-shadow: 0 0 0 1px #17130b; }
+html[data-skin="ink"] .md-rank.is-locked { opacity: 0.55; }
+
+/* facts: one quiet line split by hairlines */
+html[data-skin="ink"] .md-facts { gap: 0; row-gap: 4px; }
+html[data-skin="ink"] .md-facts .jjk-chip {
+  height: auto; padding: 0 12px; border-radius: 0; background: none; box-shadow: inset 1px 0 0 var(--g-line);
+  font-family: var(--g-sans); font-weight: 500; font-size: 12px; letter-spacing: 0.03em; color: var(--g-text);
+}
+html[data-skin="ink"] .md-facts .jjk-chip:first-child { padding-left: 0; box-shadow: none; }
+
+/* rewards */
+html[data-skin="ink"] .md-rewards { gap: 0; }
+html[data-skin="ink"] .md-rw-block { padding: 10px 0; border-radius: 0; background: none; box-shadow: inset 0 1px 0 var(--g-line); }
+html[data-skin="ink"] .mr-tile img { border-radius: 0; background: rgba(9, 9, 10, 0.7); box-shadow: inset 0 0 0 1px var(--g-line); outline: 1px solid var(--g-line-2); }
+html[data-skin="ink"] .mr-tile.is-unit img { outline-color: var(--g-accent); }
+html[data-skin="ink"] .mr-tile b { border-radius: 0; font-family: var(--ink-cinzel); font-weight: 600; background: rgba(9, 9, 10, 0.9); }
+html[data-skin="ink"] .mr-tile small { font-family: var(--g-sans); }
+html[data-skin="ink"] .md-boss-drop.is-sure img { outline: 1px solid var(--g-accent-2); }
+
+/* Start: the cream paper slip ("Enter —") */
+html[data-skin="ink"] .md-go {
+  margin: auto 0 0 !important; padding: 14px 20px 16px 22px;
+  background: linear-gradient(180deg, rgba(9, 9, 10, 0), rgba(9, 9, 10, 0.97) 26%);
+}
+html[data-skin="ink"] .md-go .mission-lock-note { color: #f0b4a8; font-size: 11.5px; }
+html[data-skin="ink"] body.page-missions .md-go .start-btn {
+  position: relative; flex: 0 1 300px; min-width: 210px; height: 52px; padding: 0 16px 0 20px;
+  display: inline-flex; align-items: center; gap: 12px;
+  border-radius: 0; background: linear-gradient(180deg, #f6eed8, #e3d4ad); color: #17130b;
+  box-shadow: inset 0 0 0 1px rgba(120, 96, 40, 0.5), 0 10px 26px rgba(0, 0, 0, 0.5);
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+  font-family: 'Cinzel', serif; font-style: italic; font-weight: 700; font-size: 19px; letter-spacing: 0.02em; text-transform: none;
+  text-shadow: none;
+}
+html[data-skin="ink"] body.page-missions .md-go .start-btn::before {
+  content: ''; order: 1; flex: 1 1 auto; min-width: 16px; height: 1px; background: #17130b; opacity: 0.6;
+}
+html[data-skin="ink"] body.page-missions .md-go .start-btn::after { content: '→'; order: 2; font-style: normal; font-size: 18px; }
+html[data-skin="ink"] body.page-missions .md-go .start-btn:hover:not(:disabled) { filter: brightness(1.05); }
+html[data-skin="ink"] body.page-missions .md-go .start-btn:disabled {
+  background: rgba(241, 235, 220, 0.06); color: var(--g-faint); box-shadow: inset 0 0 0 1px var(--g-line);
+}
+html[data-skin="ink"] body.page-missions .md-go .start-btn:disabled::before { background: var(--g-faint); }
+html[data-skin="ink"] body.page-missions .md-go .start-btn:disabled::after { content: '鍵'; font-family: var(--ink-jp); font-size: 13px; }
+html[data-skin="ink"] body.page-missions .md-story-btn {
+  height: 52px; padding: 0 16px; border-radius: 0; background: none; box-shadow: inset 0 0 0 1px var(--g-line-2);
+  font-family: var(--g-sans); font-weight: 500; font-size: 13px; letter-spacing: 0.1em; text-transform: none; color: var(--g-text);
+}
+
+/* stages: an index of hairline rows */
+html[data-skin="ink"] .md-main > .md-label { padding-bottom: 10px; margin-bottom: 0; border-bottom: 1px solid var(--g-line); }
+html[data-skin="ink"] .md-stages { gap: 0; }
+html[data-skin="ink"] .md-stage {
+  padding: 12px 6px 12px 4px; border-radius: 0; background: none; box-shadow: inset 0 -1px 0 var(--g-line);
+}
+html[data-skin="ink"] .md-stage.is-boss-stage {
+  background: linear-gradient(90deg, rgba(217, 96, 79, 0.12), transparent 55%);
+  box-shadow: inset 2px 0 0 var(--g-red), inset 0 -1px 0 var(--g-line);
+  padding-left: 10px;
+}
+html[data-skin="ink"] .md-stage-no {
+  border-radius: 0; background: none; box-shadow: none;
+  font-family: var(--ink-cinzel); font-weight: 600; font-size: 18px; color: var(--g-accent-2);
+}
+html[data-skin="ink"] .md-stage-title { font-family: var(--g-sans); font-weight: 600; font-size: 14px; letter-spacing: 0.04em; }
+html[data-skin="ink"] .md-stage-title em {
+  border-radius: 0; padding: 1px 6px; background: none; box-shadow: inset 0 0 0 1px rgba(217, 96, 79, 0.75);
+  font-family: var(--ink-cinzel); font-size: 9px; letter-spacing: 0.2em; color: #f0b4a8;
+}
+html[data-skin="ink"] .md-stage-sub { font-size: 11.5px; letter-spacing: 0.04em; }
+html[data-skin="ink"] .md-foe img { border-radius: 0; outline-color: var(--g-line-2); }
+html[data-skin="ink"] .md-foe.is-boss img { outline: 1px solid var(--g-red); outline-offset: -1px; }
+html[data-skin="ink"] .md-foe b { border-radius: 0; font-family: var(--ink-cinzel); }
+
+/* ══ Short screens: the iPhone sideways (844×390) ═══════════════════ */
+@media (max-height: 540px) {
+  html[data-skin="ink"] body.page-missions { --ink-col: 138px; --ink-card-h: 100px; }
+  html[data-skin="ink"][data-ui]:not(._g):not(._l):not(._s):not(._x) body.page-missions .mission-page-container {
+    top: max(8px, var(--safe-t, 0px)) !important; bottom: max(8px, var(--safe-b, 0px)) !important;
+    left: calc(var(--ink-rail-w) + 14px) !important; right: max(12px, var(--safe-r, 0px)) !important;
+    column-gap: 14px;
+  }
+  html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-missions .jjk-page-header {
+    left: calc(var(--ink-rail-w) + 14px) !important; top: max(10px, var(--safe-t, 0px)); transform: none;
+  }
+  html[data-skin="ink"] body.page-missions .jjk-page-header .jjk-title-plate { font-size: 18px; }
+  html[data-skin="ink"] body.page-missions .jjk-title-plate::after { font-size: 6.5px; letter-spacing: 0.26em; }
+  html[data-skin="ink"][data-ui]:not(._g):not(._l):not(._s):not(._x) body.page-missions .mission-tabs { padding-top: 62px !important; }
+  html[data-skin="ink"][data-ui]:not(._g):not(._l):not(._s):not(._x) body.page-missions .mission-tabs::before { margin-bottom: 4px; padding-bottom: 5px; font-size: 6.5px; letter-spacing: 0.22em; }
+  html[data-skin="ink"][data-ui]:not(._g):not(._l):not(._s):not(._x) body.page-missions .mission-tabs .tab-btn {
+    min-height: 0; padding: 6px 4px 6px 11px !important; font-size: 11px !important; letter-spacing: 0.02em; line-height: 1.25;
+  }
+  html[data-skin="ink"][data-ui]:not(._g):not(._l):not(._s):not(._x) body.page-missions .mission-tabs .tab-btn::after { left: 11px; bottom: 3px; }
+  html[data-skin="ink"][data-ui]:not(._g):not(._l):not(._s):not(._x) body.page-missions .mission-tabs .tab-btn.active::after { width: 20px; }
+
+  html[data-skin="ink"] body.page-missions .mission-list { gap: 8px; }
+  html[data-skin="ink"] body.page-missions .mission-list:is([data-category^="shinobi-chronicles"], [data-category="boss-battles"]) { gap: 8px; }
+  html[data-skin="ink"] body.page-missions .mission-list-head { min-height: 22px; padding: 2px 0 3px; }
+  html[data-skin="ink"] body.page-missions .mission-list-head .mlh-count { font-size: 9px; }
+  html[data-skin="ink"] body.page-missions .mission-list-head .help-tip { width: 20px; height: 20px; font-size: 11px; }
+
+  html[data-skin="ink"] body.page-missions .mission-card--banner:is([data-mission-id^="sc1_"], [data-mission-id^="sc2_"]) .mc-art--banner::before { width: 24px; padding: 0 calc((24px - 1em) / 2); font-size: 10px; line-height: 1.2; }
+  html[data-skin="ink"] body.page-missions .mission-card--banner:is([data-mission-id^="sc1_"], [data-mission-id^="sc2_"])::before { left: 40px; top: 12px; font-size: 23px; }
+  html[data-skin="ink"] body.page-missions .mission-card--banner:is([data-mission-id^="sc1_"], [data-mission-id^="sc2_"])::after { left: 40px; top: 45px; font-size: 7.5px; letter-spacing: 0.22em; }
+  html[data-skin="ink"] body.page-missions .mission-card--banner:is([data-mission-id^="sc1_"], [data-mission-id^="sc2_"]) .mc-meta { left: 40px; right: 52px; bottom: 10px; gap: 8px; }
+  html[data-skin="ink"] body.page-missions .mission-card--banner:is([data-mission-id^="sc1_"], [data-mission-id^="sc2_"]) .mc-meta::after { right: -40px; width: 24px; height: 24px; }
+  html[data-skin="ink"] body.page-missions .mission-card--banner:is([data-mission-id^="sc1_"], [data-mission-id^="sc2_"]) .mc-meta::before { right: -31px; border-left-width: 7px; border-top-width: 5px; border-bottom-width: 5px; }
+  html[data-skin="ink"] body.page-missions .mission-card--banner:is([data-mission-id^="sc1_"], [data-mission-id^="sc2_"]) .mc-stamp { right: 48px; top: 8px; width: 40px; }
+  html[data-skin="ink"] body.page-missions .mc-stat { font-size: 10.5px; padding-left: 8px; }
+  html[data-skin="ink"] body.page-missions .mission-card--banner .mc-meta { min-height: 26px; padding: 3px 8px; }
+  html[data-skin="ink"] body.page-missions .mc-pip .rank-ic { --ric: 19px; }
+
+  html[data-skin="ink"] body.page-missions .mission-card.mission-card--boss { height: 112px; }
+  html[data-skin="ink"] body.page-missions .mission-card--boss::before { left: 16px; top: 28px; font-size: 25px; }
+  html[data-skin="ink"] body.page-missions .mission-card--boss .mc-text { left: 16px; top: 11px; }
+  html[data-skin="ink"] body.page-missions .mission-card--boss .mc-kicker { font-size: 8px; }
+  html[data-skin="ink"] body.page-missions .mission-card--boss .mc-title { top: 50px; font-size: 7.5px; }
+  html[data-skin="ink"] body.page-missions .mission-card--boss .mc-art::after { top: 8px; right: 8px; padding: 3px 7px; font-size: 7px; }
+  html[data-skin="ink"] body.page-missions .mission-card--boss .mc-meta { left: 16px; bottom: 8px; }
+
+  /* sheet */
+  html[data-skin="ink"] .mission-modal { padding: max(6px, var(--safe-t, 0px)) max(8px, var(--safe-r, 0px)) max(6px, var(--safe-b, 0px)) calc(var(--ink-rail-w) + 8px) !important; }
+  html[data-skin="ink"] .mission-modal .md-sheet.jjk-panel { width: 100%; height: 100%; padding: 0; grid-template-columns: minmax(0, 47%) minmax(0, 1fr); }
+  html[data-skin="ink"] .mission-modal .md-close { top: 6px; right: 6px; width: 28px; height: 28px; }
+  html[data-skin="ink"] .md-side { gap: 7px; }
+  html[data-skin="ink"] .md-side > :not(.md-hero) { margin-left: 12px; margin-right: 12px; }
+  html[data-skin="ink"] .md-main { padding: 10px 40px 8px 14px; }
+  html[data-skin="ink"] .md-hero,
+  html[data-skin="ink"] .md-hero.md-hero--banner { height: 92px; }
+  html[data-skin="ink"] .md-hero.md-hero--banner:has(img[src*="/story/"]) .mc-art--banner::before { width: 24px; padding: 0 calc((24px - 1em) / 2); font-size: 10px; line-height: 1.2; }
+  html[data-skin="ink"] .md-hero.md-hero--banner:has(img[src*="/story/"])::before { top: 18px; left: 38px; font-size: 22px; }
+  html[data-skin="ink"] .md-hero.md-hero--banner:has(img[src*="/story/"])::after { top: 52px; left: 38px; font-size: 7.5px; letter-spacing: 0.2em; }
+  html[data-skin="ink"] .md-hero.mission-card--boss::before { left: 14px; top: 34px; font-size: 22px; }
+  html[data-skin="ink"] .md-hero.mission-card--boss .mc-text { left: 14px; top: 16px; }
+  html[data-skin="ink"] .md-hero.mission-card--boss .mc-kicker { font-size: 7.5px; }
+  html[data-skin="ink"] .md-hero.mission-card--boss .mc-title { top: 50px; font-size: 7.5px; }
+  html[data-skin="ink"] .md-hero.mission-card--boss .mc-art::after { top: 8px; right: 8px; padding: 2px 6px; font-size: 6.5px; }
+  html[data-skin="ink"] .md-desc { font-size: 11px; line-height: 1.5; }
+  html[data-skin="ink"] .md-label { font-size: 8px; letter-spacing: 0.22em; }
+  html[data-skin="ink"] .md-rank { height: 32px; padding: 0 6px; gap: 5px; }
+  html[data-skin="ink"] .md-rank-letter { width: 22px; height: 22px; }
+  html[data-skin="ink"] .md-rank-name { font-size: 10px; letter-spacing: 0.08em; }
+  html[data-skin="ink"] .md-facts .jjk-chip { font-size: 10.5px; padding: 0 8px; }
+  html[data-skin="ink"] .md-rw-block { padding: 6px 0; }
+  html[data-skin="ink"] .md-go { padding: 8px 12px 8px 12px; gap: 8px; }
+  html[data-skin="ink"] body.page-missions .md-go .start-btn { flex-basis: 220px; min-width: 170px; height: 40px; font-size: 15px; padding: 0 12px 0 14px; gap: 8px; }
+  html[data-skin="ink"] body.page-missions .md-go .start-btn::after { font-size: 15px; }
+  html[data-skin="ink"] body.page-missions .md-story-btn { height: 40px; font-size: 11px; }
+  html[data-skin="ink"] .md-main > .md-label { padding-bottom: 6px; }
+  html[data-skin="ink"] .md-stage { padding: 7px 4px 7px 2px; }
+  html[data-skin="ink"] .md-stage.is-boss-stage { padding-left: 8px; }
+  html[data-skin="ink"] .md-stage-no { font-size: 14px; }
+  html[data-skin="ink"] .md-stage-title { font-size: 12px; }
+  html[data-skin="ink"] .md-stage-sub { font-size: 10px; }
+}

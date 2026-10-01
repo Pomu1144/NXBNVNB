@@ -50,7 +50,7 @@
   <link rel="stylesheet" href="css/summon-banner-carousel.css?v=2" />
   <link rel="stylesheet" href="css/ui-layout.css?v=2" />
   <link rel="stylesheet" href="css/settings-modal.css?v=3" />
-  <link rel="stylesheet" href="css/modal-system.css?v=3" />
+  <link rel="stylesheet" href="css/modal-system.css?v=4" />
   <link rel="stylesheet" href="css/fonts.css" />
   <link rel="stylesheet" id="present-box-css" href="css/present-box.css?v=2" />
   <link rel="stylesheet" href="css/achievements.css?v=2" />
@@ -73,6 +73,7 @@
   <link rel="stylesheet" href="css/tutorial.css" />
   <link rel="stylesheet" href="css/mobile.css" />
   <link rel="stylesheet" href="css/ui-glass.css" />
+  <link rel="stylesheet" href="css/ui-ink.css" />
 </head>
 
 <body data-bottom-icons-handled="page">
@@ -179,19 +180,55 @@
     <div class="banner-button ninja-road" role="button" aria-label="Ninja Road"></div>
   </div>
 
+  <!-- Ink style home (css/ui-ink.css shows it only in Ink): layered hero art
+       (assets/ui/ink: bg, echo, hero, shards, name), left nav rail, news,
+       feature cards and the Enter button. Tiles forward to the existing
+       banner buttons / dock icons, so navigation logic is shared. -->
+  <section class="ink-home" aria-label="Home">
+    <div class="ink-layers" aria-hidden="true">
+      <img class="ink-l ink-l-bg" src="assets/ui/ink/bg.webp" alt="" draggable="false">
+      <img class="ink-l ink-l-echo" src="assets/ui/ink/echo.webp" alt="" draggable="false">
+      <img class="ink-l ink-l-hero" src="assets/ui/ink/hero.webp" alt="" draggable="false">
+      <img class="ink-l ink-l-shards" src="assets/ui/ink/shards.webp" alt="" draggable="false">
+    </div>
+    <nav class="ink-rail" aria-label="Main menu">
+      <div class="ink-brand"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 6c-9 0-16 7-16 16 0 6 4 11 9 13M24 6c6 0 11 4 12 10M36 16c-5-3-12-1-14 4s1 10 6 10 8-5 5-9"/><path d="M17 35l-6 7h24"/></svg><span>Naruto<br>Blazing</span></div>
+      <button type="button" class="ink-nav is-active" data-ink-go="home"><svg viewBox="0 0 24 24"><path d="M12 3l2.5 5.5L20 9l-4 4 1 6-5-3-5 3 1-6-4-4 5.5-.5z"/></svg>Home</button>
+      <button type="button" class="ink-nav" data-ink-go="characters"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c1-4 4-6 7-6s6 2 7 6"/></svg>Shinobi</button>
+      <button type="button" class="ink-nav" data-ink-go="missions"><svg viewBox="0 0 24 24"><path d="M6 4h10l2 2v14H6z"/><path d="M9 9h6M9 13h6M9 17h4"/></svg>Missions</button>
+      <button type="button" class="ink-nav" data-ink-go="summon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2.5"/></svg>Summon</button>
+      <button type="button" class="ink-nav" data-ink-go="shop"><svg viewBox="0 0 24 24"><path d="M5 9h14l-1.4 10H6.4z"/><path d="M9 9V7a3 3 0 0 1 6 0v2"/></svg>Shop</button>
+    </nav>
+    <div class="ink-tools">
+      <button type="button" class="ink-ic" data-ink-act="presents" aria-label="Presents"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="13" rx="1"/><path d="M3 7l9 7 9-7"/></svg></button>
+      <button type="button" class="ink-ic" data-ink-act="menu" aria-label="More" aria-expanded="false"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="7" height="7"/><rect x="13" y="4" width="7" height="7"/><rect x="4" y="13" width="7" height="7"/><rect x="13" y="13" width="7" height="7"/></svg></button>
+      <button type="button" class="ink-ic" data-ink-act="settings" aria-label="Settings"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1"/></svg></button>
+    </div>
+    <p class="ink-quote"><span lang="ja">「そう急ぐな…<br>&emsp;必ず戻ってくる」</span><em>I'll be back soon.</em></p>
+    <p class="ink-tag"><span lang="ja">火の意志、<br>&emsp;未来へ</span><small>A brighter tomorrow</small></p>
+    <div class="ink-title"><img src="assets/ui/ink/name.webp" alt="波風ミナト" draggable="false"><small>Minato<br>Namikaze</small></div>
+    <button type="button" class="ink-news" data-ink-act="notice">
+      <span class="ink-news-art" aria-hidden="true"></span>
+      <span class="ink-news-body"><b>News <i aria-hidden="true">&rarr;</i></b><span class="ink-news-list" id="ink-news-list"></span></span>
+    </button>
+    <div class="ink-cards">
+      <button type="button" class="ink-card ink-card-a" data-ink-go="summon"><span lang="ja">継ぐ意志</span><small>The will lives on</small><i aria-hidden="true"></i></button>
+      <button type="button" class="ink-card ink-card-b" data-ink-go="ninja-road"><span lang="ja">時を駆けて</span><small>Through time</small><i aria-hidden="true"></i></button>
+    </div>
+    <button type="button" class="ink-enter" data-ink-go="missions"><b>Enter</b><span class="ink-enter-line" aria-hidden="true"></span><small>To a new dawn</small><i aria-hidden="true">&rarr;</i></button>
+    <p class="ink-enter-cap" lang="ja">あの光が、また道を照らす</p>
+  </section>
+
   <!-- Glass style main menu (css/ui-glass.css shows it instead of the banner
        panel above); each tile forwards to the matching banner button -->
   <nav class="hv-menu" aria-label="Main menu">
-    <button type="button" class="hv-t hv-big" data-go="missions">
-      <span class="hv-x"><small>Story · Events · Bosses</small><b>Missions</b></span>
-      <span class="hv-go"><i><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></i>Go</span>
-    </button>
-    <button type="button" class="hv-t" data-go="summon"><span class="hv-o"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2.5"/></svg></span><span class="hv-x"><b>Summon</b><small>Featured banners</small></span></button>
-    <button type="button" class="hv-t" data-go="characters"><span class="hv-o"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c1-4 4-6 7-6s6 2 7 6"/></svg></span><span class="hv-x"><b>Shinobi</b><small>Your roster</small></span></button>
-    <button type="button" class="hv-t" data-go="fusion"><span class="hv-o"><svg viewBox="0 0 24 24"><path d="M7 8a5 5 0 0 1 10 0M17 16a5 5 0 0 1-10 0"/><path d="M12 10v4M10 12h4"/></svg></span><span class="hv-x"><b>Fusion</b><small>Recipes</small></span></button>
-    <button type="button" class="hv-t" data-go="shop"><span class="hv-o"><svg viewBox="0 0 24 24"><path d="M5 9h14l-1.4 10H6.4z"/><path d="M9 9V7a3 3 0 0 1 6 0v2"/></svg></span><span class="hv-x"><b>Shop</b><small>Items · Crystals</small></span></button>
-    <button type="button" class="hv-t" data-go="arena"><span class="hv-o"><svg viewBox="0 0 24 24"><path d="M5 19L17 7M17 7l2-3M19 19L7 7M7 7L5 4"/></svg></span><span class="hv-x"><b>Arena</b><small>Ranked battles</small></span></button>
-    <button type="button" class="hv-t" data-go="ninja-road"><span class="hv-o"><svg viewBox="0 0 24 24"><path d="M4 7h16M7 7v13M17 7v13M5 4h14M9 11h6"/></svg></span><span class="hv-x"><b>Ninja Road</b><small>10-floor run</small></span></button>
+    <button type="button" class="hv-t hv-summon" data-go="summon"><span class="hv-x"><b>Summon</b><small>Featured banners</small></span><span class="hv-o"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2.5"/></svg></span></button>
+    <button type="button" class="hv-t hv-missions" data-go="missions"><span class="hv-x"><small>Story · Events · Bosses</small><b>Missions</b></span><span class="hv-go">Go<svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></span></button>
+    <button type="button" class="hv-t" data-go="characters"><span class="hv-x"><b>Shinobi</b><small>Roster</small></span><span class="hv-o"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c1-4 4-6 7-6s6 2 7 6"/></svg></span></button>
+    <button type="button" class="hv-t" data-go="fusion"><span class="hv-x"><b>Fusion</b><small>Recipes</small></span><span class="hv-o"><svg viewBox="0 0 24 24"><path d="M7 8a5 5 0 0 1 10 0M17 16a5 5 0 0 1-10 0"/><path d="M12 10v4M10 12h4"/></svg></span></button>
+    <button type="button" class="hv-t" data-go="shop"><span class="hv-x"><b>Shop</b><small>Items</small></span><span class="hv-o"><svg viewBox="0 0 24 24"><path d="M5 9h14l-1.4 10H6.4z"/><path d="M9 9V7a3 3 0 0 1 6 0v2"/></svg></span></button>
+    <button type="button" class="hv-t" data-go="arena"><span class="hv-x"><b>Arena</b><small>Ranked</small></span><span class="hv-o"><svg viewBox="0 0 24 24"><path d="M5 19L17 7M17 7l2-3M19 19L7 7M7 7L5 4"/></svg></span></button>
+    <button type="button" class="hv-t hv-wide" data-go="ninja-road"><span class="hv-x"><b>Ninja Road</b><small>10-floor run</small></span><span class="hv-o"><svg viewBox="0 0 24 24"><path d="M4 7h16M7 7v13M17 7v13M5 4h14M9 11h6"/></svg></span></button>
   </nav>
 
   <!-- Bottom Icon Bar (10 Utility Icons) -->
@@ -516,6 +553,41 @@
           document.querySelector(`.right-banner-panel .banner-button.${tile.dataset.go}`)?.click();
         });
       });
+
+      // Ink style home: rail / cards / Enter reuse the banner buttons; the
+      // top-right icons reuse the dock; the grid icon shows the full dock
+      document.querySelectorAll('.ink-home [data-ink-go]').forEach(el => {
+        el.addEventListener('click', () => {
+          const go = el.dataset.inkGo;
+          if (go === 'home') return;
+          document.querySelector(`.right-banner-panel .banner-button.${go}`)?.click();
+        });
+      });
+      document.querySelectorAll('.ink-home [data-ink-act]').forEach(el => {
+        el.addEventListener('click', () => {
+          const act = el.dataset.inkAct;
+          if (act === 'menu') {
+            const open = document.documentElement.classList.toggle('ink-dock-open');
+            el.setAttribute('aria-expanded', String(open));
+            return;
+          }
+          document.querySelector(`.bottom-icon[data-action="${act}"]`)?.click();
+        });
+      });
+      fetch('data/announcements.json').then(r => r.json()).then(data => {
+        const box = document.getElementById('ink-news-list');
+        const list = (Array.isArray(data) ? data : (data && data.announcements) || [])
+          .slice().sort((a, b) => String(b.dateStart).localeCompare(String(a.dateStart)));
+        if (!box || !list.length) return;
+        const fmt = (d) => { const t = new Date(d); return isNaN(t) ? '' : `${String(t.getMonth() + 1).padStart(2, '0')}/${String(t.getDate()).padStart(2, '0')}`; };
+        box.replaceChildren(...list.slice(0, 3).map(a => {
+          const row = document.createElement('span');
+          const date = document.createElement('time'); date.textContent = fmt(a.dateStart);
+          const title = document.createElement('span'); title.textContent = a.title || '';
+          row.append(date, title);
+          return row;
+        }));
+      }).catch(() => {});
 
       // ===== BOTTOM ICON BAR NAVIGATION =====
 

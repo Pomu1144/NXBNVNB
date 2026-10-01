@@ -1,0 +1,230 @@
+/* css/ink/inventory.css — Ink style for inventory.html (Items: tabs, item
+   grid, item detail dialog). Loaded after css/ui-ink.css; every rule is
+   scoped to html[data-skin="ink"], so Classic and Glass are untouched. Ink
+   inherits css/glass/inventory.css and re-skins it: the panel opens up into
+   the space right of the left rail (no box around it, full height), serif
+   tabs on a hairline, charcoal item slips with a gold bar when touched, and a
+   two-column paper dialog with the item art on the left. */
+
+/* ── Page frame ─────────────────────────────────────────────────────── */
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-inventory {
+  --ink-gx: calc(var(--ink-rail-w) + 18px);
+  --ink-gr: max(24px, var(--safe-r, 0px));
+  --ink-top: 92px;
+  --ink-bot: 22px;
+  background: #0a0a0b;
+}
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-inventory {
+  --ink-gx: calc(var(--ink-rail-w) + 18px);
+  --ink-gr: max(12px, var(--safe-r, 0px));
+  --ink-top: 50px;
+  --ink-bot: max(8px, var(--safe-b, 0px));
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-inventory #full-bg {
+  overflow: hidden;
+  background:
+    linear-gradient(90deg, rgba(10, 10, 11, 0.97) 0, rgba(10, 10, 11, 0.88) 46%, rgba(10, 10, 11, 0.64)),
+    url('../../assets/ui/ink/bg.webp') 72% 40% / cover no-repeat,
+    #0a0a0b;
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-inventory #full-bg::after {
+  content: ''; position: absolute; right: -6%; top: -10%; width: min(60vw, 740px); height: 120%;
+  background: url('../../assets/ui/ink/echo.webp') right top / contain no-repeat;
+  mix-blend-mode: screen; opacity: 0.15; pointer-events: none;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 45%);
+  mask-image: linear-gradient(90deg, transparent, #000 45%);
+}
+
+/* Header: Japanese title over the Cinzel caption */
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-inventory .jjk-page-header { top: 18px; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-inventory .jjk-page-header .jjk-title-plate {
+  display: inline-flex; flex-direction: column; align-items: flex-start; justify-content: center;
+  min-width: 0; min-height: 0; padding: 0; line-height: 1.15;
+}
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-inventory .jjk-page-header { top: calc(8px + var(--safe-t, 0px)); }
+
+/* ── The panel opens up: no frame, it is the page column ───────────── */
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-inventory .inventory-page-container {
+  top: var(--ink-top) !important; bottom: var(--ink-bot) !important;
+  left: var(--ink-gx) !important; right: var(--ink-gr) !important;
+  width: auto !important; max-width: none !important; max-height: none !important; transform: none !important;
+  padding: 0 !important; border: 0 !important; border-radius: 0;
+  background: none; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none;
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-inventory .inventory-page-container::before,
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-inventory .inventory-page-container::after { display: none; }
+
+/* Tabs: serif labels on one hairline; the open tab is lit gold */
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-inventory .inventory-tabs {
+  display: flex; flex-wrap: nowrap !important; justify-content: flex-start !important;
+  gap: 0 !important; margin: 0 0 14px !important; overflow-x: auto; overflow-y: hidden;
+  box-shadow: inset 0 -1px 0 var(--g-line); scrollbar-width: none;
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-inventory .inventory-tabs .tab-btn.jjk-tab {
+  position: relative; flex: none; min-width: 0 !important; height: 40px !important; padding: 0 20px !important; margin: 0 !important;
+  background: none; border: 0; border-image: none; border-radius: 0; filter: none; box-shadow: none;
+  -webkit-backdrop-filter: none; backdrop-filter: none;
+  font: 500 14px var(--g-sans) !important; letter-spacing: 0.06em; text-transform: none; color: var(--g-dim); text-shadow: none;
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-inventory .inventory-tabs .tab-btn.jjk-tab:hover { color: var(--g-text); background: rgba(226, 204, 150, 0.05); }
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-inventory .inventory-tabs .tab-btn.jjk-tab.active {
+  color: #fff6dc; font-weight: 600 !important;
+  background: linear-gradient(0deg, rgba(201, 162, 78, 0.34), rgba(201, 162, 78, 0.06) 70%, transparent);
+  box-shadow: inset 0 -2px 0 var(--g-accent);
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-inventory .inventory-tabs .tab-btn.jjk-tab.active::after {
+  content: ''; position: absolute; left: 50%; bottom: -3px; width: 6px; height: 6px;
+  transform: translateX(-50%) rotate(45deg); background: var(--g-accent);
+}
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-inventory .inventory-tabs { margin-bottom: 8px !important; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-inventory .inventory-tabs .tab-btn.jjk-tab {
+  height: 32px !important; padding: 0 14px !important; font-size: 12px !important; letter-spacing: 0.03em;
+}
+
+/* Content well: translucent charcoal with a hairline */
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-inventory .inventory-content {
+  padding: 14px 16px !important; border: 0; border-radius: 0;
+  background: linear-gradient(180deg, rgba(14, 13, 12, 0.62), rgba(10, 10, 11, 0.48));
+  box-shadow: inset 0 0 0 1px var(--g-line);
+  scrollbar-color: rgba(201, 162, 78, 0.4) transparent;
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-inventory .inventory-content::-webkit-scrollbar-thumb { background: rgba(201, 162, 78, 0.4); }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-inventory .inventory-content { padding: 8px 10px !important; }
+
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-inventory .items-grid {
+  grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)) !important; gap: 10px !important; padding: 0 !important;
+}
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-inventory .items-grid {
+  grid-template-columns: repeat(auto-fill, minmax(92px, 1fr)) !important; gap: 6px !important;
+}
+/* section heading: serif with a fading gold rule */
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-inventory .items-group-title {
+  margin: 10px 0 2px; gap: 14px;
+  font: 600 14px var(--ink-jp); letter-spacing: 0.16em; text-transform: none; color: var(--g-text);
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-inventory .items-group-title:first-child { margin-top: 0; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-inventory .items-group-title::before {
+  content: ''; flex: none; width: 6px; height: 6px; transform: rotate(45deg); background: var(--g-accent);
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-inventory .items-group-title::after { background: linear-gradient(90deg, var(--g-line-2), transparent); }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-inventory .items-group-title { font-size: 12px; margin-top: 6px; gap: 10px; }
+
+/* ── Item slips ─────────────────────────────────────────────────────── */
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-inventory .item-card {
+  padding: 12px 8px 10px; border-radius: 0;
+  background: linear-gradient(180deg, rgba(26, 24, 20, 0.78), rgba(10, 10, 11, 0.86));
+  box-shadow: inset 0 0 0 1px var(--g-line);
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-inventory .item-card::after {
+  content: ''; position: absolute; left: 50%; top: 10px; width: 64px; height: 64px; transform: translateX(-50%);
+  background: radial-gradient(circle, rgba(226, 204, 150, 0.14), transparent 68%); pointer-events: none; z-index: 0;
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-inventory .item-card > * { position: relative; z-index: 1; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-inventory .item-card:hover {
+  background: linear-gradient(180deg, rgba(48, 40, 26, 0.84), rgba(14, 12, 10, 0.9));
+  box-shadow: inset 2px 0 0 var(--g-accent), inset 0 0 0 1px var(--g-line-2);
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-inventory .item-card .item-name {
+  font-family: var(--ink-jp); font-weight: 600; font-size: 12px; letter-spacing: 0.03em; color: var(--g-text);
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-inventory .item-quantity {
+  min-width: 0; padding: 2px 0 0; border-radius: 0; background: none; box-shadow: none; clip-path: none;
+  border-top: 1px solid var(--g-line); align-self: stretch;
+  font: 500 12px var(--ink-cinzel); letter-spacing: 0.08em; color: var(--g-accent-2);
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-inventory .item-card.is-empty .item-quantity { color: var(--g-faint); }
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-inventory .item-card.is-empty { background: rgba(10, 10, 11, 0.5); }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-inventory .item-card { padding: 8px 5px 6px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-inventory .item-card::after { top: 6px; width: 54px; height: 54px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-inventory .item-quantity { font-size: 10.5px; }
+
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-inventory .empty-state-text {
+  font-family: var(--ink-jp); font-weight: 600; letter-spacing: 0.12em; text-transform: none; color: var(--g-dim);
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-inventory .empty-state-subtext { font-style: italic; color: var(--g-faint); }
+
+/* ── Item detail: a paper dialog, art pane left, text right ─────────── */
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-inventory .item-modal { z-index: 1100; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-inventory .item-modal .modal-overlay {
+  background: radial-gradient(ellipse at 50% 50%, rgba(10, 10, 11, 0.55), rgba(6, 6, 7, 0.88));
+  -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px);
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-inventory .item-modal .modal-content {
+  width: min(600px, 92vw); max-width: 600px; padding: 0; border-radius: 0; overflow: hidden auto;
+  background:
+    radial-gradient(ellipse 70% 70% at 100% 0%, rgba(201, 162, 78, 0.1), transparent 70%),
+    linear-gradient(180deg, rgba(24, 22, 19, 0.97), rgba(10, 10, 11, 0.98));
+  box-shadow: inset 0 0 0 1px var(--g-line-2), 0 30px 80px rgba(0, 0, 0, 0.7);
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-inventory .item-modal .modal-content::before {
+  left: 0; top: 0; bottom: 0; width: 2px; height: auto; border-radius: 0; z-index: 2;
+  background: linear-gradient(180deg, var(--g-accent), rgba(201, 162, 78, 0) 80%);
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-inventory .item-details {
+  display: grid; grid-template-columns: 196px minmax(0, 1fr); grid-auto-rows: min-content;
+  column-gap: 24px; align-items: start; text-align: left; padding: 0 26px 22px 0;
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-inventory .item-icon-large {
+  grid-column: 1; grid-row: 1 / span 10; align-self: stretch;
+  width: 196px; height: auto; min-height: 220px; margin: 0; padding: 34px; box-sizing: border-box; object-fit: contain;
+  background:
+    radial-gradient(circle at 50% 52%, rgba(226, 204, 150, 0.2), transparent 62%),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.55)),
+    url('../../assets/ui/ink/bg.webp') 40% 50% / cover no-repeat;
+  box-shadow: inset -1px 0 0 var(--g-line);
+  filter: none;
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-inventory .modal-content .item-name {
+  grid-column: 2; display: block; min-height: 0; margin: 26px 40px 4px 0;
+  font-family: var(--ink-jp); font-weight: 600; font-size: 22px; letter-spacing: 0.08em; line-height: 1.3;
+  color: var(--g-text); text-align: left;
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-inventory .modal-content .item-name::after {
+  content: '道具 · Item'; display: block; margin-top: 4px;
+  font: 400 9px var(--ink-cinzel); letter-spacing: 0.34em; text-transform: uppercase; color: var(--g-dim);
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-inventory .modal-content .item-description {
+  grid-column: 2; margin: 10px 0 14px; padding: 12px 0 0;
+  background: none; border: 0; border-radius: 0; box-shadow: inset 0 1px 0 var(--g-line);
+  font-family: var(--g-sans); font-size: 13px; line-height: 1.6; color: var(--g-dim);
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-inventory .item-rarity { color: var(--g-accent); }
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-inventory .item-obtain b {
+  font: 500 10px var(--ink-cinzel); letter-spacing: 0.2em; color: var(--g-accent-2);
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-inventory .item-quantity-display {
+  grid-column: 2; justify-content: space-between; padding: 8px 14px; border: 0; border-radius: 0;
+  background: linear-gradient(90deg, rgba(201, 162, 78, 0.2), rgba(201, 162, 78, 0.03));
+  box-shadow: inset 2px 0 0 var(--g-accent), inset 0 1px 0 rgba(226, 204, 150, 0.3), inset 0 -1px 0 rgba(226, 204, 150, 0.3);
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-inventory .quantity-label {
+  font: 500 10.5px var(--ink-cinzel); letter-spacing: 0.3em; text-transform: uppercase; color: var(--g-dim);
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-inventory .quantity-value { font: 500 22px var(--ink-cinzel); color: #fff6dc; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-inventory .item-usage-note {
+  grid-column: 2; margin-top: 10px; border-radius: 0; background: none;
+  box-shadow: inset 0 0 0 1px var(--g-line); font-style: italic; color: var(--g-dim);
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-inventory .close-btn {
+  z-index: 3; top: 14px; right: 14px; width: 32px; height: 32px; border-radius: 0;
+  background: rgba(8, 8, 10, 0.6); box-shadow: inset 0 0 0 1px var(--g-line-2);
+  font: 300 20px var(--g-sans); color: var(--g-text);
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-inventory .close-btn:hover {
+  background: linear-gradient(180deg, #f3ead2, #e2d4ae); color: var(--g-on-accent); box-shadow: none; transform: none;
+}
+/* phones: a shorter, wider sheet */
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-inventory .item-modal .modal-content {
+  width: min(560px, calc(100vw - 24px)); padding: 0; max-height: calc(100dvh - 20px);
+}
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-inventory .item-details {
+  grid-template-columns: 150px minmax(0, 1fr); column-gap: 18px; padding: 0 18px 14px 0;
+}
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-inventory .item-icon-large { width: 150px; min-height: 170px; padding: 26px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-inventory .modal-content .item-name { margin: 16px 36px 2px 0; font-size: 18px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-inventory .modal-content .item-name::after { font-size: 7.5px; margin-top: 2px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-inventory .modal-content .item-description { margin: 6px 0 10px; padding: 8px 0 0; font-size: 12px; line-height: 1.5; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-inventory .item-quantity-display { padding: 5px 12px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-inventory .quantity-value { font-size: 18px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-inventory .close-btn { top: 10px; right: 10px; width: 28px; height: 28px; font-size: 18px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-inventory .item-usage-note { margin-top: 8px; padding: 6px 10px; font-size: 11.5px; }
