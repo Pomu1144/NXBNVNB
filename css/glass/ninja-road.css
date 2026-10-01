@@ -32,7 +32,7 @@ html[data-ui="glass"] .nr-bg-scrim {
 /* ── Header: same look as .jjk-page-header in Glass ────────────── */
 html[data-ui="glass"] .nr-head { gap: 12px; }
 html[data-ui="glass"] .nr-icon-btn {
-  width: 40px; height: 40px; border: 0; border-radius: var(--g-radius);
+  width: 40px; height: 40px; border: 0; border-radius: 50%;
   background: var(--g-glass-2);
   -webkit-backdrop-filter: var(--g-blur); backdrop-filter: var(--g-blur);
   box-shadow: inset 0 0 0 1px var(--g-line-2);
@@ -59,14 +59,14 @@ html[data-ui="glass"].is-mobile.is-landscape.is-compact .nr-title { padding-left
 
 /* coins + secondary buttons */
 html[data-ui="glass"] .nr-coins {
-  border: 0; border-radius: var(--g-radius);
+  border: 0; border-radius: var(--g-pill);
   background: var(--g-glass-2);
   -webkit-backdrop-filter: var(--g-blur); backdrop-filter: var(--g-blur);
   box-shadow: inset 0 0 0 1px var(--g-line);
   font-weight: 500; font-size: 16px; color: var(--g-text);
 }
 html[data-ui="glass"] .nr-chip {
-  border: 0; border-radius: var(--g-radius);
+  border: 0; border-radius: var(--g-pill);
   background: var(--g-glass-2);
   -webkit-backdrop-filter: var(--g-blur); backdrop-filter: var(--g-blur);
   box-shadow: inset 0 0 0 1px var(--g-line-2);
@@ -85,7 +85,7 @@ html[data-ui="glass"] .nr-road::before {
   background: linear-gradient(90deg, rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0.14));
 }
 html[data-ui="glass"] .nr-node-mark {
-  border: 0; border-radius: var(--g-radius);
+  border: 0; border-radius: 50%;
   background: var(--g-glass-2);
   -webkit-backdrop-filter: var(--g-blur); backdrop-filter: var(--g-blur);
   box-shadow: inset 0 0 0 1px var(--g-line-2);
@@ -129,7 +129,7 @@ html[data-ui="glass"] .nr-squad.is-empty:hover:not(:disabled) { border: 1px dash
 html[data-ui="glass"] .nr-squad-team { font-weight: 500; font-size: 14px; letter-spacing: 0.04em; text-transform: uppercase; }
 html[data-ui="glass"] .nr-squad-hp { font-weight: 500; font-size: 14px; color: var(--g-text); }
 html[data-ui="glass"] .nr-squad.is-out .nr-squad-hp { color: var(--g-red); }
-html[data-ui="glass"] .nr-unit { border: 0; border-radius: 2px; box-shadow: inset 0 0 0 1px var(--g-line); }
+html[data-ui="glass"] .nr-unit { border: 0; border-radius: var(--g-radius-sm); box-shadow: inset 0 0 0 1px var(--g-line); }
 html[data-ui="glass"] .nr-unit-hp b { background: var(--g-accent); }
 html[data-ui="glass"] .nr-squad-bar { background: rgba(255, 255, 255, 0.12); }
 html[data-ui="glass"] .nr-squad-add { font-weight: 500; font-size: 13px; letter-spacing: 0.1em; color: var(--g-dim); }
@@ -144,15 +144,15 @@ html[data-ui="glass"] .nr-floor {
 }
 html[data-ui="glass"] .nr-floor-name { font-weight: 500; font-size: 15px; letter-spacing: 0.04em; text-transform: uppercase; }
 html[data-ui="glass"] .nr-kicker em.is-boss { color: var(--g-red); }
-html[data-ui="glass"] .nr-foes img { border: 0; border-radius: 2px; outline: 1px solid var(--g-line-2); outline-offset: -1px; }
+html[data-ui="glass"] .nr-foes img { border: 0; border-radius: var(--g-radius-sm); outline: 1px solid var(--g-line-2); outline-offset: -1px; }
 html[data-ui="glass"] .nr-foes img.is-boss { outline-color: rgba(255, 106, 90, 0.75); }
 html[data-ui="glass"] .nr-floor-loot { font-weight: 500; font-size: 15px; }
 html[data-ui="glass"] .nr-seal {
-  border: 0; border-radius: 2px; box-shadow: inset 0 0 0 1px var(--g-accent);
+  border: 0; border-radius: var(--g-pill); box-shadow: inset 0 0 0 1px var(--g-accent);
   font-weight: 500; letter-spacing: 0.08em;
 }
 html[data-ui="glass"] .nr-start {
-  clip-path: none; border-radius: var(--g-radius);
+  clip-path: none; border-radius: var(--g-pill);
   background: var(--g-accent); color: var(--g-on-accent);
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
 }
@@ -171,7 +171,7 @@ html[data-ui="glass"] .nr-pick:focus-visible { outline-color: var(--g-sel); }
 html[data-ui="glass"] .nr-sheet-scrim { background: rgba(2, 4, 6, 0.62); }
 html[data-ui="glass"] .nr-sheet-panel {
   border: 0; border-radius: var(--g-radius);
-  background: linear-gradient(var(--g-accent), var(--g-accent)) 0 0 / 34px 3px no-repeat, var(--g-glass-2);
+  background: linear-gradient(var(--g-accent), var(--g-accent)) 18px 0 / 34px 3px no-repeat, var(--g-glass-2);
   -webkit-backdrop-filter: var(--g-blur); backdrop-filter: var(--g-blur);
   box-shadow: inset 0 0 0 1px var(--g-line), 0 24px 60px rgba(0, 0, 0, 0.6);
   padding-top: 16px;
@@ -180,7 +180,7 @@ html[data-ui="glass"] .nr-sheet-head .nr-icon-btn { width: 32px; height: 32px; }
 html[data-ui="glass"] .nr-sheet-title { font-weight: 500; font-size: 20px; letter-spacing: 0.04em; text-transform: uppercase; }
 html[data-ui="glass"] .nr-sheet-note { font-family: var(--g-sans); letter-spacing: 0; }
 html[data-ui="glass"] .nr-pick {
-  border: 0; border-radius: var(--g-radius);
+  border: 0; border-radius: var(--g-radius-sm);
   background: var(--g-glass); box-shadow: inset 0 0 0 1px var(--g-line);
   color: var(--g-text);
 }
@@ -190,7 +190,7 @@ html[data-ui="glass"] .nr-pick.is-current {
   box-shadow: inset 3px 0 0 var(--g-accent), inset 0 0 0 1px rgba(255, 255, 255, 0.5);
 }
 html[data-ui="glass"] .nr-pick-note { font-weight: 500; }
-html[data-ui="glass"] .nr-pick-faces img { border: 0; border-radius: 2px; outline: 1px solid var(--g-line); outline-offset: -1px; }
+html[data-ui="glass"] .nr-pick-faces img { border: 0; border-radius: var(--g-radius-sm); outline: 1px solid var(--g-line); outline-offset: -1px; }
 html[data-ui="glass"] .nr-ms-floor { font-weight: 500; font-size: 14px; letter-spacing: 0.04em; text-transform: uppercase; }
 html[data-ui="glass"] .nr-ms-loot { font-weight: 500; font-size: 13.5px; letter-spacing: 0.02em; }
 

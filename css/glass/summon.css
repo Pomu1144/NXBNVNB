@@ -1,0 +1,559 @@
+/* css/glass/summon.css — Glass style for summon.html (Settings › Display › Glass).
+   Model: Arknights: Endfield headhunt — big art, a title block on the right,
+   pity/info lines, and two pill buttons bottom-right with the cost above each
+   (×1 = white pill, ×10 = yellow pill). Every selector is scoped to
+   html[data-ui="glass"], so Classic is untouched. $ = the long prefix used to
+   beat the compact-landscape rules of summon-premium.css / jutsu-summon.css. */
+
+/* ── Page ground ─────────────────────────────────────────────────── */
+html[data-ui="glass"] body.page-summon { background: #07090b; }
+html[data-ui="glass"] #summon-bg {
+  background:
+    radial-gradient(ellipse 80% 70% at 55% 40%, rgba(40, 48, 56, 0.35), rgba(4, 6, 8, 0.92) 80%),
+    url('../../assets/ui/jjk/ink_bg.webp') center / cover no-repeat,
+    #07090b;
+  filter: grayscale(1);
+}
+
+/* ── Top bar: back + title | tabs | currencies ──────────────────── */
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .summon-topbar #btn-back-to-home {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: var(--g-glass-2);
+  -webkit-backdrop-filter: var(--g-blur); backdrop-filter: var(--g-blur);
+  box-shadow: inset 0 0 0 1px var(--g-line-2);
+}
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .summon-topbar #btn-back-to-home:hover { background: var(--g-glass-hi); }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .summon-title.jjk-title-plate {
+  min-height: 0; padding: 0 0 0 12px; font-size: 24px;
+}
+html[data-ui="glass"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) .summon-topbar #btn-back-to-home { width: 32px; height: 32px; }
+html[data-ui="glass"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) .summon-title.jjk-title-plate { font-size: 19px; padding-left: 10px; }
+
+/* tabs: one glass pill track, selected segment = white pill */
+html[data-ui="glass"] .summon-tabs {
+  gap: 2px; padding: 3px; border-radius: var(--g-pill);
+  background: var(--g-glass-2);
+  -webkit-backdrop-filter: var(--g-blur); backdrop-filter: var(--g-blur);
+  box-shadow: inset 0 0 0 1px var(--g-line);
+}
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .summon-tab.jjk-tab {
+  min-width: 0; height: 32px; padding: 0 18px;
+  border: 0; border-image: none; border-radius: var(--g-pill);
+  background: transparent; box-shadow: none; filter: none;
+  font-family: var(--g-cond); font-weight: 500; font-size: 14px; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--g-dim); text-shadow: none;
+}
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .summon-tab.jjk-tab:hover:not(.active) { color: var(--g-text); background: rgba(255, 255, 255, 0.06); }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .summon-tab.jjk-tab.active { background: var(--g-sel); color: var(--g-on-sel); }
+html[data-ui="glass"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) .summon-tab.jjk-tab { height: 26px; padding: 0 12px; font-size: 12px; }
+
+/* currencies: glass pills */
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .summon-currency-hud { gap: 6px; }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .summon-currency-hud .currency-chip {
+  --cur-h: 32px;
+  min-width: 0; height: var(--cur-h); padding: 0 14px 0 8px; gap: 8px; justify-content: flex-start;
+  border: 0; border-image: none; border-radius: var(--g-pill);
+  background: var(--g-glass-2);
+  -webkit-backdrop-filter: var(--g-blur); backdrop-filter: var(--g-blur);
+  box-shadow: inset 0 0 0 1px var(--g-line);
+  filter: none;
+  font-family: var(--g-cond); font-weight: 500; font-size: 15px; letter-spacing: 0.04em;
+  color: var(--g-text); text-shadow: none;
+}
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .summon-currency-hud .currency-icon {
+  position: static; transform: none; width: 18px; height: 18px; filter: none;
+}
+html[data-ui="glass"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) .summon-currency-hud .currency-chip { --cur-h: 28px; font-size: 13.5px; padding: 0 12px 0 6px; gap: 6px; }
+
+/* ── Panels: rail, draw column, jutsu rail / draw column ───────── */
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .banner-rail-col,
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .draw-col,
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .jutsu-rail,
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .jutsu-draw-col {
+  border: 0; border-radius: var(--g-radius);
+  background: var(--g-glass);
+  background-blend-mode: normal;
+  -webkit-backdrop-filter: var(--g-blur); backdrop-filter: var(--g-blur);
+  box-shadow: inset 0 0 0 1px var(--g-line), 0 14px 34px rgba(0, 0, 0, 0.35);
+}
+/* corner brackets → one short yellow tick, top-left */
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .banner-rail-col::after,
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .draw-col::after,
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .jutsu-rail::after,
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .jutsu-draw-col::after { display: none; }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .banner-rail-col::before,
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .draw-col::before,
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .jutsu-rail::before,
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .jutsu-draw-col::before {
+  top: 0; left: 14px; width: 22px; height: 2px; border: 0; border-radius: 2px; background: var(--g-accent);
+}
+/* section headers: small dim Oswald with a hairline after */
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .rail-heading {
+  display: flex; align-items: center; gap: 8px;
+  border: 0; border-image: none; text-align: left;
+  font-family: var(--g-cond); font-weight: 500; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--g-dim); text-shadow: none;
+}
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .rail-heading::after { content: ''; flex: 1; height: 1px; background: var(--g-line); }
+html[data-ui="glass"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) .gacha-stage .rail-heading { font-size: 10.5px; letter-spacing: 0.12em; padding: 3px 2px 5px; }
+
+/* banner thumbnails: rounded, dim idle, white ring + yellow bar when active */
+html[data-ui="glass"]:not(._g):not(._l):not(._s) #banner-preview-scroll { gap: 6px; }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) #banner-preview-scroll .preview-item,
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .rc-rail-item {
+  border: 0; border-radius: var(--g-radius-sm); overflow: hidden;
+  background: #0b0e11;
+  box-shadow: inset 0 0 0 1px var(--g-line);
+}
+html[data-ui="glass"]:not(._g):not(._l):not(._s) #banner-preview-scroll .preview-item img { filter: brightness(0.55) saturate(0.6); }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) #banner-preview-scroll .preview-item:hover { transform: none; }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) #banner-preview-scroll .preview-item:hover img { filter: brightness(0.85) saturate(0.9); }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) #banner-preview-scroll .preview-item.active,
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .rc-rail-item.active {
+  border: 0; box-shadow: none; outline: 2px solid var(--g-sel); outline-offset: -2px;
+}
+html[data-ui="glass"]:not(._g):not(._l):not(._s) #banner-preview-scroll .preview-item.active img { filter: none; }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) #banner-preview-scroll .preview-item.active::after,
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .rc-rail-item.active::after { display: none; }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) #banner-preview-scroll .preview-item.active::before,
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .rc-rail-item.active::before {
+  content: ''; position: absolute; z-index: 2; left: 0; top: 8px; bottom: 8px; width: 3px;
+  border: 0; border-radius: 0 2px 2px 0; background: var(--g-accent);
+}
+html[data-ui="glass"]:not(._g):not(._l):not(._s) #banner-preview-scroll::-webkit-scrollbar,
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .rc-rail::-webkit-scrollbar { width: 3px; height: 3px; }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) #banner-preview-scroll::-webkit-scrollbar-thumb,
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .rc-rail::-webkit-scrollbar-thumb { background: var(--g-line-2); border-radius: 2px; }
+html[data-ui="glass"] #banner-preview-scroll,
+html[data-ui="glass"] .rc-rail { scrollbar-color: var(--g-line-2) transparent; scrollbar-width: thin; }
+html[data-ui="glass"] .rc-rail-label { font-family: var(--g-cond); font-weight: 500; font-size: 13px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--g-text); }
+
+/* ── Center stage: borderless glass window, art in front ───────── */
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .featured-stage,
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .jutsu-stage {
+  border: 0; border-radius: var(--g-radius);
+  background: #090c0f;
+  box-shadow: inset 0 0 0 1px var(--g-line), 0 16px 40px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+}
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .featured-stage::before,
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .jutsu-stage::before {
+  filter: grayscale(1) brightness(0.42) contrast(1.05);
+}
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .featured-stage::after,
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .jutsu-stage::after {
+  inset: 0; border: 0; border-radius: inherit;
+  box-shadow: inset 0 0 0 1px var(--g-line), inset 0 0 60px rgba(0, 0, 0, 0.6);
+}
+html[data-ui="glass"] .featured-glow,
+html[data-ui="glass"] .jutsu-stage-glow { background: radial-gradient(circle, rgba(255, 255, 255, 0.07), transparent 65%); }
+
+/* banner art / jutsu card / recipe banner: no gold bezel, a hairline + soft shadow */
+html[data-ui="glass"]:not(._g):not(._l):not(._s) #stage-banner-img,
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .jutsu-show-frame,
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .rc-banner {
+  padding: 0; border-radius: var(--g-radius-sm); background: #0b0e11;
+  box-shadow: 0 0 0 1px var(--g-line-2), 0 14px 34px rgba(0, 0, 0, 0.7);
+}
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .jutsu-show-clip,
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .rc-banner .rcb { inset: 0; border-radius: var(--g-radius-sm); }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .jutsu-show-caption {
+  left: 0; right: 0; bottom: 0; border-radius: 0 0 var(--g-radius-sm) var(--g-radius-sm);
+  background: linear-gradient(0deg, rgba(6, 8, 10, 0.92), rgba(6, 8, 10, 0.5) 60%, transparent);
+}
+html[data-ui="glass"] .jutsu-show-name,
+html[data-ui="glass"] .featured-name {
+  font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; color: var(--g-text);
+}
+html[data-ui="glass"] .jutsu-show-type,
+html[data-ui="glass"] .featured-title { font-family: var(--g-sans); color: var(--g-dim); letter-spacing: 0.08em; }
+html[data-ui="glass"] .featured-rank { font-family: var(--g-cond); font-weight: 500; color: var(--g-accent); }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .featured-caption { background: linear-gradient(0deg, rgba(6, 8, 10, 0.94), transparent); }
+
+/* character view: tier badge + stats card */
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .stage-tier-badge,
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .featured-stage[data-view="char5"] .stage-tier-badge {
+  clip-path: none; border-radius: var(--g-pill); padding: 3px 14px;
+  background: var(--g-glass-2); box-shadow: inset 0 0 0 1px var(--g-line-2);
+  font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.1em; color: var(--g-text);
+}
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .char-stats {
+  border: 0; border-radius: var(--g-radius-sm);
+  background: var(--g-glass-2);
+  -webkit-backdrop-filter: var(--g-blur); backdrop-filter: var(--g-blur);
+  box-shadow: inset 0 0 0 1px var(--g-line);
+  font-family: var(--g-sans);
+}
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .char-stats .cs-head {
+  font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--g-text);
+}
+html[data-ui="glass"] .char-stats .cs-label { color: var(--g-dim); }
+html[data-ui="glass"] .char-stats .cs-val { font-family: var(--g-cond); font-weight: 500; color: var(--g-text); }
+html[data-ui="glass"] .char-stats .cs-val.gold { color: var(--g-accent); }
+html[data-ui="glass"] .char-stats .cs-row + .cs-row { border-top-color: var(--g-line); }
+
+/* arrows: round glass buttons with a thin chevron (no kunai art) */
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .stage-arrow {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--g-glass-2);
+  -webkit-backdrop-filter: var(--g-blur); backdrop-filter: var(--g-blur);
+  box-shadow: inset 0 0 0 1px var(--g-line-2);
+}
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .stage-arrow::before,
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .stage-arrow.left::before,
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .stage-arrow:hover::before {
+  inset: 0; margin: auto; width: 9px; height: 9px;
+  background: none; border: solid var(--g-text); border-width: 2px 2px 0 0;
+  filter: none; animation: none; scale: none;
+  translate: -2px 0; rotate: 45deg;
+}
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .stage-arrow.left::before,
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .stage-arrow.left:hover::before { translate: 2px 0; rotate: -135deg; }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .stage-arrow:hover { background: var(--g-sel); }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .stage-arrow:hover::before { border-color: var(--g-on-sel); }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .stage-arrow.left { left: 10px; }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .stage-arrow.right { right: 10px; }
+html[data-ui="glass"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) .stage-arrow { width: 28px; height: 28px; }
+html[data-ui="glass"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) .stage-arrow.left { left: 6px; }
+html[data-ui="glass"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) .stage-arrow.right { right: 6px; }
+html[data-ui="glass"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) #stage-banner-img { max-width: calc(100% - 76px); }
+
+/* view dots → short bars, the current one yellow */
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .stage-dot {
+  width: 14px; height: 3px; transform: none; border-radius: 2px;
+  background: rgba(255, 255, 255, 0.3); box-shadow: none;
+}
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .stage-dot.active { width: 22px; background: var(--g-accent); }
+
+/* ── Draw column: Endfield title block ─────────────────────────── */
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .draw-col .banner-info-section { align-items: flex-start; text-align: left; gap: 4px; padding-top: 6px; }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .banner-kicker,
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .jutsu-banner-kicker {
+  padding: 2px 10px; margin: 0; border-radius: var(--g-pill);
+  background: var(--g-sel);
+  font-family: var(--g-cond); font-weight: 500; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--g-on-sel); text-shadow: none;
+}
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .draw-col #banner-name,
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .rc-name,
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .jutsu-banner-title {
+  margin: 0; font-family: var(--g-cond); font-weight: 500; font-size: 24px; line-height: 1.12;
+  letter-spacing: 0.02em; text-transform: uppercase;
+  color: var(--g-text); text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+}
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .draw-col #banner-name .help-tip { vertical-align: 3px; margin-left: 6px; }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .draw-col #banner-description,
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .rc-desc,
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .jutsu-banner-sub {
+  padding: 0; font-family: var(--g-sans); font-size: 12px; line-height: 1.45; color: var(--g-dim);
+}
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .draw-col #banner-timer {
+  font-family: var(--g-cond); font-weight: 500; font-size: 13px; letter-spacing: 0.04em; color: var(--g-dim);
+}
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .jutsu-banner { text-align: left; padding: 6px 2px 0; display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
+
+/* pity / step line */
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .step-progress {
+  font-family: var(--g-cond); font-weight: 500; font-size: 13px; letter-spacing: 0.04em; color: var(--g-text);
+}
+html[data-ui="glass"] .step-label { color: var(--g-dim); }
+html[data-ui="glass"] .step-sep { color: var(--g-faint); }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .step-bar { height: 3px; border: 0; border-radius: 2px; background: rgba(255, 255, 255, 0.14); }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .step-bar-fill { border-radius: 2px; background: var(--g-accent); box-shadow: none; }
+
+/* rate-up rows */
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .pickup-head {
+  font-family: var(--g-cond); font-weight: 500; font-size: 11px; letter-spacing: 0.14em; color: var(--g-dim);
+}
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .pickup-head::before { display: none; }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .pickup-head::after { background: var(--g-line); }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .pickup-unit {
+  clip-path: none; border-radius: var(--g-radius-sm);
+  background: rgba(255, 255, 255, 0.04);
+  box-shadow: inset 0 0 0 1px var(--g-line);
+}
+html[data-ui="glass"]:not(._g):not(._l):not(._s) button.pickup-unit:hover { filter: none; background: rgba(255, 255, 255, 0.09); }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .pickup-portrait { border-radius: 6px; box-shadow: 0 0 0 1px var(--g-line-2); background: #0b0e11; }
+html[data-ui="glass"] .pickup-name { font-family: var(--g-cond); font-weight: 500; font-size: 15px; letter-spacing: 0.03em; color: var(--g-text); }
+html[data-ui="glass"] .pickup-ver { font-family: var(--g-sans); color: var(--g-dim); }
+html[data-ui="glass"] .pickup-stars { font-family: var(--g-cond); font-weight: 500; text-shadow: none; }
+html[data-ui="glass"] .rc-seal-sm { border-radius: 6px; border: 1px solid var(--g-line-2); transform: none; background: #0b0e11; }
+
+/* jutsu: rates rail + balance */
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .jutsu-rate-row {
+  clip-path: none; border: 0; border-radius: var(--g-radius-sm);
+  background: rgba(255, 255, 255, 0.04); box-shadow: inset 0 0 0 1px var(--g-line);
+}
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .jutsu-rate-row.r7 { background: rgba(242, 223, 61, 0.08); box-shadow: inset 0 0 0 1px rgba(242, 223, 61, 0.4); }
+html[data-ui="glass"] .jutsu-rate-pct { font-family: var(--g-cond); font-weight: 500; color: var(--g-text); text-shadow: none; }
+html[data-ui="glass"] .jutsu-rate-row.r7 .jutsu-rate-pct,
+html[data-ui="glass"] .jutsu-rate-row.r6 .jutsu-rate-pct { color: var(--g-accent); }
+html[data-ui="glass"] .jutsu-rail-label { font-family: var(--g-cond); font-weight: 500; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--g-dim); text-shadow: none; }
+html[data-ui="glass"] .jutsu-collection { font-family: var(--g-cond); font-weight: 500; color: var(--g-text); text-shadow: none; }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .jutsu-progress { height: 3px; border: 0; border-radius: 2px; background: rgba(255, 255, 255, 0.14); }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .jutsu-progress-fill { background: var(--g-accent); }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .jutsu-balance {
+  margin: 0; padding: 0 14px 0 8px; height: 30px; clip-path: none; border-radius: var(--g-pill);
+  background: var(--g-glass-2); box-shadow: inset 0 0 0 1px var(--g-line);
+  font-family: var(--g-cond); font-weight: 500; font-size: 12px; letter-spacing: 0.1em; color: var(--g-dim);
+}
+html[data-ui="glass"] .jutsu-balance b { font-family: var(--g-cond); font-weight: 500; color: var(--g-text); }
+
+/* recipes rail foot */
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .rc-rail-foot { border-top-color: var(--g-line); font-family: var(--g-cond); letter-spacing: 0.1em; text-transform: uppercase; color: var(--g-dim); }
+html[data-ui="glass"] .rc-rail-foot b { font-family: var(--g-cond); font-weight: 500; color: var(--g-text); }
+
+/* ── Draw buttons: Endfield pills, cost above each ─────────────────
+   Markup is the washi ticket (.tkt): the art layers are hidden; .tkt-body
+   becomes the pill, .tkt-stub holds the count, .tkt-cost sits above. */
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .draw-col .summon-buttons,
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .jutsu-draw-col .summon-buttons {
+  flex-direction: row; align-items: flex-end; gap: 8px; width: 100%; padding: 0; margin-top: auto;
+}
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .tkt {
+  --cost-h: 20px; --pill-h: 44px;
+  flex: 1 1 0; min-width: 0; width: auto; height: calc(var(--cost-h) + var(--pill-h)); aspect-ratio: auto;
+  padding: 0; container-type: normal;
+  filter: none; animation: none; transform: none;
+  color: var(--g-on-sel);
+}
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .tkt-single { --pill-bg: var(--g-sel); --pill-fg: var(--g-on-sel); flex-grow: 1; }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .tkt-multi { --pill-bg: var(--g-accent); --pill-fg: var(--g-on-accent); flex-grow: 1.15; }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .tkt::after,
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .tkt .tkt-body::before,
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .tkt .tkt-stub::before,
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .tkt .tkt-seal,
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .tkt .tkt-kicker,
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .tkt .tkt-label::after { display: none; }
+/* the pill */
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .tkt .tkt-body {
+  left: 0; right: 0; top: var(--cost-h); bottom: 0; overflow: visible;
+  border-radius: var(--g-pill); background: var(--pill-bg);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+  transition: filter 0.15s ease, opacity 0.15s ease;
+}
+/* count, left in the pill */
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .tkt .tkt-stub {
+  left: 0; top: var(--cost-h); bottom: 0; width: auto; padding: 0 0 0 16px;
+  flex-direction: row; align-items: center; gap: 0; transform: none;
+}
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .tkt .tkt-count {
+  font-family: var(--g-cond); font-weight: 600; font-size: 22px; letter-spacing: 0; line-height: 1;
+  color: var(--pill-fg); background: none; -webkit-text-fill-color: currentColor; filter: none;
+}
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .tkt .tkt-count i { font-size: 0.6em; vertical-align: 0.18em; margin-right: 1px; font-weight: 500; }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .tkt .tkt-unit { display: none; }
+/* label, right in the pill */
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .tkt .tkt-main { left: 0; right: 0; top: 0; bottom: 0; display: block; }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .tkt .tkt-label {
+  position: absolute; right: 18px; top: var(--cost-h); bottom: 0; display: flex; align-items: center;
+  margin: 0; padding: 0;
+  font-family: var(--g-cond); font-weight: 500; font-size: 15px; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--pill-fg); text-shadow: none;
+}
+/* cost, above the pill on the right */
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .tkt .tkt-cost {
+  position: absolute; right: 12px; top: 0; height: var(--cost-h); gap: 5px;
+  font-family: var(--g-cond); font-weight: 500; font-size: 13px; letter-spacing: 0.04em;
+  color: var(--g-text); text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
+}
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .tkt .tkt-cost img { width: 15px; height: 15px; filter: none; }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .tkt .tkt-cost > span::before { content: '×'; margin-right: 1px; opacity: 0.75; }
+/* hover / press / not enough */
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .tkt:hover:not(:disabled):not(.is-short) { transform: none; filter: none; }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .tkt:hover:not(:disabled):not(.is-short) .tkt-stub { transform: none; }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .tkt:hover:not(:disabled):not(.is-short) .tkt-body { filter: brightness(1.08); }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .tkt:active:not(:disabled) .tkt-body { filter: brightness(0.92); }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .tkt:focus-visible { filter: none; outline: 0; }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .tkt:focus-visible .tkt-body { box-shadow: 0 0 0 2px var(--g-text); }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .tkt:disabled .tkt-body,
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .tkt.is-short .tkt-body { opacity: 0.38; box-shadow: none; }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .tkt:disabled .tkt-cost,
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .tkt.is-short .tkt-cost { color: var(--g-red); }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .tkt:disabled .tkt-cost img,
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .tkt.is-short .tkt-cost img { filter: none; }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .tkt:disabled .tkt-label,
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .tkt.is-short .tkt-label,
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .tkt:disabled .tkt-count,
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .tkt.is-short .tkt-count { opacity: 0.7; }
+/* phones */
+html[data-ui="glass"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) .tkt { --cost-h: 17px; --pill-h: 34px; }
+html[data-ui="glass"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) .tkt .tkt-count { font-size: 17px; }
+html[data-ui="glass"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) .tkt .tkt-stub { padding-left: 12px; }
+html[data-ui="glass"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) .tkt .tkt-label { right: 12px; font-size: 12.5px; letter-spacing: 0.06em; }
+html[data-ui="glass"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) .tkt .tkt-cost { right: 8px; font-size: 12px; }
+html[data-ui="glass"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) .tkt .tkt-cost img { width: 13px; height: 13px; }
+html[data-ui="glass"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) .draw-col .summon-buttons,
+html[data-ui="glass"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) .jutsu-draw-col .summon-buttons { gap: 6px; }
+/* phones: keep the rate-up unit (Endfield "target operator" line) as one slim row */
+html[data-ui="glass"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) .gacha-stage:not(.rc-stage) .pickup:not([hidden]) { display: flex; gap: 4px; }
+html[data-ui="glass"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) .gacha-stage .pickup-head { display: none; }
+html[data-ui="glass"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) .gacha-stage .pickup-unit { padding: 4px 8px 4px 4px; gap: 8px; }
+html[data-ui="glass"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) .gacha-stage .pickup-portrait { width: 34px; height: 34px; }
+html[data-ui="glass"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) .gacha-stage .pickup-name { font-size: 13px; }
+html[data-ui="glass"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) .gacha-stage .pickup-ver { font-size: 10px; }
+html[data-ui="glass"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) .gacha-stage .pickup-stars { font-size: 10px; margin-top: 0; }
+html[data-ui="glass"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) .gacha-stage .pickup-unit:nth-child(n+2) { display: none; }
+html[data-ui="glass"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) .draw-col #banner-name,
+html[data-ui="glass"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) .rc-name,
+html[data-ui="glass"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) .jutsu-banner-title { font-size: 17px; }
+
+/* ── Rates / Featured / Contents: small glass pills ─────────────── */
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .summon-info-buttons { gap: 6px; }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .summon-info-btn {
+  height: 30px; padding: 0 8px;
+  border: 0; border-image: none; border-radius: var(--g-pill);
+  background: rgba(255, 255, 255, 0.05);
+  box-shadow: inset 0 0 0 1px var(--g-line-2);
+  filter: none;
+  font-family: var(--g-cond); font-weight: 500; font-size: 12.5px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--g-dim); text-shadow: none;
+}
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .summon-info-btn:hover { transform: none; filter: none; background: rgba(255, 255, 255, 0.12); color: var(--g-text); box-shadow: inset 0 0 0 1px var(--g-line-2); }
+html[data-ui="glass"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) .summon-info-btn { height: 24px; font-size: 11px; letter-spacing: 0.08em; }
+
+/* ── Rates / Featured / Contents popup ──────────────────────────── */
+html[data-ui="glass"] .summon-info-modal .sim-overlay { background: rgba(2, 4, 6, 0.62); -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .summon-info-modal .sim-panel {
+  border: 0; border-radius: var(--g-radius);
+  background: var(--g-glass-2);
+  -webkit-backdrop-filter: var(--g-blur); backdrop-filter: var(--g-blur);
+  box-shadow: inset 0 0 0 1px var(--g-line), 0 24px 60px rgba(0, 0, 0, 0.6);
+  font-family: var(--g-sans);
+}
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .summon-info-modal .sim-panel::before {
+  content: ''; position: absolute; left: 18px; top: 0; width: 34px; height: 3px; border-radius: 0 0 2px 2px; background: var(--g-accent);
+}
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .summon-info-modal .sim-header { border-bottom-color: var(--g-line); }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .summon-info-modal .sim-title {
+  padding: 0; background: none;
+  font-family: var(--g-cond); font-weight: 500; font-size: 22px; letter-spacing: 0.05em; text-transform: uppercase;
+  color: var(--g-text); text-shadow: none;
+}
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .summon-info-modal .sim-close {
+  width: 34px; height: 34px; border-radius: 50%;
+  background: rgba(255, 255, 255, 0.06); box-shadow: inset 0 0 0 1px var(--g-line-2);
+  color: var(--g-text);
+}
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .summon-info-modal .sim-close:hover { background: var(--g-sel); color: var(--g-on-sel); }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .summon-info-modal .sim-body { font-family: var(--g-sans); color: var(--g-text); }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .summon-info-modal .sim-body p { color: var(--g-dim) !important; font-family: var(--g-sans); }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .summon-info-modal .sim-rate-row {
+  border: 0; border-radius: var(--g-radius-sm);
+  background: rgba(255, 255, 255, 0.04); box-shadow: inset 0 0 0 1px var(--g-line);
+}
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .summon-info-modal .sim-rate-label { font-family: var(--g-sans); font-weight: 500; color: var(--g-dim); }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .summon-info-modal .sim-rate-value { font-family: var(--g-cond); font-weight: 500; font-size: 15px; letter-spacing: 0.03em; color: var(--g-text); }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .summon-info-modal .sim-section-label {
+  font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--g-dim);
+}
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .summon-info-modal .sim-section-label::before,
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .summon-info-modal .sim-section-label::after { background: var(--g-line); }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .summon-info-modal .sim-char-card {
+  border: 0; border-radius: var(--g-radius-sm); background: rgba(255, 255, 255, 0.04); box-shadow: inset 0 0 0 1px var(--g-line);
+}
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .summon-info-modal .sim-char-card img { border-radius: 6px; }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .summon-info-modal .sim-char-name { font-family: var(--g-cond); font-weight: 500; font-size: 11px; letter-spacing: 0.03em; color: var(--g-text); }
+/* recipe Rates list (js/summon/recipe-summon.js) */
+html[data-ui="glass"] .rc-info-row { border-bottom-color: var(--g-line); }
+html[data-ui="glass"] .rc-info-text b { font-family: var(--g-cond); font-weight: 500; color: var(--g-text); }
+html[data-ui="glass"] .rc-info-text small { color: var(--g-dim); }
+html[data-ui="glass"] .rc-info-owned { font-family: var(--g-cond); color: var(--g-accent); }
+
+/* ── Results (after the animation) ─────────────────────────────── */
+/* the reveal stage sits on .modal-overlay, which modal-system.css (injected by
+   js/modal-manager.js) leaves at opacity 0 — show it in Glass */
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .summon-modal .modal-overlay { opacity: 1; z-index: 0; background: radial-gradient(ellipse 70% 60% at 50% 45%, #1c2329, #07090b 75%); }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .summon-modal:not(.sr-sealed) .sr-panel {
+  border: 0; border-radius: var(--g-radius);
+  background: var(--g-glass-2);
+  -webkit-backdrop-filter: var(--g-blur); backdrop-filter: var(--g-blur);
+  box-shadow: inset 0 0 0 1px var(--g-line), 0 24px 60px rgba(0, 0, 0, 0.6);
+}
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .summon-modal .sr-panel::after { display: none; }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .summon-modal .sr-panel::before {
+  top: 0; left: 18px; width: 34px; height: 3px; border: 0; border-radius: 0 0 2px 2px; background: var(--g-accent);
+}
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .summon-modal .sr-head { border-bottom-color: var(--g-line); }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .summon-modal .sr-head::after,
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .summon-modal .sr-hanko { display: none; }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .summon-modal .sr-kicker { font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.16em; color: var(--g-dim); }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .summon-modal .sr-title {
+  font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; color: var(--g-text); text-shadow: none;
+}
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .summon-modal .sr-summary span {
+  clip-path: none; border-radius: var(--g-pill);
+  background: rgba(255, 255, 255, 0.05); box-shadow: inset 0 0 0 1px var(--g-line);
+  font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.1em; color: var(--g-dim);
+}
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .summon-modal .sr-summary b { font-family: var(--g-cond); font-weight: 500; color: var(--g-text); }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .summon-modal .sr-summary .is-featured { color: var(--g-accent); box-shadow: inset 0 0 0 1px rgba(242, 223, 61, 0.5); }
+/* cards keep their rarity bezel; the face goes neutral */
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .summon-modal .result-card { --face: linear-gradient(180deg, #1a2026 0%, #0f1317 62%, #0a0d10 100%); border-radius: var(--g-radius-sm); }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .summon-modal .result-card-info { border-top-color: var(--g-line); }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .summon-modal .result-card-name { font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.03em; }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .summon-modal .result-card-featured {
+  clip-path: none; border-radius: var(--g-pill); right: 4px; padding: 2px 8px;
+  background: var(--g-accent); color: var(--g-on-accent); box-shadow: none; font-family: var(--g-cond); font-weight: 500;
+}
+/* sealed phase: hint + Open All / Skip */
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .summon-modal.sr-sealed .sr-seal-hint {
+  font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.3em; color: var(--g-dim);
+}
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .summon-modal.sr-sealed .sr-seal-hint::before,
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .summon-modal.sr-sealed .sr-seal-hint::after { background: var(--g-line-2); }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .summon-modal .sr-seal-btn {
+  border: 0; border-radius: var(--g-pill);
+  background: var(--g-sel); color: var(--g-on-sel);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+  font-family: var(--g-cond); font-weight: 500; font-size: 14px; letter-spacing: 0.14em;
+}
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .summon-modal .sr-seal-btn.is-quiet {
+  background: var(--g-glass-2); color: var(--g-text);
+  -webkit-backdrop-filter: var(--g-blur); backdrop-filter: var(--g-blur);
+  box-shadow: inset 0 0 0 1px var(--g-line-2);
+}
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .summon-modal .sr-seal-btn:hover { filter: brightness(1.08); }
+/* Continue: the one yellow pill on the results screen */
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .summon-modal .btn-continue.tkt {
+  --cost-h: 0px; --pill-h: 44px; --pill-bg: var(--g-accent); --pill-fg: var(--g-on-accent);
+  flex: none; width: 220px; height: var(--pill-h); aspect-ratio: auto;
+}
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .summon-modal .btn-continue.tkt .tkt-label { font-size: 16px; }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .summon-modal .btn-continue.tkt .tkt-count[data-digits="2"] { font-size: 22px; }
+html[data-ui="glass"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) .summon-modal .btn-continue.tkt { --pill-h: 32px; width: 170px; }
+html[data-ui="glass"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) .summon-modal .btn-continue.tkt .tkt-label { font-size: 13px; }
+html[data-ui="glass"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) .summon-modal .btn-continue.tkt .tkt-count,
+html[data-ui="glass"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) .summon-modal .btn-continue.tkt .tkt-count[data-digits="2"] { font-size: 16px; }
+
+/* skip button over the animation (the animation itself is untouched) */
+html[data-ui="glass"] .summon-skip {
+  border: 0; border-radius: var(--g-pill);
+  background: var(--g-glass-2); box-shadow: inset 0 0 0 1px var(--g-line-2);
+  font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--g-text);
+}
+html[data-ui="glass"] .summon-skip:hover { border: 0; color: var(--g-on-sel); background: var(--g-sel); box-shadow: none; }
+
+/* Jutsu results popup */
+html[data-ui="glass"] .jutsu-result-modal { background: rgba(2, 4, 6, 0.7); }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .jutsu-result-box {
+  border: 0; border-radius: var(--g-radius);
+  background: var(--g-glass-2);
+  -webkit-backdrop-filter: var(--g-blur); backdrop-filter: var(--g-blur);
+  box-shadow: inset 0 0 0 1px var(--g-line), 0 24px 60px rgba(0, 0, 0, 0.6);
+}
+html[data-ui="glass"] .jutsu-result-title { font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--g-text); text-shadow: none; }
+html[data-ui="glass"] .jutsu-result-card { border-radius: var(--g-radius-sm); }
+html[data-ui="glass"] .jutsu-result-name { font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.03em; }
+html[data-ui="glass"] .jutsu-new-badge { border: 0; border-radius: var(--g-pill); background: var(--g-accent); color: var(--g-on-accent); font-family: var(--g-cond); font-weight: 500; }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .jutsu-result-close {
+  height: 40px; border: 0; border-image: none; border-radius: var(--g-pill);
+  background: var(--g-accent); color: var(--g-on-accent); filter: none; text-shadow: none;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+  font-family: var(--g-cond); font-weight: 500; font-size: 15px; letter-spacing: 0.12em; text-transform: uppercase;
+}
+html[data-ui="glass"] .jutsu-toast {
+  border: 0; border-radius: var(--g-pill);
+  background: var(--g-glass-2); box-shadow: inset 0 0 0 1px var(--g-line-2), 0 8px 20px rgba(0, 0, 0, 0.5);
+  font-family: var(--g-sans); color: var(--g-text);
+}
