@@ -404,6 +404,7 @@ html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._
 html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .draw-col #banner-name .help-tip { width: 14px; height: 14px; font-size: 9px; margin-left: 4px; vertical-align: 1px; }
 html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .draw-col #banner-timer { font-size: 10px; }
 html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage:not(.rc-stage) .pickup:not([hidden]) { display: block; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .featured-stage:not([data-view="banner"]) ~ .draw-col .pickup { display: none; }
 html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .pickup { width: 176px; top: calc(var(--sx-head) + 2px); }
 html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .pickup-head { display: none; }
 html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .pickup-unit { padding: 3px 6px; gap: 6px; }
