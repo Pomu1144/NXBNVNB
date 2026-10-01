@@ -1,0 +1,125 @@
+/* css/glass/tools.css — Tools page in the Glass style (see css/ui-glass.css).
+   Lists: glass rows, the selected one gets a yellow left bar.
+   Character stage: hairline frame, glass power plate, glass jutsu slots.
+   Strengthen: row buttons are secondary; "Auto All" is the one yellow action. */
+
+/* ── Lists (roster, Upgrade gear list, Magatama gear list, Strengthen rows) ── */
+html[data-ui="glass"] .tl-row,
+html[data-ui="glass"] .gu-item,
+html[data-ui="glass"] .mg-tool,
+html[data-ui="glass"] .gs-row {
+  background: rgba(14, 19, 24, 0.55);
+  border: 0; border-radius: var(--g-radius);
+  box-shadow: inset 0 0 0 1px var(--g-line);
+}
+html[data-ui="glass"] .gs-row { box-shadow: inset 3px 0 0 var(--tc), inset 0 0 0 1px var(--g-line); }
+html[data-ui="glass"] .tl-row:hover,
+html[data-ui="glass"] .gu-item:hover,
+html[data-ui="glass"] .mg-tool:hover { background: var(--g-glass-hi); box-shadow: inset 0 0 0 1px var(--g-line-2); }
+html[data-ui="glass"] .tl-row.is-active,
+html[data-ui="glass"] .gu-item.is-active,
+html[data-ui="glass"] .mg-tool.is-active,
+html[data-ui="glass"] .mg-tool[aria-selected="true"] {
+  background: var(--g-glass-hi);
+  box-shadow: inset 3px 0 0 var(--g-accent), inset 0 0 0 1px var(--g-line-2);
+}
+html[data-ui="glass"] .tl-row-name,
+html[data-ui="glass"] .gu-item-nm,
+html[data-ui="glass"] .mg-tool-nm,
+html[data-ui="glass"] .gs-nm b { font-family: var(--g-sans); font-weight: 600; }
+html[data-ui="glass"] .tl-row-lv,
+html[data-ui="glass"] .mg-tool-lv,
+html[data-ui="glass"] .gs-lv,
+html[data-ui="glass"] .gs-st,
+html[data-ui="glass"] .gs-cost { font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.03em; }
+html[data-ui="glass"] .gs-lv em,
+html[data-ui="glass"] .gs-st em { color: var(--g-accent); }
+html[data-ui="glass"] .gs-lv i,
+html[data-ui="glass"] .gs-st i { color: var(--g-faint); }
+html[data-ui="glass"] .tl-row-port,
+html[data-ui="glass"] .mg-tool-ic { border-color: var(--g-line-2); border-radius: 2px; }
+
+/* ── Character stage ─────────────────────────────────────────────── */
+html[data-ui="glass"] .tl-art-frame {
+  border: 0; outline: 0; border-radius: var(--g-radius);
+  box-shadow: inset 0 0 0 1px var(--g-line-2);
+  background: radial-gradient(ellipse at 50% 62%, rgba(255, 255, 255, 0.08), transparent 62%), rgba(10, 13, 17, 0.5);
+}
+html[data-ui="glass"] .tl-art-frame::before { display: none; }
+html[data-ui="glass"] .tl-name { font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.02em; color: var(--g-text); }
+html[data-ui="glass"] .tl-version { font-family: var(--g-sans); font-weight: 500; color: var(--g-dim); }
+html[data-ui="glass"] .tl-power {
+  clip-path: none; border: 0; border-radius: var(--g-radius);
+  background: var(--g-glass-2);
+  -webkit-backdrop-filter: var(--g-blur); backdrop-filter: var(--g-blur);
+  box-shadow: inset 0 0 0 1px var(--g-line);
+}
+html[data-ui="glass"] .tl-power-txt small { font-family: var(--g-cond); letter-spacing: 0.16em; color: var(--g-faint); }
+html[data-ui="glass"] .tl-power-txt b { font-family: var(--g-cond); font-weight: 500; color: var(--g-text); }
+html[data-ui="glass"] .tl-group-label { font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.16em; color: var(--g-dim); }
+html[data-ui="glass"] .tl-group-label::after { background: linear-gradient(90deg, var(--g-line-2), transparent); }
+html[data-ui="glass"] .tl-slot {
+  background: var(--g-glass-2); border-radius: 2px; color: var(--g-text);
+  box-shadow: inset 0 0 0 1px var(--g-line-2);
+}
+html[data-ui="glass"] .tl-slot--ult { box-shadow: inset 0 0 0 1px rgba(255, 106, 90, 0.7); }
+html[data-ui="glass"] .tl-slot-name { font-family: var(--g-cond); font-weight: 500; color: var(--g-faint); }
+html[data-ui="glass"] .tl-slot.is-filled img { border-color: var(--g-line-2); }
+html[data-ui="glass"] .tl-slot-r7 { background: var(--g-accent); color: var(--g-on-accent); }
+
+/* ── Stats panel ─────────────────────────────────────────────────── */
+html[data-ui="glass"] .tl-stat {
+  border-left-color: var(--g-line-2); background: rgba(255, 255, 255, 0.03); border-radius: 0 2px 2px 0;
+}
+html[data-ui="glass"] .tl-stat.has-bonus { border-left-color: var(--g-accent); background: linear-gradient(90deg, rgba(242, 223, 61, 0.1), rgba(255, 255, 255, 0.02) 70%); }
+html[data-ui="glass"] .tl-stat dt { font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.12em; color: var(--g-faint); }
+html[data-ui="glass"] .tl-stat dd b { font-family: var(--g-cond); font-weight: 500; color: var(--g-text); }
+html[data-ui="glass"] .tl-stat.has-bonus dd b { color: var(--g-text); }
+html[data-ui="glass"] .tl-stat dd small,
+html[data-ui="glass"] .tl-stat dd em,
+html[data-ui="glass"] .tl-stat dd span { color: var(--g-accent); }
+html[data-ui="glass"] .tl-stat--power { background: none; border-top-color: var(--g-line); }
+
+/* ── Strengthen: one yellow action (Auto All); row buttons secondary ── */
+html[data-ui="glass"] .gs-acts .jjk-btn.is-primary {
+  background: var(--g-glass-2); color: var(--g-text);
+  box-shadow: inset 0 0 0 1px var(--g-line-2);
+}
+html[data-ui="glass"] .gs-acts .jjk-btn.is-primary:hover:not(:disabled) { background: var(--g-sel); color: var(--g-on-sel); filter: none; }
+html[data-ui="glass"] .gs-acts .jjk-btn[data-act="up"] { box-shadow: inset 0 0 0 1px var(--g-accent); color: var(--g-accent); }
+html[data-ui="glass"] .gs-total,
+html[data-ui="glass"] .gs-foot { font-family: var(--g-cond); letter-spacing: 0.03em; }
+
+/* ── Upgrade + piece popup rows ──────────────────────────────────── */
+html[data-ui="glass"] .gu-rows { border-color: var(--g-line); border-radius: var(--g-radius); overflow: hidden; }
+html[data-ui="glass"] .gu-row { background: rgba(10, 13, 17, 0.6); }
+html[data-ui="glass"] .gu-row + .gu-row,
+html[data-ui="glass"] .gu-mats > .gu-row { border-top-color: var(--g-line); }
+html[data-ui="glass"] .gu-k { font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.14em; color: var(--g-faint); }
+html[data-ui="glass"] .gu-row > b,
+html[data-ui="glass"] .gu-n { font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.03em; }
+html[data-ui="glass"] .gu-row > b.is-up,
+html[data-ui="glass"] .gu-n em.is-ok { color: var(--g-accent); }
+html[data-ui="glass"] .gu-n em.is-short { color: var(--g-red); }
+html[data-ui="glass"] .gu-row > i { color: var(--g-faint); }
+html[data-ui="glass"] .gu-fig figcaption { font-family: var(--g-sans); font-weight: 600; }
+html[data-ui="glass"] .gp-row,
+html[data-ui="glass"] .gp-stat,
+html[data-ui="glass"] .gp-cost { border-radius: 2px; border-color: var(--g-line) !important; background: rgba(10, 13, 17, 0.6) !important; }
+
+/* ── Magatama view ───────────────────────────────────────────────── */
+html[data-ui="glass"] .mg-tool-name { font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.02em; color: var(--g-text); }
+html[data-ui="glass"] .mg-tool-bonus { font-family: var(--g-cond); font-weight: 500; color: var(--g-accent); }
+html[data-ui="glass"] .mg-total { font-family: var(--g-cond); }
+html[data-ui="glass"] .mg-ring-art { filter: none; }
+
+/* selected rows: beat the phone rules in mobile.css / gear.css / magatama.css */
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .tl-row,
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .gu-item,
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .mg-tool { border: 0 !important; outline: 0 !important; }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .tl-row.is-active,
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .gu-item.is-active,
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .mg-tool.is-active {
+  background: var(--g-glass-hi) !important;
+  box-shadow: inset 3px 0 0 var(--g-accent), inset 0 0 0 1px var(--g-line-2) !important;
+}
