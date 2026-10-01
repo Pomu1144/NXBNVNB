@@ -22,9 +22,9 @@ html[data-ui="glass"] {
   --g-text: #f3f2ee;
   --g-dim: rgba(243, 242, 238, 0.66);
   --g-faint: rgba(243, 242, 238, 0.42);
-  --g-accent: #f2df3d;
-  --g-accent-2: #fff27a;
-  --g-on-accent: #121212;
+  --g-accent: #d4a84a;
+  --g-accent-2: #ebc976;
+  --g-on-accent: #1a1408;
   --g-sel: #f4f4f1;
   --g-on-sel: #14181c;
   --g-gold: #e3c06c;

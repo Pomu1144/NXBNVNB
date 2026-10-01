@@ -325,7 +325,7 @@ html[data-ui="glass"] .ramen-card {
 }
 html[data-ui="glass"] .ramen-card:hover { box-shadow: inset 0 0 0 1px var(--g-line-2), inset 2px 0 0 var(--rc-tint); }
 html[data-ui="glass"] .ramen-card.is-selected {
-  background: rgba(242, 223, 61, 0.08);
+  background: rgba(212, 168, 74, 0.08);
   box-shadow: inset 0 0 0 1px var(--g-accent), inset 2px 0 0 var(--rc-tint);
 }
 html[data-ui="glass"] .ramen-name { font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.03em; }

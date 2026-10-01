@@ -221,7 +221,7 @@ html[data-ui="glass"] .sr-intro,
 html[data-ui="glass"] .rankup-sub { font-family: var(--g-sans); }
 html[data-ui="glass"] .sr-row.claimable {
   border: 0; border-image: none; border-radius: var(--g-radius-sm);
-  background: rgba(242, 223, 61, 0.06);
+  background: rgba(212, 168, 74, 0.06);
   box-shadow: inset 2px 0 0 var(--g-accent), inset 0 0 0 1px var(--g-line);
 }
 html[data-ui="glass"] .sr-rank,

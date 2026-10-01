@@ -2,8 +2,8 @@
    Model: Arknights: Endfield headhunt — big art, a title block on the right,
    pity/info lines, and two pill buttons bottom-right with the cost above each
    (×1 = white pill, ×10 = yellow pill). Every selector is scoped to
-   html[data-ui="glass"], so Classic is untouched. $ = the long prefix used to
-   beat the compact-landscape rules of summon-premium.css / jutsu-summon.css. */
+   html[data-ui="glass"], so Classic is untouched. The :not(._g):not(._l):not(._s)
+   prefix beats the compact-landscape rules of summon-premium.css / jutsu-summon.css. */
 
 /* ── Page ground ─────────────────────────────────────────────────── */
 html[data-ui="glass"] body.page-summon { background: #07090b; }
@@ -284,7 +284,7 @@ html[data-ui="glass"]:not(._g):not(._l):not(._s) .jutsu-rate-row {
   clip-path: none; border: 0; border-radius: var(--g-radius-sm);
   background: rgba(255, 255, 255, 0.04); box-shadow: inset 0 0 0 1px var(--g-line);
 }
-html[data-ui="glass"]:not(._g):not(._l):not(._s) .jutsu-rate-row.r7 { background: rgba(242, 223, 61, 0.08); box-shadow: inset 0 0 0 1px rgba(242, 223, 61, 0.4); }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .jutsu-rate-row.r7 { background: rgba(212, 168, 74, 0.08); box-shadow: inset 0 0 0 1px rgba(212, 168, 74, 0.4); }
 html[data-ui="glass"] .jutsu-rate-pct { font-family: var(--g-cond); font-weight: 500; color: var(--g-text); text-shadow: none; }
 html[data-ui="glass"] .jutsu-rate-row.r7 .jutsu-rate-pct,
 html[data-ui="glass"] .jutsu-rate-row.r6 .jutsu-rate-pct { color: var(--g-accent); }
@@ -366,8 +366,10 @@ html[data-ui="glass"]:not(._g):not(._l):not(._s) .tkt:hover:not(:disabled):not(.
 html[data-ui="glass"]:not(._g):not(._l):not(._s) .tkt:active:not(:disabled) .tkt-body { filter: brightness(0.92); }
 html[data-ui="glass"]:not(._g):not(._l):not(._s) .tkt:focus-visible { filter: none; outline: 0; }
 html[data-ui="glass"]:not(._g):not(._l):not(._s) .tkt:focus-visible .tkt-body { box-shadow: 0 0 0 2px var(--g-text); }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .tkt:disabled,
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .tkt.is-short { --pill-fg: var(--g-faint); }
 html[data-ui="glass"]:not(._g):not(._l):not(._s) .tkt:disabled .tkt-body,
-html[data-ui="glass"]:not(._g):not(._l):not(._s) .tkt.is-short .tkt-body { opacity: 0.38; box-shadow: none; }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .tkt.is-short .tkt-body { background: rgba(255, 255, 255, 0.07); box-shadow: inset 0 0 0 1px var(--g-line); }
 html[data-ui="glass"]:not(._g):not(._l):not(._s) .tkt:disabled .tkt-cost,
 html[data-ui="glass"]:not(._g):not(._l):not(._s) .tkt.is-short .tkt-cost { color: var(--g-red); }
 html[data-ui="glass"]:not(._g):not(._l):not(._s) .tkt:disabled .tkt-cost img,
@@ -375,7 +377,7 @@ html[data-ui="glass"]:not(._g):not(._l):not(._s) .tkt.is-short .tkt-cost img { f
 html[data-ui="glass"]:not(._g):not(._l):not(._s) .tkt:disabled .tkt-label,
 html[data-ui="glass"]:not(._g):not(._l):not(._s) .tkt.is-short .tkt-label,
 html[data-ui="glass"]:not(._g):not(._l):not(._s) .tkt:disabled .tkt-count,
-html[data-ui="glass"]:not(._g):not(._l):not(._s) .tkt.is-short .tkt-count { opacity: 0.7; }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .tkt.is-short .tkt-count { opacity: 1; }
 /* phones */
 html[data-ui="glass"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) .tkt { --cost-h: 17px; --pill-h: 34px; }
 html[data-ui="glass"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) .tkt .tkt-count { font-size: 17px; }
@@ -487,7 +489,7 @@ html[data-ui="glass"]:not(._g):not(._l):not(._s) .summon-modal .sr-summary span 
   font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.1em; color: var(--g-dim);
 }
 html[data-ui="glass"]:not(._g):not(._l):not(._s) .summon-modal .sr-summary b { font-family: var(--g-cond); font-weight: 500; color: var(--g-text); }
-html[data-ui="glass"]:not(._g):not(._l):not(._s) .summon-modal .sr-summary .is-featured { color: var(--g-accent); box-shadow: inset 0 0 0 1px rgba(242, 223, 61, 0.5); }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .summon-modal .sr-summary .is-featured { color: var(--g-accent); box-shadow: inset 0 0 0 1px rgba(212, 168, 74, 0.5); }
 /* cards keep their rarity bezel; the face goes neutral */
 html[data-ui="glass"]:not(._g):not(._l):not(._s) .summon-modal .result-card { --face: linear-gradient(180deg, #1a2026 0%, #0f1317 62%, #0a0d10 100%); border-radius: var(--g-radius-sm); }
 html[data-ui="glass"]:not(._g):not(._l):not(._s) .summon-modal .result-card-info { border-top-color: var(--g-line); }
@@ -528,7 +530,7 @@ html[data-ui="glass"]:not(._g):not(._l):not(._s) .summon-modal .btn-continue.tkt
 }
 html[data-ui="glass"]:not(._g):not(._l):not(._s) .summon-modal .btn-continue.tkt .tkt-label { font-size: 16px; }
 html[data-ui="glass"]:not(._g):not(._l):not(._s) .summon-modal .btn-continue.tkt .tkt-count[data-digits="2"] { font-size: 22px; }
-html[data-ui="glass"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) .summon-modal .btn-continue.tkt { --pill-h: 32px; width: 170px; }
+html[data-ui="glass"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) .summon-modal .btn-continue.tkt { --cost-h: 0px; --pill-h: 32px; width: 170px; }
 html[data-ui="glass"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) .summon-modal .btn-continue.tkt .tkt-label { font-size: 13px; }
 html[data-ui="glass"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) .summon-modal .btn-continue.tkt .tkt-count,
 html[data-ui="glass"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) .summon-modal .btn-continue.tkt .tkt-count[data-digits="2"] { font-size: 16px; }

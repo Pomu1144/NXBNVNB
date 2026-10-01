@@ -71,7 +71,7 @@ html[data-ui="glass"] .tl-slot-r7 { background: var(--g-accent); color: var(--g-
 html[data-ui="glass"] .tl-stat {
   border-left-color: var(--g-line-2); background: rgba(255, 255, 255, 0.03); border-radius: 0 2px 2px 0;
 }
-html[data-ui="glass"] .tl-stat.has-bonus { border-left-color: var(--g-accent); background: linear-gradient(90deg, rgba(242, 223, 61, 0.1), rgba(255, 255, 255, 0.02) 70%); }
+html[data-ui="glass"] .tl-stat.has-bonus { border-left-color: var(--g-accent); background: linear-gradient(90deg, rgba(212, 168, 74, 0.1), rgba(255, 255, 255, 0.02) 70%); }
 html[data-ui="glass"] .tl-stat dt { font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.12em; color: var(--g-faint); }
 html[data-ui="glass"] .tl-stat dd b { font-family: var(--g-cond); font-weight: 500; color: var(--g-text); }
 html[data-ui="glass"] .tl-stat.has-bonus dd b { color: var(--g-text); }
