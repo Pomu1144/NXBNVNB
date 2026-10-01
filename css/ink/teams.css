@@ -284,3 +284,95 @@ html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-teams #prebatt
 html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-teams #prebattle-footer .ctx::before { font-size: 13px; margin-right: 8px; }
 html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compact body.page-teams #btn-start-battle { min-width: 180px; height: 34px; font-size: 13px; }
 html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compact body.page-teams:has(#prebattle-footer) .team-content { padding-bottom: 60px !important; }
+
+/* ── One screen, no page scroll: tabs on top, then the formation and the
+   roster fill the rest of the height. Front and back rows always fit;
+   Commander and Link Ultimates sit below them inside the formation panel
+   and scroll there. (Phones in landscape and desktops ≥1100px; narrower
+   windows keep the stacked, scrolling layout.) ───────────────────── */
+@media (min-width: 1100px) {
+  html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-teams { overflow: hidden; }
+  html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-teams .team-content {
+    height: 100vh; height: 100dvh; box-sizing: border-box;
+    display: flex; flex-direction: column; padding-bottom: 16px !important;
+  }
+  html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-teams .team-selector { flex: 0 0 auto; }
+  html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-teams .team-workspace { flex: 1 1 auto; min-height: 0; align-items: stretch; grid-template-rows: minmax(0, 1fr); }
+  html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-teams .team-formation {
+    height: 100%; min-height: 0; box-sizing: border-box; margin: 0 !important;
+    overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: var(--g-line-2) transparent;
+    padding-top: 12px; padding-bottom: 12px;
+  }
+  html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-teams .char-selection { position: relative; top: 0; height: 100% !important; }
+  html[data-skin="ink"] body.page-teams .formation-header { margin-bottom: 10px; padding-bottom: 8px; }
+  html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-teams .team-workspace .formation-section { margin-bottom: 10px; }
+  html[data-skin="ink"] body.page-teams .section-label { margin: 0 0 8px; }
+  /* slot: smaller portrait, tight stat rows (whole card ≈ 226px) */
+  html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-teams .team-workspace .team-slot { min-height: 0 !important; height: clamp(196px, calc((100dvh - 330px) / 2), 236px); }
+  html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-teams .team-workspace .slot-card { height: 100%; box-sizing: border-box; padding: 4px 5px; gap: 3px; overflow: hidden; }
+  html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-teams .team-workspace .slot-card .portrait { padding-top: 2px; gap: 2px; }
+  html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-teams .team-workspace .slot-card .portrait img { width: 78px; height: 78px; }
+  html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-teams .team-workspace .slot-card.is-7star .seven-star-fx { width: 92px; height: 92px; top: -5px; }
+  html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-teams .team-workspace .slot-card .portrait .ultimate-badge { bottom: 20px; right: calc(50% - 44px); width: 22px; height: 22px; }
+  html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-teams .team-workspace .slot-card .portrait .lv-badge { padding: 1px 10px; font-size: 9.5px; }
+  html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-teams .team-workspace .slot-card .rail { padding: 2px 6px; }
+  html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-teams .team-workspace .rail .stat { padding: 0; line-height: 12.5px; }
+  html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-teams .team-workspace .commander-slot { min-height: 196px; }
+}
+
+/* phone landscape: the panel is the screen height under the tabs; each row
+   of four is a fixed band so both rows show together */
+html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compact body.page-teams { overflow: hidden; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compact body.page-teams .team-content {
+  height: var(--app-vh, 100vh); box-sizing: border-box;
+  display: flex; flex-direction: column; padding-bottom: max(6px, var(--safe-b, 0px)) !important;
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compact body.page-teams .team-selector { flex: 0 0 auto; margin-bottom: 6px !important; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compact body.page-teams .team-workspace { flex: 1 1 auto; min-height: 0; align-items: stretch; grid-template-rows: minmax(0, 1fr); }
+html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compact body.page-teams .team-formation {
+  height: 100%; min-height: 0; box-sizing: border-box; margin: 0 !important;
+  overflow-y: auto; overscroll-behavior: contain; scrollbar-width: none;
+  padding: 6px 10px 8px !important;
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compact body.page-teams .char-selection,
+html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compact body.page-teams:has(#prebattle-footer) .char-selection { position: relative; top: 0; height: 100% !important; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compact body.page-teams .formation-header { margin: 0 0 4px !important; padding: 0 0 4px !important; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compact body.page-teams .formation-section { margin: 0 0 4px !important; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compact body.page-teams .section-label { margin: 0 0 3px !important; line-height: 14px; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compact body.page-teams .slot-row { gap: 6px !important; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compact body.page-teams .formation-section .team-slot {
+  min-height: 0 !important; height: clamp(76px, calc((var(--app-vh, 100vh) - 186px) / 2), 112px);
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compact body.page-teams .formation-section .slot-card { height: 100%; box-sizing: border-box; padding: 3px; justify-content: center; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compact body.page-teams .formation-section .slot-card .portrait { height: 100%; padding: 0; gap: 2px; justify-content: center; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compact body.page-teams .formation-section .slot-card .portrait img {
+  width: auto; height: calc(100% - 16px); max-width: 100%; aspect-ratio: 1;
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compact body.page-teams .formation-section .slot-card.is-7star .seven-star-fx { display: none; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compact body.page-teams .formation-section .slot-card .portrait .lv-badge { font-size: 8px; padding: 1px 6px; line-height: 12px; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compact body.page-teams .formation-section .slot-card .slot-link,
+html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compact body.page-teams .formation-section .slot-remove { width: 18px; height: 18px; font-size: 11px; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compact body.page-teams:has(#prebattle-footer) .team-content { padding-bottom: 54px !important; }
+/* pre-battle: the footer takes the bottom band, so the rows shrink to fit above it */
+html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compact body.page-teams:has(#prebattle-footer) .formation-section .team-slot {
+  height: clamp(66px, calc((var(--app-vh, 100vh) - 236px) / 2), 104px);
+}
+@media (min-width: 1100px) {
+  html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-teams:has(#prebattle-footer) .team-workspace .team-slot {
+    height: clamp(200px, calc((100dvh - 380px) / 2), 236px);
+  }
+  html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-teams:has(#prebattle-footer) .team-workspace .slot-card .portrait img { width: 64px; height: 64px; }
+  html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-teams:has(#prebattle-footer) .team-workspace .slot-card.is-7star .seven-star-fx { width: 76px; height: 76px; top: -4px; }
+  html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-teams:has(#prebattle-footer) .team-workspace .rail .stat { line-height: 11.5px; }
+}
+/* smaller phones (≤ 740px wide): tabs tighter; the page title already says
+   "Team Formation", so the panel drops its own title and keeps the totals on one line */
+@media (max-width: 740px) {
+  html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compact body.page-teams .team-tab.jjk-tab { padding: 0 5px !important; font-size: 10px !important; letter-spacing: 0.02em; }
+  html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-teams .btn-rename-team::after { display: none; }
+  html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-teams .section-label { white-space: nowrap; letter-spacing: 0.2em; overflow: hidden; }
+  html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-teams .formation-header h2 { display: none; }
+  html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compact body.page-teams .team-stats {
+    display: flex !important; flex-direction: row !important; flex-wrap: nowrap; justify-content: space-between; width: 100%; gap: 6px !important;
+  }
+}
