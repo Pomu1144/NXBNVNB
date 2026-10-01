@@ -1,0 +1,305 @@
+/* css/ink/arena.css — Ink style for arena.html (Settings › Display).
+   Loaded after css/ui-ink.css; every rule is scoped to html[data-skin="ink"].
+   Ink inherits css/glass/arena.css (tokens --wb-* → --g-*) and re-lays the
+   lobby out right of the left rail: the Team 7 key art is the hero, the
+   league panel is a translucent charcoal sheet with gold hairlines, the
+   actions are quiet serif plates and Start Battle is the cream paper slip. */
+
+html[data-skin="ink"] {
+  --wb-gx-l: calc(var(--ink-rail-w) + 22px);
+  --wb-display: var(--ink-jp);
+  --wb-ui: var(--g-sans);
+  --wb-hair: var(--g-line-2);
+  --wb-hair-soft: var(--g-line);
+  --wb-gold-hi: var(--g-accent-2);
+  --wb-glass: rgba(12, 12, 14, 0.72);
+}
+html[data-skin="ink"] body.page-arena { background: #0a0a0b; }
+
+/* ── Scene: ink wash, art bleeding from the rail to the panel ───────── */
+html[data-skin="ink"] #arena-bg { background: #0a0a0b; }
+html[data-skin="ink"] .wb-bg-img {
+  background:
+    linear-gradient(90deg, rgba(10, 10, 11, 0.9), rgba(10, 10, 11, 0.55) 45%, rgba(10, 10, 11, 0.8)),
+    url('../../assets/ui/ink/bg.webp') 60% 40% / cover no-repeat;
+  filter: grayscale(0.3) sepia(0.15);
+}
+html[data-skin="ink"] .wb-seal { opacity: 0.05; filter: grayscale(1) sepia(0.6); }
+html[data-skin="ink"] .wb-art { left: var(--ink-rail-w); width: calc(64% - var(--ink-rail-w) * 0.4); }
+html[data-skin="ink"] .wb-art::before {
+  background:
+    linear-gradient(90deg, rgba(10, 10, 11, 0.85) 0%, rgba(10, 10, 11, 0) 22%),
+    radial-gradient(ellipse 55% 70% at 45% 70%, rgba(10, 10, 11, 0.5) 0%, rgba(10, 10, 11, 0) 100%);
+}
+html[data-skin="ink"] .wb-trio { filter: saturate(0.82) brightness(0.92) sepia(0.12); height: 92%; top: 10%; left: 6%; }
+html[data-skin="ink"] .wb-mist { opacity: 0.35; filter: grayscale(1) sepia(0.4); }
+html[data-skin="ink"] .wb-scrim {
+  background:
+    linear-gradient(90deg, rgba(10, 10, 11, 0) 40%, rgba(10, 10, 11, 0.55) 62%, rgba(10, 10, 11, 0.85) 100%),
+    linear-gradient(180deg, rgba(10, 10, 11, 0.6) 0%, rgba(10, 10, 11, 0) 22%),
+    linear-gradient(0deg, rgba(10, 10, 11, 0.95) 0%, rgba(10, 10, 11, 0.4) 22%, rgba(10, 10, 11, 0) 45%);
+}
+/* the league name, tall and faint along the rail edge */
+html[data-skin="ink"] .wb-vtitle {
+  left: calc(var(--ink-rail-w) + 10px); bottom: 96px;
+  font-family: 'Cinzel', serif; font-weight: 600; font-size: 54px; letter-spacing: 0.22em;
+  -webkit-text-stroke: 1px rgba(226, 204, 150, 0.16);
+}
+
+/* ── Title: Japanese serif + tiny Cinzel caption (matches .jjk-page-header) */
+html[data-skin="ink"][data-ui]:not(._g):not(._l):not(._s) .wb-head { left: var(--wb-gx-l); top: max(18px, var(--safe-t, 0px)); }
+html[data-skin="ink"] .wb-head .wb-icon-btn { display: none; }
+html[data-skin="ink"] .wb-head .wb-title h1 {
+  padding-left: 0; font-family: var(--ink-jp); font-weight: 600; font-size: 26px; letter-spacing: 0.16em;
+  text-transform: none; color: var(--g-text); text-shadow: 0 2px 12px rgba(0, 0, 0, 0.8);
+}
+html[data-skin="ink"] .wb-head .wb-title h1::before { display: none; }
+html[data-skin="ink"] .wb-head .wb-title h1::after {
+  content: '闘技場 · Ranked duels, season ladder'; display: block; margin-top: 4px;
+  font-family: var(--ink-cinzel); font-size: 9px; font-weight: 400; letter-spacing: 0.34em; text-transform: uppercase; color: var(--g-dim);
+}
+/* featured caption, lower left over the art */
+html[data-skin="ink"] .wb-feature { left: var(--wb-gx-l); bottom: 100px; }
+html[data-skin="ink"] .wb-feature .wb-kicker { font-family: var(--ink-cinzel); letter-spacing: 0.3em; color: var(--g-accent-2); }
+html[data-skin="ink"] .wb-feature-name { font-family: var(--ink-jp); font-size: 22px; letter-spacing: 0.1em; }
+html[data-skin="ink"] .wb-feature-ver { font-family: var(--g-sans); font-style: italic; letter-spacing: 0.06em; color: var(--g-dim); }
+
+/* ── Shared type ───────────────────────────────────────────────────── */
+html[data-skin="ink"] .wb-kicker { font-family: var(--ink-cinzel); font-weight: 600; letter-spacing: 0.22em; color: var(--g-dim); }
+html[data-skin="ink"] .wb-kicker b { font-family: var(--ink-cinzel); color: var(--g-text); }
+html[data-skin="ink"] .wb-diamond { border-color: var(--g-accent); border-radius: 0; }
+
+/* ── League panel ──────────────────────────────────────────────────── */
+html[data-skin="ink"] .wb-panel { top: max(14px, var(--safe-t, 0px)); padding: 14px 18px 4px; }
+html[data-skin="ink"] .wb-panel::before {
+  clip-path: none; border-radius: 0;
+  background: linear-gradient(180deg, rgba(16, 15, 14, 0.84), rgba(9, 9, 10, 0.9));
+  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+  box-shadow: inset 0 0 0 1px var(--g-line-2), inset 2px 0 0 var(--g-accent), 0 18px 40px rgba(0, 0, 0, 0.45);
+}
+html[data-skin="ink"] .wb-medal { filter: sepia(0.35) saturate(0.8) drop-shadow(0 2px 6px rgba(0, 0, 0, 0.6)); }
+html[data-skin="ink"] .wb-league-name {
+  font-family: var(--ink-jp); font-weight: 600; letter-spacing: 0.08em; text-transform: none; color: #fff6dc;
+}
+html[data-skin="ink"] .wb-tier {
+  font-family: var(--ink-cinzel); font-weight: 600; letter-spacing: 0.12em; color: var(--g-accent-2);
+  border: 0; background: none;
+}
+html[data-skin="ink"] .wb-league-text { min-width: 0; }
+html[data-skin="ink"] .wb-league-name > span:first-child { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+html[data-skin="ink"] .wb-total b { font-family: var(--ink-cinzel); font-weight: 600; color: var(--g-accent-2); }
+html[data-skin="ink"] .wb-num { font-family: var(--ink-cinzel); font-weight: 600; }
+html[data-skin="ink"] .wb-sub { font-family: var(--g-sans); font-weight: 500; letter-spacing: 0.03em; color: var(--g-dim); }
+html[data-skin="ink"] .wb-track { background: linear-gradient(rgba(226, 204, 150, 0.22), rgba(226, 204, 150, 0.22)) 0 50% / 100% 1px no-repeat; }
+html[data-skin="ink"] .wb-track::before { border-color: var(--g-accent); border-radius: 0; }
+html[data-skin="ink"] .wb-track i { background: linear-gradient(90deg, rgba(201, 162, 78, 0.4), var(--g-accent-2)); box-shadow: none; }
+html[data-skin="ink"] .wb-track::after { background: #0c0c0d; border-color: var(--g-accent); }
+html[data-skin="ink"] .wb-track.is-max::after { background: var(--g-accent-2); }
+html[data-skin="ink"] .wb-tick { background: rgba(226, 204, 150, 0.35); }
+html[data-skin="ink"] .wb-tick.on { background: var(--g-accent-2); }
+html[data-skin="ink"] .wb-stats { border-color: var(--g-line); }
+html[data-skin="ink"] .wb-stats dt { font-family: var(--ink-cinzel); letter-spacing: 0.2em; }
+html[data-skin="ink"] .wb-stats dd { font-family: var(--ink-cinzel); font-weight: 600; }
+html[data-skin="ink"] .wb-line { border-color: var(--g-line); }
+html[data-skin="ink"] .wb-line-text { font-family: var(--g-sans); font-weight: 500; letter-spacing: 0.02em; }
+html[data-skin="ink"] .wb-reward #wb-reward-rank { font-family: var(--ink-jp); font-weight: 600; letter-spacing: 0.1em; text-transform: none; color: #fff6dc; }
+html[data-skin="ink"] .wb-loot span { font-family: var(--ink-cinzel); font-weight: 600; }
+html[data-skin="ink"] .wb-panel .help-tip { border-radius: 2px; }
+
+/* ── Actions: quiet serif plates + the cream slip ─────────────────── */
+html[data-skin="ink"] .wb-cta { right: max(20px, var(--safe-r, 0px)); bottom: max(26px, calc(var(--safe-b, 0px) + 18px)); gap: 14px; align-items: flex-end; }
+html[data-skin="ink"] .wb-chips { gap: 0; box-shadow: inset 0 0 0 1px var(--g-line); background: rgba(9, 9, 10, 0.72); }
+html[data-skin="ink"] .wb-chip {
+  height: 46px; border-radius: 0; background: none; box-shadow: none;
+  -webkit-backdrop-filter: none; backdrop-filter: none;
+  font-family: var(--g-sans); font-weight: 500; font-size: 13px; letter-spacing: 0.06em; text-transform: none; color: var(--g-dim);
+}
+html[data-skin="ink"] .wb-chip + .wb-chip { box-shadow: inset 1px 0 0 var(--g-line); }
+html[data-skin="ink"] .wb-chip svg { color: var(--g-accent-2); opacity: 0.85; }
+html[data-skin="ink"] .wb-chip:hover,
+html[data-skin="ink"] .wb-chip.is-open {
+  color: #fff6dc; background: linear-gradient(180deg, rgba(201, 162, 78, 0.04), rgba(201, 162, 78, 0.24));
+  box-shadow: inset 0 -2px 0 var(--g-accent);
+}
+html[data-skin="ink"] .wb-count { border-radius: 0; background: var(--g-accent); color: #17130b; font-family: var(--ink-cinzel); }
+
+html[data-skin="ink"] #btn-battle-arena {
+  height: 56px; min-width: 0; width: 290px; padding: 0 16px 0 22px;
+  flex-direction: row; justify-content: flex-start; align-items: center; gap: 12px;
+  border-radius: 0; background: linear-gradient(180deg, #f6eed8, #e3d4ad); color: #17130b;
+  box-shadow: inset 0 0 0 1px rgba(120, 96, 40, 0.5), 0 10px 26px rgba(0, 0, 0, 0.5);
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+}
+html[data-skin="ink"] #btn-battle-arena .wb-start-label {
+  font-family: 'Cinzel', serif; font-style: italic; font-weight: 700; font-size: 22px; letter-spacing: 0.01em; text-transform: none;
+}
+html[data-skin="ink"] #btn-battle-arena .wb-start-label .wb-diamond { display: none; }
+/* the rule + arrow of the reference's "Enter —  →" */
+html[data-skin="ink"] #btn-battle-arena::before { content: ''; order: 2; flex: 1 1 auto; min-width: 14px; height: 1px; background: #17130b; opacity: 0.6; }
+html[data-skin="ink"] #btn-battle-arena::after {
+  content: '→'; display: block; position: static; inset: auto; order: 3; border: 0; border-image: none;
+  font-size: 18px; line-height: 1;
+}
+html[data-skin="ink"] #btn-battle-arena .wb-start-sub {
+  position: absolute; right: 46px; bottom: 5px; order: 4;
+  font-family: var(--g-sans); font-style: italic; font-weight: 500; font-size: 9.5px; letter-spacing: 0.04em; color: #4a3f29;
+}
+html[data-skin="ink"] #btn-battle-arena:disabled { filter: grayscale(0.8) brightness(0.6); }
+/* caption under the slip, like 「あの光が、また道を照らす」 on the home */
+html[data-skin="ink"] .wb-cta::after {
+  content: '刃を交え、名を上げよ'; position: absolute; right: 0; bottom: -19px; width: 290px; text-align: center;
+  font-family: var(--ink-jp); font-size: 10.5px; letter-spacing: 0.2em; color: var(--g-dim); pointer-events: none;
+}
+
+/* ── Sheets: Rank Ladder / Battle Record ──────────────────────────── */
+html[data-skin="ink"] .wb-sheet-scrim { background: rgba(6, 6, 7, 0.66); }
+html[data-skin="ink"] .wb-sheet-panel {
+  border-radius: 0; border: 0;
+  background: linear-gradient(180deg, rgba(16, 15, 14, 0.97), rgba(9, 9, 10, 0.98));
+  box-shadow: inset 1px 0 0 var(--g-line-2), inset 3px 0 0 rgba(201, 162, 78, 0.0), -24px 0 60px rgba(0, 0, 0, 0.6);
+}
+html[data-skin="ink"] .wb-sheet-panel::before {
+  content: ''; position: absolute; left: 0; top: 0; width: 2px; height: 64px; background: var(--g-accent);
+}
+html[data-skin="ink"] .wb-sheet-head { border-bottom-color: var(--g-line); padding-top: 4px; }
+html[data-skin="ink"] .wb-sheet-title,
+html[data-skin="ink"] .aim-title {
+  font-family: var(--ink-jp); font-weight: 600; font-size: 22px; letter-spacing: 0.14em; text-transform: none; color: var(--g-text);
+}
+html[data-skin="ink"] #ranking-title::after,
+html[data-skin="ink"] #history-title::after {
+  display: block; margin-top: 4px;
+  font-family: var(--ink-cinzel); font-size: 8.5px; font-weight: 400; letter-spacing: 0.32em; text-transform: uppercase; color: var(--g-dim);
+}
+html[data-skin="ink"] #ranking-title::after { content: '番付 · Every rank of the league'; }
+html[data-skin="ink"] #history-title::after { content: '戦績 · Your last bouts'; }
+html[data-skin="ink"] .wb-sheet-head .wb-icon-btn,
+html[data-skin="ink"] .aim-header .wb-icon-btn {
+  width: 34px; height: 34px; border-radius: 0; border: 0;
+  background: rgba(9, 9, 10, 0.7); box-shadow: inset 0 0 0 1px var(--g-line-2); color: var(--g-text);
+}
+html[data-skin="ink"] .wb-sheet-head .wb-icon-btn:hover,
+html[data-skin="ink"] .aim-header .wb-icon-btn:hover { background: var(--g-sel); color: #17130b; }
+html[data-skin="ink"] .rank-table thead th {
+  font-family: var(--ink-cinzel); font-weight: 600; font-size: 9.5px; letter-spacing: 0.28em; color: var(--g-accent-2);
+  border-bottom-color: var(--g-line);
+}
+html[data-skin="ink"] .rank-table tbody td { font-family: var(--g-sans); border-color: var(--g-line); }
+html[data-skin="ink"] .rank-name-cell { font-family: var(--ink-jp) !important; font-weight: 600; letter-spacing: 0.06em; text-transform: none !important; }
+html[data-skin="ink"] .rank-name-cell img { filter: sepia(0.3) saturate(0.85); }
+html[data-skin="ink"] .rank-tier-cell,
+html[data-skin="ink"] .rank-stars-cell,
+html[data-skin="ink"] .history-stars-cell { font-family: var(--ink-cinzel); font-weight: 600; }
+html[data-skin="ink"] .rank-table tbody tr.current-rank td {
+  background: linear-gradient(90deg, rgba(201, 162, 78, 0.3), rgba(201, 162, 78, 0.06)) fixed;
+  background: rgba(201, 162, 78, 0.14);
+}
+html[data-skin="ink"] .rank-table tbody tr.current-rank td:first-child { border-radius: 0; box-shadow: inset 2px 0 0 var(--g-accent); }
+html[data-skin="ink"] .rank-table tbody tr.current-rank td:last-child { border-radius: 0; }
+html[data-skin="ink"] .rank-table tbody tr.current-rank .rank-name-cell { color: #fff6dc; }
+html[data-skin="ink"] .history-row-result,
+html[data-skin="ink"] .history-opponent-cell { font-family: var(--ink-jp); text-transform: none; letter-spacing: 0.06em; }
+html[data-skin="ink"] .history-row-result.win { color: var(--g-accent-2); }
+html[data-skin="ink"] .history-empty { font-family: var(--g-sans); font-style: italic; color: var(--g-dim); }
+html[data-skin="ink"] .history-empty::before {
+  content: '未だ戦績なし'; display: block; margin-bottom: 6px; font-family: var(--ink-jp); font-style: normal; font-size: 18px; letter-spacing: 0.2em; color: var(--g-faint);
+}
+
+/* ── Season rewards / notices (info modal) ───────────────────────── */
+html[data-skin="ink"] .aim-overlay { background: rgba(6, 6, 7, 0.66); }
+html[data-skin="ink"] .aim-panel::before {
+  border-radius: 0; clip-path: none;
+  background: linear-gradient(var(--g-accent), var(--g-accent)) 0 0 / 2px 64px no-repeat, linear-gradient(180deg, rgba(16, 15, 14, 0.97), rgba(9, 9, 10, 0.98));
+  box-shadow: inset 0 0 0 1px var(--g-line-2), 0 30px 70px rgba(0, 0, 0, 0.7);
+}
+html[data-skin="ink"] .aim-header { border-bottom-color: var(--g-line); }
+html[data-skin="ink"] .sr-row { border-bottom-color: var(--g-line); }
+html[data-skin="ink"] .sr-row.claimable {
+  border-radius: 0; background: linear-gradient(90deg, rgba(201, 162, 78, 0.24), rgba(201, 162, 78, 0.04) 70%, transparent);
+  box-shadow: inset 2px 0 0 var(--g-accent);
+}
+html[data-skin="ink"] .sr-emblem { filter: sepia(0.3) saturate(0.85); }
+html[data-skin="ink"] .sr-rank,
+html[data-skin="ink"] .rankup-name { font-family: var(--ink-jp); font-weight: 600; letter-spacing: 0.08em; text-transform: none; }
+html[data-skin="ink"] .sr-loot { font-family: var(--ink-cinzel); font-weight: 600; }
+html[data-skin="ink"] .sr-claimed,
+html[data-skin="ink"] .sr-locked { font-family: var(--ink-cinzel); letter-spacing: 0.2em; }
+html[data-skin="ink"] .sr-claim {
+  border-radius: 0; clip-path: none; background: linear-gradient(180deg, #f6eed8, #e3d4ad); color: #17130b;
+  box-shadow: inset 0 0 0 1px rgba(120, 96, 40, 0.5);
+}
+html[data-skin="ink"] .sr-claim .wb-start-label { font-family: 'Cinzel', serif; font-style: italic; font-weight: 700; text-transform: none; letter-spacing: 0.02em; }
+html[data-skin="ink"] .sr-footer { border-top: 1px solid var(--g-line); padding-top: 10px; }
+html[data-skin="ink"] .sr-footer strong { font-family: var(--ink-jp); text-transform: none; letter-spacing: 0.08em; }
+html[data-skin="ink"] .sr-total { font-family: var(--ink-cinzel); font-weight: 600; color: var(--g-accent-2); }
+
+/* ── Rival select / team picker (full-screen flow over everything) ── */
+html[data-skin="ink"] .wb-screen-bg { background: #0a0a0b; }
+html[data-skin="ink"] .wb-screen-bg::before { background-image: url('../../assets/ui/ink/bg.webp'); filter: grayscale(0.4) sepia(0.15) brightness(0.55); }
+html[data-skin="ink"] .wb-screen-bg::after { background: linear-gradient(180deg, rgba(10, 10, 11, 0.8), rgba(10, 10, 11, 0.45) 45%, rgba(10, 10, 11, 0.9)); }
+html[data-skin="ink"] .wb-screen-head .wb-icon-btn { border-radius: 0; box-shadow: inset 0 0 0 1px var(--g-line-2); }
+html[data-skin="ink"] .wb-screen-head .wb-title h1,
+html[data-skin="ink"] .aos-title,
+html[data-skin="ink"] .atp-title { font-family: var(--ink-jp); font-weight: 600; letter-spacing: 0.14em; text-transform: none; }
+html[data-skin="ink"] .aos-card::before,
+html[data-skin="ink"] .atp-team-card::before {
+  clip-path: none; border-radius: 0; background: rgba(12, 12, 14, 0.78); box-shadow: inset 0 0 0 1px var(--g-line-2);
+}
+html[data-skin="ink"] .aos-card:hover::before,
+html[data-skin="ink"] .aos-card:focus-visible::before,
+html[data-skin="ink"] .atp-team-card:hover::before {
+  background: linear-gradient(180deg, rgba(201, 162, 78, 0.04), rgba(201, 162, 78, 0.18)), rgba(12, 12, 14, 0.85);
+  box-shadow: inset 0 0 0 1px rgba(232, 207, 140, 0.6);
+}
+html[data-skin="ink"] .atp-team-card.atp-selected::before { box-shadow: inset 2px 0 0 var(--g-accent), inset 0 0 0 1px rgba(232, 207, 140, 0.6); }
+html[data-skin="ink"] .aos-name,
+html[data-skin="ink"] .atp-team-label,
+html[data-skin="ink"] .atp-member-name,
+html[data-skin="ink"] .arena-member-name { font-family: var(--ink-jp); text-transform: none; letter-spacing: 0.06em; }
+html[data-skin="ink"] .aos-emblem { border-radius: 0; font-family: var(--ink-jp); }
+html[data-skin="ink"] .aos-unit,
+html[data-skin="ink"] .atp-portrait,
+html[data-skin="ink"] .arena-member-avatar { border-radius: 0; }
+html[data-skin="ink"] .aos-go { font-family: var(--ink-cinzel); color: var(--g-accent-2); }
+html[data-skin="ink"] .aos-power b,
+html[data-skin="ink"] .aos-bounty { font-family: var(--ink-cinzel); }
+
+/* ══ Desktop (arena.css zooms the lobby blocks ×1.4 here) ═════════ */
+@media (min-width: 1100px) and (min-height: 620px) {
+  html[data-skin="ink"] { --wb-gx-l: calc(var(--ink-rail-w) + 40px); --wb-col: 460px; }
+  html[data-skin="ink"] .wb-head > * { zoom: 1; }
+  html[data-skin="ink"] .wb-head { top: 22px; }
+  html[data-skin="ink"] .wb-panel { right: 44px; }
+  html[data-skin="ink"] .wb-cta { right: 44px; bottom: 44px; }
+  html[data-skin="ink"] .wb-cta::after { width: 290px; bottom: -24px; font-size: 8px; }
+  html[data-skin="ink"] .wb-vtitle { font-size: 104px; bottom: 120px; }
+  html[data-skin="ink"] .wb-feature { bottom: 120px; }
+  html[data-skin="ink"] .wb-trio { height: 86%; top: 12%; left: 4%; }
+}
+
+/* ══ Phone landscape (844×390) ═══════════════════════════════════ */
+html[data-skin="ink"].is-mobile.is-landscape.is-compact {
+  --wb-gx-l: calc(var(--ink-rail-w) + 14px);
+  --wb-col: 330px;
+}
+html[data-skin="ink"][data-ui]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compact .wb-head { top: max(10px, var(--safe-t, 0px)); }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact .wb-head .wb-title h1 { font-size: 18px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact .wb-head .wb-title h1::after { font-size: 7px; margin-top: 2px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact .wb-vtitle { font-size: 34px; bottom: 74px; left: calc(var(--ink-rail-w) + 6px); }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact .wb-trio { height: 88%; top: 14%; left: 4%; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact .wb-panel { top: max(8px, var(--safe-t, 0px)); right: max(12px, var(--safe-r, 0px)); padding: 10px 14px 0; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact .wb-cta { right: max(12px, var(--safe-r, 0px)); bottom: max(20px, calc(var(--safe-b, 0px) + 16px)); gap: 10px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact .wb-chip { height: 40px; padding: 0 11px; gap: 6px; font-size: 11.5px; letter-spacing: 0.03em; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact .wb-chip svg { width: 14px; height: 14px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact #btn-battle-arena { height: 42px; width: 200px; padding: 0 10px 0 14px; gap: 8px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact #btn-battle-arena .wb-start-label { font-size: 17px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact #btn-battle-arena::after { font-size: 15px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact #btn-battle-arena .wb-start-sub { right: 34px; bottom: 3px; font-size: 7.5px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact .wb-cta::after { width: 200px; bottom: -15px; font-size: 8px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact .wb-feature { bottom: 76px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact .wb-feature-name { font-size: 16px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact .wb-league-name { font-size: 18px; letter-spacing: 0.05em; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact .wb-sheet-title,
+html[data-skin="ink"].is-mobile.is-landscape.is-compact .aim-title { font-size: 17px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact .wb-sheet-head .wb-icon-btn,
+html[data-skin="ink"].is-mobile.is-landscape.is-compact .aim-header .wb-icon-btn { width: 30px; height: 30px; }

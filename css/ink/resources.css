@@ -1,0 +1,106 @@
+/* css/ink/resources.css — Ink style for resources.html (Resources &
+   Materials list). Loaded after css/ui-ink.css; every rule is scoped to
+   html[data-skin="ink"], so Classic and Glass are untouched.
+   The page has no .jjk-page-header: its .page-title is set exactly like the
+   shared Ink header (Japanese serif title right of the rail, small Cinzel
+   caption underneath), and the "Back to Main Menu" link is hidden the way
+   the Ink header hides its back button (the rail's Village entry goes home).
+   The list becomes an editorial two-column ledger of hairline rows. */
+
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-resources {
+  --ink-gx: calc(var(--ink-rail-w) + 18px);
+  --ink-gr: max(24px, var(--safe-r, 0px));
+  padding: 96px var(--ink-gr) 40px var(--ink-gx) !important;
+  font-family: var(--g-sans); color: var(--g-text);
+}
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-resources {
+  --ink-gr: max(12px, var(--safe-r, 0px));
+  padding: calc(52px + var(--safe-t, 0px)) var(--ink-gr) max(16px, var(--safe-b, 0px)) var(--ink-gx) !important;
+}
+/* a giant brush portrait washed in at the right edge (fixed, behind) */
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-resources::after {
+  content: ''; position: fixed; z-index: -1; right: 0; top: 0; bottom: 0; width: min(56vw, 720px);
+  background: url('../../assets/ui/ink/echo.webp') right -40px top -30px / auto 116% no-repeat;
+  mix-blend-mode: screen; opacity: 0.13; pointer-events: none;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 50%);
+  mask-image: linear-gradient(90deg, transparent, #000 50%);
+}
+
+/* ── Header: the shared Ink header, made from the page's own title ──── */
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-resources .page-title {
+  position: absolute; z-index: 900; top: 18px; left: calc(var(--ink-rail-w) + 18px);
+  height: auto; margin: 0; padding: 0;
+  display: flex; flex-direction: column; align-items: flex-start;
+  font-family: var(--ink-jp); font-weight: 600; font-size: 26px; letter-spacing: 0.16em; line-height: 1.15;
+  text-transform: none; text-align: left; color: var(--g-text); text-shadow: 0 2px 12px rgba(0, 0, 0, 0.7);
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-resources .page-title::before { display: none; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-resources .page-title::after {
+  content: '資源 · Materials'; display: block; margin-top: 4px;
+  font-family: var(--ink-cinzel); font-size: 9px; font-weight: 400; letter-spacing: 0.34em; text-transform: uppercase; color: var(--g-dim);
+}
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-resources .page-title {
+  top: calc(8px + var(--safe-t, 0px)); left: calc(var(--ink-rail-w) + 18px); font-size: 18px; letter-spacing: 0.14em;
+}
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-resources .page-title::after { font-size: 7px; margin-top: 2px; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-resources .back-button { display: none !important; }
+
+/* ── Ledger: categories flow in two columns of hairline rows ────────── */
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-resources .resources-container { max-width: none; margin: 0; padding: 0; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-resources #resources-list { columns: 2 380px; column-gap: 28px; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-resources .resource-category {
+  display: block; break-inside: avoid; margin: 0 0 22px; padding: 0;
+  background: none; border: 0; border-radius: 0; box-shadow: none;
+  -webkit-backdrop-filter: none; backdrop-filter: none;
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-resources .resource-category::before { display: none; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-resources .category-title {
+  display: flex; align-items: center; gap: 12px; margin: 0 0 4px; padding: 0 0 8px;
+  font: 600 15px var(--ink-jp); letter-spacing: 0.16em; text-transform: none; color: var(--g-text);
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-resources .category-title::before {
+  content: ''; flex: none; width: 6px; height: 6px; transform: rotate(45deg); background: var(--g-accent);
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-resources .category-title::after {
+  content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, var(--g-line-2), transparent);
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-resources .resource-item {
+  margin: 0; padding: 9px 12px 9px 14px; gap: 12px;
+  background: linear-gradient(90deg, rgba(20, 19, 17, 0.62), rgba(10, 10, 11, 0.3));
+  border: 0; border-radius: 0; box-shadow: inset 0 -1px 0 var(--g-line);
+  transition: background 0.15s, box-shadow 0.15s;
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-resources .resource-item:hover {
+  background: linear-gradient(90deg, rgba(201, 162, 78, 0.2), rgba(201, 162, 78, 0.03) 70%);
+  box-shadow: inset 2px 0 0 var(--g-accent), inset 0 -1px 0 var(--g-line-2);
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-resources .resource-icon { width: 36px; height: 36px; margin-right: 0; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-resources .resource-name {
+  margin-bottom: 2px; font: 600 14.5px var(--ink-jp); letter-spacing: 0.05em; color: var(--g-text);
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-resources .resource-desc { font-size: 11.5px; font-style: italic; color: var(--g-faint); }
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-resources .resource-amount {
+  min-width: 56px; font: 500 19px var(--ink-cinzel); letter-spacing: 0.04em; color: #f3ead2;
+}
+/* phones: one column of categories, rows two abreast inside each */
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-resources #resources-list { columns: auto; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-resources .resource-category {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 14px; row-gap: 0; margin-bottom: 14px;
+}
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-resources .category-title { grid-column: 1 / -1; font-size: 13px; padding-bottom: 4px; margin: 0 0 2px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-resources .resource-item { padding: 6px 8px 6px 10px; gap: 8px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-resources .resource-icon { width: 28px; height: 28px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-resources .resource-name { font-size: 12.5px; margin-bottom: 0; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-resources .resource-desc { font-size: 9.5px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-resources .resource-amount { font-size: 15px; min-width: 40px; }
+
+/* Developer controls (only with ?dev=1) */
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-resources .dev-controls {
+  border-radius: 0; background: rgba(10, 10, 11, 0.6); box-shadow: inset 0 0 0 1px var(--g-line);
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-resources .dev-controls h3 { font: 500 11px var(--ink-cinzel); letter-spacing: 0.24em; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-resources .dev-button {
+  border-radius: 0; background: rgba(8, 8, 10, 0.6); box-shadow: inset 0 0 0 1px var(--g-line-2);
+  font: italic 600 13px var(--ink-cinzel); letter-spacing: 0.04em; text-transform: none;
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-resources .dev-button:hover { background: linear-gradient(180deg, #f3ead2, #e2d4ae); color: var(--g-on-accent); }
