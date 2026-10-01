@@ -46,7 +46,7 @@ html[data-ui="glass"] body.page-resources .page-title {
   color: var(--g-text); text-shadow: 0 2px 12px rgba(0, 0, 0, 0.7);
 }
 html[data-ui="glass"] body.page-resources .page-title::before {
-  content: ''; position: absolute; left: 0; top: 18%; bottom: 18%; width: 3px; background: var(--g-accent);
+  content: ''; position: absolute; left: 0; top: calc(50% - 0.35em); bottom: calc(50% - 0.35em); width: 3px; background: var(--g-accent);
 }
 
 /* ── Category panels ────────────────────────────────────────────────── */

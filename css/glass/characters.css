@@ -290,8 +290,6 @@ html[data-ui="glass"] body.page-characters .material-amount.insufficient b { col
 html[data-ui="glass"] body.page-characters .material-amount i,
 html[data-ui="glass"] body.page-characters .material-amount span { color: var(--g-faint); }
 html[data-ui="glass"] body.page-characters .no-requirements { font-family: var(--g-sans); color: var(--g-dim); }
-/* "Fully awakened" note and similar panels inside the tab */
-html[data-ui="glass"] body.page-characters .tab-panel .jjk-panel { box-shadow: inset 0 0 0 1px var(--g-line); }
 
 /* close */
 html[data-ui="glass"] body.page-characters .char-close-btn.jjk-btn,
