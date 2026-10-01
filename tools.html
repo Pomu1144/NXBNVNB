@@ -9,6 +9,7 @@
   <script src="js/session-gate.js"></script>
   <script src="js/page-loader.js"></script>
   <script src="js/device-detect.js"></script>
+  <script src="js/ui-theme.js"></script>
   <script src="js/modal-manager.js?v=3"></script>
   <!-- PWA App Container -->
   <link rel="manifest" href="manifest.json" />
@@ -27,6 +28,7 @@
   <link rel="stylesheet" href="css/background.css" />
   <link rel="stylesheet" href="css/bottombar.css" />
   <link rel="stylesheet" href="css/mobile.css" />
+  <link rel="stylesheet" href="css/ui-glass.css" />
 </head>
 <body class="page-tools">
   <header class="jjk-page-header">
@@ -159,10 +161,9 @@
     <section class="gu-main jjk-panel" aria-label="Equipment upgrading">
       <div class="gu-top">
         <div class="gu-preview" id="gu-preview"></div>
-        <div class="gu-stat" id="gu-stat"></div>
       </div>
-      <div class="gu-use">
-        <div class="gu-use-head">Use</div>
+      <div class="gu-rows">
+        <div class="gu-row gu-stat" id="gu-stat"></div>
         <div class="gu-mats" id="gu-mats"></div>
       </div>
       <div class="gu-go">

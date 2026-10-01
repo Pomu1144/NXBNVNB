@@ -125,7 +125,7 @@ test('promotion at the cap uses 3 upgrade scrolls and Ryo, keeping the level', a
 
   // At the cap with 2 of 3 scrolls: still off, counter shows 2/3
   await page.locator('.gu-item[data-slot="helmet"]').click();
-  await expect(page.locator('#gu-mats .gx-mat').first().locator('em')).toHaveText('2/3');
+  await expect(page.locator('#gu-mats .gu-n').first()).toHaveText('2 / 3');
   await expect(page.locator('#gu-upgrade')).toBeDisabled();
 
   // Third scroll arrives: promote Green -> Blue

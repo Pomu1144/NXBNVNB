@@ -1,0 +1,288 @@
+/* css/ui-glass.css — "Glass" interface style (Settings › Display).
+   Frosted translucent panels, soft white hairlines, pill buttons, line icons.
+   Inter for what you read, the Kaisei serif only for big titles.
+   Every rule is scoped to html[data-ui="glass"] (js/ui-theme.js), so the
+   Classic style is untouched. Loaded last in <head> on every game page.
+
+   The page bars (bottom nav, village dock) are styled by bottombar.css /
+   mobile.css with long !important selectors; those overrides use
+   html[data-ui="glass"]:not(._g):not(._l):not(._s) to match their
+   specificity and win by coming later. */
+
+/* ── Tokens ─────────────────────────────────────────────────────────── */
+html[data-ui="glass"] {
+  --g-glass: rgba(16, 24, 30, 0.58);
+  --g-glass-2: rgba(10, 16, 20, 0.8);
+  --g-line: rgba(255, 255, 255, 0.14);
+  --g-line-2: rgba(255, 255, 255, 0.28);
+  --g-text: #f2efe8;
+  --g-dim: rgba(242, 239, 232, 0.64);
+  --g-faint: rgba(242, 239, 232, 0.4);
+  --g-gold: #d9b871;
+  --g-gold-2: #f3dfa8;
+  --g-red: #e0675a;
+  --g-cream: #efe9dc;
+  --g-ink: #1b1f22;
+  --g-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --g-serif: 'Kaisei Tokumin', serif;
+  --g-radius: 8px;
+  --g-blur: blur(14px) saturate(1.1);
+  /* Every page that reads the theme font gets Inter */
+  --jjk-font: var(--g-sans);
+}
+html[data-ui="glass"] body { font-family: var(--g-sans); }
+
+/* ── Page header: round back button + caption-less serif title ───── */
+html[data-ui="glass"] .jjk-page-header { gap: 12px; }
+html[data-ui="glass"] .jjk-page-header .jjk-title-plate,
+html[data-ui="glass"] .jjk-title-plate {
+  background: none;
+  min-width: 0; min-height: 0; padding: 0;
+  font-family: var(--g-serif); font-weight: 700; font-size: 24px; letter-spacing: 0.02em;
+  color: var(--g-text); text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+}
+html[data-ui="glass"] .jjk-icon-btn {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: rgba(10, 16, 20, 0.55);
+  -webkit-backdrop-filter: var(--g-blur); backdrop-filter: var(--g-blur);
+  box-shadow: inset 0 0 0 1px var(--g-line-2);
+}
+html[data-ui="glass"] .jjk-back img { width: 46%; filter: brightness(1.4) grayscale(1); }
+html[data-ui="glass"].is-mobile.is-landscape.is-compact .jjk-page-header .jjk-title-plate {
+  min-width: 0; min-height: 0; padding: 0; font-size: 18px;
+}
+html[data-ui="glass"].is-mobile.is-landscape.is-compact .jjk-page-header .jjk-icon-btn { width: 32px; height: 32px; }
+
+/* ── Panels: frosted glass, hairline, no corner brackets ─────────── */
+html[data-ui="glass"] .jjk-panel {
+  background: var(--g-glass);
+  -webkit-backdrop-filter: var(--g-blur); backdrop-filter: var(--g-blur);
+  border: 0; border-radius: var(--g-radius);
+  box-shadow: inset 0 0 0 1px var(--g-line), 0 12px 32px rgba(0, 0, 0, 0.35);
+}
+html[data-ui="glass"] .jjk-panel::before,
+html[data-ui="glass"] .jjk-panel::after { display: none; }
+html[data-ui="glass"] .jjk-row {
+  background: var(--g-glass); border-radius: var(--g-radius);
+  box-shadow: inset 0 0 0 1px var(--g-line);
+}
+
+/* ── Buttons: pills. Primary = cream with dark text; others = dark glass ── */
+html[data-ui="glass"] .jjk-btn {
+  border: 0; border-image: none; border-radius: 999px;
+  background: rgba(10, 16, 20, 0.55);
+  -webkit-backdrop-filter: var(--g-blur); backdrop-filter: var(--g-blur);
+  box-shadow: inset 0 0 0 1px var(--g-line-2);
+  font-family: var(--g-sans); font-weight: 600; font-size: 14px; letter-spacing: 0.02em;
+  color: var(--g-text); text-shadow: none;
+}
+html[data-ui="glass"] .jjk-btn.is-primary,
+html[data-ui="glass"] .modal-btn.modal-btn-primary {
+  background: linear-gradient(180deg, #f6f1e6, #e2d9c6);
+  color: var(--g-ink); text-shadow: none;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+}
+html[data-ui="glass"] .jjk-btn:hover:not(:disabled) { filter: brightness(1.08); }
+html[data-ui="glass"] .jjk-btn:disabled,
+html[data-ui="glass"] .jjk-btn.is-disabled {
+  border-image: none; background: rgba(10, 16, 20, 0.4); color: var(--g-faint);
+  box-shadow: inset 0 0 0 1px var(--g-line);
+}
+html[data-ui="glass"] .jjk-btn.is-primary:disabled,
+html[data-ui="glass"] .jjk-btn.is-primary.is-disabled {
+  background: linear-gradient(180deg, #f6f1e6, #e2d9c6); color: var(--g-ink); opacity: 0.42; box-shadow: none;
+}
+
+/* ── Tabs: pill segments, the selected one turns cream ───────────── */
+html[data-ui="glass"] .jjk-tab {
+  border: 0; border-image: none; border-radius: 999px; filter: none;
+  min-width: 0; height: 32px; padding: 0 16px;
+  background: rgba(10, 16, 20, 0.45);
+  box-shadow: inset 0 0 0 1px var(--g-line);
+  font-family: var(--g-sans); font-weight: 600; font-size: 13px;
+  color: var(--g-dim); text-shadow: none;
+}
+html[data-ui="glass"] .jjk-tab:hover { color: var(--g-text); }
+html[data-ui="glass"] .jjk-tab.active,
+html[data-ui="glass"] .jjk-tab[aria-selected="true"] {
+  background: var(--g-cream); color: var(--g-ink); text-shadow: none; box-shadow: none;
+}
+html[data-ui="glass"].is-mobile.is-landscape.is-compact .jjk-tab { height: 28px; padding: 0 12px; font-size: 12px; }
+
+/* ── Chips / progress ────────────────────────────────────────────── */
+html[data-ui="glass"] .jjk-chip {
+  clip-path: none; border: 0; border-radius: 999px;
+  background: rgba(10, 16, 20, 0.5); box-shadow: inset 0 0 0 1px var(--g-line);
+  font-family: var(--g-sans); font-weight: 600; font-size: 12px; color: var(--g-dim);
+}
+html[data-ui="glass"] .jjk-progress { border: 0; border-radius: 999px; background: rgba(255, 255, 255, 0.1); overflow: hidden; }
+html[data-ui="glass"] .jjk-progress > i { background: linear-gradient(90deg, #b99752, var(--g-gold-2)); }
+
+/* ── Bottom navigation (every page but the village) ──────────────── */
+html[data-ui="glass"]:not(._g):not(._l):not(._s) body .bottom-bar {
+  background: linear-gradient(0deg, rgba(4, 8, 10, 0.75), rgba(4, 8, 10, 0)) !important;
+  box-shadow: none !important;
+  font-family: var(--g-sans);
+}
+html[data-ui="glass"]:not(._g):not(._l):not(._s) body .bottom-bar .bottom-bar-content {
+  background: var(--g-glass-2) !important;
+  background-image: none !important;
+  -webkit-backdrop-filter: var(--g-blur) !important; backdrop-filter: var(--g-blur) !important;
+  border: 0 !important;
+  border-radius: 14px !important;
+  box-shadow: inset 0 0 0 1px var(--g-line), 0 8px 24px rgba(0, 0, 0, 0.45) !important;
+}
+html[data-ui="glass"]:not(._g):not(._l):not(._s) body .bottom-bar .hud-button + .hud-button::before {
+  background: rgba(255, 255, 255, 0.1) !important; transform: none !important; width: 1px !important;
+}
+html[data-ui="glass"]:not(._g):not(._l):not(._s) body .bottom-bar .hud-button::after {
+  font-family: var(--g-sans) !important; font-weight: 500 !important; letter-spacing: 0.04em !important;
+  color: var(--g-dim) !important; text-shadow: none !important;
+}
+html[data-ui="glass"]:not(._g):not(._l):not(._s) body .bottom-bar .hud-button img {
+  filter: grayscale(1) brightness(1.7) !important; opacity: 0.85;
+}
+/* current page: a cream pill inside the bar */
+html[data-ui="glass"]:not(._g):not(._l):not(._s) body .bottom-bar .hud-button.active {
+  background: var(--g-cream) !important;
+  background-image: none !important;
+  border-radius: 10px !important;
+  margin: 3px 0 !important;
+  box-shadow: none !important;
+}
+html[data-ui="glass"]:not(._g):not(._l):not(._s) body .bottom-bar .hud-button.active img {
+  filter: grayscale(1) brightness(0.15) !important; opacity: 1;
+}
+html[data-ui="glass"]:not(._g):not(._l):not(._s) body .bottom-bar .hud-button.active::after {
+  color: var(--g-ink) !important; font-weight: 700 !important;
+}
+
+/* ── Village: top bar, currency pills, dock ──────────────────────── */
+html[data-ui="glass"] .top-bar {
+  background: linear-gradient(180deg, rgba(6, 10, 12, 0.7), rgba(6, 10, 12, 0)) !important;
+  border: 0 !important; box-shadow: none !important;
+}
+html[data-ui="glass"] .top-bar::after { display: none !important; }
+html[data-ui="glass"] .currency-item {
+  background: rgba(10, 16, 20, 0.55) !important;
+  -webkit-backdrop-filter: var(--g-blur); backdrop-filter: var(--g-blur);
+  border: 0 !important; border-radius: 999px !important;
+  box-shadow: inset 0 0 0 1px var(--g-line) !important;
+}
+html[data-ui="glass"] .currency-item::before,
+html[data-ui="glass"] .currency-item::after { display: none !important; }
+html[data-ui="glass"] .currency-amount { font-family: var(--g-sans) !important; font-weight: 600 !important; color: var(--g-text) !important; text-shadow: none !important; }
+html[data-ui="glass"] .currency-add {
+  border: 0 !important; border-radius: 50% !important;
+  background: rgba(255, 255, 255, 0.14) !important; color: var(--g-text) !important;
+}
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .bottom-icon-bar {
+  background: var(--g-glass-2) !important;
+  background-image: none !important;
+  -webkit-backdrop-filter: var(--g-blur); backdrop-filter: var(--g-blur);
+  border: 0 !important; border-radius: 14px !important;
+  box-shadow: inset 0 0 0 1px var(--g-line), 0 8px 24px rgba(0, 0, 0, 0.45) !important;
+}
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .bottom-icon-bar::before,
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .bottom-icon-bar::after,
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .bottom-icon::before { display: none !important; }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .bottom-icon-label {
+  font-family: var(--g-sans) !important; font-weight: 500 !important; letter-spacing: 0.04em !important;
+  color: var(--g-dim) !important; text-shadow: none !important;
+}
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .bottom-icon-image { filter: grayscale(1) brightness(1.7) !important; opacity: 0.85; }
+
+/* ── Village main menu: glass tiles instead of the banner buttons ──
+   The .hv-menu markup lives in village.html; Classic never shows it. */
+.hv-menu { display: none; }
+html[data-ui="glass"]:not(._g):not(._l):not(._s) .right-banner-panel,
+html[data-ui="glass"]:not(._g):not(._l):not(._s) body .right-banner-panel { display: none !important; }
+html[data-ui="glass"] .hv-menu {
+  position: absolute; z-index: 50;
+  right: max(16px, var(--safe-r, 0px)); top: 52%; transform: translateY(-50%);
+  width: 430px;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+}
+html[data-ui="glass"] .hv-t {
+  all: unset; box-sizing: border-box; cursor: pointer;
+  position: relative; display: flex; align-items: center; gap: 12px;
+  height: 64px; padding: 0 14px; border-radius: var(--g-radius); overflow: hidden;
+  background: var(--g-glass);
+  -webkit-backdrop-filter: var(--g-blur); backdrop-filter: var(--g-blur);
+  box-shadow: inset 0 0 0 1px var(--g-line);
+  color: var(--g-text); font-family: var(--g-sans);
+  transition: box-shadow 0.15s, transform 0.12s;
+}
+html[data-ui="glass"] .hv-t:hover { box-shadow: inset 0 0 0 1px var(--g-line-2); }
+html[data-ui="glass"] .hv-t:active { transform: translateY(1px); }
+html[data-ui="glass"] .hv-t:focus-visible { box-shadow: inset 0 0 0 2px var(--g-gold-2); }
+html[data-ui="glass"] .hv-o {
+  flex: none; width: 36px; height: 36px; border-radius: 50%;
+  display: grid; place-items: center; box-shadow: inset 0 0 0 1px var(--g-line-2);
+}
+html[data-ui="glass"] .hv-t svg {
+  width: 17px; height: 17px; fill: none; stroke: var(--g-text);
+  stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round;
+}
+html[data-ui="glass"] .hv-x { display: flex; flex-direction: column; min-width: 0; line-height: 1.15; }
+html[data-ui="glass"] .hv-x b { font-weight: 600; font-size: 17px; }
+html[data-ui="glass"] .hv-x small {
+  margin-top: 3px; font-weight: 500; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--g-faint); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+html[data-ui="glass"] .hv-big {
+  grid-column: 1 / -1; height: 116px; padding: 0 18px 0 20px;
+  background: var(--g-glass) url('../assets/missions/banners/arc_academy.webp') center 30% / cover no-repeat;
+}
+html[data-ui="glass"] .hv-big::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(90deg, rgba(8, 12, 14, 0.92), rgba(8, 12, 14, 0.5) 55%, rgba(8, 12, 14, 0.05));
+}
+html[data-ui="glass"] .hv-big > * { position: relative; }
+html[data-ui="glass"] .hv-big .hv-x small { margin: 0 0 4px; color: var(--g-dim); }
+html[data-ui="glass"] .hv-big .hv-x b { font-family: var(--g-serif); font-weight: 700; font-size: 30px; letter-spacing: 0.02em; }
+html[data-ui="glass"] .hv-go {
+  margin-left: auto; display: inline-flex; align-items: center; gap: 8px;
+  height: 32px; padding: 0 14px 0 4px; border-radius: 999px;
+  background: linear-gradient(180deg, #f6f1e6, #e2d9c6); color: var(--g-ink);
+  font-weight: 600; font-size: 13px;
+}
+html[data-ui="glass"] .hv-go i { width: 24px; height: 24px; border-radius: 50%; background: var(--g-ink); display: grid; place-items: center; }
+html[data-ui="glass"] .hv-go i svg { stroke: var(--g-gold-2); width: 12px; height: 12px; }
+/* phones */
+html[data-ui="glass"].is-mobile.is-landscape.is-compact .hv-menu { width: 304px; gap: 6px; top: 53%; }
+html[data-ui="glass"].is-mobile.is-landscape.is-compact .hv-t { height: 46px; padding: 0 10px; gap: 9px; }
+html[data-ui="glass"].is-mobile.is-landscape.is-compact .hv-o { width: 28px; height: 28px; }
+html[data-ui="glass"].is-mobile.is-landscape.is-compact .hv-t svg { width: 14px; height: 14px; }
+html[data-ui="glass"].is-mobile.is-landscape.is-compact .hv-x b { font-size: 13.5px; }
+html[data-ui="glass"].is-mobile.is-landscape.is-compact .hv-x small { font-size: 8.5px; margin-top: 2px; }
+html[data-ui="glass"].is-mobile.is-landscape.is-compact .hv-big { height: 80px; padding: 0 12px 0 14px; }
+html[data-ui="glass"].is-mobile.is-landscape.is-compact .hv-big .hv-x b { font-size: 22px; }
+html[data-ui="glass"].is-mobile.is-landscape.is-compact .hv-go { height: 28px; font-size: 12px; }
+html[data-ui="glass"].is-mobile.is-landscape.is-compact .hv-go i { width: 20px; height: 20px; }
+
+/* ── In-game dialogs (js/modal-manager.js) ──────────────────────── */
+html[data-ui="glass"] .modal-overlay { background: rgba(2, 6, 8, 0.6); }
+html[data-ui="glass"] .modal-container {
+  background: var(--g-glass-2);
+  -webkit-backdrop-filter: var(--g-blur); backdrop-filter: var(--g-blur);
+  border: 0; border-radius: 12px;
+  box-shadow: inset 0 0 0 1px var(--g-line), 0 24px 60px rgba(0, 0, 0, 0.6);
+  font-family: var(--g-sans); padding-top: 64px;
+}
+html[data-ui="glass"] .modal-container::before { display: none; }
+html[data-ui="glass"] .modal-header { left: 24px; top: 22px; }
+html[data-ui="glass"] .modal-title {
+  background: none; filter: none; animation: none;
+  min-width: 0; height: auto; padding: 0;
+  font-family: var(--g-serif); font-weight: 700; font-size: 22px; color: var(--g-text); text-shadow: none;
+}
+html[data-ui="glass"] .modal-message { font-family: var(--g-sans); font-size: 14.5px; color: var(--g-dim); text-shadow: none; }
+html[data-ui="glass"] .modal-btn {
+  border-image: none; border-radius: 999px; font-family: var(--g-sans); font-weight: 600; font-size: 14px;
+}
+html[data-ui="glass"] .modal-btn.modal-btn-secondary {
+  background: rgba(255, 255, 255, 0.06); color: var(--g-text); text-shadow: none;
+  box-shadow: inset 0 0 0 1px var(--g-line-2);
+}
+html[data-ui="glass"] .modal-input { border-radius: 8px; border-color: var(--g-line-2); font-family: var(--g-sans); }
