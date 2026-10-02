@@ -64,9 +64,9 @@ html[data-skin="ink"] .ink-home {
 .ink-layers { inset: 0; }
 .ink-l-bg { inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 60% 40%; }
 .ink-l-echo {
-  left: var(--ink-rail); top: -6%; height: 78%; width: auto; opacity: 0.32; mix-blend-mode: screen;
-  -webkit-mask-image: radial-gradient(ellipse 60% 60% at 50% 45%, #000 40%, transparent 78%);
-  mask-image: radial-gradient(ellipse 60% 60% at 50% 45%, #000 40%, transparent 78%);
+  left: calc(var(--ink-rail) - 16%); top: -7%; height: 84%; width: auto; opacity: 0.85; mix-blend-mode: screen;
+  -webkit-mask-image: radial-gradient(ellipse 62% 64% at 50% 42%, #000 52%, transparent 82%);
+  mask-image: radial-gradient(ellipse 62% 64% at 50% 42%, #000 52%, transparent 82%);
 }
 .ink-l-hero {
   left: 50%; bottom: -4%; height: 108%; width: auto; transform: translateX(-46%);
@@ -185,6 +185,7 @@ html[data-skin="ink"].ink-dock-open .bottom-icon-bar { z-index: 1003 !important;
 
 /* ── Phone landscape ─────────────────────────────────────────────── */
 html[data-skin="ink"].is-mobile.is-landscape.is-compact .ink-home { --ink-rail: calc(128px + var(--safe-l, 0px)); }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact .ink-l-echo { left: calc(var(--ink-rail) - 11%); }
 html.is-mobile.is-landscape.is-compact .ink-brand { padding: 0 12px 10px; gap: 8px; }
 html.is-mobile.is-landscape.is-compact .ink-brand svg { width: 28px; height: 28px; }
 html.is-mobile.is-landscape.is-compact .ink-brand span { font-size: 7.5px; letter-spacing: 0.3em; }
