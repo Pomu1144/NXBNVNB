@@ -366,24 +366,25 @@ html[data-skin="ink"] .seven-star-fx.aura-fx > b {
   background: url('../assets/effects/ink_frame_7s.webp') center / 100% 100% no-repeat;
   opacity: 0.78;
 }
-/* 7★ flow: liquid gold travelling round the brush stroke. <s> is masked to
-   the stroke; <u> inside it is a large conic highlight that turns forever,
-   so the light keeps flowing along the frame (transform only). */
+/* 7★ flow: a soft gold glint travels round the brush frame, one edge after
+   another (top → right → bottom → left). Four small glints move with
+   transform + opacity only: no masks, no repaint. */
 html[data-skin="ink"] .aura-fx > s {
   display: block; position: absolute; inset: 0; overflow: hidden; pointer-events: none;
 }
-html[data-skin="ink"] .seven-star-fx.aura-fx > s {
-  -webkit-mask: url('../assets/effects/ink_frame_7s.webp') center / 100% 100% no-repeat;
-          mask: url('../assets/effects/ink_frame_7s.webp') center / 100% 100% no-repeat;
-}
 html[data-skin="ink"] .seven-star-fx.aura-fx > s > u {
-  position: absolute; left: 50%; top: 50%; width: 180%; aspect-ratio: 1; margin: -90% 0 0 -90%;
-  background: conic-gradient(from 0deg,
-    transparent 0deg, rgba(255, 236, 170, 0) 20deg, rgba(255, 244, 205, 0.95) 48deg, rgba(240, 200, 110, 0.6) 70deg, transparent 100deg,
-    transparent 180deg, rgba(255, 236, 170, 0) 200deg, rgba(255, 244, 205, 0.85) 228deg, rgba(240, 200, 110, 0.5) 250deg, transparent 280deg);
-  animation: inkFlowTurn 3.6s linear infinite;
+  position: absolute; display: block; opacity: 0;
+  background: radial-gradient(closest-side, rgba(255, 248, 222, 0.95), rgba(244, 206, 120, 0.55) 45%, rgba(201, 162, 78, 0) 100%);
+  animation: 3.4s linear infinite;
 }
-@keyframes inkFlowTurn { to { transform: rotate(360deg); } }
+html[data-skin="ink"] .seven-star-fx.aura-fx > s > u:nth-child(1) { left: 0; top: 1.5%; width: 34%; height: 6%; animation-name: inkGlintTop; }
+html[data-skin="ink"] .seven-star-fx.aura-fx > s > u:nth-child(2) { top: 0; right: 1.5%; width: 7.5%; height: 30%; animation-name: inkGlintRight; }
+html[data-skin="ink"] .seven-star-fx.aura-fx > s > u:nth-child(3) { left: 0; bottom: 1.5%; width: 34%; height: 6%; animation-name: inkGlintBottom; }
+html[data-skin="ink"] .seven-star-fx.aura-fx > s > u:nth-child(4) { top: 0; left: 1.5%; width: 7.5%; height: 30%; animation-name: inkGlintLeft; }
+@keyframes inkGlintTop    { 0% { transform: translateX(-100%); opacity: 0; } 3% { opacity: 1; } 22% { opacity: 1; } 25% { transform: translateX(294%); opacity: 0; } 100% { transform: translateX(294%); opacity: 0; } }
+@keyframes inkGlintRight  { 0%, 25% { transform: translateY(-100%); opacity: 0; } 28% { opacity: 1; } 47% { opacity: 1; } 50%, 100% { transform: translateY(333%); opacity: 0; } }
+@keyframes inkGlintBottom { 0%, 50% { transform: translateX(294%); opacity: 0; } 53% { opacity: 1; } 72% { opacity: 1; } 75%, 100% { transform: translateX(-100%); opacity: 0; } }
+@keyframes inkGlintLeft   { 0%, 75% { transform: translateY(333%); opacity: 0; } 78% { opacity: 1; } 97% { opacity: 1; } 100% { transform: translateY(-100%); opacity: 0; } }
 
 /* Ultimate Max flow: two smoke layers rise, sway and fade in turn, so the
    ink keeps streaming off the card */
@@ -418,3 +419,10 @@ html[data-skin="ink"] img.ultimate-badge[src$="ultimate_max.png"] {
   html[data-skin="ink"] .aura-fx > s, html[data-skin="ink"] .aura-fx > s > u { animation: none !important; }
 }
 html[data-skin="ink"] .char-slot img.ultimate-badge[src$="ultimate_max.png"] { width: 30px !important; height: 30px !important; right: 6px !important; bottom: 34px !important; }
+/* while scrolling, drop the flowing layers (the gold frame stays) and fade
+   them back in when the roster comes to rest: scrolling then costs the same
+   as a plain card grid */
+html[data-skin="ink"] .aura-fx > s,
+html[data-skin="ink"] .maxed-fx.aura-fx > b { transition: opacity 0.35s ease, visibility 0s; }
+html[data-skin="ink"].fx-scrolling .aura-fx > s,
+html[data-skin="ink"].fx-scrolling .maxed-fx.aura-fx > b { opacity: 0 !important; visibility: hidden; transition: none; }
