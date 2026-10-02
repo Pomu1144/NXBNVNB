@@ -7,7 +7,8 @@
 //                 "fg":    ".../motion_6S_fg.webp",      // the unit, cut out
 //                 "swirl": "assets/effects/wind_swirl_gold.webp",
 //                 "gust":  "assets/effects/wind_gust_gold.webp",
-//                 "video": ".../motion_6S.mp4" } } }               // optional
+//                 "video": ".../motion_6S.mp4",                    // optional
+//                 "videoWebm": ".../motion_6S.webm" } } }          // optional
 // With `video`, the art itself is animated: a muted looping clip whose first
 // and last frames are the still art (so the loop is seamless) plays over it;
 // the still shows until the clip can play, and under reduced motion.
@@ -59,7 +60,10 @@
       v.className = "a7 am am-vid";
       v.setAttribute("aria-hidden", "true");
       v.innerHTML = `<img class="am-still-art" src="${esc(full)}" alt="" decoding="async">` +
-        (still ? "" : `<video class="am-video" src="${esc(m.video)}" muted loop playsinline autoplay preload="auto" disablepictureinpicture></video>`);
+        (still ? "" : `<video class="am-video" muted loop playsinline autoplay preload="auto" disablepictureinpicture>` +
+          // VP9 WebM first (Chrome, Firefox, Android), H.264 MP4 for Safari
+          (m.videoWebm ? `<source src="${esc(m.videoWebm)}" type="video/webm">` : "") +
+          `<source src="${esc(m.video)}" type="video/mp4"></video>`);
       const vid = v.querySelector("video");
       if (vid) {
         vid.muted = true;
@@ -87,7 +91,7 @@
 
   function unmount(host) {
     if (!host) return;
-    host.querySelectorAll(":scope > .a7 video").forEach((v) => { v.pause(); v.removeAttribute("src"); v.load(); });
+    host.querySelectorAll(":scope > .a7 video").forEach((v) => { v.pause(); v.querySelectorAll("source").forEach((x) => x.remove()); v.removeAttribute("src"); v.load(); });
     host.querySelectorAll(":scope > .a7").forEach((el) => el.remove());
     host.classList.remove("has-a7");
   }

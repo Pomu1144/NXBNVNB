@@ -124307,7 +124307,9 @@
      "plate": "assets/characters/minato_2100/motion_5S_plate.webp",
      "fg": "assets/characters/minato_2100/motion_5S_fg.webp",
      "swirl": "assets/effects/wind_swirl_gold.webp",
-     "gust": "assets/effects/wind_gust_gold.webp"
+     "gust": "assets/effects/wind_gust_gold.webp",
+     "video": "assets/characters/minato_2100/motion_5S.mp4",
+     "videoWebm": "assets/characters/minato_2100/motion_5S.webm"
     }
    },
    "6S": {
@@ -124317,7 +124319,9 @@
      "plate": "assets/characters/minato_2101/motion_6S_plate.webp",
      "fg": "assets/characters/minato_2101/motion_6S_fg.webp",
      "swirl": "assets/effects/wind_swirl_gold.webp",
-     "gust": "assets/effects/wind_gust_gold.webp"
+     "gust": "assets/effects/wind_gust_gold.webp",
+     "video": "assets/characters/minato_2101/motion_6S.mp4",
+     "videoWebm": "assets/characters/minato_2101/motion_6S.webm"
     }
    }
   },
@@ -124435,7 +124439,9 @@
      "plate": "assets/characters/minato_2101/motion_6S_plate.webp",
      "fg": "assets/characters/minato_2101/motion_6S_fg.webp",
      "swirl": "assets/effects/wind_swirl_gold.webp",
-     "gust": "assets/effects/wind_gust_gold.webp"
+     "gust": "assets/effects/wind_gust_gold.webp",
+     "video": "assets/characters/minato_2101/motion_6S.mp4",
+     "videoWebm": "assets/characters/minato_2101/motion_6S.webm"
     }
    }
   },
