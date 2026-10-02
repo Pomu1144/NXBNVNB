@@ -154,6 +154,15 @@
                 <p class="settings-help">Sound effects, gift codes, save export / import and log out</p>
               </div>
             </div>
+
+            <div class="settings-divider"></div>
+
+            <!-- Screen info: how this device reports its screen to the game
+                 (for layout fixes on new phones / OS versions) -->
+            <div class="settings-section">
+              <h3 class="settings-section-title">Screen</h3>
+              <p class="settings-help" id="setting-screen-info" style="font-family:monospace;font-size:11px;line-height:1.6;word-break:break-word"></p>
+            </div>
           </div>
         </div>
       `;
@@ -495,8 +504,43 @@
       this.overlay.classList.add('active');
       this.isOpen = true;
       this.loadSettings();
+      this.showScreenInfo();
 
       console.log('Settings modal opened');
+    },
+
+    /**
+     * Fill the Screen line: viewport, screen, safe areas and where a
+     * full-screen fixed layer really sits on this device.
+     */
+    showScreenInfo() {
+      const el = document.getElementById('setting-screen-info');
+      if (!el) return;
+      try {
+        const probe = (css) => {
+          const d = document.createElement('div');
+          d.style.cssText = 'position:fixed;left:0;width:1px;visibility:hidden;pointer-events:none;' + css;
+          document.body.appendChild(d);
+          const r = d.getBoundingClientRect(), c = getComputedStyle(d);
+          const cs = { paddingTop: c.paddingTop, paddingRight: c.paddingRight, paddingBottom: c.paddingBottom, paddingLeft: c.paddingLeft };
+          d.remove();
+          return { r, cs };
+        };
+        const fx = probe('top:0;bottom:0').r;
+        const h = (u) => Math.round(probe('top:0;height:' + u).r.height);
+        const sa = probe('top:0;height:0;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)').cs;
+        const vv = window.visualViewport;
+        const ios = (navigator.userAgent.match(/OS (\d+)_(\d+)/) || []).slice(1).join('.') || '-';
+        const standalone = (window.matchMedia && matchMedia('(display-mode: standalone)').matches) || navigator.standalone === true;
+        el.textContent = [
+          'inner ' + innerWidth + 'x' + innerHeight + ', client ' + document.documentElement.clientWidth + 'x' + document.documentElement.clientHeight,
+          'screen ' + screen.width + 'x' + screen.height + ' @' + (window.devicePixelRatio || 1) + 'x',
+          'fixed top ' + Math.round(fx.top) + ' h ' + Math.round(fx.height) + (vv ? ', vv h ' + Math.round(vv.height) + ' top ' + Math.round(vv.offsetTop) : ''),
+          '100vh ' + h('100vh') + ', lvh ' + h('100lvh') + ', svh ' + h('100svh') + ', dvh ' + h('100dvh'),
+          'safe t' + parseInt(sa.paddingTop) + ' r' + parseInt(sa.paddingRight) + ' b' + parseInt(sa.paddingBottom) + ' l' + parseInt(sa.paddingLeft),
+          'iOS ' + ios + (standalone ? ', home-screen app' : ', browser') + ', scrollY ' + Math.round(scrollY)
+        ].join(' | ');
+      } catch (e) { el.textContent = 'n/a'; }
     },
 
     /**
