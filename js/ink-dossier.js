@@ -8,7 +8,8 @@
 //  - the same entry may carry the unit's own dossier art and lettering
 //    ({ art, nameImg, quoteImg }); those images replace the card art and the
 //    typeset name / quote when present. `art` is a full-frame 16:9 painting:
-//    the left column shows its left part, the record panel the rest, dimmed.
+//    the left column shows its left part, the record panel the rest, dimmed;
+//    optional `artShift` (0-0.3) slides it left to bring a figure into view.
 //  - optional `motto` (English line, top-right of the record) and `role`
 //    (e.g. "Lightning Style / Tactical Support", under the version).
 // It never touches game state and never delays opening the modal: the quote
@@ -65,6 +66,8 @@
     // the same full-frame art also runs behind the record panel
     if (q && q.art) MODAL.style.setProperty("--ink-art", `url("${q.art}")`);
     else MODAL.style.removeProperty("--ink-art");
+    if (q && q.art && q.artShift) MODAL.style.setProperty("--ink-art-dx", String(+q.artShift || 0));
+    else MODAL.style.removeProperty("--ink-art-dx");
     if (MOTTO) { MOTTO.textContent = (q && q.motto) || ""; MOTTO.hidden = !(q && q.motto); }
     if (ROLE) { ROLE.textContent = (q && q.role) || ""; ROLE.hidden = !(q && q.role); }
     setImg(VIMG, q && q.nameImg, "ink-has-nameimg");
