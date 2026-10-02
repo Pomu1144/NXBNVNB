@@ -316,3 +316,29 @@ html[data-skin="ink"] .jjk-title-plate::after {
 }
 html[data-skin="ink"].is-mobile.is-landscape.is-compact .jjk-page-header .jjk-title-plate { font-size: 18px; }
 html[data-skin="ink"].is-mobile.is-landscape.is-compact .jjk-title-plate::after { font-size: 7px; margin-top: 2px; }
+
+
+/* ── Power grade scale (D … LR) ──────────────────────────────────────
+   One dry-brush calligraphy family built from the gold UR mark; the metal
+   climbs with the grade: iron D, copper C, bronze B, silver A, champagne S,
+   gold SS, deep gold SSS, gold-leaf UR, vermilion-and-gold LR.
+   assets/ui/ink/pow_*.webp keep the 500px framing of assets/icons/pow_*.png,
+   so every place that shows a grade (dossier, Tools, mission ranks, the
+   mission-complete popup) swaps art without layout changes. */
+html[data-skin="ink"] img[src$="icons/pow_d.png"] { content: url('../assets/ui/ink/pow_d.webp'); }
+html[data-skin="ink"] img[src$="icons/pow_c.png"] { content: url('../assets/ui/ink/pow_c.webp'); }
+html[data-skin="ink"] img[src$="icons/pow_b.png"] { content: url('../assets/ui/ink/pow_b.webp'); }
+html[data-skin="ink"] img[src$="icons/pow_a.png"] { content: url('../assets/ui/ink/pow_a.webp'); }
+html[data-skin="ink"] img[src$="icons/pow_s.png"] { content: url('../assets/ui/ink/pow_s.webp'); }
+html[data-skin="ink"] img[src$="icons/pow_ss.png"] { content: url('../assets/ui/ink/pow_ss.webp'); }
+html[data-skin="ink"] img[src$="icons/pow_sss.png"] { content: url('../assets/ui/ink/pow_sss.webp'); }
+html[data-skin="ink"] img[src$="icons/pow_ur.png"] { content: url('../assets/ui/ink/pow_ur.webp'); }
+/* LR: the animated badge (characters) and the video (Tools) become the mark */
+html[data-skin="ink"] .power-grade-animated.power-grade-lr {
+  border: 0 !important; border-radius: 0 !important; box-shadow: none !important; animation: none !important;
+  background: url('../assets/ui/ink/grade_lr.webp') center / contain no-repeat !important;
+  color: transparent !important; text-shadow: none !important;
+}
+html[data-skin="ink"] .power-grade-animated.power-grade-lr > * { display: none !important; }
+html[data-skin="ink"] .tl-grade[data-grade="LR"] { background: url('../assets/ui/ink/grade_lr.webp') center / contain no-repeat; }
+html[data-skin="ink"] .tl-grade[data-grade="LR"] video { display: none; }

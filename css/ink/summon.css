@@ -1,23 +1,48 @@
 /* css/ink/summon.css — "Ink" style for summon.html (Settings › Display › Ink).
    Ink is Glass + css/ui-ink.css, so css/glass/summon.css still applies; this
-   file re-lays the page like the Ink village: the featured banner art is the
-   full-bleed hero behind everything (fading to black at the edges), the
-   banner list is a slim serif list on the left, the title block sits
-   bottom-left over the art (Japanese heading over a Cinzel caption), and
-   ×1 / ×10 are paper slips bottom-right with the cost above. The summon animation itself is untouched.
+   file re-lays the page as three columns right of the Ink rail:
+     LEFT   categories (the Shinobi / Jutsu Cards / Recipes tabs) with the
+            open category's list between them — banner cards carry the
+            banner's key art bleeding in from the right;
+     CENTER the selected banner in a thin gold hairline frame, chevrons on
+            its edges, dots bottom-left, an info box bottom-right
+            (title | divider | rate-up unit);
+     RIGHT  a vertical quote, a details card (Rates / Featured / Contents),
+            the step line, then ×1 (hairline) over ×10 (cream paper slip).
+   Currencies sit top-right as square hairline boxes. Only CSS: every
+   element is the page's own (js/summon*.js untouched).
    Selector prefix: html[data-skin="ink"] + six :not() = 0,7,1, so it ties the
    compact Glass rules (html[data-ui="glass"].is-mobile.is-landscape.is-compact
    :not×3) and wins by load order. */
 
-/* ── Frame metrics ─────────────────────────────────────────────── */
+/* ── Frame metrics ─────────────────────────────────────────────────
+   --sx-list / --sx-side: left / right column widths; --sx-cw: the centre
+   column width; --sx-fh: the banner frame height (16:10-ish, never taller
+   than the column); --sx-fy: the frame's top/bottom inset inside the column. */
 html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) body.page-summon {
-  --sx-head: 86px; --sx-list: 214px; --sx-pad: 26px; --sx-foot: 130px;
-  --sx-slips: 440px; --sx-slip-h: 70px; --sx-slip-b: 40px;
-  --sx-art-h: min(100%, calc((100vw - var(--ink-rail-w) - var(--sx-list)) * 0.7));
+  --sx-head: 64px; --sx-bot: 18px; --sx-pad: 22px; --sx-gap: 20px;
+  --sx-list: 232px; --sx-side: 184px; --sx-tab: 46px; --sx-card: 56px;
+  --sx-quote: 160px; --sx-ratio: 1.62;
+  --sx-pr: max(var(--sx-pad), var(--safe-r, 0px));
+  --sx-cw: calc(100vw - var(--ink-rail-w) - var(--sx-pad) - var(--sx-pr) - var(--sx-list) - var(--sx-side) - 2 * var(--sx-gap));
+  --sx-fh: min(100% - var(--sx-head) - var(--sx-bot), var(--sx-cw) / var(--sx-ratio));
+  --sx-fy: calc((100% - var(--sx-head) - var(--sx-bot) - var(--sx-fh)) / 2);
+  --sx-cl: calc(var(--sx-pad) + var(--sx-list) + var(--sx-gap));                 /* centre column left  */
+  --sx-cr: calc(var(--sx-pr) + var(--sx-side) + var(--sx-gap));                  /* centre column right */
   --sx-ink: 10, 10, 11;
+  --sx-hair: rgba(226, 204, 150, 0.26);
+  --sx-hair-hi: rgba(232, 207, 140, 0.72);
+  --sx-paper: linear-gradient(180deg, #f6eed8, #e6d8b2);
   background: #0a0a0b !important;
 }
-html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) body.page-summon { --sx-head: 50px; --sx-list: 132px; --sx-pad: 12px; --sx-foot: 84px; --sx-slips: 300px; --sx-slip-h: 52px; --sx-slip-b: 28px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) body.page-summon {
+  --sx-head: 42px; --sx-bot: 8px; --sx-pad: 10px; --sx-gap: 10px;
+  --sx-list: 150px; --sx-side: 124px; --sx-tab: 30px; --sx-card: 40px;
+  --sx-quote: 82px; --sx-ratio: 1.56;
+}
+@media (max-width: 720px) {
+  html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) body.page-summon { --sx-pad: 8px; --sx-gap: 8px; --sx-list: 124px; --sx-side: 108px; --sx-card: 34px; --sx-tab: 28px; }
+}
 html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) #summon-bg { display: none; }
 
 /* the page is a fixed sheet right of the rail, full height */
@@ -26,537 +51,676 @@ html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .sum
   width: auto; max-width: none; height: auto; min-height: 0; margin: 0; padding: 0;
   display: block; overflow: hidden;
 }
+/* "A NEW STORY AWAITS." — bottom right, only where the sheet has room */
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page::after {
+  content: 'A New Story Awaits.'; position: absolute; z-index: 0; right: calc(var(--sx-cr) + 2px); bottom: 10px; pointer-events: none;
+  font-family: var(--ink-cinzel); font-size: 9px; letter-spacing: 0.5em; text-transform: uppercase; color: var(--g-faint);
+}
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page::after { display: none; }
 
-/* ── Header: serif title | text tabs | currencies ──────────────── */
+/* ── Top: title left, currencies right ─────────────────────────────
+   The top bar is only a holder: its pieces sit on the sheet itself, so the
+   category tabs can drop into the left column. */
 html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-topbar {
-  position: absolute; z-index: 6; left: 0; right: 0; top: 0; height: var(--sx-head); box-sizing: border-box;
-  display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 18px;
-  padding: max(6px, var(--safe-t, 0px)) max(var(--sx-pad), var(--safe-r, 0px)) 0 var(--sx-pad);
-  background: linear-gradient(180deg, rgba(var(--sx-ink), 0.82), rgba(var(--sx-ink), 0.35) 70%, transparent);
-  pointer-events: none;
+  position: static; display: block; height: 0; margin: 0; padding: 0; background: none; box-shadow: none; border: 0;
 }
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-topbar > * { pointer-events: auto; }
 html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-topbar #btn-back-to-home { display: none; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-topbar .summon-titlebar {
+  position: absolute; z-index: 4; left: var(--sx-pad); top: max(0px, var(--safe-t, 0px)); height: var(--sx-head);
+  display: flex; align-items: center; margin: 0; padding: 0; max-width: calc(var(--sx-list) + var(--sx-gap) + 160px);
+}
 html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-title.jjk-title-plate {
-  min-height: 0; padding: 0; font-size: 28px; line-height: 1.1; text-shadow: 0 2px 10px #000;
+  min-height: 0; padding: 0; font-size: 24px; line-height: 1.1; text-shadow: 0 2px 10px #000; white-space: nowrap;
 }
-html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-title.jjk-title-plate { padding: 0; font-size: 19px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-title.jjk-title-plate { font-size: 16px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-title.jjk-title-plate::after { margin-top: 1px; font-size: 7px; }
 
-/* tabs: serif words on a hairline, the current one gold-washed with a gold underline */
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-topbar .summon-tabs {
-  justify-self: center; gap: 0; padding: 0; border-radius: 0;
-  background: none; -webkit-backdrop-filter: none; backdrop-filter: none;
-  box-shadow: inset 0 -1px 0 var(--g-line);
+/* currencies: square hairline boxes, right-aligned */
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-topbar .summon-currency-hud {
+  position: absolute; z-index: 4; right: var(--sx-pr); top: max(0px, var(--safe-t, 0px)); height: var(--sx-head);
+  display: flex; align-items: center; gap: 8px; margin: 0; padding: 0;
 }
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-tab.jjk-tab {
-  position: relative; min-width: 0; height: 36px; padding: 0 18px;
-  border-radius: 0; background: none; box-shadow: none;
-  font-family: var(--g-sans); font-weight: 500; font-size: 14px; letter-spacing: 0.08em; text-transform: none;
-  color: var(--g-dim);
-}
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-tab.jjk-tab:hover:not(.active) { background: rgba(226, 204, 150, 0.06); color: var(--g-text); }
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-tab.jjk-tab.active {
-  background: linear-gradient(0deg, rgba(201, 162, 78, 0.3), rgba(201, 162, 78, 0) 85%);
-  color: #fff6dc; box-shadow: inset 0 -2px 0 var(--g-accent);
-}
-html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-tab.jjk-tab { height: 28px; padding: 0 10px; font-size: 12px; letter-spacing: 0.04em; }
-
-/* currencies: square hairline chips */
 html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-currency-hud .currency-chip {
-  --cur-h: 32px; border-radius: 2px;
-  background: rgba(var(--sx-ink), 0.72); box-shadow: inset 0 0 0 1px var(--g-line);
-  font-family: var(--g-sans); font-weight: 500; font-size: 14px; letter-spacing: 0.04em;
+  --cur-h: 34px; height: var(--cur-h); min-width: 112px; padding: 0 14px 0 10px; gap: 10px; justify-content: flex-start; border-radius: 0;
+  background: rgba(var(--sx-ink), 0.74); box-shadow: inset 0 0 0 1px var(--sx-hair);
+  font-family: var(--g-sans); font-weight: 500; font-size: 14px; letter-spacing: 0.04em; color: var(--g-text);
 }
-html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-currency-hud .currency-chip { --cur-h: 26px; font-size: 12px; padding: 0 10px 0 6px; }
-html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-currency-hud { gap: 4px; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-currency-hud .currency-icon { width: 18px; height: 18px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-topbar .summon-currency-hud { gap: 5px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-currency-hud .currency-chip { --cur-h: 26px; min-width: 76px; font-size: 12px; padding: 0 9px 0 6px; gap: 6px; }
 html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-currency-hud .currency-icon { width: 15px; height: 15px; }
 
+/* ── Left column: categories (the mode tabs) ───────────────────────
+   The tab strip becomes the full-height left column: the open category
+   heads it, the list of that category fills the middle (the stage's own
+   rail, positioned below), the other categories sit at the foot. */
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-topbar .summon-tabs {
+  position: absolute; z-index: 3; left: var(--sx-pad); top: var(--sx-head); bottom: var(--sx-bot); width: var(--sx-list);
+  display: flex; flex-direction: column; gap: 4px; margin: 0; padding: 0;
+  border-radius: 0; background: none; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none;
+  pointer-events: none;
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-topbar .summon-tabs::after { content: ''; order: 1; flex: 1 1 auto; }          /* room for the list */
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-tab.jjk-tab {
+  order: 2; position: relative; flex: none; display: flex; align-items: center; gap: 12px;
+  width: 100%; min-width: 0; height: var(--sx-tab); padding: 0 14px 0 18px; box-sizing: border-box; pointer-events: auto;
+  border: 0; border-radius: 0; background: rgba(var(--sx-ink), 0.72); box-shadow: inset 0 0 0 1px var(--g-line);
+  font-family: var(--g-sans); font-weight: 500; font-size: 15px; letter-spacing: 0.04em; text-transform: none; text-align: left;
+  color: var(--g-dim); text-shadow: none;
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-tab.jjk-tab::before {                       /* the category glyph */
+  content: ''; flex: none; width: 16px; height: 16px; box-sizing: border-box;
+  background: currentColor; opacity: 0.9;
+  clip-path: polygon(50% 0, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-tab.jjk-tab[data-tab="jutsu"]::before {     /* a card: a hairline box with a centre rule */
+  width: 17px; height: 12px; clip-path: none; background: linear-gradient(currentColor, currentColor) center / 7px 1.5px no-repeat;
+  border: 1.5px solid currentColor;
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-tab.jjk-tab[data-tab="recipes"]::before {   /* a scroll seal: ring + dot */
+  width: 16px; height: 16px; clip-path: none; border-radius: 50%; border: 1.5px solid currentColor;
+  background: radial-gradient(circle, currentColor 0 2.5px, transparent 3px);
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-tab.jjk-tab::after { display: none; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-tab.jjk-tab:hover:not(.active) { background: rgba(36, 32, 26, 0.82); color: var(--g-text); }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-tab.jjk-tab.active {
+  order: 0; color: #fff6dc;
+  background: linear-gradient(90deg, rgba(201, 162, 78, 0.42), rgba(201, 162, 78, 0.1) 70%, rgba(var(--sx-ink), 0.6));
+  box-shadow: inset 3px 0 0 var(--g-accent), inset 0 1px 0 rgba(226, 204, 150, 0.4), inset 0 -1px 0 rgba(226, 204, 150, 0.4);
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-tab.jjk-tab.active::before { color: var(--g-accent-2); opacity: 1; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-topbar .summon-tabs { gap: 3px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-tab.jjk-tab { gap: 8px; padding: 0 8px 0 10px; font-size: 11.5px; letter-spacing: 0.02em; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-tab.jjk-tab::before { width: 12px; height: 12px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-tab.jjk-tab[data-tab="jutsu"]::before { width: 13px; height: 9px; background-size: 5px 1.2px; border-width: 1.2px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-tab.jjk-tab[data-tab="recipes"]::before { width: 12px; height: 12px; border-width: 1.2px; background: radial-gradient(circle, currentColor 0 2px, transparent 2.5px); }
 
-/* ══ Shinobi + Recipes: art behind, list left, info along the foot ══
-   Like the village: the art fills the sheet from the list edge, the title
-   block sits bottom-left over the art, the draw slips bottom-right. */
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .gacha-stage {
+/* ══ Shinobi + Recipes stage: the three columns ═════════════════════ */
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .gacha-stage,
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .jutsu-summon-panel {
   position: absolute; inset: 0; z-index: 1;
-  display: block; width: auto; max-width: none; height: auto; max-height: none; margin: 0; gap: 0;
+  display: block; width: auto; max-width: none; height: auto; max-height: none; margin: 0; gap: 0; padding: 0;
 }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .jutsu-summon-panel[style*="none"] { display: none; }
 
-/* hero art: full bleed from the list edge to the screen edge */
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .featured-stage {
-  position: absolute; inset: 0; height: auto; min-height: 0; z-index: 0;
-  border: 0; border-radius: 0; background: none; box-shadow: none; overflow: hidden;
+/* the quote, top of the right column, set vertically one glyph per line:
+   想いは / 今もここに (column 2 a step lower); THE WILL LIVES ON sits above
+   the details card (its ::after) */
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .gacha-stage::before,
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .gacha-stage::after,
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .jutsu-summon-panel::before,
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .jutsu-summon-panel::after {
+  content: '想\A い\A は'; white-space: pre; position: absolute; z-index: 2; pointer-events: none; text-align: center;
+  right: calc(var(--sx-pr) + 12px); top: calc(var(--sx-head) + 2px); width: 1.3em;
+  font-family: var(--ink-jp); font-weight: 400; font-size: 21px; line-height: 1.22;
+  color: rgba(241, 235, 220, 0.84); text-shadow: 0 2px 10px #000;
 }
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .featured-stage::before { display: none; }
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .featured-stage::after {      /* the reference's black→clear washes */
-  content: ''; position: absolute; inset: 0; z-index: 3; pointer-events: none; border: 0; border-radius: 0;
-  box-shadow: none;
-  background:
-    linear-gradient(90deg, rgba(var(--sx-ink), 0.96) 0, rgba(var(--sx-ink), 0.78) calc(var(--sx-list) - 6px), rgba(var(--sx-ink), 0) calc(var(--sx-list) + 90px)),
-    linear-gradient(0deg, rgba(var(--sx-ink), 0.94) 0, rgba(var(--sx-ink), 0.6) var(--sx-foot), rgba(var(--sx-ink), 0) calc(var(--sx-foot) + 90px)),
-    linear-gradient(270deg, rgba(var(--sx-ink), 0.55) 0, rgba(var(--sx-ink), 0) 22%);
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .gacha-stage::after,
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .jutsu-summon-panel::after { content: '今\A も\A こ\A こ\A に'; right: calc(var(--sx-pr) + 12px + 1.6em); top: calc(var(--sx-head) + 2px + 1.1em); }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .gacha-stage::before,
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .gacha-stage::after,
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .jutsu-summon-panel::before,
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .jutsu-summon-panel::after { font-size: 11.5px; line-height: 1.16; right: calc(var(--sx-pr) + 8px); top: var(--sx-head); }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .gacha-stage::after,
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .jutsu-summon-panel::after { right: calc(var(--sx-pr) + 8px + 1.6em); top: calc(var(--sx-head) + 1em); }
+/* caption: left of the quote, just above the card */
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .summon-info-buttons::after,
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-balance::after {
+  content: 'The Will\A Lives On'; white-space: pre; position: absolute; left: 2px; bottom: calc(100% + 10px); pointer-events: none;
+  font-family: var(--ink-cinzel); font-size: 8.5px; line-height: 1.9; letter-spacing: 0.42em; text-transform: uppercase; color: var(--g-faint);
 }
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .featured-glow { display: none; }
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .stage-view-banner {
-  left: var(--sx-list); right: 0; top: 0; bottom: auto; height: var(--sx-art-h); animation: none;
-}
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage #stage-banner-img {
-  position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; max-height: none;
-  object-fit: cover; object-position: 0 50%;
-  padding: 0; border-radius: 0; background: none; box-shadow: none; filter: none;
-  -webkit-mask-image: linear-gradient(0deg, transparent 0, #000 26%);
-  mask-image: linear-gradient(0deg, transparent 0, #000 26%);
-  animation: sxArtIn 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) both;
-}
-@keyframes sxArtIn { from { opacity: 0; transform: translateX(14px); } to { opacity: 1; transform: none; } }
-@media (prefers-reduced-motion: reduce) { html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage #stage-banner-img { animation: none; } }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .summon-info-buttons::after,
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-balance::after { font-size: 6px; line-height: 1.8; letter-spacing: 0.3em; bottom: calc(100% + 6px); left: 1px; }
 
-/* character views: art + stats over the middle of the sheet */
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .featured-stage[data-view="char6"] .stage-view-char,
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .featured-stage[data-view="char5"] .stage-view-char {
-  left: var(--sx-list); right: 0; top: calc(var(--sx-head) + 80px); bottom: calc(var(--sx-foot) + 70px); padding: 0 var(--sx-pad); gap: 16px; z-index: 4;
-}
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage #featured-art { height: 100%; max-width: 58%; }
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .char-stats {
-  border-radius: 2px; background: rgba(var(--sx-ink), 0.8); box-shadow: inset 0 0 0 1px var(--g-line);
-}
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .char-stats .cs-head { font-family: var(--ink-cinzel); font-size: 11px; letter-spacing: 0.26em; color: var(--g-accent-2); }
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .stage-tier-badge,
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .featured-stage[data-view="char5"] .stage-tier-badge {
-  top: calc(var(--sx-head) + 2px); left: calc(var(--sx-list) + var(--sx-pad)); transform: none;
-  z-index: 5; border-radius: 0; padding: 0 0 3px; background: none; box-shadow: inset 0 -1px 0 var(--g-line-2);
-  font-family: var(--ink-cinzel); font-size: 10px; letter-spacing: 0.3em; color: var(--g-accent-2);
-}
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .featured-caption {
-  left: calc(var(--sx-list) + var(--sx-pad)); right: auto; top: calc(var(--sx-head) + 24px); bottom: auto; max-width: 40%;
-  padding: 0; z-index: 5; background: none; flex-direction: column; align-items: flex-start; gap: 2px;
-}
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .featured-stage:not([data-view="banner"]) .featured-caption { padding-right: 0; }
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .featured-name { font-family: var(--g-sans); font-weight: 600; font-size: 24px; letter-spacing: 0.04em; text-transform: none; }
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .featured-title { font-family: var(--g-sans); font-style: italic; font-size: 12px; }
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .featured-rank { order: 2; font-family: var(--ink-cinzel); font-size: 11px; color: var(--g-accent-2); text-shadow: none; }
-html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .featured-name { font-size: 15px; }
-html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .featured-caption { top: calc(var(--sx-head) + 16px); }
-html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .char-stats { padding: 6px 8px; width: min(150px, 40%); }
-html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .char-stats .cs-row { font-size: 10.5px; padding: 2px 1px; }
-html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .char-stats .cs-head { font-size: 9px; padding-bottom: 4px; margin-bottom: 4px; }
-html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .stage-tier-badge,
-html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .featured-stage[data-view="char5"] .stage-tier-badge { font-size: 8px; }
-html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .featured-stage[data-view="char6"] .stage-view-char,
-html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .featured-stage[data-view="char5"] .stage-view-char { top: var(--sx-head); bottom: var(--sx-foot); padding: 0 8px 0 40%; }
-
-/* view controls: ‹ ━ ━ ━ › bottom-left of the art */
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .stage-arrow {
-  top: auto; bottom: 16px; transform: none; z-index: 6; width: 30px; height: 30px; border-radius: 0;
-  background: rgba(var(--sx-ink), 0.6); -webkit-backdrop-filter: none; backdrop-filter: none;
-  box-shadow: inset 0 0 0 1px var(--g-line-2);
-}
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .stage-arrow::before,
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .stage-arrow.left::before,
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .stage-arrow:hover::before { width: 7px; height: 7px; border-width: 1.5px 1.5px 0 0; border-color: var(--g-text); }
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .stage-arrow:hover { background: var(--g-sel); }
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .stage-arrow:hover::before { border-color: var(--g-on-sel); }
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .stage-arrow.left { left: calc(var(--sx-list) + var(--sx-pad)); right: auto; }
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .stage-arrow.right { left: calc(var(--sx-list) + var(--sx-pad) + 30px + 84px); right: auto; }
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .stage-dots,
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .featured-stage:not([data-view="banner"]) .stage-dots {
-  left: calc(var(--sx-list) + var(--sx-pad) + 30px + 12px); right: auto; bottom: 30px; transform: none; z-index: 6; gap: 6px;
-}
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .stage-dot { width: 14px; height: 2px; border-radius: 0; background: rgba(241, 235, 220, 0.3); }
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .stage-dot.active { width: 22px; background: var(--g-accent); }
-html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .stage-arrow { width: 24px; height: 24px; bottom: 9px; }
-html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .stage-arrow.right { left: calc(var(--sx-list) + var(--sx-pad) + 24px + 76px); }
-html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .stage-dots,
-html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .featured-stage:not([data-view="banner"]) .stage-dots { left: calc(var(--sx-list) + var(--sx-pad) + 24px + 10px); bottom: 20px; }
-html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage #stage-banner-img { max-width: none; }
-
-/* ── Banner list: slim serif rows ─────────────────────────────── */
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .banner-rail-col {
-  position: absolute; z-index: 4; left: 0; top: var(--sx-head); bottom: 0; width: var(--sx-list); height: auto; min-height: 0;
-  box-sizing: border-box; padding: 6px 0 14px; gap: 0;
+/* ── Left column list: banner cards with art bleeding in from the right ── */
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .banner-rail-col,
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-rail {
+  position: absolute; z-index: 2; left: var(--sx-pad); width: var(--sx-list);
+  top: calc(var(--sx-head) + var(--sx-tab) + 6px); bottom: calc(var(--sx-bot) + 2 * var(--sx-tab) + 2 * 4px + 8px);
+  height: auto; min-height: 0; box-sizing: border-box; padding: 0 0 0 18px; margin: 0; gap: 0;
+  display: flex; flex-direction: column; grid-column: auto;
   border: 0; border-radius: 0; background: none; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none;
-  counter-reset: sxb;
 }
 html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .banner-rail-col::before,
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .banner-rail-col::after { display: none; }
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .rail-heading {
-  display: block; margin: 0 0 6px; padding: 0 var(--sx-pad) 8px;
-  border: 0; border-image: none; box-shadow: inset 0 -1px 0 var(--g-line);
-  font-family: var(--ink-jp); font-weight: 600; font-size: 15px; letter-spacing: 0.2em; text-transform: none; text-align: left;
-  color: var(--g-text); text-shadow: none;
-}
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .rail-heading::after {
-  content: 'Banners'; display: block; flex: none; height: auto; margin-top: 2px; background: none;
-  font-family: var(--ink-cinzel); font-weight: 400; font-size: 8.5px; letter-spacing: 0.34em; text-transform: uppercase; color: var(--g-dim);
-}
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage:not(.rc-stage) .rail-heading { font-size: 0; }
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage:not(.rc-stage) .rail-heading::before { content: '幟'; font-size: 15px; }
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .rc-stage .rail-heading { font-size: 0; }
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .rc-stage .rail-heading::before { content: '巻物'; font-size: 15px; }
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .rc-stage .rail-heading::after { content: 'Scrolls'; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .banner-rail-col::after,
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-rail::before,
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-rail::after { display: none; }
+/* a thin gold spine down the open category's list */
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .banner-rail-col { box-shadow: inset 1px 0 0 rgba(226, 204, 150, 0.14); }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-rail { box-shadow: inset 1px 0 0 rgba(226, 204, 150, 0.14); }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .rail-heading { display: none; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .banner-rail-col,
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-rail { padding-left: 8px; top: calc(var(--sx-head) + var(--sx-tab) + 4px); bottom: calc(var(--sx-bot) + 2 * var(--sx-tab) + 2 * 3px + 4px); }
 
 html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage #banner-preview-scroll,
 html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .rc-stage .rc-rail {
-  gap: 0; padding: 0 0 24px;
-  -webkit-mask-image: linear-gradient(0deg, transparent 0, #000 36px); mask-image: linear-gradient(0deg, transparent 0, #000 36px);
+  display: flex !important; flex-direction: column; flex: 1 1 auto; gap: 6px; min-height: 0; padding: 0 0 18px; margin: 0;
+  overflow-x: hidden; overflow-y: auto; scrollbar-width: none;
+  -webkit-mask-image: linear-gradient(0deg, transparent 0, #000 22px); mask-image: linear-gradient(0deg, transparent 0, #000 22px);
 }
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage #banner-preview-scroll .preview-item {
-  counter-increment: sxb;
-  position: relative; display: flex; align-items: center; gap: 10px;
-  width: 100%; height: 38px; aspect-ratio: auto; flex: 0 0 auto; box-sizing: border-box;
-  padding: 0 10px 0 var(--sx-pad); margin: 0;
-  border: 0; border-radius: 0; outline: 0; opacity: 1; overflow: hidden;
-  background: none; box-shadow: none; transform: none;
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage #banner-preview-scroll::-webkit-scrollbar,
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .rc-stage .rc-rail::-webkit-scrollbar { display: none; width: 0; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage #banner-preview-scroll .preview-item,
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .rc-stage .rc-rail-item {
+  position: relative; display: flex; align-items: center; flex: 0 0 auto;
+  width: 100%; height: var(--sx-card); aspect-ratio: auto; box-sizing: border-box;
+  padding: 0 0 0 14px; margin: 0; opacity: 1; overflow: hidden; cursor: pointer;
+  border: 0; border-radius: 0; outline: 0; transform: none; transition: background 0.15s, box-shadow 0.15s;
+  background: #121110; box-shadow: inset 0 0 0 1px var(--sx-hair);
 }
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage #banner-preview-scroll .preview-item::before {   /* 01 02 03 … */
-  content: counter(sxb, decimal-leading-zero); position: static; flex: none; width: auto; height: auto;
-  border: 0; border-radius: 0; background: none; transform: none;
-  font-family: var(--ink-cinzel); font-size: 9px; letter-spacing: 0.1em; color: var(--g-faint);
+/* the key art: right ~62%, fading to the dark toward the name */
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage #banner-preview-scroll .preview-item img {
+  display: block; position: absolute; right: 0; top: 0; width: 64%; height: 100%; border-radius: 0;
+  object-fit: cover; object-position: 84% 16%; filter: saturate(0.9) brightness(0.8);
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, rgba(0, 0, 0, 0.55) 34%, #000 70%);
+  mask-image: linear-gradient(90deg, transparent 0, rgba(0, 0, 0, 0.55) 34%, #000 70%);
 }
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage #banner-preview-scroll .preview-item::after {    /* the banner name, from title="" */
-  content: attr(title); display: block; position: static; flex: 1; min-width: 0; width: auto; height: auto;
-  border: 0; background: none; transform: none;
-  font-family: var(--g-sans); font-size: 12.5px; line-height: 1.25; letter-spacing: 0.02em; color: var(--g-dim);
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-}
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage #banner-preview-scroll .preview-item img { display: none; }
 html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage #banner-preview-scroll .preview-item .preview-item-label { display: none; }
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage #banner-preview-scroll .preview-item:hover { transform: none; background: rgba(226, 204, 150, 0.06); }
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage #banner-preview-scroll .preview-item:hover::after { color: var(--g-text); }
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage #banner-preview-scroll .preview-item.active {
-  border: 0; outline: 0;
-  background: linear-gradient(90deg, rgba(201, 162, 78, 0.38), rgba(201, 162, 78, 0.06) 80%, transparent);
-  box-shadow: inset 2px 0 0 var(--g-accent), inset 0 1px 0 rgba(226, 204, 150, 0.3), inset 0 -1px 0 rgba(226, 204, 150, 0.3);
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage #banner-preview-scroll .preview-item::before { display: none; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage #banner-preview-scroll .preview-item::after {            /* the banner name, from title="" */
+  content: attr(title); position: relative; z-index: 1; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2;
+  width: 58%; height: auto; overflow: hidden; border: 0; background: none; transform: none;
+  font-family: var(--g-sans); font-size: 13px; line-height: 1.25; letter-spacing: 0.01em; color: var(--g-dim);
+  text-shadow: 0 1px 2px #000, 0 0 8px #000;
 }
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage #banner-preview-scroll .preview-item.active::before { color: var(--g-accent-2); }
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage #banner-preview-scroll .preview-item.active::after { color: #fff6dc; font-weight: 600; }
-html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage #banner-preview-scroll .preview-item { height: 30px; gap: 6px; padding-right: 6px; }
-html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage #banner-preview-scroll .preview-item::after { font-size: 10.5px; }
-html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage #banner-preview-scroll .preview-item::before { font-size: 7.5px; }
-html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .rail-heading { padding-bottom: 5px; margin-bottom: 2px; }
-html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage:not(.rc-stage) .rail-heading::before,
-html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .rc-stage .rail-heading::before { font-size: 12px; }
-html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .rail-heading::after { font-size: 6.5px; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage #banner-preview-scroll .preview-item:hover { background: #1a1815; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage #banner-preview-scroll .preview-item:hover::after,
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage #banner-preview-scroll .preview-item:hover img { color: var(--g-text); filter: none; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage #banner-preview-scroll .preview-item.active,
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .rc-stage .rc-rail-item.active {
+  border: 0; outline: 0; background: #1a1712;
+  box-shadow: inset 0 0 0 1px var(--sx-hair-hi), 0 0 0 1px rgba(0, 0, 0, 0.6);
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage #banner-preview-scroll .preview-item.active img { filter: none; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage #banner-preview-scroll .preview-item.active::after { color: #fff6dc; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage #banner-preview-scroll .preview-item.active::before,
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .rc-stage .rc-rail-item.active::before {                                /* gold tick on the spine */
+  content: ''; display: block; position: absolute; z-index: 2; left: 0; top: 50%; width: 5px; height: 5px; margin-top: -2.5px;
+  border: 0; border-radius: 0; background: var(--g-accent); transform: translateX(-50%) rotate(45deg);
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage #banner-preview-scroll .preview-item.active { overflow: visible; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage #banner-preview-scroll,
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .rc-stage .rc-rail { gap: 4px; padding-bottom: 12px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage #banner-preview-scroll .preview-item,
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .rc-stage .rc-rail-item { padding-left: 7px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage #banner-preview-scroll .preview-item::after { font-size: 9.5px; line-height: 1.2; width: 66%; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage #banner-preview-scroll .preview-item img { width: 60%; }
 
+/* recipes list rows: the composed mini banner on the right, the name left */
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .rc-stage .rc-rail-item .rcb {
+  position: absolute; right: 0; top: 0; width: 64%; height: 100%; border-radius: 0; overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 60%); mask-image: linear-gradient(90deg, transparent 0, #000 60%);
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .rc-stage .rc-rail-item .rcb-mark { display: none; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .rc-hero .rcb-hero-name { display: none; }   /* the info box names the banner */
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .rc-stage .rc-rail-label {
+  position: relative; z-index: 1; width: 62%; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden;
+  font-family: var(--g-sans); font-weight: 500; font-size: 13px; line-height: 1.25; letter-spacing: 0.01em; text-transform: none;
+  color: var(--g-dim); text-shadow: 0 1px 2px #000, 0 0 8px #000; white-space: normal; text-align: left;
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .rc-stage .rc-rail-item:hover { background: #1a1815; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .rc-stage .rc-rail-item.active { overflow: visible; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .rc-stage .rc-rail-item.active::after { display: none; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .rc-stage .rc-rail-item.active .rc-rail-label { color: #fff6dc; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .rc-stage .rc-rail-label { font-size: 9.5px; line-height: 1.2; width: 66%; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .rc-stage .rc-rail-foot {
+  display: grid; gap: 3px; flex: none; margin: 6px 0 0; padding: 8px 0 0 2px; border-top: 1px solid var(--g-line);
+  font-family: var(--ink-cinzel); font-size: 8.5px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--g-dim);
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .rc-stage .rc-rail-foot > div { display: flex; justify-content: space-between; align-items: baseline; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .rc-stage .rc-rail-foot b { font-family: var(--g-sans); font-size: 13px; letter-spacing: 0.02em; color: var(--g-text); }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .rc-stage .rc-rail-foot { margin-top: 3px; padding-top: 4px; font-size: 6.5px; gap: 1px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .rc-stage .rc-rail-foot b { font-size: 10px; }
 
+/* ── Centre: the banner in a gold hairline frame ─────────────────── */
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .featured-stage,
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-stage {
+  position: absolute; z-index: 1; left: var(--sx-cl); right: var(--sx-cr); top: var(--sx-head); bottom: var(--sx-bot);
+  height: var(--sx-fh); min-height: 0; margin: auto 0; width: auto;
+  border: 0; border-radius: 0; background: #0d0c0b; overflow: visible;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.7), 0 24px 60px rgba(0, 0, 0, 0.6);
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .featured-stage::before,
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-stage::before {   /* outer hairline, a few px off the art */
+  content: ''; display: block; position: absolute; inset: -6px; z-index: 0; pointer-events: none;
+  border: 1px solid rgba(226, 204, 150, 0.16); border-radius: 0; background: none; filter: none; opacity: 1; animation: none;
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .featured-stage::after,
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-stage::after {    /* the gold hairline frame over the art */
+  content: ''; position: absolute; inset: 0; z-index: 4; pointer-events: none;
+  border: 1px solid var(--sx-hair-hi); border-radius: 0; background: none;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.35), inset 0 -60px 60px -40px rgba(0, 0, 0, 0.55);
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .featured-glow,
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-stage-glow { display: none; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .stage-view { overflow: hidden; inset: 0; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .stage-view-banner { animation: none; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage #stage-banner-img {
+  position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; max-height: none;
+  object-fit: cover; object-position: 0% 50%; transform: none;
+  padding: 0; border-radius: 0; background: none; box-shadow: none; filter: none;
+  animation: sxArtIn 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+@keyframes sxArtIn { from { opacity: 0; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage #stage-banner-img { animation: none; } }
 
-/* ── Info: the draw column dissolves into the foot of the sheet ── */
+/* chevrons: thin, on the frame's left / right edges */
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .stage-arrow,
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .stage-arrow:hover {
+  position: absolute; top: 50%; bottom: auto; z-index: 6; width: 30px; height: 64px; margin: 0; transform: translateY(-50%);
+  border: 0; border-radius: 0; background: none; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none;
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .stage-arrow.left { left: 2px; right: auto; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .stage-arrow.right { right: 2px; left: auto; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .stage-arrow::before,
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .stage-arrow.left::before,
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .stage-arrow:hover::before,
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .stage-arrow.left:hover::before {
+  width: 14px; height: 14px; border: solid rgba(246, 238, 216, 0.9); border-width: 1.2px 1.2px 0 0; background: none;
+  filter: drop-shadow(0 0 3px rgba(0, 0, 0, 0.9));
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .stage-arrow:hover::before,
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .stage-arrow.left:hover::before { border-color: var(--g-accent-2); }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .stage-arrow,
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .stage-arrow:hover { width: 24px; height: 48px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .stage-arrow::before,
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .stage-arrow.left::before,
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .stage-arrow:hover::before,
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .stage-arrow.left:hover::before { width: 10px; height: 10px; }
+
+/* carousel dots: small diamonds, bottom-left inside the frame */
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .stage-dots,
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .featured-stage:not([data-view="banner"]) .stage-dots {
+  left: 16px; right: auto; bottom: 14px; top: auto; transform: none; z-index: 6; gap: 10px; align-items: center;
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .stage-dot,
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .stage-dot.active {
+  width: 6px; height: 6px; border-radius: 0; transform: rotate(45deg); cursor: pointer;
+  background: rgba(241, 235, 220, 0.42); box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.5);
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .stage-dot.active { background: var(--g-accent-2); }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .stage-dots,
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .featured-stage:not([data-view="banner"]) .stage-dots { left: 10px; bottom: 9px; gap: 8px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .stage-dot { width: 5px; height: 5px; }
+
+/* character views: art left, stats right, caption top-left — all inside the frame */
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .featured-stage[data-view="char6"] .stage-view-char,
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .featured-stage[data-view="char5"] .stage-view-char {
+  z-index: 3; padding: 8% 40px 8% 40px; gap: 4%; justify-content: center;
+  background: radial-gradient(ellipse 60% 70% at 38% 55%, rgba(201, 162, 78, 0.14), transparent 70%), #0d0c0b;
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage #featured-art { height: 100%; max-width: 54%; filter: drop-shadow(0 10px 24px rgba(0, 0, 0, 0.7)); }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .char-stats {
+  width: min(220px, 38%); border: 0; border-radius: 0; background: rgba(var(--sx-ink), 0.82); box-shadow: inset 0 0 0 1px var(--g-line-2);
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .char-stats .cs-head { font-family: var(--ink-cinzel); font-size: 11px; letter-spacing: 0.26em; color: var(--g-accent-2); border-bottom-color: var(--g-line); }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .stage-tier-badge,
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .featured-stage[data-view="char5"] .stage-tier-badge {
+  top: 12px; left: 16px; transform: none; z-index: 5; border-radius: 0; padding: 0 0 3px; background: none; box-shadow: inset 0 -1px 0 var(--g-line-2);
+  font-family: var(--ink-cinzel); font-size: 10px; letter-spacing: 0.3em; color: var(--g-accent-2);
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .featured-caption {
+  left: 16px; right: auto; top: 34px; bottom: auto; max-width: 50%; padding: 0; z-index: 5; background: none;
+  flex-direction: column; align-items: flex-start; gap: 2px;
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .featured-stage:not([data-view="banner"]) .featured-caption { padding-right: 0; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .featured-name { font-family: var(--g-sans); font-weight: 600; font-size: 20px; letter-spacing: 0.04em; text-transform: none; color: #fff6dc; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .featured-title { font-family: var(--g-sans); font-style: italic; font-size: 12px; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .featured-rank { order: 2; font-family: var(--ink-cinzel); font-size: 11px; color: var(--g-accent-2); text-shadow: none; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .featured-stage[data-view="char6"] .stage-view-char,
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .featured-stage[data-view="char5"] .stage-view-char { padding: 30px 26px 12px; gap: 8px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .featured-name { font-size: 13px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .featured-title { font-size: 9.5px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .featured-caption { left: 10px; top: 22px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .stage-tier-badge,
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .featured-stage[data-view="char5"] .stage-tier-badge { top: 7px; left: 10px; font-size: 7.5px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .char-stats { padding: 5px 7px; width: min(140px, 42%); }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .char-stats .cs-row { font-size: 9.5px; padding: 1px 1px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .char-stats .cs-head { font-size: 8px; padding-bottom: 3px; margin-bottom: 3px; }
+
+/* ── Info box: bottom-right inside the banner — title | rate-up unit ── */
 html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .draw-col,
 html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-draw-col { display: contents; }
 html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .draw-col::before,
 html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .draw-col::after,
 html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-draw-col::before,
 html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-draw-col::after { display: none; }
-
-/* title block, bottom-left over the art: 限定口寄せ / FEATURED SUMMON / name */
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) body.page-summon {
+  --sx-ib-h: 72px; --sx-ib-w: min(380px, calc(var(--sx-cw) - 120px)); --sx-ib-pk: 84px;
+  --sx-ib-r: calc(var(--sx-cr) + 14px); --sx-ib-b: calc(var(--sx-bot) + var(--sx-fy) + 14px);
+}
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) body.page-summon { --sx-ib-h: 54px; --sx-ib-w: min(232px, calc(var(--sx-cw) - 70px)); --sx-ib-pk: 52px; --sx-ib-r: calc(var(--sx-cr) + 8px); --sx-ib-b: calc(var(--sx-bot) + var(--sx-fy) + 8px); }
 html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .draw-col .banner-info-section,
 html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-banner {
-  position: absolute; z-index: 5; left: calc(var(--sx-list) + var(--sx-pad)); bottom: calc(16px + 30px + 14px);
-  width: min(380px, calc(100% - var(--sx-list) - var(--sx-slips) - 3 * var(--sx-pad)));
-  display: flex; flex-direction: column; align-items: flex-start; text-align: left; gap: 4px; padding: 0; margin: 0;
+  position: absolute; z-index: 5; right: var(--sx-ib-r); bottom: var(--sx-ib-b);
+  width: var(--sx-ib-w); height: var(--sx-ib-h); box-sizing: border-box; margin: 0;
+  padding: 10px calc(var(--sx-ib-pk) + 14px) 10px 16px;
+  display: flex; flex-direction: column; justify-content: center; align-items: flex-start; gap: 3px; text-align: left;
+  background: linear-gradient(90deg, rgba(var(--sx-ink), 0.78), rgba(var(--sx-ink), 0.88));
+  box-shadow: inset 0 0 0 1px var(--sx-hair); -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px);
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .draw-col .banner-info-section::after,
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-banner::after {           /* the divider before the mini column */
+  content: ''; position: absolute; right: var(--sx-ib-pk); top: 12px; bottom: 12px; width: 1px; background: var(--g-line-2);
 }
 html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .draw-col .banner-info-section::before,
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-banner::before {
-  content: '限定口寄せ'; order: -2; font-family: var(--ink-jp); font-weight: 600; font-size: 22px; letter-spacing: 0.26em; line-height: 1.2;
-  color: var(--g-text); text-shadow: 0 2px 10px #000;
-}
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .rc-stage .draw-col .banner-info-section::before { content: '秘伝の巻物'; }
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-banner::before { content: '忍術巻物'; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-banner::before { display: none; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .draw-col:has(.pickup[hidden]) .banner-info-section,
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .rc-stage .draw-col .banner-info-section { padding-right: 16px; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .draw-col:has(.pickup[hidden]) .banner-info-section::after,
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .rc-stage .draw-col .banner-info-section::after { display: none; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .featured-stage:not([data-view="banner"]) ~ .draw-col .banner-info-section,
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .featured-stage:not([data-view="banner"]) ~ .draw-col .pickup,
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage:not(.rc-stage) .featured-stage:not([data-view="banner"]) ~ .draw-col .pickup:not([hidden]),
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage:not(.rc-stage) .featured-stage:not([data-view="banner"]) ~ .draw-col .pickup:not([hidden]) { display: none; }
 html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .draw-col .banner-kicker,
 html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-banner-kicker {
-  display: flex; order: -1; align-items: center; gap: 10px; margin: 0 0 6px; padding: 0; border-radius: 0; background: none;
-  font-family: var(--ink-cinzel); font-weight: 400; font-size: 9px; letter-spacing: 0.34em; text-transform: uppercase; color: var(--g-dim);
+  display: block; margin: 0; padding: 0; border-radius: 0; background: none; box-shadow: none;
+  font-family: var(--ink-cinzel); font-weight: 400; font-size: 8.5px; letter-spacing: 0.34em; text-transform: uppercase; color: var(--g-accent-2);
 }
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .draw-col .banner-kicker::after,
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-banner-kicker::after { content: ''; width: 60px; height: 1px; background: var(--g-line-2); }
 html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .draw-col #banner-name,
 html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .rc-name,
 html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-banner-title {
-  margin: 0; font-family: var(--g-sans); font-weight: 600; font-size: 20px; line-height: 1.25; letter-spacing: 0.04em; text-transform: none;
-  color: #fff6dc; text-shadow: 0 2px 12px #000;
+  margin: 0; max-width: 100%; font-family: var(--g-sans); font-weight: 500; font-size: 15px; line-height: 1.3; letter-spacing: 0.02em; text-transform: none;
+  color: #fff6dc; text-shadow: none; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden;
 }
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .draw-col #banner-name .help-tip { width: 18px; height: 18px; border-radius: 0; font-size: 11px; vertical-align: 2px; }
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .draw-col #banner-timer { font-family: var(--g-sans); font-style: italic; font-size: 12px; color: var(--g-red); }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .draw-col #banner-name .help-tip {
+  width: 16px; height: 16px; margin-left: 6px; border-radius: 0; font-size: 10px; line-height: 14px; vertical-align: 1px;
+  background: none; box-shadow: inset 0 0 0 1px var(--g-line-2); color: var(--g-accent-2);
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .draw-col #banner-timer { font-family: var(--g-sans); font-style: italic; font-size: 11px; color: var(--g-red); }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .draw-col #banner-timer:empty { display: none; }
 html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .rc-desc,
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .draw-col #banner-description,
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-banner-sub { font-family: var(--g-sans); font-size: 12px; line-height: 1.55; color: var(--g-dim); padding: 0; text-shadow: 0 1px 6px #000; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-banner-sub {
+  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden;
+  padding: 0; font-family: var(--g-sans); font-size: 11px; line-height: 1.4; color: var(--g-dim); text-shadow: none;
+}
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .draw-col .banner-info-section,
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-banner { padding: 5px calc(var(--sx-ib-pk) + 8px) 5px 9px; gap: 1px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .draw-col:has(.pickup[hidden]) .banner-info-section,
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .rc-stage .draw-col .banner-info-section { padding-right: 9px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .draw-col .banner-info-section::after,
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-banner::after { top: 7px; bottom: 7px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .draw-col .banner-kicker,
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-banner-kicker { font-size: 6px; letter-spacing: 0.26em; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .draw-col #banner-name,
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .rc-name,
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-banner-title { font-size: 10.5px; line-height: 1.25; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .draw-col #banner-name .help-tip { width: 12px; height: 12px; font-size: 8px; line-height: 11px; margin-left: 3px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .draw-col #banner-timer { font-size: 8.5px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .rc-desc,
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-banner-sub { display: none; }
 
-/* rate-up: a slim card, top-right under the currencies */
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .pickup {
-  position: absolute; z-index: 5; right: max(var(--sx-pad), var(--safe-r, 0px)); top: calc(var(--sx-head) + 4px); width: min(260px, 30%);
-  margin: 0;
+/* the mini column: "Rate Up" + the lead unit's portrait tile */
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage:not(.rc-stage) .pickup:not([hidden]) {
+  position: absolute; z-index: 6; right: var(--sx-ib-r); bottom: var(--sx-ib-b); width: var(--sx-ib-pk); height: var(--sx-ib-h);
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; margin: 0; padding: 0;
 }
 html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .pickup-head {
-  font-family: var(--ink-cinzel); font-weight: 400; font-size: 8.5px; letter-spacing: 0.34em; color: var(--g-dim); justify-content: flex-end;
+  display: block; margin: 0; padding: 0; font-family: var(--ink-cinzel); font-weight: 400; font-size: 8px; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--g-accent-2); text-align: center;
 }
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .pickup-unit {
-  border-radius: 0; background: linear-gradient(270deg, rgba(var(--sx-ink), 0.85), rgba(var(--sx-ink), 0.55));
-  box-shadow: inset 0 0 0 1px var(--g-line-2);
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .pickup-head span { display: inline; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .pickup-head::before,
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .pickup-head::after { display: none; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .pickup-list { display: block; margin: 0; padding: 0; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .pickup-unit,
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage button.pickup-unit:hover {
+  display: block; width: auto; margin: 0; padding: 0; border: 0; border-radius: 0; clip-path: none; background: none; box-shadow: none; filter: none;
 }
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage button.pickup-unit:hover { background: rgba(36, 32, 26, 0.9); }
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .pickup-portrait { border-radius: 0; box-shadow: 0 0 0 1px var(--g-line-2); }
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .pickup-name { font-family: var(--g-sans); font-weight: 600; font-size: 14px; letter-spacing: 0.02em; }
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .pickup-ver { font-style: italic; }
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .pickup-stars { font-family: var(--ink-cinzel); color: var(--g-accent-2); }
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .rc-seal-sm { border-radius: 0; }
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .featured-stage:not([data-view="banner"]) ~ .draw-col .pickup { display: none; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .pickup-unit:nth-child(n+2),
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .pickup-text { display: none; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .pickup-portrait {
+  display: block; width: 40px; height: 40px; border-radius: 0; background: #0b0b0c;
+  box-shadow: 0 0 0 1px var(--g-line-2), 0 0 0 3px rgba(var(--sx-ink), 0.9), 0 0 0 4px rgba(226, 204, 150, 0.16);
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage button.pickup-unit:hover .pickup-portrait { box-shadow: 0 0 0 1px var(--sx-hair-hi), 0 0 0 3px rgba(var(--sx-ink), 0.9), 0 0 0 4px rgba(226, 204, 150, 0.3); }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .pickup-portrait img { border-radius: 0; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .pickup-head { font-size: 5.5px; letter-spacing: 0.14em; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage:not(.rc-stage) .pickup:not([hidden]) { gap: 3px; display: flex; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .pickup-portrait { width: 30px; height: 30px; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .rc-stage .pickup { display: none; }
 
-/* step / pity line: above the slips */
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .step-progress {
-  position: absolute; z-index: 5; right: max(var(--sx-pad), var(--safe-r, 0px)); bottom: calc(var(--sx-slip-b) + var(--sx-slip-h) + 8px); width: var(--sx-slips);
-  font-family: var(--g-sans); font-size: 12px;
-}
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .step-bar { height: 1px; border-radius: 0; background: var(--g-line-2); }
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .step-bar-fill { height: 3px; margin-top: -1px; border-radius: 0; }
-
-/* ── ×1 / ×10: paper slips, side by side, the cost above each ──────
-   ×10 = cream paper (the page's one main action), ×1 = a charcoal slip
-   with a cream hairline; both carry a short rule and an italic label,
-   like the village's "Enter ——" slip. */
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .summon-buttons {
-  position: absolute; z-index: 5; right: max(var(--sx-pad), var(--safe-r, 0px)); bottom: var(--sx-slip-b); width: var(--sx-slips);
-  flex-direction: row; align-items: flex-end; gap: 10px; margin: 0; padding: 0;
-}
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) body .summon-page .tkt {
-  --cost-h: 20px; --pill-h: 50px;
-  flex: 1 1 0; width: auto; height: calc(var(--cost-h) + var(--pill-h)); min-width: 0;
-}
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .tkt-single { --pill-bg: rgba(var(--sx-ink), 0.8); --pill-fg: var(--g-text); --rule: rgba(241, 235, 220, 0.45); }
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .tkt-multi { --pill-bg: linear-gradient(180deg, #f6eed8, #e3d4ad); --pill-fg: #17130b; --rule: rgba(23, 19, 11, 0.6); flex-grow: 1.12; }
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .tkt .tkt-body {
-  border-radius: 0; background: var(--pill-bg);
-  clip-path: polygon(0 0, 100% 0, 100% 100%, 9px 100%, 0 calc(100% - 9px));
-  box-shadow: none;
-}
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .tkt-single .tkt-body { box-shadow: inset 0 0 0 1px var(--g-line-2); }
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .tkt-multi .tkt-body { box-shadow: inset 0 0 0 1px rgba(120, 96, 40, 0.5), 0 10px 26px rgba(0, 0, 0, 0.5); }
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .tkt .tkt-body::after {        /* the thin rule between count and label */
-  content: ''; position: absolute; left: 62px; right: 96px; top: 50%; height: 1px; background: var(--rule);
-}
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .tkt-single .tkt-body::after { left: 50px; }
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .tkt .tkt-stub { padding-left: 14px; }
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) body .summon-page .tkt .tkt-count {
-  font-family: 'Cinzel', serif; font-style: italic; font-weight: 700; font-size: 24px !important; letter-spacing: 0; color: var(--pill-fg);
-}
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) body .summon-page .tkt .tkt-count i { font-style: italic; font-size: 0.6em; vertical-align: 0.14em; opacity: 0.7; }
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) body.page-summon .summon-page .tkt .tkt-label {
-  right: 26px !important; font-family: var(--g-sans); font-style: italic; font-weight: 500;
-  font-size: 15px !important; letter-spacing: 0.06em !important; text-transform: none; color: var(--pill-fg);
-}
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .tkt .tkt-main::after {          /* › after the label */
-  content: ''; position: absolute; right: 13px; top: calc(var(--cost-h) + var(--pill-h) / 2 - 3px);
-  width: 5px; height: 5px; border: solid var(--pill-fg); border-width: 1.2px 1.2px 0 0; transform: rotate(45deg); opacity: 0.75;
-}
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .tkt .tkt-cost {
-  right: 2px; font-family: var(--g-sans); font-weight: 500; font-size: 12.5px; letter-spacing: 0.04em; color: var(--g-text); text-shadow: 0 1px 6px #000;
-}
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .tkt .tkt-cost::before {
-  content: '消費'; margin-right: 4px; font-family: var(--ink-jp); font-size: 9.5px; letter-spacing: 0.14em; color: var(--g-dim);
-}
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .tkt .tkt-cost img { width: 14px; height: 14px; }
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .tkt:hover:not(:disabled):not(.is-short) .tkt-body { filter: brightness(1.08); }
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .tkt:active:not(:disabled) .tkt-body { transform: translateY(1px); }
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .tkt:focus-visible .tkt-body { box-shadow: inset 0 0 0 2px var(--g-accent-2); }
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .tkt:disabled,
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .tkt.is-short { --pill-fg: var(--g-faint); --rule: var(--g-line); }
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .tkt:disabled .tkt-body,
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .tkt.is-short .tkt-body { background: rgba(var(--sx-ink), 0.6); box-shadow: inset 0 0 0 1px var(--g-line); }
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .tkt:disabled .tkt-cost,
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .tkt.is-short .tkt-cost { color: var(--g-red); }
-html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) body .summon-page .tkt { --cost-h: 16px; --pill-h: 36px; }
-html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) body .summon-page .tkt .tkt-count { font-size: 18px !important; }
-html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .tkt .tkt-stub { padding-left: 10px !important; }
-html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) body.page-summon .summon-page .tkt .tkt-label { font-size: 12px !important; right: 20px !important; letter-spacing: 0.02em !important; }
-html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .tkt .tkt-main::after { right: 9px; width: 4px; height: 4px; }
-html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .tkt .tkt-body::after { left: 48px; right: 76px; }
-html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .tkt-single .tkt-body::after { left: 38px; }
-html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .tkt .tkt-cost { font-size: 10.5px; }
-html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .tkt .tkt-cost::before { font-size: 8px; }
-html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .tkt .tkt-cost img { width: 11px; height: 11px; }
-html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .summon-buttons { gap: 6px; }
-
-/* Rates / Featured / Contents: serif words split by hairlines, under the slips */
+/* ── Right column: details card, step line, ×1 / ×10 ─────────────── */
+/* details card (Rates / Featured / Contents) under the quote */
 html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .summon-info-buttons {
-  position: absolute; z-index: 5; right: max(var(--sx-pad), var(--safe-r, 0px)); bottom: 8px; width: var(--sx-slips);
-  display: flex; gap: 0; margin: 0;
+  position: absolute; z-index: 3; right: var(--sx-pr); top: calc(var(--sx-head) + var(--sx-quote) + 6px); width: var(--sx-side);
+  display: flex; flex-direction: column; gap: 6px; margin: 0; padding: 12px 12px 12px; box-sizing: border-box;
+  background: rgba(var(--sx-ink), 0.78); box-shadow: inset 0 0 0 1px var(--sx-hair), 0 0 0 4px rgba(var(--sx-ink), 0.35);
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .summon-info-buttons::before {
+  content: 'Summon Details'; display: block; margin: 0 0 4px; font-family: var(--g-sans); font-size: 14px; letter-spacing: 0.02em; color: var(--g-text);
 }
 html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) body .summon-page .summon-info-btn,
 html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) body .summon-page .summon-info-btn.x {
-  flex: 1 1 0; height: 26px; padding: 0 2px !important; border: 0; border-radius: 0; background: none; box-shadow: none;
-  font-family: var(--ink-cinzel); font-weight: 400; font-size: 9.5px !important; letter-spacing: 0.22em !important; text-transform: uppercase;
-  color: var(--g-dim);
+  position: relative; display: flex; align-items: center; justify-content: flex-start; flex: none;
+  height: 30px; width: 100%; padding: 0 22px 0 12px !important; margin: 0;
+  border: 0; border-radius: 0; background: rgba(226, 204, 150, 0.03); box-shadow: inset 0 0 0 1px var(--g-line-2);
+  font-family: var(--g-sans); font-weight: 400; font-size: 13px !important; letter-spacing: 0.04em !important; text-transform: none;
+  color: var(--g-text); text-shadow: none; transform: none; filter: none;
 }
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) body .summon-page .summon-info-btn + .summon-info-btn { box-shadow: inset 1px 0 0 var(--g-line-2); }
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) body .summon-page .summon-info-btn:hover { background: rgba(226, 204, 150, 0.08); color: var(--g-text); }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) body .summon-page .summon-info-btn::after {         /* › */
+  content: ''; position: absolute; right: 11px; top: 50%; width: 5px; height: 5px; margin-top: -3px;
+  border: solid currentColor; border-width: 1.2px 1.2px 0 0; transform: rotate(45deg); opacity: 0.8;
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) body .summon-page .summon-info-btn:hover { background: rgba(226, 204, 150, 0.1); color: #fff6dc; box-shadow: inset 0 0 0 1px var(--sx-hair-hi); }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .summon-info-buttons { gap: 3px; padding: 6px 6px 6px; top: calc(var(--sx-head) + var(--sx-quote) + 2px); box-shadow: inset 0 0 0 1px var(--sx-hair); }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .summon-info-buttons::before { font-size: 9.5px; margin-bottom: 1px; }
 html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) body .summon-page .summon-info-btn,
-html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) body .summon-page .summon-info-btn.x { height: 18px; font-size: 8px !important; letter-spacing: 0.14em !important; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) body .summon-page .summon-info-btn.x { height: 20px; font-size: 9.5px !important; padding: 0 14px 0 7px !important; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) body .summon-page .summon-info-btn::after { right: 7px; width: 4px; height: 4px; margin-top: -2px; }
 
-/* phones */
-html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .draw-col .banner-info-section,
-html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-banner { bottom: calc(9px + 24px + 8px); gap: 1px; }
-html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .draw-col .banner-info-section::before,
-html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-banner::before { font-size: 14px; letter-spacing: 0.22em; }
-html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .draw-col .banner-kicker,
-html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-banner-kicker { display: flex; font-size: 6.5px; margin: 0 0 2px; gap: 6px; }
-html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .draw-col .banner-kicker::after,
-html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-banner-kicker::after { width: 30px; }
-html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .draw-col #banner-name,
-html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .rc-name,
-html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-banner-title { font-size: 13.5px; line-height: 1.25; }
-html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .draw-col #banner-name .help-tip { width: 14px; height: 14px; font-size: 9px; margin-left: 4px; vertical-align: 1px; }
-html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .draw-col #banner-timer { font-size: 10px; }
-html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage:not(.rc-stage) .pickup:not([hidden]) { display: block; }
-html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .featured-stage:not([data-view="banner"]) ~ .draw-col .pickup { display: none; }
-html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .pickup { width: 176px; top: calc(var(--sx-head) + 2px); }
-html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .pickup-head { display: none; }
-html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .pickup-unit { padding: 3px 6px; gap: 6px; }
-html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .pickup-unit:nth-child(n+2) { display: none; }
-html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .pickup-portrait { width: 26px; height: 26px; }
-html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .pickup-name { font-size: 11px; }
-html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .pickup-ver { font-size: 8.5px; }
-html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .pickup-stars { font-size: 8.5px; margin-top: 0; }
+/* jutsu: the shinobite balance is the right column's card */
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-balance {
+  position: absolute; z-index: 3; right: var(--sx-pr); top: calc(var(--sx-head) + var(--sx-quote) + 6px); width: var(--sx-side); box-sizing: border-box;
+  display: grid; grid-template-columns: auto 1fr; grid-template-rows: auto auto; align-items: center; column-gap: 10px; row-gap: 2px;
+  height: auto; margin: 0; padding: 12px; border-radius: 0; clip-path: none;
+  background: rgba(var(--sx-ink), 0.78); box-shadow: inset 0 0 0 1px var(--sx-hair), 0 0 0 4px rgba(var(--sx-ink), 0.35);
+  font-family: var(--ink-cinzel); font-size: 8.5px; letter-spacing: 0.26em; text-transform: uppercase; color: var(--g-dim);
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-balance img { grid-row: 1 / 3; width: 36px; height: 36px; padding: 4px; box-sizing: border-box; box-shadow: inset 0 0 0 1px var(--g-line-2); }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-balance b { font-family: var(--g-sans); font-weight: 500; font-size: 17px; letter-spacing: 0.02em; color: var(--g-text); }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-balance { top: calc(var(--sx-head) + var(--sx-quote) + 2px); padding: 6px; column-gap: 6px; font-size: 6px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-balance img { width: 26px; height: 26px; padding: 3px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-balance b { font-size: 12px; }
 
-/* ══ Recipes tab: the composed recipe banner as the hero ══════════ */
+/* step line ("Step 1 / 8"), above the draw slips */
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .step-progress {
+  position: absolute; z-index: 3; right: var(--sx-pr); bottom: calc(var(--sx-bot) + var(--sx-slips-h) + 10px); width: var(--sx-side);
+  box-sizing: border-box; display: flex; align-items: baseline; gap: 4px; flex-wrap: wrap; margin: 0; padding: 8px 12px 10px;
+  background: rgba(var(--sx-ink), 0.82); box-shadow: inset 0 0 0 1px var(--g-line-2);
+  font-family: var(--g-sans); font-size: 13px; color: var(--g-text);
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .step-progress.hidden { display: none; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .step-progress .step-label { margin-right: auto; color: var(--g-dim); }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .step-progress #step-current { font-size: 17px; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .step-progress::after {             /* the little notch under the box, pointing at the slip */
+  content: ''; position: absolute; left: 50%; bottom: -4px; width: 7px; height: 7px; margin-left: -3.5px;
+  background: rgba(var(--sx-ink), 1); box-shadow: 1px 1px 0 var(--g-line-2); transform: rotate(45deg);
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .step-bar { flex: 1 0 100%; height: 1px; margin-top: 6px; border-radius: 0; background: var(--g-line-2); }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .step-bar-fill { height: 3px; margin-top: -1px; border-radius: 0; background: var(--g-accent); box-shadow: none; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .step-progress { padding: 4px 7px 6px; font-size: 10px; bottom: calc(var(--sx-bot) + var(--sx-slips-h) + 6px); }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .step-progress #step-current { font-size: 12px; }
+
+/* ×1 (hairline) over ×10 (the cream paper slip) */
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) body.page-summon { --sx-single-h: 42px; --sx-multi-h: 96px; --sx-slips-h: calc(var(--sx-single-h) + var(--sx-multi-h) + 8px); }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) body.page-summon { --sx-single-h: 30px; --sx-multi-h: 62px; --sx-slips-h: calc(var(--sx-single-h) + var(--sx-multi-h) + 5px); }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .summon-buttons,
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .draw-col .summon-buttons,
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .jutsu-draw-col .summon-buttons {
+  position: absolute; z-index: 3; right: var(--sx-pr); bottom: var(--sx-bot); width: var(--sx-side);
+  display: flex; flex-direction: column; align-items: stretch; gap: 8px; margin: 0; padding: 0;
+}
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .summon-buttons,
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .draw-col .summon-buttons,
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .jutsu-draw-col .summon-buttons { gap: 5px; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) body .summon-page .tkt {
+  --cost-h: 0px; --pill-h: var(--sx-single-h);
+  flex: none; width: 100%; height: var(--sx-single-h); min-width: 0; aspect-ratio: auto; margin: 0; padding: 0;
+  filter: none; animation: none; transform: none;
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) body .summon-page .tkt-multi { --pill-h: var(--sx-multi-h); height: var(--sx-multi-h); order: 2; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .tkt .tkt-kicker,
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .tkt .tkt-seal,
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .tkt .tkt-unit,
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .tkt .tkt-body::before,
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .tkt .tkt-body::after,
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .tkt .tkt-stub::before,
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .tkt::after,
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .tkt .tkt-main::after { display: none; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .tkt .tkt-body {
+  position: absolute; left: 0; right: 0; top: 0; bottom: 0; overflow: hidden;
+  border-radius: 0; clip-path: none; transform: none;
+}
+/* ×1: charcoal with a cream hairline — "1×" left, cost right */
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .tkt-single .tkt-body { background: rgba(var(--sx-ink), 0.82); box-shadow: inset 0 0 0 1px var(--g-line-2); }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .tkt-single .tkt-stub {
+  position: absolute; left: 0; top: 0; bottom: 0; width: auto; padding: 0 0 0 14px !important; transform: none;
+  display: flex; align-items: center;
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) body .summon-page .tkt .tkt-count {
+  display: inline-flex; align-items: baseline; gap: 1px;
+  font-family: var(--g-sans); font-style: italic; font-weight: 500; font-size: 20px !important; line-height: 1; letter-spacing: 0;
+  color: var(--g-text); background: none; -webkit-text-fill-color: currentColor; filter: none; text-shadow: none;
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) body .summon-page .tkt .tkt-count i { order: 1; font-style: italic; font-size: 0.72em !important; vertical-align: 0; margin: 0; opacity: 0.85; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .tkt .tkt-main { position: absolute; inset: 0; display: block; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) body.page-summon .summon-page .tkt .tkt-label {
+  position: absolute; left: 50px; right: auto !important; top: 0; bottom: 0; display: flex; align-items: center; margin: 0; padding: 0;
+  font-family: var(--g-sans); font-style: italic; font-weight: 400; font-size: 12px !important; letter-spacing: 0.04em !important; text-transform: none;
+  color: var(--g-dim); text-shadow: none;
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .tkt .tkt-cost {
+  position: absolute; right: 12px; left: auto; top: 0; bottom: 0; height: auto; display: flex; align-items: center; gap: 5px;
+  font-family: var(--g-sans); font-weight: 500; font-size: 13px; letter-spacing: 0.04em; color: var(--g-text); text-shadow: none;
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .tkt .tkt-cost > span::before { content: none; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .tkt .tkt-cost img { width: 15px; height: 15px; filter: none; }
+/* ×10: cream paper — big "10×" above, the cost on a darker band below */
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .tkt-multi .tkt-body {
+  background:
+    linear-gradient(0deg, rgba(23, 19, 11, 0.14) 0, rgba(23, 19, 11, 0.14) 32%, rgba(120, 96, 40, 0.5) 32%, rgba(120, 96, 40, 0.5) calc(32% + 1px), transparent calc(32% + 1px)),
+    var(--sx-paper);
+  box-shadow: inset 0 0 0 1px rgba(120, 96, 40, 0.55), 0 0 0 1px rgba(0, 0, 0, 0.5), 0 14px 30px rgba(0, 0, 0, 0.55);
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .tkt-multi .tkt-stub {
+  position: absolute; left: 0; right: 0; top: 0; bottom: 32%; width: auto; padding: 0 !important; transform: none;
+  display: flex; align-items: center; justify-content: center;
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) body .summon-page .tkt-multi .tkt-count { font-size: 40px !important; font-weight: 500; color: #17130b; letter-spacing: -0.01em; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) body.page-summon .summon-page .tkt-multi .tkt-label { display: none; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .tkt-multi .tkt-cost {
+  left: 0; right: 0; top: auto; bottom: 0; height: 32%; justify-content: center; gap: 7px;
+  font-size: 15px; color: #17130b;
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .tkt-multi .tkt-cost img { width: 17px; height: 17px; }
+/* hover / press / focus / not enough */
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .tkt:hover:not(:disabled):not(.is-short) { transform: none; filter: none; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .tkt:hover:not(:disabled):not(.is-short) .tkt-stub { transform: none; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .tkt-multi:hover:not(:disabled):not(.is-short) .tkt-body { filter: brightness(1.05); }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .tkt-single:hover:not(:disabled):not(.is-short) .tkt-body { filter: none; background: rgba(36, 32, 26, 0.9); box-shadow: inset 0 0 0 1px var(--sx-hair-hi); }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .tkt:active:not(:disabled) .tkt-body { filter: brightness(0.95); }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .tkt:focus-visible { outline: 0; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .tkt:focus-visible .tkt-body { box-shadow: inset 0 0 0 2px var(--g-accent-2); }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .tkt:disabled .tkt-body,
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .tkt.is-short .tkt-body { background: rgba(var(--sx-ink), 0.6); box-shadow: inset 0 0 0 1px var(--g-line); }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) body .summon-page .tkt:disabled .tkt-count,
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) body .summon-page .tkt.is-short .tkt-count { color: var(--g-faint); opacity: 1; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .tkt:disabled .tkt-cost,
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .tkt.is-short .tkt-cost { color: var(--g-red); }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) body .summon-page .tkt .tkt-count { font-size: 14px !important; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .tkt-single .tkt-stub { padding-left: 9px !important; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) body.page-summon .summon-page .tkt .tkt-label { left: 34px; font-size: 9px !important; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .tkt .tkt-cost { right: 8px; font-size: 10px; gap: 3px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .tkt .tkt-cost img { width: 11px; height: 11px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) body .summon-page .tkt-multi .tkt-count { font-size: 25px !important; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .tkt-multi .tkt-cost { font-size: 11px; gap: 4px; right: 0; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .tkt-multi .tkt-cost img { width: 12px; height: 12px; }
+
+/* ══ Recipes: the composed recipe banner fills the frame ════════════ */
 html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .rc-stage .featured-stage .stage-view-banner { display: block; overflow: hidden; }
 html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .rc-stage .rc-banner {
-  position: absolute; left: 0; top: 0; height: 100%; width: auto; max-height: none; aspect-ratio: 16 / 9;
-  padding: 0; background: none; box-shadow: none;
-  -webkit-mask-image: linear-gradient(0deg, transparent 0, #000 26%);
-  mask-image: linear-gradient(0deg, transparent 0, #000 26%);
+  position: absolute; inset: 0; width: 100%; height: 100%; max-height: none; aspect-ratio: auto; margin: 0;
+  padding: 0; border-radius: 0; background: none; box-shadow: none;
 }
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .rc-stage .rc-banner .rcb { border-radius: 0; }
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .rc-stage .rc-rail-item {
-  aspect-ratio: auto; height: 38px; display: flex; align-items: center; padding: 0 10px 0 var(--sx-pad); box-sizing: border-box;
-  border: 0; border-radius: 0; outline: 0; background: none; box-shadow: none;
-}
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .rc-stage .rc-rail-item .rcb { display: none; }
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .rc-stage .rc-rail-label {
-  position: static; font-family: var(--g-sans); font-weight: 500; font-size: 12.5px; letter-spacing: 0.02em; text-transform: none;
-  color: var(--g-dim); text-shadow: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-}
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .rc-stage .rc-rail-item:hover { background: rgba(226, 204, 150, 0.06); }
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .rc-stage .rc-rail-item.active {
-  outline: 0; border: 0;
-  background: linear-gradient(90deg, rgba(201, 162, 78, 0.38), rgba(201, 162, 78, 0.06) 80%, transparent);
-  box-shadow: inset 2px 0 0 var(--g-accent), inset 0 1px 0 rgba(226, 204, 150, 0.3), inset 0 -1px 0 rgba(226, 204, 150, 0.3);
-}
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .rc-stage .rc-rail-item.active::before,
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .rc-stage .rc-rail-item.active::after { display: none; }
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .rc-stage .rc-rail-item.active .rc-rail-label { color: #fff6dc; font-weight: 600; }
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .rc-stage .rc-rail-foot { display: grid; margin: 8px var(--sx-pad) 0; padding: 8px 0 0; border-top: 1px solid var(--g-line); font-family: var(--ink-cinzel); font-size: 8.5px; letter-spacing: 0.24em; }
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .rc-stage .rc-rail-foot b { font-family: var(--g-sans); font-size: 13px; letter-spacing: 0.02em; }
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .rc-stage .pickup { display: none; }
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .rc-stage .rc-banner { top: calc(var(--sx-head) * 0.4); height: calc(100% - var(--sx-head) * 0.4); }
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .rc-hero .rcb-hero-name { display: none; }   /* sits in the cropped right edge; the title block names the banner */
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .rc-stage .rc-banner .rcb { border-radius: 0; inset: 0; }
 html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .rc-hero .rcb-kicker.banner-kicker {
   padding: 0; border-radius: 0; background: none; box-shadow: inset 0 -1px 0 var(--g-line-2);
   font-family: var(--ink-cinzel); font-weight: 400; letter-spacing: 0.34em; color: var(--g-dim);
 }
-/* the banner's mini recipe scroll moves up under its title, clear of the title block */
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .rc-hero .rcb-strip { top: 45%; bottom: auto; left: 5%; width: 30%; }
-html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .rc-stage .rc-rail-item { height: 30px; padding-right: 6px; }
-html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .rc-stage .rc-rail-label { font-size: 10.5px; }
-html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .rc-stage .rc-rail-foot { margin-top: 4px; padding-top: 4px; font-size: 6.5px; gap: 2px; }
-html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .rc-stage .rc-rail-foot b { font-size: 10.5px; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .rc-stage .draw-col .rc-name { -webkit-line-clamp: 1; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .rc-hero .rcb-strip { top: 50%; bottom: auto; }
 
-/* ══ Jutsu Cards: rates list left, card art as the hero ═══════════ */
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .jutsu-summon-panel {
-  position: absolute; inset: 0; z-index: 1;
-  width: auto; max-width: none; height: auto; max-height: none; margin: 0;
-}
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-stage {
-  position: absolute; inset: 0; height: auto; min-height: 0; z-index: 0;
-  border: 0; border-radius: 0; background: none; box-shadow: none; overflow: hidden;
-}
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-stage::before { display: none; }
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-stage::after {
-  content: ''; position: absolute; inset: 0; z-index: 3; pointer-events: none; border: 0; border-radius: 0; box-shadow: none;
-  background:
-    linear-gradient(90deg, rgba(var(--sx-ink), 0.96) 0, rgba(var(--sx-ink), 0.78) calc(var(--sx-list) - 6px), rgba(var(--sx-ink), 0) calc(var(--sx-list) + 90px)),
-    linear-gradient(0deg, rgba(var(--sx-ink), 0.94) 0, rgba(var(--sx-ink), 0.6) var(--sx-foot), rgba(var(--sx-ink), 0) calc(var(--sx-foot) + 90px)),
-    linear-gradient(180deg, rgba(var(--sx-ink), 0.75) 0, rgba(var(--sx-ink), 0) calc(var(--sx-head) + 40px));
-}
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-stage-glow { display: none; }
+/* ══ Jutsu Cards: rates list left, card art framed in the centre ════ */
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-stage { overflow: visible; }
 html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-show-frame {
-  position: absolute; left: var(--sx-list); right: 0; top: 0; bottom: auto; height: var(--sx-art-h); width: auto; max-width: none; max-height: none; aspect-ratio: auto;
-  margin: 0; padding: 0; transform: none; border-radius: 0; background: none; box-shadow: none;
+  position: absolute; inset: 0; width: auto; height: auto; max-width: none; max-height: none; aspect-ratio: auto;
+  margin: 0; padding: 0; transform: none; border-radius: 0; background: none; box-shadow: none; overflow: hidden;
 }
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-show-clip {
-  inset: 0; border-radius: 0;
-  -webkit-mask-image: linear-gradient(0deg, transparent 0, #000 26%);
-  mask-image: linear-gradient(0deg, transparent 0, #000 26%);
-}
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-show-img { object-fit: cover; object-position: 50% 30%; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-show-clip { inset: 0; border-radius: 0; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-show-img { object-fit: cover; object-position: 50% 30%; border-radius: 0; }
 html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-show-caption {
-  position: absolute; left: var(--sx-pad); right: auto; top: calc(var(--sx-head) + 2px); bottom: auto; z-index: 5;
-  max-width: 44%; align-items: flex-start; text-align: left; padding: 0; border-radius: 0; background: none;
+  position: absolute; left: 16px; right: auto; top: 14px; bottom: auto; z-index: 5;
+  max-width: 50%; align-items: flex-start; text-align: left; padding: 0; border-radius: 0; background: none;
 }
 html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-show-name { font-family: var(--g-sans); font-weight: 600; font-size: 18px; letter-spacing: 0.04em; text-transform: none; color: #fff6dc; text-shadow: 0 0 2px #000, 0 2px 10px #000, 0 0 18px rgba(0, 0, 0, 0.8); }
 html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-show-type { font-family: var(--ink-cinzel); font-size: 9px; letter-spacing: 0.32em; text-transform: uppercase; color: var(--g-text); text-shadow: 0 0 2px #000, 0 1px 6px #000; }
 html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-show-stars { color: var(--g-accent-2); letter-spacing: 0.1em; }
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .stage-arrow.right { left: calc(var(--sx-list) + var(--sx-pad) + 36px); right: auto; }
-html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .stage-arrow.right { left: calc(var(--sx-list) + var(--sx-pad) + 30px); }
-html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-show-name { font-size: 13px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-show-name { font-size: 12px; }
 html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-show-type { font-size: 6.5px; }
 html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-show-stars { font-size: 9px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-show-caption { left: 10px; top: 8px; }
+/* the info box in the jutsu frame has no mini column */
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-banner { padding-right: 16px; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-banner::after { display: none; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-banner { padding-right: 9px; }
 
-/* rates rail = the slim list */
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-rail {
-  position: absolute; z-index: 4; left: 0; top: var(--sx-head); bottom: 0; width: var(--sx-list); height: auto; min-height: 0;
-  grid-column: auto; box-sizing: border-box; padding: 6px 0 14px; gap: 0;
-  border: 0; border-radius: 0; background: none; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none;
-}
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-rail::before,
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-rail::after { display: none; }
+/* drop rates = the open category's list */
 html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .rail-heading {
-  display: block; margin: 0 0 6px; padding: 0 var(--sx-pad) 8px; border: 0; border-image: none; box-shadow: inset 0 -1px 0 var(--g-line);
-  font-family: var(--ink-jp); font-weight: 600; font-size: 0; letter-spacing: 0.2em; text-align: left; color: var(--g-text); text-shadow: none;
+  display: block; flex: none; margin: 0 0 6px; padding: 0 0 6px; border: 0; border-image: none; box-shadow: inset 0 -1px 0 var(--g-line);
+  font-family: var(--ink-cinzel); font-weight: 400; font-size: 8.5px; letter-spacing: 0.34em; text-transform: uppercase; text-align: left;
+  color: var(--g-dim); text-shadow: none;
 }
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .rail-heading::before { content: '排出率'; font-size: 15px; }
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .rail-heading::after {
-  content: 'Drop Rates'; display: block; flex: none; height: auto; margin-top: 2px; background: none;
-  font-family: var(--ink-cinzel); font-weight: 400; font-size: 8.5px; letter-spacing: 0.34em; text-transform: uppercase; color: var(--g-dim);
-}
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-rates { display: flex; flex-direction: column; gap: 0; padding: 0; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .rail-heading::before,
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .rail-heading::after { display: none; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-rates { display: flex; flex-direction: column; gap: 4px; padding: 0; min-height: 0; overflow-y: auto; scrollbar-width: none; }
 html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-rate-row,
 html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-rate-row.r7 {
-  display: flex; align-items: center; justify-content: space-between; height: 34px; padding: 0 12px 0 var(--sx-pad); margin: 0;
-  border: 0; border-radius: 0; clip-path: none; background: none; box-shadow: inset 0 -1px 0 rgba(226, 204, 150, 0.08);
+  display: flex; align-items: center; justify-content: space-between; flex: none; height: 32px; padding: 0 12px; margin: 0;
+  border: 0; border-radius: 0; clip-path: none; background: #121110; box-shadow: inset 0 0 0 1px var(--sx-hair);
 }
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-rate-row.r7 {
-  background: linear-gradient(90deg, rgba(201, 162, 78, 0.34), rgba(201, 162, 78, 0.04) 80%, transparent);
-  box-shadow: inset 2px 0 0 var(--g-accent), inset 0 1px 0 rgba(226, 204, 150, 0.3), inset 0 -1px 0 rgba(226, 204, 150, 0.3);
-}
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-rate-star { color: var(--g-accent-2); font-size: 8px; letter-spacing: 0.04em; }
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-rate-pct { font-family: var(--g-sans); font-size: 13px; }
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-rail-foot { margin: auto var(--sx-pad) 0; padding: 8px 0 0; border-top: 1px solid var(--g-line); text-align: left; }
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-rail-label { font-family: var(--ink-cinzel); font-size: 8.5px; letter-spacing: 0.3em; }
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-collection { font-family: var(--g-sans); font-size: 14px; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-rate-row.r7 { background: #1a1712; box-shadow: inset 0 0 0 1px var(--sx-hair-hi); }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-rate-star { color: var(--g-accent-2); font-size: 9px; letter-spacing: 0.04em; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-rate-pct { font-family: var(--g-sans); font-size: 13px; color: var(--g-text); }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-rail-foot { flex: none; margin: auto 0 0; padding: 8px 0 0 2px; border-top: 1px solid var(--g-line); text-align: left; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-rail-label { font-family: var(--ink-cinzel); font-size: 8.5px; letter-spacing: 0.3em; color: var(--g-dim); }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-collection { font-family: var(--g-sans); font-size: 14px; color: var(--g-text); }
 html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-progress { height: 1px; border-radius: 0; background: var(--g-line-2); margin-top: 6px; }
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-progress-fill { height: 3px; margin-top: -1px; }
-html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .rail-heading { padding-bottom: 5px; margin-bottom: 2px; }
-html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .rail-heading::before { font-size: 12px; }
-html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .rail-heading::after { font-size: 6.5px; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-progress-fill { height: 3px; margin-top: -1px; border-radius: 0; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .rail-heading { font-size: 6.5px; margin-bottom: 3px; padding-bottom: 3px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-rates { gap: 3px; }
 html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-rate-row,
-html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-rate-row.r7 { height: 26px; padding-right: 6px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-rate-row.r7 { height: 22px; padding: 0 7px; }
 html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-rate-star { font-size: 6.5px; }
-html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-rate-pct { font-size: 11px; }
-html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-rail-foot { padding-top: 5px; }
-html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-rail-label { font-size: 6.5px; }
-html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-collection { font-size: 11px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-rate-pct { font-size: 10px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-rail-foot { padding-top: 4px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-rail-label { font-size: 6px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-collection { font-size: 10px; }
 
-/* jutsu draw column pieces: shinobite balance sits top-right (like rate-up) */
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-banner-sub { display: none; }
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-balance {
-  position: absolute; z-index: 5; right: max(var(--sx-pad), var(--safe-r, 0px)); top: calc(var(--sx-head) + 4px); margin: 0;
-  height: 32px; padding: 0 12px 0 8px; gap: 8px; border-radius: 0; clip-path: none;
-  background: rgba(var(--sx-ink), 0.75); box-shadow: inset 0 0 0 1px var(--g-line-2);
-  font-family: var(--ink-cinzel); font-size: 9px; letter-spacing: 0.24em;
+/* small phones (667 wide): a slimmer info box so the banner's own title stays clear */
+@media (max-width: 720px) {
+  html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) body.page-summon { --sx-ib-h: 40px; --sx-ib-pk: 40px; --sx-ib-w: min(210px, calc(var(--sx-cw) - 60px)); }
+  html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .draw-col .banner-kicker,
+  html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-banner-kicker,
+  html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .pickup-head { display: none; }
+  html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .draw-col #banner-name,
+  html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .rc-name,
+  html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-banner-title { -webkit-line-clamp: 2; font-size: 10px; }
+  html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .pickup-portrait { width: 26px; height: 26px; }
+  html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .summon-info-buttons::after,
+  html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-balance::after { letter-spacing: 0.18em; }
 }
-html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-balance b { font-family: var(--g-sans); font-size: 14px; }
-html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-balance { height: 26px; font-size: 7px; top: calc(var(--sx-head) + 2px); }
-html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-balance b { font-size: 12px; }
-html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-balance img { width: 15px; height: 15px; }
-
-
 /* ══ Rates / Featured / Contents popup ═══════════════════════════ */
 html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-info-modal .sim-overlay { background: rgba(6, 6, 7, 0.72); -webkit-backdrop-filter: none; backdrop-filter: none; }
 html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-info-modal .sim-panel {

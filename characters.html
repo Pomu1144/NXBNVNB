@@ -80,6 +80,16 @@
     <div class="char-modal-panel">
       <div class="char-modal-art">
         <img id="char-modal-img" src="" alt="Character full art" />
+        <img class="ink-dossier-art" alt="" hidden />
+        <!-- Ink style only (hidden elsewhere): dossier caption, back arrow, vertical name, quote -->
+        <div class="ink-dossier-deco" hidden aria-hidden="true">
+          <div class="ink-dossier-vname"><img class="ink-vname-img" alt="" /><span class="ink-vname-ja"></span><span class="ink-vname-en"></span></div>
+          <div class="ink-dossier-quote is-empty"><img class="ink-quote-img" alt="" /><span class="ink-quote-ja"></span><span class="ink-quote-en"></span></div>
+        </div>
+        <div class="ink-dossier-head" hidden>
+          <button type="button" class="ink-dossier-back" aria-label="Back to roster"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12H5M11 5l-7 7 7 7" /></svg></button>
+          <span class="ink-dossier-cap">Shinobi Record</span>
+        </div>
         <div id="char-power-holder-container"></div>
       </div>
       <div class="char-modal-info">
@@ -332,6 +342,7 @@
   <script src="js/magatama.js"></script>
   <script src="js/gear.js"></script>
   <script src="js/characters.js"></script>
+  <script src="js/ink-dossier.js"></script>
   <script src="js/sprite-player.js"></script>
   <script src="js/skins.js"></script>
   <script src="js/skin-picker.js"></script>
