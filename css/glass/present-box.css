@@ -1,0 +1,192 @@
+/* css/glass/present-box.css — Glass style for the Present Box, its single
+   present view, the small notice popup and the reward reveal
+   (js/dashboard-mailbox.js; Classic rules in css/present-box.css).
+   Ink re-skins this in css/ink/present-box.css. */
+
+/* ── Shell ───────────────────────────────────────────────────────── */
+html[data-ui="glass"] .pb-backdrop,
+html[data-ui="glass"] .rr-backdrop {
+  background: rgba(6, 8, 10, 0.72);
+  -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+}
+html[data-ui="glass"] .pb-modal,
+html[data-ui="glass"] .rr-modal { font-family: var(--g-sans); color: var(--g-text); }
+html[data-ui="glass"] .pb-frame,
+html[data-ui="glass"] .pb-alert,
+html[data-ui="glass"] .rr-card {
+  border: 0; border-radius: var(--g-radius);
+  background: var(--g-glass-2);
+  -webkit-backdrop-filter: var(--g-blur); backdrop-filter: var(--g-blur);
+  box-shadow: inset 0 0 0 1px var(--g-line), 0 24px 60px rgba(0, 0, 0, 0.6);
+}
+/* one short accent tick top-left instead of the four gold brackets */
+html[data-ui="glass"] .pb-frame::before,
+html[data-ui="glass"] .pb-alert::before,
+html[data-ui="glass"] .rr-card::before {
+  inset: 0 auto auto 18px; width: 22px; height: 2px; background: var(--g-accent);
+}
+html[data-ui="glass"] .pb-inner { padding: 18px 20px 16px 0; }
+
+/* close: small square key */
+html[data-ui="glass"] .pb-close {
+  top: 16px; right: 16px; width: 34px; height: 34px;
+  border-radius: var(--g-radius-sm); background: rgba(255, 255, 255, 0.04);
+  box-shadow: inset 0 0 0 1px var(--g-line-2);
+}
+html[data-ui="glass"] .pb-close::before,
+html[data-ui="glass"] .pb-close::after { width: 15px; height: 1.5px; background: var(--g-text); box-shadow: none; }
+html[data-ui="glass"] .pb-close:hover { filter: none; background: rgba(255, 255, 255, 0.1); }
+
+/* ── Header ──────────────────────────────────────────────────────── */
+html[data-ui="glass"] .pb-head { padding: 0 64px 14px 22px; gap: 16px; align-items: baseline; }
+html[data-ui="glass"] .pb-title.jjk-title-plate {
+  margin: 0; min-width: 0; min-height: 0; padding: 0;
+  background: none; border: 0; box-shadow: none; clip-path: none;
+  font-family: var(--g-cond); font-weight: 500; font-size: 24px; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--g-text); text-shadow: none;
+}
+html[data-ui="glass"] .pb-title.jjk-title-plate::before,
+html[data-ui="glass"] .pb-title.jjk-title-plate::after { content: none; }
+html[data-ui="glass"] .pb-counts { gap: 14px; }
+html[data-ui="glass"] .pb-count {
+  padding: 0; background: none; border: 0; clip-path: none;
+  font-family: var(--g-cond); font-weight: 500; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--g-dim);
+}
+html[data-ui="glass"] .pb-count b { color: var(--g-text); }
+html[data-ui="glass"] .pb-count-new b { color: var(--g-accent); }
+html[data-ui="glass"] .pb-view-title { font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.04em; color: var(--g-text); text-shadow: none; }
+
+/* ── List rows ───────────────────────────────────────────────────── */
+html[data-ui="glass"] .pb-list { padding: 2px 4px 6px 20px; gap: 8px; scrollbar-color: var(--g-line-2) transparent; }
+html[data-ui="glass"] .pb-list::-webkit-scrollbar-track { background: transparent; }
+html[data-ui="glass"] .pb-list::-webkit-scrollbar-thumb { background: var(--g-line-2); }
+html[data-ui="glass"] .pb-row {
+  border: 0; border-image: none; border-radius: var(--g-radius-sm);
+  padding: 10px 12px;
+  background: rgba(255, 255, 255, 0.035);
+  box-shadow: inset 0 0 0 1px var(--g-line);
+}
+html[data-ui="glass"] .pb-row:hover { filter: none; background: rgba(255, 255, 255, 0.06); }
+html[data-ui="glass"] .pb-row.is-unread::before {
+  left: 0; top: 10px; bottom: 10px; width: 2px; background: var(--g-accent); box-shadow: none;
+}
+html[data-ui="glass"] .pb-row-icon,
+html[data-ui="glass"] .pb-row-main,
+html[data-ui="glass"] .pb-row-side { margin: 0; }
+html[data-ui="glass"] .pb-row-icon {
+  width: 52px; height: 52px; border-radius: var(--g-radius-sm);
+  background: rgba(0, 0, 0, 0.3); box-shadow: inset 0 0 0 1px var(--g-line);
+}
+html[data-ui="glass"] .pb-row-icon img { width: 34px; height: 34px; }
+html[data-ui="glass"] .pb-row-title { font-family: var(--g-cond); font-weight: 500; font-size: 16px; letter-spacing: 0.02em; color: var(--g-text); text-shadow: none; }
+html[data-ui="glass"] .pb-row.is-unread .pb-row-title { color: var(--g-text); }
+html[data-ui="glass"] .pb-row-text { color: var(--g-dim); }
+html[data-ui="glass"] .pb-new {
+  padding: 1px 6px; clip-path: none; border: 0; border-radius: 4px;
+  background: var(--g-accent); color: var(--g-on-accent);
+  font-family: var(--g-cond); font-weight: 600; font-size: 10px; letter-spacing: 0.12em;
+}
+html[data-ui="glass"] .pb-chip {
+  clip-path: none; border: 0; border-radius: 4px;
+  background: rgba(0, 0, 0, 0.28); box-shadow: inset 0 0 0 1px var(--g-line);
+}
+html[data-ui="glass"] .pb-chip-qty { font-family: var(--g-cond); font-weight: 500; color: var(--g-text); }
+html[data-ui="glass"] .pb-chip-more { color: var(--g-accent); }
+html[data-ui="glass"] .pb-row-side { box-shadow: inset 1px 0 0 var(--g-line); padding-left: 8px; }
+html[data-ui="glass"] .pb-row-date { font-family: var(--g-cond); font-weight: 400; letter-spacing: 0.06em; color: var(--g-faint); }
+html[data-ui="glass"] .pb-stamp { font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.14em; color: var(--g-faint); }
+html[data-ui="glass"] .pb-stamp img { width: 28px; opacity: 0.75; filter: none; }
+
+/* ── Buttons: primary = accent block, secondary = hairline ───────── */
+html[data-ui="glass"] .pb-btn,
+html[data-ui="glass"] .rr-ok {
+  border: 0; border-image: none; border-radius: var(--g-radius-sm);
+  font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase;
+  text-shadow: none; filter: none; animation: none;
+}
+html[data-ui="glass"] .pb-btn-gold,
+html[data-ui="glass"] .pb-btn-crimson,
+html[data-ui="glass"] .rr-ok { background: var(--g-accent); color: var(--g-on-accent); box-shadow: none; }
+html[data-ui="glass"] .pb-btn-dark { background: rgba(255, 255, 255, 0.04); color: var(--g-text); box-shadow: inset 0 0 0 1px var(--g-line-2); }
+html[data-ui="glass"] .pb-btn:hover,
+html[data-ui="glass"] .rr-ok:hover,
+html[data-ui="glass"] .rr-ok:focus-visible { filter: brightness(1.08); }
+html[data-ui="glass"] .pb-btn[disabled] { background: rgba(255, 255, 255, 0.04); color: var(--g-faint); box-shadow: inset 0 0 0 1px var(--g-line); filter: none; }
+html[data-ui="glass"] .pb-btn-badge {
+  clip-path: none; border: 0; border-radius: 4px;
+  background: rgba(0, 0, 0, 0.75); color: var(--g-accent-2);
+}
+html[data-ui="glass"] .pb-btn[disabled] .pb-btn-badge { color: var(--g-faint); }
+html[data-ui="glass"] .rr-ok { animation: rrPop 0.45s var(--ok-d, 0.6s) cubic-bezier(0.2, 1.5, 0.4, 1) both; }
+
+/* ── Footer + empty ─────────────────────────────────────────────── */
+html[data-ui="glass"] .pb-foot { border-image: none; border-top: 1px solid var(--g-line); padding-left: 22px; }
+html[data-ui="glass"] .pb-foot-note { color: var(--g-faint); }
+html[data-ui="glass"] .pb-empty-title { font-family: var(--g-cond); font-weight: 500; color: var(--g-text); text-shadow: none; }
+html[data-ui="glass"] .pb-empty-sub { color: var(--g-dim); }
+
+/* ── Single present view ────────────────────────────────────────── */
+html[data-ui="glass"] .pb-head--view { padding-left: 22px; }
+html[data-ui="glass"] .pb-view-body { padding-left: 22px; }
+html[data-ui="glass"] .pb-view-text {
+  border: 0; border-radius: var(--g-radius-sm);
+  background: rgba(0, 0, 0, 0.25); box-shadow: inset 2px 0 0 var(--g-accent), inset 0 0 0 1px var(--g-line);
+  color: var(--g-text);
+}
+html[data-ui="glass"] .pb-view-label { font-family: var(--g-cond); font-weight: 500; letter-spacing: 0.14em; color: var(--g-dim); }
+html[data-ui="glass"] .pb-view-label::before,
+html[data-ui="glass"] .pb-view-label::after { background: var(--g-line); }
+html[data-ui="glass"] .pb-tile-socket,
+html[data-ui="glass"] .rr-socket {
+  border-radius: var(--g-radius-sm);
+  background: rgba(0, 0, 0, 0.3); box-shadow: inset 0 0 0 1px var(--g-line-2); filter: none;
+}
+html[data-ui="glass"] .pb-tile-qty,
+html[data-ui="glass"] .rr-qty { font-family: var(--g-cond); font-weight: 500; -webkit-text-stroke: 3px rgba(0, 0, 0, 0.85); }
+html[data-ui="glass"] .pb-tile-name,
+html[data-ui="glass"] .rr-name { font-family: var(--g-sans); font-weight: 500; color: var(--g-text); text-shadow: none; }
+
+/* ── Small notice ───────────────────────────────────────────────── */
+html[data-ui="glass"] .pb-alert-title {
+  margin: 22px 0 12px; padding: 0; min-width: 0; width: auto; background: none; text-shadow: none;
+  font-family: var(--g-cond); font-weight: 500; font-size: 20px; letter-spacing: 0.06em; color: var(--g-text);
+}
+html[data-ui="glass"] .pb-alert-body { color: var(--g-dim); }
+
+/* ── Reward reveal: no soft glows, a quiet title, square sockets ── */
+html[data-ui="glass"] .rr-flare,
+html[data-ui="glass"] .rr-tile-glow { display: none; }
+html[data-ui="glass"] .rr-rays { opacity: 0.5; }
+html[data-ui="glass"] .rr-card { padding-top: 76px; }
+html[data-ui="glass"] .rr-banner {
+  left: 0; right: 0; top: 22px; min-width: 0; height: auto; padding: 0;
+  justify-content: center; background: none; filter: none;
+}
+html[data-ui="glass"] .rr-banner span {
+  font-family: var(--g-cond); font-weight: 500; font-size: 22px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--g-text); text-shadow: none;
+}
+html[data-ui="glass"] .rr-socket::after { display: none; }
+html[data-ui="glass"] .rr-name { font-size: 13px; }
+html[data-ui="glass"] .rr-note { color: var(--g-dim); }
+
+/* ── Phone landscape / narrow (matches present-box.css breakpoint) ── */
+@media (max-height: 540px), (max-width: 700px) {
+  html[data-ui="glass"] .pb-frame,
+  html[data-ui="glass"] .pb-frame--view { border-radius: 0; }
+  html[data-ui="glass"] .pb-inner { padding: max(8px, env(safe-area-inset-top, 0px)) max(12px, env(safe-area-inset-right, 0px)) max(8px, env(safe-area-inset-bottom, 0px)) 0; }
+  html[data-ui="glass"] .pb-close { top: max(8px, env(safe-area-inset-top, 0px)); right: max(12px, env(safe-area-inset-right, 0px)); width: 30px; height: 30px; }
+  html[data-ui="glass"] .pb-head { padding: 0 52px 8px max(14px, env(safe-area-inset-left, 0px)); }
+  html[data-ui="glass"] .pb-title.jjk-title-plate { font-size: 18px; }
+  html[data-ui="glass"] .pb-list,
+  html[data-ui="glass"] .pb-view-body,
+  html[data-ui="glass"] .pb-head--view { padding-left: max(14px, env(safe-area-inset-left, 0px)); }
+  html[data-ui="glass"] .pb-row { padding: 6px 10px; min-height: 0; }
+  html[data-ui="glass"] .pb-row-icon { width: 40px; height: 40px; }
+  html[data-ui="glass"] .pb-row-icon img { width: 26px; height: 26px; }
+  html[data-ui="glass"] .pb-row-title { font-size: 14px; }
+  html[data-ui="glass"] .pb-foot { padding: 6px 0 0 max(14px, env(safe-area-inset-left, 0px)); }
+  html[data-ui="glass"] .rr-card { padding-top: 56px; }
+  html[data-ui="glass"] .rr-banner { top: 14px; }
+  html[data-ui="glass"] .rr-banner span { font-size: 18px; }
+}
