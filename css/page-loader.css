@@ -261,3 +261,128 @@ html.pl-active { background: #071418; }
   #page-loader .pl-brush { display: none; }
   #page-loader.is-leaving .pl-panel { animation: none; opacity: 0; transition: opacity .2s; }
 }
+
+/* ══ Ink interface style (html[data-skin="ink"], set by js/ui-theme.js in
+   <head> right after this loader is built, before the first paint) ═══════
+   Charcoal ink wash, a thin gold hairline frame, a gold Leaf outline, the
+   destination in a large letter-spaced serif and one gold hairline bar with
+   a solid fill. No segments, glows, gradients or dust. Classic and Glass
+   never match these rules. Tokens fall back to literals: css/ui-ink.css,
+   which defines them, loads later in <head>. */
+html[data-skin="ink"].pl-active { background: #0a0a0b; }
+html[data-skin="ink"] #page-loader {
+  --pl-gold: #c9a24e;
+  --pl-text: #f1ebdc;
+  font-family: 'Kaisei Tokumin', 'Hiragino Mincho ProN', 'Yu Mincho', 'Noto Serif JP', Georgia, serif;
+}
+html[data-skin="ink"] #page-loader .pl-panel {
+  background:
+    radial-gradient(ellipse 70% 70% at 50% 48%, rgba(10, 10, 11, 0.55), rgba(10, 10, 11, 0.9) 78%),
+    linear-gradient(rgba(10, 10, 11, 0.5), rgba(10, 10, 11, 0.5)),
+    url('../assets/ui/ink/bg.webp') 62% 40% / cover no-repeat,
+    #0a0a0b;
+}
+html[data-skin="ink"] #page-loader .pl-panel::before { display: none; }
+html[data-skin="ink"] #page-loader .pl-panel::after {
+  inset: max(14px, env(safe-area-inset-top, 0px)) max(14px, env(safe-area-inset-right, 0px)) max(14px, env(safe-area-inset-bottom, 0px)) max(14px, env(safe-area-inset-left, 0px));
+  border: 0; box-shadow: inset 0 0 0 1px rgba(226, 204, 150, 0.22);
+}
+
+html[data-skin="ink"] #page-loader .pl-stage { width: min(560px, 74vw); }
+html[data-skin="ink"] #page-loader .pl-emblem { order: 0; width: 46px; height: 36px; margin-bottom: 16px; perspective: none; }
+html[data-skin="ink"] #page-loader .pl-emblem img { display: none; }
+html[data-skin="ink"] #page-loader .pl-emblem::before {
+  left: 0; top: 0; width: 100%; height: 100%; margin: 0; border-radius: 0;
+  background: var(--pl-gold);
+  -webkit-mask: url('../assets/ui/ink/leaf_outline.webp') center / contain no-repeat;
+  mask: url('../assets/ui/ink/leaf_outline.webp') center / contain no-repeat;
+  opacity: 0.9; transform: none;
+  animation: pl-ink-breathe 2.8s ease-in-out infinite;
+}
+html[data-skin="ink"] #page-loader .pl-kicker {
+  order: 0;
+  font-family: 'Cinzel', 'Kaisei Tokumin', serif; font-size: 10px; font-weight: 400;
+  letter-spacing: 0.5em; margin-left: 0.5em; color: var(--pl-gold);
+}
+html[data-skin="ink"] #page-loader .pl-title {
+  order: 1;
+  font-family: var(--ink-jp, 'Hiragino Mincho ProN', 'Yu Mincho', 'Noto Serif JP', 'Kaisei Tokumin', serif);
+  font-size: 36px; font-weight: 600; line-height: 1.25;
+  letter-spacing: 0.16em; padding-left: 0.16em; text-transform: none;
+  color: var(--pl-text); background: none; -webkit-text-fill-color: currentColor;
+  filter: none; text-shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
+  margin: 8px 0 0;
+}
+/* Japanese caption under the destination: 「いざ、参る」 with hairlines */
+html[data-skin="ink"] #page-loader .pl-stage::after {
+  content: 'いざ、参る'; order: 2;
+  display: flex; align-items: center; gap: 14px; margin: 8px 0 34px;
+  font-family: var(--ink-jp, 'Hiragino Mincho ProN', 'Yu Mincho', 'Noto Serif JP', 'Kaisei Tokumin', serif);
+  font-size: 11px; letter-spacing: 0.4em; padding-left: 0.4em; color: rgba(241, 235, 220, 0.6);
+  background:
+    linear-gradient(rgba(226, 204, 150, 0.35), rgba(226, 204, 150, 0.35)) left center / 34px 1px no-repeat,
+    linear-gradient(rgba(226, 204, 150, 0.35), rgba(226, 204, 150, 0.35)) right center / 34px 1px no-repeat;
+  padding-right: 48px; padding-left: calc(48px + 0.4em);
+}
+
+/* Bar: one gold hairline track, a solid gold fill on it */
+html[data-skin="ink"] #page-loader .pl-bar { order: 3; height: 14px; }
+html[data-skin="ink"] #page-loader .pl-bar::after { display: none; }
+html[data-skin="ink"] #page-loader .pl-track {
+  inset: 50% 0 auto 0; height: 1px; margin-top: -0.5px;
+  background: rgba(226, 204, 150, 0.32); filter: none;
+}
+html[data-skin="ink"] #page-loader .pl-fill {
+  left: 0; top: 50%; bottom: auto; height: 2px; margin-top: -1px;
+  width: calc(100% * var(--pl-p)); border-radius: 0;
+  background: var(--pl-gold); box-shadow: none; overflow: visible;
+}
+html[data-skin="ink"] #page-loader .pl-fill::after { display: none; }
+/* a small gold diamond marks the leading edge */
+html[data-skin="ink"] #page-loader .pl-fill::before {
+  right: -3px; width: 6px; height: 6px; margin-top: -3px; border-radius: 0;
+  background: var(--pl-gold); transform: rotate(45deg);
+}
+html[data-skin="ink"] #page-loader .pl-runner {
+  bottom: 50%; left: calc(100% * var(--pl-p));
+  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.55));
+}
+
+html[data-skin="ink"] #page-loader .pl-meta { order: 4; margin-top: 12px; padding: 0; }
+html[data-skin="ink"] #page-loader .pl-tip {
+  font-size: 13px; font-weight: 400; font-style: italic; letter-spacing: 0.02em;
+  color: rgba(241, 235, 220, 0.6); text-shadow: none;
+}
+html[data-skin="ink"] #page-loader .pl-tip b { color: rgba(232, 207, 140, 0.9); font-weight: 600; }
+html[data-skin="ink"] #page-loader .pl-pct {
+  font-family: 'Kaisei Tokumin', 'Hiragino Mincho ProN', serif;
+  font-size: 13px; letter-spacing: 0.12em; color: #e8cf8c; text-shadow: none;
+}
+html[data-skin="ink"] #page-loader .pl-brush { filter: brightness(0); }
+
+@keyframes pl-ink-breathe {
+  0%, 100% { opacity: 0.6; }
+  50%      { opacity: 0.95; }
+}
+
+@media (min-width: 1200px) and (min-height: 760px) {
+  html[data-skin="ink"] #page-loader .pl-stage { width: 640px; }
+  html[data-skin="ink"] #page-loader .pl-emblem { width: 56px; height: 44px; margin-bottom: 20px; }
+  html[data-skin="ink"] #page-loader .pl-kicker { font-size: 11px; }
+  html[data-skin="ink"] #page-loader .pl-title { font-size: 44px; }
+  html[data-skin="ink"] #page-loader .pl-stage::after { font-size: 12px; margin-bottom: 40px; }
+  html[data-skin="ink"] #page-loader .pl-tip { font-size: 14px; }
+  html[data-skin="ink"] #page-loader .pl-pct { font-size: 14px; }
+}
+/* phones held sideways: scale with the viewport height */
+@media (max-height: 480px) {
+  html[data-skin="ink"] #page-loader .pl-emblem { width: 38px; height: 30px; margin-bottom: 10px; }
+  html[data-skin="ink"] #page-loader .pl-kicker { font-size: 9px; }
+  html[data-skin="ink"] #page-loader .pl-title { font-size: clamp(24px, 7.4vh, 32px); margin-top: 4px; }
+  html[data-skin="ink"] #page-loader .pl-stage::after { font-size: 10px; margin: 6px 0 clamp(22px, 6.5vh, 30px); }
+  html[data-skin="ink"] #page-loader .pl-tip { font-size: 12px; }
+  html[data-skin="ink"] #page-loader .pl-pct { font-size: 12px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html[data-skin="ink"] #page-loader .pl-emblem::before { animation: none; }
+}
