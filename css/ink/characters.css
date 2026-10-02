@@ -208,13 +208,23 @@ html[data-skin="ink"] .cm-power {
 }
 html[data-skin="ink"] .cm-power-txt small { font-family: var(--ink-cinzel); font-size: 10px; font-weight: 600; letter-spacing: 0.34em; color: rgba(241, 235, 220, 0.78); }
 html[data-skin="ink"] .cm-power-txt b { font-family: var(--ink-jp); font-weight: 600; font-size: 32px; line-height: 1.05; letter-spacing: 0.04em; color: #fff7e2; text-shadow: 0 2px 10px #000; }
-/* UR: the gold dry-brush mark (assets/ui/ink/grade_ur.webp) replaces the purple bubble */
-html[data-skin="ink"] body.page-characters .cm-power[title="Power grade UR"] .cm-power-grade {
-  width: 83px; height: 56px; margin-right: -4px; overflow: visible;
-  background: url('../../assets/ui/ink/grade_ur.webp') 0 50% / contain no-repeat;
+/* Power grade: the Ink brush mark for every grade (assets/ui/ink/grade_*.webp, see
+   css/ui-ink.css); each grade gets its own width so wide marks (SSS, UR, LR)
+   never run into the POWER label. */
+html[data-skin="ink"] body.page-characters .cm-power[title^="Power grade "] .cm-power-grade {
+  height: 56px; margin-right: 2px; overflow: visible; background: 0 50% / contain no-repeat;
   filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.7));
 }
-html[data-skin="ink"] body.page-characters .cm-power[title="Power grade UR"] .cm-power-grade > * { display: none !important; }
+html[data-skin="ink"] body.page-characters .cm-power[title^="Power grade "] .cm-power-grade > * { display: none !important; }
+html[data-skin="ink"] body.page-characters .cm-power[title="Power grade D"] .cm-power-grade { width: 55px; background-image: url('../../assets/ui/ink/grade_d.webp'); }
+html[data-skin="ink"] body.page-characters .cm-power[title="Power grade C"] .cm-power-grade { width: 42px; background-image: url('../../assets/ui/ink/grade_c.webp'); }
+html[data-skin="ink"] body.page-characters .cm-power[title="Power grade B"] .cm-power-grade { width: 48px; background-image: url('../../assets/ui/ink/grade_b.webp'); }
+html[data-skin="ink"] body.page-characters .cm-power[title="Power grade A"] .cm-power-grade { width: 50px; background-image: url('../../assets/ui/ink/grade_a.webp'); }
+html[data-skin="ink"] body.page-characters .cm-power[title="Power grade S"] .cm-power-grade { width: 48px; background-image: url('../../assets/ui/ink/grade_s.webp'); }
+html[data-skin="ink"] body.page-characters .cm-power[title="Power grade SS"] .cm-power-grade { width: 74px; background-image: url('../../assets/ui/ink/grade_ss.webp'); }
+html[data-skin="ink"] body.page-characters .cm-power[title="Power grade SSS"] .cm-power-grade { width: 88px; background-image: url('../../assets/ui/ink/grade_sss.webp'); }
+html[data-skin="ink"] body.page-characters .cm-power[title="Power grade UR"] .cm-power-grade { width: 83px; background-image: url('../../assets/ui/ink/grade_ur.webp'); }
+html[data-skin="ink"] body.page-characters .cm-power[title="Power grade LR"] .cm-power-grade { width: 92px; background-image: url('../../assets/ui/ink/grade_lr.webp'); }
 
 /* skins: square hairline key, bottom-right of the art */
 html[data-skin="ink"] body.page-characters .skin-btn {
@@ -480,7 +490,15 @@ html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-characters #ch
 html[data-skin="ink"].is-mobile.is-landscape.is-compact .cm-power { gap: 7px; }
 html[data-skin="ink"].is-mobile.is-landscape.is-compact .cm-power-txt small { font-size: 6.5px; letter-spacing: 0.3em; margin-bottom: 1px; }
 html[data-skin="ink"].is-mobile.is-landscape.is-compact .cm-power-txt b { font-size: 19px; }
-html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-characters .cm-power[title="Power grade UR"] .cm-power-grade { width: 53px; height: 36px; margin-right: -2px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-characters .cm-power[title="Power grade D"] .cm-power-grade { width: 35px; height: 36px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-characters .cm-power[title="Power grade C"] .cm-power-grade { width: 27px; height: 36px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-characters .cm-power[title="Power grade B"] .cm-power-grade { width: 31px; height: 36px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-characters .cm-power[title="Power grade A"] .cm-power-grade { width: 32px; height: 36px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-characters .cm-power[title="Power grade S"] .cm-power-grade { width: 31px; height: 36px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-characters .cm-power[title="Power grade SS"] .cm-power-grade { width: 48px; height: 36px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-characters .cm-power[title="Power grade SSS"] .cm-power-grade { width: 57px; height: 36px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-characters .cm-power[title="Power grade UR"] .cm-power-grade { width: 53px; height: 36px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-characters .cm-power[title="Power grade LR"] .cm-power-grade { width: 59px; height: 36px; }
 html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-characters .skin-btn { right: 10px; bottom: 8px; height: 28px; padding: 0 8px 0 6px; font-size: 8px; letter-spacing: 0.18em; }
 html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-characters .skin-btn svg { width: 15px; height: 15px; }
 
