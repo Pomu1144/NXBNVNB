@@ -1,4 +1,18 @@
 {
-  "naruto_2114": { "jaName": "うずまきナルト", "ja": "だからよ、オレは諦めねェ!", "en": "Because I never give up." },
-  "naruto_2115": { "jaName": "うずまきナルト", "ja": "だからよ、オレは諦めねェ!", "en": "Because I never give up." }
+  "naruto_2114": {
+    "jaName": "うずまきナルト",
+    "ja": "だからよ、オレは諦めねェ!",
+    "en": "Because I never give up.",
+    "art": "assets/characters/naruto_2115/dossier/art.webp",
+    "nameImg": "assets/characters/naruto_2115/dossier/name_ja.webp",
+    "quoteImg": "assets/characters/naruto_2115/dossier/quote.webp"
+  },
+  "naruto_2115": {
+    "jaName": "うずまきナルト",
+    "ja": "だからよ、オレは諦めねェ!",
+    "en": "Because I never give up.",
+    "art": "assets/characters/naruto_2115/dossier/art.webp",
+    "nameImg": "assets/characters/naruto_2115/dossier/name_ja.webp",
+    "quoteImg": "assets/characters/naruto_2115/dossier/quote.webp"
+  }
 }

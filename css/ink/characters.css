@@ -606,3 +606,48 @@ html[data-skin="ink"] .skin-opt-btn { border-radius: 0; background: linear-gradi
 html[data-skin="ink"] .skin-opt.is-worn .skin-opt-btn:disabled { background: transparent; color: var(--g-accent-2); box-shadow: inset 0 0 0 1px var(--g-line-2); }
 html[data-skin="ink"].is-mobile.is-landscape.is-compact .ramen-modal-title.jjk-title-plate,
 html[data-skin="ink"].is-mobile.is-landscape.is-compact .card-inventory-title.jjk-title-plate { font-size: 16px; }
+
+/* ── Unit-specific dossier assets (data/unit-quotes.json: art, nameImg,
+   quoteImg). When a unit has its own painted art it replaces the card art;
+   its brush name and quote lettering replace the typeset ones. ────────── */
+html[data-skin="ink"] body.page-characters #char-modal.ink-has-art .ink-dossier-art {
+  display: block; position: absolute; inset: 0; z-index: 1;
+  width: 100%; height: 100%; object-fit: cover; object-position: 82% 18%;
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-characters #char-modal.ink-has-art #char-modal-img,
+html[data-skin="ink"] body.page-characters #char-modal.ink-has-art .char-modal-art > .a7 { visibility: hidden; }
+/* painted art already carries its own dark ground: lighter edge fades */
+html[data-skin="ink"] body.page-characters #char-modal.ink-has-art .char-modal-art::after {
+  background:
+    linear-gradient(270deg, #0d0d0e 0, rgba(13, 13, 14, 0.7) 6%, rgba(13, 13, 14, 0.18) 16%, transparent 26%),
+    linear-gradient(0deg, rgba(10, 10, 11, 0.9) 0, rgba(10, 10, 11, 0.35) 14%, transparent 30%),
+    linear-gradient(90deg, rgba(10, 10, 11, 0.5) 0, transparent 14%);
+}
+
+/* the village leaf: the thin outline mark, above the quote */
+html[data-skin="ink"] body.page-characters .ink-dossier-deco::before {
+  right: 14%; top: 17%; width: 13cqw; aspect-ratio: 600 / 468; opacity: 0.45;
+  background: url('../../assets/ui/ink/leaf_outline.webp') center / contain no-repeat;
+}
+
+/* brush-lettered Japanese name */
+html[data-skin="ink"] body.page-characters .ink-vname-img { display: none; }
+html[data-skin="ink"] body.page-characters #char-modal.ink-has-nameimg .ink-vname-img {
+  display: block; width: auto; height: min(340px, 50cqh); max-height: 100%; flex: 0 0 auto;
+  filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.75));
+}
+html[data-skin="ink"] body.page-characters #char-modal.ink-has-nameimg .ink-vname-ja { display: none; }
+
+/* lettered quote (already set on its diagonal) */
+html[data-skin="ink"] body.page-characters .ink-quote-img { display: none; }
+html[data-skin="ink"] body.page-characters #char-modal.ink-has-quoteimg .ink-dossier-quote { transform: none; right: 2.5%; top: 31%; gap: 0; }
+html[data-skin="ink"] body.page-characters #char-modal.ink-has-quoteimg .ink-dossier-quote::before { inset: -12% -8%; background: radial-gradient(closest-side, rgba(8, 8, 9, 0.38), transparent); }
+html[data-skin="ink"] body.page-characters #char-modal.ink-has-quoteimg .ink-quote-img {
+  display: block; width: 28cqw; height: auto; filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.8));
+}
+html[data-skin="ink"] body.page-characters #char-modal.ink-has-quoteimg .ink-quote-ja,
+html[data-skin="ink"] body.page-characters #char-modal.ink-has-quoteimg .ink-quote-en { display: none; }
+
+html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-characters #char-modal.ink-has-nameimg .ink-vname-img { height: min(200px, 50cqh); }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-characters #char-modal.ink-has-quoteimg .ink-dossier-quote { right: 2%; top: 27%; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-characters #char-modal.ink-has-quoteimg .ink-quote-img { width: 34cqw; }

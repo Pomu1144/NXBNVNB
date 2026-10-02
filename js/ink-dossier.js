@@ -5,6 +5,9 @@
 //  - the vertical name mirrors #nameplate-name;
 //  - an optional Japanese name + quote comes from data/unit-quotes.json
 //    (unit id -> { ja, en, jaName }); units without an entry show none.
+//  - the same entry may carry the unit's own dossier art and lettering
+//    ({ art, nameImg, quoteImg }); those images replace the card art and the
+//    typeset name / quote when present.
 // It never touches game state and never delays opening the modal: the quote
 // file is fetched once in the background and applied when it arrives.
 (function () {
@@ -15,6 +18,15 @@
   const NAME = document.getElementById("nameplate-name");
   const VJA = $(".ink-vname-ja"), VEN = $(".ink-vname-en");
   const QUOTE = $(".ink-dossier-quote"), QJA = $(".ink-quote-ja"), QEN = $(".ink-quote-en");
+  const ART = $(".ink-dossier-art"), VIMG = $(".ink-vname-img"), QIMG = $(".ink-quote-img");
+
+  // set an optional image; the modal class says whether it is in use
+  function setImg(img, src, cls) {
+    const on = !!src;
+    if (img && on && img.getAttribute("src") !== src) img.src = src;
+    if (img && !on) img.removeAttribute("src");
+    MODAL.classList.toggle(cls, on);
+  }
 
   $(".ink-dossier-back")?.addEventListener("click", () => document.getElementById("char-modal-close")?.click());
 
@@ -44,8 +56,11 @@
     // display-only line break after the first comma (text itself unchanged)
     if (QJA) QJA.textContent = ((q && q.ja) || "").replace("、", "、\n");
     if (QEN) QEN.textContent = (q && q.en) || "";
-    MODAL.classList.toggle("ink-has-janame", !!(q && q.jaName));
-    if (QUOTE) QUOTE.classList.toggle("is-empty", !(q && (q.ja || q.en)));
+    MODAL.classList.toggle("ink-has-janame", !!(q && (q.jaName || q.nameImg)));
+    setImg(ART, q && q.art, "ink-has-art");
+    setImg(VIMG, q && q.nameImg, "ink-has-nameimg");
+    setImg(QIMG, q && q.quoteImg, "ink-has-quoteimg");
+    if (QUOTE) QUOTE.classList.toggle("is-empty", !(q && (q.ja || q.en || q.quoteImg)));
   }
 
   new MutationObserver(render).observe(MODAL, { attributes: true, attributeFilter: ["class", "data-current-uid"] });
