@@ -460,18 +460,22 @@
     MODAL_ART.style.setProperty("--a7-side", Math.max(0, Math.min(r.width, r.height)) + "px");
   }
   function mountModalAnim(c, tier, art) {
-    if (!MODAL_ART || !window.SevenStarAnim) return;
-    if ((starsFromTier(tier) || 0) >= 7 && window.SevenStarAnim.has(c)) {
-      window.SevenStarAnim.mount(MODAL_ART, c, { full: safeStr(art.full, c.full) });
-      sizeModalAnim();
-      if (!modalArtRO && "ResizeObserver" in window) { modalArtRO = new ResizeObserver(sizeModalAnim); modalArtRO.observe(MODAL_ART); }
-    } else {
-      unmountModalAnim();
+    if (!MODAL_ART) return;
+    let el = null;
+    if (window.SevenStarAnim && (starsFromTier(tier) || 0) >= 7 && window.SevenStarAnim.has(c)) {
+      el = window.SevenStarAnim.mount(MODAL_ART, c, { full: safeStr(art.full, c.full) });
+    } else if (window.ArtMotion && window.ArtMotion.has(c, tier)) {
+      // any tier with a `motion` block on its art (js/art-motion.js)
+      el = window.ArtMotion.mount(MODAL_ART, c, tier);
     }
+    if (!el) { unmountModalAnim(); return; }
+    sizeModalAnim();
+    if (!modalArtRO && "ResizeObserver" in window) { modalArtRO = new ResizeObserver(sizeModalAnim); modalArtRO.observe(MODAL_ART); }
   }
   function unmountModalAnim() {
-    if (!MODAL_ART || !window.SevenStarAnim) return;
-    window.SevenStarAnim.unmount(MODAL_ART);
+    if (!MODAL_ART) return;
+    MODAL_ART.querySelectorAll(":scope > .a7").forEach((el) => el.remove());
+    MODAL_ART.classList.remove("has-a7");
     if (modalArtRO) { modalArtRO.disconnect(); modalArtRO = null; }
   }
 

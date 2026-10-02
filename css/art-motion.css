@@ -1,0 +1,65 @@
+/* ============================================================
+   css/art-motion.css: animated full art for any tier (js/art-motion.js)
+   ------------------------------------------------------------
+   Builds on the .a7 container from css/seven-star-anim.css (square,
+   clipped, placed over the modal art in every style). Layers:
+     plate (scene without the unit) drifting · wind vortex behind ·
+     cut-out unit swaying (movement layer) · vortex rim in front ·
+     two gusts sweeping across · gold flecks blown along
+   Compositor-only (transform + opacity); still under reduced motion.
+   ============================================================ */
+.a7.am { --am-loop: 6s; }
+.a7.am > img { object-fit: cover; }
+/* the plate sits a touch larger so its drift never shows an edge */
+.a7.am .am-plate { transform: scale(1.06); animation: am-drift 11s ease-in-out infinite alternate; }
+.a7.am .am-fg {
+  transform: scale(1.06); transform-origin: 50% 70%;
+  animation: am-sway var(--am-loop) ease-in-out infinite;
+}
+.a7.am .am-swirl {
+  inset: -18%; width: 136%; height: 136%;
+  mix-blend-mode: screen; opacity: 0.5;
+  animation: am-spin 13s linear infinite;
+}
+/* front rim: only the outer ring, so the face stays clear */
+.a7.am .am-rim {
+  opacity: 0.4; animation: am-spin-rev 9s linear infinite;
+  -webkit-mask-image: radial-gradient(circle at 50% 50%, transparent 36%, #000 52%);
+          mask-image: radial-gradient(circle at 50% 50%, transparent 36%, #000 52%);
+}
+.a7.am .am-gust {
+  inset: 8% -30%; width: 160%; height: 84%; object-fit: fill;
+  mix-blend-mode: screen; opacity: 0;
+  animation: am-gust 3.4s cubic-bezier(.35,0,.25,1) infinite;
+  /* thin out over the middle so the face stays clear */
+  -webkit-mask-image: radial-gradient(ellipse 24% 46% at 50% 42%, rgba(0,0,0,.15) 30%, #000 75%);
+          mask-image: radial-gradient(ellipse 24% 46% at 50% 42%, rgba(0,0,0,.15) 30%, #000 75%);
+}
+.a7.am .am-gust.b { top: 22%; transform: scaleY(-1); animation-delay: -1.7s; animation-duration: 4.1s; }
+.a7.am .am-pp i {
+  position: absolute; left: var(--x); top: var(--y); width: var(--s); height: var(--s);
+  background: #ffe7a3; border-radius: 1px; transform: rotate(45deg);
+  opacity: 0; animation: am-fleck var(--d) linear var(--dl) infinite;
+}
+@keyframes am-drift { from { transform: scale(1.06) translate(0.8%, -0.4%); } to { transform: scale(1.06) translate(-0.8%, 0.5%); } }
+@keyframes am-sway {
+  0%, 100% { transform: scale(1.06) translate(0, 0) rotate(0deg); }
+  30%      { transform: scale(1.075) translate(-0.9%, -0.7%) rotate(-0.5deg); }
+  65%      { transform: scale(1.065) translate(0.7%, -0.3%) rotate(0.4deg); }
+}
+@keyframes am-spin     { to { transform: rotate(360deg); } }
+@keyframes am-spin-rev { from { transform: rotate(0deg) scale(1.04); } to { transform: rotate(-360deg) scale(1.04); } }
+@keyframes am-gust {
+  0%   { transform: translateX(-30%); opacity: 0; }
+  20%  { opacity: 0.5; }
+  60%  { opacity: 0.35; }
+  100% { transform: translateX(30%); opacity: 0; }
+}
+@keyframes am-fleck {
+  0%   { opacity: 0; transform: translate(0, 0) rotate(45deg) scale(.7); }
+  15%  { opacity: 1; }
+  80%  { opacity: .85; }
+  100% { opacity: 0; transform: translate(var(--dx), var(--dy)) rotate(225deg) scale(1); }
+}
+.a7.am.am-still *, .a7.am.a7-paused * { animation: none !important; }
+@media (prefers-reduced-motion: reduce) { .a7.am * { animation: none !important; } }
