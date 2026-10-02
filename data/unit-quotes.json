@@ -114,7 +114,12 @@
     "nameImg": "assets/characters/sasuke_2117/dossier/name_ja.webp",
     "quoteImg": "assets/characters/sasuke_2117/dossier/quote.webp",
     "motto": "I don't follow a path anymore. I create it.",
-    "role": "Lightning Style / Avenger"
+    "role": "Lightning Style / Avenger",
+    "fx": "lightning",
+    "fxOrigin": [
+      0.494,
+      0.79
+    ]
   },
   "sasuke_2117": {
     "jaName": "うちはサスケ",
@@ -124,6 +129,11 @@
     "nameImg": "assets/characters/sasuke_2117/dossier/name_ja.webp",
     "quoteImg": "assets/characters/sasuke_2117/dossier/quote.webp",
     "motto": "I don't follow a path anymore. I create it.",
-    "role": "Lightning Style / Avenger"
+    "role": "Lightning Style / Avenger",
+    "fx": "lightning",
+    "fxOrigin": [
+      0.494,
+      0.79
+    ]
   }
 }

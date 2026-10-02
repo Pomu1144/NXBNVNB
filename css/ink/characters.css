@@ -639,6 +639,16 @@ html[data-skin="ink"] body.page-characters #char-modal.ink-has-art .ink-dossier-
   width: calc(100% * var(--ink-art-k) * (1 + var(--ink-art-dx, 0))); height: 100%; max-width: none;
   object-fit: cover; object-position: 0% 30%;
 }
+/* animated effect layer (data fx), drawn by js/ink-lightning.js over the same box */
+html[data-skin="ink"] body.page-characters .ink-dossier-fx { display: none; }
+html[data-skin="ink"] body.page-characters #char-modal.ink-has-art.ink-has-fx .ink-dossier-fx {
+  display: block; position: absolute; top: 0; z-index: 1; pointer-events: none;
+  --ink-art-k: calc(100 / 60);
+  left: calc(-100% * var(--ink-art-k) * var(--ink-art-dx, 0));
+  width: calc(100% * var(--ink-art-k) * (1 + var(--ink-art-dx, 0))); height: 100%;
+}
+html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-characters #char-modal.ink-has-art.ink-has-fx .ink-dossier-fx { --ink-art-k: calc(100 / 55); }
+html.fx-scrolling[data-skin="ink"] body.page-characters .ink-dossier-fx { visibility: hidden; }
 html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-characters #char-modal.ink-has-art #char-modal-img,
 html[data-skin="ink"] body.page-characters #char-modal.ink-has-art .char-modal-art > .a7 { visibility: hidden; }
 html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-characters #char-modal.ink-has-art .char-modal-panel {
