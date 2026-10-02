@@ -70,6 +70,18 @@ html[data-skin="ink"] .mission-card[data-mission-id="sc2_13"],
 html[data-skin="ink"] .md-hero:has(img[src$="/sc2_13.webp"]) { --ink-arc: url('../../assets/missions/banners/arc_ninja_war.webp'); --ink-pos: 70%; --ink-ja: "第四次忍界大戦"; --ink-no: "第二十六章"; --ink-en: "Chapter 26 · The Fourth Great Ninja War"; }
 html[data-skin="ink"] .mission-card[data-mission-id="sc2_14"],
 html[data-skin="ink"] .md-hero:has(img[src$="/sc2_14.webp"]) { --ink-arc: url('../../assets/missions/banners/arc_final_battle.webp'); --ink-pos: 60%; --ink-ja: "最後の戦い"; --ink-no: "第二十七章"; --ink-en: "Chapter 27 · The Final Battle"; }
+/* Part 1 chapters with their own painted scene (assets/missions/banners/scenes/):
+   these replace the shared arc art; --ink-posy keeps the faces in the band */
+html[data-skin="ink"] .mission-card[data-mission-id="sc1_01"],
+html[data-skin="ink"] .md-hero:has(img[src$="/sc1_01.webp"]) { --ink-arc: url('../../assets/missions/banners/scenes/sc1_01.webp'); --ink-pos: 100%; --ink-posy: 42%; }
+html[data-skin="ink"] .mission-card[data-mission-id="sc1_02"],
+html[data-skin="ink"] .md-hero:has(img[src$="/sc1_02.webp"]) { --ink-arc: url('../../assets/missions/banners/scenes/sc1_02.webp'); --ink-pos: 90%; --ink-posy: 36%; }
+html[data-skin="ink"] .mission-card[data-mission-id="sc1_03"],
+html[data-skin="ink"] .md-hero:has(img[src$="/sc1_03.webp"]) { --ink-arc: url('../../assets/missions/banners/scenes/sc1_03.webp'); --ink-pos: 95%; --ink-posy: 30%; }
+html[data-skin="ink"] .mission-card[data-mission-id="sc1_05"],
+html[data-skin="ink"] .md-hero:has(img[src$="/sc1_05.webp"]) { --ink-arc: url('../../assets/missions/banners/scenes/sc1_05.webp'); --ink-pos: 90%; --ink-posy: 40%; }
+html[data-skin="ink"] .mission-card[data-mission-id="sc1_06"],
+html[data-skin="ink"] .md-hero:has(img[src$="/sc1_06.webp"]) { --ink-arc: url('../../assets/missions/banners/scenes/sc1_06.webp'); --ink-pos: 85%; --ink-posy: 55%; }
 html[data-skin="ink"] .mission-card[data-mission-id="boss_nine_tails"],
 html[data-skin="ink"] .md-hero:has(img[src$="/boss_nine_tails.webp"]) { --ink-ja: "九尾"; --ink-no: "巨大討伐"; }
 html[data-skin="ink"] .mission-card[data-mission-id="boss_susanoo_perfect"],
@@ -199,7 +211,7 @@ html[data-skin="ink"] body.page-missions .mission-card--banner:is([data-mission-
 html[data-skin="ink"] body.page-missions .mission-card--banner:is([data-mission-id^="sc1_"], [data-mission-id^="sc2_"]) .mc-art--banner,
 html[data-skin="ink"] .md-hero.md-hero--banner:has(img[src*="/story/"]) .mc-art--banner {
   position: absolute; inset: 0; aspect-ratio: auto;
-  background: var(--ink-arc) var(--ink-pos, 50%) 38% / cover no-repeat #141210;
+  background: var(--ink-arc) var(--ink-pos, 50%) var(--ink-posy, 38%) / cover no-repeat #141210;
   transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 html[data-skin="ink"] body.page-missions .mission-card--banner:is([data-mission-id^="sc1_"], [data-mission-id^="sc2_"]):hover .mc-art--banner { transform: scale(1.03); }
