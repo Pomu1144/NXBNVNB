@@ -433,3 +433,7 @@ html[data-skin="ink"] .aura-fx > s,
 html[data-skin="ink"] .maxed-fx.aura-fx > b { transition: opacity 0.35s ease, visibility 0s; }
 html[data-skin="ink"].fx-scrolling .aura-fx > s,
 html[data-skin="ink"].fx-scrolling .maxed-fx.aura-fx > b { opacity: 0 !important; visibility: hidden; transition: none; }
+/* Card auras are switched off in Ink for now (gold 7★ frame and Ultimate
+   Max smoke) until a new look is chosen; the rules above are kept for that.
+   display:none also stops their animations. */
+html[data-skin="ink"] .aura-fx { display: none !important; }
