@@ -939,4 +939,5 @@ html[data-skin="ink"] body.page-characters .char-grid .char-slot .char-card-leve
    show all of it instead of zooming in on the face */
 html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-characters .char-modal-art:has(> .a7.am),
 html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compact body.page-characters .char-modal-art:has(> .a7.am) { --ia-zoom: 1; }
-html[data-skin="ink"] body.page-characters .char-modal-art > .a7.am { left: 50%; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-characters .char-modal-art:has(> .a7.am) { --ia-side: min(100cqw, 100cqh); }
+html[data-skin="ink"] body.page-characters .char-modal-art > .a7.am { left: 50%; top: 50%; transform: translate(-50%, -50%); }
