@@ -934,3 +934,10 @@ html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-characters .ch
 html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-characters .char-grid .char-card-level { padding: 0 5px; gap: 3px; }
 html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-characters .char-grid { grid-template-columns: repeat(auto-fill, minmax(136px, 1fr)) !important; }
 html[data-skin="ink"] body.page-characters .char-grid .char-slot .char-card-level { position: relative; z-index: 4; }
+
+/* animated full art (js/art-motion.js) is a composed scene, not a portrait:
+   show all of it instead of zooming in on the face */
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-characters .char-modal-art:has(> .a7.am),
+html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compact body.page-characters .char-modal-art:has(> .a7.am) { --ia-zoom: 1; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-characters .char-modal-art:has(> .a7.am) { --ia-side: min(100cqw, 100cqh); }
+html[data-skin="ink"] body.page-characters .char-modal-art > .a7.am { left: 50%; top: 50%; transform: translate(-50%, -50%); }
