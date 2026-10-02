@@ -334,8 +334,12 @@
       const fx7Style = (is7Star && c.fx7) ? ` style="--fx7c:${c.fx7.color || "#c9b6ff"};--fx7m:url('${safeStr(art.portrait, c.portrait)}')"` : "";
       if (fx7Style) fxData.push("anim7");
       const fxAttr = (fxData.length ? ` data-fx="${fxData.join(" ")}"` : "") + fx7Style;
+      // filter keys for the Ink roster toolbar (js/ink-roster.js)
+      const lvNow = safeNum(inst.level, 1);
+      const capNow = (hasLimitBreak && inst.limitBreakLevel > 0) ? window.LimitBreak.getExtendedLevelCap(tier, inst.limitBreakLevel) : tierCap(c, tier);
+      const keyAttr = ` data-el="${safeStr(c.element, "")}" data-stars="${starsFromTier(tier) || 0}" data-lv="${lvNow}" data-max="${lvNow >= capNow ? 1 : 0}" data-q="${safeStr(`${c.name} ${c.version || ""}`, "").toLowerCase().replace(/"/g, "")}"`;
       return `
-        <button class="char-slot${fxClass}"${fxAttr} type="button" data-uid="${inst.uid}">
+        <button class="char-slot${fxClass}"${fxAttr}${keyAttr} type="button" data-uid="${inst.uid}">
           <img class="char-portrait-img" src="${safeStr(art.portrait, c.portrait)}" alt="${c.name} portrait"
                width="200" height="200" loading="lazy" decoding="async"
                onerror="this.onerror=null;this.src='assets/characters/_common/silhouette.png';" />
@@ -344,8 +348,37 @@
         </button>
       `;
     }).join("");
+    document.dispatchEvent(new CustomEvent("roster:rendered"));
   }
   window.refreshCharacterGrid = renderGrid;
+
+  /* ---------- Unit summary (stats, power, grade, level) ----------
+     Same maths as the Status tab, without touching the DOM or storage;
+     used by the Ink roster's tile grades and preview panel. */
+  function unitSummary(uid) {
+    const inst = window.InventoryChar.getByUid(uid);
+    const c = inst && BYID[inst.charId];
+    if (!c) return null;
+    const tier = inst.tierCode || minTier(c);
+    const lb = (hasLimitBreak && inst.limitBreakLevel > 0) ? inst.limitBreakLevel : 0;
+    const cap = lb ? window.LimitBreak.getExtendedLevelCap(tier, lb) : tierCap(c, tier);
+    let st = c.statsBase || {};
+    if (hasProg && window.Progression.computeEffectiveStatsLoreTier) {
+      const comp = window.Progression.computeEffectiveStatsLoreTier(c, safeNum(inst.level, 1), tier, { normalize: true, extendedCap: lb ? cap : null });
+      st = comp?.stats || {};
+      if (lb) st = window.LimitBreak.applyLimitBreakToStats(st, lb);
+    }
+    const bonus = getEquippedCardBonuses(uid);
+    const hp = (st.hp || 0) + bonus.hp, atk = (st.atk || 0) + bonus.atk, spd = (st.speed || 0) + bonus.spd;
+    const nAb = (inst.unlockedAbilities || []).length;
+    const level = safeNum(inst.level, 1);
+    return {
+      uid, inst, c, tier, stars: starsFromTier(tier) || 0, art: resolveTierArt(c, tier),
+      level, cap, isMax: level >= cap, hp, atk, spd,
+      power: hp + atk + spd + nAb * 30000, grade: calculatePowerGrade(hp + atk + spd, nAb)
+    };
+  }
+  window.RosterInfo = { summary: unitSummary, open: (uid) => openModalByUid(uid) };
 
   /* ---------- Modal open/close ---------- */
   function openModalByUid(uid) {
@@ -1974,6 +2007,7 @@
 
   /* ---------- Grid clicks ---------- */
   GRID.addEventListener("click", (e) => {
+    if (e.defaultPrevented) return;   // the Ink roster selects first (js/ink-roster.js)
     const slot = e.target.closest(".char-slot");
     if (!slot) return;
     const uid = slot.getAttribute("data-uid");
