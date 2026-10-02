@@ -342,3 +342,58 @@ html[data-skin="ink"] .power-grade-animated.power-grade-lr {
 html[data-skin="ink"] .power-grade-animated.power-grade-lr > * { display: none !important; }
 html[data-skin="ink"] .tl-grade[data-grade="LR"] { background: url('../assets/ui/ink/grade_lr.webp') center / contain no-repeat; }
 html[data-skin="ink"] .tl-grade[data-grade="LR"] video { display: none; }
+
+/* ── Card auras in Ink (js/seven-star-fx.js injects .seven-star-fx /
+   .maxed-fx <i><b></b></i> into on-screen cards; Classic/Glass keep the
+   lightning and wind). Same perf model: one still per aura, compositor-only
+   transform/opacity animation, no blend modes, no animated shadows.
+   7★: a gold-leaf dry-brush frame traced round the card, a slow light sweep
+   running along the gold (the sweep is masked to the brush stroke).
+   Ultimate Max (fully maxed): gold-flecked sumi smoke curling off the card
+   edges; the Ultimate Max badge becomes a vermilion 極 seal. */
+html[data-skin="ink"] .char-slot.is-7star,
+html[data-skin="ink"] .team-char-card.is-7star,
+html[data-skin="ink"] .char-slot.is-maxed {
+  border-color: rgba(201, 162, 78, 0.45);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45), inset 0 0 0 1px rgba(226, 204, 150, 0.14);
+}
+html[data-skin="ink"] .char-slot.is-7star:hover,
+html[data-skin="ink"] .char-slot.is-maxed:hover { border-color: rgba(226, 204, 150, 0.85); }
+html[data-skin="ink"] .slot-card.is-7star .portrait img { border-color: rgba(201, 162, 78, 0.55); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.45); }
+/* sit the brush frame just outside the card */
+html[data-skin="ink"] .char-slot .seven-star-fx { inset: -9px; width: calc(100% + 18px); height: calc(100% + 18px); border-radius: 0; }
+html[data-skin="ink"] .seven-star-fx.aura-fx > b {
+  background: url('../assets/effects/ink_frame_7s.webp') center / 100% 100% no-repeat;
+  animation: inkFrameBreath 4.2s ease-in-out infinite;
+}
+html[data-skin="ink"] .seven-star-fx.aura-fx::after {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(115deg, transparent 38%, rgba(255, 246, 214, 0.95) 50%, transparent 62%) 0 0 / 100% 100% no-repeat;
+  -webkit-mask: url('../assets/effects/ink_frame_7s.webp') center / 100% 100% no-repeat;
+          mask: url('../assets/effects/ink_frame_7s.webp') center / 100% 100% no-repeat;
+  transform: translateX(-130%);
+  animation: inkFrameSweep 4.2s cubic-bezier(.45, 0, .3, 1) infinite;
+}
+@keyframes inkFrameBreath { 0%, 100% { opacity: 0.86; } 50% { opacity: 1; } }
+@keyframes inkFrameSweep { 0%, 50% { transform: translateX(-130%); } 85%, 100% { transform: translateX(130%); } }
+
+html[data-skin="ink"] .maxed-fx { border-radius: 0; }
+html[data-skin="ink"] .maxed-fx.aura-fx > b {
+  background: url('../assets/effects/ink_smoke_max.webp') center / 100% 100% no-repeat;
+  transform-origin: 50% 100%;
+  animation: inkSmokeDrift 7s ease-in-out infinite;
+}
+@keyframes inkSmokeDrift {
+  0%, 100% { transform: translateY(0) scale(1, 1);          opacity: 0.85; }
+  50%      { transform: translateY(-3%) scale(1.03, 1.06);   opacity: 0.55; }
+}
+/* the Ultimate Max badge: a vermilion 極 seal */
+html[data-skin="ink"] img.ultimate-badge[src$="ultimate_max.png"] {
+  content: url('../assets/effects/ink_seal_kiwami.webp');
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.7));
+}
+.fx-off .seven-star-fx.aura-fx::after { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) {
+  html[data-skin="ink"] .seven-star-fx.aura-fx::after { display: none; }
+}
+html[data-skin="ink"] .char-slot img.ultimate-badge[src$="ultimate_max.png"] { width: 30px !important; height: 30px !important; right: 6px !important; bottom: 34px !important; }
