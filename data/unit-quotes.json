@@ -1,18 +1,78 @@
 {
   "naruto_2114": {
     "jaName": "うずまきナルト",
-    "ja": "だからよ、オレは諦めねェ!",
-    "en": "Because I never give up.",
+    "ja": "だからよ…オレは諦めねェ!",
+    "en": "Because I never give up!",
     "art": "assets/characters/naruto_2115/dossier/art.webp",
     "nameImg": "assets/characters/naruto_2115/dossier/name_ja.webp",
     "quoteImg": "assets/characters/naruto_2115/dossier/quote.webp"
   },
   "naruto_2115": {
     "jaName": "うずまきナルト",
-    "ja": "だからよ、オレは諦めねェ!",
-    "en": "Because I never give up.",
+    "ja": "だからよ…オレは諦めねェ!",
+    "en": "Because I never give up!",
     "art": "assets/characters/naruto_2115/dossier/art.webp",
     "nameImg": "assets/characters/naruto_2115/dossier/name_ja.webp",
     "quoteImg": "assets/characters/naruto_2115/dossier/quote.webp"
+  },
+  "kakashi_2052": {
+    "jaName": "はたけカカシ",
+    "ja": "オレのやることは…仲間を絶対に失わないことだ",
+    "en": "What I do... is make sure I never lose my friends.",
+    "art": "assets/characters/kakashi_2052/dossier/art.webp",
+    "nameImg": "assets/characters/kakashi_2052/dossier/name_ja.webp",
+    "quoteImg": "assets/characters/kakashi_2052/dossier/quote.webp",
+    "motto": "A shinobi protects what is precious.",
+    "role": "Lightning Style / Tactical Support"
+  },
+  "kakashi_2053": {
+    "jaName": "はたけカカシ",
+    "ja": "オレのやることは…仲間を絶対に失わないことだ",
+    "en": "What I do... is make sure I never lose my friends.",
+    "art": "assets/characters/kakashi_2052/dossier/art.webp",
+    "nameImg": "assets/characters/kakashi_2052/dossier/name_ja.webp",
+    "quoteImg": "assets/characters/kakashi_2052/dossier/quote.webp",
+    "motto": "A shinobi protects what is precious.",
+    "role": "Lightning Style / Tactical Support"
+  },
+  "kakashi_509": {
+    "jaName": "はたけカカシ",
+    "ja": "まだまだだ…",
+    "en": "Not yet... I still have a long way to go.",
+    "art": "assets/characters/kakashi_2091/dossier/art.webp",
+    "nameImg": "assets/characters/kakashi_2091/dossier/name_ja.webp",
+    "quoteImg": "assets/characters/kakashi_2091/dossier/quote.webp",
+    "motto": "A shinobi sees more than what lies ahead.",
+    "role": "Lightning Style / Tactical Support"
+  },
+  "kakashi_2091": {
+    "jaName": "はたけカカシ",
+    "ja": "まだまだだ…",
+    "en": "Not yet... I still have a long way to go.",
+    "art": "assets/characters/kakashi_2091/dossier/art.webp",
+    "nameImg": "assets/characters/kakashi_2091/dossier/name_ja.webp",
+    "quoteImg": "assets/characters/kakashi_2091/dossier/quote.webp",
+    "motto": "A shinobi sees more than what lies ahead.",
+    "role": "Lightning Style / Tactical Support"
+  },
+  "hashirama_2058": {
+    "jaName": "千手柱間",
+    "ja": "オレは忍の世に木の葉という大きな木を育てたい",
+    "en": "I want to nurture a great tree called the Leaf in this shinobi world.",
+    "art": "assets/characters/hashirama_2058/dossier/art.webp",
+    "nameImg": "assets/characters/hashirama_2058/dossier/name_ja.webp",
+    "quoteImg": "assets/characters/hashirama_2058/dossier/quote.webp",
+    "motto": "True strength lies in protecting what matters.",
+    "role": "Wood Style / Frontline Tank"
+  },
+  "hashirama_418": {
+    "jaName": "千手柱間",
+    "ja": "忍とは…人と人とがわかり合える未来を作ることだ",
+    "en": "A shinobi... builds a future where people can truly understand each other.",
+    "art": "assets/characters/hashirama_418/dossier/art.webp",
+    "nameImg": "assets/characters/hashirama_418/dossier/name_ja.webp",
+    "quoteImg": "assets/characters/hashirama_418/dossier/quote.webp",
+    "motto": "A true shinobi protects people and the bonds that connect them.",
+    "role": "Wood Style / Frontline Tank"
   }
 }
