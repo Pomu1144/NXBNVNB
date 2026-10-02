@@ -74,5 +74,66 @@
     "quoteImg": "assets/characters/hashirama_418/dossier/quote.webp",
     "motto": "A true shinobi protects people and the bonds that connect them.",
     "role": "Wood Style / Frontline Tank"
+  },
+  "kakashi_664": {
+    "jaName": "はたけカカシ",
+    "ja": "仲間を… 俺は絶対に失わない。",
+    "en": "I won't let my comrades fall... not again.",
+    "art": "assets/characters/kakashi_664/dossier/art.webp",
+    "nameImg": "assets/characters/kakashi_664/dossier/name_ja.webp",
+    "quoteImg": "assets/characters/kakashi_664/dossier/quote.webp",
+    "motto": "True strength lives in those you protect.",
+    "role": "Shadow Blade / Tactical Support",
+    "artShift": 0.15
+  },
+  "kakashi_854": {
+    "jaName": "はたけカカシ",
+    "ja": "まだまだ…",
+    "en": "Not yet... I still have a long way to go.",
+    "art": "assets/characters/kakashi_855/dossier/art.webp",
+    "nameImg": "assets/characters/kakashi_855/dossier/name_ja.webp",
+    "quoteImg": "assets/characters/kakashi_855/dossier/quote.webp",
+    "motto": "A shinobi sees more than what lies ahead.",
+    "role": "Lightning Style / Tactical Support"
+  },
+  "kakashi_855": {
+    "jaName": "はたけカカシ",
+    "ja": "まだまだ…",
+    "en": "Not yet... I still have a long way to go.",
+    "art": "assets/characters/kakashi_855/dossier/art.webp",
+    "nameImg": "assets/characters/kakashi_855/dossier/name_ja.webp",
+    "quoteImg": "assets/characters/kakashi_855/dossier/quote.webp",
+    "motto": "A shinobi sees more than what lies ahead.",
+    "role": "Lightning Style / Tactical Support"
+  },
+  "sasuke_2116": {
+    "jaName": "うちはサスケ",
+    "ja": "まだ終わりじゃない… 俺は…俺のやり方で…",
+    "en": "It's not over yet. I will... in my own way...",
+    "art": "assets/characters/sasuke_2117/dossier/art.webp",
+    "nameImg": "assets/characters/sasuke_2117/dossier/name_ja.webp",
+    "quoteImg": "assets/characters/sasuke_2117/dossier/quote.webp",
+    "motto": "I don't follow a path anymore. I create it.",
+    "role": "Lightning Style / Avenger",
+    "fx": "lightning",
+    "fxOrigin": [
+      0.494,
+      0.79
+    ]
+  },
+  "sasuke_2117": {
+    "jaName": "うちはサスケ",
+    "ja": "まだ終わりじゃない… 俺は…俺のやり方で…",
+    "en": "It's not over yet. I will... in my own way...",
+    "art": "assets/characters/sasuke_2117/dossier/art.webp",
+    "nameImg": "assets/characters/sasuke_2117/dossier/name_ja.webp",
+    "quoteImg": "assets/characters/sasuke_2117/dossier/quote.webp",
+    "motto": "I don't follow a path anymore. I create it.",
+    "role": "Lightning Style / Avenger",
+    "fx": "lightning",
+    "fxOrigin": [
+      0.494,
+      0.79
+    ]
   }
 }

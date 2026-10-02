@@ -631,14 +631,28 @@ html[data-skin="ink"].is-mobile.is-landscape.is-compact .card-inventory-title.jj
 /* full-frame art: the image spans the whole dossier (its left part fills the
    art column, the rest runs dimmed behind the record), as in the mockups */
 html[data-skin="ink"] body.page-characters #char-modal.ink-has-art .ink-dossier-art {
-  display: block; position: absolute; left: 0; top: 0; z-index: 1;
-  width: calc(100% * 100 / 60); height: 100%; max-width: none;
+  display: block; position: absolute; top: 0; z-index: 1;
+  --ink-art-k: calc(100 / 60);
+  /* --ink-art-dx (data artShift): slide the painting left by that fraction
+     of the dossier, keeping its right edge at the dossier's right edge */
+  left: calc(-100% * var(--ink-art-k) * var(--ink-art-dx, 0));
+  width: calc(100% * var(--ink-art-k) * (1 + var(--ink-art-dx, 0))); height: 100%; max-width: none;
   object-fit: cover; object-position: 0% 30%;
 }
+/* animated effect layer (data fx), drawn by js/ink-lightning.js over the same box */
+html[data-skin="ink"] body.page-characters .ink-dossier-fx { display: none; }
+html[data-skin="ink"] body.page-characters #char-modal.ink-has-art.ink-has-fx .ink-dossier-fx {
+  display: block; position: absolute; top: 0; z-index: 1; pointer-events: none;
+  --ink-art-k: calc(100 / 60);
+  left: calc(-100% * var(--ink-art-k) * var(--ink-art-dx, 0));
+  width: calc(100% * var(--ink-art-k) * (1 + var(--ink-art-dx, 0))); height: 100%;
+}
+html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-characters #char-modal.ink-has-art.ink-has-fx .ink-dossier-fx { --ink-art-k: calc(100 / 55); }
+html.fx-scrolling[data-skin="ink"] body.page-characters .ink-dossier-fx { visibility: hidden; }
 html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-characters #char-modal.ink-has-art #char-modal-img,
 html[data-skin="ink"] body.page-characters #char-modal.ink-has-art .char-modal-art > .a7 { visibility: hidden; }
 html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-characters #char-modal.ink-has-art .char-modal-panel {
-  background: #0b0b0c var(--ink-art) 0% 30% / cover no-repeat !important;
+  background: #0b0b0c var(--ink-art) 100% 30% / cover no-repeat !important;
 }
 html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-characters #char-modal.ink-has-art .char-modal-info {
   background: linear-gradient(90deg, rgba(11, 11, 12, 0.93), rgba(11, 11, 12, 0.8) 30%, rgba(11, 11, 12, 0.74)) !important;
@@ -687,7 +701,7 @@ html[data-skin="ink"] body.page-characters #char-modal.ink-has-nameimg .ink-vnam
 /* lettered quote (already set on its diagonal) */
 html[data-skin="ink"] body.page-characters .ink-quote-img { display: none; }
 html[data-skin="ink"] body.page-characters #char-modal.ink-has-quoteimg .ink-dossier-quote { transform: none; right: auto; top: auto; left: calc(var(--ia-l) + var(--ia-ic) + 118px); bottom: 104px; gap: 0; }
-html[data-skin="ink"] body.page-characters #char-modal.ink-has-quoteimg .ink-dossier-quote::before { inset: -12% -8%; background: radial-gradient(closest-side, rgba(8, 8, 9, 0.38), transparent); }
+html[data-skin="ink"] body.page-characters #char-modal.ink-has-quoteimg .ink-dossier-quote::before { inset: -12% -8%; background: radial-gradient(closest-side, rgba(8, 8, 9, 0.6), rgba(8, 8, 9, 0.3) 70%, transparent); }
 html[data-skin="ink"] body.page-characters #char-modal.ink-has-quoteimg .ink-quote-img {
   display: block; width: 36cqw; height: auto; filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.8));
 }
@@ -695,7 +709,7 @@ html[data-skin="ink"] body.page-characters #char-modal.ink-has-quoteimg .ink-quo
 html[data-skin="ink"] body.page-characters #char-modal.ink-has-quoteimg .ink-quote-en { display: none; }
 
 html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-characters #char-modal.ink-has-nameimg .ink-vname-img { height: min(200px, 50cqh); }
-html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-characters #char-modal.ink-has-art .ink-dossier-art { width: calc(100% * 100 / 55); }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-characters #char-modal.ink-has-art .ink-dossier-art { --ink-art-k: calc(100 / 55); }
 html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-characters .ink-motto { display: none; }
 html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-characters #char-modal:has(.ink-motto:not([hidden])) :is(.nameplate-stars, .nameplate-sub) { max-width: none; }
 html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-characters .ink-role { font-size: 6.5px; padding-left: 22px; letter-spacing: 0.24em; }

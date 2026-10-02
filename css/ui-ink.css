@@ -56,7 +56,7 @@ html[data-skin="ink"]:not(._g):not(._l):not(._s) .currency-hud { margin-right: 1
 html[data-skin="ink"] .ink-home {
   display: block; position: fixed; inset: 0; z-index: 40; overflow: hidden;
   background: #0b0b0c; color: var(--g-text); font-family: var(--g-sans);
-  --ink-rail: 190px;
+  --ink-rail: calc(190px + var(--safe-l, 0px)); /* the rail pads the left safe area (iPhone notch in landscape) */
 }
 
 /* Layers: bg plate → giant echo face → hero cut-out → light shards */
@@ -64,9 +64,9 @@ html[data-skin="ink"] .ink-home {
 .ink-layers { inset: 0; }
 .ink-l-bg { inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 60% 40%; }
 .ink-l-echo {
-  left: var(--ink-rail); top: -6%; height: 78%; width: auto; opacity: 0.32; mix-blend-mode: screen;
-  -webkit-mask-image: radial-gradient(ellipse 60% 60% at 50% 45%, #000 40%, transparent 78%);
-  mask-image: radial-gradient(ellipse 60% 60% at 50% 45%, #000 40%, transparent 78%);
+  left: calc(var(--ink-rail) - 16%); top: -7%; height: 84%; width: auto; opacity: 0.85; mix-blend-mode: screen;
+  -webkit-mask-image: radial-gradient(ellipse 62% 64% at 50% 42%, #000 52%, transparent 82%);
+  mask-image: radial-gradient(ellipse 62% 64% at 50% 42%, #000 52%, transparent 82%);
 }
 .ink-l-hero {
   left: 50%; bottom: -4%; height: 108%; width: auto; transform: translateX(-46%);
@@ -184,17 +184,18 @@ html[data-skin="ink"] .ink-home {
 html[data-skin="ink"].ink-dock-open .bottom-icon-bar { z-index: 1003 !important; }
 
 /* ── Phone landscape ─────────────────────────────────────────────── */
-html[data-skin="ink"].is-mobile.is-landscape.is-compact .ink-home { --ink-rail: 128px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact .ink-home { --ink-rail: calc(128px + var(--safe-l, 0px)); }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact .ink-l-echo { left: calc(var(--ink-rail) - 11%); }
 html.is-mobile.is-landscape.is-compact .ink-brand { padding: 0 12px 10px; gap: 8px; }
 html.is-mobile.is-landscape.is-compact .ink-brand svg { width: 28px; height: 28px; }
 html.is-mobile.is-landscape.is-compact .ink-brand span { font-size: 7.5px; letter-spacing: 0.3em; }
-html.is-mobile.is-landscape.is-compact .ink-nav { height: 34px; padding: 0 10px 0 calc(16px + var(--safe-l, 0px)); gap: 9px; font-size: 12px; }
+html.is-mobile.is-landscape.is-compact .ink-nav { height: 34px; padding: 0 10px 0 16px; gap: 9px; font-size: 12px; }
 html.is-mobile.is-landscape.is-compact .ink-nav svg { width: 15px; height: 15px; }
 html.is-mobile.is-landscape.is-compact .ink-rail { padding-top: 10px; gap: 2px; }
 html.is-mobile.is-landscape.is-compact .ink-tools { top: 6px; gap: 4px; }
 html.is-mobile.is-landscape.is-compact .ink-ic { width: 30px; height: 28px; }
 html.is-mobile.is-landscape.is-compact .ink-ic svg { width: 15px; height: 15px; }
-html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compact .currency-hud { margin-right: 108px !important; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compact .currency-hud { margin-right: calc(108px + var(--safe-r, 0px)) !important; }
 html.is-mobile.is-landscape.is-compact .ink-quote { top: 22%; left: calc(var(--ink-rail) + 18px); font-size: 11px; line-height: 1.7; }
 html.is-mobile.is-landscape.is-compact .ink-quote em { font-size: 10px; }
 html.is-mobile.is-landscape.is-compact .ink-quote em::after { width: 50px; }
@@ -202,7 +203,7 @@ html.is-mobile.is-landscape.is-compact .ink-tag { font-size: 14px; top: 17%; rig
 html.is-mobile.is-landscape.is-compact .ink-tag small { font-size: 7px; }
 html.is-mobile.is-landscape.is-compact .ink-title { bottom: 22%; left: calc(var(--ink-rail) - 10px); width: min(33vw, 270px); }
 html.is-mobile.is-landscape.is-compact .ink-title small { font-size: 7px; }
-html.is-mobile.is-landscape.is-compact .ink-news { left: 10px; bottom: max(8px, var(--safe-b, 0px)); height: 62px; width: min(300px, 34vw); }
+html.is-mobile.is-landscape.is-compact .ink-news { left: max(10px, var(--safe-l, 0px)); bottom: max(8px, var(--safe-b, 0px)); height: 62px; width: min(300px, 34vw); }
 html.is-mobile.is-landscape.is-compact .ink-news-body { padding: 5px 9px; gap: 2px; }
 html.is-mobile.is-landscape.is-compact .ink-news-body b { font-size: 10px; padding-bottom: 2px; }
 html.is-mobile.is-landscape.is-compact .ink-news-list > span { font-size: 9px; gap: 6px; }
@@ -216,6 +217,12 @@ html.is-mobile.is-landscape.is-compact .ink-enter { height: 42px; width: min(220
 html.is-mobile.is-landscape.is-compact .ink-enter b { font-size: 20px; }
 html.is-mobile.is-landscape.is-compact .ink-enter small { font-size: 7px; right: 36px; bottom: 3px; }
 html.is-mobile.is-landscape.is-compact .ink-enter-cap { width: min(220px, 26vw); font-size: 8.5px; bottom: max(4px, var(--safe-b, 0px)); }
+/* larger phones (896×414, 932×430): let the type grow with the viewport height */
+html.is-mobile.is-landscape.is-compact .ink-quote { font-size: clamp(11px, 2.9vh, 13px); }
+html.is-mobile.is-landscape.is-compact .ink-quote em { font-size: clamp(10px, 2.6vh, 11.5px); }
+html.is-mobile.is-landscape.is-compact .ink-tag { font-size: clamp(14px, 3.7vh, 16px); }
+html.is-mobile.is-landscape.is-compact .ink-title { width: min(33vw, 70vh, 300px); }
+html.is-mobile.is-landscape.is-compact .ink-card span { font-size: clamp(16px, 4.2vh, 18px); }
 
 /* Serif labels run wider than Oswald: keep button and tab text on one line */
 html[data-skin="ink"] .jjk-btn,
@@ -296,7 +303,7 @@ html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._
 }
 html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body .bottom-bar { padding-top: 8px !important; }
 html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body .bottom-bar .hud-button {
-  height: 34px !important; gap: 9px !important; padding: 0 6px 0 calc(14px + var(--safe-l, 0px)) !important;
+  height: 34px !important; gap: 9px !important; padding: 0 6px 0 14px !important; /* .bottom-bar already pads --safe-l */
 }
 html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body .bottom-bar .hud-button img { width: 15px !important; height: 15px !important; }
 html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body .bottom-bar .hud-button::after { font-size: 11px !important; }
