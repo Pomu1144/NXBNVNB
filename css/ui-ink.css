@@ -364,36 +364,57 @@ html[data-skin="ink"] .slot-card.is-7star .portrait img { border-color: rgba(201
 html[data-skin="ink"] .char-slot .seven-star-fx { inset: -9px; width: calc(100% + 18px); height: calc(100% + 18px); border-radius: 0; }
 html[data-skin="ink"] .seven-star-fx.aura-fx > b {
   background: url('../assets/effects/ink_frame_7s.webp') center / 100% 100% no-repeat;
-  animation: inkFrameBreath 4.2s ease-in-out infinite;
+  opacity: 0.78;
 }
-html[data-skin="ink"] .seven-star-fx.aura-fx::after {
-  content: ''; position: absolute; inset: 0; pointer-events: none;
-  background: linear-gradient(115deg, transparent 38%, rgba(255, 246, 214, 0.95) 50%, transparent 62%) 0 0 / 100% 100% no-repeat;
+/* 7★ flow: liquid gold travelling round the brush stroke. <s> is masked to
+   the stroke; <u> inside it is a large conic highlight that turns forever,
+   so the light keeps flowing along the frame (transform only). */
+html[data-skin="ink"] .aura-fx > s {
+  display: block; position: absolute; inset: 0; overflow: hidden; pointer-events: none;
+}
+html[data-skin="ink"] .seven-star-fx.aura-fx > s {
   -webkit-mask: url('../assets/effects/ink_frame_7s.webp') center / 100% 100% no-repeat;
           mask: url('../assets/effects/ink_frame_7s.webp') center / 100% 100% no-repeat;
-  transform: translateX(-130%);
-  animation: inkFrameSweep 4.2s cubic-bezier(.45, 0, .3, 1) infinite;
 }
-@keyframes inkFrameBreath { 0%, 100% { opacity: 0.86; } 50% { opacity: 1; } }
-@keyframes inkFrameSweep { 0%, 50% { transform: translateX(-130%); } 85%, 100% { transform: translateX(130%); } }
+html[data-skin="ink"] .seven-star-fx.aura-fx > s > u {
+  position: absolute; left: 50%; top: 50%; width: 180%; aspect-ratio: 1; margin: -90% 0 0 -90%;
+  background: conic-gradient(from 0deg,
+    transparent 0deg, rgba(255, 236, 170, 0) 20deg, rgba(255, 244, 205, 0.95) 48deg, rgba(240, 200, 110, 0.6) 70deg, transparent 100deg,
+    transparent 180deg, rgba(255, 236, 170, 0) 200deg, rgba(255, 244, 205, 0.85) 228deg, rgba(240, 200, 110, 0.5) 250deg, transparent 280deg);
+  animation: inkFlowTurn 3.6s linear infinite;
+}
+@keyframes inkFlowTurn { to { transform: rotate(360deg); } }
 
+/* Ultimate Max flow: two smoke layers rise, sway and fade in turn, so the
+   ink keeps streaming off the card */
 html[data-skin="ink"] .maxed-fx { border-radius: 0; }
-html[data-skin="ink"] .maxed-fx.aura-fx > b {
+html[data-skin="ink"] .maxed-fx.aura-fx > b,
+html[data-skin="ink"] .maxed-fx.aura-fx > s {
   background: url('../assets/effects/ink_smoke_max.webp') center / 100% 100% no-repeat;
   transform-origin: 50% 100%;
-  animation: inkSmokeDrift 7s ease-in-out infinite;
+  animation: inkSmokeFlow 5.2s linear infinite;
 }
-@keyframes inkSmokeDrift {
-  0%, 100% { transform: translateY(0) scale(1, 1);          opacity: 0.85; }
-  50%      { transform: translateY(-3%) scale(1.03, 1.06);   opacity: 0.55; }
+html[data-skin="ink"] .maxed-fx.aura-fx > s { animation-delay: -2.6s; animation-name: inkSmokeFlowB; }
+html[data-skin="ink"] .maxed-fx.aura-fx > s > u { display: none; }
+@keyframes inkSmokeFlow {
+  0%   { transform: translate(0, 6%) scale(1, 0.96) skewX(0deg);   opacity: 0; }
+  25%  { opacity: 0.9; }
+  50%  { transform: translate(-1.5%, 0) scale(1.02, 1.03) skewX(-3deg); opacity: 0.85; }
+  100% { transform: translate(1.5%, -8%) scale(1.05, 1.1) skewX(3deg); opacity: 0; }
+}
+@keyframes inkSmokeFlowB {
+  0%   { transform: scaleX(-1) translate(0, 6%) scale(1, 0.96) skewX(0deg);   opacity: 0; }
+  25%  { opacity: 0.8; }
+  50%  { transform: scaleX(-1) translate(1.5%, 0) scale(1.02, 1.03) skewX(3deg); opacity: 0.75; }
+  100% { transform: scaleX(-1) translate(-1.5%, -8%) scale(1.05, 1.1) skewX(-3deg); opacity: 0; }
 }
 /* the Ultimate Max badge: a vermilion 極 seal */
 html[data-skin="ink"] img.ultimate-badge[src$="ultimate_max.png"] {
   content: url('../assets/effects/ink_seal_kiwami.webp');
   filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.7));
 }
-.fx-off .seven-star-fx.aura-fx::after { animation-play-state: paused; }
+.fx-off .aura-fx > s, .fx-off .aura-fx > s > u { animation-play-state: paused; }
 @media (prefers-reduced-motion: reduce) {
-  html[data-skin="ink"] .seven-star-fx.aura-fx::after { display: none; }
+  html[data-skin="ink"] .aura-fx > s, html[data-skin="ink"] .aura-fx > s > u { animation: none !important; }
 }
 html[data-skin="ink"] .char-slot img.ultimate-badge[src$="ultimate_max.png"] { width: 30px !important; height: 30px !important; right: 6px !important; bottom: 34px !important; }

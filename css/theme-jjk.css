@@ -201,6 +201,7 @@ html.is-mobile.is-landscape.is-compact .jjk-page-header .jjk-title-plate {
   background: center / cover no-repeat;
   pointer-events: none;
 }
+.aura-fx > s { display: none; }   /* Ink-only flowing layer (css/ui-ink.css) */
 .seven-star-fx.aura-fx > b { background-image: url("../assets/effects/aura_lightning_a.webp"); animation: auraBolt .6s infinite; }
 .maxed-fx.aura-fx > b      { background-image: url("../assets/effects/aura_wind_a.webp"); animation: auraWind 3.8s ease-in-out infinite; }
 /* one still x 4 mirror poses, hard cuts + flicker = crackling lightning */

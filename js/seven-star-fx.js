@@ -45,7 +45,9 @@
       const el = document.createElement("i");
       el.className = cls + " aura-fx";
       el.setAttribute("aria-hidden", "true");
-      el.innerHTML = "<b></b>";
+      // <b> = the still; <s><u></u></s> = an extra flowing layer used by the
+      // Ink style (hidden elsewhere, see css/theme-jjk.css)
+      el.innerHTML = "<b></b><s><u></u></s>";
       host.insertBefore(el, before);
     });
   }
