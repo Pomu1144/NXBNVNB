@@ -939,5 +939,11 @@ html[data-skin="ink"] body.page-characters .char-grid .char-slot .char-card-leve
    show all of it instead of zooming in on the face */
 html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-characters .char-modal-art:has(> .a7.am),
 html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compact body.page-characters .char-modal-art:has(> .a7.am) { --ia-zoom: 1; }
-html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-characters .char-modal-art:has(> .a7.am) { --ia-side: min(100cqw, 100cqh); }
-html[data-skin="ink"] body.page-characters .char-modal-art > .a7.am { left: 50%; top: 50%; transform: translate(-50%, -50%); }
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-characters .char-modal-art:has(> .a7.am) { --ia-side: min(100cqw, 108cqh); }
+/* flush with the record on the right; a wide column's spare width goes left,
+   under the ability keys, where the edge fades into the backdrop */
+html[data-skin="ink"] body.page-characters .char-modal-art > .a7.am {
+  left: auto; right: 0; top: 50%; transform: translateY(-50%);
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 14%);
+          mask-image: linear-gradient(to right, transparent, #000 14%);
+}
