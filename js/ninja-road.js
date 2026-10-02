@@ -100,7 +100,7 @@
     const members = [];
     SLOT_ORDER.forEach(slot => {
       const e = team[slot];
-      if (e && e.uid && inv[e.uid]) members.push({ uid: e.uid, charId: inv[e.uid].charId || e.charId });
+      if (e && e.uid && inv[e.uid]) members.push({ uid: e.uid, charId: inv[e.uid].charId || e.charId, slot });
     });
     if (!members.length) return null;
     const c = team.commander;
@@ -343,7 +343,13 @@
       const out = squadOut(q);
       const hp = Math.round(squadHP(q) * 100);
       const sel = i === state.sel && !out;
-      const tiles = q.members.map(m => {
+      // Formation layout: front row of 4 over back row of 4, empty spots kept.
+      // (Runs saved before members carried their slot fill in order.)
+      const bySlot = {};
+      q.members.forEach((m, k) => { bySlot[m.slot || SLOT_ORDER[k]] = m; });
+      const tiles = SLOT_ORDER.map(slot => {
+        const m = bySlot[slot];
+        if (!m) return '<span class="nr-unit is-empty" aria-hidden="true"></span>';
         const h = unitHP(q, m.uid);
         return `<span class="nr-unit ${h <= 0 ? 'is-down' : ''}" title="${esc(chars[m.charId]?.name || '')}">
           <img src="${esc(portraitOf(m.charId, m.uid))}" alt="" loading="lazy" onerror="this.src='${SILHOUETTE}'">

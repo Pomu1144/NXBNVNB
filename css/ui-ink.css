@@ -342,3 +342,87 @@ html[data-skin="ink"] .power-grade-animated.power-grade-lr {
 html[data-skin="ink"] .power-grade-animated.power-grade-lr > * { display: none !important; }
 html[data-skin="ink"] .tl-grade[data-grade="LR"] { background: url('../assets/ui/ink/grade_lr.webp') center / contain no-repeat; }
 html[data-skin="ink"] .tl-grade[data-grade="LR"] video { display: none; }
+
+/* ── Card auras in Ink (js/seven-star-fx.js injects .seven-star-fx /
+   .maxed-fx <i><b></b></i> into on-screen cards; Classic/Glass keep the
+   lightning and wind). Same perf model: one still per aura, compositor-only
+   transform/opacity animation, no blend modes, no animated shadows.
+   7★: a gold-leaf dry-brush frame traced round the card, a slow light sweep
+   running along the gold (the sweep is masked to the brush stroke).
+   Ultimate Max (fully maxed): gold-flecked sumi smoke curling off the card
+   edges; the Ultimate Max badge becomes a vermilion 極 seal. */
+html[data-skin="ink"] .char-slot.is-7star,
+html[data-skin="ink"] .team-char-card.is-7star,
+html[data-skin="ink"] .char-slot.is-maxed {
+  border-color: rgba(201, 162, 78, 0.45);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45), inset 0 0 0 1px rgba(226, 204, 150, 0.14);
+}
+html[data-skin="ink"] .char-slot.is-7star:hover,
+html[data-skin="ink"] .char-slot.is-maxed:hover { border-color: rgba(226, 204, 150, 0.85); }
+html[data-skin="ink"] .slot-card.is-7star .portrait img { border-color: rgba(201, 162, 78, 0.55); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.45); }
+/* sit the brush frame just outside the card */
+html[data-skin="ink"] .char-slot .seven-star-fx { inset: -9px; width: calc(100% + 18px); height: calc(100% + 18px); border-radius: 0; }
+html[data-skin="ink"] .seven-star-fx.aura-fx > b {
+  background: url('../assets/effects/ink_frame_7s.webp') center / 100% 100% no-repeat;
+  opacity: 0.78;
+}
+/* 7★ flow: a soft gold glint travels round the brush frame, one edge after
+   another (top → right → bottom → left). Four small glints move with
+   transform + opacity only: no masks, no repaint. */
+html[data-skin="ink"] .aura-fx > s {
+  display: block; position: absolute; inset: 0; overflow: hidden; pointer-events: none;
+}
+html[data-skin="ink"] .seven-star-fx.aura-fx > s > u {
+  position: absolute; display: block; opacity: 0;
+  background: radial-gradient(closest-side, rgba(255, 248, 222, 0.95), rgba(244, 206, 120, 0.55) 45%, rgba(201, 162, 78, 0) 100%);
+  animation: 3.4s linear infinite;
+}
+html[data-skin="ink"] .seven-star-fx.aura-fx > s > u:nth-child(1) { left: 0; top: 1.5%; width: 34%; height: 6%; animation-name: inkGlintTop; }
+html[data-skin="ink"] .seven-star-fx.aura-fx > s > u:nth-child(2) { top: 0; right: 1.5%; width: 7.5%; height: 30%; animation-name: inkGlintRight; }
+html[data-skin="ink"] .seven-star-fx.aura-fx > s > u:nth-child(3) { left: 0; bottom: 1.5%; width: 34%; height: 6%; animation-name: inkGlintBottom; }
+html[data-skin="ink"] .seven-star-fx.aura-fx > s > u:nth-child(4) { top: 0; left: 1.5%; width: 7.5%; height: 30%; animation-name: inkGlintLeft; }
+@keyframes inkGlintTop    { 0% { transform: translateX(-100%); opacity: 0; } 3% { opacity: 1; } 22% { opacity: 1; } 25% { transform: translateX(294%); opacity: 0; } 100% { transform: translateX(294%); opacity: 0; } }
+@keyframes inkGlintRight  { 0%, 25% { transform: translateY(-100%); opacity: 0; } 28% { opacity: 1; } 47% { opacity: 1; } 50%, 100% { transform: translateY(333%); opacity: 0; } }
+@keyframes inkGlintBottom { 0%, 50% { transform: translateX(294%); opacity: 0; } 53% { opacity: 1; } 72% { opacity: 1; } 75%, 100% { transform: translateX(-100%); opacity: 0; } }
+@keyframes inkGlintLeft   { 0%, 75% { transform: translateY(333%); opacity: 0; } 78% { opacity: 1; } 97% { opacity: 1; } 100% { transform: translateY(-100%); opacity: 0; } }
+
+/* Ultimate Max flow: two smoke layers rise, sway and fade in turn, so the
+   ink keeps streaming off the card */
+html[data-skin="ink"] .maxed-fx { border-radius: 0; }
+html[data-skin="ink"] .maxed-fx.aura-fx > b,
+html[data-skin="ink"] .maxed-fx.aura-fx > s {
+  background: url('../assets/effects/ink_smoke_max.webp') center / 100% 100% no-repeat;
+  transform-origin: 50% 100%;
+  animation: inkSmokeFlow 5.2s linear infinite;
+}
+html[data-skin="ink"] .maxed-fx.aura-fx > s { animation-delay: -2.6s; animation-name: inkSmokeFlowB; }
+html[data-skin="ink"] .maxed-fx.aura-fx > s > u { display: none; }
+@keyframes inkSmokeFlow {
+  0%   { transform: translate(0, 6%) scale(1, 0.96) skewX(0deg);   opacity: 0; }
+  25%  { opacity: 0.9; }
+  50%  { transform: translate(-1.5%, 0) scale(1.02, 1.03) skewX(-3deg); opacity: 0.85; }
+  100% { transform: translate(1.5%, -8%) scale(1.05, 1.1) skewX(3deg); opacity: 0; }
+}
+@keyframes inkSmokeFlowB {
+  0%   { transform: scaleX(-1) translate(0, 6%) scale(1, 0.96) skewX(0deg);   opacity: 0; }
+  25%  { opacity: 0.8; }
+  50%  { transform: scaleX(-1) translate(1.5%, 0) scale(1.02, 1.03) skewX(3deg); opacity: 0.75; }
+  100% { transform: scaleX(-1) translate(-1.5%, -8%) scale(1.05, 1.1) skewX(-3deg); opacity: 0; }
+}
+/* the Ultimate Max badge: a vermilion 極 seal */
+html[data-skin="ink"] img.ultimate-badge[src$="ultimate_max.png"] {
+  content: url('../assets/effects/ink_seal_kiwami.webp');
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.7));
+}
+.fx-off .aura-fx > s, .fx-off .aura-fx > s > u { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) {
+  html[data-skin="ink"] .aura-fx > s, html[data-skin="ink"] .aura-fx > s > u { animation: none !important; }
+}
+html[data-skin="ink"] .char-slot img.ultimate-badge[src$="ultimate_max.png"] { width: 30px !important; height: 30px !important; right: 6px !important; bottom: 34px !important; }
+/* while scrolling, drop the flowing layers (the gold frame stays) and fade
+   them back in when the roster comes to rest: scrolling then costs the same
+   as a plain card grid */
+html[data-skin="ink"] .aura-fx > s,
+html[data-skin="ink"] .maxed-fx.aura-fx > b { transition: opacity 0.35s ease, visibility 0s; }
+html[data-skin="ink"].fx-scrolling .aura-fx > s,
+html[data-skin="ink"].fx-scrolling .maxed-fx.aura-fx > b { opacity: 0 !important; visibility: hidden; transition: none; }

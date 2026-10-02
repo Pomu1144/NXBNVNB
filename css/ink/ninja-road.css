@@ -120,6 +120,7 @@ html[data-skin="ink"] .nr-squad.is-empty:hover:not(:disabled) { border: 0; outli
 html[data-skin="ink"] .nr-squad-team { font-family: var(--ink-jp); font-weight: 600; letter-spacing: 0.08em; text-transform: none; }
 html[data-skin="ink"] .nr-squad-hp { font-family: var(--ink-cinzel); font-weight: 600; color: var(--g-accent-2); }
 html[data-skin="ink"] .nr-unit { border-radius: 0; box-shadow: inset 0 0 0 1px var(--g-line-2); }
+html[data-skin="ink"] .nr-unit.is-empty { border: 0; background: rgba(8, 8, 9, 0.35); box-shadow: inset 0 0 0 1px var(--g-line); }
 html[data-skin="ink"] .nr-unit-hp b { background: linear-gradient(90deg, #a8833a, var(--g-accent-2)); }
 html[data-skin="ink"] .nr-squad-bar { background: rgba(226, 204, 150, 0.12); }
 html[data-skin="ink"] .nr-squad-bar b { background: var(--g-accent-2); }

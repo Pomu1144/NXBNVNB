@@ -45,7 +45,10 @@
       const el = document.createElement("i");
       el.className = cls + " aura-fx";
       el.setAttribute("aria-hidden", "true");
-      el.innerHTML = "<b></b>";
+      // <b> = the still; <s> + four <u> = the Ink style's flowing layer
+      // (glints that travel round the frame; hidden elsewhere, see
+      // css/theme-jjk.css)
+      el.innerHTML = "<b></b><s><u></u><u></u><u></u><u></u></s>";
       host.insertBefore(el, before);
     });
   }
@@ -110,6 +113,18 @@
       mo.observe(el, { childList: true });
     });
   }
+
+  // While the player scrolls, every aura pauses (html.fx-scrolling) and
+  // resumes ~180ms after the last scroll event: the compositor then only
+  // moves the cards, so long rosters of 7-star / maxed units scroll smoothly.
+  let scrollTimer = 0;
+  function onScroll() {
+    const root = document.documentElement;
+    if (!root.classList.contains("fx-scrolling")) root.classList.add("fx-scrolling");
+    clearTimeout(scrollTimer);
+    scrollTimer = setTimeout(() => root.classList.remove("fx-scrolling"), 180);
+  }
+  document.addEventListener("scroll", onScroll, { capture: true, passive: true });
 
   window.SevenStarFX = { rescan: scheduleScan };
 
