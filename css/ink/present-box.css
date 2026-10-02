@@ -1,0 +1,134 @@
+/* css/ink/present-box.css — Ink style for the Present Box, present view,
+   notice popup and reward reveal. Sits on css/glass/present-box.css
+   (Ink keeps html[data-ui="glass"]): charcoal panels, gold hairlines,
+   serif type with small Cinzel captions, cream paper-slip main actions. */
+
+/* ── Shell ───────────────────────────────────────────────────────── */
+html[data-skin="ink"] .pb-backdrop,
+html[data-skin="ink"] .rr-backdrop { background: rgba(5, 5, 6, 0.8); -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px); }
+html[data-skin="ink"] .pb-frame,
+html[data-skin="ink"] .pb-alert,
+html[data-skin="ink"] .rr-card {
+  border-radius: 2px;
+  background:
+    linear-gradient(180deg, rgba(20, 19, 17, 0.94), rgba(9, 9, 10, 0.97)),
+    url('../../assets/ui/ink/bg.webp') center / cover no-repeat;
+  -webkit-backdrop-filter: none; backdrop-filter: none;
+  box-shadow: inset 0 0 0 1px rgba(226, 204, 150, 0.28), 0 30px 70px rgba(0, 0, 0, 0.7);
+}
+html[data-skin="ink"] .pb-frame::before,
+html[data-skin="ink"] .pb-alert::before,
+html[data-skin="ink"] .rr-card::before { inset: 0 auto auto 0; width: 2px; height: 46px; background: var(--g-accent); }
+
+html[data-skin="ink"] .pb-close { border-radius: 0; background: rgba(8, 8, 9, 0.6); box-shadow: inset 0 0 0 1px var(--g-line-2); }
+html[data-skin="ink"] .pb-close:hover { background: rgba(241, 235, 220, 0.06); box-shadow: inset 0 0 0 1px var(--g-accent); }
+
+/* ── Header: serif title, Japanese + Cinzel caption, counts as captions ── */
+html[data-skin="ink"] .pb-head { align-items: flex-end; }
+html[data-skin="ink"] .pb-title.jjk-title-plate {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 3px;
+  font-family: var(--ink-jp); font-weight: 600; font-size: 25px; letter-spacing: 0.1em; text-transform: none; color: #fff7e2;
+}
+html[data-skin="ink"] .pb-title.jjk-title-plate::after {
+  content: '贈り物  ·  PRESENTS'; white-space: pre;
+  font-family: var(--ink-cinzel); font-weight: 600; font-size: 9.5px; letter-spacing: 0.32em; color: var(--g-accent);
+}
+html[data-skin="ink"] .pb-counts { padding-bottom: 3px; }
+html[data-skin="ink"] .pb-count { font-family: var(--ink-cinzel); font-weight: 600; font-size: 10px; letter-spacing: 0.24em; color: var(--g-faint); }
+html[data-skin="ink"] .pb-count b { font-family: var(--ink-jp); font-size: 1.5em; letter-spacing: 0.02em; margin-right: 6px; color: var(--g-text); }
+html[data-skin="ink"] .pb-count-new b { color: var(--g-accent-2); }
+html[data-skin="ink"] .pb-view-title { font-family: var(--ink-jp); font-weight: 600; font-size: 20px; letter-spacing: 0.06em; color: #fff7e2; }
+
+/* ── Rows: translucent charcoal, hairline; unread = gold bar + gold wash ── */
+html[data-skin="ink"] .pb-row {
+  border-radius: 0;
+  background: linear-gradient(180deg, rgba(18, 17, 15, 0.6), rgba(10, 10, 11, 0.7));
+  box-shadow: inset 0 0 0 1px var(--g-line);
+}
+html[data-skin="ink"] .pb-row:hover { background: linear-gradient(180deg, rgba(28, 26, 22, 0.7), rgba(12, 12, 13, 0.75)); box-shadow: inset 0 0 0 1px var(--g-line-2); }
+html[data-skin="ink"] .pb-row.is-unread {
+  background: linear-gradient(90deg, rgba(201, 162, 78, 0.16), rgba(18, 17, 15, 0.6) 55%, rgba(10, 10, 11, 0.7));
+}
+html[data-skin="ink"] .pb-row.is-unread::before { top: 0; bottom: 0; }
+html[data-skin="ink"] .pb-row-icon { border-radius: 0; background: rgba(6, 6, 7, 0.55); box-shadow: inset 0 0 0 1px var(--g-line-2); }
+html[data-skin="ink"] .pb-row-title { font-family: var(--ink-jp); font-weight: 600; font-size: 16px; letter-spacing: 0.03em; }
+html[data-skin="ink"] .pb-row.is-unread .pb-row-title { color: #fff7e2; }
+html[data-skin="ink"] .pb-row-text { font-family: var(--g-sans); font-style: italic; }
+html[data-skin="ink"] .pb-new {
+  border-radius: 0; background: none; color: var(--g-accent-2);
+  box-shadow: inset 0 0 0 1px rgba(226, 204, 150, 0.5);
+  font-family: var(--ink-cinzel); font-weight: 600; font-size: 9px; letter-spacing: 0.24em; padding: 2px 7px 1px;
+}
+html[data-skin="ink"] .pb-chip { border-radius: 0; background: rgba(6, 6, 7, 0.5); }
+html[data-skin="ink"] .pb-chip-qty { font-family: var(--ink-jp); font-weight: 600; }
+html[data-skin="ink"] .pb-row-date { font-family: var(--ink-cinzel); font-size: 9.5px; letter-spacing: 0.18em; text-transform: uppercase; }
+html[data-skin="ink"] .pb-stamp { font-family: var(--ink-cinzel); font-size: 9px; letter-spacing: 0.26em; color: var(--g-faint); }
+html[data-skin="ink"] .pb-stamp::before { content: '受領'; font-family: var(--ink-jp); font-size: 15px; letter-spacing: 0.1em; color: var(--g-dim); margin-bottom: 1px; }
+html[data-skin="ink"] .pb-stamp img { display: none; }
+
+/* ── Buttons: main = cream paper slip, the rest hairline ─────────── */
+html[data-skin="ink"] .pb-btn,
+html[data-skin="ink"] .rr-ok {
+  border-radius: 0; font-family: var(--g-sans); font-weight: 500; letter-spacing: 0.06em; text-transform: none;
+}
+html[data-skin="ink"] .pb-btn-gold,
+html[data-skin="ink"] .pb-btn-crimson,
+html[data-skin="ink"] .rr-ok {
+  background: linear-gradient(180deg, #f3ead2, #e2d4ae); color: var(--g-on-accent);
+  box-shadow: inset 0 0 0 1px rgba(120, 96, 40, 0.5), 0 8px 20px rgba(0, 0, 0, 0.45);
+  font-style: italic; font-weight: 700;
+}
+html[data-skin="ink"] .pb-btn-crimson,
+html[data-skin="ink"] .rr-ok { justify-content: space-between; gap: 16px; padding: 0 18px 0 22px; clip-path: polygon(0 0, 100% 0, 100% 100%, 9px 100%, 0 calc(100% - 9px)); }
+html[data-skin="ink"] .rr-ok { display: inline-flex; align-items: center; }
+html[data-skin="ink"] .rr-ok::after { content: '—  →'; font-style: normal; font-weight: 400; letter-spacing: 0; opacity: 0.75; }
+html[data-skin="ink"] .pb-btn-dark { background: rgba(8, 8, 9, 0.5); box-shadow: inset 0 0 0 1px var(--g-line-2); }
+html[data-skin="ink"] .pb-btn-dark:hover { background: rgba(241, 235, 220, 0.06); box-shadow: inset 0 0 0 1px var(--g-accent); filter: none; }
+html[data-skin="ink"] .pb-btn[disabled] { background: transparent; clip-path: none; font-style: normal; }
+html[data-skin="ink"] .pb-btn-badge { border-radius: 0; background: #1a1408; color: #f3ead2; font-style: normal; font-family: var(--ink-jp); }
+html[data-skin="ink"] .pb-btn[disabled] .pb-btn-badge { background: none; box-shadow: inset 0 0 0 1px var(--g-line); }
+
+/* ── Footer + empty ─────────────────────────────────────────────── */
+html[data-skin="ink"] .pb-foot { border-top-color: var(--g-line); }
+html[data-skin="ink"] .pb-foot-note { font-family: var(--g-sans); font-style: italic; }
+html[data-skin="ink"] .pb-empty-title { font-family: var(--ink-jp); font-weight: 600; letter-spacing: 0.08em; }
+
+/* ── Single present view ────────────────────────────────────────── */
+html[data-skin="ink"] .pb-view-text { border-radius: 0; background: rgba(6, 6, 7, 0.45); font-family: var(--g-sans); }
+html[data-skin="ink"] .pb-view-label { font-family: var(--ink-cinzel); font-weight: 600; font-size: 10px; letter-spacing: 0.32em; color: var(--g-accent); }
+html[data-skin="ink"] .pb-view-label span::before { content: '内容  ·  '; white-space: pre; font-family: var(--ink-jp); letter-spacing: 0.1em; color: var(--g-text); }
+html[data-skin="ink"] .pb-view-label::before,
+html[data-skin="ink"] .pb-view-label::after { background: linear-gradient(90deg, transparent, var(--g-line-2)); }
+html[data-skin="ink"] .pb-view-label::after { background: linear-gradient(90deg, var(--g-line-2), transparent); }
+html[data-skin="ink"] .pb-tile-socket,
+html[data-skin="ink"] .rr-socket { border-radius: 0; background: rgba(6, 6, 7, 0.55); }
+html[data-skin="ink"] .pb-tile-qty,
+html[data-skin="ink"] .rr-qty { font-family: var(--ink-jp); font-weight: 700; }
+html[data-skin="ink"] .pb-tile-name,
+html[data-skin="ink"] .rr-name { font-family: var(--ink-jp); font-weight: 600; letter-spacing: 0.02em; }
+
+/* ── Notice ─────────────────────────────────────────────────────── */
+html[data-skin="ink"] .pb-alert-title { font-family: var(--ink-jp); font-weight: 600; letter-spacing: 0.08em; text-transform: none; color: #fff7e2; }
+
+/* ── Reward reveal: quiet serif title with a caption, no rays ───── */
+html[data-skin="ink"] .rr-rays { display: none; }
+html[data-skin="ink"] .rr-banner { flex-direction: column; gap: 4px; }
+html[data-skin="ink"] .rr-banner span { font-family: var(--ink-jp); font-weight: 600; font-size: 22px; letter-spacing: 0.1em; text-transform: none; color: #fff7e2; }
+html[data-skin="ink"] .rr-banner::after {
+  content: '報酬  ·  REWARDS'; white-space: pre;
+  font-family: var(--ink-cinzel); font-weight: 600; font-size: 9.5px; letter-spacing: 0.32em; color: var(--g-accent);
+}
+html[data-skin="ink"] .rr-card { padding-top: 92px; }
+html[data-skin="ink"] .rr-socket::after { border-radius: 0; }
+html[data-skin="ink"] .rr-note { font-family: var(--g-sans); font-style: italic; }
+
+@media (max-height: 540px), (max-width: 700px) {
+  html[data-skin="ink"] .pb-frame,
+  html[data-skin="ink"] .pb-frame--view { box-shadow: none; }
+  html[data-skin="ink"] .pb-title.jjk-title-plate { font-size: 19px; }
+  html[data-skin="ink"] .pb-title.jjk-title-plate::after { font-size: 8px; }
+  html[data-skin="ink"] .pb-row-title { font-size: 14px; }
+  html[data-skin="ink"] .pb-btn-crimson { height: 34px; }
+  html[data-skin="ink"] .rr-card { padding-top: 66px; }
+  html[data-skin="ink"] .rr-banner span { font-size: 18px; }
+}
