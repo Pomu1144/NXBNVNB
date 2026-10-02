@@ -6,7 +6,11 @@
 //     "motion": { "plate": ".../motion_6S_plate.webp",   // art without the unit
 //                 "fg":    ".../motion_6S_fg.webp",      // the unit, cut out
 //                 "swirl": "assets/effects/wind_swirl_gold.webp",
-//                 "gust":  "assets/effects/wind_gust_gold.webp" } } }
+//                 "gust":  "assets/effects/wind_gust_gold.webp",
+//                 "video": ".../motion_6S.mp4" } } }               // optional
+// With `video`, the art itself is animated: a muted looping clip whose first
+// and last frames are the still art (so the loop is seamless) plays over it;
+// the still shows until the clip can play, and under reduced motion.
 // Layers (back to front): the plate drifting slowly; a wind vortex turning
 // behind the unit; the cut-out unit swaying and breathing (the movement
 // layer, so it shifts against the scene without a doubled outline); a
@@ -26,7 +30,7 @@
   function block(c, tier) {
     const t = c && c.artByTier && c.artByTier[tier];
     const m = t && t.motion;
-    return m && m.fg && m.plate ? m : null;
+    return m && (m.video || (m.fg && m.plate)) ? m : null;
   }
   const has = (c, tier) => !!block(c, tier);
 
@@ -49,6 +53,23 @@
     if (!host || !m) return null;
     unmount(host);
     const still = reduced();
+    if (m.video) {
+      const full = (opts && opts.full) || (c.artByTier[tier] && c.artByTier[tier].full) || c.full;
+      const v = document.createElement("div");
+      v.className = "a7 am am-vid";
+      v.setAttribute("aria-hidden", "true");
+      v.innerHTML = `<img class="am-still-art" src="${esc(full)}" alt="" decoding="async">` +
+        (still ? "" : `<video class="am-video" src="${esc(m.video)}" muted loop playsinline autoplay preload="auto" disablepictureinpicture></video>`);
+      const vid = v.querySelector("video");
+      if (vid) {
+        vid.muted = true;
+        vid.addEventListener("playing", () => v.classList.add("is-playing"), { once: true });
+        const p = vid.play && vid.play(); if (p && p.catch) p.catch(() => {});
+      }
+      host.appendChild(v);
+      host.classList.add("has-a7");
+      return v;
+    }
     const el = document.createElement("div");
     el.className = "a7 am" + (still ? " am-still" : "");
     el.setAttribute("aria-hidden", "true");
@@ -66,6 +87,7 @@
 
   function unmount(host) {
     if (!host) return;
+    host.querySelectorAll(":scope > .a7 video").forEach((v) => { v.pause(); v.removeAttribute("src"); v.load(); });
     host.querySelectorAll(":scope > .a7").forEach((el) => el.remove());
     host.classList.remove("has-a7");
   }

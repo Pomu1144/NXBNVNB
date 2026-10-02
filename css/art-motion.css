@@ -63,3 +63,7 @@
 }
 .a7.am.am-still *, .a7.am.a7-paused * { animation: none !important; }
 @media (prefers-reduced-motion: reduce) { .a7.am * { animation: none !important; } }
+
+/* animated art clip: the still sits underneath until the clip plays */
+.a7.am-vid > .am-video { object-fit: cover; opacity: 0; transition: opacity .25s ease; }
+.a7.am-vid.is-playing > .am-video { opacity: 1; }

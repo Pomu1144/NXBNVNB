@@ -474,6 +474,7 @@
   }
   function unmountModalAnim() {
     if (!MODAL_ART) return;
+    window.ArtMotion?.unmount(MODAL_ART);   // also stops an art clip
     MODAL_ART.querySelectorAll(":scope > .a7").forEach((el) => el.remove());
     MODAL_ART.classList.remove("has-a7");
     if (modalArtRO) { modalArtRO.disconnect(); modalArtRO = null; }
