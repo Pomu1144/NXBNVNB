@@ -40,6 +40,8 @@
       folder: 'assets/sprites/skins/sasuke_2117_akatsuki', own: [...BODY, 'secret'], thumb: 'assets/sprites/skins/sasuke_2117_akatsuki/thumb.webp', price: 50 },
     { id: 'itachi_2031_anbu', charIds: ['itachi_2031', 'itachi_2032'], unit: 'Itachi Uchiha', name: 'ANBU Black Ops',
       folder: 'assets/sprites/skins/itachi_2031_anbu', own: BODY, thumb: 'assets/sprites/skins/itachi_2031_anbu/thumb.webp', price: 45 },
+    { id: 'itachi_2096_online', charIds: ['itachi_2096', 'itachi_2094'], unit: 'Itachi Uchiha', name: 'Akatsuki (Online)',
+      folder: 'assets/sprites/online/itachi', own: BODY, thumb: 'assets/sprites/online/itachi/thumb.webp', price: 50 },
     { id: 'minato_2101_online', charIds: ['minato_2101'], unit: 'Minato Namikaze', name: 'Hokage Cloak',
       folder: 'assets/sprites/skins/minato_2101_online', own: BODY, thumb: 'assets/sprites/skins/minato_2101_online/thumb.webp', price: 50 },
   ];
