@@ -1,0 +1,154 @@
+/* css/teams-dev-panel.css
+   Dev panel on Team Formation (js/teams-dev-panel.js, ?dev=1 only).
+   Collapsed: a small "DEV" tab in the empty top-right corner of the page
+   header. Open: a flat dark sheet under it that scrolls when tall. */
+
+#teams-dev-panel {
+  --tdev-bg: #15171b;
+  --tdev-bg-2: #1d2026;
+  --tdev-line: rgba(255, 255, 255, 0.14);
+  --tdev-text: #e4e6ea;
+  --tdev-muted: #8d939c;
+  --tdev-accent: #c9a24e;
+  position: fixed;
+  top: calc(12px + env(safe-area-inset-top, 0px));
+  right: calc(12px + env(safe-area-inset-right, 0px));
+  z-index: 4500;               /* above the page, below modals */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+  font: 13px/1.3 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color: var(--tdev-text);
+}
+
+.tdev-tab {
+  padding: 4px 9px;
+  border: 1px solid var(--tdev-line);
+  border-radius: 4px;
+  background: var(--tdev-bg);
+  color: var(--tdev-muted);
+  font: 700 11px/1.2 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  letter-spacing: 0.12em;
+  cursor: pointer;
+}
+.tdev-tab:hover { color: var(--tdev-text); border-color: rgba(255, 255, 255, 0.3); }
+#teams-dev-panel:not(.is-collapsed) .tdev-tab { display: none; }
+#teams-dev-panel.is-collapsed .tdev-body { display: none; }
+
+.tdev-body {
+  width: 300px;
+  max-width: calc(100vw - 24px);
+  max-height: calc(100vh - 110px);
+  max-height: calc(100dvh - 110px);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px;
+  border: 1px solid var(--tdev-line);
+  border-radius: 6px;
+  background: var(--tdev-bg);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+/* teams.html hides scrollbars page-wide; the panel keeps a thin one */
+#teams-dev-panel .tdev-body,
+#teams-dev-panel .tdev-list { scrollbar-width: thin; }
+#teams-dev-panel .tdev-body::-webkit-scrollbar,
+#teams-dev-panel .tdev-list::-webkit-scrollbar { display: block; width: 6px; }
+#teams-dev-panel .tdev-body::-webkit-scrollbar-thumb,
+#teams-dev-panel .tdev-list::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.2); border-radius: 3px; }
+
+.tdev-head { display: flex; align-items: center; justify-content: space-between; }
+.tdev-title { font-weight: 700; font-size: 13px; letter-spacing: 0.04em; }
+.tdev-close {
+  width: 26px; height: 26px;
+  border: 1px solid var(--tdev-line);
+  border-radius: 4px;
+  background: transparent;
+  color: var(--tdev-muted);
+  font-size: 17px; line-height: 1;
+  cursor: pointer;
+}
+.tdev-close:hover { color: var(--tdev-text); }
+
+.tdev-actions { display: flex; flex-direction: column; gap: 6px; }
+.tdev-btn {
+  width: 100%;
+  min-height: 32px;
+  padding: 6px 10px;
+  border: 1px solid var(--tdev-line);
+  border-radius: 4px;
+  background: var(--tdev-bg-2);
+  color: var(--tdev-text);
+  font: 600 12px/1.2 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  text-align: left;
+  cursor: pointer;
+}
+.tdev-btn:hover { border-color: rgba(255, 255, 255, 0.3); }
+.tdev-btn.is-primary { border-color: var(--tdev-accent); }
+.tdev-btn:disabled { opacity: 0.45; cursor: default; }
+
+.tdev-status { min-height: 15px; font-size: 11px; color: var(--tdev-accent); }
+.tdev-status:empty { display: none; }
+
+.tdev-sub {
+  display: flex; align-items: center; justify-content: space-between;
+  padding-top: 6px;
+  border-top: 1px solid var(--tdev-line);
+  font-size: 11px;
+  color: var(--tdev-muted);
+}
+.tdev-links { display: flex; gap: 8px; }
+.tdev-link {
+  padding: 0; border: 0; background: none;
+  color: var(--tdev-text); font: inherit; text-decoration: underline;
+  cursor: pointer;
+}
+
+.tdev-list {
+  flex: 0 1 auto;
+  min-height: 60px;
+  max-height: 240px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.tdev-unit {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 6px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+.tdev-unit:hover { background: var(--tdev-bg-2); }
+.tdev-unit input { flex: 0 0 auto; margin: 0; accent-color: var(--tdev-accent); }
+.tdev-meta { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; }
+.tdev-meta b { font-size: 12px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tdev-meta small { font-size: 10px; color: var(--tdev-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tdev-tag {
+  flex: 0 0 auto;
+  padding: 1px 4px;
+  border: 1px solid var(--tdev-accent);
+  border-radius: 3px;
+  color: var(--tdev-accent);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+.tdev-note { font-size: 10px; color: var(--tdev-muted); line-height: 1.35; overflow-wrap: anywhere; }
+
+/* Phone landscape: short screens, so a tighter sheet whose list grows to
+   fill it (the sheet itself scrolls past that). */
+html.is-mobile #teams-dev-panel { top: calc(8px + env(safe-area-inset-top, 0px)); right: calc(8px + env(safe-area-inset-right, 0px)); }
+html.is-mobile .tdev-body {
+  width: 280px;
+  max-height: calc(100dvh - 16px);
+  padding: 8px;
+  gap: 6px;
+}
+html.is-mobile .tdev-btn { min-height: 28px; padding: 4px 8px; }
+html.is-mobile .tdev-list { max-height: 150px; }

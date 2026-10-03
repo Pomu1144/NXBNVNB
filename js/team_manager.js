@@ -1306,6 +1306,16 @@
     // Saved tiers corrected by the inventory migration (js/character_inv.js)
     // after the first render: redraw so stars / 7★ frames / cost match.
     window.addEventListener("inventory:tiers-migrated", () => renderTeam());
+    // Dev tools (js/teams-dev-panel.js) rewrite teams / inventory in storage:
+    // re-read both and redraw, optionally showing `teamNum`.
+    window.TeamManager = {
+      reload(teamNum) {
+        loadTeams();
+        buildCharacterGrid();
+        if (teamNum) switchTeam(Number(teamNum)); else renderTeam();
+      },
+      get currentTeam() { return currentTeam; },
+    };
     console.log("[Team Manager] Ready!");
   })();
 

@@ -489,6 +489,8 @@
       try { return window.Skins?.folderFor?.(charId) || base; } catch (_) { return base; }
     },
     basePathFor: charId => REGISTRY[charId] || null,
+    /* Every charId with a sprite set (read-only copy of REGISTRY's keys). */
+    registeredIds: () => Object.keys(REGISTRY),
     /* Register a folder that carries only the sheets listed in `own`; every
      * other sheet (effect layers, extra jutsu parts...) is read from `from`.
      * Used by js/skins.js for skin folders. */
