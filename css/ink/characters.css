@@ -174,24 +174,22 @@ html[data-skin="ink"] body.page-characters .ink-dossier-cap {
   background: linear-gradient(var(--g-accent), var(--g-accent)) 0 100% / 14px 1px no-repeat;
 }
 
-/* latent ability keys: a column of squares down the left edge */
+/* latent ability keys: a column of bare icons down the left edge */
 html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-characters .char-modal-art .passive-icons-right {
   left: var(--ia-l); right: auto; top: calc(var(--ia-t) + var(--ia-btn) + 26px); bottom: auto; transform: none;
   gap: var(--ia-gap); animation: none;
 }
-html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-characters .char-modal-art .passive-icon {
-  width: var(--ia-ic); height: var(--ia-ic); padding: 3px; border: 0; border-radius: 0;
-  background: rgba(9, 9, 10, 0.72); -webkit-backdrop-filter: none; backdrop-filter: none;
-  box-shadow: inset 0 0 0 1px var(--g-line-2); transform: none;
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-characters .char-modal-art .passive-icon,
+html[data-skin="ink"] body.page-characters .char-modal-art .passive-icon.unlocked,
+html[data-skin="ink"] body.page-characters .char-modal-art .passive-icon:hover {
+  width: var(--ia-ic); height: var(--ia-ic); padding: 0; border: 0; border-radius: 0;
+  background: none; -webkit-backdrop-filter: none; backdrop-filter: none;
+  box-shadow: none; transform: none;
 }
-html[data-skin="ink"] body.page-characters .char-modal-art .passive-icon.unlocked {
-  box-shadow: inset 0 0 0 1px var(--g-accent), 0 0 0 2px rgba(9, 9, 10, 0.85), 0 0 0 3px rgba(201, 162, 78, 0.55);
-}
-html[data-skin="ink"] body.page-characters .char-modal-art .passive-icon:hover { box-shadow: inset 0 0 0 1px var(--g-accent); transform: none; }
-html[data-skin="ink"] body.page-characters .char-modal-art .passive-icon.locked::before { border-radius: 0; background: rgba(20, 20, 20, 0.45); }
-html[data-skin="ink"] body.page-characters .char-modal-art .passive-icon img { filter: none; }
+html[data-skin="ink"] body.page-characters .char-modal-art .passive-icon.locked::before { content: none; }
+html[data-skin="ink"] body.page-characters .char-modal-art .passive-icon img { filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.85)); }
 html[data-skin="ink"] body.page-characters .char-modal-art .passive-icon.locked img,
-html[data-skin="ink"] body.page-characters .char-modal-art .passive-icon.locked:hover img { filter: grayscale(100%) opacity(0.5); }
+html[data-skin="ink"] body.page-characters .char-modal-art .passive-icon.locked:hover img { filter: grayscale(100%) brightness(0.75) drop-shadow(0 2px 2px rgba(0, 0, 0, 0.85)); opacity: 0.6; }
 html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-characters .char-modal-art .passive-icon::after {
   right: auto; left: calc(100% + 10px); border-radius: 0; border: 0;
   background: rgba(9, 9, 10, 0.94); box-shadow: inset 0 0 0 1px var(--g-line-2);
