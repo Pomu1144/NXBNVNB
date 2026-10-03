@@ -1,0 +1,14 @@
+Pain (Tendo) battle sprites from Naruto Online.
+Frames supplied by the owner (a single packed sheet, pain_sheet.webp).
+The sheet was split into 202 frames (connected regions between the green
+gaps, numbered in reading order as Asset_0..201) and cut out using the
+sheet's own alpha channel, with the green spill removed.
+Sheets packed with tools/sprites/frames_to_sheet.py
+(--stand 104 --leg-mode feet --leg-band 6), numbered by Asset_N:
+  idle 98-105 (ping-pong), run 88-90 (ping-pong, low dash),
+  attack 47-59 (sweep, strikes, high kick), hit 116,117,116,
+  ko 116,118,119,120,127,128,128 (head snapped back, falls, ends lying down),
+  jutsu 168-182 (palm thrust; the cloak flares on 177-178),
+  ultimate 187-201 (chakra rods: crouch, leap, slashes, dive, finish)
+Frames 0-45 are a smaller-scale set and are not used.
+thumb.webp is cropped from frame 100.
