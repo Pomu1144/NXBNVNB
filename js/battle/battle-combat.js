@@ -568,7 +568,7 @@
             onDone?.();
           }
         });
-        this.afterCutin(attacker, 'jutsu', j.data.name || j.data.skillName || j.meta.name, () => tl.play(), j);
+        this.afterCutin(attacker, 'jutsu', j.data.name || j.data.skillName || j.meta.name, () => tl.play(), j, core);
 
         // Step 1: Show attack name (0s)
         tl.call(() => {
@@ -579,6 +579,8 @@
           if (window.BattleNarrator) {
             window.BattleNarrator.narrateJutsu(attacker, target, core);
           }
+          // Uchiha genjutsu: the eye is full size when the hit lands
+          if (!jDodged) this.playGenjutsuFx(attacker, j, [target], core);
         });
 
         // Step 2: Wait 0.7s for attack name to breathe
@@ -639,6 +641,7 @@
           window.BattleNarrator.narrateJutsu(attacker, target, core);
         }
 
+        if (!jDodged) this.playGenjutsuFx(attacker, j, [target], core);
         setTimeout(() => {
           const animGif = j.data.animationGif || attacker._ref?.base?.jutsuAnimation;
           if (window.BattleAnimations) {
@@ -752,7 +755,7 @@
             onDone?.();
           }
         });
-        this.afterCutin(attacker, 'ultimate', u.data.name || u.data.skillName || u.meta.name, () => tl.play(), u);
+        this.afterCutin(attacker, 'ultimate', u.data.name || u.data.skillName || u.meta.name, () => tl.play(), u, core);
 
         // Step 1: Show attack name (0s)
         tl.call(() => {
@@ -763,6 +766,7 @@
           if (window.BattleNarrator) {
             window.BattleNarrator.narrateUltimate(attacker, targets, core);
           }
+          this.playGenjutsuFx(attacker, u, targets, core); // Uchiha genjutsu eye over each target
         });
 
         // Step 2: Wait 0.7s then play animation
@@ -844,6 +848,7 @@
           if (window.BattleAnimations) {
             window.BattleAnimations.playSkillAnimation(attacker, "ultimate", animGif, core.dom);
           }
+          this.playGenjutsuFx(attacker, u, targets, core);
         }, 700);
 
         targets.forEach((target, i) => {
@@ -1086,6 +1091,7 @@
         if (window.BattleAnimations) {
           window.BattleAnimations.playSkillAnimation(attacker, "jutsu", animGif, core.dom);
         }
+        this.playGenjutsuFx(attacker, j, targets, core);
 
         // Hit all targets
         targets.forEach((target, i) => {
@@ -1126,7 +1132,7 @@
           core.checkBattleEnd();
           onDone?.();
         }, targets.length * 200 + 800);
-      });
+      }, null, core);
 
       return true;
     },
@@ -1166,7 +1172,7 @@
         window.BattleAttackNames?.showAttackName?.(name, kind);
         if (attacker._sprite) this.playSheetInPlace(attacker, kind, core);
         setTimeout(finish, 450);
-      }, skill);
+      }, skill, core);
     },
 
     /**
@@ -1409,19 +1415,23 @@
     },
 
     /**
-     * Play the skill cut-in (BattleCutin), then the skill's Domain Expansion
-     * if it has one (runDomain), then run `fn`. The unit counts as busy
-     * meanwhile so the turn watchdogs wait. Runs `fn` right away (next
-     * microtask) when cut-ins are off and there is no domain.
+     * Play the skill cut-in (BattleCutin), then the Sharingan activation
+     * flash for an Uchiha caster (playSharinganFlash), then the skill's Domain
+     * Expansion if it has one (runDomain), then run `fn`. The unit counts as
+     * busy meanwhile so the turn watchdogs wait. Runs `fn` right away (next
+     * microtask) when none of them applies.
      */
-    afterCutin(attacker, kind, skillName, fn, skill = null) {
+    afterCutin(attacker, kind, skillName, fn, skill = null, core = null) {
       const C = window.BattleCutin;
       const cut = C?.wants?.(attacker, kind);
       const dom = !!window.BattleDomain?.defOf?.(skill);
-      if (!cut && !dom) { Promise.resolve().then(fn); return; }
+      const eye = this.wantsSharinganFlash(attacker, kind);
+      if (!cut && !dom && !eye) { Promise.resolve().then(fn); return; }
       const wasBusy = attacker._actionBusy;
       attacker._actionBusy = true;
+      if (eye) this.warmSharingan(attacker);
       (cut ? C.play(attacker, kind, skillName).catch(() => {}) : Promise.resolve())
+        .then(() => this.playSharinganFlash(attacker, kind, core || window.BattleManager))
         .then(() => this.runDomain(attacker, kind, skill))
         .then(() => {
           attacker._actionBusy = wasBusy || false;
@@ -1438,6 +1448,125 @@
       const D = window.BattleDomain;
       if (!D?.defOf?.(skill)) return Promise.resolve(false);
       return D.expand(attacker, kind, skill, window.BattleManager).catch(() => false);
+    },
+
+    /* ===== Sharingan (Uchiha) =====
+     * Two scene effects from assets/sprites/fx/sharingan (effect-only sheets,
+     * no hit frames, drawn by playTechniqueFx):
+     *  - activate: a short (~0.7s) eye flash over the caster's head and upper
+     *    body before any Uchiha jutsu / ultimate, after the cut-in. Off switch
+     *    (flash only): localStorage 'battle_sharingan_v1' = '0' (dev panel).
+     *  - genjutsu: the eye forms over each target, spins, then breaks apart,
+     *    when an Uchiha skill is a genjutsu (isGenjutsuSkill). Cosmetic only:
+     *    damage and hit counts still come from the caster's sheet / data.
+     * Both are best-effort: a missing sheet or any error skips the effect,
+     * and the flash promise always resolves (bounded wait). */
+    SHARINGAN_BASE: 'assets/sprites/fx/sharingan',
+    SHARINGAN_KEY: 'battle_sharingan_v1',
+    // Skill name / description words that make an Uchiha skill a genjutsu.
+    GENJUTSU_RE: /genjutsu|illusion|tsukuyomi|izanami|izanagi|kotoamatsukami/i,
+
+    sharinganEnabled() {
+      try { return localStorage.getItem(this.SHARINGAN_KEY) !== '0'; } catch (e) { return true; }
+    },
+    setSharinganEnabled(on) {
+      try { localStorage.setItem(this.SHARINGAN_KEY, on ? '1' : '0'); } catch (e) { /* storage blocked */ }
+    },
+
+    /** Uchiha by name ("Itachi Uchiha") or by the "Uchiha Clan" affiliation. */
+    isUchiha(unit) {
+      try {
+        const base = unit?._ref?.base;
+        if (/uchiha/i.test(`${unit?.name || ''} ${base?.name || ''}`)) return true;
+        return Array.isArray(base?.affiliation) && base.affiliation.some(a => /uchiha/i.test(a));
+      } catch (e) { return false; }
+    },
+
+    /**
+     * True when a skill ({ meta, data } from getUnitSkills, or its data) is a
+     * genjutsu: an explicit `genjutsu: true|false` on the tier data or the
+     * skill wins, else its name or description matches GENJUTSU_RE
+     * (Tsukuyomi, Kotoamatsukami, "Genjutsu: ...", "Evil Illusion: ...").
+     */
+    isGenjutsuSkill(skill) {
+      if (!skill) return false;
+      const data = skill.data && typeof skill.data === 'object' ? skill.data : skill;
+      const meta = skill.meta || {};
+      const flag = data.genjutsu ?? meta.genjutsu;
+      if (typeof flag === 'boolean') return flag;
+      const text = [data.name, data.skillName, meta.name, data.description].filter(Boolean).join(' ');
+      return this.GENJUTSU_RE.test(text);
+    },
+
+    _sharinganOk() {
+      if (typeof document !== 'undefined' && document.hidden) return false;
+      try { if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return false; } catch (e) { /* ignore */ }
+      return !!window.SpritePlayer;
+    },
+
+    wantsSharinganFlash(unit, kind) {
+      return (kind === 'jutsu' || kind === 'ultimate') && this.sharinganEnabled()
+        && this.isUchiha(unit) && this._sharinganOk();
+    },
+
+    /** Start loading the Sharingan sheets (during the cut-in) for an Uchiha unit. */
+    warmSharingan(unit) {
+      if (!this.isUchiha(unit) || !window.SpritePlayer) return;
+      for (const s of ['activate', 'genjutsu']) {
+        try { window.SpritePlayer.preload(this.SHARINGAN_BASE, s, { background: true }).catch(() => {}); } catch (e) { /* cosmetic */ }
+      }
+    },
+
+    /** The sheet's meta, or null if it is missing or not loaded within `ms`. */
+    _sharinganSheet(sheet, ms = 700) {
+      try {
+        const p = window.SpritePlayer.preload(this.SHARINGAN_BASE, sheet, { background: true }).catch(() => null);
+        return Promise.race([p, new Promise(r => setTimeout(() => r(null), ms))]);
+      } catch (e) { return Promise.resolve(null); }
+    },
+
+    /**
+     * Activation flash over an Uchiha caster before a jutsu / ultimate.
+     * Resolves when the flash is gone (~0.7s), at once when not wanted, and
+     * never rejects or hangs (hard cap).
+     */
+    playSharinganFlash(attacker, kind, core) {
+      if (!this.wantsSharinganFlash(attacker, kind) || !core?.dom?.scene) return Promise.resolve(false);
+      return new Promise(resolve => {
+        let settled = false;
+        const settle = v => { if (!settled) { settled = true; clearTimeout(cap); resolve(v); } };
+        const cap = setTimeout(() => settle(false), 2000);
+        this._sharinganSheet('activate').then(meta => {
+          if (!meta || settled) { settle(false); return; }
+          const foes = this.getOpponents(attacker, core);
+          this.playTechniqueFx(attacker, foes.length ? foes : [attacker], this.SHARINGAN_BASE, 'activate', meta, core,
+            { at: 'caster', onEnd: () => settle(true) });
+        }).catch(() => settle(false));
+      });
+    },
+
+    /**
+     * Genjutsu eye over each target of an Uchiha genjutsu skill. Fire and
+     * forget: no hits, no waiting; does nothing for other skills.
+     */
+    playGenjutsuFx(attacker, skill, targets, core) {
+      try {
+        if (!this.isUchiha(attacker) || !this.isGenjutsuSkill(skill)) return false;
+        if (!this._sharinganOk() || !core?.dom?.scene) return false;
+        const list = (targets || []).filter(t => t && t.stats?.hp > 0);
+        if (!list.length) return false;
+        this._sharinganSheet('genjutsu').then(meta => {
+          if (!meta) return;
+          // the skill-name band would cover the eye over the top row
+          const band = window.BattleAttackNames?.currentDisplay;
+          if (band) setTimeout(() => window.BattleAttackNames?.hideAttackName?.(band), 300);
+          list.forEach(t => this.playTechniqueFx(attacker, [t], this.SHARINGAN_BASE, 'genjutsu', meta, core, { at: 'targets' }));
+        }).catch(() => {});
+        return true;
+      } catch (e) {
+        console.warn('[Combat] genjutsu fx skipped', e);
+        return false;
+      }
     },
 
     /**
@@ -1458,6 +1587,7 @@
       // Turn watchdogs (AI safety net, input manager) wait while this is set.
       attacker._actionBusy = true;
       const done = () => { attacker._actionBusy = false; core.checkBattleEnd?.(); onDone?.(); };
+      if (kind !== 'secret') this.warmSharingan(attacker); // loads during the cut-in
 
       // Callout band stays up for the whole sprite attack; hidden when it ends.
       // It is shown after the cut-in (if any) has played.
@@ -1518,6 +1648,8 @@
 
         // Blazing-style cut-in first (resolves at once when off / not wanted).
         try { await window.BattleCutin?.play?.(attacker, kind, skillName); } catch (e) { /* cosmetic */ }
+        // Uchiha: the Sharingan flashes over the caster as it activates (bounded, never throws)
+        try { await this.playSharinganFlash(attacker, kind, core); } catch (e) { /* cosmetic */ }
         await this.runDomain(attacker, kind, skill);
         callout = window.BattleAttackNames?.showAttackName(skillName, kind, { hold: 'manual' });
         await wait(350); // let the skill name land
@@ -1545,6 +1677,18 @@
         const doHit = k => {
           for (; next <= k && next < hitCount; next++) this.applySpriteHit(plans, next, hitCount, attacker, kind, core, counter);
         };
+        // Uchiha genjutsu: the eye forms over each target so it is full size
+        // when the first hit lands (its own scene layer, outside fxLayers: no
+        // hits, no change to the hit count, damage split or flow)
+        if (this.isUchiha(attacker) && this.isGenjutsuSkill(skill)) {
+          let firstHitSec = 0;
+          try {
+            if (fxHitLayer) firstHitSec = Math.max(0, Math.min(meta.frames - 1, Number(fxHitLayer.startFrame) || 0)) / meta.fps + fxHitLayer.meta.hits[0] / fxHitLayer.meta.fps;
+            else if (meta?.hits?.length) firstHitSec = meta.hits[0] / meta.fps;
+          } catch (e) { firstHitSec = 0; }
+          const eyed = plans.filter(p => !p.dodged).map(p => p.target);
+          setTimeout(() => this.playGenjutsuFx(attacker, skill, eyed, core), Math.max(0, (firstHitSec || 0) - 0.55) * 1000);
+        }
         await new Promise(resolve => {
           let finished = false, guard = null;
           const finish = () => {
@@ -1636,6 +1780,8 @@
      * [x, y] point in the caster's frame, 0..1, mirrored with the caster) and
      * travels to the centre of the effect area over its own length (a thrown
      * Rasenshuriken, a Tailed Beast Bomb from Kurama's jaws).
+     * A sheet whose meta has "bodyY" is centred that many unit heights above
+     * the feet instead of standing on them (the Sharingan eye over a body).
      * Removed when it ends.
      */
     playTechniqueFx(attacker, targets, base, sheet, fxMeta, core, { onHit, onEnd, at = 'targets', layer = 'front', projectile = false, fly = false, from = null } = {}) {
@@ -1666,13 +1812,22 @@
         }
         usable = usable + 6 - sr.top;
         const gy = Number(fxMeta.groundY) || 0.88;
+        const bodyY = fxMeta.bodyY != null ? Number(fxMeta.bodyY) : NaN;
         let h = unitH * (Number(fxMeta.heightUnits) || 2.2);
         // Keep it under the top HUD: first slide it down (at most ~a third of its
         // height, so the sphere still wraps the targets), then shrink if needed.
         // (an effect around the caster stays on the caster's feet and only shrinks)
         let top = feet - h * gy;
-        if (top < usable && at !== 'caster') top = Math.min(usable, top + h * 0.35);
-        if (top < usable) { h = Math.max(unitH, (feet + (top - (feet - h * gy)) - usable) / gy); top = usable; }
+        if (Number.isFinite(bodyY)) {
+          // centred on the unit's body: bodyY unit heights above the feet
+          // (a Sharingan over the head and chest; a portrait card shorter than
+          // a sprite counts its own height); slides down under the HUD
+          const bodyH = Math.min(unitH, avg(r => r.height) || unitH);
+          top = Math.max(usable, feet - bodyH * bodyY - h / 2);
+        } else {
+          if (top < usable && at !== 'caster') top = Math.min(usable, top + h * 0.35);
+          if (top < usable) { h = Math.max(unitH, (feet + (top - (feet - h * gy)) - usable) / gy); top = usable; }
+        }
         const w = h * fxMeta.frameWidth / fxMeta.frameHeight;
         const aEl = scene.querySelector(`.battle-unit[data-unit-id="${attacker.id}"] .unit-sprite`);
         const ar = aEl?.getBoundingClientRect();

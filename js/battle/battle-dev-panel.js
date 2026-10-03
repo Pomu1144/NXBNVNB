@@ -211,6 +211,7 @@
           </div>
           <button type="button" class="jjk-btn is-primary bdev-maxall" id="bdev-maxall">Max chakra</button>
           <button type="button" class="jjk-btn bdev-maxall bdev-cutins" id="bdev-cutins" aria-pressed="true">Cut-ins: On</button>
+          <button type="button" class="jjk-btn bdev-maxall bdev-cutins" id="bdev-sharingan" aria-pressed="true" title="Sharingan flash over Uchiha units before a jutsu / ultimate">Sharingan flash: On</button>
           <button type="button" class="jjk-btn bdev-maxall" id="bdev-clearcd">Remove cooldowns</button>
           <button type="button" class="jjk-btn bdev-maxall bdev-nocd" id="bdev-nocd" aria-pressed="false">No cooldowns: Off</button>
           <button type="button" class="jjk-btn bdev-maxall" id="bdev-clearsave" title="Delete the refresh-resume snapshot; reload to start this battle fresh">Clear saved battle</button>
@@ -260,6 +261,20 @@
         this.flash(`Skill cut-ins ${C.isEnabled() ? "on" : "off"}`);
       });
       syncCut();
+      const eyeBtn = root.querySelector("#bdev-sharingan");
+      const syncEye = () => {
+        const on = window.BattleCombat?.sharinganEnabled?.() !== false;
+        eyeBtn.textContent = `Sharingan flash: ${on ? "On" : "Off"}`;
+        eyeBtn.setAttribute("aria-pressed", String(on));
+      };
+      eyeBtn.addEventListener("click", () => {
+        const B = window.BattleCombat;
+        if (!B?.setSharinganEnabled) return;
+        B.setSharinganEnabled(!B.sharinganEnabled());
+        syncEye();
+        this.flash(`Sharingan flash ${B.sharinganEnabled() ? "on" : "off"}`);
+      });
+      syncEye();
 
       this.list.addEventListener("click", e => {
         const row = e.target.closest("[data-uid]");
