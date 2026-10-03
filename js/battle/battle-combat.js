@@ -1500,7 +1500,6 @@
 
     _sharinganOk() {
       if (typeof document !== 'undefined' && document.hidden) return false;
-      try { if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return false; } catch (e) { /* ignore */ }
       return !!window.SpritePlayer;
     },
 
