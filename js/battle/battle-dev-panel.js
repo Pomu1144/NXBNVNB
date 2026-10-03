@@ -403,6 +403,7 @@
             <div class="bdev-sec">Misc</div>
             <div class="bdev-grid">
               <button type="button" class="bdev-btn bdev-tog" id="bdev-cutins" aria-pressed="true">Cut-ins</button>
+              <button type="button" class="bdev-btn bdev-tog" id="bdev-sharingan" aria-pressed="true" title="Sharingan flash over Uchiha units before a jutsu / ultimate">Sharingan</button>
               <button type="button" class="bdev-btn" id="bdev-clearsave" title="Delete the refresh-resume snapshot; reload to start this battle fresh">Clear save</button>
             </div>
             <div class="bdev-sec">Units <small>tap a row to give it the turn</small></div>
@@ -446,6 +447,9 @@
       toggle("#bdev-cutins", "Skill cut-ins",
         () => window.BattleCutin?.isEnabled?.() !== false,
         v => window.BattleCutin?.setEnabled?.(v));
+      toggle("#bdev-sharingan", "Sharingan flash",
+        () => window.BattleCombat?.sharinganEnabled?.() !== false,
+        v => window.BattleCombat?.setSharinganEnabled?.(v));
 
       this.list.addEventListener("click", e => safe("unit row", () => {
         const row = e.target.closest("[data-uid]");
