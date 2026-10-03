@@ -1,6 +1,6 @@
 {
-  "frameWidth": 296,
-  "frameHeight": 256,
+  "frameWidth": 436,
+  "frameHeight": 326,
   "frames": 28,
   "columns": 12,
   "fps": 14,
@@ -23,6 +23,6 @@
     22,
     23
   ],
-  "heightScale": 1.0,
-  "anchorX": 0.3309
+  "heightScale": 1.2734,
+  "anchorX": 0.3852
 }
