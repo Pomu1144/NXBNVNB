@@ -1,0 +1,6 @@
+Naruto Uzumaki (1 Tailed Cloak) battle sprites from Naruto Online.
+Ripped by RockNGame.
+Sheets packed with tools/sprites/frames_to_sheet.py from the "(Battle)" frames
+(Asset_N numbering; --stand 160 --leg-mode color --leg-color 240,112,80 --leg-tol 40):
+  idle 33-39 (ping-pong), run 97-100, attack 64-74, hit 93,94,84,
+  ko 46,60,57,58, jutsu 85-92, ultimate 0-15

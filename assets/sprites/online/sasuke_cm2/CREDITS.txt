@@ -1,0 +1,9 @@
+Sasuke Uchiha (Curse Mark Level 2) battle sprites from Naruto Online.
+Ripped by RockNGame.
+Sheets packed with tools/sprites/frames_to_sheet.py (--anchor feet, --stand 158)
+from the "(Battle)" frames, numbered by their Asset_N index:
+  idle 30-36 (ping-pong), run 81,84,63,55,69,65 (hop-dash loop),
+  attack 0-10, hit 57,58,50, ko 57,58,59,62,60,
+  jutsu 26,27,113,39,112,114-119 (wing dash and spin slash),
+  ultimate 90,91,92,101,102,103,111,25,108,107,106,105,23,22,99,24,20,21 (take-off and dive)
+thumb.webp is cropped from frame 47.
