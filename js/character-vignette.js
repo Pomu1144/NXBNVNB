@@ -12,18 +12,24 @@
  * assets/home/thumbs/<charId>.webp for the picker) and listing it in ROSTER.
  * `ar` is the bust's width / height, used to fit two of them into the gap
  * between the featured banner and the menu panel.
+ *
+ * Animated idle (optional): `anim` names a folder holding anim.json
+ * ({ frames, fps, frameWidth, frameHeight, columns, rows, sheets: [...] })
+ * and the sheet images it lists. The frames loop on a canvas laid over the
+ * still bust (same box, same aspect), which stays underneath until every
+ * sheet has loaded and is shown again under reduced motion or on error.
  */
 (function () {
   'use strict';
 
-  const bust = (name, title, id, ar) => ({
-    name, title, ar, bust: true,
+  const bust = (name, title, id, ar, anim = null) => ({
+    name, title, ar, bust: true, anim,
     img: `assets/home/${id}_bust.webp`,
     thumb: `assets/home/thumbs/${id}.webp`,
   });
 
   const ROSTER = {
-    minato_2101:    bust('Minato Namikaze', 'Raikosekka', 'minato_2101', 0.738),
+    minato_2101:    bust('Minato Namikaze', 'Raikosekka', 'minato_2101', 0.738, 'assets/home/anim/minato_2101'),
     naruto_2133:    bust('Naruto Uzumaki', 'The Back of a Figure', 'naruto_2133', 0.893),
     sasuke_420:     bust('Sasuke Uchiha', 'Thunder of Retaliation', 'sasuke_420', 0.875),
     kakashi_797:    bust('Kakashi Hatake', 'Battle Tactician', 'kakashi_797', 0.842),
@@ -63,6 +69,53 @@
     try { localStorage.setItem(STORE_KEY, value); } catch (_) { /* storage blocked */ }
   }
 
+  /* ---- animated idle: frames from sprite sheets, drawn on a canvas ---- */
+  const reducedMotion = () => !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
+
+  function startAnim(el, base) {
+    if (reducedMotion()) return;
+    const body = el.querySelector('.home-char-body');
+    const img = el.querySelector('.home-char-img');
+    fetch(`${base}/anim.json`).then(r => (r.ok ? r.json() : Promise.reject(new Error('no anim.json'))))
+      .then(meta => Promise.all(meta.sheets.map(src => new Promise((ok, fail) => {
+        const im = new Image();
+        im.onload = () => ok(im);
+        im.onerror = fail;
+        im.src = `${base}/${src}`;
+      }))).then(sheets => ({ meta, sheets })))
+      .then(({ meta, sheets }) => {
+        if (!el.isConnected) return;
+        const cv = document.createElement('canvas');
+        cv.className = 'home-char-img home-char-anim';
+        cv.width = meta.frameWidth;
+        cv.height = meta.frameHeight;
+        cv.setAttribute('aria-hidden', 'true');
+        const ctx = cv.getContext('2d');
+        const per = meta.columns * meta.rows;
+        const draw = i => {
+          const im = sheets[Math.floor(i / per)];
+          const k = i % per;
+          const sx = (k % meta.columns) * meta.frameWidth, sy = Math.floor(k / meta.columns) * meta.frameHeight;
+          ctx.clearRect(0, 0, cv.width, cv.height);
+          ctx.drawImage(im, sx, sy, meta.frameWidth, meta.frameHeight, 0, 0, cv.width, cv.height);
+        };
+        draw(0);
+        body.appendChild(cv);
+        el.classList.add('is-animated');
+        const dt = 1000 / meta.fps;
+        let t0 = null, last = -1;
+        const tick = now => {
+          if (!el.isConnected) return;
+          if (t0 === null) t0 = now;
+          const i = Math.floor((now - t0) / dt) % meta.frames;
+          if (i !== last && !document.hidden) { draw(i); last = i; }
+          requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+      })
+      .catch(err => { console.warn('[HomeCharacter] idle animation unavailable, showing the still', err); img.style.visibility = ''; });
+  }
+
   function makeChar(id, slot) {
     const entry = ROSTER[id];
     const el = document.createElement('div');
@@ -75,6 +128,7 @@
       <div class="home-char-body">
         <img class="home-char-img" src="${entry.img}" alt="${entry.name}" draggable="false">
       </div>`;
+    if (entry.anim) startAnim(el, entry.anim);
     el.querySelector('.home-char-body').addEventListener('click', () => {
       // A little reaction when tapped.
       el.classList.remove('is-poked');
