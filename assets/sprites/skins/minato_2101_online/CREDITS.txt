@@ -2,4 +2,6 @@ Minato Namikaze (Hokage Cloak) battle sprites from Naruto Online.
 Ripped by RockNGame.
 Sheets packed with tools/sprites/frames_to_sheet.py from the "In Battle" frames:
   idle 79-88 (ping-pong), run 20-24 (ping-pong), attack 1-11, hit 96,97,100,101,
-  ko 141-144, jutsu 38-43,73-78, ultimate 167-179,163-166 (+3 held), Rasengan painted over the placeholder orb
+  ko 141-144, jutsu 38-43,73-78, ultimate 167-179,163-166 + 166 held for the impact; Rasengan + impact VFX
+  composited by tools/sprites/minato_online_rasengan.py (style matched to the
+  game's Fire Ball Jutsu effect)

@@ -3,11 +3,15 @@
 
     python3 tools/sprites/frames_to_sheet.py <frames_dir> <out_dir> <anim> <i,j,k-l,...>
         [--fps 12] [--loop] [--hits 3,10] [--pingpong] [--stand 184] [--pattern Asset_{}.png]
+        [--reg-dir <dir>]
 
 Ripped frames come cropped to their own bounding box, with no shared origin,
 so each frame is registered here: feet on the sheet's floor (bottom-aligned)
 and centred on the legs (the centroid of the trouser pixels, falling back to
 the frame's middle), which keeps the body still while the cloak and arms move.
+With --reg-dir, the legs are found in same-named frames from that folder
+instead (the frames before effects were painted on, so blue effects can't
+pull the registration).
 
 Output matches js/sprite-player.js: <anim>.webp in a grid plus <anim>.json
 { frameWidth, frameHeight, frames, columns, fps, loop, hits, heightScale,
@@ -62,6 +66,7 @@ def main():
     ap.add_argument("--stand", type=float, default=184.0)
     ap.add_argument("--pattern", default="Asset_{}.png")
     ap.add_argument("--columns", type=int, default=12)
+    ap.add_argument("--reg-dir", default=None)
     args = ap.parse_args()
 
     idx = parse_list(args.frames)
@@ -69,7 +74,10 @@ def main():
         idx = idx + idx[-2:0:-1]
     imgs = [Image.open(os.path.join(args.frames_dir, args.pattern.format(i))).convert("RGBA") for i in idx]
 
-    ax = [leg_x(im) for im in imgs]
+    if args.reg_dir:
+        ax = [leg_x(Image.open(os.path.join(args.reg_dir, args.pattern.format(i))).convert("RGBA")) for i in idx]
+    else:
+        ax = [leg_x(im) for im in imgs]
     left = math.ceil(max(ax))
     right = math.ceil(max(im.size[0] - x for im, x in zip(imgs, ax)))
     fw = left + right + 2
