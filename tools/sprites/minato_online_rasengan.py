@@ -3,26 +3,23 @@
 
     python3 tools/sprites/minato_online_rasengan.py "<rip>/In Battle" <out_dir>
     python3 tools/sprites/frames_to_sheet.py <out_dir>/fx assets/sprites/skins/minato_2101_online \\
-        ultimate 0-34 --fps 12 --hits 17,18,19,20 --stand 187 --reg-dir <out_dir>/raw
+        ultimate 0-26 --fps 12 --hits 17,18,19 --stand 187 --reg-dir <out_dir>/raw
 
 The rip only has a grey placeholder ball where the Rasengan effect was. This
-composites animated VFX, painted in the game's own flat cel effect style
-(matched to its Fire Ball Jutsu effect), over it:
-  tools/sprites/src/rasengan_loop.mp4    a spinning Rasengan (seamless loop)
-  tools/sprites/src/rasengan_impact.mp4  the impact: star flash, blast, spiral, fragments
-Both are on black; each frame is keyed to alpha by its brightness (additive
-light, so un-premultiplied colour over any background), and a round mask
-trims stray streaks at the clip's edges.
-
-The sphere sits in his hand at hand-marked positions from the charge to the
-lunge, spinning at twice the clip's speed; the impact then plays at full size
-just ahead of his fist while he holds the lunge, the sphere still grinding in
-his hand.
+composites the owner's Rasengan effect sheet (tools/sprites/src/rasengan/,
+16 keyed frames of its 4x4 layout: gather, grow, full, two thrust frames,
+burst, four fade frames) over it:
+  charge (Asset 172-173)          gather and grow (f00-f07), in his hand
+  lunge (174-179, 163-165)        the full sphere spinning (f04-f07), in his hand
+  last lunge frame                the thrust, trail behind (f10)
+  impact, the lunge held (166)    the star burst ahead of his fist (f11), then
+                                  the wisps scattering away (f12-f15)
+The rip's grey ball is erased under the effect.
 Writes <out_dir>/fx/Asset_<k>.png (with effects) and <out_dir>/raw/Asset_<k>.png
 (the same frames without them, for leg registration).
 """
+
 import os
-import subprocess
 import sys
 
 import numpy as np
@@ -31,36 +28,7 @@ from PIL import Image
 HERE = os.path.dirname(os.path.abspath(__file__))
 SRC = sys.argv[1] if len(sys.argv) > 1 else "In Battle"
 OUT = sys.argv[2] if len(sys.argv) > 2 else "out"
-LOOP = os.path.join(HERE, "src", "rasengan_loop.mp4")
-IMPACT = os.path.join(HERE, "src", "rasengan_impact.mp4")
-VS = 512  # decoded video size
-
-
-def ffmpeg_exe():
-    try:
-        import imageio_ffmpeg
-        return imageio_ffmpeg.get_ffmpeg_exe()
-    except ImportError:
-        return "ffmpeg"
-
-
-def read_video(path):
-    raw = subprocess.run([ffmpeg_exe(), "-v", "error", "-i", path, "-vf", f"scale={VS}:{VS}",
-                          "-f", "rawvideo", "-pix_fmt", "rgb24", "-"], check=True, capture_output=True).stdout
-    return np.frombuffer(raw, np.uint8).reshape(-1, VS, VS, 3)
-
-
-def key(rgb, inner=0.80, outer=0.98, gain=1.35):
-    """Black-background VFX frame -> RGBA: alpha from brightness, colour un-premultiplied."""
-    f = rgb.astype(np.float32) / 255.0
-    a = np.clip((f.max(axis=2) - 0.05) * gain, 0, 1)
-    yy, xx = np.mgrid[0:VS, 0:VS]
-    d = np.hypot(xx - VS / 2, yy - VS / 2) / (VS / 2)
-    a *= np.clip((outer - d) / (outer - inner), 0, 1)
-    c = np.where(a[..., None] > 1e-3, f / np.maximum(a[..., None], 1e-3), 0)
-    out = np.dstack([np.clip(c, 0, 1) * 255, a * 255]).astype(np.uint8)
-    return Image.fromarray(out, "RGBA")
-
+FX = os.path.join(HERE, "src", "rasengan")
 
 # source frame -> (hand x, hand y, sphere radius) in that frame's pixels
 MARKS = {
@@ -78,12 +46,32 @@ MARKS = {
     166: (175, 38, 16),
 }
 BODY = list(range(167, 180)) + [163, 164, 165, 166]   # 17 frames
-N_IMPACT = 18                                         # the lunge held while the impact plays
-SEQ = BODY + [166] * N_IMPACT
-IMPACT_R = 135          # impact radius (source px) at full size
-IMPACT_DX = 34          # impact centre ahead of the hand
-PAD_T, PAD_R = 118, 195
-SPHERE_FILL = 0.66      # the loop's sphere radius as a share of the clip's half-width
+# the impact: lunge held while the burst (f11) lands, then the wisps (f12-f15) scatter
+IMPACT = [11, 11, 11, 12, 12, 13, 13, 14, 15, 15]
+SEQ = BODY + [166] * len(IMPACT)
+IMPACT_R = 120          # burst radius (source px)
+IMPACT_DX = 30          # burst centre ahead of the hand
+PAD_T, PAD_R = 110, 175
+SPHERE_FILL = 0.62      # the full sphere's swirl radius as a share of its frame's half-size
+
+
+def load_fx():
+    out = []
+    for i in range(16):
+        im = Image.open(os.path.join(FX, f"f{i:02d}.png")).convert("RGBA")
+        out.append(im.crop(im.getchannel("A").point(lambda v: 255 if v > 20 else 0).getbbox()))
+    return out
+
+
+def charge_frame(i, k):
+    """Which sheet frame is in his hand on body frame i (sequence index k)."""
+    if i == 172:
+        return 2
+    if i == 173:
+        return 7
+    if i == 166 or i == 165:
+        return 10           # the thrust: trail behind, sphere driving forward
+    return 4 + (k % 4)      # the full sphere spinning (f04-f07)
 
 
 def paste_center(fr, im, cx, cy):
@@ -91,12 +79,7 @@ def paste_center(fr, im, cx, cy):
 
 
 def main():
-    loop = read_video(LOOP)
-    impact = read_video(IMPACT)
-    # the impact clip: star flash at the start, speed-streak blast, spinning
-    # spiral, then fragments that shrink away by the end
-    t0 = 0
-    imp_idx = np.linspace(t0, len(impact) - 1, N_IMPACT).round().astype(int)
+    fx = load_fx()
     for sub in ("fx", "raw"):
         os.makedirs(os.path.join(OUT, sub), exist_ok=True)
 
@@ -114,35 +97,38 @@ def main():
             a[..., 1][m] = 90 + 150 * lum
             a[..., 2][m] = 200 + 55 * lum
             src = Image.fromarray(a.clip(0, 255).astype(np.uint8), "RGBA")
-        if k >= len(BODY):  # the sphere shrinks during the blast: erase the rip's grey ball under it
+        held = k >= len(BODY)
+        if held:  # the sphere is spent in the burst: erase the rip's grey ball
             a = np.array(src)
             cx, cy, r = MARKS[i]
             yy, xx = np.mgrid[0:h, 0:w]
             sat = a[..., :3].astype(int).max(2) - a[..., :3].astype(int).min(2)
-            ball = ((xx - cx) ** 2 + (yy - cy) ** 2 <= (r - 1) ** 2) & (xx > cx - 9) & (sat < 28)
-            a[ball] = 0
+            a[((xx - cx) ** 2 + (yy - cy) ** 2 <= (r - 1) ** 2) & (xx > cx - 9) & (sat < 28)] = 0
             src = Image.fromarray(a, "RGBA")
         raw = Image.new("RGBA", (w + PAD_R, h + PAD_T), (0, 0, 0, 0))
         raw.alpha_composite(src, (0, PAD_T))
         raw.save(os.path.join(OUT, "raw", f"Asset_{k}.png"))
         fr = raw.copy()
 
-        held = k >= len(BODY)
-        j = k - len(BODY)
-        if i in MARKS:
+        if not held and i in MARKS:
             cx, cy, r = MARKS[i]
-            # during the blast the sphere keeps grinding in his fist, shrinking a little
-            scale = 1.0 if not held else max(0.6, 1.0 - 0.08 * j)
-            size = max(8, int(round(2 * r * scale / SPHERE_FILL)))
-            o = key(loop[(k * 2 * 2) % len(loop)]).resize((size, size), Image.LANCZOS)
-            paste_center(fr, o, cx, cy + PAD_T)
+            j = charge_frame(i, k)
+            e = fx[j]
+            if j == 10:  # thrust frame: size by the sphere, head on the hand, trail behind
+                s = (2 * r / SPHERE_FILL) / e.size[1]
+                e = e.resize((max(1, int(e.size[0] * s)), max(1, int(e.size[1] * s))), Image.LANCZOS)
+                fr.alpha_composite(e, (int(cx + r * 1.2 - e.size[0]), int(cy + PAD_T - e.size[1] / 2)))
+            else:
+                size = int(round(2 * r / SPHERE_FILL))
+                e = e.resize((size, max(1, int(size * e.size[1] / e.size[0]))), Image.LANCZOS)
+                paste_center(fr, e, cx, cy + PAD_T)
         if held:
             cx, cy, _ = MARKS[166]
-            # grows in fast over the first frames, then holds full size
-            grow = min(1.0, 0.6 + 0.2 * j)
-            size = int(round(2 * IMPACT_R * grow))
-            b = key(impact[imp_idx[j]], inner=0.72, outer=0.97).resize((size, size), Image.LANCZOS)
-            paste_center(fr, b, cx + IMPACT_DX, cy + PAD_T)
+            j = IMPACT[k - len(BODY)]
+            e = fx[j]
+            size = int(2 * IMPACT_R * (0.8 if k == len(BODY) else 1.0))
+            e = e.resize((size, max(1, int(size * e.size[1] / e.size[0]))), Image.LANCZOS)
+            paste_center(fr, e, cx + IMPACT_DX, cy + PAD_T)
         fr.save(os.path.join(OUT, "fx", f"Asset_{k}.png"))
     print(len(SEQ), "frames")
 

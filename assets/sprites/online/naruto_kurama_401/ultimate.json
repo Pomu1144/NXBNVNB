@@ -1,0 +1,30 @@
+{
+  "frameWidth": 425,
+  "frameHeight": 285,
+  "frames": 19,
+  "columns": 12,
+  "fps": 12,
+  "loop": false,
+  "hits": [
+    5,
+    7,
+    9,
+    14
+  ],
+  "heightScale": 1.6021,
+  "anchorX": 0.4118,
+  "anchorY": 1.0,
+  "fx": [
+    {
+      "sheet": "ultimate_rsfly",
+      "at": "targets",
+      "startFrame": 3,
+      "fly": true
+    },
+    {
+      "sheet": "ultimate_rsboom",
+      "at": "targets",
+      "startFrame": 13
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+Naruto Uzumaki 'Proof of Bonds' 6-star ultimate (Tailed Beast Planetary Rasen Shuriken).
+Body: the Kurama Link set (../naruto_kurama). Effect: the owner's Rasenshuriken sheet
+(tools/sprites/src/rasenshuriken), split into a thrown layer (f01-f06, f08-f11)
+and an arrival blast (f12-f15) that carries the hits.
