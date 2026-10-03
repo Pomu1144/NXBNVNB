@@ -40,6 +40,8 @@
       folder: 'assets/sprites/skins/sasuke_2117_akatsuki', own: [...BODY, 'secret'], thumb: 'assets/sprites/skins/sasuke_2117_akatsuki/thumb.webp', price: 50 },
     { id: 'itachi_2031_anbu', charIds: ['itachi_2031', 'itachi_2032'], unit: 'Itachi Uchiha', name: 'ANBU Black Ops',
       folder: 'assets/sprites/skins/itachi_2031_anbu', own: BODY, thumb: 'assets/sprites/skins/itachi_2031_anbu/thumb.webp', price: 45 },
+    { id: 'minato_2101_online', charIds: ['minato_2101'], unit: 'Minato Namikaze', name: 'Hokage Cloak',
+      folder: 'assets/sprites/skins/minato_2101_online', own: BODY, thumb: 'assets/sprites/skins/minato_2101_online/thumb.webp', price: 50 },
   ];
   const BYID = new Map(CATALOGUE.map(s => [s.id, s]));
 
