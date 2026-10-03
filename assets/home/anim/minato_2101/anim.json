@@ -1,0 +1,15 @@
+{
+  "frames": 60,
+  "fps": 12,
+  "frameWidth": 472,
+  "frameHeight": 640,
+  "columns": 6,
+  "rows": 2,
+  "sheets": [
+    "sheet_0.webp",
+    "sheet_1.webp",
+    "sheet_2.webp",
+    "sheet_3.webp",
+    "sheet_4.webp"
+  ]
+}
