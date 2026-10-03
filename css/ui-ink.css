@@ -84,6 +84,7 @@ html[data-skin="ink"] .ink-home {
     linear-gradient(0deg, rgba(8, 8, 9, 0.75), transparent 30%);
 }
 .ink-home > *:not(.ink-layers) { position: absolute; z-index: 2; }
+.ink-l-hero-gl { animation: none; } /* js/ink-hero-motion.js: the moving copy, shown once the still has slid in */
 @keyframes inkHeroIn { from { opacity: 0; transform: translateX(-40%); } to { opacity: 1; transform: translateX(-46%); } }
 @keyframes inkDrift { from { transform: translate(-1.5%, 1%) scale(1); } to { transform: translate(1.5%, -1%) scale(1.03); } }
 @media (prefers-reduced-motion: reduce) { .ink-l-hero, .ink-l-shards { animation: none; } }
