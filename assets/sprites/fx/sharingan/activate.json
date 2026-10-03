@@ -1,0 +1,14 @@
+{
+  "frameWidth": 192,
+  "frameHeight": 192,
+  "frames": 13,
+  "columns": 5,
+  "fps": 18.0,
+  "loop": false,
+  "hits": [],
+  "fxOnly": true,
+  "heightUnits": 0.95,
+  "groundY": 0.5,
+  "centerX": 0.5,
+  "bodyY": 0.72
+}

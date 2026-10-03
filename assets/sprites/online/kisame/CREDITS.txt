@@ -1,0 +1,13 @@
+Kisame Hoshigaki (Samehada Fusion) battle sprites from Naruto Online.
+Ripped by RockNGame.
+Sheets packed with tools/sprites/frames_to_sheet.py
+(--stand 226 --leg-mode color --leg-color 88,88,104 --leg-tol 22) from the
+"(Battle)" frames, numbered by their Asset_N index:
+  idle 50-57 (ping-pong), run 89-91 (ping-pong, low lunging dash),
+  attack 67-77 (claw/kick/tail-spin combo), hit 98,98,67,
+  ko 98-107,107 (blown back, tumbles, ends lying down),
+  jutsu 82-97 (punch flurry, fin spin, lunge, slashes),
+  ultimate 108-123 (leap, spinning dive, head-first slam, landing)
+Not used: 0-30, 39-49 (water splash VFX) and 60-62 (water wave VFX), 31 (smear),
+32-38 (leap/landing), 58-59, 63-66 (lying), 78-81 (low crouch).
+thumb.webp is cropped from frame 50.

@@ -1,0 +1,9 @@
+Sasuke Uchiha (Part 2) battle sprites from Naruto Online.
+Ripped by RockNGame.
+Sheets packed with tools/sprites/frames_to_sheet.py (default leg anchor, --stand 171)
+from the "(Battle)" frames, numbered by their Asset_N index:
+  idle 53,39-43 (ping-pong), run 123-125 (ping-pong, low dash),
+  attack 0-13 (sword combo), hit 92,101,102, ko 92,54,83,84,68,91,65,66,
+  jutsu 120,121,120,121,2,123,124,125,46,47,48,49 (charge, dash, thrust),
+  ultimate 127,133,132,129,136,130,131,135,131,137,138,139 (arm raised to the sky, then brought down)
+thumb.webp is cropped from frame 40.

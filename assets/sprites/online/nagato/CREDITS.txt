@@ -1,0 +1,7 @@
+Nagato battle sprites from Naruto Online.
+Ripped by RockNGame.
+Sheets packed with tools/sprites/frames_to_sheet.py
+(--stand 170 --leg-color 48,48,56:12 --leg-color 72,72,88:12) from the
+"Nagato (Battle)" frames, numbered by "Asset_N":
+  idle 35-41 (ping-pong), run 16-19 (ping-pong), attack 65-77, hit 95,96,95,
+  ko 95-98,59,60, jutsu 99-107, ultimate 108-127

@@ -1,0 +1,11 @@
+Shisui Uchiha battle sprites from Naruto Online.
+Ripped by RockNGame.
+Sheets packed with tools/sprites/frames_to_sheet.py (--stand 145 --leg-mode feet)
+from the "(Battle)" frames, numbered by their Asset_N index:
+  idle 27-30 (ping-pong), run 93-95 (ping-pong, low dash),
+  attack 0-12 (tanto combo), hit 43,44,43,
+  ko 43,40,41,48,49,49 (doubled over, flipped, ends lying down),
+  jutsu 13-26 (Body Flicker: crouch, vanish smear 18, reappear crouched),
+  ultimate 31-36,89-104 (flicker dash, hand seal, flicker smears 91-92,
+  low strikes, tanto raised and brought down, closing seal)
+thumb.webp is cropped from frame 27.

@@ -1,0 +1,8 @@
+Itachi Uchiha (Akatsuki) battle sprites from Naruto Online.
+Ripped by RockNGame.
+Sheets packed with tools/sprites/frames_to_sheet.py (--stand 177 --leg-color 88,88,112:20).
+The rip folder mixes battle and overworld frames whose Asset numbers collide;
+frame numbers below are the battle "Asset_N" numbers (for colliding numbers the
+battle-scale frame was used; Asset_71 is 98_Asset_71.png):
+  idle 96-106 (ping-pong), run 23-25 (ping-pong), attack 37-47, hit 84,85,84,
+  ko 84-87,48,49, jutsu 88-95, ultimate 1-5,11-22

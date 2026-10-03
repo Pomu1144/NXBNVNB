@@ -1,0 +1,22 @@
+{
+  "frameWidth": 274,
+  "frameHeight": 134,
+  "frames": 11,
+  "columns": 11,
+  "fps": 12,
+  "loop": false,
+  "hits": [
+    3,
+    7
+  ],
+  "heightScale": 0.8057,
+  "anchorX": 0.4599,
+  "anchorY": 1.0,
+  "fx": {
+    "sheet": "jutsu_fx",
+    "base": "assets/sprites/fx/phoenix_flower",
+    "at": "targets",
+    "layer": "front",
+    "startFrame": 3
+  }
+}

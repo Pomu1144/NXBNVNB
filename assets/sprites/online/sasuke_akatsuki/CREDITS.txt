@@ -1,0 +1,11 @@
+Sasuke Uchiha (Akatsuki) battle sprites from Naruto Online.
+Ripped by RockNGame.
+Sheets packed with tools/sprites/frames_to_sheet.py (--anchor feet, --stand 176)
+from the "(Battle)" frames, numbered by their Asset_N index:
+  idle 114,115,124,126 (ping-pong), run 54,42,39,40,41 (ping-pong, low dash),
+  attack 0-12,19,13 (sword combo), hit 63,110,111,110,
+  ko 63,110,111,77,113,100,74,75,
+  jutsu 127-136 (Mangekyo, arm raised), ultimate 137,138,139,20-31
+thumb.webp is cropped from frame 122.
+The rip's Susanoo pieces (frames 15-18, 32, 33 arm/fist, 125 ribcage) are not
+in these body sheets.
