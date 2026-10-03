@@ -17,7 +17,7 @@
  * ({ frames, fps, frameWidth, frameHeight, columns, rows, sheets: [...] })
  * and the sheet images it lists. The frames loop on a canvas laid over the
  * still bust (same box, same aspect), which stays underneath until every
- * sheet has loaded and is shown again under reduced motion or on error.
+ * sheet has loaded and is shown again if loading fails.
  */
 (function () {
   'use strict';
@@ -70,10 +70,7 @@
   }
 
   /* ---- animated idle: frames from sprite sheets, drawn on a canvas ---- */
-  const reducedMotion = () => !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
-
   function startAnim(el, base) {
-    if (reducedMotion()) return;
     const body = el.querySelector('.home-char-body');
     const img = el.querySelector('.home-char-img');
     fetch(`${base}/anim.json`).then(r => (r.ok ? r.json() : Promise.reject(new Error('no anim.json'))))

@@ -216,7 +216,6 @@
       stop();
       const frameMs = 1000 / (anim.fps * speed);
       const start = performance.now();
-      const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
       const hitIdx = new Map((Array.isArray(anim.hits) ? anim.hits : []).map((f, k) => [f, k]));
       let reached = -1; // last frame index whose callbacks have fired
       let lastShown = -1;
@@ -254,7 +253,9 @@
               return;
             }
           }
-          show(reduceMotion ? 0 : i);
+          // Sheets always play, even with the OS's Reduce Motion on: holding frame 0
+          // left attacks and jutsu as a still pose on phones with it enabled.
+          show(i);
           if (oneShot) fireUpTo(i);
           else if (onFrame && i !== reached) { reached = i; safe(onFrame, i); }
           timer = requestAnimationFrame(tick);
