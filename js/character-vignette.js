@@ -86,7 +86,7 @@
       .then(({ meta, sheets }) => {
         if (!el.isConnected) return;
         const cv = document.createElement('canvas');
-        cv.className = 'home-char-img home-char-anim';
+        cv.className = 'home-char-anim';
         cv.width = meta.frameWidth;
         cv.height = meta.frameHeight;
         cv.setAttribute('aria-hidden', 'true');
