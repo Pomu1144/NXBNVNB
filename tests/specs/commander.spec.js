@@ -78,6 +78,8 @@ test.describe('commander', () => {
     expect(before.chakra).toBe(20);
 
     // Cast: 16 chakra leaves the team, the cut-in plays, enemies take damage.
+    // (A unit still finishing an action blocks casting; wait until it is castable.)
+    await expect(page.locator('.cmd-banner.is-ready:not(.is-blocked)')).toHaveCount(1, { timeout: 20_000 });
     await banner.click();
     await expect(page.locator('.cmd-cutin')).toHaveCount(1);
     await page.waitForFunction(() => !window.BattleCommander.casting, null, { timeout: 15_000 });
@@ -115,7 +117,7 @@ test.describe('commander', () => {
     // Collapsed, the tile still casts when the team has 16 chakra.
     await holdTurns(page);
     await setChakra(page, 4);
-    await expect(page.locator('.cmd-banner')).toHaveClass(/is-ready/);
+    await expect(page.locator('.cmd-banner.is-ready:not(.is-blocked)')).toHaveCount(1, { timeout: 20_000 });
     await page.locator('.cmd-banner').click();
     await page.waitForFunction(() => !window.BattleCommander.casting, null, { timeout: 15_000 });
     expect(await page.evaluate(() => window.BattleManager.activeTeam.reduce((s, u) => s + u.chakra, 0))).toBe(0);

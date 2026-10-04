@@ -31,6 +31,7 @@
     core: null,
     el: null,
     wrap: null,
+    queued: false,
     casting: false,
 
     /* ===== banner ===== */
@@ -43,23 +44,26 @@
       this.wrap?.remove();
 
       const art = safe("art", () => (core.units ? core.units.resolveTierArt(c.base, c.tier) : core.resolveTierArtFallback(c.base, c.tier))) || {};
-      const chips = (core.commanderBuffs || []).map(b => `<span class="cmd-chip">${esc(b.label)} +${esc(b.percent)}%</span>`).join("");
+      const aura = (core.commanderBuffs || []).map(b => `${esc(b.label)} +${esc(b.percent)}%`).join(" · ");
       const el = document.createElement("button");
       el.type = "button";
       el.className = "cmd-banner";
       el.innerHTML = `
+        <span class="cmd-ink" aria-hidden="true"></span>
         <span class="cmd-seal" aria-hidden="true">発動</span>
-        <span class="cmd-kicker"><b>指揮</b><span>Commander</span></span>
-        <span class="cmd-row">
-          <span class="cmd-portrait"><img src="${esc(art.portrait || "")}" alt="" draggable="false">
-            <i class="cmd-el" style="background:${ELEMENT_COLOR[c.element] || "#555"}"></i></span>
-          <span class="cmd-who"><span class="cmd-name">${esc(c.name)}</span><span class="cmd-chips">${chips}</span></span>
+        <span class="cmd-brushk" aria-hidden="true">指揮</span>
+        <span class="cmd-body">
+          <span class="cmd-row">
+            <span class="cmd-portrait"><img src="${esc(art.portrait || "")}" alt="" draggable="false">
+              <i class="cmd-el" style="background:${ELEMENT_COLOR[c.element] || "#555"}"></i></span>
+            <span class="cmd-who"><span class="cmd-label">Commander</span><span class="cmd-name">${esc(c.name)}</span>${aura ? `<span class="cmd-aura">${aura}</span>` : ""}</span>
+          </span>
+          <span class="cmd-gauge">
+            <span class="cmd-pips">${"<i></i>".repeat(COST)}</span>
+            <b class="cmd-count">0<i>/${COST}</i></b>
+          </span>
+          <span class="cmd-go"><b>奥義</b><span>Unleash</span></span>
         </span>
-        <span class="cmd-gauge">
-          <span class="cmd-gauge-head"><span>Team chakra</span><b class="cmd-count">0<i> / ${COST}</i></b></span>
-          <span class="cmd-pips">${"<i></i>".repeat(COST)}</span>
-        </span>
-        <span class="cmd-go"><span>Unleash</span><b>奥義 —</b></span>
         <span class="cmd-mini" aria-hidden="true"><span class="cmd-mini-count">0</span></span>`;
       // The banner and its fold tab sit side by side in one wrapper (a button
       // can't hold another button).
@@ -70,7 +74,7 @@
       fold.className = "cmd-fold";
       fold.innerHTML = `<svg width="10" height="14" viewBox="0 0 10 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7.5 1.5L2.5 7l5 5.5"/></svg>`;
       fold.addEventListener("click", e => { e.stopPropagation(); this.setFolded(!this.folded); });
-      wrap.append(el, fold);
+      wrap.append(fold, el);
       (document.querySelector(".battle-container") || document.body).appendChild(wrap);
       this.el = el;
       this.wrap = wrap;
@@ -92,6 +96,8 @@
         e.stopPropagation();
         if (held) { held = false; return; }
         if (this.ready()) this.cast();
+        // full gauge but a unit is mid-action: queue it, it fires the moment the field is clear
+        else if (this.teamChakra() >= COST && this.core?.commander?.ultimate && !this.casting) { this.queued = true; this.update(); }
         else this.showDetails();
       });
     },
@@ -135,6 +141,9 @@
       const ready = n >= COST;
       el.classList.toggle("is-ready", ready);
       el.classList.toggle("is-blocked", ready && !this.canCastNow());
+      if (this.queued && !ready) this.queued = false;
+      el.classList.toggle("is-queued", !!this.queued);
+      if (this.queued && ready && this.canCastNow()) { this.queued = false; this.cast(); }
       el.setAttribute("aria-label", ready
         ? `Unleash commander ultimate, ${core.commander.ultimate?.name || ""}`
         : `Commander ${core.commander.name}, team chakra ${shown} of ${COST}`);
@@ -155,7 +164,7 @@
       box.setAttribute("aria-label", "Commander details");
       box.innerHTML = `
         <button type="button" class="cmd-x" aria-label="Close"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M1 1l10 10M11 1L1 11"/></svg></button>
-        <div class="cmd-dh"><span class="cmd-k">指揮 · Commander</span><b>${esc(c.name)}</b>
+        <div class="cmd-dh"><span class="cmd-k">指揮</span><b>${esc(c.name)}</b>
           <span class="cmd-sub">${esc(c.base?.version || "")}${c.base?.version ? " · " : ""}${esc((c.element || "").replace(/^./, m => m.toUpperCase()))} · ${c.stars}★</span></div>
         <div class="cmd-ds"><span class="cmd-dsh"><span>Team aura</span><i>always on</i></span>${aura}</div>
         ${u ? `<div class="cmd-ds"><span class="cmd-dsh"><span>Commander ultimate</span><i>costs ${COST} team chakra</i></span>
@@ -236,9 +245,9 @@
       ov.innerHTML = `
         <div class="cmd-band"><div class="cmd-band-in">
           <div class="cmd-art"><img src="assets/characters/${esc(id)}/dossier/art.webp" alt="" draggable="false"></div>
-          <div class="cmd-title"><span class="cmd-k"><b>指揮奥義</b>Commander ultimate</span>
-            <strong>${esc(u.name)}</strong><i></i><span class="cmd-by">${esc(c.name)}${c.base?.version ? ` · ${esc(c.base.version)}` : ""}</span></div>
-        </div></div>`;
+        </div></div>
+        <div class="cmd-title"><span class="cmd-k"><b>指揮奥義</b>Commander ultimate</span>
+          <strong>${esc(u.name)}</strong><i></i><span class="cmd-by">${esc(c.name)}${c.base?.version ? ` · ${esc(c.base.version)}` : ""}</span></div>`;
       const img = ov.querySelector(".cmd-art img");
       img.addEventListener("error", () => { if (art.full && img.src.indexOf(art.full) < 0) img.src = art.full; }, { once: true });
       (document.querySelector(".battle-container") || document.body).appendChild(ov);
