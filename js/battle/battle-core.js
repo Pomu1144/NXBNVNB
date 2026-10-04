@@ -596,7 +596,7 @@
       };
 
       // Calculate commander buffs
-      this.commanderBuffs = this.calculateCommanderBuffs(element, stars);
+      this.commanderBuffs = this.calculateCommanderBuffs(String(element).toLowerCase(), stars);
 
       console.log(`[BattleCore] 🎖️ Commander loaded: ${base.name} (${stars}★ ${element})`);
       console.log(`[BattleCore] 📊 Commander buffs:`, this.commanderBuffs);
