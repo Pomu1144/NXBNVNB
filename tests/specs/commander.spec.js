@@ -93,6 +93,13 @@ test.describe('commander', () => {
     expect(after.chakra).toBe(4);
     expect(after.enemyHp).toBeLessThan(before.enemyHp);
     await expect(banner).not.toHaveClass(/is-ready/);
+
+    // Not once per battle: every time the team builds 16 chakra again it can be cast again.
+    await setChakra(page, 4); // 16
+    await expect(page.locator('.cmd-banner.is-ready:not(.is-blocked)')).toHaveCount(1, { timeout: 20_000 });
+    await banner.click();
+    await page.waitForFunction(() => !window.BattleCommander.casting, null, { timeout: 15_000 });
+    expect(await page.evaluate(() => window.BattleManager.activeTeam.reduce((s, u) => s + u.chakra, 0))).toBe(0);
     expect(errors.pageErrors, errors.pageErrors.join('\n')).toEqual([]);
   });
 
