@@ -93,4 +93,36 @@ test.describe('commander', () => {
     await expect(banner).not.toHaveClass(/is-ready/);
     expect(errors.pageErrors, errors.pageErrors.join('\n')).toEqual([]);
   });
+
+  test('the panel collapses, stays collapsed next battle, and still casts', async ({ page }) => {
+    const errors = collectErrors(page);
+    await openBattle(page);
+    const wrap = page.locator('.cmd-wrap');
+    const fold = page.locator('.cmd-fold');
+    await expect(wrap).not.toHaveClass(/is-folded/);
+    await expect(fold).toHaveAttribute('aria-expanded', 'true');
+    await fold.click();
+    await expect(wrap).toHaveClass(/is-folded/);
+    await expect(fold).toHaveAttribute('aria-expanded', 'false');
+    await expect(page.locator('.cmd-banner .cmd-name')).toBeHidden();
+
+    // Remembered: the next battle opens collapsed.
+    await page.reload();
+    await waitForLoader(page, 45_000);
+    await page.waitForFunction(() => document.querySelector('.cmd-wrap'), null, { timeout: 45_000 });
+    await expect(page.locator('.cmd-wrap')).toHaveClass(/is-folded/);
+
+    // Collapsed, the tile still casts when the team has 16 chakra.
+    await holdTurns(page);
+    await setChakra(page, 4);
+    await expect(page.locator('.cmd-banner')).toHaveClass(/is-ready/);
+    await page.locator('.cmd-banner').click();
+    await page.waitForFunction(() => !window.BattleCommander.casting, null, { timeout: 15_000 });
+    expect(await page.evaluate(() => window.BattleManager.activeTeam.reduce((s, u) => s + u.chakra, 0))).toBe(0);
+
+    // Open again.
+    await page.locator('.cmd-fold').click();
+    await expect(page.locator('.cmd-wrap')).not.toHaveClass(/is-folded/);
+    expect(errors.pageErrors, errors.pageErrors.join('\n')).toEqual([]);
+  });
 });

@@ -18,6 +18,9 @@
   "use strict";
 
   const COST = 16;
+  const FOLD_KEY = "blazing_commander_folded_v1";
+  const readFolded = () => { try { return localStorage.getItem(FOLD_KEY) === "1"; } catch (_) { return false; } };
+  const saveFolded = v => { try { localStorage.setItem(FOLD_KEY, v ? "1" : "0"); } catch (_) { /* storage blocked */ } };
   const alive = u => !!(u && u.stats && u.stats.hp > 0);
   const safe = (label, fn) => { try { return fn(); } catch (e) { console.warn(`[Commander] ${label} failed`, e); return undefined; } };
   const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -27,6 +30,7 @@
   const BattleCommander = {
     core: null,
     el: null,
+    wrap: null,
     casting: false,
 
     /* ===== banner ===== */
@@ -36,7 +40,7 @@
       const c = core.commander;
       if (!c) return;
       document.getElementById("commander-display")?.classList.add("hidden");
-      this.el?.remove();
+      this.wrap?.remove();
 
       const art = safe("art", () => (core.units ? core.units.resolveTierArt(c.base, c.tier) : core.resolveTierArtFallback(c.base, c.tier))) || {};
       const chips = (core.commanderBuffs || []).map(b => `<span class="cmd-chip">${esc(b.label)} +${esc(b.percent)}%</span>`).join("");
@@ -55,10 +59,24 @@
           <span class="cmd-gauge-head"><span>Team chakra</span><b class="cmd-count">0<i> / ${COST}</i></b></span>
           <span class="cmd-pips">${"<i></i>".repeat(COST)}</span>
         </span>
-        <span class="cmd-go"><span>Unleash</span><b>奥義 —</b></span>`;
-      (document.querySelector(".battle-container") || document.body).appendChild(el);
+        <span class="cmd-go"><span>Unleash</span><b>奥義 —</b></span>
+        <span class="cmd-mini" aria-hidden="true"><span class="cmd-mini-count">0</span></span>`;
+      // The banner and its fold tab sit side by side in one wrapper (a button
+      // can't hold another button).
+      const wrap = document.createElement("div");
+      wrap.className = "cmd-wrap";
+      const fold = document.createElement("button");
+      fold.type = "button";
+      fold.className = "cmd-fold";
+      fold.innerHTML = `<svg width="10" height="14" viewBox="0 0 10 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7.5 1.5L2.5 7l5 5.5"/></svg>`;
+      fold.addEventListener("click", e => { e.stopPropagation(); this.setFolded(!this.folded); });
+      wrap.append(el, fold);
+      (document.querySelector(".battle-container") || document.body).appendChild(wrap);
       this.el = el;
+      this.wrap = wrap;
+      this.fold = fold;
       this.wire(el);
+      this.setFolded(readFolded(), false);
       this.update();
     },
 
@@ -76,6 +94,18 @@
         if (this.ready()) this.cast();
         else this.showDetails();
       });
+    },
+
+    /** Collapse the banner to its portrait tile (or open it again); remembered between battles. */
+    setFolded(on, remember = true) {
+      this.folded = !!on;
+      this.wrap?.classList.toggle("is-folded", this.folded);
+      if (this.fold) {
+        this.fold.setAttribute("aria-expanded", String(!this.folded));
+        this.fold.setAttribute("aria-label", this.folded ? "Show commander panel" : "Collapse commander panel");
+      }
+      if (this.folded) document.querySelector(".cmd-details")?.remove();
+      if (remember) saveFolded(this.folded);
     },
 
     teamChakra() {
@@ -99,6 +129,8 @@
       const n = this.teamChakra();
       const shown = Math.min(COST, n);
       el.querySelector(".cmd-count").firstChild.nodeValue = String(shown);
+      el.querySelector(".cmd-mini-count").textContent = String(shown);
+      el.style.setProperty("--cmd-fill", String(shown / COST));
       el.querySelectorAll(".cmd-pips i").forEach((p, i) => p.classList.toggle("on", i < shown));
       const ready = n >= COST;
       el.classList.toggle("is-ready", ready);

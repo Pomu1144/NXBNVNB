@@ -7,8 +7,7 @@
 }
 .cmd-banner {
   all: unset; box-sizing: border-box; cursor: pointer; -webkit-tap-highlight-color: transparent; touch-action: manipulation;
-  position: fixed; z-index: 60;
-  left: calc(max(10px, env(safe-area-inset-left, 0px)) + 4px); bottom: calc(max(10px, env(safe-area-inset-bottom, 0px)) + 2px);
+  position: relative;
   width: 184px; padding: 9px 10px 10px;
   display: flex; flex-direction: column; gap: 7px;
   background: var(--cmd-ink); color: var(--cmd-text);
@@ -16,6 +15,35 @@
   font-family: 'Hiragino Mincho ProN', 'Yu Mincho', 'Noto Serif JP', 'Kaisei Tokumin', Georgia, serif;
   user-select: none; -webkit-user-select: none;
 }
+/* the banner and its fold tab, side by side */
+.cmd-wrap {
+  position: fixed; z-index: 60; display: flex; align-items: stretch;
+  left: calc(max(10px, env(safe-area-inset-left, 0px)) + 4px); bottom: calc(max(10px, env(safe-area-inset-bottom, 0px)) + 2px);
+}
+.cmd-fold {
+  all: unset; box-sizing: border-box; cursor: pointer; -webkit-tap-highlight-color: transparent;
+  width: 24px; min-height: 44px; display: flex; align-items: center; justify-content: center;
+  background: rgba(9, 9, 11, 0.82); color: rgba(241, 235, 220, 0.7);
+  box-shadow: inset -1px 0 0 rgba(201, 162, 78, 0.42), inset 0 1px 0 rgba(201, 162, 78, 0.42), inset 0 -1px 0 rgba(201, 162, 78, 0.42);
+}
+.cmd-fold:hover { color: #fff7e2; }
+.cmd-fold svg { transition: transform 0.2s; }
+.cmd-wrap.is-folded .cmd-fold svg { transform: rotate(180deg); }
+.cmd-mini { display: none; }
+/* folded: just the portrait, a thin fill bar and the count */
+.cmd-wrap.is-folded .cmd-banner { width: auto; padding: 6px 6px 5px; gap: 4px; }
+.cmd-wrap.is-folded .cmd-kicker,
+.cmd-wrap.is-folded .cmd-who,
+.cmd-wrap.is-folded .cmd-gauge,
+.cmd-wrap.is-folded .cmd-go { display: none !important; }
+.cmd-wrap.is-folded .cmd-mini {
+  display: block; position: relative; height: 12px;
+  background: linear-gradient(90deg, #d9b25c calc(var(--cmd-fill, 0) * 100%), rgba(241, 235, 220, 0.14) 0) left bottom / 100% 4px no-repeat;
+  margin-top: 4px;
+}
+.cmd-mini-count { position: absolute; left: 0; top: -2px; font-family: 'Cinzel', 'Kaisei Tokumin', Georgia, serif; font-size: 8px; font-weight: 600; line-height: 1; color: rgba(241, 235, 220, 0.75); }
+.cmd-wrap.is-folded .cmd-banner.is-ready .cmd-mini-count { color: #e2cc96; }
+.cmd-wrap.is-folded .cmd-seal { right: -8px; top: -10px; width: 26px; height: 22px; font-size: 9px; }
 .cmd-banner::before { content: ""; position: absolute; left: 0; top: 0; width: 100%; height: 1px; background: linear-gradient(90deg, var(--cmd-gold), rgba(201, 162, 78, 0) 80%); }
 .cmd-kicker { display: flex; align-items: baseline; gap: 7px; }
 .cmd-kicker b { font-size: 12px; font-weight: 700; color: var(--cmd-gold); }
@@ -101,6 +129,7 @@
 
 /* phone landscape */
 html.is-mobile.is-landscape.is-compact .cmd-banner { width: 168px; padding: 7px 8px 8px; gap: 5px; }
+html.is-mobile.is-landscape.is-compact .cmd-wrap.is-folded .cmd-banner { width: auto; padding: 5px 5px 4px; gap: 3px; }
 html.is-mobile.is-landscape.is-compact .cmd-portrait { width: 42px; height: 42px; }
 html.is-mobile.is-landscape.is-compact .cmd-name { font-size: 12px; }
 html.is-mobile.is-landscape.is-compact .cmd-go { margin: 0 -8px -8px; height: 28px; }
