@@ -376,3 +376,16 @@ html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compa
     display: flex !important; flex-direction: row !important; flex-wrap: nowrap; justify-content: space-between; width: 100%; gap: 6px !important;
   }
 }
+
+/* ── Phone landscape with the notch insets (iPhone): about 600px is left for
+   the page. Nothing here may scroll sideways: the totals drop under the
+   title, the team tabs and filter chips tighten to fit their row. ── */
+html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compact body.page-teams .team-formation { overflow-x: hidden; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compact body.page-teams .formation-header { flex-wrap: wrap; row-gap: 2px; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compact body.page-teams .formation-header .team-stats { flex: 1 1 auto; justify-content: flex-start; flex-wrap: wrap; row-gap: 0; min-width: 0; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compact body.page-teams .team-stats span { white-space: nowrap; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compact body.page-teams .team-tab.jjk-tab { padding: 0 4px !important; font-size: 10.5px !important; letter-spacing: 0; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compact body.page-teams .filter-bar { overflow-x: hidden; flex-wrap: wrap; gap: 3px !important; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-teams .f-chip { min-width: 0; padding: 0 2px; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compact body.page-teams .formation-header .team-stats { gap: 2px 8px !important; letter-spacing: 0.06em; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-teams .formation-header .team-stats strong { font-size: 1.35em; }
