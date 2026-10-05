@@ -74,7 +74,7 @@ html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-shop .shop-content {
   max-width: none; margin: 0;
   padding: var(--ink-top) var(--ink-gr) 48px var(--ink-gx) !important;
 }
-html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-shop .shop-content { padding-bottom: max(18px, var(--safe-b, 0px)) !important; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-shop .shop-content { padding-bottom: calc(max(18px, var(--safe-b, 0px)) + var(--safe-b, 0px)) !important; }
 
 /* ── Tabs: serif labels on one hairline; the open tab is lit gold ───── */
 html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-shop .shop-tabs {
@@ -480,3 +480,15 @@ html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._
 html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-shop .sp-dialog .modal-btn { height: 36px; font-size: 14px; }
 html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-shop .sp-dialog .modal-btn-primary { min-width: 140px; }
 html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-shop .sp-name { font-size: 16px; }
+
+/* the tab strip scrolls on phones: a fade on whichever edge still has tabs,
+   so "Recipe Scroll:" / "Limit Brea" read as more to swipe to, not cut text */
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-shop .shop-tabs.is-more-right {
+  -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 44px), transparent); mask-image: linear-gradient(90deg, #000 calc(100% - 44px), transparent);
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-shop .shop-tabs.is-more-left {
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 44px); mask-image: linear-gradient(90deg, transparent, #000 44px);
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-shop .shop-tabs.is-more-left.is-more-right {
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 44px, #000 calc(100% - 44px), transparent); mask-image: linear-gradient(90deg, transparent, #000 44px, #000 calc(100% - 44px), transparent);
+}

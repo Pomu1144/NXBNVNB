@@ -272,3 +272,13 @@ html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._
 html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-settings [data-ui-style]::after { font-size: 7px; letter-spacing: 0.14em; }
 html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-settings .set-control.is-wide { flex: 0 1 360px; }
 html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-settings .bg-preview-name { font-size: 12.5px; }
+
+/* iPhone SE / 5s landscape (568 wide): the style cards and the background
+   picker get the full width ("Classic" / the background name were cut) */
+@media (max-width: 640px) {
+  html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-settings [data-ui-style] { padding: 0 6px 0 42px; font-size: 12.5px; }
+  html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-settings [data-ui-style]::before { left: 6px; width: 30px; height: 30px; margin-top: -15px; }
+  html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-settings [data-ui-style]::after { letter-spacing: 0.06em; }
+  html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-settings .bg-picker { grid-template-columns: minmax(0, 1fr); }
+  html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-settings .bg-thumbs { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}

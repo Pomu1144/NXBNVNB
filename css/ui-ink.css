@@ -200,7 +200,7 @@ html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compa
 html.is-mobile.is-landscape.is-compact .ink-quote { top: 22%; left: calc(var(--ink-rail) + 18px); font-size: 11px; line-height: 1.7; }
 html.is-mobile.is-landscape.is-compact .ink-quote em { font-size: 10px; }
 html.is-mobile.is-landscape.is-compact .ink-quote em::after { width: 50px; }
-html.is-mobile.is-landscape.is-compact .ink-tag { font-size: 14px; top: 17%; right: 3%; }
+html.is-mobile.is-landscape.is-compact .ink-tag { font-size: 14px; top: 17%; right: max(3%, calc(var(--safe-r, 0px) + 10px)); }
 html.is-mobile.is-landscape.is-compact .ink-tag small { font-size: 7px; }
 html.is-mobile.is-landscape.is-compact .ink-title { bottom: 22%; left: calc(var(--ink-rail) - 10px); width: min(33vw, 270px); }
 html.is-mobile.is-landscape.is-compact .ink-title small { font-size: 7px; }
@@ -224,6 +224,21 @@ html.is-mobile.is-landscape.is-compact .ink-quote em { font-size: clamp(10px, 2.
 html.is-mobile.is-landscape.is-compact .ink-tag { font-size: clamp(14px, 3.7vh, 16px); }
 html.is-mobile.is-landscape.is-compact .ink-title { width: min(33vw, 70vh, 300px); }
 html.is-mobile.is-landscape.is-compact .ink-card span { font-size: clamp(16px, 4.2vh, 18px); }
+/* short screens (iPhone 8 / SE, Safari with its bars): the nav fits above the
+   News card, and the two banner cards sit higher so they clear ENTER */
+@media (max-height: 380px) {
+  html.is-mobile.is-landscape.is-compact .ink-nav { height: 29px; }
+  html.is-mobile.is-landscape.is-compact .ink-rail { padding-top: 6px; gap: 1px; }
+  html.is-mobile.is-landscape.is-compact .ink-cards { top: 36%; }
+}
+@media (max-height: 300px) {
+  /* no room for the News card: the nav keeps the whole rail */
+  html.is-mobile.is-landscape.is-compact .ink-news { display: none; }
+  html.is-mobile.is-landscape.is-compact .ink-nav { height: 26px; }
+  html.is-mobile.is-landscape.is-compact .ink-brand { padding-bottom: 4px; }
+  html.is-mobile.is-landscape.is-compact .ink-cards { top: 30%; }
+  html.is-mobile.is-landscape.is-compact .ink-card { height: 42px; }
+}
 
 /* Serif labels run wider than Oswald: keep button and tab text on one line */
 html[data-skin="ink"] .jjk-btn,
@@ -276,7 +291,12 @@ html[data-skin="ink"]:not(._g):not(._l):not(._s) body .bottom-bar .bottom-bar-co
   width: 100% !important; height: auto !important; max-width: none !important; margin: 0 !important; gap: 2px !important;
   background: none !important; border: 0 !important; border-radius: 0 !important; box-shadow: none !important;
   overflow-y: auto !important; overflow-x: hidden !important;
+  /* take the rail's remaining height so the list scrolls on short screens
+     (otherwise the last links - Items, Shop - fall below the screen) */
+  flex: 1 1 auto !important; min-height: 0 !important;
+  overscroll-behavior: contain; scrollbar-width: none;
 }
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body .bottom-bar .bottom-bar-content::-webkit-scrollbar { display: none; }
 html[data-skin="ink"]:not(._g):not(._l):not(._s) body .bottom-bar .hud-button {
   flex: 0 0 auto !important; flex-direction: row !important; justify-content: flex-start !important; align-items: center !important;
   gap: 14px !important; height: 40px !important; padding: 0 12px 0 24px !important; margin: 0 !important;
@@ -308,6 +328,16 @@ html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._
 }
 html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body .bottom-bar .hud-button img { width: 15px !important; height: 15px !important; }
 html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body .bottom-bar .hud-button::after { font-size: 11px !important; }
+/* short phones (iPhone 8 / SE, or Safari with its bars): tighter links so the whole list fits or nearly fits */
+@media (max-height: 380px) {
+  html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body .bottom-bar { padding-top: 6px !important; padding-bottom: max(6px, var(--safe-b, 0px)) !important; }
+  html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body .bottom-bar::before { padding-bottom: 4px; min-height: 22px; }
+  html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body .bottom-bar .hud-button { height: 29px !important; }
+}
+@media (max-height: 300px) {
+  html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body .bottom-bar .hud-button { height: 25px !important; }
+  html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body .bottom-bar::before { min-height: 18px; padding-top: 0; padding-bottom: 2px; background-size: 18px 18px; }
+}
 
 /* Page header sits to the right of the rail; serif title, no ink plate */
 html[data-skin="ink"]:not(._g):not(._l):not(._s) .jjk-page-header { left: calc(var(--ink-rail-w) + 18px) !important; }

@@ -1165,3 +1165,47 @@ html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._
 html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-tools .gu-v { white-space: normal; overflow: visible; text-overflow: clip; line-height: 1.2; }
 html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-tools .gu-pieces .tl-panel-head { flex-wrap: wrap; row-gap: 2px; }
 html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-tools .gu-pieces .gs-who { max-width: 100%; white-space: normal; overflow: visible; text-overflow: clip; }
+
+/* ── Older iPhones ──────────────────────────────────────────────────
+   - shinobi names wrap to two lines instead of "Obito Uc…"
+   - short screens (Safari with its bars): tighter stat rows, and Auto-Equip /
+     Unequip All share one row so both stay on screen
+   - SE (568 wide): narrower side columns and smaller gear slots, so the
+     loadout keeps its room and the gear stops covering the name */
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-tools .tl-row-name {
+  white-space: normal; overflow: hidden; text-overflow: clip; line-height: 1.12;
+  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2;
+}
+@media (max-height: 360px) {
+  /* the stat list scrolls; Auto-Equip / Unequip All stay pinned under it */
+  html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-tools .tl-side { display: flex; flex-direction: column; overflow: hidden; }
+  html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-tools .tl-stats { flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; }
+  html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-tools .tl-actions { flex: none; margin-top: 0; gap: 4px; padding: 5px 8px 5px; }
+  html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-tools .tl-stat { padding: 2px 0; }
+  html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-tools .tl-act.jjk-btn { height: 26px; }
+  html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-tools #tools-auto.jjk-btn:not(:disabled) { height: 28px; }
+  /* gear keys: tighter so the column stays below the unit's name */
+  html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-tools .gp-col { gap: 2px; }
+}
+@media (max-height: 300px) {
+  html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-tools .gp::after { display: none; }
+}
+@media (max-width: 640px) {
+  html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-tools .tl-app { grid-template-columns: 112px minmax(0, 1fr) 124px; gap: 5px; }
+  html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-tools .tl-stage { --gk: 28px; --jk: 26px; --gh: 26px; --st-top: 58px; --st-bot: 38px; --bleed: 8px; }
+  html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-tools .tl-name { font-size: 13px; }
+  html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-tools .tl-power-txt b { font-size: 13px; }
+  html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-tools .tl-row { grid-template-columns: 22px minmax(0, 1fr) auto; gap: 4px; padding: 4px 4px 4px 3px; }
+  html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-tools .tl-row-port { width: 22px; height: 22px; }
+  html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-tools .tl-row-name { font-size: 9.5px; }
+  html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-tools .tl-row-lv { font-size: 10.5px; }
+  html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-tools .tl-slot-group { gap: 4px; }
+  html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-tools .tl-slot-row { gap: 3px; }
+  html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-tools .tl-stats { padding: 0 6px; }
+  html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-tools .tl-stat dd b { font-size: 11px; }
+  html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-tools .tl-bonus { font-size: 7.5px; min-width: 3.6em; }
+  html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-tools .tl-search input::placeholder { font-size: 10px; }
+  html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-tools #tools-auto.jjk-btn:not(:disabled) { padding: 0 4px !important; justify-content: center; font-size: 11.5px !important; }
+  html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-tools #tools-auto.jjk-btn::after,
+  html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-tools #tools-auto.jjk-btn::before { content: none !important; display: none !important; }
+}

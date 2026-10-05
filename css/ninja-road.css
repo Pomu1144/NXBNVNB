@@ -84,6 +84,7 @@ svg:not(.nr-sprite) { width: 18px; height: 18px; flex: none; fill: none; stroke:
   z-index: 1;
   display: grid;
   grid-template-rows: auto minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, 1fr); /* the road's min-width must not widen the page past the screen */
   gap: var(--nr-gap);
   padding: var(--nr-gy-t) var(--nr-gx-r) var(--nr-gy-b) var(--nr-gx-l);
   max-width: 1180px;
@@ -445,11 +446,22 @@ svg:not(.nr-sprite) { width: 18px; height: 18px; flex: none; fill: none; stroke:
 /* ── Narrow phones (portrait / small landscape) ───────────── */
 @media (max-width: 700px) {
   .nr-picks { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .nr-squads { grid-template-columns: minmax(0, 1fr); align-content: start; overflow-y: auto; }
   .nr-chip-label { display: none; }
   .nr-chip { padding: 0 10px; }
   .nr-foes { display: none; }
   .nr-start { min-width: 150px; padding: 0 14px; }
+}
+
+/* portrait: one squad per row, scrolling */
+@media (max-width: 700px) and (orientation: portrait) {
+  .nr-squads { grid-template-columns: minmax(0, 1fr); align-content: start; overflow-y: auto; }
+}
+/* small landscape phones (iPhone 8 / SE): the three squads stay side by side
+   with smaller unit tiles, and the road fits the width instead of scrolling */
+@media (max-width: 700px) and (orientation: landscape) {
+  :root { --nr-tile: 32px; }
+  .nr-road { min-width: 0; }
+  .nr-squad { padding: 7px 8px 8px; }
 }
 
 /* ── Short landscape phones: tighter still ────────────────── */

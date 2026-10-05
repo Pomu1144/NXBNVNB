@@ -20,7 +20,12 @@ html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-teams .team-selector 
   gap: 14px !important; margin: 0 0 14px !important;
   box-shadow: inset 0 -1px 0 var(--g-line);
 }
-html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-teams .team-tabs-row { gap: 0 !important; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; min-width: 0; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-teams .team-tabs-row {
+  gap: 0 !important; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; min-width: 0;
+  /* start-aligned: a centred row that overflows its scroll box cuts off its
+     first tab ("Team 1") with no way to scroll back to it */
+  justify-content: flex-start; flex: 1 1 auto;
+}
 html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-teams .team-tab.jjk-tab {
   min-width: 0 !important; height: 36px !important; padding: 0 16px !important; flex: 0 0 auto;
   border-radius: 0; background: none; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none;
@@ -389,3 +394,17 @@ html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compa
 html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-teams .f-chip { min-width: 0; padding: 0 2px; }
 html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compact body.page-teams .formation-header .team-stats { gap: 2px 8px !important; letter-spacing: 0.06em; }
 html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-teams .formation-header .team-stats strong { font-size: 1.35em; }
+
+/* ── iPhone SE / 5s landscape (568 wide) ─────────────────────────────
+   - Rename Team becomes a pencil icon so the eight tabs keep their room
+   - the front-row cards' "LV 50" stays on one line
+   - "Commander (Off-Field Support)" shortens to "Commander" */
+@media (max-width: 640px) {
+  html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compact body.page-teams .btn-rename-team { width: 26px; padding: 0 !important; justify-content: center; font-size: 0 !important; }
+  html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compact body.page-teams .btn-rename-team::before { content: '✎'; font-size: 13px; font-style: normal; }
+  html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compact body.page-teams .team-tab.jjk-tab { padding: 0 4px !important; }
+  html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compact body.page-teams .formation-section .slot-card .portrait .lv-badge { white-space: nowrap; padding: 1px 3px; font-size: 7.5px; letter-spacing: 0; }
+}
+@media (max-width: 740px) {
+  html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-teams .section-label-more { display: none; }
+}
