@@ -213,7 +213,7 @@
     $('portal-wallet-note').textContent = !session
       ? 'Open the game from the Portal to move currency'
       : pending ? pending + ' transfer' + (pending === 1 ? '' : 's') + ' waiting for the Portal; retried automatically'
-        : 'Send puts it in the Portal wallet; Receive takes it out into this game';
+        : 'Send moves it to the Portal; Receive brings Ryo or Pearls held there into this game';
   }
 
   async function move(kind) {

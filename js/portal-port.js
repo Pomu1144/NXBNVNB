@@ -10,8 +10,9 @@
  *   PortalPort.deposit(cur, n)      move Ryo / Ninja Pearls into the Portal wallet
  *   PortalPort.withdraw(cur, n)     move them from the Portal wallet into this game
  *
- * Currency: 'coins' ↔ Ryo and 'premium' ↔ Ninja Pearls (js/resources.js).
- * Money only moves while connected to the hub. Each transfer is saved as
+ * Currency: 'coins' = Ryo and 'premium' = Ninja Pearls (js/resources.js).
+ * The hub holds them as this game's currencies; its Exchange converts them
+ * into other games' currencies. Money only moves while connected to the hub. Each transfer is saved as
  * pending under blazing_portal_tx_v1 before it is sent and retried with the
  * same txId if the hub's answer is lost, so it is applied exactly once.
  *
