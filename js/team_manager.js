@@ -360,7 +360,7 @@
     slotEl.innerHTML = `
       <div class="slot-card${is7Star ? ' is-7star' : ''}">
         <div class="portrait"${fxAttr}>
-          <img src="${img}" alt="${char.name}"
+          <img src="${img}" alt="${char.name}" draggable="false"
                onerror="this.src='assets/characters/_common/silhouette.png';" />
           <div class="lv-badge">Lv ${inst.level}</div>
           ${teamUltimateBadge}
@@ -884,7 +884,7 @@
   }
 
   function onPointerMove(e) {
-    if (!drag || e.pointerId !== drag.id) return;
+    if (!drag || e.pointerId !== drag.id || drag.viaTouch) return;
     drag.x = e.clientX; drag.y = e.clientY;
     const dist = Math.hypot(drag.x - drag.x0, drag.y - drag.y0);
     if (!drag.active) {
@@ -893,9 +893,47 @@
       return;
     }
     e.preventDefault();
+    moveDrag();
+  }
+
+  function moveDrag() {
     positionGhost();
     updateDropTarget();
     autoScroll();
+  }
+
+  // iOS Safari (and some Android browsers) send pointercancel once a held
+  // finger starts to move, or on a long press, even after the drag has
+  // begun. A started drag then follows the finger through touch events
+  // instead of being dropped, and ends on touchend.
+  function touchPoint(e) {
+    const t = [...(e.changedTouches || [])].find(t => drag && (drag.touchId == null || t.identifier === drag.touchId))
+      || e.touches?.[0] || e.changedTouches?.[0];
+    return t ? { x: t.clientX, y: t.clientY, id: t.identifier } : null;
+  }
+  function onTouchStart(e) {
+    if (drag && drag.type !== "mouse" && drag.touchId == null) drag.touchId = e.changedTouches?.[0]?.identifier;
+  }
+  function onTouchMove(e) {
+    if (!drag?.active) return;
+    e.preventDefault();   // stop the page/list from scrolling under the drag
+    if (!drag.viaTouch) return;
+    const p = touchPoint(e);
+    if (!p) return;
+    drag.x = p.x; drag.y = p.y;
+    moveDrag();
+  }
+  function onTouchEnd(e) {
+    if (!drag?.viaTouch) return;
+    const p = touchPoint(e);
+    if (p) { drag.x = p.x; drag.y = p.y; }
+    if (e.cancelable) e.preventDefault();
+    finishDrag();
+  }
+  function onPointerCancel(e) {
+    if (!drag || e.pointerId !== drag.id) return;
+    if (drag.active && drag.type !== "mouse") { drag.viaTouch = true; return; }
+    cancelDrag();
   }
 
   function hitTarget(x, y) {
@@ -928,52 +966,106 @@
     hit.el.dataset.dropLabel = k === "invalid" ? drag.plan.reason : dropLabels[k];
   }
 
-  // Edge auto-scroll so a unit can be carried from the list to slots that are
-  // off-screen (stacked layout) or to hidden cards in the list.
+  // Edge auto-scroll so a unit can be carried to slots that are out of view:
+  // the panel under the finger scrolls (on phones the formation panel and the
+  // roster scroll on their own, e.g. the Commander slot sits below the fold),
+  // or the page itself in the stacked layout.
+  // the page scroller: <html> normally, <body> where the page sets
+  // body { overflow: auto } (the Classic and Glass styles on phones)
+  function pageScroller() {
+    const se = document.scrollingElement || document.documentElement;
+    const b = document.body;
+    if (b && /auto|scroll/.test(getComputedStyle(b).overflowY) && b.scrollHeight > b.clientHeight + 1) return b;
+    return se;
+  }
+  function scrollableAt(x, y) {
+    for (let el = document.elementFromPoint(x, y); el && el !== document.body && el !== document.documentElement; el = el.parentElement) {
+      const oy = getComputedStyle(el).overflowY;
+      if ((oy === "auto" || oy === "scroll") && el.scrollHeight > el.clientHeight + 1) return el;
+    }
+    return null;
+  }
   function autoScroll() {
     if (drag.scrollRaf) return;
     const step = () => {
       drag && (drag.scrollRaf = 0);
       if (!drag?.active) return;
-      const edge = 48, vh = window.innerHeight;
-      const bottomBar = document.querySelector(".bottom-bar")?.offsetHeight || 0;
-      const lo = edge, hi = vh - bottomBar - edge;
-      // Only scroll once the pointer has been outside the edge bands since the
-      // drag began, so picking a unit up near an edge doesn't yank the page.
+      // The innermost panel the finger is over. At a panel's very edge the
+      // finger can be just past it (over the page around it), so the last
+      // panel stays in use while the finger is within a few px of it; an outer
+      // container never takes over (it would slide the panel away).
+      let host = scrollableAt(drag.x, drag.y);
+      const last = drag.scrollHost;
+      if (last && last.isConnected && last !== host && !(host && last.contains(host))) {
+        const r = last.getBoundingClientRect();
+        if (drag.x >= r.left && drag.x <= r.right && drag.y >= r.top - 40 && drag.y <= r.bottom + 40) host = last;
+      }
+      if (!host) host = pageScroller();
+      drag.scrollHost = host;
+      let top, bottom;
+      if (host === document.scrollingElement || host === document.body) {
+        const bottomBar = document.querySelector(".bottom-bar")?.offsetHeight || 0;
+        top = 0; bottom = window.innerHeight - bottomBar;
+      } else {
+        const r = host.getBoundingClientRect();
+        top = Math.max(0, r.top); bottom = Math.min(window.innerHeight, r.bottom);
+      }
+      // a thin band on short phone panels, so a slot near the edge can still be
+      // hovered and dropped on without the panel scrolling it away
+      const edge = Math.max(14, Math.min(40, (bottom - top) / 8));
+      const lo = top + edge, hi = bottom - edge;
+      // Only scroll once the finger has been outside the edge bands since the
+      // drag began, so picking a unit up near an edge doesn't yank the panel.
       if (drag.y > lo && drag.y < hi) { drag.scrollArmed = true; return; }
       if (!drag.scrollArmed) return;
-      let dy = 0;
-      if (drag.y <= lo) dy = -Math.ceil((lo - drag.y + 4) / 3);
-      else dy = Math.ceil((drag.y - hi + 4) / 3);
-      if (dy) {
-        const sc = document.scrollingElement;
-        const before = sc.scrollTop;
-        sc.scrollTop += dy;
-        if (sc.scrollTop !== before) {
-          updateDropTarget();
-          drag.scrollRaf = requestAnimationFrame(step);
-        }
+      // faster the deeper the finger is in the band, capped so the slot you
+      // are heading for doesn't fly past
+      const dy = drag.y <= lo ? -Math.ceil((lo - drag.y + 4) / 4) : Math.ceil((drag.y - hi + 4) / 4);
+      // Over a slot it can drop on, the panel only scrolls until that slot is
+      // fully in view, then holds still, so the slot doesn't slide out from
+      // under the finger (to go further, move past the slot).
+      let by = Math.max(-12, Math.min(12, dy));
+      const k = drag.plan?.kind;
+      if (drag.target?.el && k && k !== "none" && k !== "invalid") {
+        const t = drag.target.el.getBoundingClientRect();
+        if (dy > 0 ? t.bottom <= bottom - 2 : t.top >= top + 2) return;
+        // never scroll it out from under the finger
+        by = dy > 0 ? Math.min(by, Math.max(0, Math.floor(t.bottom - drag.y - 3)))
+                    : Math.max(by, -Math.max(0, Math.floor(drag.y - t.top - 3)));
+        if (!by) return;
+      }
+      const before = host.scrollTop;
+      host.scrollTop += by;
+      if (host.scrollTop !== before) {
+        updateDropTarget();
+        drag.scrollRaf = requestAnimationFrame(step);
       }
     };
     drag.scrollRaf = requestAnimationFrame(step);
   }
 
   function onPointerUp(e) {
-    if (!drag || e.pointerId !== drag.id) return;
+    if (!drag || e.pointerId !== drag.id || drag.viaTouch) return;
     if (drag.active) {
       e.preventDefault();
-      updateDropTarget();
-      const target = drag.target, plan = drag.plan, src = drag.src;
-      endDrag();
-      suppressClick = true;
-      setTimeout(() => { suppressClick = false; }, 0);
-      if (target && plan) {
-        if (plan.kind === "invalid") toast(plan.reason);
-        else if (plan.kind !== "none") commitDrop(src, target.key);
-      }
+      finishDrag();
       return;
     }
     cancelDrag();
+  }
+
+  function finishDrag() {
+    // drop on what is highlighted under the finger (what the player sees);
+    // only look again if nothing was
+    if (!drag.target) updateDropTarget();
+    const target = drag.target, plan = drag.plan, src = drag.src;
+    endDrag();
+    suppressClick = true;
+    setTimeout(() => { suppressClick = false; }, 0);
+    if (target && plan) {
+      if (plan.kind === "invalid") toast(plan.reason);
+      else if (plan.kind !== "none") commitDrop(src, target.key);
+    }
   }
 
   function endDrag() {
@@ -1007,9 +1099,13 @@
     document.addEventListener("pointerdown", onPointerDown);
     document.addEventListener("pointermove", onPointerMove, { passive: false });
     document.addEventListener("pointerup", onPointerUp);
-    document.addEventListener("pointercancel", (e) => { if (drag && e.pointerId === drag.id) cancelDrag(); });
-    // Once a touch drag has started, stop the page/list from scrolling under it.
-    document.addEventListener("touchmove", (e) => { if (drag?.active) e.preventDefault(); }, { passive: false });
+    document.addEventListener("pointercancel", onPointerCancel);
+    // Touch: once a drag has started, stop the page/list from scrolling under
+    // it, and keep following the finger if the browser cancels the pointer.
+    document.addEventListener("touchstart", onTouchStart, { passive: true });
+    document.addEventListener("touchmove", onTouchMove, { passive: false });
+    document.addEventListener("touchend", onTouchEnd, { passive: false });
+    document.addEventListener("touchcancel", (e) => { if (drag?.viaTouch) cancelDrag(); });
     // Long-press must not open the context menu / image callout.
     document.addEventListener("contextmenu", (e) => { if (drag) e.preventDefault(); });
     // A drag ends with a click on whatever is underneath; swallow it.

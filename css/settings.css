@@ -287,7 +287,9 @@ html:not(.dev-mode) .dev-only { display: none !important; }
 .set-name { font-weight: 800; font-size: 15px; color: var(--jjk-gold-hi); }
 
 /* ── Narrow screens (portrait phones): stack rows ─────────── */
-@media (max-width: 640px) {
+/* (portrait only: an iPhone SE in landscape is 568px wide and keeps the
+   label-beside-control rows) */
+@media (max-width: 640px) and (orientation: portrait) {
   .settings-panel { width: calc(100% - 16px); padding: 12px 10px 12px; }
   .settings-tabs { flex-wrap: nowrap; margin-bottom: 10px; }
   .settings-tabs .jjk-tab { min-width: 0; flex: 1 1 0; height: 34px; padding: 0 4px; font-size: 12px; white-space: nowrap; }

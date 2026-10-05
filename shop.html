@@ -265,6 +265,23 @@
   <!-- Navigation Script -->
   <script src="js/navigation.js"></script>
 
+  <!-- Tab strip: mark when it scrolls (css/ink/shop.css fades the cut edge) -->
+  <script>
+    (function () {
+      const strip = document.querySelector('.shop-tabs');
+      if (!strip) return;
+      const mark = () => {
+        const max = strip.scrollWidth - strip.clientWidth;
+        strip.classList.toggle('is-more-right', max > 2 && strip.scrollLeft < max - 2);
+        strip.classList.toggle('is-more-left', max > 2 && strip.scrollLeft > 2);
+      };
+      strip.addEventListener('scroll', mark, { passive: true });
+      window.addEventListener('resize', mark);
+      if (window.ResizeObserver) new ResizeObserver(mark).observe(strip);
+      mark();
+    })();
+  </script>
+
   <!-- Music Initialization -->
   <script>
     // Music initialization - start BGM on page load

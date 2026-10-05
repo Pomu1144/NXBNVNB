@@ -852,3 +852,38 @@ html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jut
   font-family: 'Cinzel', serif; font-style: italic; font-weight: 700; letter-spacing: 0.06em; text-transform: none;
 }
 html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-toast { border-radius: 0; background: rgba(14, 13, 12, 0.94); box-shadow: inset 0 0 0 1px var(--g-line-2); }
+
+/* ══ Older / smaller iPhones ══════════════════════════════════════
+   - the bottom edge clears the iPhone X home bar (Recipes, 10x summon)
+   - the info box is slim and sits flush on the banner art's bottom edge,
+     below the title painted into the art ("RYOMEN SUKUNA - King of Curses")
+   - very short screens (SE in Safari) drop the vertical quote, so the
+     Rates / Featured / Contents box no longer lands on the x1 Summon slip */
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) body.page-summon {
+  --sx-bot: max(8px, var(--safe-b, env(safe-area-inset-bottom, 0px)));
+  --sx-ib-h: 40px; --sx-ib-pk: 40px; --sx-ib-w: min(210px, calc(var(--sx-cw) - 60px));
+  --sx-ib-b: calc(var(--sx-bot) + var(--sx-fy));
+}
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage .draw-col .banner-kicker,
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .jutsu-summon-panel .jutsu-banner-kicker { display: none; }
+@media (max-height: 300px) {
+  html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) body.page-summon { --sx-quote: 0px; --sx-multi-h: 50px; }
+  html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .gacha-stage::before,
+  html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .gacha-stage::after,
+  html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .jutsu-summon-panel::before,
+  html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .jutsu-summon-panel::after { display: none; }
+  html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .summon-page .summon-info-buttons { top: calc(var(--sx-head) + 14px); }
+}
+/* SE (568 wide): the art is small and centred with room under it, so the
+   info box sits just below the art instead of over its painted title */
+@media (max-width: 640px) {
+  html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) body.page-summon {
+    --sx-ib-w: var(--sx-cw);
+    --sx-ib-b: max(var(--sx-bot), calc(var(--sx-bot) + var(--sx-fy) - var(--sx-ib-h) - 4px));
+  }
+}
+/* banner list on 667px-and-narrower phones: names get three short lines
+   ("King of Curses: / Ryomen / Sukuna") instead of "Ryomen…" */
+@media (max-width: 720px) {
+  html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .gacha-stage #banner-preview-scroll .preview-item::after { -webkit-line-clamp: 3; width: 80%; font-size: 8.5px; line-height: 1.14; }
+}

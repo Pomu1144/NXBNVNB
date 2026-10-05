@@ -594,8 +594,17 @@ svg.wb-star {
   .wb-trio { height: 72%; left: 2%; top: 20%; }
 }
 
-/* Narrow desktop windows / portrait fallback: simple stacked, scrolling page */
-@media (max-width: 640px) {
+/* Small landscape phones (iPhone SE / 5s, 568 wide): the action chips become
+   icons (their names stay as accessible labels) so the row fits beside Start */
+@media (max-width: 640px) and (orientation: landscape) {
+  .wb-chip { padding: 0 10px; }
+  .wb-chip .wb-chip-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .wb-start { min-width: 0; }
+}
+
+/* Narrow portrait windows: simple stacked, scrolling page. (Not landscape:
+   an iPhone SE / 5s in landscape is 568px wide and keeps the side-by-side layout.) */
+@media (max-width: 640px) and (orientation: portrait) {
   html, body { height: auto; overflow: auto; }
   .arena-page { position: relative; bottom: auto; min-height: 100vh; padding: 76px 16px calc(var(--wb-stage-b) + 24px); display: flex; flex-direction: column; gap: 16px; }
   .wb-panel { position: relative; right: auto; top: auto; width: 100%; margin-top: 45vh; }
