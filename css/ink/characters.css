@@ -941,3 +941,16 @@ html[data-skin="ink"] body.page-characters .char-modal-art > .a7.am {
   -webkit-mask-image: linear-gradient(to right, transparent, #000 14%);
           mask-image: linear-gradient(to right, transparent, #000 14%);
 }
+
+/* ── Older iPhones: the roster filter bar ────────────────────────────
+   The filter row (All / Element / Stars / Level / Favourites) left the
+   search box too narrow ("Searc…") and pushed the 40/40 count off the right
+   edge on an SE. Below 860px wide (iPhone X and smaller) the bar wraps:
+   search and count drop to their own row, full width. */
+@media (max-width: 860px) {
+  html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-characters .ink-roster-bar { flex-wrap: wrap; row-gap: 5px; }
+  html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-characters .ink-rf-btn { padding: 0 8px; gap: 5px; font-size: 11.5px; }
+  html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-characters .ink-rsearch { flex: 1 1 100%; max-width: none; margin-left: 0; order: 9; }
+  html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-characters .ink-rcount { order: 10; flex: none; }
+  html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-characters .ink-rsearch:has(+ .ink-rcount) { flex-basis: calc(100% - 70px); }
+}

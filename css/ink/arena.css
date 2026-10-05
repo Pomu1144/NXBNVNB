@@ -317,3 +317,28 @@ html[data-skin="ink"] .wb-screen { --wb-gx-l: max(20px, var(--safe-l, 0px)); }
 @media (min-width: 1100px) and (min-height: 620px) {
   html[data-skin="ink"] .wb-screen { --wb-gx-l: 48px; }
 }
+
+/* ══ Narrow phone landscape (iPhone SE / 5s, 568px wide) ══════════
+   The rank card would sit over the page title and the action chips would
+   run under the nav rail: the card drops below the title and narrows, and
+   the chips become icons (their names stay as aria-labels / tooltips). */
+/* rank name fits whole instead of "Academy Stud…" on 736px-and-narrower phones */
+@media (max-width: 760px) {
+  html[data-skin="ink"].is-mobile.is-landscape.is-compact .wb-league-name { font-size: 16px; letter-spacing: 0.03em; gap: 6px; }
+  html[data-skin="ink"].is-mobile.is-landscape.is-compact .wb-league { gap: 9px; }
+}
+@media (max-width: 640px) {
+  html[data-skin="ink"].is-mobile.is-landscape.is-compact { --wb-col: 300px; }
+  html[data-skin="ink"].is-mobile.is-landscape.is-compact .wb-panel { top: calc(max(8px, var(--safe-t, 0px)) + 36px); padding: 8px 12px 0; }
+  html[data-skin="ink"].is-mobile.is-landscape.is-compact .wb-chip { width: 40px; padding: 0; justify-content: center; }
+  html[data-skin="ink"].is-mobile.is-landscape.is-compact .wb-chip .wb-chip-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  html[data-skin="ink"].is-mobile.is-landscape.is-compact .wb-chip svg { width: 16px; height: 16px; }
+  html[data-skin="ink"].is-mobile.is-landscape.is-compact .wb-chip-team img,
+  html[data-skin="ink"].is-mobile.is-landscape.is-compact .wb-chip-team .wb-chip-face { margin: 0; }
+  html[data-skin="ink"].is-mobile.is-landscape.is-compact #btn-battle-arena { width: 180px; }
+  html[data-skin="ink"].is-mobile.is-landscape.is-compact .wb-cta::after { width: 180px; }
+}
+@media (max-width: 640px) and (max-height: 300px) {
+  html[data-skin="ink"].is-mobile.is-landscape.is-compact .wb-cta { bottom: 14px; }
+  html[data-skin="ink"].is-mobile.is-landscape.is-compact .wb-cta::after { display: none; }
+}

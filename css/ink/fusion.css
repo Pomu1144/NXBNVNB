@@ -17,7 +17,7 @@ html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .fus
   padding: max(10px, var(--safe-t, 0px)) max(var(--fx-pad), var(--safe-r, 0px)) 14px calc(var(--ink-rail-w) + var(--fx-pad));
   gap: 14px;
 }
-html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .fusion-content { padding: max(6px, var(--safe-t, 0px)) max(10px, var(--safe-r, 0px)) 8px calc(var(--ink-rail-w) + var(--fx-pad)); gap: 6px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .fusion-content { padding: max(6px, var(--safe-t, 0px)) max(10px, var(--safe-r, 0px)) max(8px, var(--safe-b, 0px)) calc(var(--ink-rail-w) + var(--fx-pad)); gap: 6px; }
 
 /* ── Header: serif title | text tabs | ryo ─────────────────────── */
 html[data-skin="ink"]:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .fusion-header { grid-template-columns: auto minmax(0, 1fr) auto; gap: 18px; min-height: 52px; }
@@ -316,3 +316,14 @@ html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._
 html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .fu-stub-title { grid-column: 1; grid-row: 1; }
 html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .fusion-requirements { grid-column: 1; grid-row: 2; max-height: 84px; }
 html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .fusion-actions { grid-column: 2; grid-row: 1 / 3; align-self: end; margin: 0; }
+
+/* iPhone SE / 5s landscape: a slimmer recipe list so the fusion ticket keeps
+   room for full-size unit slots and a one-line 必要条件 heading, and the
+   empty-state Summon / Shop buttons share the column */
+@media (max-width: 640px) {
+  html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .fusion-layout { grid-template-columns: minmax(150px, 30%) minmax(0, 1fr); gap: 8px; }
+  html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .fusion-actions .jjk-btn { padding: 0 8px; }
+  html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .rc-empty-actions { gap: 6px; width: 100%; }
+  html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .rc-empty-actions .jjk-btn { min-width: 0; flex: 1 1 0; padding: 0 4px; font-size: 11px; }
+  html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s):not(._a):not(._b):not(._c) .rc-empty h3 { font-size: 15px; white-space: nowrap; }
+}

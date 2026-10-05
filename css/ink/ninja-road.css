@@ -14,8 +14,8 @@ html[data-skin="ink"] {
   --nr-gold-hi: var(--g-accent-2);
   --nr-glass: rgba(12, 12, 14, 0.72);
   --nr-glass-hi: rgba(14, 13, 12, 0.96);
-  --nr-gx-l: max(22px, var(--safe-l, 0px));
-  --nr-gx-r: max(22px, var(--safe-r, 0px));
+  --nr-gx-l: max(22px, var(--safe-l, env(safe-area-inset-left, 0px)));
+  --nr-gx-r: max(22px, var(--safe-r, env(safe-area-inset-right, 0px)));
 }
 html[data-skin="ink"] body.page-ninja-road { background: #0a0a0b; }
 
@@ -218,7 +218,11 @@ html[data-skin="ink"] .nr-toast b { font-family: var(--ink-jp); letter-spacing: 
 
 /* ══ Phone landscape (844×390) ════════════════════════════════════ */
 html[data-skin="ink"][data-ui]:not(._g).is-mobile.is-landscape.is-compact .nr-page {
-  padding-top: max(10px, var(--safe-t, 0px)); padding-left: max(16px, var(--safe-l, 0px)); padding-right: max(16px, var(--safe-r, 0px));
+  /* this page doesn't load css/mobile.css, so fall back to env() for the notch insets */
+  padding-top: max(10px, var(--safe-t, env(safe-area-inset-top, 0px)));
+  padding-left: max(16px, var(--safe-l, env(safe-area-inset-left, 0px)));
+  padding-right: max(16px, var(--safe-r, env(safe-area-inset-right, 0px)));
+  padding-bottom: max(8px, var(--safe-b, env(safe-area-inset-bottom, 0px)));
 }
 html[data-skin="ink"][data-ui]:not(._g).is-mobile.is-landscape.is-compact .nr-title { font-size: 18px; }
 html[data-skin="ink"].is-mobile.is-landscape.is-compact .nr-title::after { font-size: 7px; margin-top: 3px; }

@@ -548,3 +548,20 @@ html[data-skin="ink"] .md-foe b { border-radius: 0; font-family: var(--ink-cinze
   html[data-skin="ink"] .md-stage-title { font-size: 12px; }
   html[data-skin="ink"] .md-stage-sub { font-size: 10px; }
 }
+
+/* ── Older iPhones: locked chapter cards ─────────────────────────────
+   The unlock hint ("Clear Normal of "Graduation Exam"") was cut to
+   "Clear No…" next to the reward figures. On a locked card the hint is what
+   matters: the figures step aside and the hint may take two lines. */
+html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-missions .mission-card--banner.mission-locked .mc-meta .mc-stat { display: none; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-missions .mission-card--banner.mission-locked .mc-lock .mission-lock-note {
+  white-space: normal; text-overflow: clip; line-height: 1.2;
+  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2;
+}
+/* SE (568 wide): the chapter subtitle stays on the dark side of the card
+   instead of running into the character art */
+@media (max-width: 640px) {
+  html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-missions .mission-card--banner:is([data-mission-id^="sc1_"], [data-mission-id^="sc2_"])::after {
+    max-width: 46%; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; letter-spacing: 0.14em;
+  }
+}

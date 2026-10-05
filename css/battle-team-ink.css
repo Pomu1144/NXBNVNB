@@ -189,3 +189,30 @@ html.is-mobile #team-holder .uc-tag { font-size: 0; }
   clip-path: none !important; background: transparent !important;
   -webkit-mask: url('../assets/ui/ink/ink_card.webp') center top / 100% 122% no-repeat; mask: url('../assets/ui/ink/ink_card.webp') center top / 100% 122% no-repeat;
 }
+
+/* ── Smaller phones (iPhone X / 8 / SE): the cards sit between the action-
+   panel handle (bottom-left, ~44px) and the commander banner (bottom-right,
+   ~214px), and shrink as needed so the 4th card is never under the banner. */
+@media (max-width: 860px) {
+  html.is-mobile .page-battle {
+    --tl-l: calc(max(4px, env(safe-area-inset-left, 0px)) + 44px);
+    --tl-r: calc(max(6px, env(safe-area-inset-right, 0px)) + 216px);
+    --uc-h: clamp(72px, min(calc(var(--ch) * 30), calc((100vw - var(--tl-l) - var(--tl-r) - 8px) / 3.6)), 128px);
+  }
+  html.is-mobile .page-battle:has(#team-holder.has-bench) {
+    --uc-h: clamp(72px, min(calc(var(--ch) * 30), calc((100vw - var(--tl-l) - var(--tl-r) - 8px) / 4.05)), 128px);
+  }
+  html.is-mobile #team-holder { left: calc((var(--tl-l) + 100vw - var(--tl-r)) / 2); }
+}
+
+/* ── Short phone screens (iPhone 8 / SE, Safari with its bars) ────────
+   The field starts below the turn bar and the "Wave 1/1" label instead of
+   behind them, ends above the team cards, and on the shortest screens the
+   units are a little smaller so the formation rows stop stacking. */
+@media (max-height: 420px) {
+  html.is-mobile .page-battle #battlefield-grid { top: 50px; height: calc(100% - 50px - var(--uc-h) - 6px); }
+}
+@media (max-height: 300px) {
+  html.is-mobile .page-battle { --battle-unit-size: 52px; }
+  html.is-mobile .page-battle .battle-unit { --sprite-h: 64px; --sprite-box: 78px; }
+}
