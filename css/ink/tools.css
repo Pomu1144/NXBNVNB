@@ -1153,3 +1153,15 @@ html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._
   html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-tools .mg-tool-lv small { display: none; }
   html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-tools #mg-oneclick:not(:disabled)::after { content: none; }
 }
+
+/* ── Upgrade, phone landscape: the stat rows and the button sit as one group
+   centred beside the preview (they were pinned to the bottom, leaving the
+   top half empty); long names wrap instead of being cut off. ── */
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-tools .gu-main {
+  grid-template-rows: minmax(0, 1fr) auto auto minmax(0, 1fr);
+  grid-template-areas: "top ." "top rows" "top go" "top .";
+}
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-tools .gu-rows { align-self: auto; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-tools .gu-v { white-space: normal; overflow: visible; text-overflow: clip; line-height: 1.2; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-tools .gu-pieces .tl-panel-head { flex-wrap: wrap; row-gap: 2px; }
+html[data-skin="ink"].is-mobile.is-landscape.is-compact:not(._g):not(._l):not(._s) body.page-tools .gu-pieces .gs-who { max-width: 100%; white-space: normal; overflow: visible; text-overflow: clip; }
