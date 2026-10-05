@@ -4,9 +4,9 @@
     python3 tools/ui/commander_sheet.py [tools/ui/src/commander_ink_sheet.webp]
 
 The sheet (transparent background) holds, top to bottom: a huge wide stroke
-(the cut-in band), a wide stroke (the banner), a vermilion stroke and an enso,
-a vermilion hanko seal and six ink drops. The band is also saved upright as
-the backing / mask of the battle team cards (ink_card.webp). Each piece is cropped, cleaned of
+(the cut-in band), a wide stroke (the old banner, now taken from the second
+sheet by team_sheet.py), a vermilion stroke and an enso, a vermilion hanko
+seal and six ink drops. Each piece is cropped, cleaned of
 stray specks, toned (vermilion for the reds, cream for the enso so it reads on
 black ink) and written to assets/ui/ink/cmd_*.webp.
 """
@@ -83,7 +83,7 @@ def main():
     big, small = pieces(a)[:5], pieces(a)[5:11]
     # the five large pieces by position: top row, second row, then left/right halves
     big = sorted(big, key=lambda sl: (sl[0].start, sl[1].start))
-    band, banner = big[0], big[1]
+    band = big[0]  # big[1], the banner, is replaced by team_sheet.py's
     rest = sorted(big[2:], key=lambda sl: (sl[0].start, sl[1].start))
     red_or_enso = {}
     for sl in rest:
@@ -95,10 +95,6 @@ def main():
         else: red_or_enso["enso"] = sl
 
     save(clean(a[band]), "cmd_band.webp", width=1400, q=85)
-    # the same stroke stood upright (loaded head at the top): the battle team cards
-    up = np.ascontiguousarray(np.rot90(clean(a[band]), k=-1))
-    save(up, "ink_card.webp", height=900, q=85)
-    save(clean(a[banner]), "cmd_swash.webp", width=720, q=85)
     save(vermilion(clean(a[red_or_enso["red"]], keep=0.02)), "cmd_swash_red.webp", width=560)
     save(vermilion(clean(a[red_or_enso["seal"]], keep=0.05)), "cmd_seal.webp", width=160)
     save(tint(clean(a[red_or_enso["enso"]]), PAPER, fade=0.45), "cmd_enso.webp", width=220)
