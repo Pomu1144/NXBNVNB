@@ -1,0 +1,166 @@
+/* Battle team cards in sumi ink — to match the commander banner.
+   Layered over battle-team-holder.css / battle-chakra-wheel.css /
+   battle-link-ultimate.css (markup unchanged, so tap, drag, swap, chakra
+   and HP updates all work as before):
+   - each card is an upright ink brush stroke (assets/ui/ink/ink_card.webp),
+     the portrait painted into it (the same stroke as a mask), no frame art
+   - name in cream serif, a thin HP line, an indigo chakra gauge
+   - slot number as brush kanji on a vermilion ink drop
+   - ready: painted seals instead of lightning — 術 (indigo) for a jutsu,
+     奥 (vermilion) for an ultimate — and a matching brush stroke under the card
+   The kanji use 'Yuji Boku Cmd' (declared in battle-commander.css). */
+#team-holder {
+  --ti-paper: #efe6cf; --ti-paper-dim: rgba(239, 230, 207, 0.6); --ti-paper-faint: rgba(239, 230, 207, 0.16);
+  --ti-sumi: #0b0a0c; --ti-vermilion: #b8322a; --ti-vermilion-2: #d4473a; --ti-indigo: #3d6aa6; --ti-indigo-2: #6f9ad4;
+  --ti-brush: 'Yuji Boku Cmd', 'Hiragino Mincho ProN', 'Yu Mincho', 'Noto Serif JP', 'Kaisei Tokumin', serif;
+  --ti-serif: 'Hiragino Mincho ProN', 'Yu Mincho', 'Noto Serif JP', 'Kaisei Tokumin', Georgia, serif;
+  --ti-ink: url('../assets/ui/ink/ink_card.webp');
+}
+
+/* no frame art, no lightning */
+#team-holder .uc-art,
+#team-holder .uc-volt,
+#team-holder .uc-volt-glow { display: none !important; }
+
+/* ── the card: an upright ink stroke ─────────────────────────── */
+#team-holder .uc-body::before {
+  content: ''; position: absolute; inset: -3% -9% -6% -9%; z-index: 0; pointer-events: none;
+  background: var(--ti-ink) center / 100% 100% no-repeat;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.55));
+}
+#team-holder .active-portrait-container > .unit-ring {
+  inset: 0 0 18% 0; height: auto; clip-path: none; background: transparent;
+  -webkit-mask: var(--ti-ink) center top / 100% 122% no-repeat; mask: var(--ti-ink) center top / 100% 122% no-repeat;
+}
+#team-holder .active-portrait-container .portrait {
+  left: 0; top: 0; width: 100%; height: 100%; object-position: center 16%;
+  filter: saturate(0.92) contrast(1.04);
+  /* the portrait images carry their own card frame and star badge: zoom past them */
+  transform: scale(1.3); transform-origin: 50% 32%;
+}
+/* the portrait sinks into the ink toward the name */
+#team-holder .active-portrait-container > .unit-ring::after {
+  background: linear-gradient(180deg, rgba(11, 10, 12, 0) 52%, rgba(11, 10, 12, 0.65) 80%, rgba(11, 10, 12, 0.96) 100%);
+}
+
+/* name + HP */
+#team-holder .unit-info { left: 9%; right: 9%; top: 72%; transform: none; gap: calc(var(--uc-h) * 0.018); }
+#team-holder .unit-card.has-backup .unit-info { right: 22%; }
+#team-holder .unit-name {
+  font-family: var(--ti-serif); font-weight: 700; color: var(--ti-paper);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.95);
+}
+#team-holder .unit-info .unit-hp-bar {
+  height: clamp(2px, calc(var(--uc-h) * 0.018), 4px);
+  background: var(--ti-paper-faint); border: 0; border-radius: 2px; box-shadow: none;
+}
+#team-holder .unit-info .unit-hp-fill,
+#team-holder .unit-hp-fill { background: var(--ti-paper); border-radius: 2px; }
+#team-holder .unit-card.hp-low .unit-info .unit-hp-fill { background: var(--ti-vermilion-2); }
+
+/* chakra: an indigo ink line with the count */
+#team-holder .uc-strip { left: 9%; right: 9%; top: 85%; height: 8%; }
+#team-holder .unit-card.has-backup .uc-strip { right: 24%; }
+#team-holder .chakra-gauge.cbar .cb-track {
+  height: 42%; border: 0; border-radius: 3px; box-shadow: none;
+  background: var(--ti-paper-faint);
+}
+#team-holder .chakra-gauge.cbar .cb-fill {
+  background: linear-gradient(90deg, var(--ti-indigo), var(--ti-indigo-2));
+  box-shadow: none; border-radius: 3px;
+}
+#team-holder .chakra-gauge.cbar .cb-fill::after { background: var(--ti-paper); box-shadow: none; width: 1px; }
+#team-holder .chakra-gauge.cbar.ult-ready .cb-fill { background: linear-gradient(90deg, var(--ti-vermilion), var(--ti-vermilion-2)); }
+#team-holder .chakra-gauge.cbar .cb-segs { opacity: 0.35; }
+#team-holder .chakra-gauge.cbar .cg-count { font-family: var(--ti-serif); color: var(--ti-paper); text-shadow: 0 1px 2px #000; }
+#team-holder .chakra-gauge.cbar .cg-count small { color: var(--ti-paper-dim); }
+
+/* ── slot number: brush kanji on a vermilion drop ─────────────── */
+#team-holder .uc-pos {
+  left: 4%; top: 2%; width: 20%; border: 0; border-radius: 0; box-shadow: none;
+  background: var(--ti-vermilion);
+  -webkit-mask: url('../assets/ui/ink/cmd_dab.webp') center / contain no-repeat; mask: url('../assets/ui/ink/cmd_dab.webp') center / contain no-repeat;
+  color: var(--ti-paper); font-size: 0;
+}
+#team-holder .uc-pos::after { font: 400 clamp(9px, calc(var(--uc-w) * 0.12), 17px)/1 var(--ti-brush); }
+#team-holder .unit-card[data-pos="1"] .uc-pos::after { content: '一'; }
+#team-holder .unit-card[data-pos="2"] .uc-pos::after { content: '二'; }
+#team-holder .unit-card[data-pos="3"] .uc-pos::after { content: '三'; }
+#team-holder .unit-card[data-pos="4"] .uc-pos::after { content: '四'; }
+#team-holder .unit-card:not([data-pos="1"]):not([data-pos="2"]):not([data-pos="3"]):not([data-pos="4"]) .uc-pos { font-size: clamp(7px, calc(var(--uc-w) * 0.085), 13px); }
+
+/* ── ready: painted seals, a brush stroke under the card ──────── */
+#team-holder .uc-ready { top: 3%; right: 2%; gap: 3px; }
+#team-holder .uc-tag {
+  width: calc(var(--uc-w) * 0.26); aspect-ratio: 1; padding: 0; border: 0; border-radius: 0; transform: rotate(-6deg);
+  background: none; box-shadow: none; text-shadow: none; font-size: 0; position: relative;
+  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.6));
+}
+/* the painted seal (its own layer, so the jutsu seal can be re-inked indigo) */
+#team-holder .uc-tag::before {
+  content: ''; position: absolute; inset: 0;
+  background:
+    url('../assets/ui/ink/cmd_seal.webp') center / 100% 100% no-repeat,
+    linear-gradient(var(--ti-paper), var(--ti-paper)) center / 76% 76% no-repeat;
+}
+#team-holder .uc-tag::after {
+  position: absolute; inset: 0; display: grid; place-items: center;
+  font: 400 clamp(9px, calc(var(--uc-w) * 0.15), 20px)/1 var(--ti-brush);
+}
+#team-holder .tag-ult { color: var(--ti-vermilion); }
+#team-holder .tag-ult::after { content: '奥'; }
+#team-holder .tag-jutsu { color: var(--ti-indigo); }
+#team-holder .tag-jutsu::before { filter: hue-rotate(205deg) saturate(0.8); }
+#team-holder .tag-jutsu::after { content: '術'; }
+@keyframes ucTagIn {
+  from { opacity: 0; transform: rotate(-6deg) scale(1.8); }
+  to   { opacity: 1; transform: rotate(-6deg) scale(1); }
+}
+#team-holder .unit-card.jutsu-ready .uc-body::after,
+#team-holder .unit-card.ult-ready .uc-body::after {
+  content: ''; position: absolute; left: -6%; right: -14%; bottom: -7%; height: 9%; z-index: 0; pointer-events: none;
+  background: url('../assets/ui/ink/cmd_swash_red.webp') left center / 100% 100% no-repeat;
+}
+#team-holder .unit-card.jutsu-ready:not(.ult-ready) .uc-body::after { filter: hue-rotate(205deg) saturate(0.75); }
+
+/* ── acting unit: lifted, a vermilion drop above it ───────────── */
+#team-holder .unit-card.is-acting::before {
+  width: 12%; aspect-ratio: 1; top: -2%; clip-path: none; filter: none;
+  background: var(--ti-vermilion-2);
+  -webkit-mask: url('../assets/ui/ink/cmd_dab.webp') center / contain no-repeat; mask: url('../assets/ui/ink/cmd_dab.webp') center / contain no-repeat;
+}
+#team-holder .unit-card.is-acting .uc-body::before { filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.65)); }
+
+/* drag target: the stroke darkens and lifts (no glow) */
+#team-holder .unit-card.drag-over .uc-body::before { filter: drop-shadow(0 0 0 var(--ti-indigo-2)) drop-shadow(0 6px 10px rgba(0, 0, 0, 0.65)); }
+
+/* bond badge: cream on ink, vermilion when linking now */
+#team-holder .uc-link {
+  left: 6%; top: 60%; border-radius: 0; border: 0; padding: 0.25em 0.5em;
+  font-family: var(--ti-serif); color: var(--ti-paper);
+  background: rgba(11, 10, 12, 0.82); box-shadow: none;
+}
+#team-holder .uc-link.is-ready { color: var(--ti-paper); background: var(--ti-vermilion); border: 0; animation: none; }
+#team-holder .unit-card.link-ready > .uc-body { filter: none; }
+
+/* ── backup mini card: a smaller stroke ──────────────────────── */
+#team-holder .uc-mini::before {
+  content: ''; position: absolute; inset: -4% -10% -6% -10%; z-index: 0; pointer-events: none;
+  background: var(--ti-ink) center / 100% 100% no-repeat;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.6));
+}
+#team-holder .uc-mini > .unit-ring {
+  inset: 0 0 24% 0; height: auto; clip-path: none; background: transparent; z-index: 1;
+  -webkit-mask: var(--ti-ink) center top / 100% 130% no-repeat; mask: var(--ti-ink) center top / 100% 130% no-repeat;
+}
+#team-holder .uc-mini .portrait { left: 0; top: 0; width: 100%; height: 100%; transform: scale(1.3); transform-origin: 50% 32%; }
+#team-holder .ucm-tag { background: var(--ti-sumi); color: var(--ti-paper); border: 0; border-radius: 0; box-shadow: none; z-index: 2; }
+#team-holder .ucm-bars { z-index: 2; }
+#team-holder .uc-mini .unit-hp-bar.bench-hp { background: var(--ti-paper-faint); border: 0; box-shadow: none; }
+
+/* the swap ghost flies the same ink card */
+.uc-ghost .ucg-art { display: none; }
+.uc-ghost .ucg-win {
+  clip-path: none !important; background: transparent !important;
+  -webkit-mask: url('../assets/ui/ink/ink_card.webp') center top / 100% 122% no-repeat; mask: url('../assets/ui/ink/ink_card.webp') center top / 100% 122% no-repeat;
+}

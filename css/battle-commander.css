@@ -7,7 +7,7 @@
   font-family: 'Yuji Boku Cmd';
   src: url('../assets/fonts/yuji-boku-commander.woff2') format('woff2');
   font-display: swap;
-  unicode-range: U+6307, U+63EE, U+767A, U+52D5, U+5965, U+7FA9; /* 指揮発動奥義 */
+  unicode-range: U+6307, U+63EE, U+767A, U+52D5, U+5965, U+7FA9, U+4E00, U+4E8C, U+4E09, U+56DB, U+8853; /* 指揮発動奥義 一二三四 術 */
 }
 .cmd-wrap, .cmd-details, .cmd-cutin {
   --cmd-paper: #efe6cf; --cmd-paper-dim: rgba(239, 230, 207, 0.62); --cmd-paper-faint: rgba(239, 230, 207, 0.2);

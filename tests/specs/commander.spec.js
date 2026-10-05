@@ -98,8 +98,11 @@ test.describe('commander', () => {
     await setChakra(page, 4); // 16
     await expect(page.locator('.cmd-banner.is-ready:not(.is-blocked)')).toHaveCount(1, { timeout: 20_000 });
     await banner.click();
-    await page.waitForFunction(() => !window.BattleCommander.casting, null, { timeout: 15_000 });
+    // read the team's chakra as the cast starts (the 16 is drained then); afterwards
+    // the battle may hand out chakra again (a defeated enemy, a new wave)
+    await page.waitForFunction(() => window.BattleCommander.casting, null, { timeout: 15_000 });
     expect(await page.evaluate(() => window.BattleManager.activeTeam.reduce((s, u) => s + u.chakra, 0))).toBe(0);
+    await page.waitForFunction(() => !window.BattleCommander.casting, null, { timeout: 15_000 });
     expect(errors.pageErrors, errors.pageErrors.join('\n')).toEqual([]);
   });
 
@@ -126,8 +129,9 @@ test.describe('commander', () => {
     await setChakra(page, 4);
     await expect(page.locator('.cmd-banner.is-ready:not(.is-blocked)')).toHaveCount(1, { timeout: 20_000 });
     await page.locator('.cmd-banner').click();
-    await page.waitForFunction(() => !window.BattleCommander.casting, null, { timeout: 15_000 });
+    await page.waitForFunction(() => window.BattleCommander.casting, null, { timeout: 15_000 });
     expect(await page.evaluate(() => window.BattleManager.activeTeam.reduce((s, u) => s + u.chakra, 0))).toBe(0);
+    await page.waitForFunction(() => !window.BattleCommander.casting, null, { timeout: 15_000 });
 
     // Open again.
     await page.locator('.cmd-fold').click();
