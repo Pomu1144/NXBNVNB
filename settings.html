@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="css/page-loader.css" />
   <script src="js/session-gate.js"></script>
   <script src="js/page-loader.js"></script>
+  <script src="js/portal-guests.js"></script>
   <script src="js/device-detect.js"></script>
   <script src="js/ui-theme.js"></script>
   <script src="js/dev-mode.js"></script>
@@ -26,6 +27,7 @@
   <link rel="stylesheet" href="css/background.css" />
   <link rel="stylesheet" href="css/bottombar.css" />
   <link rel="stylesheet" href="css/settings.css" />
+  <link rel="stylesheet" href="css/portal.css" />
   <link rel="stylesheet" href="css/modal-system.css?v=4" />
   <!-- Hide scrollbar but keep functionality -->
   <style>
@@ -65,6 +67,7 @@
       <button class="jjk-tab" role="tab" aria-selected="false" data-tab="display">Display</button>
       <button class="jjk-tab" role="tab" aria-selected="false" data-tab="account">Account</button>
       <button class="jjk-tab" role="tab" aria-selected="false" data-tab="data">Data</button>
+      <button class="jjk-tab" role="tab" aria-selected="false" data-tab="portal">Portal</button>
       <button class="jjk-tab dev-only" role="tab" aria-selected="false" data-tab="dev">Dev Tools</button>
     </nav>
 
@@ -192,6 +195,63 @@
         </div>
       </section>
 
+      <!-- Portal -->
+      <section class="settings-pane" id="pane-portal" role="tabpanel">
+        <h2 class="set-group">Connection</h2>
+        <div class="set-row">
+          <div class="set-label"><b>Portal Hub</b><small id="portal-status-note">Carry up to 5 characters between your games</small></div>
+          <div class="set-control">
+            <span class="jjk-chip" id="portal-status">Checking…</span>
+            <a class="jjk-btn" id="portal-open" href="../portal-container/index.html" target="_top">Open Portal</a>
+          </div>
+        </div>
+
+        <div id="portal-party-block" hidden>
+          <h2 class="set-group">Arrived With You</h2>
+          <div class="portal-grid" id="portal-party"></div>
+          <div class="set-row">
+            <div class="set-label"><b>Party Import</b><small id="portal-party-note"></small></div>
+            <div class="set-control">
+              <button class="jjk-btn is-primary" id="portal-party-import">Import Party</button>
+            </div>
+          </div>
+        </div>
+
+        <h2 class="set-group">Send to Portal</h2>
+        <div class="set-row">
+          <div class="set-label"><b>Choose up to 5</b><small>Copies are sent; your units stay here</small></div>
+          <div class="set-control is-wide">
+            <input type="search" id="portal-search" class="set-field" placeholder="Search your roster" autocomplete="off" spellcheck="false">
+            <span class="jjk-chip" id="portal-picked">0 / 5</span>
+          </div>
+        </div>
+        <div class="portal-grid portal-roster" id="portal-roster"></div>
+        <div class="set-row">
+          <div class="set-label"><b>Send</b><small id="portal-send-note">Send to the Portal vault, or make a Portal Code to paste into another game</small></div>
+          <div class="set-control">
+            <button class="jjk-btn is-primary" id="portal-send" disabled>Send to Vault</button>
+            <button class="jjk-btn" id="portal-make-code" disabled>Make Code</button>
+          </div>
+        </div>
+        <div class="set-row" id="portal-code-out-row" hidden>
+          <label class="set-label" for="portal-code-out"><b>Portal Code</b><small>Paste it in another game's Portal settings</small></label>
+          <div class="set-control is-wide">
+            <input type="text" id="portal-code-out" class="set-field" readonly>
+            <button class="jjk-btn" id="portal-copy-code">Copy</button>
+          </div>
+        </div>
+
+        <h2 class="set-group">Receive</h2>
+        <div class="set-row">
+          <label class="set-label" for="portal-code-in"><b>Paste Portal Code</b><small>Up to 5 characters from another game join your roster</small></label>
+          <div class="set-control is-wide">
+            <input type="text" id="portal-code-in" class="set-field" placeholder="PRTL1.…" autocomplete="off" spellcheck="false">
+            <button class="jjk-btn" id="portal-import-code">Import</button>
+          </div>
+        </div>
+        <p class="portal-msg" id="portal-msg" role="status" aria-live="polite"></p>
+      </section>
+
       <!-- Developer Tools -->
       <section class="settings-pane dev-only" id="pane-dev" role="tabpanel">
         <h2 class="set-group">Developer Tools</h2>
@@ -250,6 +310,9 @@
   <script src="js/audio-manager.js"></script>
   <script src="js/username.js"></script>
   <script src="js/character_inv.js?v=3"></script>
+  <script src="js/portal-sdk.js"></script>
+  <script src="js/portal-port.js"></script>
+  <script src="js/settings-portal.js"></script>
   <script src="js/resources.js"></script>
   <script src="js/ninja-rank.js"></script>
   <script src="js/exp-rewards.js"></script>
