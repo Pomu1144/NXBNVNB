@@ -206,6 +206,30 @@
           </div>
         </div>
 
+        <h2 class="set-group">Wallet</h2>
+        <div class="set-row">
+          <div class="set-label"><b>Balances</b><small>Ryo = Portal coins, Ninja Pearls = Portal premium (1 : 1)</small></div>
+          <div class="set-control portal-balances">
+            <span class="jjk-chip">Ryo <b id="portal-bal-ryo">0</b></span>
+            <span class="jjk-chip">Pearls <b id="portal-bal-pearls">0</b></span>
+            <span class="jjk-chip portal-hub-bal">Portal ◎ <b id="portal-bal-coins">—</b></span>
+            <span class="jjk-chip portal-hub-bal">Portal ◆ <b id="portal-bal-premium">—</b></span>
+          </div>
+        </div>
+        <div class="set-row">
+          <label class="set-label" for="portal-amount"><b>Move Currency</b><small id="portal-wallet-note">Open the game from the Portal to move currency</small></label>
+          <div class="set-control is-wide">
+            <input type="number" id="portal-amount" class="set-field portal-amount" min="1" step="1" inputmode="numeric" placeholder="Amount">
+            <select id="portal-currency" class="set-field portal-currency" aria-label="Currency">
+              <option value="coins">Ryo</option>
+              <option value="premium">Ninja Pearls</option>
+            </select>
+            <button class="jjk-btn is-primary" id="portal-deposit" disabled>Send</button>
+            <button class="jjk-btn" id="portal-withdraw" disabled>Receive</button>
+          </div>
+        </div>
+        <p class="portal-msg" id="portal-wallet-msg" role="status" aria-live="polite"></p>
+
         <div id="portal-party-block" hidden>
           <h2 class="set-group">Arrived With You</h2>
           <div class="portal-grid" id="portal-party"></div>

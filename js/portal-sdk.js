@@ -15,8 +15,22 @@
  *     portal.party                      // { id, max, cards: [card, …] } (0–5 cards)
  *     await portal.update(cardId, { level: 42 });
  *     await portal.grant(card);         // add a character to the vault
+ *     portal.wallet                     // { coins, premium } held by the hub
+ *     await portal.deposit('coins', 500, txId);    // game → hub wallet
+ *     await portal.withdraw('premium', 10, txId);  // hub wallet → game
  *     portal.exit();                    // ask the hub to close the game
  *   }
+ *
+ * Currency: every game maps its soft currency to 'coins' and its premium
+ * currency to 'premium'. Amounts on the wire are in the GAME's units; the
+ * hub converts with the rates in its games.json (default 1:1). Money only
+ * moves through the hub (never through Portal Codes, which can be copied).
+ * Each transfer carries a txId from PortalSDK.newTxId(); the hub applies a
+ * txId once, so a game that lost the answer retries with the same txId:
+ *   deposit:  take the money locally, save {txId,…} as pending, send;
+ *             ok → drop pending; refused → refund; no answer → retry later.
+ *   withdraw: save pending, send; ok → credit locally, drop pending;
+ *             refused → drop pending; no answer → retry later.
  *
  * Without the hub, characters can still travel as a Portal Code — a text
  * string holding up to 5 cards:
@@ -24,10 +38,11 @@
  *
  * Wire format (window.postMessage, every message has ns:'portal', v:1):
  *   game → hub  { type:'hello', gameId }
- *   hub  → game { type:'welcome', player, party }
+ *   hub  → game { type:'welcome', player, party, wallet, rates }
  *   game → hub  { type:'update', reqId, partyId, cardId, patch }
  *   game → hub  { type:'grant',  reqId, card }
- *   hub  → game { type:'ack', reqId, ok, error? }
+ *   game → hub  { type:'deposit' | 'withdraw', reqId, txId, currency, amount }
+ *   hub  → game { type:'ack', reqId, ok, error?, refused?, wallet? }
  *   game → hub  { type:'exit' }
  * ------------------------------------------------------------------------- */
 (function (global) {
@@ -45,6 +60,25 @@
   // Raw stats are normalised to 0–1 against these caps so every game can map
   // a card onto its own stat scale.
   const STAT_CAPS = { hp: 75000, atk: 10000, speed: 550 };
+
+  const CURRENCIES = ['coins', 'premium'];
+  const MAX_TRANSFER = 1e9;
+
+  function newTxId() {
+    return 'tx_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2, 10);
+  }
+
+  function checkTransfer(currency, amount, txId) {
+    if (!CURRENCIES.includes(currency)) throw new Error('Unknown currency');
+    if (!Number.isInteger(amount) || amount < 1 || amount > MAX_TRANSFER) throw new Error('Amount must be a whole number from 1 to ' + MAX_TRANSFER);
+    if (typeof txId !== 'string' || !/^[A-Za-z0-9_-]{6,64}$/.test(txId)) throw new Error('Bad txId');
+  }
+
+  function cleanWallet(w) {
+    const out = {};
+    for (const c of CURRENCIES) out[c] = Math.max(0, Math.floor(Number(w && w[c]) || 0));
+    return out;
+  }
 
   const clamp = (n, lo, hi) => Math.min(hi, Math.max(lo, n));
   const str = (v, max = 120) => (typeof v === 'string' ? v.trim().slice(0, max) : '');
@@ -165,9 +199,23 @@
           pending.set(reqId, { res, rej });
           send(Object.assign({ reqId }, msg), session.hubOrigin);
           setTimeout(() => {
-            if (pending.has(reqId)) { pending.delete(reqId); rej(new Error('Portal did not answer')); }
+            if (pending.has(reqId)) { pending.delete(reqId); rej(new Error('Portal did not answer')); } // not refused: may have applied
           }, 5000);
         });
+      }
+
+      function transfer(type, currency, amount, txId) {
+        try { checkTransfer(currency, amount, txId); } catch (err) { err.refused = true; return Promise.reject(err); }
+        return request({ type, txId, currency, amount }).then((m) => {
+          session.wallet = cleanWallet(m.wallet);
+          return session.wallet;
+        });
+      }
+
+      function cleanRates(r) {
+        const out = {};
+        for (const c of CURRENCIES) out[c] = Number(r && r[c]) > 0 ? Number(r[c]) : 1;
+        return out;
       }
 
       global.addEventListener('message', (e) => {
@@ -188,16 +236,23 @@
               const p = {};
               if (patch && patch.level != null) p.level = Math.round(Number(patch.level) || 0);
               if (patch && patch.rarity != null) p.rarity = Math.round(Number(patch.rarity) || 0);
-              return request({ type: 'update', partyId: party.id, cardId, patch: p });
+              return request({ type: 'update', partyId: party.id, cardId, patch: p }).then(() => true);
             },
-            grant: (card) => request({ type: 'grant', card: validateCard(card) }),
+            grant: (card) => request({ type: 'grant', card: validateCard(card) }).then(() => true),
+            wallet: cleanWallet(m.wallet),
+            rates: cleanRates(m.rates),
+            deposit: (currency, amount, txId) => transfer('deposit', currency, amount, txId),
+            withdraw: (currency, amount, txId) => transfer('withdraw', currency, amount, txId),
             exit: () => send({ type: 'exit' }, session.hubOrigin),
           };
           resolve(session);
         } else if (m.type === 'ack' && pending.has(m.reqId)) {
           const p = pending.get(m.reqId);
           pending.delete(m.reqId);
-          m.ok ? p.res(true) : p.rej(new Error(str(m.error, 200) || 'Portal refused'));
+          if (m.ok) return p.res(m);
+          const err = new Error(str(m.error, 200) || 'Portal refused');
+          err.refused = true; // the hub answered no: nothing was applied
+          p.rej(err);
         }
       });
 
@@ -208,8 +263,8 @@
   }
 
   global.PortalSDK = {
-    VERSION, MAX_PARTY, ELEMENTS, STAT_CAPS, NS,
-    connect, validateCard, encodeCode, decodeCode,
+    VERSION, MAX_PARTY, ELEMENTS, STAT_CAPS, NS, CURRENCIES, MAX_TRANSFER,
+    connect, validateCard, encodeCode, decodeCode, newTxId, checkTransfer,
     normalizeStats, denormalizeStats, absUrl,
   };
 })(typeof window !== 'undefined' ? window : globalThis);

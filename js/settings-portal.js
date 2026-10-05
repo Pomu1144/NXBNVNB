@@ -17,8 +17,8 @@
   let roster = [];          // [{ inst, def }] best instance per character
   let session = null;
 
-  function msg(text, isError) {
-    const el = $('portal-msg');
+  function msg(text, isError, where) {
+    const el = $(where || 'portal-msg');
     el.textContent = text || '';
     el.classList.toggle('is-error', !!isError);
   }
@@ -198,12 +198,55 @@
     }
   });
 
+  /* ---------- wallet ---------- */
+
+  const fmt = (n) => Number(n || 0).toLocaleString();
+
+  function renderWallet() {
+    $('portal-bal-ryo').textContent = fmt(Port.balance('coins'));
+    $('portal-bal-pearls').textContent = fmt(Port.balance('premium'));
+    $('portal-bal-coins').textContent = session ? fmt(session.wallet.coins) : '—';
+    $('portal-bal-premium').textContent = session ? fmt(session.wallet.premium) : '—';
+    $('portal-deposit').disabled = !session;
+    $('portal-withdraw').disabled = !session;
+    const pending = Port.pendingTx().length;
+    $('portal-wallet-note').textContent = !session
+      ? 'Open the game from the Portal to move currency'
+      : pending ? pending + ' transfer' + (pending === 1 ? '' : 's') + ' waiting for the Portal; retried automatically'
+        : 'Send puts it in the Portal wallet; Receive takes it out into this game';
+  }
+
+  async function move(kind) {
+    const currency = $('portal-currency').value;
+    const amount = Math.floor(Number($('portal-amount').value));
+    const name = Port.CURRENCY_NAMES[currency];
+    $('portal-deposit').disabled = $('portal-withdraw').disabled = true;
+    try {
+      const r = await Port[kind](currency, amount);
+      if (r.ok) {
+        msg((kind === 'deposit' ? 'Sent ' : 'Received ') + fmt(amount) + ' ' + name + '.', false, 'portal-wallet-msg');
+        $('portal-amount').value = '';
+      } else {
+        msg(r.error, !r.pending, 'portal-wallet-msg');
+      }
+    } catch (err) {
+      msg(err.message, true, 'portal-wallet-msg');
+    }
+    renderWallet();
+  }
+
+  $('portal-deposit').addEventListener('click', () => move('deposit'));
+  $('portal-withdraw').addEventListener('click', () => move('withdraw'));
+
   /* ---------- boot ---------- */
 
   Port.session.then((s) => {
     session = s;
     renderConnection();
     renderParty();
+    renderWallet();
+    // The automatic retry on connect may finish a little later.
+    Port.retryPending().then(renderWallet);
   });
 
   // Build the roster when the tab is first opened (characters.json is large).

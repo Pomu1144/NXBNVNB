@@ -106,3 +106,82 @@ test.describe('portal', () => {
     errors.assertClean('portal');
   });
 });
+
+// A minimal hub: iframes a page and answers the Portal protocol with a
+// wallet that applies each txId once (like portal-container/js/bridge.js).
+const FAKE_HUB = `<!doctype html><meta charset="utf-8"><body style="margin:0">
+<iframe id="g" src="/settings.html" style="width:100vw;height:100vh;border:0"></iframe>
+<script>
+  window.hub = { wallet: { coins: 100, premium: 5 }, ledger: {}, seen: [], silent: false };
+  addEventListener('message', (e) => {
+    const m = e.data, g = document.getElementById('g').contentWindow;
+    if (!m || m.ns !== 'portal' || e.source !== g) return;
+    const send = (x) => g.postMessage(Object.assign({ ns: 'portal', v: 1 }, x), location.origin);
+    hub.seen.push(m.type + (m.txId ? ':' + m.txId : ''));
+    if (m.type === 'hello') return send({ type: 'welcome', player: { name: 'T' }, party: { id: 'p1', cards: [] }, wallet: hub.wallet, rates: {} });
+    if (m.type !== 'deposit' && m.type !== 'withdraw') return;
+    let r = hub.ledger[m.txId];
+    if (!r) {
+      if (m.type === 'withdraw' && hub.wallet[m.currency] < m.amount) r = { ok: false, error: 'Not enough' };
+      else { hub.wallet[m.currency] += m.type === 'deposit' ? m.amount : -m.amount; r = { ok: true }; }
+      hub.ledger[m.txId] = r;
+    }
+    if (hub.silent) return; // applied, but the answer is lost
+    send({ type: 'ack', reqId: m.reqId, ok: r.ok, error: r.error, wallet: hub.wallet });
+  });
+</script>`;
+
+test.describe('portal currency', () => {
+  test.describe.configure({ timeout: 120_000 });
+
+  test('Ryo and Pearls move to and from the hub exactly once', async ({ page }) => {
+    const errors = collectErrors(page);
+    await seedSave(page, { blazing_resources_v1: { ryo: 1000, ninja_pearls: 50, shinobites: 0 } });
+    await page.route('**/__hub.html', (route) => route.fulfill({ contentType: 'text/html', body: FAKE_HUB }));
+    await page.goto('/__hub.html');
+    const frame = page.frameLocator('#g');
+    const game = () => page.frames().find((f) => /settings\.html/.test(f.url()));
+    await expect.poll(() => game() && game().evaluate(() => !!window.PortalPort)).toBe(true);
+    await frame.locator('[data-tab="portal"]').click();
+    await expect(frame.locator('#portal-status')).toHaveText('Connected');
+    await game().evaluate(() => PortalPort.session);
+
+    const read = () => Promise.all([
+      game().evaluate(() => [Resources.get('ryo'), Resources.get('ninja_pearls'), PortalPort.pendingTx().length]),
+      page.evaluate(() => [hub.wallet.coins, hub.wallet.premium]),
+    ]).then(([g, h]) => ({ ryo: g[0], pearls: g[1], pending: g[2], coins: h[0], premium: h[1] }));
+    const ryo0 = (await read()).ryo; // a login bonus may have added Ryo
+
+    const move = async (kind, amount, currency) => {
+      await frame.locator('#portal-amount').fill(String(amount));
+      await frame.locator('#portal-currency').selectOption(currency);
+      await frame.locator(kind === 'deposit' ? '#portal-deposit' : '#portal-withdraw').click();
+      await expect(frame.locator('#portal-wallet-msg')).not.toHaveText('');
+      const text = await frame.locator('#portal-wallet-msg').textContent();
+      await frame.locator('#portal-wallet-msg').evaluate((el) => { el.textContent = ''; });
+      return text;
+    };
+
+    expect(await move('deposit', 300, 'coins')).toContain('Sent 300 Ryo');
+    expect(await read()).toMatchObject({ ryo: ryo0 - 300, coins: 400, pending: 0 });
+    expect(await move('deposit', 60, 'premium')).toContain('Not enough Ninja Pearls');
+    expect(await move('withdraw', 5, 'premium')).toContain('Received 5 Ninja Pearls');
+    expect(await read()).toMatchObject({ pearls: 55, premium: 0 });
+    expect(await move('withdraw', 1, 'premium')).toContain('Not enough');
+    expect(await read()).toMatchObject({ pearls: 55, premium: 0, pending: 0 });
+
+    // The hub applies a withdrawal but its answer is lost: the transfer stays
+    // pending and is retried with the same txId, crediting the game once.
+    await page.evaluate(() => { hub.silent = true; });
+    const lost = await move('withdraw', 150, 'coins');
+    expect(lost).toContain('retry');
+    expect(await read()).toMatchObject({ ryo: ryo0 - 300, coins: 250, pending: 1 });
+    await page.evaluate(() => { hub.silent = false; });
+    await game().evaluate(() => PortalPort.retryPending());
+    expect(await read()).toMatchObject({ ryo: ryo0 - 150, coins: 250, pending: 0 });
+    const tx = await page.evaluate(() => hub.seen.filter((s) => s.startsWith('withdraw:')));
+    expect(tx[tx.length - 1]).toBe(tx[tx.length - 2]); // same txId re-sent
+
+    errors.assertClean('portal currency');
+  });
+});

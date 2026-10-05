@@ -7,6 +7,13 @@
  *   PortalPort.cardFor(inst)        portable card for an inventory instance
  *   PortalPort.importCards(cards)   copy up to 5 cards into the roster
  *   PortalPort.syncParty()          report level-ups of party cards to the hub
+ *   PortalPort.deposit(cur, n)      move Ryo / Ninja Pearls into the Portal wallet
+ *   PortalPort.withdraw(cur, n)     move them from the Portal wallet into this game
+ *
+ * Currency: 'coins' ↔ Ryo and 'premium' ↔ Ninja Pearls (js/resources.js).
+ * Money only moves while connected to the hub. Each transfer is saved as
+ * pending under blazing_portal_tx_v1 before it is sent and retried with the
+ * same txId if the hub's answer is lost, so it is applied exactly once.
  *
  * Importing is a copy. A card from this game adds the unit (or raises its
  * level). A card from another game becomes a guest unit: a full character
@@ -26,6 +33,9 @@
   const GUESTS_KEY = 'blazing_portal_guests_v1';
   const PARTIES_KEY = 'blazing_portal_parties_v1';
   const HUB_URL = '../portal-container/index.html';
+  const TX_KEY = 'blazing_portal_tx_v1';
+  const CURRENCY = { coins: 'ryo', premium: 'ninja_pearls' };
+  const CURRENCY_NAMES = { coins: 'Ryo', premium: 'Ninja Pearls' };
 
   /* ---------- storage (all Portal keys go through here) ---------- */
 
@@ -229,6 +239,68 @@
     return sent;
   }
 
+  /* ---------- currency ---------- */
+
+  const pendingTx = () => readJSON(TX_KEY, []).filter((t) => t && t.txId);
+  const dropTx = (txId) => writeJSON(TX_KEY, pendingTx().filter((t) => t.txId !== txId));
+
+  function resources() {
+    if (!window.Resources) throw new Error('Currency is not available on this page');
+    return window.Resources;
+  }
+
+  function balance(currency) {
+    return window.Resources ? window.Resources.get(CURRENCY[currency]) : 0;
+  }
+
+  // Send one saved transfer. The local side of a deposit was already taken.
+  // A txId is never in flight twice: the hub would answer both, and a
+  // withdrawal would be credited twice.
+  const inFlight = new Set();
+  async function runTx(s, tx) {
+    const res = resources();
+    if (inFlight.has(tx.txId)) return { ok: false, pending: true, error: 'Transfer already in progress' };
+    inFlight.add(tx.txId);
+    try {
+      const wallet = await s[tx.type](tx.currency, tx.amount, tx.txId);
+      if (tx.type === 'withdraw') res.add(CURRENCY[tx.currency], tx.amount);
+      dropTx(tx.txId);
+      return { ok: true, wallet };
+    } catch (err) {
+      if (!err.refused) return { ok: false, pending: true, error: 'No answer from the Portal yet; it will retry automatically' };
+      if (tx.type === 'deposit') res.add(CURRENCY[tx.currency], tx.amount); // refund
+      dropTx(tx.txId);
+      return { ok: false, error: err.message };
+    } finally {
+      inFlight.delete(tx.txId);
+    }
+  }
+
+  async function startTx(type, currency, amount) {
+    const s = await session;
+    if (!s) throw new Error('Open the game from the Portal to move currency');
+    if (!CURRENCY[currency]) throw new Error('Unknown currency');
+    amount = Math.floor(Number(amount));
+    SDK.checkTransfer(currency, amount, 'tx_check');
+    const res = resources();
+    const tx = { txId: SDK.newTxId(), type, currency, amount, at: Date.now() };
+    if (type === 'deposit') {
+      if (res.get(CURRENCY[currency]) < amount) throw new Error('Not enough ' + CURRENCY_NAMES[currency]);
+      res.subtract(CURRENCY[currency], amount);
+    }
+    writeJSON(TX_KEY, pendingTx().concat(tx));
+    return runTx(s, tx);
+  }
+
+  /** Retry transfers whose answer was lost. Returns how many completed. */
+  async function retryPending() {
+    const s = await session;
+    if (!s || !window.Resources) return 0;
+    let done = 0;
+    for (const tx of pendingTx()) if ((await runTx(s, tx)).ok) done++;
+    return done;
+  }
+
   function partyImported(id) {
     return readJSON(PARTIES_KEY, []).includes(id);
   }
@@ -241,6 +313,7 @@
   session.then(async (s) => {
     if (!s) return;
     if (document.readyState === 'loading') await new Promise((r) => document.addEventListener('DOMContentLoaded', r, { once: true }));
+    retryPending();
     if (!window.InventoryChar) return;
     if (s.party.cards.length && !partyImported(s.party.id)) {
       try {
@@ -263,5 +336,11 @@
     syncParty,
     partyImported,
     isGuest: (def) => !!(def && def.portalGuest),
+    CURRENCY_NAMES,
+    balance,
+    deposit: (currency, amount) => startTx('deposit', currency, amount),
+    withdraw: (currency, amount) => startTx('withdraw', currency, amount),
+    pendingTx,
+    retryPending,
   };
 })();
