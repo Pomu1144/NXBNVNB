@@ -27,10 +27,10 @@ python3 tools/sprites/ipa_rig/build_hashirama.py ipa/Payload/BNEI0249.app/Data/R
 
 | sheet           | clip                     |
 |-----------------|--------------------------|
-| `idle`          | `0040200004`             |
+| `idle`          | `3040210001` (upright seal stance, as in the original battles; `0040200004` is a crouched stance) |
 | `run`           | `0040200002` from 0.3 s  |
 | `attack`        | `1040200001` (2 hits)    |
-| `hit`           | idle → `3040210001` guard → idle |
+| `hit`           | idle → opening recoil of `0040200003` → idle |
 | `ko`            | backstep `0040200003` to its deepest stagger, then tipped onto the ground (no KO clip in the IPA) |
 | `ultimate`      | `2040221354`, Hashirama only |
 | `ultimate_body` | `2040221354`, Buddha + summoning smoke, behind the caster |

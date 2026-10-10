@@ -140,7 +140,9 @@ def main():
     raw = load_clips(f'{R}/sprite/unit/mockanimations/0402')
     clip = lambda name: ss.Clip(raw[acs[name + 'L']].read_typetree())
 
-    idle = render(parts, cells, clip('0040200004'), 24)
+    # battle stance: upright, hands together in a seal (as in the original game's battles);
+    # 0040200004 is a crouched stance
+    idle = render(parts, cells, clip('3040210001'), 24)
     boxes = [bbox(f) for f in idle]
     ref = (min(b[0] for b in boxes), min(b[1] for b in boxes), max(b[2] for b in boxes))
     sheets = {}
@@ -155,9 +157,9 @@ def main():
     att = render(parts, cells, clip('1040200001'), fps)
     sheets['attack'] = pack(f'{a.out}/attack', att, fps, False, ref, hits=[round(0.46 * fps), round(0.61 * fps)])
 
-    # flinch: idle -> guard pose -> back to idle
-    guard = render(parts, cells, clip('3040210001'), 12, 0.0, 0.25)
-    hit = [idle[0]] + guard[:2] + [guard[-1]] * 2 + [idle[0]]
+    # flinch: the recoil that opens the backstep (0040200003), then back to the stance
+    recoil = render(parts, cells, clip('0040200003'), 12, 0.0, 0.25)
+    hit = [idle[0]] + recoil + [recoil[-1], idle[0]]
     sheets['hit'] = pack(f'{a.out}/hit', hit, 12, False, ref)
     thumb(idle[0], ref, f'{a.out}/thumb.webp')
 
