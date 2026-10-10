@@ -31,7 +31,7 @@ python3 tools/sprites/ipa_rig/build_hashirama.py ipa/Payload/BNEI0249.app/Data/R
 | `run`           | `0040200002` from 0.3 s  |
 | `attack`        | `1040200001` (2 hits)    |
 | `hit`           | idle → `3040210001` guard → idle |
-| `ko`            | `0040200003`             |
+| `ko`            | backstep `0040200003` to its deepest stagger, then tipped onto the ground (no KO clip in the IPA) |
 | `ultimate`      | `2040221354`, Hashirama only |
 | `ultimate_body` | `2040221354`, Buddha + summoning smoke, behind the caster |
 | `ultimate_fx`   | effect `21354` (both layers), 12 hits over the targets |
