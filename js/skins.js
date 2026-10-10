@@ -52,6 +52,10 @@
     // jutsu isn't in the game files, so 'jutsu' stays on the base folder.
     { id: 'hashirama_418_original', charIds: ['hashirama_418', 'hashirama_417'], unit: 'Hashirama Senju', name: 'Original Blazing',
       folder: 'assets/sprites/skins/hashirama_418_original', own: ['idle', 'run', 'attack', 'hit', 'ko', 'ultimate', 'ultimate_body', 'ultimate_fx'], thumb: 'assets/sprites/skins/hashirama_418_original/thumb.webp', price: 50 },
+    // Drawn in the original game's sprite style (tools/sprites/produce/specs/madara_2098_original.json); the
+    // effect layers (jutsu_fx, secret_body, secret_fx) stay on the base folder.
+    { id: 'madara_2098_original', charIds: ['madara_2098', 'madara_525'], unit: 'Madara Uchiha', name: 'Original Blazing',
+      folder: 'assets/sprites/skins/madara_2098_original', own: ['idle', 'run', 'attack', 'hit', 'ko', 'jutsu', 'secret'], thumb: 'assets/sprites/skins/madara_2098_original/thumb.webp', price: 50 },
   ];
   const BYID = new Map(CATALOGUE.map(s => [s.id, s]));
 
