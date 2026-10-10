@@ -23,7 +23,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import ssrender as ss  # noqa: E402
 
 RS = 1.7          # render scale (SpriteStudio px -> canvas px); idle body ~270 px tall
-CANVAS = (3000, 2400)
+CANVAS = (3000, 2800)
 ORIGIN = (1500, 1900)  # SpriteStudio (0, 0) = the unit's feet
 HEIGHT = 256      # sheet frame height for body-sized sheets (idle body = full frame)
 MAX_SIDE = 8192   # keep sheets under the common mobile texture limit
@@ -161,7 +161,11 @@ def main():
     sheets['hit'] = pack(f'{a.out}/hit', hit, 12, False, ref)
     thumb(idle[0], ref, f'{a.out}/thumb.webp')
 
-    ko = render(parts, cells, clip('0040200003'), 12)
+    # no KO clip ships in the IPA: 0040200003 is a backstep (hop back, stagger, land). Use it up
+    # to the deepest backward stagger, then tip that pose over the back foot onto the ground.
+    back = render(parts, cells, clip('0040200003'), 12)
+    deep = max(range(len(back) * 3 // 4), key=lambda i: lean(back[i]))
+    ko = back[:deep + 1] + [topple(back[deep], ang) for ang in (16, 36, 56, 72, 78, 78)]
     sheets['ko'] = pack(f'{a.out}/ko', ko, 12, False, ref)
 
     # ultimate: Sage Art: Wood Style: Shinsu Senju, in three layers like the unit's base sheets:
@@ -201,6 +205,23 @@ def main():
             strip(frames, f'{a.preview}/{name}.png')
 
 
+def lean(frame):
+    """How far the top of the body sits behind (left of) the feet, in px."""
+    a = np.asarray(frame.getchannel('A')) > 24
+    rows = np.where(a.any(1))[0]
+    top, bot = rows[0], rows[-1]
+    mid = lambda r: np.where(a[r])[0].mean()
+    return mid(bot - 2) - mid(top + (bot - top) // 6)
+
+
+def topple(frame, angle):
+    """Rotate a backward-leaning pose about its back foot by `angle` degrees (falls to the left),
+    keeping that foot on the feet line."""
+    b = bbox(frame)
+    pivot = (b[0] + 10, ORIGIN[1])
+    return frame.rotate(angle, resample=Image.BICUBIC, center=pivot)
+
+
 def trim(frames):
     """Drop the empty frames at both ends; returns (first kept index, frames)."""
     lit = [i for i, f in enumerate(frames) if bbox(f, 24)]
@@ -220,7 +241,7 @@ def pack_fx(out, frames, fps, ref, hits, height=420, quality=86, max_units=3.6, 
     boxes = [b for b in (bbox(f, 24) for f in frames) if b]
     # the Buddha's arms reach down from far above: cap the height and fade the top edge
     t = max(min(b[1] for b in boxes) - 4, int(feet - max_units * ref_h))
-    bottom = max(max(b[3] for b in boxes) + 4, feet + 4)
+    bottom = max(min(max(b[3] for b in boxes) + 4, int(feet + 0.8 * ref_h)), feet + 4)  # dust rings: cap
     cov = fx_impacts(frames)
     if center == 'impact':
         big = [bbox(f, 24) for f, c in zip(frames, cov) if c >= 0.5 * max(cov)]
@@ -236,6 +257,8 @@ def pack_fx(out, frames, fps, ref, hits, height=420, quality=86, max_units=3.6, 
     rows = -(-len(frames) // cols)
     sheet = Image.new('RGBA', (cols * fw, rows * fh), (0, 0, 0, 0))
     ramp = np.clip(np.arange(fh, dtype=np.float32) / max(fade * fh, 1e-6), 0, 1)[:, None] if fade else 1.0
+    if fade:  # soft bottom edge too (capped dust rings)
+        ramp = ramp * np.clip((fh - 1 - np.arange(fh, dtype=np.float32)) / (0.08 * fh), 0, 1)[:, None]
     for i, f in enumerate(frames):
         a = np.asarray(f.crop((l, t, r, bottom)).resize((fw, fh), Image.LANCZOS)).copy()
         a[..., 3] = (a[..., 3] * ramp).astype(np.uint8)

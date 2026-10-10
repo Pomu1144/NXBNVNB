@@ -1,13 +1,13 @@
 {
-  "frameWidth": 133,
+  "frameWidth": 154,
   "frameHeight": 256,
   "frames": 31,
-  "columns": 30,
+  "columns": 26,
   "fps": 12,
   "loop": false,
   "hits": [],
-  "heightScale": 1.0365,
-  "anchorX": 0.4766,
+  "heightScale": 1.0447,
+  "anchorX": 0.5,
   "fx": [
     {
       "sheet": "ultimate_body",

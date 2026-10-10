@@ -5,6 +5,7 @@ import UnityPy
 from PIL import Image
 
 TRANSFORM, RENDERER, MONO = 4, 23, 114
+PIVOT = [-1, -1]  # cell pivot: offset of the part origin from the cell centre, in cell sizes
 
 
 def load_rig(prefab_path, extra_tex_paths=()):
@@ -147,8 +148,7 @@ def render_frame(parts, cells, vals, canvas=(1400, 1000), origin=(700, 800), sca
             continue
         w, h = cell['size']['x'], cell['size']['y']
         px, py = cell['pivot']['x'], cell['pivot']['y']
-        cx, cy = -px * w, -py * h  # quad center relative to pivot (SS: pivot in -0.5..0.5, +y up)
-        cx, cy = -px * w, py * h
+        cx, cy = PIVOT[0] * px * w, PIVOT[1] * py * h  # quad centre relative to the part origin
         corners = np.array([[-w / 2, -h / 2], [w / 2, -h / 2], [-w / 2, h / 2], [w / 2, h / 2]])  # LB RB LT RT
         if g('flpH', p['flpH']) >= 0.5:
             corners[:, 0] *= -1

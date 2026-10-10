@@ -1,8 +1,8 @@
 {
-  "frameWidth": 615,
+  "frameWidth": 858,
   "frameHeight": 420,
   "frames": 17,
-  "columns": 6,
+  "columns": 4,
   "fps": 12,
   "loop": false,
   "hits": [
@@ -20,7 +20,7 @@
     14
   ],
   "fxOnly": true,
-  "groundY": 0.7178,
+  "groundY": 0.8187,
   "centerX": 0.5,
-  "heightUnits": 5.017
+  "heightUnits": 4.399
 }
