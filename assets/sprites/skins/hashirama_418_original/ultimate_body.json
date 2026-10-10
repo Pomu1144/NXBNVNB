@@ -1,0 +1,13 @@
+{
+  "frameWidth": 404,
+  "frameHeight": 480,
+  "frames": 24,
+  "columns": 10,
+  "fps": 12,
+  "loop": false,
+  "hits": [],
+  "fxOnly": true,
+  "groundY": 0.7406,
+  "centerX": 0.5,
+  "heightUnits": 5.458
+}
