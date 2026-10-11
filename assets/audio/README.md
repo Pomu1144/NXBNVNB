@@ -30,3 +30,19 @@ critical, jutsu, ultimate, summon, victory, defeat). Missing files fail quietly.
 ## Credits
 
 Music is original, rendered with the FluidR3_GM soundfont (MIT licence, Copyright Frank Wen).
+
+## Original game sound bank (`original/`)
+
+Every cue of the original game's sound bank (`criaudio/ja/nrb.acb` + `.awb` in the IPA),
+extracted with `tools/audio/extract_acb.py` (HCA decoded by ffmpeg):
+
+| Folder | What |
+|--------|------|
+| `original/sfx/` | 124 sound effects (`SE_*`: hits, slashes, explosions, elements, jutsu, buffs/debuffs, menus, gacha) |
+| `original/voice/` | 573 voice lines (`voice_<id>_<name>_{atk,ski,oug,gasha}_*` for Naruto, Sasuke, Sakura, Kakashi, Iruka, Hashirama, Madara; `voice_ui_titlecall_*`). Cues with several takes are `<cue>__1.mp3`, `__2.mp3`... |
+| `original/music/` | 12 BGM tracks (`BGM_*`), loop points in `manifest.json` |
+| `original/jingles/` | 6 jingles (`JG_*`: level up, mission clear / fail, evolution...) |
+
+`original/manifest.json` lists every file with its cue name, length and loop points.
+`js/audio-manager.js` plays the sound effects (its `SFX` table maps game events to clips);
+the music player still uses `music/`.
