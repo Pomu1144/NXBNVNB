@@ -1,0 +1,170 @@
+{
+ "poison_square": {
+  "frameWidth": 256,
+  "frameHeight": 236,
+  "frames": 34,
+  "columns": 16,
+  "fps": 10,
+  "loop": true,
+  "zone": [
+   0.237,
+   0.286,
+   0.8214,
+   0.9191
+  ]
+ },
+ "poison_tall": {
+  "frameWidth": 223,
+  "frameHeight": 256,
+  "frames": 34,
+  "columns": 18,
+  "fps": 10,
+  "loop": true,
+  "zone": [
+   0.36,
+   0.3219,
+   0.6637,
+   0.897
+  ]
+ },
+ "poison_wide": {
+  "frameWidth": 256,
+  "frameHeight": 131,
+  "frames": 34,
+  "columns": 16,
+  "fps": 10,
+  "loop": true,
+  "zone": [
+   0.2743,
+   0.3468,
+   0.7191,
+   0.7803
+  ]
+ },
+ "chakra_up_square": {
+  "frameWidth": 237,
+  "frameHeight": 256,
+  "frames": 34,
+  "columns": 17,
+  "fps": 10,
+  "loop": true,
+  "zone": [
+   0.1873,
+   0.3123,
+   0.8002,
+   0.8801
+  ]
+ },
+ "chakra_up_tall": {
+  "frameWidth": 170,
+  "frameHeight": 256,
+  "frames": 34,
+  "columns": 24,
+  "fps": 10,
+  "loop": true,
+  "zone": [
+   0.2128,
+   0.1799,
+   0.793,
+   0.9563
+  ]
+ },
+ "chakra_up_wide": {
+  "frameWidth": 256,
+  "frameHeight": 136,
+  "frames": 34,
+  "columns": 16,
+  "fps": 10,
+  "loop": true,
+  "zone": [
+   0.1758,
+   0.2602,
+   0.8231,
+   0.8699
+  ]
+ },
+ "chakra_down_square": {
+  "frameWidth": 235,
+  "frameHeight": 256,
+  "frames": 34,
+  "columns": 17,
+  "fps": 10,
+  "loop": true,
+  "zone": [
+   0.2009,
+   0.0866,
+   0.8138,
+   0.6503
+  ]
+ },
+ "chakra_down_tall": {
+  "frameWidth": 233,
+  "frameHeight": 256,
+  "frames": 34,
+  "columns": 17,
+  "fps": 10,
+  "loop": true,
+  "zone": [
+   0.2821,
+   0.1131,
+   0.7011,
+   0.8806
+  ]
+ },
+ "chakra_down_wide": {
+  "frameWidth": 256,
+  "frameHeight": 135,
+  "frames": 34,
+  "columns": 16,
+  "fps": 10,
+  "loop": true,
+  "zone": [
+   0.1769,
+   0.1885,
+   0.8242,
+   0.8033
+  ]
+ },
+ "swap_seal_square": {
+  "frameWidth": 256,
+  "frameHeight": 244,
+  "frames": 21,
+  "columns": 16,
+  "fps": 10,
+  "loop": true,
+  "zone": [
+   0.1631,
+   0.1615,
+   0.8202,
+   0.8148
+  ]
+ },
+ "swap_seal_tall": {
+  "frameWidth": 178,
+  "frameHeight": 256,
+  "frames": 21,
+  "columns": 21,
+  "fps": 10,
+  "loop": true,
+  "zone": [
+   0.3233,
+   0.1571,
+   0.7621,
+   0.8237
+  ]
+ },
+ "swap_seal_wide": {
+  "frameWidth": 256,
+  "frameHeight": 140,
+  "frames": 21,
+  "columns": 16,
+  "fps": 10,
+  "loop": true,
+  "zone": [
+   0.1262,
+   0.1444,
+   0.8573,
+   0.8599
+  ]
+ }
+}

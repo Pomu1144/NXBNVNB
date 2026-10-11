@@ -6,9 +6,9 @@
  *    flinching instead of stuttering on frame 0. A unit that is busy with its
  *    own run / attack / jutsu / ultimate sheet is never interrupted.
  *  - When a sprite unit's HP reaches 0 its 'ko' sheet plays on a stand-in
- *    element that holds the last (knocked-down) frame and then fades out, so
- *    the regular death cleanup (BattleUnits.updateUnitDisplay removes the
- *    unit's element after 0.5s) can run untouched.
+ *    element that holds the last (knocked-down) frame, then vanishes in the
+ *    original smoke puff (BattleUiFx.vanish), so the regular death cleanup
+ *    (BattleUnits.updateUnitDisplay removes the unit's element) can run untouched.
  *  - Portrait units (no sprite) get a short knockback: white flash, push away
  *    from the enemy side, slight backward tilt, settle.
  *
@@ -22,7 +22,7 @@
 
   const HIT_RESTART_MS = 250;  // min gap between restarts of the hit sheet
   const PORTRAIT_GAP_MS = 200; // min gap between portrait knockbacks
-  const KO_HOLD_MS = 900;      // knocked-down frame stays this long before fading
+  const KO_HOLD_MS = 450;      // knocked-down frame stays this long before the smoke puff
   const BUSY = new Set(['run', 'attack', 'jutsu', 'ultimate']);
 
   const reduceMotion = () => !!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
@@ -112,14 +112,11 @@
         ko.el.style.backgroundPosition = `${-(last % meta.columns) * w}px ${-Math.floor(last / meta.columns) * h}px`;
       });
     }).then(() => new Promise(r => setTimeout(r, KO_HOLD_MS)))
-      .then(() => {
-        const a = stand.animate?.([{ opacity: 1 }, { opacity: 0 }], { duration: 500, fill: 'forwards' });
-        if (a) a.onfinish = cleanup; else cleanup();
-      })
-      .catch(() => {
-        // No ko sheet: let the regular fade handle it.
-        if (!swapped) cleanup();
-        else { sp.el.style.visibility = ''; cleanup(); }
+      .then(() => (window.BattleUiFx ? window.BattleUiFx.vanish(ko.el, host) : null))
+      .then(cleanup, () => {
+        // No ko sheet: the unit goes in the smoke puff where it stood.
+        if (window.BattleUiFx) window.BattleUiFx.vanish(stand, host, slotR).then(cleanup, cleanup);
+        else cleanup();
       });
   }
 

@@ -107,6 +107,16 @@
       damageEl.style.color = style.color;
       damageEl.style.textShadow = style.shadow;
 
+      // Damage in the original game's brush digits (js/battle/battle-digits.js)
+      if (!isHeal && window.BattleDigits) {
+        const px = parseFloat(style.size) * 16;
+        damageEl.textContent = '';
+        Object.assign(damageEl.style, { display: 'flex', flexDirection: 'column', alignItems: 'center', textShadow: 'none' });
+        if (isCritical) damageEl.appendChild(window.BattleDigits.image('critical', px * 0.55));
+        damageEl.appendChild(window.BattleDigits.make(String(amount), { font: 'white', height: px * 0.95 }));
+        if (damageType === 'weak' || damageType === 'resist') damageEl.style.filter = 'grayscale(0.6) brightness(0.85)';
+      }
+
       dom.damageLayer.appendChild(damageEl);
 
       // Play sound effect
@@ -167,51 +177,8 @@
         }, 1000);
       }
 
-      // Add critical hit indicator
-      if (isCritical) {
-        const critText = document.createElement('div');
-        critText.textContent = 'CRITICAL!';
-        critText.style.position = 'absolute';
-        critText.style.left = `${rect.left - sceneRect.left + rect.width / 2}px`;
-        critText.style.top = `${rect.top - sceneRect.top - 40}px`;
-        critText.style.transform = 'translate(-50%, -100%)';
-        critText.style.fontSize = '1.3rem';
-        critText.style.fontWeight = 'bold';
-        critText.style.color = '#ffcc00';
-        critText.style.textShadow = '2px 2px 4px rgba(0,0,0,0.8), 0 0 15px rgba(255,204,0,0.7)';
-        critText.style.zIndex = '501';
-        critText.style.pointerEvents = 'none';
-        critText.style.fontFamily = "'Cinzel', serif";
-        critText.style.opacity = '0';
-        dom.damageLayer.appendChild(critText);
-
-        if (window.gsap) {
-          window.gsap.timeline({
-            onComplete: () => critText.remove()
-          })
-          .fromTo(critText,
-            { scale: 0.3, opacity: 0, rotation: -15 },
-            { scale: 1, opacity: 1, rotation: 0, duration: 0.2, ease: "back.out(4)" }
-          )
-          .to(critText, {
-            y: -30,
-            opacity: 1,
-            duration: 0.5,
-            ease: "power1.out"
-          })
-          .to(critText, {
-            y: -50,
-            opacity: 0,
-            scale: 0.8,
-            duration: 0.3,
-            ease: "power2.in"
-          });
-        } else {
-          critText.style.animation = 'damageFloat 1s ease-out forwards';
-          critText.style.opacity = '1';
-          setTimeout(() => critText.remove(), 1000);
-        }
-      }
+      // Critical hits are marked by the original "Critical" image beside the number
+      // (added above), not a second text label.
 
       console.log(`[Animations] ✅ Enhanced damage number created`, {
         text: damageEl.textContent,
@@ -258,6 +225,12 @@
           : '0 2px 0 #7a0000, 0 0 6px rgba(255,60,40,0.8), 2px 2px 3px rgba(0,0,0,0.9)',
         opacity: '0'
       });
+      if (window.BattleDigits) {
+        const px = parseFloat(el.style.fontSize) * 16 * 1.25;
+        el.textContent = '';
+        el.style.textShadow = 'none';
+        el.appendChild(window.BattleDigits.make(String(amount), { font: 'white', height: px }));
+      }
       dom.damageLayer.appendChild(el);
       const rise = small ? 26 : 40;
       const a = el.animate([
@@ -271,7 +244,8 @@
 
       if (isCritical && hitIndex === 0) {
         const crit = document.createElement('div');
-        crit.textContent = 'CRITICAL!';
+        if (window.BattleDigits) crit.appendChild(window.BattleDigits.image('critical', small ? 26 : 40));
+        else crit.textContent = 'CRITICAL!';
         Object.assign(crit.style, {
           position: 'absolute', left: `${r.left - sr.left + r.width / 2}px`, top: `${r.top - sr.top - (small ? 18 : 30)}px`,
           transform: 'translate(-50%, -100%)', pointerEvents: 'none', zIndex: '540',
@@ -324,7 +298,14 @@
         });
         dom.damageLayer.appendChild(el);
       }
-      el.innerHTML = `<span style="font-size:1.35em">${count}</span> HIT${count === 1 ? '' : 'S'}`;
+      if (window.BattleDigits) {
+        const small = window.innerWidth < 900 || window.innerHeight < 500;
+        const h = small ? 26 : 40;
+        el.replaceChildren(window.BattleDigits.make(String(count), { font: 'gold', height: h * 1.15 }), window.BattleDigits.image('hits', h * 0.8));
+        Object.assign(el.style, { display: 'flex', alignItems: 'flex-end', gap: '2px', textShadow: 'none' });
+      } else {
+        el.innerHTML = `<span style="font-size:1.35em">${count}</span> HIT${count === 1 ? '' : 'S'}`;
+      }
       el.animate([{ transform: 'scale(1.35)' }, { transform: 'scale(1)' }], { duration: 140, easing: 'ease-out' });
       clearTimeout(el._fade);
       el.style.opacity = '1';

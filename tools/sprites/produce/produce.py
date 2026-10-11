@@ -50,8 +50,8 @@ TEMPLATES = {
              "to feet, the character is about 72% of the canvas height, horizontally centred, feet about 60 px "
              "above the bottom edge. {margin} {bg}"),
     # refs: base pose
-    "edit": ("Edit the reference image: keep EXACTLY the same character ({short}), same outfit, same soft "
-             "painterly 2.5D anime battle-sprite rendering, same canvas, same scale (identical head size and body "
+    "edit": ("Edit the reference image: keep EXACTLY the same character ({short}), same outfit, same "
+             "{render}, same canvas, same scale (identical head size and body "
              "size, do not shrink or enlarge {obj}), feet at the same spot near the bottom of the canvas, side view "
              "facing RIGHT. Change only: {prompt} {margin} {bg}"),
     # refs: base pose, style sprite
@@ -69,6 +69,9 @@ TEMPLATES = {
               "near the bottom of the canvas. {margin} {bg}"),
 }
 
+
+# how edit prompts name the rendering to keep; a spec can override it with "render_text"
+RENDER = "soft painterly 2.5D anime battle-sprite rendering"
 
 # default look of effect-only frames; a spec can override it with "fx_style"
 FX_STYLE = ("Anime film still, painted cel-shaded, matching the Naruto Shippuden anime style: clean dark "
@@ -188,7 +191,8 @@ def prompt_for(s, name):
     return TEMPLATES[p["type"]].format(character=s["character"], short=s["short"], prompt=p["prompt"].strip(),
                                        scale_rule=scale_rule, continuity=continuity, fx_refs=fx_refs,
                                        fx_style=p.get("fx_style", s.get("fx_style", FX_STYLE)),
-                                       style=STYLE, margin=MARGIN if not p.get("no_margin") else "", bg=BG,
+                                       style=s.get("style_text", STYLE), render=s.get("render_text", RENDER),
+                                       margin=MARGIN if not p.get("no_margin") else "", bg=BG,
                                        subj=subj, obj=obj).replace("  ", " ")
 
 

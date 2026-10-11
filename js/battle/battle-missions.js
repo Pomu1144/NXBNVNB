@@ -207,6 +207,10 @@
       bm.updateCombatants();
       bm.renderAllUnits();
 
+      // Battlefield gimmick tiles (poison, chakra up/down, swap seal) for this wave
+      window.BattleGimmicks?.onWave(bm, waveData, waveIndex);
+      window.BattleObjectives?.onWave(bm);
+
       // Initialize field/buddy skills after first wave loads (only once)
       if (!this._fieldBuddyInitialized && window.BattleFieldBuddy) {
         try {
@@ -358,12 +362,25 @@
 
       try {
         if (window.MissionProgress && missionId && difficulty) {
-          const result = await window.MissionProgress.completeMission(missionId, difficulty);
+          // mission goals: which objectives this battle met (shown on the results screen)
+          const { objectives = [] } = await window.MissionProgress.getRewards(missionId, difficulty);
+          const goals = window.BattleObjectives ? window.BattleObjectives.evaluate(bm, objectives) : [];
+          const met = goals.map((g, i) => (g.met ? i : -1)).filter(i => i >= 0);
+          const result = await window.MissionProgress.completeMission(missionId, difficulty, met);
           bm._missionResult = result || null; // shown on the Mission Rewards screen
+          const before = window.MissionProgress.getCompletedObjectives(missionId, difficulty);
+          bm._missionGoals = goals.map((g, i) => ({ ...g, isNew: (result?.newObjectives || []).includes(i), cleared: !!before[i] }));
           console.log("[Missions] Completion recorded:", missionId, difficulty, result?.rewards);
         }
       } catch (err) {
         console.error("[Missions] Failed to record completion:", err);
+      }
+
+      // Character EXP for every unit on the team (animated on the results screen)
+      try {
+        if (window.BattleUnitExp) bm._unitExp = window.BattleUnitExp.grant(bm);
+      } catch (err) {
+        console.error("[Missions] Failed to award character EXP:", err);
       }
 
       try {

@@ -255,7 +255,7 @@
         <div class="mr-burst"><div class="mr-rays"></div><div class="mr-flare"></div></div>
         <div class="mr-card">
           <div class="mr-banner"><span>Mission Complete</span></div>
-          ${rank ? `<div class="mr-rank" title="${esc(rank)}-Rank"><img src="assets/icons/pow_${esc(String(rank).toLowerCase())}.png" alt="${esc(rank)}" draggable="false" onerror="this.replaceWith(Object.assign(document.createElement('span'),{textContent:'${esc(rank)}'}))"></div>` : ''}
+          ${rank ? `<div class="mr-rank" title="${esc(rank)}-Rank"><img src="assets/ui/ink/pow_${esc(String(rank).toLowerCase())}.webp" alt="${esc(rank)}" draggable="false" onerror="this.replaceWith(Object.assign(document.createElement('span'),{textContent:'${esc(rank)}'}))"></div>` : ''}
           <div class="mr-head">
             ${mission.name ? `<div class="mr-mission">${esc(mission.name)}</div>` : ''}
             <div class="mr-meta">
@@ -264,6 +264,8 @@
             </div>
           </div>
           <div class="mr-stages">${stageChips}</div>
+          ${this.goalsMarkup(core?._missionGoals, esc)}
+          ${this.unitExpMarkup(core?._unitExp, esc)}
           <div class="mr-label"><span>Rewards Obtained</span></div>
           <div class="mr-grid" aria-live="polite"></div>
           <div class="mr-extra"></div>
@@ -337,13 +339,20 @@
         toItems(clear.rewards).forEach(it => addTile({ ...it, key: 'bonus_' + it.key }, true));
       }
 
+      // Mission goals: rows ink in one by one, met ones get the seal stamped
+      await this.playGoals(overlay);
+      // Character EXP: bars fill, levels tick up
+      await this.playUnitExp(overlay, core?._unitExp);
+
       // Player EXP / rank up
       if (expGained > 0 || rankUp) {
         await this.delay(250);
+        const rankBefore = expList.length ? expList[0].rankBefore : null;
         extra.innerHTML = `
           ${expGained > 0 ? `<span class="mr-exp"><img src="assets/ui/jjk/star_gold.webp" alt="" draggable="false">Player EXP <b>+${expGained.toLocaleString()}</b></span>` : ''}
-          ${rankUp ? `<span class="mr-rankup">Rank Up!${rankAfter != null ? ` <b>Rank ${esc(rankAfter)}</b>` : ''}</span>` : ''}`;
+          ${rankUp ? this.rankUpMarkup(rankBefore, rankAfter, esc) : ''}`;
         extra.classList.add('is-in');
+        if (rankUp) window.AudioManager?.playSFX?.('awakening');
       }
 
       // Continue button
@@ -357,6 +366,140 @@
         this.closeResultsScreen();
       };
       overlay.querySelector('.mr-actions').appendChild(continueBtn);
+    },
+
+    /**
+     * Mission goals panel ("Special Reward Condition"), ink style
+     * (css/battle-results-goals.css). goals: [{ description, reward, met, isNew, cleared }]
+     * from BattleMissions.recordMissionComplete. Met this battle: the seal stamps in;
+     * met on an earlier run: the seal is already there; not met: the row stays faint.
+     */
+    goalsMarkup(goals, esc) {
+      if (!Array.isArray(goals) || !goals.length) return '';
+      const RF = window.RewardFormat;
+      const rows = goals.map((g, i) => {
+        const item = RF ? RF.items(g.reward || {})[0] : null;
+        const state = g.met ? 'is-met' : g.cleared ? 'is-cleared' : 'is-open';
+        return `
+          <li class="rg-row ${state}" style="--i:${i}">
+            <span class="rg-num">${i + 1}</span>
+            <span class="rg-bar"><span class="rg-text">${esc(g.description)}</span></span>
+            <span class="rg-reward">
+              ${item ? `<img class="rg-icon" src="${esc(item.icon)}" alt="${esc(item.name)}" title="${esc(item.name)}" draggable="false" onerror="this.onerror=null;this.src='${esc(item.fallback || '')}'">
+              <span class="rg-qty">×${RF.fmtQty(item.qty)}</span>` : ''}
+              <img class="rg-seal" src="assets/ui/original/results/goal_seal.webp" alt="${g.met || g.cleared ? 'Achieved' : ''}" draggable="false">
+            </span>
+          </li>`;
+      }).join('');
+      return `
+        <section class="rg-goals" aria-label="Special Reward Condition">
+          <div class="rg-head"><span>Special Reward Condition</span></div>
+          <ol class="rg-list">${rows}</ol>
+        </section>`;
+    },
+
+    async playGoals(overlay) {
+      const rows = [...overlay.querySelectorAll('.rg-row')];
+      if (!rows.length) return;
+      overlay.querySelector('.rg-goals')?.classList.add('is-in');
+      for (const row of rows) {
+        await this.delay(260);
+        row.classList.add('is-in');
+        if (row.classList.contains('is-met')) {
+          await this.delay(320);
+          row.classList.add('is-stamped');
+          window.AudioManager?.playSFX?.('seal');
+        }
+      }
+      await this.delay(200);
+    },
+
+    /**
+     * Team EXP (the original "Team" results row): mission EXP, then each unit's card with
+     * its level plate, EXP bar and the EXP still needed for the next level. playUnitExp fills
+     * the bars from the old values to the new ones, through every level gained.
+     */
+    unitExpMarkup(data, esc) {
+      if (!data || !Array.isArray(data.units) || !data.units.length) return '';
+      const cards = data.units.map((u, i) => {
+        const b = u.before, max = b.level >= u.cap;
+        const stars = parseInt(u.tier, 10) || '';
+        return `
+          <li class="rx-unit" data-i="${i}">
+            <span class="rx-lvup">LEVEL UP</span>
+            <span class="rx-card">
+              <img src="${esc(u.portrait)}" alt="${esc(u.name)}" title="${esc(u.name)}" draggable="false" onerror="this.style.visibility='hidden'">
+              ${stars ? `<span class="rx-stars">★${esc(stars)}</span>` : ''}
+            </span>
+            <span class="rx-level">Lv <b>${max ? 'MAX' : esc(b.level)}</b></span>
+            <span class="rx-bar"><i style="width:${max ? 100 : (b.exp / b.need) * 100}%"></i></span>
+            <span class="rx-next">${max ? 0 : (b.need - b.exp).toLocaleString()}</span>
+          </li>`;
+      }).join('');
+      return `
+        <section class="rx-team" aria-label="Team EXP">
+          <div class="rx-total"><span>EXP</span><b>${Number(data.exp).toLocaleString()}</b></div>
+          <div class="rx-head"><span>Team</span></div>
+          <ol class="rx-units">${cards}</ol>
+        </section>`;
+    },
+
+    async playUnitExp(overlay, data) {
+      const sec = overlay.querySelector('.rx-team');
+      if (!sec || !data) return;
+      sec.classList.add('is-in');
+      await this.delay(350);
+      const reduce = !!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+      const STEP_MS = reduce ? 0 : 650; // one bar sweep (a full level, or the last part)
+      const runs = data.units.map((u, i) => {
+        const el = sec.querySelector(`.rx-unit[data-i="${i}"]`);
+        if (!el || !u.gained) return Promise.resolve();
+        const bar = el.querySelector('.rx-bar i'), lv = el.querySelector('.rx-level b'), next = el.querySelector('.rx-next');
+        const need = l => window.BattleUnitExp ? window.BattleUnitExp.expToNext(l) : 100 * l;
+        // segments: [level, fromExp, toExp]
+        const segs = [];
+        let level = u.before.level, from = u.before.exp;
+        while (level < u.after.level) { segs.push([level, from, need(level)]); level++; from = 0; }
+        if (u.after.level < u.cap) segs.push([level, from, u.after.exp]);
+        return segs.reduce((p, [l, a, b], k) => p.then(() => new Promise(done => {
+          const n = need(l), t0 = performance.now(), dur = STEP_MS * Math.max(0.25, (b - a) / n);
+          const tick = now => {
+            const f = dur ? Math.min(1, (now - t0) / dur) : 1;
+            const v = a + (b - a) * f;
+            bar.style.width = `${(v / n) * 100}%`;
+            next.textContent = Math.round(n - v).toLocaleString();
+            if (f < 1) { requestAnimationFrame(tick); return; }
+            if (b >= n) { // level reached
+              const nl = l + 1, isMax = nl >= u.cap;
+              lv.textContent = isMax ? 'MAX' : nl;
+              bar.style.width = isMax ? '100%' : '0%';
+              next.textContent = isMax ? '0' : need(nl).toLocaleString();
+              el.classList.remove('is-up'); void el.offsetWidth; el.classList.add('is-up');
+              if (k === 0) window.AudioManager?.playSFX?.('buff');
+            }
+            done();
+          };
+          requestAnimationFrame(tick);
+        })), Promise.resolve());
+      });
+      await Promise.all(runs);
+      await this.delay(200);
+    },
+
+    /** "Ninja Rank Up" banner (the original game's title art) over an ink card. */
+    rankUpMarkup(before, after, esc) {
+      const gain = before != null && after != null ? after - before : null;
+      return `
+        <section class="rg-rankup" aria-label="Ninja Rank Up">
+          <img class="rg-rankup-title" src="assets/ui/original/results/ninja_rank_up.webp" alt="Ninja Rank Up" draggable="false">
+          <div class="rg-rankup-card">
+            <div class="rg-rankup-row">
+              <span class="rg-rankup-label">Ninja Rank</span>
+              <b>${before != null ? esc(before) : ''}</b><i>→</i><b>${after != null ? esc(after) : ''}</b>
+              ${gain ? `<em>+${esc(gain)}</em>` : '<em></em>'}
+            </div>
+          </div>
+        </section>`;
     },
 
     /**

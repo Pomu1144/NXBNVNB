@@ -106,55 +106,32 @@
     defineSounds() {
       if (!window.Howl) return;
 
-      // Sound Effects - Using proper assets/audio/sfx/ structure
-      // These will fail gracefully if files don't exist
-      this.sounds.uiClick = new Howl({
-        src: ['assets/audio/sfx/ui_click.mp3'],
-        volume: this.getEffectiveVolume('sfx'),
-        preload: false
-      });
-
-      this.sounds.hit = new Howl({
-        src: ['assets/audio/sfx/hit.mp3'],
-        volume: this.getEffectiveVolume('sfx'),
-        preload: false
-      });
-
-      this.sounds.critical = new Howl({
-        src: ['assets/audio/sfx/critical.mp3'],
-        volume: this.getEffectiveVolume('sfx') * 1.2,
-        preload: false
-      });
-
-      this.sounds.jutsu = new Howl({
-        src: ['assets/audio/sfx/jutsu.mp3'],
-        volume: this.getEffectiveVolume('sfx'),
-        preload: false
-      });
-
-      this.sounds.ultimate = new Howl({
-        src: ['assets/audio/sfx/ultimate.mp3'],
-        volume: this.getEffectiveVolume('sfx') * 1.3,
-        preload: false
-      });
-
-      this.sounds.summon = new Howl({
-        src: ['assets/audio/sfx/summon.mp3'],
-        volume: this.getEffectiveVolume('sfx') * 1.5,
-        preload: false
-      });
-
-      this.sounds.victory = new Howl({
-        src: ['assets/audio/sfx/victory.mp3'],
-        volume: this.getEffectiveVolume('sfx'),
-        preload: false
-      });
-
-      this.sounds.defeat = new Howl({
-        src: ['assets/audio/sfx/defeat.mp3'],
-        volume: this.getEffectiveVolume('sfx'),
-        preload: false
-      });
+      // Sound effects from the original game's sound bank (assets/audio/original,
+      // extracted by tools/audio/extract_acb.py; manifest.json lists every clip).
+      const O = 'assets/audio/original/';
+      const SFX = {
+        uiClick:      ['sfx/SE_1_menu_slct.mp3', 1],
+        hit:          ['sfx/SE_27_hit_dageki_1.mp3', 1],
+        critical:     ['sfx/SE_30_hit_critical_1.mp3', 1.2],
+        jutsu:        ['sfx/SE_32_skill_on.mp3', 1],
+        ultimate:     ['sfx/SE_33_s_skill_on_1.mp3', 1.3],
+        summon:       ['sfx/SE_80_gasha_quake_01_a.mp3', 1.5],
+        victory:      ['jingles/JG_3_mission_clear.mp3', 1],
+        defeat:       ['jingles/JG_4_mission_fail.mp3', 1],
+        awakening:    ['jingles/JG_5_evolution.mp3', 1],
+        heal:         ['sfx/SE_22_heal.mp3', 1],
+        buff:         ['sfx/SE_50_buff.mp3', 1],
+        debuff:       ['sfx/SE_51_debuff.mp3', 1],
+        poison:       ['sfx/SE_52_poison.mp3', 1],
+        seal:         ['sfx/SE_54_seal_1.mp3', 1],
+        slipDamage:   ['sfx/SE_95_slipdamage.mp3', 1],
+        bossCaution:  ['sfx/SE_15_boss_caution.mp3', 1],
+      };
+      this._sfxGain = {};
+      for (const [name, [file, gain]] of Object.entries(SFX)) {
+        this._sfxGain[name] = gain;
+        this.sounds[name] = new Howl({ src: [O + file], volume: this.getEffectiveVolume('sfx') * gain, preload: false });
+      }
 
       console.log('[AudioManager] Defined', Object.keys(this.sounds).length, 'sounds');
     },
@@ -466,7 +443,7 @@
       if (this.muted || this.sfxMuted) return;
 
       // Set volume and play
-      sound.volume(this.getEffectiveVolume('sfx'));
+      sound.volume(this.getEffectiveVolume('sfx') * ((this._sfxGain && this._sfxGain[soundName]) || 1));
       sound.play();
     },
 

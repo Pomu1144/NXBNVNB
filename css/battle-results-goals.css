@@ -1,0 +1,314 @@
+/* Mission results: goals panel ("Special Reward Condition") and the Ninja Rank Up
+   banner, in sumi ink over the results card (js/battle/battle-rewards.js goalsMarkup,
+   rankUpMarkup).
+   - Type is the original game's FOT-Matisse EB (subset to Latin from the IPA,
+     assets/fonts/matisse-eb.woff2).
+   - Each goal is a sumi brush stroke (assets/ui/ink/cmd_swash.webp) instead of the original
+     red bar, its number on a vermilion ink drop, and its reward on a washi square.
+   - Met goals get the original "achieved" seal (assets/ui/original/results/goal_seal.webp,
+     recoloured to vermilion ink) stamped over the reward.
+   - The "Ninja Rank Up" title is the original art, as is, over an ink card. */
+@font-face {
+  font-family: 'Matisse EB';
+  src: url('../assets/fonts/matisse-eb.woff2') format('woff2');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+.mr-card:has(.rg-goals), .mr-card:has(.rx-team) { overflow-y: auto; scrollbar-width: none; }
+.mr-card:has(.rg-goals)::-webkit-scrollbar { display: none; }
+
+.rg-goals, .rg-rankup {
+  --rg-paper: #efe6cf;
+  --rg-paper-dim: rgba(239, 230, 207, 0.55);
+  --rg-vermilion: #b8322a;
+  --rg-gold: #c9a24e;
+  --rg-font: 'Matisse EB', 'Hiragino Mincho ProN', 'Yu Mincho', 'Kaisei Tokumin', Georgia, serif;
+  font-family: var(--rg-font);
+  font-weight: 800;
+}
+
+/* ── Goals ─────────────────────────────────────────────── */
+.rg-goals {
+  width: 100%;
+  max-width: 620px;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.35s, transform 0.35s;
+}
+.rg-goals.is-in { opacity: 1; transform: none; }
+
+.rg-head {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  margin: 2px auto 6px;
+  width: min(420px, 90%);
+  padding: 7px 0 8px;
+  background: url('../assets/ui/ink/cmd_swash_red.webp') center / 100% 100% no-repeat;
+}
+.rg-head span {
+  color: var(--rg-paper);
+  font-size: 17px;
+  letter-spacing: 0.03em;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.55), 0 0 6px rgba(0, 0, 0, 0.35);
+}
+
+.rg-list {
+  list-style: none; margin: 0; padding: 12px 16px 12px 10px;
+  display: flex; flex-direction: column; gap: 6px;
+  /* a washi sheet, as the original sets its goals on parchment */
+  background:
+    linear-gradient(rgba(239, 230, 207, 0.06), rgba(120, 100, 60, 0.12)),
+    url('../assets/ui/ink/ink_washi.webp') center / cover;
+  box-shadow: inset 0 0 0 1px rgba(201, 162, 78, 0.45), inset 0 0 24px rgba(90, 70, 30, 0.35), 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+.rg-row {
+  position: relative;
+  display: grid;
+  grid-template-columns: 40px 1fr 60px;
+  align-items: center;
+  gap: 8px;
+  min-height: 58px;
+  opacity: 0;
+  transform: translateX(-14px);
+  transition: opacity 0.3s, transform 0.3s, filter 0.3s;
+}
+.rg-row.is-in { opacity: 1; transform: none; }
+.rg-row.is-open.is-in { opacity: 0.55; filter: saturate(0.3); }
+
+/* number on a vermilion ink drop */
+.rg-num {
+  position: relative;
+  width: 40px; height: 40px;
+  display: grid; place-items: center;
+  color: var(--rg-paper);
+  font-size: 22px;
+  line-height: 1;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.6);
+  z-index: 1;
+}
+.rg-num::before {
+  content: '';
+  position: absolute; inset: -6px;
+  background: url('../assets/ui/ink/ink_splash_red.webp') center / contain no-repeat;
+  z-index: -1;
+  transform: rotate(calc(var(--i) * 70deg));
+}
+
+/* the goal on a sumi brush stroke */
+.rg-bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 46px;
+  padding: 4px 18px 6px 16px;
+  background: url('../assets/ui/ink/cmd_swash.webp') left center / 100% 100% no-repeat;
+}
+.rg-text {
+  color: var(--rg-paper);
+  font-size: 15.5px;
+  line-height: 1.2;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.7);
+}
+
+/* reward on washi, the seal stamped over it */
+.rg-reward {
+  position: relative;
+  width: 56px; height: 56px;
+  display: grid; place-items: center;
+  background: url('../assets/ui/ink/ink_washi.webp') center / cover;
+  box-shadow: 0 0 0 1px rgba(23, 19, 11, 0.7), 0 0 0 3px rgba(201, 162, 78, 0.5), 0 3px 6px rgba(0, 0, 0, 0.35);
+}
+.rg-icon { width: 40px; height: 40px; object-fit: contain; }
+.rg-qty {
+  position: absolute; right: 2px; bottom: 0;
+  color: #17130b;
+  font-size: 12px;
+  text-shadow: 0 0 2px var(--rg-paper), 0 0 2px var(--rg-paper);
+}
+.rg-seal {
+  position: absolute;
+  right: -18px; top: -18px;
+  width: 60px; height: 60px;
+  opacity: 0;
+  pointer-events: none;
+  transform: rotate(-12deg);
+}
+.rg-row.is-cleared .rg-seal { opacity: 0.92; }
+.rg-row.is-stamped .rg-seal { animation: rgStamp 0.42s cubic-bezier(0.3, 1.6, 0.5, 1) both; }
+@keyframes rgStamp {
+  0%   { opacity: 0; transform: scale(2.4) rotate(-26deg); }
+  60%  { opacity: 1; transform: scale(0.9) rotate(-10deg); }
+  100% { opacity: 0.94; transform: scale(1) rotate(-12deg); }
+}
+
+/* ── Ninja Rank Up ─────────────────────────────────────── */
+.rg-rankup {
+  flex-basis: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 4px;
+}
+.rg-rankup-title {
+  width: min(400px, 82%);
+  height: auto;
+  position: relative;
+  z-index: 1;
+  margin-bottom: -16px;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.55));
+  animation: rgTitle 0.6s cubic-bezier(0.2, 1.4, 0.4, 1) both;
+}
+@keyframes rgTitle {
+  0%   { opacity: 0; transform: scale(1.6); }
+  100% { opacity: 1; transform: none; }
+}
+.rg-rankup-card {
+  width: min(420px, 90%);
+  padding: 22px 26px 12px;
+  box-sizing: border-box;
+  background:
+    linear-gradient(rgba(10, 10, 12, 0.86), rgba(10, 10, 12, 0.94)),
+    url('../assets/ui/ink/ink_washi.webp') center / cover;
+  box-shadow: inset 0 0 0 1px rgba(201, 162, 78, 0.5), 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+.rg-rankup-row {
+  display: grid;
+  grid-template-columns: 1fr auto auto auto 44px;
+  align-items: baseline;
+  gap: 10px;
+  color: var(--rg-paper);
+  font-size: 19px;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.7);
+}
+.rg-rankup-row b { font-weight: 800; font-size: 22px; min-width: 1.2em; text-align: right; }
+.rg-rankup-row i { font-style: normal; color: var(--rg-paper-dim); }
+.rg-rankup-row em { font-style: normal; color: #6fb8ff; font-size: 20px; text-align: right; }
+
+@media (max-width: 700px), (max-height: 540px) {
+  .rg-head span { font-size: 15px; }
+  .rg-row { grid-template-columns: 34px 1fr 50px; min-height: 50px; gap: 6px; }
+  .rg-num { width: 34px; height: 34px; font-size: 19px; }
+  .rg-bar { min-height: 40px; padding: 3px 14px 5px 12px; }
+  .rg-text { font-size: 13.5px; }
+  .rg-reward { width: 48px; height: 48px; }
+  .rg-icon { width: 34px; height: 34px; }
+  .rg-seal { width: 50px; height: 50px; right: -14px; top: -14px; }
+  .rg-list { padding: 10px 12px 10px 6px; }
+  .rg-rankup-row { font-size: 16px; }
+  .rg-rankup-row b { font-size: 19px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rg-row, .rg-goals { transition: none; }
+  .rg-row.is-stamped .rg-seal { animation: none; opacity: 0.94; }
+  .rg-rankup-title { animation: none; }
+}
+
+/* ── Team EXP (js/battle/battle-rewards.js unitExpMarkup) ─────────────────
+   The original "Team" row: mission EXP on a sumi plate, then each unit's card,
+   level plate, EXP bar and the EXP still needed for the next level. */
+.rx-team {
+  --rg-paper: #efe6cf;
+  --rg-font: 'Matisse EB', 'Hiragino Mincho ProN', 'Yu Mincho', 'Kaisei Tokumin', Georgia, serif;
+  width: 100%;
+  max-width: 620px;
+  font-family: var(--rg-font);
+  font-weight: 800;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.35s, transform 0.35s;
+}
+.rx-team.is-in { opacity: 1; transform: none; }
+
+.rx-total {
+  display: flex; align-items: center; justify-content: space-between;
+  width: min(440px, 92%); margin: 2px auto 8px; padding: 6px 22px 7px;
+  box-sizing: border-box;
+  background: url('../assets/ui/ink/cmd_swash.webp') center / 100% 100% no-repeat;
+  color: var(--rg-paper); font-size: 19px; letter-spacing: 0.04em;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.7);
+}
+.rx-total b { font-weight: 800; font-size: 21px; }
+
+.rx-head { display: flex; justify-content: center; margin: 0 auto 24px; }
+.rx-head span {
+  padding: 3px 26px 4px;
+  color: var(--rg-paper); font-size: 15px;
+  background: rgba(10, 10, 12, 0.85);
+  box-shadow: inset 0 0 0 1px rgba(201, 162, 78, 0.6);
+}
+
+.rx-units {
+  list-style: none; margin: 0; padding: 0;
+  display: flex; justify-content: center; flex-wrap: wrap; gap: 10px 12px;
+}
+.rx-unit {
+  position: relative;
+  width: 84px;
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+}
+.rx-card {
+  position: relative;
+  width: 76px; height: 76px;
+  background: url('../assets/ui/ink/ink_washi.webp') center / cover;
+  box-shadow: 0 0 0 1px rgba(23, 19, 11, 0.8), 0 0 0 3px rgba(201, 162, 78, 0.7), 0 3px 6px rgba(0, 0, 0, 0.5);
+}
+.rx-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.rx-stars {
+  position: absolute; left: 3px; bottom: 1px;
+  color: #ffd25a; font-size: 14px;
+  text-shadow: 0 0 2px #000, 0 1px 0 #000, 0 0 4px #000;
+}
+.rx-level {
+  width: 100%; box-sizing: border-box; text-align: center;
+  padding: 1px 0 2px;
+  background: rgba(10, 10, 12, 0.9);
+  box-shadow: inset 0 0 0 1px rgba(201, 162, 78, 0.55);
+  color: var(--rg-paper); font-size: 13px;
+}
+.rx-level b { font-weight: 800; color: #ffd25a; }
+.rx-bar {
+  width: 100%; height: 9px; box-sizing: border-box;
+  background: rgba(10, 10, 12, 0.85);
+  box-shadow: inset 0 0 0 1px rgba(201, 162, 78, 0.45);
+  overflow: hidden;
+}
+.rx-bar i {
+  display: block; height: 100%;
+  background: linear-gradient(180deg, #ffb347, #e8731c 60%, #b8501a);
+}
+.rx-next {
+  color: var(--rg-paper); font-size: 17px; line-height: 1;
+  text-shadow: 0 0 2px #000, 0 1px 0 #000, 0 0 3px #000;
+}
+.rx-lvup {
+  position: absolute; top: -19px; left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  color: #e8432f; font-size: 11.5px; letter-spacing: 0;
+  text-shadow: 0 0 2px #fff, 0 1px 0 #fff, 0 0 4px rgba(255, 255, 255, 0.8);
+  opacity: 0; pointer-events: none;
+}
+.rx-unit.is-up .rx-lvup { animation: rxLvUp 0.5s cubic-bezier(0.2, 1.6, 0.4, 1) both; }
+@keyframes rxLvUp {
+  0%   { opacity: 0; transform: translate(-50%, 8px) scale(0.6); }
+  100% { opacity: 1; transform: translate(-50%, 0) scale(1); }
+}
+
+@media (max-width: 700px), (max-height: 540px) {
+  .rx-unit { width: 66px; }
+  .rx-lvup { font-size: 10px; top: -16px; }
+  .rx-card { width: 60px; height: 60px; }
+  .rx-level { font-size: 11.5px; }
+  .rx-next { font-size: 14px; }
+  .rx-total { font-size: 16px; }
+  .rx-total b { font-size: 18px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rx-team { transition: none; }
+  .rx-unit.is-up .rx-lvup { animation: none; opacity: 1; }
+}

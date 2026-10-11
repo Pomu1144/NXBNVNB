@@ -277,7 +277,6 @@
       // Add special effects for crits
       if (type === 'crit') {
         damageNum.style.animation = 'damageCritFloat 1s ease-out forwards';
-        damageNum.textContent = `CRITICAL! -${damage}`;
       }
 
       container.appendChild(damageNum);

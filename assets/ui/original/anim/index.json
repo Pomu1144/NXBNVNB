@@ -1,0 +1,290 @@
+{
+ "cutin_3": {
+  "frameWidth": 350,
+  "frameHeight": 384,
+  "frames": 17,
+  "columns": 11,
+  "fps": 15,
+  "loop": false,
+  "origin": [
+   0.3583,
+   0.5
+  ]
+ },
+ "Cutin_2": {
+  "frameWidth": 384,
+  "frameHeight": 299,
+  "frames": 68,
+  "columns": 10,
+  "fps": 15,
+  "loop": false,
+  "origin": [
+   0.5,
+   0.5
+  ]
+ },
+ "sys_0108_ninjutsu": {
+  "frameWidth": 314,
+  "frameHeight": 307,
+  "frames": 17,
+  "columns": 13,
+  "fps": 15,
+  "loop": true,
+  "origin": [
+   0.5,
+   0.5179
+  ]
+ },
+ "sys_0145_heart_killer": {
+  "frameWidth": 72,
+  "frameHeight": 84,
+  "frames": 28,
+  "columns": 28,
+  "fps": 15,
+  "loop": false,
+  "origin": [
+   -0.3194,
+   2.369
+  ]
+ },
+ "sys_0020_hit_dageki": {
+  "frameWidth": 384,
+  "frameHeight": 376,
+  "frames": 17,
+  "columns": 10,
+  "fps": 15,
+  "loop": false,
+  "origin": [
+   0.5086,
+   0.5154
+  ]
+ },
+ "sys_0118_chakramax": {
+  "frameWidth": 229,
+  "frameHeight": 233,
+  "frames": 15,
+  "columns": 15,
+  "fps": 15,
+  "loop": true,
+  "origin": [
+   0.4672,
+   0.5365
+  ]
+ },
+ "sys_0070_jyutu_standby": {
+  "frameWidth": 323,
+  "frameHeight": 292,
+  "frames": 24,
+  "columns": 12,
+  "fps": 15,
+  "loop": true,
+  "origin": [
+   0.4954,
+   0.8425
+  ]
+ },
+ "sys_0119_chakramax_ougi": {
+  "frameWidth": 229,
+  "frameHeight": 233,
+  "frames": 15,
+  "columns": 15,
+  "fps": 15,
+  "loop": true,
+  "origin": [
+   0.4672,
+   0.5365
+  ]
+ },
+ "sys_0072_jyutu_hatudou": {
+  "frameWidth": 334,
+  "frameHeight": 384,
+  "frames": 10,
+  "columns": 10,
+  "fps": 15,
+  "loop": false,
+  "origin": [
+   0.5145,
+   0.8519
+  ]
+ },
+ "sys_0021_hit_zangeki": {
+  "frameWidth": 293,
+  "frameHeight": 307,
+  "frames": 9,
+  "columns": 9,
+  "fps": 15,
+  "loop": false,
+  "origin": [
+   0.4983,
+   0.6482
+  ]
+ },
+ "sys_0003_cursor": {
+  "frameWidth": 182,
+  "frameHeight": 185,
+  "frames": 30,
+  "columns": 22,
+  "fps": 15,
+  "loop": true,
+  "origin": [
+   0.5055,
+   0.5081
+  ]
+ },
+ "sys_0010_recovery_chara": {
+  "frameWidth": 164,
+  "frameHeight": 240,
+  "frames": 14,
+  "columns": 14,
+  "fps": 15,
+  "loop": false,
+  "origin": [
+   0.5366,
+   0.9667
+  ]
+ },
+ "sys_0008_shadow": {
+  "frameWidth": 110,
+  "frameHeight": 58,
+  "frames": 1,
+  "columns": 1,
+  "fps": 15,
+  "loop": true,
+  "origin": [
+   0.5182,
+   0.5
+  ]
+ },
+ "sys_0012_kemuri_b": {
+  "frameWidth": 262,
+  "frameHeight": 276,
+  "frames": 5,
+  "columns": 5,
+  "fps": 15,
+  "loop": false,
+  "origin": [
+   0.5115,
+   0.779
+  ]
+ },
+ "sys_0109_ougi": {
+  "frameWidth": 384,
+  "frameHeight": 348,
+  "frames": 9,
+  "columns": 9,
+  "fps": 15,
+  "loop": true,
+  "origin": [
+   0.4922,
+   0.4914
+  ]
+ },
+ "sys_0074_last_hit_back": {
+  "frameWidth": 384,
+  "frameHeight": 302,
+  "frames": 34,
+  "columns": 10,
+  "fps": 15,
+  "loop": false,
+  "origin": [
+   0.5045,
+   0.5
+  ]
+ },
+ "sys_0093_chakra_recovery": {
+  "frameWidth": 384,
+  "frameHeight": 335,
+  "frames": 17,
+  "columns": 10,
+  "fps": 15,
+  "loop": false,
+  "origin": [
+   0.5012,
+   0.8207
+  ]
+ },
+ "sys_0073_ougi_hatsdou": {
+  "frameWidth": 348,
+  "frameHeight": 384,
+  "frames": 7,
+  "columns": 7,
+  "fps": 15,
+  "loop": false,
+  "origin": [
+   0.4561,
+   0.8182
+  ]
+ },
+ "sys_0040_up": {
+  "frameWidth": 260,
+  "frameHeight": 343,
+  "frames": 12,
+  "columns": 12,
+  "fps": 15,
+  "loop": false,
+  "origin": [
+   0.5154,
+   0.8601
+  ]
+ },
+ "sys_0071_ougi_standby": {
+  "frameWidth": 284,
+  "frameHeight": 377,
+  "frames": 30,
+  "columns": 14,
+  "fps": 15,
+  "loop": true,
+  "origin": [
+   0.4824,
+   0.8408
+  ]
+ },
+ "sys_0094_chakra_standby": {
+  "frameWidth": 262,
+  "frameHeight": 131,
+  "frames": 30,
+  "columns": 15,
+  "fps": 15,
+  "loop": true,
+  "origin": [
+   0.5,
+   0.6489
+  ]
+ },
+ "sys_0019_mob_teleport": {
+  "frameWidth": 107,
+  "frameHeight": 184,
+  "frames": 2,
+  "columns": 2,
+  "fps": 15,
+  "loop": false,
+  "origin": [
+   0.4766,
+   0.8261
+  ]
+ },
+ "sys_0105_boss_toujyou": {
+  "frameWidth": 384,
+  "frameHeight": 299,
+  "frames": 28,
+  "columns": 10,
+  "fps": 15,
+  "loop": false,
+  "origin": [
+   0.5,
+   0.5
+  ]
+ },
+ "sys_0091_rengeki_chou": {
+  "frameWidth": 384,
+  "frameHeight": 125,
+  "frames": 22,
+  "columns": 10,
+  "fps": 15,
+  "loop": false,
+  "origin": [
+   0.4255,
+   1.1663
+  ]
+ }
+}

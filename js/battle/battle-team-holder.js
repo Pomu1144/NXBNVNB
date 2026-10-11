@@ -503,6 +503,10 @@
         if (!activeDown && core.turns && core.turns.getCurrentUnit() !== activeUnit) {
           return deny(`Can only switch during ${activeUnit.name}'s turn!`);
         }
+        // battlefield swap seal tile under the unit (js/battle/battle-gimmicks.js)
+        if (!activeDown && window.BattleGimmicks?.blocksSwap?.(activeUnit)) {
+          return deny(`${activeUnit.name} is standing on a No Swap zone!`);
+        }
         if (window.BattleDrag?.spriteDrag?.active || core.drag?.spriteDrag?.active) return;
       }
 

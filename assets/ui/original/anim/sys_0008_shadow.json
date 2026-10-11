@@ -1,0 +1,12 @@
+{
+ "frameWidth": 110,
+ "frameHeight": 58,
+ "frames": 1,
+ "columns": 1,
+ "fps": 15,
+ "loop": true,
+ "origin": [
+  0.5182,
+  0.5
+ ]
+}
