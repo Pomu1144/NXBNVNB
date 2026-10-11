@@ -104,7 +104,20 @@
       firstTime[`book_${el}_1`] = 2;
     }
 
-    return { completion, firstTime, objectives: [] };
+    return { completion, firstTime, objectives: getDefaultObjectives(difficulty) };
+  }
+
+  // ---------- Default Objectives (missions without hand-authored ones) ----------
+  // Three goals per rank, as in the original game; each pays once (js/battle/battle-objectives.js checks them).
+  const DEFAULT_TURNS = { D: 10, C: 10, B: 12, A: 15, S: 18, SS: 18 };
+  const DEFAULT_STARS = { D: 4, C: 4, B: 5, A: 6, S: 6, SS: 6 };
+  function getDefaultObjectives(difficulty) {
+    const mult = DIFFICULTY_MULTIPLIERS[difficulty] || 1;
+    return [
+      { description: "Clear without any ally falling", reward: { ninja_pearls: 1 } },
+      { description: `Clear in ${DEFAULT_TURNS[difficulty] || 12} turns or less`, reward: { ryo: Math.round(3000 * mult) } },
+      { description: `Use only ${DEFAULT_STARS[difficulty] || 5}-star or lower characters`, reward: { ryo: Math.round(5000 * mult) } }
+    ];
   }
 
   // ---------- Per-mission clear rewards (data/missions.json) ----------
@@ -133,7 +146,7 @@
       return {
         completion: own.completion || {},
         firstTime: own.firstTime || {},
-        objectives: missionRewards?.[difficulty]?.objectives || []
+        objectives: missionRewards?.[difficulty]?.objectives || getDefaultObjectives(difficulty)
       };
     }
 

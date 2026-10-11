@@ -264,6 +264,7 @@
             </div>
           </div>
           <div class="mr-stages">${stageChips}</div>
+          ${this.goalsMarkup(core?._missionGoals, esc)}
           <div class="mr-label"><span>Rewards Obtained</span></div>
           <div class="mr-grid" aria-live="polite"></div>
           <div class="mr-extra"></div>
@@ -337,13 +338,18 @@
         toItems(clear.rewards).forEach(it => addTile({ ...it, key: 'bonus_' + it.key }, true));
       }
 
+      // Mission goals: rows ink in one by one, met ones get the seal stamped
+      await this.playGoals(overlay);
+
       // Player EXP / rank up
       if (expGained > 0 || rankUp) {
         await this.delay(250);
+        const rankBefore = expList.length ? expList[0].rankBefore : null;
         extra.innerHTML = `
           ${expGained > 0 ? `<span class="mr-exp"><img src="assets/ui/jjk/star_gold.webp" alt="" draggable="false">Player EXP <b>+${expGained.toLocaleString()}</b></span>` : ''}
-          ${rankUp ? `<span class="mr-rankup">Rank Up!${rankAfter != null ? ` <b>Rank ${esc(rankAfter)}</b>` : ''}</span>` : ''}`;
+          ${rankUp ? this.rankUpMarkup(rankBefore, rankAfter, esc) : ''}`;
         extra.classList.add('is-in');
+        if (rankUp) window.AudioManager?.playSFX?.('awakening');
       }
 
       // Continue button
@@ -357,6 +363,68 @@
         this.closeResultsScreen();
       };
       overlay.querySelector('.mr-actions').appendChild(continueBtn);
+    },
+
+    /**
+     * Mission goals panel ("Special Reward Condition"), ink style
+     * (css/battle-results-goals.css). goals: [{ description, reward, met, isNew, cleared }]
+     * from BattleMissions.recordMissionComplete. Met this battle: the seal stamps in;
+     * met on an earlier run: the seal is already there; not met: the row stays faint.
+     */
+    goalsMarkup(goals, esc) {
+      if (!Array.isArray(goals) || !goals.length) return '';
+      const RF = window.RewardFormat;
+      const rows = goals.map((g, i) => {
+        const item = RF ? RF.items(g.reward || {})[0] : null;
+        const state = g.met ? 'is-met' : g.cleared ? 'is-cleared' : 'is-open';
+        return `
+          <li class="rg-row ${state}" style="--i:${i}">
+            <span class="rg-num">${i + 1}</span>
+            <span class="rg-bar"><span class="rg-text">${esc(g.description)}</span></span>
+            <span class="rg-reward">
+              ${item ? `<img class="rg-icon" src="${esc(item.icon)}" alt="${esc(item.name)}" title="${esc(item.name)}" draggable="false" onerror="this.onerror=null;this.src='${esc(item.fallback || '')}'">
+              <span class="rg-qty">×${RF.fmtQty(item.qty)}</span>` : ''}
+              <img class="rg-seal" src="assets/ui/original/results/goal_seal.webp" alt="${g.met || g.cleared ? 'Achieved' : ''}" draggable="false">
+            </span>
+          </li>`;
+      }).join('');
+      return `
+        <section class="rg-goals" aria-label="Special Reward Condition">
+          <div class="rg-head"><span>Special Reward Condition</span></div>
+          <ol class="rg-list">${rows}</ol>
+        </section>`;
+    },
+
+    async playGoals(overlay) {
+      const rows = [...overlay.querySelectorAll('.rg-row')];
+      if (!rows.length) return;
+      overlay.querySelector('.rg-goals')?.classList.add('is-in');
+      for (const row of rows) {
+        await this.delay(260);
+        row.classList.add('is-in');
+        if (row.classList.contains('is-met')) {
+          await this.delay(320);
+          row.classList.add('is-stamped');
+          window.AudioManager?.playSFX?.('seal');
+        }
+      }
+      await this.delay(200);
+    },
+
+    /** "Ninja Rank Up" banner (the original game's title art) over an ink card. */
+    rankUpMarkup(before, after, esc) {
+      const gain = before != null && after != null ? after - before : null;
+      return `
+        <section class="rg-rankup" aria-label="Ninja Rank Up">
+          <img class="rg-rankup-title" src="assets/ui/original/results/ninja_rank_up.webp" alt="Ninja Rank Up" draggable="false">
+          <div class="rg-rankup-card">
+            <div class="rg-rankup-row">
+              <span class="rg-rankup-label">Ninja Rank</span>
+              <b>${before != null ? esc(before) : ''}</b><i>→</i><b>${after != null ? esc(after) : ''}</b>
+              ${gain ? `<em>+${esc(gain)}</em>` : '<em></em>'}
+            </div>
+          </div>
+        </section>`;
     },
 
     /**

@@ -353,6 +353,9 @@
       // Battlefield gimmick tile under the unit (poison, chakra up/down)
       window.BattleGimmicks?.onTurnEnd(core, this.currentUnit);
 
+      // Mission goals: turn count, allies down
+      window.BattleObjectives?.onTurnEnd(core, this.currentUnit);
+
       // Reset chakra mode if using chakra system
       if (core.chakra) {
         core.chakra.resetChakraMode(this.currentUnit, core);
