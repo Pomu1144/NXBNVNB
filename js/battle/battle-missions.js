@@ -207,6 +207,9 @@
       bm.updateCombatants();
       bm.renderAllUnits();
 
+      // Battlefield gimmick tiles (poison, chakra up/down, swap seal) for this wave
+      window.BattleGimmicks?.onWave(bm, waveData, waveIndex);
+
       // Initialize field/buddy skills after first wave loads (only once)
       if (!this._fieldBuddyInitialized && window.BattleFieldBuddy) {
         try {

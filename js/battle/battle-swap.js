@@ -38,6 +38,12 @@
         window.BattleNarrator?.narrate?.(`${activeUnit.name} is switch sealed!`, core);
         return;
       }
+      // Battlefield swap seal tile under the unit (js/battle/battle-gimmicks.js)
+      if (window.BattleGimmicks?.blocksSwap?.(activeUnit)) {
+        window.StatusEffectUI?.popup?.(activeUnit, 'No Swap Zone!', '#b7c4b0', 'switch_seal');
+        window.BattleNarrator?.narrate?.(`${activeUnit.name} is standing on a No Swap zone!`, core);
+        return;
+      }
 
       // CRITICAL: Check if position IDs match
       if (activeUnit.positionId !== benchUnit.positionId) {
@@ -158,7 +164,8 @@
      * Check if unit can be swapped
      */
     canSwap(unit) {
-      return !this.isSwapping && unit.stats.hp > 0 && !window.BattleBuffs?.has?.(unit, 'switch_seal');
+      return !this.isSwapping && unit.stats.hp > 0 && !window.BattleBuffs?.has?.(unit, 'switch_seal')
+        && !window.BattleGimmicks?.blocksSwap?.(unit);
     },
 
     /**

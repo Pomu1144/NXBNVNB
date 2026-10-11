@@ -1,0 +1,14 @@
+{
+ "frameWidth": 256,
+ "frameHeight": 131,
+ "frames": 34,
+ "columns": 16,
+ "fps": 10,
+ "loop": true,
+ "zone": [
+  0.2743,
+  0.3468,
+  0.7191,
+  0.7803
+ ]
+}
