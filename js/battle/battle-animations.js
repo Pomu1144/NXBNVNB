@@ -112,7 +112,7 @@
         const px = parseFloat(style.size) * 16;
         damageEl.textContent = '';
         Object.assign(damageEl.style, { display: 'flex', flexDirection: 'column', alignItems: 'center', textShadow: 'none' });
-        if (damageType === 'crit') damageEl.appendChild(window.BattleDigits.image('critical', px * 0.55));
+        if (isCritical) damageEl.appendChild(window.BattleDigits.image('critical', px * 0.55));
         damageEl.appendChild(window.BattleDigits.make(String(amount), { font: 'white', height: px * 0.95 }));
         if (damageType === 'weak' || damageType === 'resist') damageEl.style.filter = 'grayscale(0.6) brightness(0.85)';
       }
@@ -177,51 +177,8 @@
         }, 1000);
       }
 
-      // Add critical hit indicator
-      if (isCritical) {
-        const critText = document.createElement('div');
-        critText.textContent = 'CRITICAL!';
-        critText.style.position = 'absolute';
-        critText.style.left = `${rect.left - sceneRect.left + rect.width / 2}px`;
-        critText.style.top = `${rect.top - sceneRect.top - 40}px`;
-        critText.style.transform = 'translate(-50%, -100%)';
-        critText.style.fontSize = '1.3rem';
-        critText.style.fontWeight = 'bold';
-        critText.style.color = '#ffcc00';
-        critText.style.textShadow = '2px 2px 4px rgba(0,0,0,0.8), 0 0 15px rgba(255,204,0,0.7)';
-        critText.style.zIndex = '501';
-        critText.style.pointerEvents = 'none';
-        critText.style.fontFamily = "'Cinzel', serif";
-        critText.style.opacity = '0';
-        dom.damageLayer.appendChild(critText);
-
-        if (window.gsap) {
-          window.gsap.timeline({
-            onComplete: () => critText.remove()
-          })
-          .fromTo(critText,
-            { scale: 0.3, opacity: 0, rotation: -15 },
-            { scale: 1, opacity: 1, rotation: 0, duration: 0.2, ease: "back.out(4)" }
-          )
-          .to(critText, {
-            y: -30,
-            opacity: 1,
-            duration: 0.5,
-            ease: "power1.out"
-          })
-          .to(critText, {
-            y: -50,
-            opacity: 0,
-            scale: 0.8,
-            duration: 0.3,
-            ease: "power2.in"
-          });
-        } else {
-          critText.style.animation = 'damageFloat 1s ease-out forwards';
-          critText.style.opacity = '1';
-          setTimeout(() => critText.remove(), 1000);
-        }
-      }
+      // Critical hits are marked by the original "Critical" image beside the number
+      // (added above), not a second text label.
 
       console.log(`[Animations] ✅ Enhanced damage number created`, {
         text: damageEl.textContent,
