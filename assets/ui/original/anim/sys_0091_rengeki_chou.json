@@ -1,0 +1,12 @@
+{
+ "frameWidth": 384,
+ "frameHeight": 125,
+ "frames": 22,
+ "columns": 10,
+ "fps": 15,
+ "loop": false,
+ "origin": [
+  0.4255,
+  1.1663
+ ]
+}

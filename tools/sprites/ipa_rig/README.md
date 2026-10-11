@@ -39,3 +39,25 @@ python3 tools/sprites/ipa_rig/build_hashirama.py ipa/Payload/BNEI0249.app/Data/R
 The clips are authored facing left; frames are mirrored to face right. The
 Wooden Dragon jutsu isn't in the IPA, so the skin uses the base folder's
 `jutsu`. Requires `pip install UnityPy pillow numpy`.
+
+## Other renderers
+
+* `build_gimmicks.py`: the battlefield gimmick zones (poison, chakra up, chakra down,
+  swap seal) to `assets/sprites/gimmicks/<type>_<shape>.webp/.json`, one looping sheet
+  per shape (square / tall / wide). Each rig has invisible "node" parts that mark the
+  zone's footprint; they are not drawn, their box is written as `zone` in the json.
+  Played by `js/battle/battle-gimmicks.js`.
+* `build_ui.py`: every battle UI rig (hit sparks, skill auras and activations, chakra
+  effects, cursor, cut-ins, "Incoming Boss", "Ultra Combo") to
+  `assets/ui/original/anim/`, the damage and hit-counter digit fonts to
+  `assets/ui/original/font/` and the English text images to `assets/ui/original/text/`.
+  The fonts are used by `js/battle/battle-digits.js`.
+
+```
+python3 tools/sprites/ipa_rig/build_gimmicks.py ipa/Payload/BNEI0249.app/Data/Raw/AssetBundle/iOS
+python3 tools/sprites/ipa_rig/build_ui.py ipa/Payload/BNEI0249.app
+python3 tools/audio/extract_acb.py <nrb.acb> <nrb.awb> assets/audio/original --format mp3
+```
+
+The sound bank sits in the IPA as Unity TextAssets (`criaudio/ja/nrb.acb.bytes` and
+`nrb.awb.bytes`); export their raw bytes with UnityPy first.
