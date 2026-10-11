@@ -44,11 +44,28 @@ def ui_rigs(path):
             ctrls.append((o.path_id, t))
         elif cn == 'SSPart':
             parts.setdefault(t['controller']['m_PathID'], []).append(t)
-    clips = [ss.Clip(o.read_typetree()) for o in env.objects if o.type.name == 'AnimationClip']
+    clips = {o.path_id: ss.Clip(o.read_typetree()) for o in env.objects if o.type.name == 'AnimationClip'}
+    # each rig has an AnimatorController of the same name holding its clip (the Animator on
+    # the rig's "animator" child gets it at runtime). Rigs share part paths, so matching
+    # clips by binding overlap alone picks the wrong one; that is only the fallback.
+    by_name = {}
+    for o in env.objects:
+        if o.type.name == 'AnimatorController':
+            t = o.read_typetree()
+            ids = [c['m_PathID'] for c in t.get('m_AnimationClips', [])]
+            if ids and ids[0] in clips:
+                by_name[t['m_Name'].lower()] = clips[ids[0]]
+
+    def clip_for(go, hs):
+        name = gos.get(go, '').lower()
+        if name in by_name:
+            return by_name[name]
+        return max(clips.values(), key=lambda c: sum(1 for b in c.bindings if b['path'] in hs))
+
     for cid, ct in ctrls:
         ps = sorted(parts.get(cid, []), key=lambda p: p['arrayIndex'])
         hs = {ss.H(p['path']) for p in ps}
-        clip = max(clips, key=lambda c: sum(1 for b in c.bindings if b['path'] in hs))
+        clip = clip_for(ct['m_GameObject']['m_PathID'], hs)
         tex = [objs[r['m_PathID']].read().image.convert('RGBA') if r['m_PathID'] in objs else None
                for r in ct['cellTextures']]
         cells = []

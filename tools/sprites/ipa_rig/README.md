@@ -51,7 +51,10 @@ Wooden Dragon jutsu isn't in the IPA, so the skin uses the base folder's
   effects, cursor, cut-ins, "Incoming Boss", "Ultra Combo") to
   `assets/ui/original/anim/`, the damage and hit-counter digit fonts to
   `assets/ui/original/font/` and the English text images to `assets/ui/original/text/`.
-  The fonts are used by `js/battle/battle-digits.js`.
+  The fonts are used by `js/battle/battle-digits.js`. Each rig's clip comes from the
+  AnimatorController of the same name (rigs share part paths, so matching by bindings
+  picks the wrong clip). `js/battle/battle-ui-fx.js` plays `sys_0020_hit_dageki` (white
+  starburst) on every hit and `sys_0012_kemuri_b` (smoke puff) when a unit dies.
 
 ```
 python3 tools/sprites/ipa_rig/build_gimmicks.py ipa/Payload/BNEI0249.app/Data/Raw/AssetBundle/iOS

@@ -280,17 +280,21 @@
       // Update visual state for dead units - make them disappear
       if (unit.stats.hp <= 0) {
         console.log(`[BattleUnits] 💀 Unit ${unit.name} is dead, removing from battlefield`);
-        unitEl.style.transition = 'opacity 0.5s ease-out, transform 0.5s ease-out';
-        unitEl.style.opacity = "0";
-        unitEl.style.transform = "scale(0.8)";
+        // Gone from the field, not faded: sprite units already show their knock-down on
+        // BattleHitReact's stand-in (which ends in the smoke puff), so the real element just
+        // goes; other units vanish inside the original smoke puff (BattleUiFx.vanish).
         unitEl.style.pointerEvents = "none";
-
-        // Remove from DOM after animation
-        setTimeout(() => {
-          if (unitEl.parentNode) {
-            unitEl.remove();
+        if (!unitEl._vanishing) {
+          unitEl._vanishing = true;
+          const gone = () => { if (unitEl.parentNode) unitEl.remove(); };
+          if (unit._koShown) {
+            setTimeout(gone, 200); // the stand-in has taken over the sprite by then
+          } else if (!window.BattleUiFx) {
+            gone();
+          } else {
+            window.BattleUiFx.vanish(unitEl).then(gone, gone);
           }
-        }, 500);
+        }
 
         // Also remove from team holder if player unit (unless the card still
         // carries a living backup, which can be swapped in)

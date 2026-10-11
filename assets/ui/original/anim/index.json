@@ -24,15 +24,15 @@
   ]
  },
  "sys_0108_ninjutsu": {
-  "frameWidth": 384,
-  "frameHeight": 348,
-  "frames": 9,
-  "columns": 9,
+  "frameWidth": 314,
+  "frameHeight": 307,
+  "frames": 17,
+  "columns": 13,
   "fps": 15,
   "loop": true,
   "origin": [
-   0.4922,
-   0.4914
+   0.5,
+   0.5179
   ]
  },
  "sys_0145_heart_killer": {
@@ -204,15 +204,15 @@
   ]
  },
  "sys_0073_ougi_hatsdou": {
-  "frameWidth": 284,
-  "frameHeight": 377,
-  "frames": 30,
-  "columns": 14,
+  "frameWidth": 348,
+  "frameHeight": 384,
+  "frames": 7,
+  "columns": 7,
   "fps": 15,
   "loop": false,
   "origin": [
-   0.4824,
-   0.8408
+   0.4561,
+   0.8182
   ]
  },
  "sys_0040_up": {

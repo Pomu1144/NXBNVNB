@@ -1,12 +1,12 @@
 {
- "frameWidth": 284,
- "frameHeight": 377,
- "frames": 30,
- "columns": 14,
+ "frameWidth": 348,
+ "frameHeight": 384,
+ "frames": 7,
+ "columns": 7,
  "fps": 15,
  "loop": false,
  "origin": [
-  0.4824,
-  0.8408
+  0.4561,
+  0.8182
  ]
 }
