@@ -376,6 +376,13 @@
         console.error("[Missions] Failed to record completion:", err);
       }
 
+      // Character EXP for every unit on the team (animated on the results screen)
+      try {
+        if (window.BattleUnitExp) bm._unitExp = window.BattleUnitExp.grant(bm);
+      } catch (err) {
+        console.error("[Missions] Failed to award character EXP:", err);
+      }
+
       try {
         if (window.ExpRewards) {
           const stats = this.calculateBattleStats(bm);

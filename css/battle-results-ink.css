@@ -1,0 +1,128 @@
+/* Mission results in ink style: the whole card (js/battle/battle-rewards.js showResultsScreen),
+   to match the goals panel, team EXP and Ninja Rank Up (css/battle-results-goals.css).
+   Layered over css/battle-results-jjk.css (same markup):
+   - charcoal sumi card over the ink village backdrop (assets/ui/ink/bg.webp), gold hairline
+   - title on a vermilion brush stroke, rank as the ink grade lettering (assets/ui/ink/pow_*)
+   - chips as paper slips, reward tiles as washi squares, "Bonus" as a vermilion slip
+   - Continue as a cream paper slip
+   - type: the original game's FOT-Matisse EB (declared in battle-results-goals.css) */
+.mr-modal {
+  --mr-gold: #c9a24e;
+  --mr-gold-hi: #e8cf8c;
+  --mr-line: rgba(201, 162, 78, 0.42);
+  --mr-text: #efe6cf;
+  --mr-muted: rgba(239, 230, 207, 0.6);
+  --mr-font: 'Matisse EB', 'Hiragino Mincho ProN', 'Yu Mincho', 'Kaisei Tokumin', Georgia, serif;
+  --mr-ink: #0b0a0c;
+  --mr-vermilion: #b8322a;
+}
+
+.mr-modal .mr-backdrop {
+  background:
+    radial-gradient(ellipse at 50% 45%, rgba(11, 10, 12, 0.55) 0%, rgba(5, 5, 6, 0.94) 72%),
+    url('../assets/ui/ink/bg.webp') center / cover no-repeat,
+    var(--mr-ink);
+}
+.mr-modal .mr-rays {
+  background: repeating-conic-gradient(from 0deg, rgba(232, 207, 140, 0.05) 0deg 5deg, rgba(232, 207, 140, 0) 5deg 18deg);
+}
+.mr-modal .mr-flare { background: radial-gradient(circle, rgba(232, 207, 140, 0.16) 0%, rgba(184, 50, 42, 0.08) 40%, transparent 66%); }
+
+.mr-modal .mr-card {
+  background:
+    linear-gradient(180deg, rgba(14, 13, 15, 0.9), rgba(8, 8, 9, 0.96)),
+    url('../assets/ui/ink/ink_washi.webp') center / cover,
+    var(--mr-ink);
+  border: 1px solid var(--mr-line);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), inset 0 0 60px rgba(0, 0, 0, 0.55);
+}
+
+/* title on a vermilion brush stroke */
+.mr-modal .mr-banner {
+  background: url('../assets/ui/ink/cmd_swash_red.webp') left center / 100% 100% no-repeat;
+  filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.55));
+}
+.mr-modal .mr-banner span {
+  font-family: var(--mr-font);
+  color: var(--mr-text);
+  letter-spacing: 0.03em;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.6), 0 0 6px rgba(0, 0, 0, 0.35);
+}
+
+/* the ink grade lettering */
+.mr-modal .mr-rank::before { background: radial-gradient(closest-side, rgba(184, 50, 42, 0.18), rgba(184, 50, 42, 0) 100%); }
+.mr-modal .mr-rank img { width: 150px; height: 150px; }
+
+.mr-modal .mr-mission { color: var(--mr-gold-hi); font-family: var(--mr-font); }
+
+/* chips: paper slips */
+.mr-modal .mr-chip {
+  font-family: var(--mr-font);
+  color: #17130b;
+  background: linear-gradient(180deg, #f3ead2, #e2d4ae);
+  border: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.45);
+  border-radius: 1px;
+  text-shadow: none;
+}
+.mr-modal .mr-chip--first { color: var(--mr-text); background: var(--mr-vermilion); }
+
+.mr-modal .mr-stage {
+  font-family: var(--mr-font);
+  background: rgba(10, 10, 12, 0.88);
+  border-color: var(--mr-line);
+  border-radius: 1px;
+}
+.mr-modal .mr-stage.is-open {
+  color: #17130b;
+  background: linear-gradient(180deg, #f3ead2, #e2d4ae);
+  border-color: rgba(201, 162, 78, 0.7);
+}
+
+.mr-modal .mr-label { font-family: var(--mr-font); color: var(--mr-gold-hi); }
+
+/* reward tiles: washi squares */
+.mr-modal .mr-tile-glow { background: radial-gradient(circle, rgba(232, 207, 140, 0.22) 0%, rgba(184, 50, 42, 0.08) 42%, transparent 70%); }
+.mr-modal .mr-socket {
+  background: url('../assets/ui/ink/ink_washi.webp') center / cover;
+  box-shadow: 0 0 0 1px rgba(23, 19, 11, 0.8), 0 0 0 3px rgba(201, 162, 78, 0.6), 0 4px 8px rgba(0, 0, 0, 0.5);
+  border-radius: 0;
+}
+.mr-modal .mr-qty {
+  font-family: var(--mr-font);
+  color: var(--mr-text);
+  -webkit-text-stroke: 3px var(--mr-ink);
+}
+.mr-modal .mr-tag {
+  font-family: var(--mr-font);
+  color: var(--mr-text);
+  background: var(--mr-vermilion);
+  border: none;
+  clip-path: none;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+.mr-modal .mr-name { font-family: var(--mr-font); color: var(--mr-text); }
+
+.mr-modal .mr-exp, .mr-modal .mr-rankup { font-family: var(--mr-font); }
+.mr-modal .mr-exp b { color: var(--mr-gold-hi); }
+
+/* Continue: a cream paper slip */
+.mr-modal .mr-continue.jjk-btn {
+  border: none;
+  border-image: none;
+  border-radius: 1px;
+  background: linear-gradient(180deg, #f3ead2, #e2d4ae);
+  color: #17130b;
+  font-family: var(--mr-font);
+  font-weight: 800;
+  text-shadow: none;
+  box-shadow: 0 0 0 1px rgba(23, 19, 11, 0.7), 0 0 0 3px rgba(201, 162, 78, 0.55), 0 6px 14px rgba(0, 0, 0, 0.55);
+  filter: none;
+}
+.mr-modal .mr-continue.jjk-btn:hover { background: linear-gradient(180deg, #fbf3dd, #eadcb6); }
+
+/* the card scrolls as a whole (goals + team EXP make it tall), so the grid doesn't clip */
+.mr-modal .mr-card:has(.rg-goals) .mr-grid,
+.mr-modal .mr-card:has(.rx-team) .mr-grid { max-height: none; overflow: visible; }
+.mr-modal .mr-card:has(.rg-goals) > *,
+.mr-modal .mr-card:has(.rx-team) > * { flex-shrink: 0; }

@@ -16,7 +16,7 @@
   font-display: swap;
 }
 
-.mr-card:has(.rg-goals) { overflow-y: auto; scrollbar-width: none; }
+.mr-card:has(.rg-goals), .mr-card:has(.rx-team) { overflow-y: auto; scrollbar-width: none; }
 .mr-card:has(.rg-goals)::-webkit-scrollbar { display: none; }
 
 .rg-goals, .rg-rankup {
@@ -206,4 +206,109 @@
   .rg-row, .rg-goals { transition: none; }
   .rg-row.is-stamped .rg-seal { animation: none; opacity: 0.94; }
   .rg-rankup-title { animation: none; }
+}
+
+/* ── Team EXP (js/battle/battle-rewards.js unitExpMarkup) ─────────────────
+   The original "Team" row: mission EXP on a sumi plate, then each unit's card,
+   level plate, EXP bar and the EXP still needed for the next level. */
+.rx-team {
+  --rg-paper: #efe6cf;
+  --rg-font: 'Matisse EB', 'Hiragino Mincho ProN', 'Yu Mincho', 'Kaisei Tokumin', Georgia, serif;
+  width: 100%;
+  max-width: 620px;
+  font-family: var(--rg-font);
+  font-weight: 800;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.35s, transform 0.35s;
+}
+.rx-team.is-in { opacity: 1; transform: none; }
+
+.rx-total {
+  display: flex; align-items: center; justify-content: space-between;
+  width: min(440px, 92%); margin: 2px auto 8px; padding: 6px 22px 7px;
+  box-sizing: border-box;
+  background: url('../assets/ui/ink/cmd_swash.webp') center / 100% 100% no-repeat;
+  color: var(--rg-paper); font-size: 19px; letter-spacing: 0.04em;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.7);
+}
+.rx-total b { font-weight: 800; font-size: 21px; }
+
+.rx-head { display: flex; justify-content: center; margin: 0 auto 24px; }
+.rx-head span {
+  padding: 3px 26px 4px;
+  color: var(--rg-paper); font-size: 15px;
+  background: rgba(10, 10, 12, 0.85);
+  box-shadow: inset 0 0 0 1px rgba(201, 162, 78, 0.6);
+}
+
+.rx-units {
+  list-style: none; margin: 0; padding: 0;
+  display: flex; justify-content: center; flex-wrap: wrap; gap: 10px 12px;
+}
+.rx-unit {
+  position: relative;
+  width: 84px;
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+}
+.rx-card {
+  position: relative;
+  width: 76px; height: 76px;
+  background: url('../assets/ui/ink/ink_washi.webp') center / cover;
+  box-shadow: 0 0 0 1px rgba(23, 19, 11, 0.8), 0 0 0 3px rgba(201, 162, 78, 0.7), 0 3px 6px rgba(0, 0, 0, 0.5);
+}
+.rx-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.rx-stars {
+  position: absolute; left: 3px; bottom: 1px;
+  color: #ffd25a; font-size: 14px;
+  text-shadow: 0 0 2px #000, 0 1px 0 #000, 0 0 4px #000;
+}
+.rx-level {
+  width: 100%; box-sizing: border-box; text-align: center;
+  padding: 1px 0 2px;
+  background: rgba(10, 10, 12, 0.9);
+  box-shadow: inset 0 0 0 1px rgba(201, 162, 78, 0.55);
+  color: var(--rg-paper); font-size: 13px;
+}
+.rx-level b { font-weight: 800; color: #ffd25a; }
+.rx-bar {
+  width: 100%; height: 9px; box-sizing: border-box;
+  background: rgba(10, 10, 12, 0.85);
+  box-shadow: inset 0 0 0 1px rgba(201, 162, 78, 0.45);
+  overflow: hidden;
+}
+.rx-bar i {
+  display: block; height: 100%;
+  background: linear-gradient(180deg, #ffb347, #e8731c 60%, #b8501a);
+}
+.rx-next {
+  color: var(--rg-paper); font-size: 17px; line-height: 1;
+  text-shadow: 0 0 2px #000, 0 1px 0 #000, 0 0 3px #000;
+}
+.rx-lvup {
+  position: absolute; top: -19px; left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  color: #e8432f; font-size: 11.5px; letter-spacing: 0;
+  text-shadow: 0 0 2px #fff, 0 1px 0 #fff, 0 0 4px rgba(255, 255, 255, 0.8);
+  opacity: 0; pointer-events: none;
+}
+.rx-unit.is-up .rx-lvup { animation: rxLvUp 0.5s cubic-bezier(0.2, 1.6, 0.4, 1) both; }
+@keyframes rxLvUp {
+  0%   { opacity: 0; transform: translate(-50%, 8px) scale(0.6); }
+  100% { opacity: 1; transform: translate(-50%, 0) scale(1); }
+}
+
+@media (max-width: 700px), (max-height: 540px) {
+  .rx-unit { width: 66px; }
+  .rx-lvup { font-size: 10px; top: -16px; }
+  .rx-card { width: 60px; height: 60px; }
+  .rx-level { font-size: 11.5px; }
+  .rx-next { font-size: 14px; }
+  .rx-total { font-size: 16px; }
+  .rx-total b { font-size: 18px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rx-team { transition: none; }
+  .rx-unit.is-up .rx-lvup { animation: none; opacity: 1; }
 }
