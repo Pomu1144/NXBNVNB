@@ -130,10 +130,9 @@
   }
 
   // Banner view, after the original game's summon screen: an info bar under the art
-  // (banner name, a scrolling rates line, the end date) and stickers on the art
-  // ("New", "Can be Awakened to ★N"). Banners here never end, so the date is the
+  // (banner name, a scrolling rates line, the end date), "New" / "Can be Awakened
+  // to ★N" lettering and a gold Multi Summon line along the art's bottom edge. Banners here never end, so the date is the
   // original's far-future convention for permanent banners.
-  const esc = t => String(t == null ? '' : t).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
   function renderBar(banner, f) {
     const name = $('sb-name'), until = $('sb-until'), tick = $('sb-ticker'), stick = $('sb-stickers');
     if (!name || !tick) return;
@@ -143,36 +142,37 @@
     if (banner.includeStandardPool !== false) (sd.standardPool || []).forEach(id => pool.add(id));
     const rateLine = ['7', '6', '5', '4']
       .filter(k => rates[k + 'star'] != null)
-      .map(k => `${k} Stars: ${rates[k + 'star']}%`).join(' / ');
-    const lead = f && (f.evolved || f.base);
-    const parts = [];
-    if (lead) parts.push(`Featured ${esc(lead.name)} — the featured rate climbs with every Multi Summon!`);
-    parts.push(`${pool.size} characters can appear. ${rateLine}`);
-    const text = parts.join('<i>✦</i>');
-    tick.innerHTML = `<span>${text}</span><span aria-hidden="true">${text}</span>`;
+      .map(k => `${k} stars ${rates[k + 'star']}%`).join(', ');
+    const line = `${pool.size} characters can appear: ${rateLine}`;
+    tick.innerHTML = `<span>${line}</span><span aria-hidden="true">${line}</span>`;
     name.textContent = banner.name || '';
     if (until) until.textContent = 'until 2099/12/31 10:59';
+    const rib = $('sb-ribbon');
+    if (rib) rib.innerHTML = '<i class="sb-coin" aria-hidden="true">★</i>The featured rate climbs with every Multi Summon!';
 
     if (stick) {
       const list = (sd.banners || []).filter(b => b.type !== 'standard');
       const isNew = list.slice(0, 3).some(b => b.id === banner.id);
       const tags = [];
       if (isNew) tags.push('<span class="sb-sticker sb-new">New</span>');
-      if (f && f.twoTier) tags.push(`<span class="sb-sticker sb-awaken">Can be Awakened<br>to <b>★${f.maxStar}</b></span>`);
+      if (f && f.twoTier) tags.push(`<span class="sb-sticker sb-awaken">Can be Awakened to <b>★</b>${f.maxStar}</span>`);
       stick.innerHTML = tags.join('');
       placeStickers();
     }
   }
 
-  // Pin the stickers to the art's top-right corner (classic/glass letterbox the art;
-  // ink fills the stage with it).
+  // Pin the stickers and the ribbon line to the art's bottom edge (classic/glass
+  // letterbox the art; ink fills the stage with it).
   function placeStickers() {
     const stick = $('sb-stickers'), img = $('stage-banner-img'), stage = $('featured-stage');
     if (!stick || !img || !stage) return;
     const r = img.getBoundingClientRect(), sr = stage.getBoundingClientRect();
     if (!r.width || !sr.width) return;
-    stick.style.top = Math.max(0, r.top - sr.top) + 'px';
+    const bottom = Math.max(0, sr.bottom - r.bottom) + 'px';
+    stick.style.bottom = bottom;
     stick.style.right = Math.max(0, sr.right - r.right) + 'px';
+    const rib = $('sb-ribbon');
+    if (rib) { rib.style.bottom = bottom; rib.style.left = Math.max(0, r.left - sr.left) + 'px'; rib.style.width = r.width + 'px'; }
   }
   (function () {
     const img = $('stage-banner-img');
