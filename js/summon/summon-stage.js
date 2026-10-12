@@ -115,6 +115,7 @@
     if (dot5) dot5.style.display = (f && f.twoTier) ? '' : 'none';
 
     renderPickup(banner);
+    renderBar(banner, f);
 
     // reset to banner view on banner change
     setView('banner');
@@ -127,6 +128,57 @@
       });
     }
   }
+
+  // Banner view, after the original game's summon screen: an info bar under the art
+  // (banner name, a scrolling rates line, the end date) and stickers on the art
+  // ("New", "Can be Awakened to ★N"). Banners here never end, so the date is the
+  // original's far-future convention for permanent banners.
+  const esc = t => String(t == null ? '' : t).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
+  function renderBar(banner, f) {
+    const name = $('sb-name'), until = $('sb-until'), tick = $('sb-ticker'), stick = $('sb-stickers');
+    if (!name || !tick) return;
+    const sd = window.summonData || {};
+    const rates = sd.baseRates || { '7star': 0.33, '6star': 3, '5star': 12, '4star': 84.67 };
+    const pool = new Set([...(banner.featured || []), ...(banner.characters || [])]);
+    if (banner.includeStandardPool !== false) (sd.standardPool || []).forEach(id => pool.add(id));
+    const rateLine = ['7', '6', '5', '4']
+      .filter(k => rates[k + 'star'] != null)
+      .map(k => `${k} Stars: ${rates[k + 'star']}%`).join(' / ');
+    const lead = f && (f.evolved || f.base);
+    const parts = [];
+    if (lead) parts.push(`Featured ${esc(lead.name)} — the featured rate climbs with every Multi Summon!`);
+    parts.push(`${pool.size} characters can appear. ${rateLine}`);
+    const text = parts.join('<i>✦</i>');
+    tick.innerHTML = `<span>${text}</span><span aria-hidden="true">${text}</span>`;
+    name.textContent = banner.name || '';
+    if (until) until.textContent = 'until 2099/12/31 10:59';
+
+    if (stick) {
+      const list = (sd.banners || []).filter(b => b.type !== 'standard');
+      const isNew = list.slice(0, 3).some(b => b.id === banner.id);
+      const tags = [];
+      if (isNew) tags.push('<span class="sb-sticker sb-new">New</span>');
+      if (f && f.twoTier) tags.push(`<span class="sb-sticker sb-awaken">Can be Awakened<br>to <b>★${f.maxStar}</b></span>`);
+      stick.innerHTML = tags.join('');
+      placeStickers();
+    }
+  }
+
+  // Pin the stickers to the art's top-right corner (classic/glass letterbox the art;
+  // ink fills the stage with it).
+  function placeStickers() {
+    const stick = $('sb-stickers'), img = $('stage-banner-img'), stage = $('featured-stage');
+    if (!stick || !img || !stage) return;
+    const r = img.getBoundingClientRect(), sr = stage.getBoundingClientRect();
+    if (!r.width || !sr.width) return;
+    stick.style.top = Math.max(0, r.top - sr.top) + 'px';
+    stick.style.right = Math.max(0, sr.right - r.right) + 'px';
+  }
+  (function () {
+    const img = $('stage-banner-img');
+    if (img) img.addEventListener('load', () => requestAnimationFrame(placeStickers));
+    window.addEventListener('resize', placeStickers);
+  })();
 
   // Rate-up list in the draw panel: one row per featured unit (evolved form).
   // Clicking a row shows that unit's form on the stage.

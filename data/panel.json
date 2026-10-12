@@ -1,116 +1,62 @@
 {
-  "missions": [
+  "_doc": "Panel Missions (js/panel-missions.js). Each panel is a 3x3 board of 9 missions; claiming a mission reveals its ninth of the panel art, and claiming all 9 unlocks the panel reward. track: {type: clear, mission, rank} first clear of a mission at a rank | {type: plays, mission, count} times a mission was cleared | {type: plays_cat, category, count} clears of any mission whose category starts with it | {type: stat, key, target} with key battlesWon, maxLevel, distinct, streak, awakened, rank, maxed, arenaWins.",
+  "panels": [
     {
-      "id": "mission_001",
-      "title": "Complete 5 Battles",
-      "description": "Win 5 battles to earn your first reward",
-      "reward": {
-        "type": "resource",
-        "resourceName": "Ninja Pearls",
-        "quantity": 50
-      },
-      "completed": false
+      "id": "rookie",
+      "name": "Rookie Panel Missions",
+      "logo": ["Rookie", "Panel Missions"],
+      "theme": "leaf",
+      "art": "assets/characters/naruto_2119/full_6S.webp",
+      "reward": { "type": "character", "characterId": "naruto_2119", "quantity": 1, "tierCode": "6S" },
+      "missions": [
+        { "id": "rk_01", "title": "Complete \"Graduation Exam\" on Normal!", "track": { "type": "clear", "mission": "sc1_01", "rank": "C" }, "reward": { "type": "resource", "resourceName": "Ninja Pearls", "quantity": 5 } },
+        { "id": "rk_02", "title": "Complete \"Team 7 United\" on Normal!", "track": { "type": "clear", "mission": "sc1_02", "rank": "C" }, "reward": { "type": "resource", "resourceName": "Ninja Pearls", "quantity": 5 } },
+        { "id": "rk_03", "title": "Complete \"Land of Waves\" on Normal!", "track": { "type": "clear", "mission": "sc1_03", "rank": "C" }, "reward": { "type": "resource", "resourceName": "Ninja Pearls", "quantity": 5 } },
+        { "id": "rk_04", "title": "Complete \"Graduation Exam\" on Hard!", "track": { "type": "clear", "mission": "sc1_01", "rank": "B" }, "reward": { "type": "resource", "resourceName": "Ryo", "quantity": 5000 } },
+        { "id": "rk_05", "title": "Win 5 battles!", "track": { "type": "stat", "key": "battlesWon", "target": 5 }, "reward": { "type": "resource", "resourceName": "Ninja Pearls", "quantity": 5 } },
+        { "id": "rk_06", "title": "Have 3 different characters!", "track": { "type": "stat", "key": "distinct", "target": 3 }, "reward": { "type": "resource", "resourceName": "Ninja Pearls", "quantity": 5 } },
+        { "id": "rk_07", "title": "Complete \"Exam Round 1\" on Normal!", "track": { "type": "clear", "mission": "sc1_04", "rank": "C" }, "reward": { "type": "resource", "resourceName": "Ryo", "quantity": 10000 } },
+        { "id": "rk_08", "title": "Raise a character to Lv 20!", "track": { "type": "stat", "key": "maxLevel", "target": 20 }, "reward": { "type": "resource", "resourceName": "Ninja Pearls", "quantity": 5 } },
+        { "id": "rk_09", "title": "Reach Ninja Rank 5!", "track": { "type": "stat", "key": "rank", "target": 5 }, "reward": { "type": "resource", "resourceName": "Ninja Pearls", "quantity": 5 } }
+      ]
     },
     {
-      "id": "mission_002",
-      "title": "Level Up a Character",
-      "description": "Increase any character to level 10",
-      "reward": {
-        "type": "resource",
-        "resourceName": "Ryo",
-        "quantity": 10000
-      },
-      "completed": false
+      "id": "menma",
+      "name": "Panel Mission",
+      "logo": ["Panel", "Mission"],
+      "theme": "fire",
+      "art": "assets/characters/menma_2073/full_6S.webp",
+      "reward": { "type": "character", "characterId": "menma_2073", "quantity": 1, "tierCode": "6S" },
+      "missions": [
+        { "id": "mn_01", "title": "Log in for 3 days!", "track": { "type": "stat", "key": "streak", "target": 3 }, "reward": { "type": "resource", "resourceName": "Ninja Pearls", "quantity": 5 } },
+        { "id": "mn_02", "title": "Complete \"Gama-chan's Hidden Hoard\" 15 time(s)!", "track": { "type": "plays", "mission": "growth_ryo", "count": 15 }, "reward": { "type": "resource", "resourceName": "Ryo", "quantity": 20000 } },
+        { "id": "mn_03", "title": "Raise a character to Lv 50!", "track": { "type": "stat", "key": "maxLevel", "target": 50 }, "reward": { "type": "resource", "resourceName": "Ninja Pearls", "quantity": 5 } },
+        { "id": "mn_04", "title": "Awaken a character!", "track": { "type": "stat", "key": "awakened", "target": 1 }, "reward": { "type": "resource", "resourceName": "Ninja Pearls", "quantity": 5 } },
+        { "id": "mn_05", "title": "Complete 10 Story Mission(s)!", "track": { "type": "plays_cat", "category": "Shinobi Chronicles", "count": 10 }, "reward": { "type": "resource", "resourceName": "Ninja Pearls", "quantity": 5 } },
+        { "id": "mn_06", "title": "Win 3 Arena battle(s)!", "track": { "type": "stat", "key": "arenaWins", "target": 3 }, "reward": { "type": "resource", "resourceName": "Ninja Pearls", "quantity": 5 } },
+        { "id": "mn_07", "title": "Complete \"Ramen Report: All Cups\" 5 time(s)!", "track": { "type": "plays", "mission": "growth_ramen", "count": 5 }, "reward": { "type": "resource", "resourceName": "Ryo", "quantity": 10000 } },
+        { "id": "mn_08", "title": "Reach Ninja Rank 15!", "track": { "type": "stat", "key": "rank", "target": 15 }, "reward": { "type": "resource", "resourceName": "Ninja Pearls", "quantity": 5 } },
+        { "id": "mn_09", "title": "Have 10 different characters!", "track": { "type": "stat", "key": "distinct", "target": 10 }, "reward": { "type": "resource", "resourceName": "Ninja Pearls", "quantity": 10 } }
+      ]
     },
     {
-      "id": "mission_003",
-      "title": "Unlock 3 Characters",
-      "description": "Add 3 different characters to your roster",
-      "reward": {
-        "type": "resource",
-        "resourceName": "Shinobites",
-        "quantity": 5
-      },
-      "completed": false
-    },
-    {
-      "id": "mission_004",
-      "title": "Complete Daily Login",
-      "description": "Log in 7 days in a row",
-      "reward": {
-        "type": "resource",
-        "resourceName": "Ninja Pearls",
-        "quantity": 100
-      },
-      "completed": false
-    },
-    {
-      "id": "mission_005",
-      "title": "Awaken a Character",
-      "description": "Awaken any character to the next tier",
-      "reward": {
-        "type": "character",
-        "characterId": "example_character_001",
-        "quantity": 1,
-        "tierCode": "5S"
-      },
-      "completed": false
-    },
-    {
-      "id": "mission_006",
-      "title": "Reach Ninja Rank 10",
-      "description": "Level up your Ninja Rank to 10",
-      "reward": {
-        "type": "resource",
-        "resourceName": "Ryo",
-        "quantity": 50000
-      },
-      "completed": false
-    },
-    {
-      "id": "mission_007",
-      "title": "Complete 20 Battles",
-      "description": "Win 20 battles total",
-      "reward": {
-        "type": "resource",
-        "resourceName": "Ninja Pearls",
-        "quantity": 150
-      },
-      "completed": false
-    },
-    {
-      "id": "mission_008",
-      "title": "Max Level a Character",
-      "description": "Level any character to their maximum level",
-      "reward": {
-        "type": "character",
-        "characterId": "example_character_002",
-        "quantity": 1,
-        "tierCode": "6S"
-      },
-      "completed": false
-    },
-    {
-      "id": "mission_009",
-      "title": "Collect 10 Characters",
-      "description": "Build a roster of 10 unique characters",
-      "reward": {
-        "type": "resource",
-        "resourceName": "Shinobites",
-        "quantity": 20
-      },
-      "completed": false
-    },
-    {
-      "id": "mission_010",
-      "title": "Complete All Basic Missions",
-      "description": "Finish all previous panel missions",
-      "reward": {
-        "type": "resource",
-        "resourceName": "Ninja Pearls",
-        "quantity": 300
-      },
-      "completed": false
+      "id": "basic",
+      "name": "Basic Training",
+      "logo": ["Basic", "Training"],
+      "theme": "sky",
+      "art": "assets/characters/minato_2101/full_6S.webp",
+      "reward": { "type": "resource", "resourceName": "Ninja Pearls", "quantity": 300 },
+      "missions": [
+        { "id": "mission_001", "title": "Win 5 battles!", "track": { "type": "stat", "key": "battlesWon", "target": 5 }, "reward": { "type": "resource", "resourceName": "Ninja Pearls", "quantity": 50 } },
+        { "id": "mission_002", "title": "Raise a character to Lv 10!", "track": { "type": "stat", "key": "maxLevel", "target": 10 }, "reward": { "type": "resource", "resourceName": "Ryo", "quantity": 10000 } },
+        { "id": "mission_003", "title": "Have 3 different characters!", "track": { "type": "stat", "key": "distinct", "target": 3 }, "reward": { "type": "resource", "resourceName": "Shinobites", "quantity": 5 } },
+        { "id": "mission_004", "title": "Log in 7 days in a row!", "track": { "type": "stat", "key": "streak", "target": 7 }, "reward": { "type": "resource", "resourceName": "Ninja Pearls", "quantity": 100 } },
+        { "id": "mission_005", "title": "Awaken a character!", "track": { "type": "stat", "key": "awakened", "target": 1 }, "reward": { "type": "resource", "resourceName": "Ryo", "quantity": 30000 } },
+        { "id": "mission_006", "title": "Reach Ninja Rank 10!", "track": { "type": "stat", "key": "rank", "target": 10 }, "reward": { "type": "resource", "resourceName": "Ryo", "quantity": 50000 } },
+        { "id": "mission_007", "title": "Win 20 battles!", "track": { "type": "stat", "key": "battlesWon", "target": 20 }, "reward": { "type": "resource", "resourceName": "Ninja Pearls", "quantity": 150 } },
+        { "id": "mission_008", "title": "Raise a character to max level!", "track": { "type": "stat", "key": "maxed", "target": 1 }, "reward": { "type": "resource", "resourceName": "Ryo", "quantity": 50000 } },
+        { "id": "mission_009", "title": "Have 10 different characters!", "track": { "type": "stat", "key": "distinct", "target": 10 }, "reward": { "type": "resource", "resourceName": "Shinobites", "quantity": 20 } }
+      ]
     }
   ]
 }
