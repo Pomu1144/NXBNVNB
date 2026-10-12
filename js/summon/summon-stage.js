@@ -155,10 +155,28 @@
       const isNew = list.slice(0, 3).some(b => b.id === banner.id);
       const tags = [];
       if (isNew) tags.push('<span class="sb-sticker sb-new">New</span>');
-      if (f && f.twoTier) tags.push(`<span class="sb-sticker sb-awaken">Can be Awakened to <b>★</b>${f.maxStar}</span>`);
+      if (f && f.twoTier) tags.push(`<span class="sb-sticker sb-awaken">Can be Awakened to ${starMark(f.maxStar)}</span>`);
       stick.innerHTML = tags.join('');
       placeStickers();
     }
+  }
+
+  // The in-game star mark: a yellow-to-pink star with a dark outline, then the
+  // numeral (rainbow for 7 and up, gold below).
+  function starMark(n) {
+    const u = 'sbs' + n;
+    const num = n >= 7
+      ? `<stop offset="0" stop-color="#ff5fd2"/><stop offset=".3" stop-color="#ffe14a"/><stop offset=".55" stop-color="#5dff8a"/><stop offset=".8" stop-color="#4fd2ff"/><stop offset="1" stop-color="#b47dff"/>`
+      : `<stop offset="0" stop-color="#fffbe0"/><stop offset=".45" stop-color="#ffe066"/><stop offset="1" stop-color="#ef9a12"/>`;
+    return `<svg class="sb-star" viewBox="0 0 ${n >= 10 ? 74 : 56} 30" aria-label="${n} stars" role="img">
+      <defs>
+        <linearGradient id="${u}s" x1=".1" y1=".05" x2=".85" y2=".95"><stop offset="0" stop-color="#fff27a"/><stop offset=".36" stop-color="#ffd23f"/><stop offset=".62" stop-color="#ff5c86"/><stop offset="1" stop-color="#f0207a"/></linearGradient>
+        <linearGradient id="${u}n" x1=".7" y1="0" x2=".3" y2="1">${num}</linearGradient>
+      </defs>
+      <path d="M15.0 2.0L19.1 10.0L27.9 11.4L21.6 17.7L23.0 26.6L15.0 22.5L7.0 26.6L8.4 17.7L2.1 11.4L10.9 10.0z"
+        fill="url(#${u}s)" stroke="#2a0606" stroke-width="2.6" stroke-linejoin="round" paint-order="stroke"/>
+      <text x="28" y="26" font-size="28" fill="url(#${u}n)" stroke="#2a0606" stroke-width="4.5" stroke-linejoin="round" paint-order="stroke">${n}</text>
+    </svg>`;
   }
 
   // Pin the stickers and the ribbon line to the art's bottom edge (classic/glass
