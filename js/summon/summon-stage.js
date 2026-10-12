@@ -148,14 +148,14 @@
     name.textContent = banner.name || '';
     if (until) until.textContent = 'until 2099/12/31 10:59';
     const rib = $('sb-ribbon');
-    if (rib) rib.innerHTML = '<i class="sb-coin" aria-hidden="true">★</i>The featured rate climbs with every Multi Summon!';
+    if (rib) rib.innerHTML = '<i class="sb-coin" aria-hidden="true">★</i><span class="sb-gt" data-t="The featured rate climbs with every Multi Summon!">The featured rate climbs with every Multi Summon!</span>';
 
     if (stick) {
       const list = (sd.banners || []).filter(b => b.type !== 'standard');
       const isNew = list.slice(0, 3).some(b => b.id === banner.id);
       const tags = [];
       if (isNew) tags.push('<span class="sb-sticker sb-new">New</span>');
-      if (f && f.twoTier) tags.push(`<span class="sb-sticker sb-awaken">Can be Awakened to ${starMark(f.maxStar)}</span>`);
+      if (f && f.twoTier) tags.push(`<span class="sb-sticker sb-awaken"><span class="sb-gt" data-t="Can be Awakened to">Can be Awakened to</span> ${starMark(f.maxStar)}</span>`);
       stick.innerHTML = tags.join('');
       placeStickers();
     }

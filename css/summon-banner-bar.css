@@ -78,11 +78,26 @@
   filter: drop-shadow(0 0 1px #5a0000) drop-shadow(0 2px 2px rgba(0, 0, 0, 0.6));
 }
 .sb-awaken {
-  font-size: 17px; color: #ffe04d;
-  -webkit-text-stroke: 4px #2a1400;
-  text-shadow: 0 -1px 0 #fffbe0;
-  filter: drop-shadow(0 0 1.2px #fff8e0) drop-shadow(0 0 0.6px #fff8e0) drop-shadow(0 2px 2px rgba(0, 0, 0, 0.6));
+  position: relative; font-family: var(--sb-font); font-size: 18px; letter-spacing: 0.01em;
   animation-delay: 0.08s;
+}
+.sb-awaken::before {   /* the yellow light streak behind the line */
+  content: ''; position: absolute; left: -6%; right: 4%; top: 30%; bottom: 8%; z-index: -1;
+  background: radial-gradient(ellipse at 45% 60%, rgba(255, 236, 120, 0.85), rgba(255, 200, 60, 0.35) 45%, transparent 72%);
+  filter: blur(3px);
+}
+/* gold gradient lettering: the outline is a copy of the text drawn behind (data-t),
+   so the gradient fill doesn't get eaten by the stroke */
+.sb-gt {
+  position: relative; display: inline-block;
+  background: linear-gradient(180deg, #fffbe6 0%, #ffe680 35%, #f6b72e 70%, #d9800f 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-fill-color: transparent;
+  -webkit-text-stroke: 0;
+}
+.sb-gt::before {
+  content: attr(data-t); position: absolute; left: 0; top: 0; z-index: -1;
+  color: #2a0c02; -webkit-text-fill-color: #2a0c02; -webkit-text-stroke: 6px #2a0c02;
+  filter: drop-shadow(0 0 0.8px #fff4d0) drop-shadow(0 0 0.8px #fff4d0) drop-shadow(0 2px 2px rgba(0, 0, 0, 0.65));
 }
 .sb-star {
   display: inline-block; height: 1.6em; width: auto; vertical-align: -0.4em; margin-left: 0.05em;
@@ -95,10 +110,8 @@
 
 .sb-ribbon {
   position: absolute; left: 0; bottom: var(--sb-h); z-index: 5; align-items: center; gap: 6px;
-  padding: 0 0 6px 10px; pointer-events: none;
-  font-size: 15px; color: #ffe27a;
-  -webkit-text-stroke: 4px #3a1a00;
-  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.7));
+  padding: 0 0 7px 10px; pointer-events: none;
+  font-family: var(--sb-font); font-size: 15.5px;
 }
 .sb-coin {
   flex: none; display: inline-grid; place-items: center; width: 22px; height: 22px; border-radius: 50%;
@@ -117,8 +130,9 @@ html.is-mobile.is-landscape.is-compact .sb-ticker-track { font-size: 8.5px; line
 html.is-mobile.is-landscape.is-compact .featured-stage[data-view="banner"] .stage-dots { bottom: 4px; }
 html.is-mobile.is-landscape.is-compact .sb-stickers { padding: 0 9px 20px 0; }
 html.is-mobile.is-landscape.is-compact .sb-new { font-size: 18px; -webkit-text-stroke-width: 3px; }
-html.is-mobile.is-landscape.is-compact .sb-awaken { font-size: 10.5px; -webkit-text-stroke-width: 2.5px; }
-html.is-mobile.is-landscape.is-compact .sb-ribbon { font-size: 9px; -webkit-text-stroke-width: 2.5px; padding: 0 0 4px 6px; gap: 4px; }
+html.is-mobile.is-landscape.is-compact .sb-awaken { font-size: 11px; }
+html.is-mobile.is-landscape.is-compact .sb-gt::before { -webkit-text-stroke-width: 3.5px; }
+html.is-mobile.is-landscape.is-compact .sb-ribbon { font-size: 9.5px; padding: 0 0 4px 6px; gap: 4px; }
 html.is-mobile.is-landscape.is-compact .sb-coin { width: 13px; height: 13px; font-size: 7px; }
 
 /* ink: the bar replaces the floating name card and rate-up tile in the banner view
