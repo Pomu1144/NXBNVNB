@@ -161,9 +161,11 @@
     }
   }
 
-  // The in-game star mark: a yellow-to-pink star with a dark outline, then the
-  // numeral (rainbow for 7 and up, gold below).
+  // The in-game star mark. 6 and 7 use the game's sprites; other counts get an SVG
+  // drawn to match (yellow-to-pink star, dark outline, rainbow or gold numeral).
   function starMark(n) {
+    // the game's own pink (awakened) star marks, cut from its UI atlas
+    if (n === 6 || n === 7) return `<img class="sb-star sb-star-img" src="assets/ui/original/stars/awaken_${n}.png" alt="${n} stars" draggable="false">`;
     const u = 'sbs' + n;
     const num = n >= 7
       ? `<stop offset="0" stop-color="#ff5fd2"/><stop offset=".3" stop-color="#ffe14a"/><stop offset=".55" stop-color="#5dff8a"/><stop offset=".8" stop-color="#4fd2ff"/><stop offset="1" stop-color="#b47dff"/>`
