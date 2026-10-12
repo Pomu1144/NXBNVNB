@@ -115,6 +115,7 @@
     if (dot5) dot5.style.display = (f && f.twoTier) ? '' : 'none';
 
     renderPickup(banner);
+    renderBar(banner, f);
 
     // reset to banner view on banner change
     setView('banner');
@@ -127,6 +128,77 @@
       });
     }
   }
+
+  // Banner view, after the original game's summon screen: an info bar under the art
+  // (banner name, a scrolling rates line, the end date), "New" / "Can be Awakened
+  // to ★N" lettering and a gold Multi Summon line along the art's bottom edge. Banners here never end, so the date is the
+  // original's far-future convention for permanent banners.
+  function renderBar(banner, f) {
+    const name = $('sb-name'), until = $('sb-until'), tick = $('sb-ticker'), stick = $('sb-stickers');
+    if (!name || !tick) return;
+    const sd = window.summonData || {};
+    const rates = sd.baseRates || { '7star': 0.33, '6star': 3, '5star': 12, '4star': 84.67 };
+    const pool = new Set([...(banner.featured || []), ...(banner.characters || [])]);
+    if (banner.includeStandardPool !== false) (sd.standardPool || []).forEach(id => pool.add(id));
+    const rateLine = ['7', '6', '5', '4']
+      .filter(k => rates[k + 'star'] != null)
+      .map(k => `${k} stars ${rates[k + 'star']}%`).join(', ');
+    const line = `${pool.size} characters can appear: ${rateLine}`;
+    tick.innerHTML = `<span>${line}</span><span aria-hidden="true">${line}</span>`;
+    name.textContent = banner.name || '';
+    if (until) until.textContent = 'until 2099/12/31 10:59';
+    const rib = $('sb-ribbon');
+    if (rib) rib.innerHTML = '<i class="sb-coin" aria-hidden="true">★</i><span class="sb-gt" data-t="The featured rate climbs with every Multi Summon!">The featured rate climbs with every Multi Summon!</span>';
+
+    if (stick) {
+      const list = (sd.banners || []).filter(b => b.type !== 'standard');
+      const isNew = list.slice(0, 3).some(b => b.id === banner.id);
+      const tags = [];
+      if (isNew) tags.push('<span class="sb-sticker sb-new">New</span>');
+      if (f && f.twoTier) tags.push(`<span class="sb-sticker sb-awaken"><span class="sb-gt" data-t="Can be Awakened to">Can be Awakened to</span> ${starMark(f.maxStar)}</span>`);
+      stick.innerHTML = tags.join('');
+      placeStickers();
+    }
+  }
+
+  // The in-game star mark. 6 and 7 use the game's sprites; other counts get an SVG
+  // drawn to match (yellow-to-pink star, dark outline, rainbow or gold numeral).
+  function starMark(n) {
+    // the game's own pink (awakened) star marks, cut from its UI atlas
+    if (n === 6 || n === 7) return `<img class="sb-star sb-star-img" src="assets/ui/original/stars/awaken_${n}.png" alt="${n} stars" draggable="false">`;
+    const u = 'sbs' + n;
+    const num = n >= 7
+      ? `<stop offset="0" stop-color="#ff5fd2"/><stop offset=".3" stop-color="#ffe14a"/><stop offset=".55" stop-color="#5dff8a"/><stop offset=".8" stop-color="#4fd2ff"/><stop offset="1" stop-color="#b47dff"/>`
+      : `<stop offset="0" stop-color="#fffbe0"/><stop offset=".45" stop-color="#ffe066"/><stop offset="1" stop-color="#ef9a12"/>`;
+    return `<svg class="sb-star" viewBox="0 0 ${n >= 10 ? 74 : 56} 30" aria-label="${n} stars" role="img">
+      <defs>
+        <linearGradient id="${u}s" x1=".1" y1=".05" x2=".85" y2=".95"><stop offset="0" stop-color="#fff27a"/><stop offset=".36" stop-color="#ffd23f"/><stop offset=".62" stop-color="#ff5c86"/><stop offset="1" stop-color="#f0207a"/></linearGradient>
+        <linearGradient id="${u}n" x1=".7" y1="0" x2=".3" y2="1">${num}</linearGradient>
+      </defs>
+      <path d="M15.0 2.0L19.1 10.0L27.9 11.4L21.6 17.7L23.0 26.6L15.0 22.5L7.0 26.6L8.4 17.7L2.1 11.4L10.9 10.0z"
+        fill="url(#${u}s)" stroke="#2a0606" stroke-width="2.6" stroke-linejoin="round" paint-order="stroke"/>
+      <text x="28" y="26" font-size="28" fill="url(#${u}n)" stroke="#2a0606" stroke-width="4.5" stroke-linejoin="round" paint-order="stroke">${n}</text>
+    </svg>`;
+  }
+
+  // Pin the stickers and the ribbon line to the art's bottom edge (classic/glass
+  // letterbox the art; ink fills the stage with it).
+  function placeStickers() {
+    const stick = $('sb-stickers'), img = $('stage-banner-img'), stage = $('featured-stage');
+    if (!stick || !img || !stage) return;
+    const r = img.getBoundingClientRect(), sr = stage.getBoundingClientRect();
+    if (!r.width || !sr.width) return;
+    const bottom = Math.max(0, sr.bottom - r.bottom) + 'px';
+    stick.style.bottom = bottom;
+    stick.style.right = Math.max(0, sr.right - r.right) + 'px';
+    const rib = $('sb-ribbon');
+    if (rib) { rib.style.bottom = bottom; rib.style.left = Math.max(0, r.left - sr.left) + 'px'; rib.style.width = r.width + 'px'; }
+  }
+  (function () {
+    const img = $('stage-banner-img');
+    if (img) img.addEventListener('load', () => requestAnimationFrame(placeStickers));
+    window.addEventListener('resize', placeStickers);
+  })();
 
   // Rate-up list in the draw panel: one row per featured unit (evolved form).
   // Clicking a row shows that unit's form on the stage.

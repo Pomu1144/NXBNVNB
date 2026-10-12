@@ -376,6 +376,17 @@
         console.error("[Missions] Failed to record completion:", err);
       }
 
+      // Play counts for "complete X N times" panel missions (js/panel-missions.js reads them)
+      try {
+        const c = JSON.parse(localStorage.getItem("blazing_play_counts_v1") || "{}") || {};
+        c.missions = c.missions || {};
+        c.cats = c.cats || {};
+        if (missionId) c.missions[missionId] = (c.missions[missionId] || 0) + 1;
+        const cat = bm.missionData?.category;
+        if (cat) c.cats[cat] = (c.cats[cat] || 0) + 1;
+        localStorage.setItem("blazing_play_counts_v1", JSON.stringify(c));
+      } catch (err) { /* storage blocked */ }
+
       // Character EXP for every unit on the team (animated on the results screen)
       try {
         if (window.BattleUnitExp) bm._unitExp = window.BattleUnitExp.grant(bm);

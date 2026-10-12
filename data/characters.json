@@ -129109,17 +129109,33 @@
   "starMaxCode": "6S",
   "lbEligible": false,
   "portrait": "assets/characters/naruto_2137/portrait_5S.webp",
-  "full": "assets/characters/naruto_2137/full_5S.webp",
+  "full": "assets/characters/naruto_2137/full_5S_v2.webp",
   "ultimateAnimation": null,
   "secretAnimation": null,
   "artByTier": {
    "5S": {
     "portrait": "assets/characters/naruto_2137/portrait_5S.webp",
-    "full": "assets/characters/naruto_2137/full_5S.webp"
+    "full": "assets/characters/naruto_2137/full_5S_v2.webp",
+    "motion": {
+     "plate": "assets/characters/naruto_2137/motion_5S_plate.webp",
+     "fg": "assets/characters/naruto_2137/motion_5S_fg.webp",
+     "swirl": "assets/effects/wind_swirl_gold.webp",
+     "gust": "assets/effects/wind_gust_gold.webp",
+     "video": "assets/characters/naruto_2137/motion_5S.mp4",
+     "videoWebm": "assets/characters/naruto_2137/motion_5S.webm"
+    }
    },
    "6S": {
     "portrait": "assets/characters/naruto_2138/portrait_6S.webp",
-    "full": "assets/characters/naruto_2138/full_6S.webp"
+    "full": "assets/characters/naruto_2138/full_6S_v2.webp",
+    "motion": {
+     "plate": "assets/characters/naruto_2138/motion_6S_plate.webp",
+     "fg": "assets/characters/naruto_2138/motion_6S_fg.webp",
+     "swirl": "assets/effects/wind_swirl_gold.webp",
+     "gust": "assets/effects/wind_gust_gold.webp",
+     "video": "assets/characters/naruto_2138/motion_6S.mp4",
+     "videoWebm": "assets/characters/naruto_2138/motion_6S.webm"
+    }
    }
   },
   "statsBase": {
@@ -129226,13 +129242,21 @@
   "starMaxCode": "6S",
   "lbEligible": false,
   "portrait": "assets/characters/naruto_2138/portrait_6S.webp",
-  "full": "assets/characters/naruto_2138/full_6S.webp",
+  "full": "assets/characters/naruto_2138/full_6S_v2.webp",
   "ultimateAnimation": null,
   "secretAnimation": null,
   "artByTier": {
    "6S": {
     "portrait": "assets/characters/naruto_2138/portrait_6S.webp",
-    "full": "assets/characters/naruto_2138/full_6S.webp"
+    "full": "assets/characters/naruto_2138/full_6S_v2.webp",
+    "motion": {
+     "plate": "assets/characters/naruto_2138/motion_6S_plate.webp",
+     "fg": "assets/characters/naruto_2138/motion_6S_fg.webp",
+     "swirl": "assets/effects/wind_swirl_gold.webp",
+     "gust": "assets/effects/wind_gust_gold.webp",
+     "video": "assets/characters/naruto_2138/motion_6S.mp4",
+     "videoWebm": "assets/characters/naruto_2138/motion_6S.webm"
+    }
    }
   },
   "statsBase": {

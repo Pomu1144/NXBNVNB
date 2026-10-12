@@ -1,53 +1,61 @@
-// js/panel-missions.js - Panel Mission System
-// Data: data/panel.json   Claimed state: localStorage 'blazing_panel_mission_progress'
-// UI styles: css/panel-missions.css (shared JJK theme: css/theme-jjk.css)
+// js/panel-missions.js - Panel Missions, laid out like the original game's Panel Mission
+// screen, turned landscape: the panel banner (art, logo, "Complete 9 Panel Missions to get
+// <reward>!") and the controls on the left, the 3x3 board of parchment slips on the right.
+// Claiming a mission turns its slip over to show that ninth of the panel art; claiming all
+// nine grants the panel reward. Panels page with the arrows / dots; the swap button flips
+// every slip between its condition and its reward, as in the original.
 //
-// A mission is claimable only once its condition is met. Conditions are read
-// from existing saved game state (inventory, arena record, mission clears,
-// login streak, ninja rank). The last mission in the list is the panel
-// completion reward and unlocks once every other mission has been claimed.
+// Data: data/panel.json ({ panels: [{ id, name, logo, theme, art, reward, missions[9] }] },
+// see its _doc for the track types). Claimed state: localStorage
+// 'blazing_panel_mission_progress' ([{ id, completed }], mission ids plus 'panel:<id>').
+// Play counts for "complete X N times" missions: localStorage 'blazing_play_counts_v1',
+// bumped by BattleMissions.recordMissionComplete via PanelMissions.recordPlay().
+// UI styles: css/panel-missions.css. Type: the original FOT-Reggae B (titles) and
+// FOT-Matisse EB (slips), subset to Latin from the IPA (assets/fonts/).
+
+const PLAY_KEY = 'blazing_play_counts_v1';
+const PROGRESS_KEY = 'blazing_panel_mission_progress';
 
 class PanelMissions {
   constructor() {
-    this.missions = [];
+    this.panels = [];
+    this.missions = [];       // flat list, kept for callers that read it
+    this.claimed = {};        // id -> true
     this._chars = null;       // id -> character (for awakening / max level / names)
     this._escBound = false;
+    this.page = 0;
+    this.showRewards = false;
   }
 
   async init() {
     await this.loadMissions();
     this.loadMissionProgress();
     this._loadCharacters();
-    console.log('✅ Panel Missions initialized');
   }
 
   async loadMissions() {
     try {
       const response = await fetch('data/panel.json');
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-      }
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
       const data = await response.json();
-      this.missions = data.missions || [];
-      console.log(`Loaded ${this.missions.length} panel missions`);
+      // older data: one flat list whose last entry is the completion reward
+      this.panels = Array.isArray(data.panels) ? data.panels
+        : [{ id: 'basic', name: 'Panel Missions', logo: ['Panel', 'Missions'], missions: (data.missions || []).slice(0, 9), reward: (data.missions || [])[9]?.reward }];
+      this.missions = this.panels.flatMap(p => p.missions);
     } catch (error) {
       console.error('Failed to load panel missions:', error);
+      this.panels = [];
       this.missions = [];
     }
   }
 
   loadMissionProgress() {
+    this.claimed = {};
     try {
-      const saved = localStorage.getItem('blazing_panel_mission_progress');
-      if (saved) {
-        const progress = JSON.parse(saved);
-        this.missions.forEach(mission => {
-          const savedMission = progress.find(m => m.id === mission.id);
-          if (savedMission) {
-            mission.completed = savedMission.completed || false;
-          }
-        });
-      }
+      const saved = JSON.parse(localStorage.getItem(PROGRESS_KEY) || '[]');
+      (Array.isArray(saved) ? saved : []).forEach(m => { if (m && m.completed) this.claimed[m.id] = true; });
+      // the old flat list's completion reward was mission_010
+      if (this.claimed.mission_010) this.claimed['panel:basic'] = true;
     } catch (error) {
       console.error('Failed to load mission progress:', error);
     }
@@ -55,14 +63,23 @@ class PanelMissions {
 
   saveMissionProgress() {
     try {
-      const progress = this.missions.map(m => ({
-        id: m.id,
-        completed: m.completed
-      }));
-      localStorage.setItem('blazing_panel_mission_progress', JSON.stringify(progress));
+      const out = Object.keys(this.claimed).map(id => ({ id, completed: true }));
+      localStorage.setItem(PROGRESS_KEY, JSON.stringify(out));
     } catch (error) {
       console.error('Failed to save mission progress:', error);
     }
+  }
+
+  /** BattleMissions.recordMissionComplete: count a cleared mission (any rank). */
+  recordPlay(missionId, category) {
+    try {
+      const c = JSON.parse(localStorage.getItem(PLAY_KEY) || '{}') || {};
+      c.missions = c.missions || {};
+      c.cats = c.cats || {};
+      if (missionId) c.missions[missionId] = (c.missions[missionId] || 0) + 1;
+      if (category) c.cats[category] = (c.cats[category] || 0) + 1;
+      localStorage.setItem(PLAY_KEY, JSON.stringify(c));
+    } catch (e) { /* storage blocked */ }
   }
 
   /* ------------------------------------------------------------------
@@ -75,7 +92,7 @@ class PanelMissions {
       const map = {};
       list.forEach(c => { if (c && c.id) map[c.id] = c; });
       this._chars = map;
-      if (document.getElementById('panel-modal')) this._render(true);
+      if (document.getElementById('panel-modal')) this._render();
     }).catch(() => {});
   }
 
@@ -126,62 +143,54 @@ class PanelMissions {
 
     return {
       battlesWon: clears + (Number(arena.wins) || 0),
+      arenaWins: Number(arena.wins) || 0,
       maxLevel,
       distinct: new Set(inst.map(i => i && i.charId).filter(Boolean)).size,
       streak: Math.max(Number(daily.loginStreak) || 0, Number(cal.streak) || 0),
       awakened,
       rank,
       maxed,
+      prog,
+      plays: this._json(PLAY_KEY, {}) || {},
     };
   }
 
-  // id -> [snapshot key, target]; the final mission is handled separately
-  _tracker(mission) {
-    if (Array.isArray(mission.track)) return mission.track;
-    return ({
-      mission_001: ['battlesWon', 5],
-      mission_002: ['maxLevel', 10],
-      mission_003: ['distinct', 3],
-      mission_004: ['streak', 7],
-      mission_005: ['awakened', 1],
-      mission_006: ['rank', 10],
-      mission_007: ['battlesWon', 20],
-      mission_008: ['maxed', 1],
-      mission_009: ['distinct', 10],
-    })[mission.id] || null;
-  }
-
-  _finalMission() {
-    return this.missions.length > 1 ? this.missions[this.missions.length - 1] : null;
-  }
-
-  _boardMissions() {
-    const fin = this._finalMission();
-    return fin ? this.missions.slice(0, -1) : this.missions.slice();
-  }
-
   getProgress(mission, snap) {
-    if (mission === this._finalMission()) {
-      const others = this._boardMissions();
-      return { cur: others.filter(m => m.completed).length, target: others.length, tracked: true };
-    }
-    const t = this._tracker(mission);
-    if (!t) return { cur: mission.completed ? 1 : 0, target: 1, tracked: false };
     const s = snap || this._snapshot();
-    const cur = Number(s[t[0]]) || 0;
-    return { cur: Math.min(cur, t[1]), target: t[1], tracked: true };
+    const t = mission.track || {};
+    if (t.type === 'clear') {
+      const done = !!(s.prog[t.mission] && s.prog[t.mission][t.rank] && s.prog[t.mission][t.rank].firstClear);
+      return { cur: done ? 1 : 0, target: 1 };
+    }
+    if (t.type === 'plays') {
+      const n = Number(s.plays.missions?.[t.mission]) || 0;
+      return { cur: Math.min(n, t.count), target: t.count };
+    }
+    if (t.type === 'plays_cat') {
+      const n = Object.entries(s.plays.cats || {}).reduce((a, [k, v]) => a + (k.startsWith(t.category) ? Number(v) || 0 : 0), 0);
+      return { cur: Math.min(n, t.count), target: t.count };
+    }
+    if (t.type === 'stat') {
+      const n = Number(s[t.key]) || 0;
+      return { cur: Math.min(n, t.target), target: t.target };
+    }
+    return { cur: 0, target: 1 };
   }
 
   isMissionComplete(mission, snap) {
     const p = this.getProgress(mission, snap);
-    return p.tracked && p.cur >= p.target;
+    return p.cur >= p.target;
   }
 
   _stateOf(mission, snap) {
-    if (mission.completed) return 'claimed';
-    if (this.isMissionComplete(mission, snap)) return 'ready';
-    if (mission === this._finalMission()) return 'locked';
-    return 'progress';
+    if (this.claimed[mission.id]) return 'claimed';
+    return this.isMissionComplete(mission, snap) ? 'ready' : 'progress';
+  }
+
+  _panelState(panel) {
+    const done = panel.missions.filter(m => this.claimed[m.id]).length;
+    if (this.claimed['panel:' + panel.id]) return { done, state: 'claimed' };
+    return { done, state: done >= panel.missions.length ? 'ready' : 'locked' };
   }
 
   /* ------------------------------------------------------------------
@@ -195,59 +204,79 @@ class PanelMissions {
     }
   }
 
-  completeMission(missionId) {
-    const mission = this.missions.find(m => m.id === missionId);
-    if (!mission) return;
-    if (mission.completed) {
-      this._notice('Already Claimed', 'You have already claimed this reward.');
-      return;
-    }
-    if (!this.isMissionComplete(mission)) {
-      const p = this.getProgress(mission);
-      this._notice('Not Yet Complete', `${mission.title}: ${p.cur} / ${p.target}. Complete the mission to claim its reward.`);
-      return;
-    }
-
-    mission.completed = true;
-    this.saveMissionProgress();
-    this.giveReward(mission.reward);
-    this._render(true);
-
-    const item = this._rewardItem(mission.reward);
+  _reveal(items, title, note) {
     if (window.DashboardMailbox && typeof window.DashboardMailbox.showRewardReveal === 'function') {
-      window.DashboardMailbox.showRewardReveal([item], {
-        title: 'Rewards Obtained',
-        note: mission.reward?.type === 'character' ? 'New ninja added to your Characters.' : mission.title,
-      });
+      window.DashboardMailbox.showRewardReveal(items, { title, note });
     } else {
-      this._notice('Mission Complete', `${mission.title}\nReward: ${this.getRewardDisplayText(mission.reward)}`);
+      this._notice(title, items.map(i => `${i.name} ×${i.qty}`).join('\n'));
     }
   }
 
+  /** Claim every ready mission in ids; returns the reward items given. */
+  _claim(ids, snap) {
+    const items = [];
+    ids.forEach(id => {
+      const m = this.missions.find(x => x.id === id);
+      if (!m || this._stateOf(m, snap) !== 'ready') return;
+      this.claimed[m.id] = true;
+      this.giveReward(m.reward);
+      items.push(this._rewardItem(m.reward));
+    });
+    if (items.length) this.saveMissionProgress();
+    return items;
+  }
+
+  completeMission(missionId) {
+    const items = this._claim([missionId], this._snapshot());
+    if (!items.length) return;
+    this._closeDetails();
+    this._render();
+    this._reveal(items, 'Rewards Obtained', this.missions.find(m => m.id === missionId)?.title);
+  }
+
+  takeAll() {
+    const panel = this.panels[this.page];
+    if (!panel) return;
+    const items = this._claim(panel.missions.map(m => m.id), this._snapshot());
+    const ps = this._panelState(panel);
+    if (ps.state === 'ready') {
+      this.claimed['panel:' + panel.id] = true;
+      this.giveReward(panel.reward);
+      items.push(this._rewardItem(panel.reward));
+      this.saveMissionProgress();
+    }
+    if (!items.length) { this._notice('Panel Mission', 'No rewards are ready to take yet.'); return; }
+    this._render();
+    this._reveal(items, 'Rewards Obtained', ps.state === 'ready' ? `${panel.name} complete!` : panel.name);
+  }
+
+  claimPanel() {
+    const panel = this.panels[this.page];
+    if (!panel || this._panelState(panel).state !== 'ready') return;
+    this.claimed['panel:' + panel.id] = true;
+    this.saveMissionProgress();
+    this.giveReward(panel.reward);
+    this._render();
+    this._reveal([this._rewardItem(panel.reward)], 'Panel Complete!',
+      panel.reward?.type === 'character' ? 'New ninja added to your Characters.' : panel.name);
+  }
+
   giveReward(reward) {
+    if (!reward) return;
     switch (reward.type) {
       case 'character':
         if (window.InventoryChar) {
-          for (let i = 0; i < reward.quantity; i++) {
+          for (let i = 0; i < (reward.quantity || 1); i++) {
             window.InventoryChar.addCopy(reward.characterId, 1, reward.tierCode || '3S');
           }
-          console.log(`Gave character: ${reward.characterId} x${reward.quantity}`);
         }
         break;
-
       case 'resource':
         if (window.Resources) {
-          const resourceKey = reward.resourceName.toLowerCase().replace(/\s+/g, '_');
-          window.Resources.add(resourceKey, reward.quantity);
-          console.log(`Gave resource: ${reward.resourceName} x${reward.quantity}`);
+          window.Resources.add(reward.resourceName.toLowerCase().replace(/\s+/g, '_'), reward.quantity);
         } else {
           console.error('[PanelMissions] Resources module not loaded; reward lost:', reward);
         }
-        break;
-
-      case 'item':
-        // TODO: Implement item system
-        console.log(`Gave item: ${reward.itemId} x${reward.quantity}`);
         break;
     }
   }
@@ -264,54 +293,34 @@ class PanelMissions {
     return m ? `${m[1]}★` : '';
   }
 
-  _charName(id) {
-    const c = this._chars?.[id];
-    if (c && c.name) return c.name;
-    return 'Ninja';
-  }
-
-  /** { icon, fallback, name, qty, kind } */
+  /** { icon, fallback, name, qty, kind, tier } */
   _rewardItem(reward) {
     reward = reward || {};
     if (reward.type === 'character') {
       const tier = reward.tierCode || '3S';
-      const known = !!this._chars?.[reward.characterId];
+      const c = this._chars?.[reward.characterId];
       return {
         kind: 'character',
         icon: `assets/characters/${reward.characterId}/portrait_${tier}.webp`,
         fallback: 'assets/icons/characters_icon.png',
-        name: known ? this._charName(reward.characterId) : `${this._tierLabel(tier)} Ninja`,
+        name: c ? c.name : `${this._tierLabel(tier)} Ninja`,
+        version: c ? c.version : '',
         tier: this._tierLabel(tier),
         qty: reward.quantity || 1,
       };
     }
-    if (reward.type === 'resource') {
-      const n = String(reward.resourceName || '').toLowerCase();
-      const icon = n.includes('pearl') ? 'assets/icons/currency/ninjapearl.png'
-        : n.includes('ryo') ? 'assets/icons/currency/ryo.png'
-        : n.includes('shinobite') ? 'assets/icons/currency/shinobite.png'
-        : 'assets/icons/chestunopened.png';
-      return { kind: 'resource', icon, name: reward.resourceName, qty: reward.quantity };
-    }
-    return { kind: 'item', icon: 'assets/icons/chestunopened.png', name: reward.itemId || 'Item', qty: reward.quantity || 1 };
+    const n = String(reward.resourceName || '').toLowerCase();
+    const icon = n.includes('pearl') ? 'assets/icons/currency/ninjapearl.png'
+      : n.includes('ryo') ? 'assets/icons/currency/ryo.png'
+      : n.includes('shinobite') ? 'assets/icons/currency/shinobite.png'
+      : 'assets/icons/chestunopened.png';
+    const name = n.includes('pearl') ? 'Ninja Pearl' : reward.resourceName;
+    return { kind: 'resource', icon, name, qty: reward.quantity };
   }
 
   getRewardDisplayText(reward) {
-    switch (reward.type) {
-      case 'character':
-        return `${this._rewardItem(reward).name} x${reward.quantity}`;
-      case 'resource':
-        return `${reward.quantity} ${reward.resourceName}`;
-      case 'item':
-        return `${reward.quantity}x ${reward.itemId}`;
-      default:
-        return 'Unknown reward';
-    }
-  }
-
-  getRewardIcon(reward) {
     const it = this._rewardItem(reward);
-    return `<img src="${this._esc(it.icon)}" class="reward-icon-img" alt="" onerror="this.onerror=null;this.src='${it.fallback || 'assets/icons/chestunopened.png'}'">`;
+    return it.kind === 'character' ? `${it.name} "${it.version}" (${it.tier})` : `${it.name} x${(it.qty || 0).toLocaleString()}`;
   }
 
   /* ------------------------------------------------------------------
@@ -321,135 +330,165 @@ class PanelMissions {
     if (document.querySelector('link[href*="css/panel-missions.css"]')) return;
     const l = document.createElement('link');
     l.rel = 'stylesheet';
-    l.href = 'css/panel-missions.css?v=2';
+    l.href = 'css/panel-missions.css?v=3';
     document.head.appendChild(l);
   }
 
-  _fmt(n) { return (Number(n) || 0).toLocaleString(); }
-
-  _tileHTML(m, i, snap) {
-    const st = this._stateOf(m, snap);
-    const p = this.getProgress(m, snap);
-    const it = this._rewardItem(m.reward);
-    const pct = Math.round((p.cur / p.target) * 100);
-    const fb = it.fallback || 'assets/icons/chestunopened.png';
-    const stateLabel = { claimed: 'Claimed', ready: 'Complete', progress: 'In Progress' }[st];
-
-    let action;
-    if (st === 'ready') action = `<button class="jjk-btn pm-claim" data-claim="${this._esc(m.id)}">Claim</button>`;
-    else if (st === 'claimed') action = `<img class="pm-stamp" src="assets/ui/jjk/stamp_claimed.webp" alt="Claimed" draggable="false">`;
-    else action = `<span class="pm-count"><b>${this._fmt(p.cur)}</b>/${this._fmt(p.target)}</span>`;
-
+  _bannerHTML(panel) {
+    const it = this._rewardItem(panel.reward);
+    const logo = Array.isArray(panel.logo) ? panel.logo : [panel.name];
+    const prize = it.kind === 'character'
+      ? `${this._esc(it.name)} "${this._esc(it.version)}" (★${this._esc(String(it.tier).replace('★', ''))})!`
+      : `${this._esc(it.name)} ×${(it.qty || 0).toLocaleString()}!`;
     return `
-      <article class="pm-tile is-${st}" style="--i:${i}" title="${this._esc(m.description)}">
-        <div class="pm-tile-top">
-          <span class="pm-num">${String(i + 1).padStart(2, '0')}</span>
-          <span class="pm-state">${stateLabel}</span>
+      <div class="pmx-banner pmx-theme-${this._esc(panel.theme || 'fire')}">
+        <div class="pmx-banner-art" style="background-image:url('${this._esc(panel.art)}')"></div>
+        <div class="pmx-logo">
+          <span class="pmx-logo-board"></span>
+          <span class="pmx-logo-scroll" aria-hidden="true"></span>
+          ${logo.map((w, i) => `<b class="pmx-logo-l${i}">${this._esc(w)}</b>`).join('')}
         </div>
-        <h3 class="pm-title">${this._esc(m.title)}</h3>
-        <p class="pm-desc">${this._esc(m.description)}</p>
-        <div class="pm-prog"><div class="jjk-progress"><i style="width:${pct}%"></i></div></div>
-        <div class="pm-tile-foot">
-          <span class="pm-reward${it.kind === 'character' ? ' is-char' : ''}">
-            <img src="${this._esc(it.icon)}" alt="" draggable="false" onerror="this.onerror=null;this.src='${fb}'">
-            <span>${it.kind === 'character' ? this._esc(it.tier || 'Ninja') : '&times;' + this._fmt(it.qty)}</span>
-          </span>
-          ${action}
+        <div class="pmx-goal">
+          <span class="pmx-goal-a">Complete ${panel.missions.length} Panel Missions to get</span>
+          <span class="pmx-goal-b">${prize}</span>
         </div>
-      </article>`;
+      </div>`;
   }
 
-  _finalHTML(m, snap) {
-    if (!m) return '';
+  _tileHTML(m, i, panel, snap) {
     const st = this._stateOf(m, snap);
-    const p = this.getProgress(m, snap);
+    const r = Math.floor(i / 3), c = i % 3;
+    if (st === 'claimed') {
+      return `<div class="pmx-cell is-claimed" style="background-image:url('${this._esc(panel.art)}');background-position:${c * 50}% ${r * 50}%" title="${this._esc(m.title)}"></div>`;
+    }
     const it = this._rewardItem(m.reward);
-    const fb = it.fallback || 'assets/icons/chestunopened.png';
-    let action;
-    if (st === 'ready') action = `<button class="jjk-btn pm-final-claim" data-claim="${this._esc(m.id)}">Claim</button>`;
-    else if (st === 'claimed') action = `<div class="pm-final-done"><img src="assets/ui/jjk/stamp_claimed.webp" alt="" draggable="false"><span>Claimed</span></div>`;
-    else action = `<button class="jjk-btn pm-final-claim" disabled>Claim</button>`;
-
+    const label = this.showRewards ? `${it.name} x${(it.qty || 0).toLocaleString()}` : m.title;
     return `
-      <aside class="pm-final is-${st}">
-        <div class="pm-final-head">Panel Complete Reward</div>
-        <div class="pm-final-socket${it.kind === 'character' ? ' is-char' : ''}">
-          <img src="${this._esc(it.icon)}" alt="" draggable="false" onerror="this.onerror=null;this.src='${fb}'">
-          <span class="pm-final-qty">${it.kind === 'character' ? this._esc(it.tier) : '&times;' + this._fmt(it.qty)}</span>
+      <div class="pmx-cell is-${st}">
+        <div class="pmx-slip">
+          <i class="pmx-pin pmx-pin-l"></i><i class="pmx-pin pmx-pin-r"></i>
+          <p class="pmx-text">${this._esc(label)}</p>
+          <button type="button" class="pmx-btn" data-details="${this._esc(m.id)}">${st === 'ready' ? 'Claim' : 'Details'}</button>
         </div>
-        <div class="pm-final-name">${this._esc(it.name)}</div>
-        <div class="pm-final-desc">${this._esc(m.description)}</div>
-        ${st === 'locked' ? `<div class="pm-final-state"><span>Locked</span>${p.target - p.cur} mission${p.target - p.cur === 1 ? '' : 's'} left to claim</div>` : ''}
-        ${st === 'ready' ? `<div class="pm-final-state is-ready"><span>Panel Clear</span>Reward ready</div>` : ''}
-        <div class="pm-final-prog">
-          <div class="jjk-progress"><i style="width:${Math.round(p.cur / p.target * 100)}%"></i></div>
-          <span><b>${p.cur}</b> / ${p.target}</span>
-        </div>
-        ${action}
-      </aside>`;
+      </div>`;
   }
 
-  _render(keep) {
+  _render() {
     const modal = document.getElementById('panel-modal');
     if (!modal) return;
+    const panel = this.panels[this.page];
+    if (!panel) return;
     const snap = this._snapshot();
-    const board = this._boardMissions();
-    const fin = this._finalMission();
-    const cleared = board.filter(m => m.completed).length;
-    const ready = this.missions.filter(m => this._stateOf(m, snap) === 'ready').length;
+    const ps = this._panelState(panel);
+    const ready = panel.missions.filter(m => this._stateOf(m, snap) === 'ready').length + (ps.state === 'ready' ? 1 : 0);
+    const it = this._rewardItem(panel.reward);
 
-    modal.querySelector('#pm-summary').innerHTML = `
-      <div class="pm-summary-label"><span>Cleared</span><b>${cleared}</b><em>/ ${board.length}</em>
-        ${ready ? `<span class="pm-ready-chip">${ready} ready</span>` : ''}</div>
-      <div class="jjk-progress"><i style="width:${board.length ? Math.round(cleared / board.length * 100) : 0}%"></i></div>`;
-    const grid = modal.querySelector('#pm-grid');
-    grid.classList.toggle('no-anim', !!keep);
-    grid.innerHTML = board.map((m, i) => this._tileHTML(m, i, snap)).join('');
-    modal.querySelector('#pm-final-slot').innerHTML = this._finalHTML(fin, snap);
+    modal.querySelector('#pmx-left').innerHTML = `
+      ${this._bannerHTML(panel)}
+      <div class="pmx-controls">
+        <div class="pmx-prize is-${ps.state}">
+          <span class="pmx-prize-icon${it.kind === 'character' ? ' is-char' : ''}"><img src="${this._esc(it.icon)}" alt="" draggable="false" onerror="this.onerror=null;this.src='${this._esc(it.fallback || 'assets/icons/chestunopened.png')}'"></span>
+          <span class="pmx-prize-text"><small>Panel reward</small><b>${ps.done} / ${panel.missions.length}</b></span>
+          ${ps.state === 'ready' ? '<button type="button" class="pmx-btn pmx-prize-claim" data-panel-claim>Claim</button>'
+            : ps.state === 'claimed' ? '<span class="pmx-prize-done">Obtained</span>' : ''}
+        </div>
+        <button type="button" class="pmx-take${ready ? ' is-on' : ''}" data-take ${ready ? '' : 'disabled'}>Take All</button>
+        <button type="button" class="pmx-swap${this.showRewards ? ' is-on' : ''}" data-swap aria-label="Show ${this.showRewards ? 'missions' : 'rewards'}" title="Show ${this.showRewards ? 'missions' : 'rewards'}"><span></span></button>
+      </div>`;
+    modal.querySelector('#pmx-board').innerHTML = panel.missions.map((m, i) => this._tileHTML(m, i, panel, snap)).join('');
+    modal.querySelector('#pmx-board').classList.toggle('is-complete', ps.state !== 'locked');
+    modal.querySelector('#pmx-dots').innerHTML = this.panels.map((p, i) =>
+      `<button type="button" class="pmx-dot${i === this.page ? ' is-on' : ''}" data-page="${i}" aria-label="${this._esc(p.name)}"></button>`).join('');
+    modal.querySelector('#pmx-hint').textContent = ready
+      ? `${ready} reward${ready === 1 ? '' : 's'} ready. Tap Take All to collect.`
+      : 'Tap a panel to see details.';
   }
 
+  _details(id) {
+    const m = this.missions.find(x => x.id === id);
+    if (!m) return;
+    const snap = this._snapshot();
+    const st = this._stateOf(m, snap);
+    const p = this.getProgress(m, snap);
+    const it = this._rewardItem(m.reward);
+    this._closeDetails();
+    const html = `
+      <div class="pmx-details" id="pmx-details" role="dialog" aria-label="Mission details">
+        <div class="pmx-details-card">
+          <i class="pmx-pin pmx-pin-l"></i><i class="pmx-pin pmx-pin-r"></i>
+          <p class="pmx-details-title">${this._esc(m.title)}</p>
+          <div class="pmx-details-prog"><span style="width:${Math.round(p.cur / p.target * 100)}%"></span><b>${p.cur.toLocaleString()} / ${p.target.toLocaleString()}</b></div>
+          <div class="pmx-details-reward"><img src="${this._esc(it.icon)}" alt="" draggable="false"><span>${this._esc(it.name)} x${(it.qty || 0).toLocaleString()}</span></div>
+          <div class="pmx-details-actions">
+            ${st === 'ready' ? `<button type="button" class="pmx-btn" data-claim="${this._esc(m.id)}">Claim</button>` : ''}
+            <button type="button" class="pmx-btn pmx-btn-dark" data-close-details>${st === 'ready' ? 'Later' : 'Close'}</button>
+          </div>
+        </div>
+      </div>`;
+    document.getElementById('panel-modal').insertAdjacentHTML('beforeend', html);
+  }
+
+  _closeDetails() { document.getElementById('pmx-details')?.remove(); }
+
   openPanelModal() {
-    if (this.missions.length === 0) {
+    if (!this.panels.length) {
       this._notice('Panel Missions', 'No panel missions available.');
       return;
     }
     this._ensureStyles();
     this._loadCharacters();
+    document.getElementById('panel-modal')?.remove();
+    // open on the first panel that still has something to do
+    const open = this.panels.findIndex(p => this._panelState(p).state !== 'claimed');
+    this.page = open >= 0 ? open : 0;
 
-    const existingModal = document.getElementById('panel-modal');
-    if (existingModal) existingModal.remove();
-
-    const modalHTML = `
-      <div class="pm-modal" id="panel-modal" role="dialog" aria-modal="true" aria-label="Panel Missions">
-        <div class="pm-backdrop" data-close></div>
-        <section class="pm-shell">
-          <header class="pm-head">
-            <h2 class="jjk-title-plate pm-plate">Panel Missions</h2>
-            <div class="pm-panel-name"><span>Panel 1</span><small>Basic Training</small></div>
-            <div class="pm-summary" id="pm-summary"></div>
-            <button class="jjk-icon-btn pm-close" data-close aria-label="Close"><span class="pm-x" aria-hidden="true"></span></button>
-          </header>
-          <div class="pm-body">
-            <div class="pm-grid" id="pm-grid"></div>
-            <div class="pm-final-slot" id="pm-final-slot"></div>
+    document.body.insertAdjacentHTML('beforeend', `
+      <div class="pmx-modal" id="panel-modal" role="dialog" aria-modal="true" aria-label="Panel Mission">
+        <header class="pmx-head">
+          <button type="button" class="pmx-back" data-close>Back</button>
+          <h2 class="pmx-title">Panel Mission</h2>
+        </header>
+        <div class="pmx-body">
+          <div class="pmx-left" id="pmx-left"></div>
+          <div class="pmx-right">
+            <button type="button" class="pmx-arrow pmx-arrow-l" data-step="-1" aria-label="Previous panel"></button>
+            <div class="pmx-board" id="pmx-board"></div>
+            <button type="button" class="pmx-arrow pmx-arrow-r" data-step="1" aria-label="Next panel"></button>
+            <div class="pmx-dots" id="pmx-dots"></div>
           </div>
-        </section>
-      </div>`;
+        </div>
+        <footer class="pmx-hint" id="pmx-hint"></footer>
+      </div>`);
 
-    document.body.insertAdjacentHTML('beforeend', modalHTML);
     const modal = document.getElementById('panel-modal');
     modal.addEventListener('click', (e) => {
-      if (e.target.closest('[data-close]')) return this.closePanelModal();
-      const b = e.target.closest('[data-claim]');
-      if (b && !b.disabled) this.completeMission(b.getAttribute('data-claim'));
+      const t = e.target;
+      if (t.closest('[data-close]')) return this.closePanelModal();
+      if (t.closest('[data-close-details]') || t.id === 'pmx-details') return this._closeDetails();
+      const claim = t.closest('[data-claim]');
+      if (claim) return this.completeMission(claim.getAttribute('data-claim'));
+      const det = t.closest('[data-details]');
+      if (det) {
+        const id = det.getAttribute('data-details');
+        const m = this.missions.find(x => x.id === id);
+        return m && this._stateOf(m) === 'ready' ? this.completeMission(id) : this._details(id);
+      }
+      if (t.closest('[data-take]')) return this.takeAll();
+      if (t.closest('[data-panel-claim]')) return this.claimPanel();
+      if (t.closest('[data-swap]')) { this.showRewards = !this.showRewards; return this._render(); }
+      const step = t.closest('[data-step]');
+      if (step) { this.page = (this.page + Number(step.getAttribute('data-step')) + this.panels.length) % this.panels.length; return this._render(); }
+      const pg = t.closest('[data-page]');
+      if (pg) { this.page = Number(pg.getAttribute('data-page')); return this._render(); }
     });
-    this._render(false);
+    this._render();
 
     if (!this._escBound) {
       this._escBound = true;
       document.addEventListener('keydown', (e) => {
         if (e.key !== 'Escape' || !document.getElementById('panel-modal')) return;
         if (document.getElementById('reward-reveal') || document.getElementById('custom-alert-modal')) return;
+        if (document.getElementById('pmx-details')) return this._closeDetails();
         this.closePanelModal();
       });
     }
@@ -462,11 +501,7 @@ class PanelMissions {
     setTimeout(() => modal.remove(), 160);
   }
 
-  // Kept for backwards compatibility (styles now live in css/panel-missions.css)
   injectPanelStyles() { this._ensureStyles(); }
 }
 
-// Global instance
 window.PanelMissions = new PanelMissions();
-
-console.log('✅ Panel Missions module loaded');
