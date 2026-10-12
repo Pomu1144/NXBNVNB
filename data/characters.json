@@ -33292,7 +33292,11 @@
    },
    "6S": {
     "portrait": "assets/characters/sasuke_303/portrait_6S.webp",
-    "full": "assets/characters/sasuke_303/full_6S.webp"
+    "full": "assets/characters/sasuke_303/full_6S.webp",
+    "motion": {
+     "video": "assets/characters/sasuke_303/motion_6S.mp4",
+     "videoWebm": "assets/characters/sasuke_303/motion_6S.webm"
+    }
    }
   },
   "statsBase": {
@@ -33400,7 +33404,11 @@
   "artByTier": {
    "6S": {
     "portrait": "assets/characters/sasuke_303/portrait_6S.webp",
-    "full": "assets/characters/sasuke_303/full_6S.webp"
+    "full": "assets/characters/sasuke_303/full_6S.webp",
+    "motion": {
+     "video": "assets/characters/sasuke_303/motion_6S.mp4",
+     "videoWebm": "assets/characters/sasuke_303/motion_6S.webm"
+    }
    }
   },
   "statsBase": {
