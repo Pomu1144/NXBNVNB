@@ -158,6 +158,48 @@
     window.addEventListener('touchend', onFirstTouch, true);
   }
 
+  /* ---- Keyboard: put the page back where it was once the keyboard closes ----
+     iOS scrolls the whole view to show a focused text box and doesn't always
+     scroll it back when the keyboard closes. The page is then drawn offset
+     (a black band at the top) while taps still land where things used to be.
+     Remember the scroll position when a text box takes focus and restore it
+     after the last one loses focus. */
+  if (isMobile) {
+    var typing = function (el) {
+      if (!el || !el.tagName) return false;
+      var t = el.tagName;
+      if (t === 'TEXTAREA' || el.isContentEditable) return true;
+      if (t !== 'INPUT') return false;
+      return !/^(button|checkbox|radio|range|submit|reset|file|color|image|hidden)$/i.test(el.type || '');
+    };
+    var kbSaved = null, kbTimers = [];
+    var kbPut = function (pos) {
+      window.scrollTo(pos.x, pos.y);
+      // the scroller under <html>/<body> can be left offset too
+      var se = document.scrollingElement;
+      if (se) { se.scrollLeft = pos.x; se.scrollTop = pos.y; }
+    };
+    var kbClear = function () { kbTimers.forEach(clearTimeout); kbTimers = []; };
+    document.addEventListener('focusin', function (e) {
+      if (!typing(e.target)) return;
+      kbClear();
+      if (!kbSaved) kbSaved = { x: window.scrollX || 0, y: window.scrollY || 0 };
+    }, true);
+    document.addEventListener('focusout', function (e) {
+      if (!typing(e.target) || !kbSaved) return;
+      var pos = kbSaved;
+      kbClear();
+      // once right away, again after the keyboard's close animation
+      [60, 450].forEach(function (ms, i) {
+        kbTimers.push(setTimeout(function () {
+          if (typing(document.activeElement)) return;   // moved to another text box
+          kbPut(pos);
+          if (i === 1) { kbSaved = null; kbTimers = []; update(); }
+        }, ms));
+      });
+    }, true);
+  }
+
   window.BlazingDevice = {
     isMobile: isMobile,
     detected: detected,
