@@ -116883,7 +116883,11 @@
    },
    "6S": {
     "portrait": "assets/characters/kaguya_2043/portrait_6S.webp",
-    "full": "assets/characters/kaguya_2043/full_6S.webp"
+    "full": "assets/characters/kaguya_2043/full_6S.webp",
+    "motion": {
+     "video": "assets/characters/kaguya_2043/motion_6S.mp4",
+     "videoWebm": "assets/characters/kaguya_2043/motion_6S.webm"
+    }
    }
   },
   "statsBase": {
@@ -116993,7 +116997,11 @@
   "artByTier": {
    "6S": {
     "portrait": "assets/characters/kaguya_2043/portrait_6S.webp",
-    "full": "assets/characters/kaguya_2043/full_6S.webp"
+    "full": "assets/characters/kaguya_2043/full_6S.webp",
+    "motion": {
+     "video": "assets/characters/kaguya_2043/motion_6S.mp4",
+     "videoWebm": "assets/characters/kaguya_2043/motion_6S.webm"
+    }
    }
   },
   "statsBase": {
