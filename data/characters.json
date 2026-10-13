@@ -118783,7 +118783,11 @@
    },
    "6S": {
     "portrait": "assets/characters/hashirama_2058/portrait_6S.webp",
-    "full": "assets/characters/hashirama_2058/full_6S.webp"
+    "full": "assets/characters/hashirama_2058/full_6S.webp",
+    "motion": {
+     "video": "assets/characters/hashirama_2058/motion_6S.mp4",
+     "videoWebm": "assets/characters/hashirama_2058/motion_6S.webm"
+    }
    }
   },
   "statsBase": {
@@ -118896,7 +118900,11 @@
   "artByTier": {
    "6S": {
     "portrait": "assets/characters/hashirama_2058/portrait_6S.webp",
-    "full": "assets/characters/hashirama_2058/full_6S.webp"
+    "full": "assets/characters/hashirama_2058/full_6S.webp",
+    "motion": {
+     "video": "assets/characters/hashirama_2058/motion_6S.mp4",
+     "videoWebm": "assets/characters/hashirama_2058/motion_6S.webm"
+    }
    }
   },
   "statsBase": {
