@@ -40,8 +40,8 @@
   // gold sakura framing the top and bottom edges, as on the awakened art screen
   function spawnFrameFlowers(layer, reduced) {
     const spots = [];
-    // tall screens get bigger flowers so the bands read as in the original
-    const k = global.innerHeight > global.innerWidth ? 1.55 : 1;
+    // sizes are in vmin (the screen height in landscape): scaled up so the bands read as in the original
+    const k = global.innerHeight > global.innerWidth ? 1.55 : 1.45;
     // [x%, y%, size vmin]: big ones in the corners, smaller ones between
     const top = [[4, 4, 34], [24, -2, 22], [44, 6, 16], [63, -1, 24], [84, 6, 30], [100, 0, 20], [34, 12, 11], [74, 14, 12]];
     const bot = [[-2, 92, 38], [20, 98, 20], [42, 90, 14], [60, 99, 26], [80, 92, 22], [98, 98, 30], [30, 84, 10], [70, 85, 11]];

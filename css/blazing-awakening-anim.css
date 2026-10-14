@@ -9,17 +9,21 @@
 
 /* the unit's art */
 .ba-art {
-  position: absolute; inset: 9% 0; display: grid; place-items: center;
+  position: absolute; inset: 0; display: grid; place-items: center;
   transform: scale(1.06); transition: transform 3.8s cubic-bezier(0.2, 0.7, 0.3, 1), filter 0.4s ease;
   filter: brightness(0.55) saturate(0.8);
 }
 .ba-overlay.is-in .ba-art { transform: scale(1); }
 .ba-art.is-new { filter: none; }
-.ba-art img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
+/* the game is landscape: the art fills the screen, centered a little high so the face clears the logo */
+.ba-art img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 32%; }
+.ba-art::after {   /* darken the top and bottom so the gold flowers stand out */
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.75) 0%, transparent 24%, transparent 72%, rgba(0, 0, 0, 0.8) 100%);
+}
 /* tall screens: fill the middle band with the art, as the game does */
 @media (orientation: portrait) {
   .ba-art { inset: 14% 0; }
-  .ba-art img { object-fit: cover; }
 }
 
 /* white glow behind the top and bottom flower bands */
@@ -39,7 +43,7 @@
 
 /* center group: brush stroke, logo, gold bits */
 .ba-center {
-  position: absolute; left: 50%; top: 56%; width: min(104vw, 1300px); aspect-ratio: 4 / 1;
+  position: absolute; left: 50%; top: 60%; width: min(104vw, 1300px); aspect-ratio: 4 / 1;
   transform: translate(-50%, -50%) rotate(-7deg); pointer-events: none;
 }
 
@@ -98,8 +102,8 @@
 
 /* phones in landscape: keep the logo inside the short screen */
 @media (orientation: landscape) and (max-height: 500px) {
-  .ba-center { width: min(86vw, 900px); top: 54%; }
-  .ba-glow { height: 24%; }
+  .ba-center { width: min(80vw, 860px); top: 64%; }
+  .ba-glow { height: 22%; }
 }
 
 @media (prefers-reduced-motion: reduce) {
