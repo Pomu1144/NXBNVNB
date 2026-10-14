@@ -207,7 +207,7 @@ body.page-teams {
   gap: 6px;
 }
 
-.slot-card .portrait img {
+.slot-card .portrait img:not(.ultimate-badge) {
   width: 110px;
   height: 110px;
   object-fit: cover;
@@ -220,7 +220,7 @@ body.page-teams {
 
 /* ---------- 7-Star Lightning Effect (formation slot portraits) ---------- */
 .slot-card.is-7star .portrait { overflow: visible; }
-.slot-card.is-7star .portrait img {
+.slot-card.is-7star .portrait img:not(.ultimate-badge) {
   border-color: rgba(230,120,220,0.6);
   box-shadow: 0 0 12px rgba(220,90,200,0.45), 0 2px 8px rgba(0,0,0,0.4);
 }
@@ -1508,7 +1508,7 @@ body.page-teams .char-selection.drop-remove {
     min-height: 0; padding: 6px; gap: 6px;
   }
   .team-workspace .slot-card .portrait { width: 100%; padding-top: 4px; gap: 4px; }
-  .team-workspace .slot-card .portrait img { width: 96px; height: 96px; }
+  .team-workspace .slot-card .portrait img:not(.ultimate-badge) { width: 96px; height: 96px; }
   .team-workspace .slot-card.is-7star .seven-star-fx { width: 112px; height: 112px; top: -4px; }
   .team-workspace .slot-card .portrait .lv-badge { width: auto; padding: 3px 12px; }
   .team-workspace .slot-card .portrait .ultimate-badge { bottom: 26px; right: calc(50% - 50px); width: 26px; height: 26px; }
@@ -1581,7 +1581,8 @@ html.is-mobile.is-landscape.is-compact body.page-teams .slot-row {
 html.is-mobile.is-landscape.is-compact body.page-teams .slot-card .rail { display: none; }
 html.is-mobile.is-landscape.is-compact body.page-teams .slot-card { min-height: 0; padding: 4px; }
 html.is-mobile.is-landscape.is-compact body.page-teams .slot-card .portrait { width: 100%; padding-top: 2px; }
-html.is-mobile.is-landscape.is-compact body.page-teams .slot-card .portrait img { width: 100%; height: auto; aspect-ratio: 1; max-width: 90px; }
+html.is-mobile.is-landscape.is-compact body.page-teams .slot-card .portrait img:not(.ultimate-badge) { width: 100%; height: auto; aspect-ratio: 1; max-width: 90px; }
+html.is-mobile.is-landscape.is-compact body.page-teams .slot-card .portrait .ultimate-badge { width: 20px; height: 20px; bottom: 16px; right: calc(50% - 40px); }
 html.is-mobile.is-landscape.is-compact body.page-teams .slot-card .portrait .lv-badge { width: auto; font-size: 9px; padding: 2px 6px; }
 html.is-mobile.is-landscape.is-compact body.page-teams .team-slot { min-height: 104px !important; }
 html.is-mobile.is-landscape.is-compact body.page-teams .commander-slot { min-height: 104px !important; }

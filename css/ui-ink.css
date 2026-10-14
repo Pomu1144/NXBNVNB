@@ -397,7 +397,7 @@ html[data-skin="ink"] .char-slot.is-maxed {
 }
 html[data-skin="ink"] .char-slot.is-7star:hover,
 html[data-skin="ink"] .char-slot.is-maxed:hover { border-color: rgba(226, 204, 150, 0.85); }
-html[data-skin="ink"] .slot-card.is-7star .portrait img { border-color: rgba(201, 162, 78, 0.55); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.45); }
+html[data-skin="ink"] .slot-card.is-7star .portrait img:not(.ultimate-badge) { border-color: rgba(201, 162, 78, 0.55); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.45); }
 /* sit the brush frame just outside the card */
 html[data-skin="ink"] .char-slot .seven-star-fx { inset: -9px; width: calc(100% + 18px); height: calc(100% + 18px); border-radius: 0; }
 html[data-skin="ink"] .seven-star-fx.aura-fx > b {
