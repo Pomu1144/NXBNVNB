@@ -94,7 +94,7 @@ html[data-ui="glass"] body.page-teams .slot-empty {
   color: var(--g-faint);
 }
 html[data-ui="glass"] body.page-teams .slot-card { background: transparent; border-radius: var(--g-radius-sm); }
-html[data-ui="glass"] body.page-teams .slot-card .portrait img {
+html[data-ui="glass"] body.page-teams .slot-card .portrait img:not(.ultimate-badge) {
   border: 0; border-radius: 6px;
   box-shadow: inset 0 0 0 1px var(--g-line), 0 2px 8px rgba(0, 0, 0, 0.45);
 }
