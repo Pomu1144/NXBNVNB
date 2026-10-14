@@ -77118,7 +77118,7 @@
    },
    "6S": {
     "portrait": "assets/characters/sasuke_662/portrait_6S.webp",
-    "full": "assets/characters/sasuke_662/full_6S.gif"
+    "full": "assets/characters/sasuke_662/full_6S.webp"
    }
   },
   "statsBase": {
@@ -77225,13 +77225,13 @@
   "starMaxCode": "6S",
   "lbEligible": false,
   "portrait": "assets/characters/sasuke_662/portrait_6S.webp",
-  "full": "assets/characters/sasuke_662/full_6S.gif",
+  "full": "assets/characters/sasuke_662/full_6S.webp",
   "ultimateAnimation": null,
   "secretAnimation": null,
   "artByTier": {
    "6S": {
     "portrait": "assets/characters/sasuke_662/portrait_6S.webp",
-    "full": "assets/characters/sasuke_662/full_6S.gif"
+    "full": "assets/characters/sasuke_662/full_6S.webp"
    }
   },
   "statsBase": {
