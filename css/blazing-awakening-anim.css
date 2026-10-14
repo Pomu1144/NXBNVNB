@@ -1,0 +1,110 @@
+/* Blazing Awakening cut-in (js/blazing-awakening-anim.js) */
+.ba-overlay {
+  position: fixed; inset: 0; z-index: 10000; overflow: hidden;
+  background: #000; opacity: 0; transition: opacity 0.35s ease;
+  cursor: pointer; -webkit-tap-highlight-color: transparent;
+}
+.ba-overlay.is-in { opacity: 1; }
+.ba-overlay.is-out { opacity: 0; transition-duration: 0.45s; }
+
+/* the unit's art */
+.ba-art {
+  position: absolute; inset: 9% 0; display: grid; place-items: center;
+  transform: scale(1.06); transition: transform 3.8s cubic-bezier(0.2, 0.7, 0.3, 1), filter 0.4s ease;
+  filter: brightness(0.55) saturate(0.8);
+}
+.ba-overlay.is-in .ba-art { transform: scale(1); }
+.ba-art.is-new { filter: none; }
+.ba-art img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
+/* tall screens: fill the middle band with the art, as the game does */
+@media (orientation: portrait) {
+  .ba-art { inset: 14% 0; }
+  .ba-art img { object-fit: cover; }
+}
+
+/* white glow behind the top and bottom flower bands */
+.ba-glow {
+  position: absolute; left: -10%; right: -10%; height: 20%; pointer-events: none;
+  background: radial-gradient(ellipse 70% 100% at 50% 50%, #fffdf6 0%, rgba(255, 250, 235, 0.95) 35%, rgba(255, 232, 180, 0.5) 60%, transparent 80%);
+  opacity: 0; transform: scaleY(0.3);
+  transition: opacity 0.5s ease 0.15s, transform 0.6s cubic-bezier(0.2, 0.9, 0.3, 1) 0.15s;
+}
+.ba-glow--top { top: -6%; }
+.ba-glow--bot { bottom: -6%; }
+.ba-overlay.is-in .ba-glow { opacity: 1; transform: scaleY(1); }
+
+.ba-flowers, .ba-petals { position: absolute; inset: 0; pointer-events: none; }
+.ba-flower { position: absolute; height: auto; opacity: 0; will-change: transform; filter: drop-shadow(0 0 6px rgba(255, 220, 120, 0.35)); }
+.ba-petal { position: absolute; top: 0; height: auto; opacity: 0; will-change: transform; }
+
+/* center group: brush stroke, logo, gold bits */
+.ba-center {
+  position: absolute; left: 50%; top: 56%; width: min(104vw, 1300px); aspect-ratio: 4 / 1;
+  transform: translate(-50%, -50%) rotate(-7deg); pointer-events: none;
+}
+
+/* the red brush stroke behind the logo */
+.ba-swoosh {
+  position: absolute; left: -6%; right: -6%; top: 26%; height: 52%;
+  background:
+    repeating-linear-gradient(178deg, rgba(0, 0, 0, 0.22) 0 2px, transparent 2px 7px),
+    linear-gradient(90deg, transparent 0%, #5a0000 8%, #c40d0d 30%, #ff2a1a 55%, #d11010 78%, rgba(120, 0, 0, 0.9) 92%, transparent 100%);
+  border-radius: 50% 40% 55% 45% / 60% 45% 55% 40%;
+  filter: drop-shadow(0 0 12px rgba(255, 40, 20, 0.6));
+  -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 22%, #000 70%, transparent 100%);
+          mask-image: linear-gradient(180deg, transparent 0%, #000 22%, #000 70%, transparent 100%);
+  clip-path: inset(0 100% 0 0);
+}
+/* a thin gold-white streak trailing under the stroke */
+.ba-streak {
+  position: absolute; left: 4%; right: 2%; top: 70%; height: 9%;
+  background: linear-gradient(90deg, transparent, rgba(255, 246, 210, 0.95) 30%, rgba(255, 210, 90, 0.9) 70%, transparent);
+  border-radius: 50%; filter: blur(2px);
+  clip-path: inset(0 100% 0 0);
+}
+.ba-overlay.is-swoosh .ba-swoosh { animation: baSweep 0.42s cubic-bezier(0.5, 0, 0.2, 1) forwards; }
+.ba-overlay.is-swoosh .ba-streak { animation: baSweep 0.5s cubic-bezier(0.5, 0, 0.2, 1) 0.1s forwards; }
+@keyframes baSweep { to { clip-path: inset(0 0 0 0); } }
+
+.ba-logo {
+  position: absolute; left: 50%; top: 50%; width: 88%; height: auto;
+  transform: translate(-50%, -50%) scale(1.9); opacity: 0;
+  filter: drop-shadow(0 0 3px rgba(255, 30, 20, 0.95)) drop-shadow(0 0 14px rgba(230, 0, 0, 0.7));
+}
+.ba-overlay.is-logo .ba-logo { animation: baSlam 0.5s cubic-bezier(0.2, 1.4, 0.4, 1) forwards, baPulse 2.4s ease-in-out 0.6s infinite; }
+@keyframes baSlam {
+  0% { transform: translate(-50%, -50%) scale(1.9); opacity: 0; }
+  45% { opacity: 1; }
+  100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+}
+@keyframes baPulse {
+  0%, 100% { filter: drop-shadow(0 0 3px rgba(255, 30, 20, 0.95)) drop-shadow(0 0 14px rgba(230, 0, 0, 0.7)); }
+  50% { filter: drop-shadow(0 0 4px rgba(255, 60, 30, 1)) drop-shadow(0 0 22px rgba(255, 20, 0, 0.85)); }
+}
+
+.ba-bits { position: absolute; left: 50%; top: 50%; width: 0; height: 0; }
+.ba-bit {
+  position: absolute; left: 0; top: 0; opacity: 0;
+  background: linear-gradient(135deg, #fff3b8, #f2c14e 45%, #b9801c);
+  box-shadow: 0 0 6px rgba(255, 210, 90, 0.7);
+}
+
+.ba-flash {
+  position: absolute; inset: 0; pointer-events: none; opacity: 0;
+  background: radial-gradient(circle at 50% 56%, #fff 0%, rgba(255, 240, 200, 0.85) 35%, rgba(255, 200, 120, 0) 75%);
+}
+.ba-flash.is-on { animation: baFlash 0.6s ease-out forwards; }
+@keyframes baFlash { 0% { opacity: 0; } 18% { opacity: 1; } 100% { opacity: 0; } }
+
+/* phones in landscape: keep the logo inside the short screen */
+@media (orientation: landscape) and (max-height: 500px) {
+  .ba-center { width: min(86vw, 900px); top: 54%; }
+  .ba-glow { height: 24%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ba-art, .ba-glow { transition: none; }
+  .ba-swoosh, .ba-streak { clip-path: none; }
+  .ba-overlay.is-logo .ba-logo { animation: none; transform: translate(-50%, -50%) scale(1); opacity: 1; }
+  .ba-flash.is-on { animation: none; }
+}
