@@ -106,7 +106,7 @@ html[data-skin="ink"] body.page-teams .slot-empty::before {
   content: '空'; font-family: var(--ink-jp); font-size: 22px; letter-spacing: 0; color: rgba(241, 235, 220, 0.16);
 }
 html[data-skin="ink"] body.page-teams .slot-card { border-radius: 0; }
-html[data-skin="ink"] body.page-teams .slot-card .portrait img { border-radius: 0; box-shadow: inset 0 0 0 1px var(--g-line), 0 4px 12px rgba(0, 0, 0, 0.5); }
+html[data-skin="ink"] body.page-teams .slot-card .portrait img:not(.ultimate-badge) { border-radius: 0; box-shadow: inset 0 0 0 1px var(--g-line), 0 4px 12px rgba(0, 0, 0, 0.5); }
 html[data-skin="ink"] body.page-teams .slot-card .portrait .lv-badge {
   border-radius: 0; background: rgba(8, 8, 9, 0.8); box-shadow: inset 0 1px 0 var(--g-line-2);
   font-family: var(--ink-cinzel); letter-spacing: 0.18em;
@@ -316,7 +316,7 @@ html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compa
   html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-teams .team-workspace .team-slot { min-height: 0 !important; height: clamp(196px, calc((100dvh - 330px) / 2), 236px); }
   html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-teams .team-workspace .slot-card { height: 100%; box-sizing: border-box; padding: 4px 5px; gap: 3px; overflow: hidden; }
   html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-teams .team-workspace .slot-card .portrait { padding-top: 2px; gap: 2px; }
-  html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-teams .team-workspace .slot-card .portrait img { width: 78px; height: 78px; }
+  html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-teams .team-workspace .slot-card .portrait img:not(.ultimate-badge) { width: 78px; height: 78px; }
   html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-teams .team-workspace .slot-card.is-7star .seven-star-fx { width: 92px; height: 92px; top: -5px; }
   html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-teams .team-workspace .slot-card .portrait .ultimate-badge { bottom: 20px; right: calc(50% - 44px); width: 22px; height: 22px; }
   html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-teams .team-workspace .slot-card .portrait .lv-badge { padding: 1px 10px; font-size: 9.5px; }
@@ -350,10 +350,12 @@ html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compa
 }
 html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compact body.page-teams .formation-section .slot-card { height: 100%; box-sizing: border-box; padding: 3px; justify-content: center; }
 html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compact body.page-teams .formation-section .slot-card .portrait { height: 100%; padding: 0; gap: 2px; justify-content: center; }
-html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compact body.page-teams .formation-section .slot-card .portrait img {
+html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compact body.page-teams .formation-section .slot-card .portrait img:not(.ultimate-badge) {
   width: auto; height: calc(100% - 16px); max-width: 100%; aspect-ratio: 1;
 }
 html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compact body.page-teams .formation-section .slot-card.is-7star .seven-star-fx { display: none; }
+/* the Ultimate Max seal stays a small corner stamp, not portrait-sized */
+html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compact body.page-teams .formation-section .slot-card .portrait .ultimate-badge { width: 18px; height: 18px; bottom: 14px; right: 4px; }
 html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compact body.page-teams .formation-section .slot-card .portrait .lv-badge { font-size: 8px; padding: 1px 6px; line-height: 12px; }
 html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compact body.page-teams .formation-section .slot-card .slot-link,
 html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compact body.page-teams .formation-section .slot-remove { width: 18px; height: 18px; font-size: 11px; }
@@ -366,7 +368,7 @@ html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compa
   html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-teams:has(#prebattle-footer) .team-workspace .team-slot {
     height: clamp(200px, calc((100dvh - 380px) / 2), 236px);
   }
-  html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-teams:has(#prebattle-footer) .team-workspace .slot-card .portrait img { width: 64px; height: 64px; }
+  html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-teams:has(#prebattle-footer) .team-workspace .slot-card .portrait img:not(.ultimate-badge) { width: 64px; height: 64px; }
   html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-teams:has(#prebattle-footer) .team-workspace .slot-card.is-7star .seven-star-fx { width: 76px; height: 76px; top: -4px; }
   html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-teams:has(#prebattle-footer) .team-workspace .rail .stat { line-height: 11.5px; }
 }
