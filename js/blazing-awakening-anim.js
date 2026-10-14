@@ -4,7 +4,8 @@
 //     edges over a white glow
 //   - a red brush stroke sweeping across, then the "Blazing Awakening" brush logo slamming in
 //     with a flash and gold paper bits, while gold petals drift down
-// Sprites (assets/ui/blazing/) were cut from in-game screenshots.
+// Sprites (assets/ui/blazing/): the logo, gold_flower and gold_petal were cut from in-game
+// screenshots; flower_1-9 and petal_1-8 are Canva renders made in the same gold-leaf style.
 // Same call shape as AwakeningAnimation.play, so js/characters.js can swap between them.
 // Tap to skip. css/blazing-awakening-anim.css holds the look.
 
@@ -13,8 +14,9 @@
 
   const ASSET = "assets/ui/blazing/";
   const LOGO = ASSET + "logo.webp";
-  const FLOWER = ASSET + "gold_flower.webp";
-  const PETAL = ASSET + "gold_petal.webp";
+  const range = (n, name) => Array.from({ length: n }, (_, i) => `${ASSET}${name}_${i + 1}.webp`);
+  const FLOWERS = [ASSET + "gold_flower.webp", ...range(9, "flower")];
+  const PETALS = [ASSET + "gold_petal.webp", ...range(8, "petal")];
 
   const rand = (a, b) => a + Math.random() * (b - a);
   const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
@@ -48,7 +50,7 @@
 
     spots.forEach((s, i) => {
       const f = el("img", "ba-flower", layer);
-      f.src = FLOWER;
+      f.src = FLOWERS[i % FLOWERS.length];
       f.alt = "";
       f.style.left = s.x + "%";
       f.style.top = s.y + "%";
@@ -80,7 +82,7 @@
   function spawnPetals(layer, count) {
     for (let i = 0; i < count; i++) {
       const p = el("img", "ba-petal", layer);
-      p.src = PETAL;
+      p.src = pick(PETALS);
       p.alt = "";
       const size = rand(2.2, 5.5);
       p.style.width = size + "vmin";
@@ -121,7 +123,7 @@
    */
   async function play(oldName, newName, oldArtUrl, newArtUrl, onComplete) {
     const reduced = global.matchMedia && global.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    await Promise.all([preload(oldArtUrl), preload(newArtUrl), preload(LOGO), preload(FLOWER), preload(PETAL)]);
+    await Promise.all([preload(oldArtUrl), preload(newArtUrl), preload(LOGO), ...FLOWERS.map(preload), ...PETALS.map(preload)]);
 
     const ov = el("div", "ba-overlay", document.body);
     ov.setAttribute("role", "dialog");
