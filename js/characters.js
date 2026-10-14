@@ -1480,6 +1480,7 @@
 
       // Use new Awakening system if available
       let res;
+      const preTier = inst.tierCode || maxTier(c);   // art for the Blazing Awakening cut-in
       if (hasAwakening) {
         const canAfford = await window.Awakening.canAffordAwaken(inst, c);
         if (!canAfford) {
@@ -1556,7 +1557,9 @@
           const currentUid = inst.uid;
 
           // 🚀 1. Play animation FIRST (modal stays open, animation plays as overlay)
-          if (window.AwakeningAnimation && typeof window.AwakeningAnimation.play === 'function') {
+          // Blazing Awakening (→6SB) gets its own cut-in (js/blazing-awakening-anim.js)
+          const awakenAnim = (res.tier === "6SB" && window.BlazingAwakeningAnimation) ? window.BlazingAwakeningAnimation : window.AwakeningAnimation;
+          if (awakenAnim && typeof awakenAnim.play === 'function') {
             try {
               console.log("[UI Debug] Playing awakening animation (modal stays open)...");
               console.log("[UI Debug] Old character:", oldCharacterName, "→ New character:", newCharacter.name);
@@ -1564,7 +1567,7 @@
               console.log("[UI Debug] New artwork:", newArtworkUrl);
 
               // Play animation - modal stays open during animation
-              window.AwakeningAnimation.play(
+              awakenAnim.play(
                 oldCharacterName,
                 newCharacter.name,
                 oldArtworkUrl,
@@ -1645,6 +1648,8 @@
 
         // *** FORCE COMPLETE MODAL REFRESH VIA AJAX (same as transformation path) ***
         const currentUid = inst.uid;
+        const isBlazing = res.tier === "6SB";
+        const refreshAfterAwaken = () => {
         console.log("[UI Debug] Forcing complete modal refresh for UID:", currentUid);
 
         // Close current modal
@@ -1667,11 +1672,21 @@
             });
           }
 
-          // Show success message
-          if (window.ModalManager) {
+          // Show success message (the Blazing Awakening cut-in already says it)
+          if (window.ModalManager && !isBlazing) {
             window.ModalManager.showInfo(`Successfully awakened ${c.name} to ${starsFromTier(res.tier)} stars!`);
           }
         }, 100); // Small delay to let modal close animation complete
+        };
+
+        if (isBlazing && window.BlazingAwakeningAnimation) {
+          const oldArt = resolveTierArt(c, preTier);
+          const newArt = resolveTierArt(c, res.tier);
+          window.BlazingAwakeningAnimation.play(c.name, c.name,
+            safeStr(oldArt.full, oldArt.portrait), safeStr(newArt.full, newArt.portrait), refreshAfterAwaken);
+        } else {
+          refreshAfterAwaken();
+        }
       }
     };
 
