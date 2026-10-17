@@ -15,6 +15,13 @@
  * +10%), higher ranks (Hard/Extreme/S/SS), and bosses on top. The data's own
  * stats stay as a floor, so a hand-tuned enemy is never made weaker.
  *
+ * SS is built to challenge a full team of maxed 7★ units (CFG.SS): the
+ * reference unit is never weaker than a max-level 7★ in max gear, and enemy
+ * HP assumes jutsu / ultimate damage rather than normal attacks, so a grunt
+ * survives a crit jutsu and a boss takes several ultimates. Their attack is
+ * already sized to KO such a unit in a couple of boss hits, so it keeps the
+ * normal counts.
+ *
  * Only story/event missions are touched: Arena and Ninja Road size their
  * rivals themselves, and giant bosses keep data/bosses.json.
  *
@@ -45,6 +52,18 @@
     RANK: { D: 0.85, C: 1, B: 1.12, A: 1.25, S: 1.4, SS: 1.6 },
     // Bosses get the rank twice over on HP.
     BOSS_RANK_HP_EXP: 1.5,
+    // SS: built to challenge a full team of maxed 7★ units.
+    SS: {
+      // Max-level 7★ (average statsMax of the 7★ cards: ~54k HP, ~5k ATK)
+      // in max Red Shiny gear (+10.8k HP, +630 ATK). Used when the rank's
+      // recommended power describes a weaker unit.
+      FLOOR_UNIT: { hp: 65000, atk: 5600, def: 400 },
+      // A 7★ jutsu is ~5-7x ATK and an ultimate up to 20x, often critting,
+      // so these count in normal attacks: a grunt survives a crit jutsu, a
+      // boss takes several ultimates.
+      GRUNT_HITS_TO_KILL: 10,
+      BOSS_HITS_TO_KILL: 60,
+    },
   };
 
   function statPower(power) {
@@ -65,6 +84,17 @@
     return !!(stageData?.boss && id && stageData.boss === id && ctx.waveIndex === ctx.waveCount - 1);
   }
 
+  /** Reference unit and hit counts for a mission rank. */
+  function rankTuning(rank, power) {
+    const ref = referenceUnit(power);
+    if (rank !== 'SS') return { ref, hits: CFG };
+    const f = CFG.SS.FLOOR_UNIT;
+    return {
+      ref: { hp: Math.max(ref.hp, f.hp), atk: Math.max(ref.atk, f.atk), def: Math.max(ref.def, f.def) },
+      hits: { ...CFG, ...CFG.SS },
+    };
+  }
+
   /**
    * Target stats for one enemy of the current mission wave, or null when the
    * battle isn't a scaled mission. Pure: returns a new stats object.
@@ -72,7 +102,7 @@
   function targetStats(mission, rank, base, enemyData, ctx) {
     const power = mission?.power?.[rank];
     if (!(power > 0)) return null;
-    const ref = referenceUnit(power);
+    const { ref, hits } = rankTuning(rank, power);
     const stageT = ctx.stageCount > 1 ? ctx.stageIndex / (ctx.stageCount - 1) : 0;
     const waveT = ctx.waveCount > 1 ? ctx.waveIndex / (ctx.waveCount - 1) : 0;
     const ramp = 1 + CFG.STAGE_RAMP * stageT + CFG.WAVE_RAMP * waveT;
@@ -81,11 +111,11 @@
     const boss = isBossEntry(enemyData, base, ctx, stageData);
 
     const hp = boss
-      ? ref.atk * CFG.BOSS_HITS_TO_KILL * ramp * Math.pow(r, CFG.BOSS_RANK_HP_EXP)
-      : ref.atk * CFG.GRUNT_HITS_TO_KILL * ramp * r;
+      ? ref.atk * hits.BOSS_HITS_TO_KILL * ramp * Math.pow(r, CFG.BOSS_RANK_HP_EXP)
+      : ref.atk * hits.GRUNT_HITS_TO_KILL * ramp * r;
     const atk = boss
-      ? (ref.hp / CFG.BOSS_HITS_TO_KO) * ramp * r
-      : (ref.hp / CFG.GRUNT_HITS_TO_KO) * ramp * r;
+      ? (ref.hp / hits.BOSS_HITS_TO_KO) * ramp * r
+      : (ref.hp / hits.GRUNT_HITS_TO_KO) * ramp * r;
     return { hp: Math.round(hp), atk: Math.round(atk), def: Math.round(ref.def * r), boss };
   }
 
@@ -101,7 +131,7 @@
     return stats;
   }
 
-  const api = { CFG, statPower, referenceUnit, targetStats, enemyStats };
+  const api = { CFG, statPower, referenceUnit, rankTuning, targetStats, enemyStats };
 
   // Enraged mission bosses (battle-combat.js AI) pulse red.
   if (typeof document !== 'undefined') {
