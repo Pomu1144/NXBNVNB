@@ -429,6 +429,16 @@
       if (!bm.isArena || bm._arenaResultRecorded) return bm._arenaOutcome || null;
       bm._arenaResultRecorded = true;
 
+      // Kage League match: League Points instead of arena stars
+      if (bm.isKageLeague && window.KageLeague) {
+        const out = window.KageLeague.applyResult(bm.kageLeagueMatch, isVictory) || {};
+        if (isVictory && window.ExpRewards) {
+          try { window.ExpRewards.onBattleWin({}); } catch (e) {}
+        }
+        bm._arenaOutcome = { kage: true, ...out };
+        return bm._arenaOutcome;
+      }
+
       let opponent = null;
       try { opponent = JSON.parse(localStorage.getItem("arena_opponent") || "null"); } catch (e) {}
       localStorage.removeItem("arena_opponent");
@@ -668,16 +678,35 @@
       // Create professional stats HTML
       const isArena = !!bm.isArena;
       const isRoad = !!bm.isNinjaRoad;
-      const subtitle = isArena
+      const isLeague = isArena && !!bm.isKageLeague;
+      const subtitle = isLeague
+        ? (isVictory ? "Kage League Victory" : "Kage League Defeat")
+        : isArena
         ? (isVictory ? "Arena Victory" : "Arena Defeat")
         : isRoad
           ? (isVictory ? "Floor Cleared" : "Squad Defeated")
           : (isVictory ? "Mission Accomplished" : "Mission Failed");
-      const returnUrl = isArena ? 'arena.html' : isRoad ? 'ninja-road.html' : 'missions.html';
+      const returnUrl = isLeague ? 'kage-league.html' : isArena ? 'arena.html' : isRoad ? 'ninja-road.html' : 'missions.html';
 
-      // Arena outcome rows (stars, streak, ryo)
+      // Arena outcome rows (stars, streak, ryo); Kage League: LP and place
       const arena = bm._arenaOutcome;
-      const arenaRowsHTML = (isArena && arena) ? `
+      const ord = (n) => { const v = n % 100; return n + (['th', 'st', 'nd', 'rd'][(v - 20) % 10] || ['th', 'st', 'nd', 'rd'][v] || 'th'); };
+      const leagueRowsHTML = (isLeague && arena && arena.kage) ? `
+          <div class="stat-divider"></div>
+          <div class="stat-row">
+            <span class="stat-label">Opponent</span>
+            <span class="stat-value gold">${arena.opponent || 'Rival'}</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">League Points</span>
+            <span class="stat-value ${arena.lpGained >= 0 ? 'gold' : ''}">${arena.lpGained > 0 ? '+' : ''}${arena.lpGained} LP &nbsp;(${arena.lpAfter} total)</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">Bracket Place</span>
+            <span class="stat-value">${ord(arena.placeBefore)} → ${ord(arena.placeAfter)}</span>
+          </div>
+          ${arena.stale ? `<div class="stat-row"><span class="stat-label">Season</span><span class="stat-value">Ended before this match finished</span></div>` : ''}` : '';
+      const arenaRowsHTML = isLeague ? leagueRowsHTML : (isArena && arena) ? `
           <div class="stat-divider"></div>
 
           <div class="stat-row">
@@ -765,7 +794,7 @@
           <button class="result-btn primary" id="btn-continue-battle">
             ${isVictory ? "Continue" : "Return"}
           </button>
-          ${(!isVictory && !isRoad) ? '<button class="result-btn secondary" id="btn-retry-battle">Retry</button>' : ''}
+          ${(!isVictory && !isRoad && !isLeague) ? '<button class="result-btn secondary" id="btn-retry-battle">Retry</button>' : ''}
         </div>
       `;
 
