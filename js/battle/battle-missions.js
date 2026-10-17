@@ -705,6 +705,24 @@
           </div>` : ''}
       ` : '';
 
+      // Support shinobi row: who lent the 4th unit, with a friend request
+      // for a non-friend (js/support-shinobi.js). The pick stays for Retry and
+      // is spent on Continue.
+      const SS = window.SupportShinobi;
+      const guest = (!isArena && !isRoad && bm.guestSupport) ? bm.guestSupport : null;
+      const esc = (v) => String(v ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+      const guestRowHTML = guest ? `
+          <div class="stat-divider"></div>
+          <div class="stat-row">
+            <span class="stat-label">Support</span>
+            <span class="stat-value gold">${esc(guest.unit.name)} · ${esc(guest.name)}</span>
+          </div>
+          <div class="stat-row" id="support-friend-row">
+            <span class="stat-label">${guest.isFriend ? 'Friend' : 'Add as friend?'}</span>
+            <span class="stat-value">${guest.isFriend ? 'Already a friend'
+              : `<button type="button" class="result-btn secondary" id="btn-support-friend" style="min-height:32px;padding:4px 12px">Send Friend Request</button>`}</span>
+          </div>` : '';
+
       bm.dom.resultStats.innerHTML = `
         <div class="result-subtitle">
           ${subtitle}
@@ -735,6 +753,7 @@
             <span class="stat-value">${stats.wave}</span>
           </div>
           ${arenaRowsHTML}
+          ${guestRowHTML}
 
           <div class="stat-divider"></div>
 
@@ -773,8 +792,18 @@
       const btnContinue = document.getElementById('btn-continue-battle');
       const btnRetry = document.getElementById('btn-retry-battle');
 
+      const btnFriend = document.getElementById('btn-support-friend');
+      if (btnFriend && guest && SS) {
+        btnFriend.addEventListener('click', () => {
+          const r = SS.addFriend(guest);
+          const label = r.ok ? 'Friend added' : r.reason === 'full' ? `Friend list full (${SS.FRIEND_CAP})` : 'Already a friend';
+          btnFriend.replaceWith(document.createTextNode(label));
+        });
+      }
+
       if (btnContinue) {
         btnContinue.addEventListener('click', () => {
+          if (guest && SS) SS.finish();
           // Clean up any lingering arena state
           if (isArena) {
             localStorage.removeItem('arena_enemies');
