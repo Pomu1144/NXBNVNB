@@ -12,7 +12,7 @@
 //
 // Purely visual: nothing here changes combat. The kind of mark comes from
 // keywords in the skill's name and description (natureOf). Marks are
-// painted procedurally on small canvases in a layer under the units.
+// painted decal textures (assets/ui/battle-scars) in a layer under the units.
 //
 // Hooks (installed once BattleCombat / BattleMissions exist):
 //   BattleCombat.performJutsu / performUltimate / performMultiJutsu /
@@ -24,7 +24,6 @@
 
   const OFF_KEY = 'battle_scars_off';
   const MAX_SCARS = 28;
-  const GLOW_MS = 2600;           // fresh glow cools over this long
   const SIZE = { jutsu: 0.10, ultimate: 0.15, secret: 0.19, centre: 0.2 }; // share of scene width
   const ACTIVE_MS = 12000;        // safety: a technique that never reports done stops marking
 
@@ -65,181 +64,28 @@
   }
 
   /* ------------------------------------------------------------------
-   * Painters. Each draws on a square canvas of size S, centred, and gets a
-   * second canvas for the fresh glow. The layer squashes them flat so they
-   * lie on the ground.
+   * Painted decal textures (assets/ui/battle-scars/<name>.webp), one per
+   * nature. Plain hits and unnamed jutsu reuse the earth cracks. For hot natures a
+   * second copy of the texture, brightened and screen-blended, is the fresh glow.
+   * The layer squashes them flat so they lie on the ground.
    * ------------------------------------------------------------------ */
-  function blotch(g, S, r, stops, n = 9, jitter = 0.28) {
-    for (let i = 0; i < n; i++) {
-      const a = (i / n) * Math.PI * 2 + rand(-0.3, 0.3);
-      const d = r * rand(0, 0.45);
-      const x = S / 2 + Math.cos(a) * d, y = S / 2 + Math.sin(a) * d;
-      const rr = r * rand(1 - jitter, 1 + jitter) * 0.62;
-      const gr = g.createRadialGradient(x, y, 0, x, y, rr);
-      stops.forEach(([o, c]) => gr.addColorStop(o, c));
-      g.fillStyle = gr;
-      g.beginPath(); g.arc(x, y, rr, 0, Math.PI * 2); g.fill();
-    }
-  }
-  function branch(g, x, y, ang, len, w, depth, style) {
-    if (depth <= 0 || len < 2) return;
-    const segs = 4;
-    g.lineCap = 'round'; g.lineJoin = 'round';
-    let cx = x, cy = y, a = ang;
-    g.beginPath(); g.moveTo(cx, cy);
-    for (let i = 0; i < segs; i++) {
-      a += rand(-0.45, 0.45);
-      cx += Math.cos(a) * len / segs; cy += Math.sin(a) * len / segs;
-      g.lineTo(cx, cy);
-      if (Math.random() < 0.35) branch(g, cx, cy, a + rand(-1, 1), len * 0.5, w * 0.6, depth - 1, style);
-    }
-    g.strokeStyle = style; g.lineWidth = w; g.stroke();
-  }
-  function cracks(g, S, r, n, style, w) {
-    for (let i = 0; i < n; i++) branch(g, S / 2 + rand(-r, r) * 0.15, S / 2 + rand(-r, r) * 0.15, (i / n) * Math.PI * 2 + rand(-0.3, 0.3), r * rand(0.6, 1), w, 3, style);
-  }
-  function crater(g, S, r, tint = '40,28,20') {
-    blotch(g, S, r * 0.95, [[0, `rgba(${tint},.85)`], [0.6, `rgba(${tint},.5)`], [1, `rgba(${tint},0)`]], 7, 0.15);
-    // lit rim on the far side
-    g.save(); g.globalCompositeOperation = 'source-over';
-    g.strokeStyle = 'rgba(230,210,180,.28)'; g.lineWidth = r * 0.07;
-    g.beginPath(); g.arc(S / 2, S / 2 + r * 0.05, r * 0.66, Math.PI * 1.1, Math.PI * 1.9); g.stroke();
-    g.restore();
-  }
-  function hotspots(g, S, r, n, rgb, size = 0.18) {
-    for (let i = 0; i < n; i++) {
-      const a = rand(0, Math.PI * 2), d = r * rand(0, 0.8);
-      const x = S / 2 + Math.cos(a) * d, y = S / 2 + Math.sin(a) * d, rr = r * rand(size * 0.4, size);
-      const gr = g.createRadialGradient(x, y, 0, x, y, rr);
-      gr.addColorStop(0, `rgba(${rgb},1)`); gr.addColorStop(1, `rgba(${rgb},0)`);
-      g.fillStyle = gr; g.beginPath(); g.arc(x, y, rr, 0, Math.PI * 2); g.fill();
-    }
-  }
-
-  const PAINT = {
-    fire(m, gl, S, r) {
-      blotch(m, S, r, [[0, 'rgba(20,10,6,.92)'], [0.55, 'rgba(45,22,10,.6)'], [1, 'rgba(60,30,12,0)']], 11);
-      cracks(m, S, r * 0.8, 5, 'rgba(15,8,4,.55)', r * 0.03);
-      hotspots(gl, S, r * 0.8, 14, '255,140,40', 0.22);
-      hotspots(gl, S, r * 0.5, 6, '255,220,120', 0.12);
-    },
-    blackfire(m, gl, S, r) {
-      blotch(m, S, r, [[0, 'rgba(6,2,10,.95)'], [0.6, 'rgba(20,6,26,.6)'], [1, 'rgba(20,6,26,0)']], 12);
-      hotspots(gl, S, r * 0.8, 12, '120,40,170', 0.22);
-      hotspots(gl, S, r * 0.5, 5, '210,120,255', 0.1);
-    },
-    lightning(m, gl, S, r) {
-      blotch(m, S, r * 0.7, [[0, 'rgba(14,12,22,.95)'], [0.5, 'rgba(24,20,34,.6)'], [1, 'rgba(24,20,34,0)']], 7);
-      cracks(m, S, r, 8, 'rgba(12,10,20,.85)', r * 0.04);
-      cracks(m, S, r * 0.8, 5, 'rgba(150,170,210,.35)', r * 0.012);
-      gl.shadowColor = 'rgba(120,200,255,1)'; gl.shadowBlur = r * 0.12;
-      cracks(gl, S, r * 0.95, 7, 'rgba(200,240,255,1)', r * 0.022);
-      hotspots(gl, S, r * 0.3, 4, '160,220,255', 0.3);
-    },
-    ice(m, gl, S, r) {
-      blotch(m, S, r * 0.85, [[0, 'rgba(214,232,248,.8)'], [0.65, 'rgba(180,212,238,.45)'], [1, 'rgba(180,212,238,0)']], 10, 0.35);
-      // shards: short wedges pointing out, with a lit edge
-      for (let i = 0; i < 16; i++) {
-        const a = rand(0, Math.PI * 2), d = r * rand(0.1, 0.55), len = r * rand(0.18, 0.4), w = len * rand(0.18, 0.3);
-        const x = S / 2 + Math.cos(a) * d, y = S / 2 + Math.sin(a) * d;
-        m.save(); m.translate(x, y); m.rotate(a);
-        m.fillStyle = 'rgba(235,246,255,.9)';
-        m.beginPath(); m.moveTo(0, -w / 2); m.lineTo(len, 0); m.lineTo(0, w / 2); m.closePath(); m.fill();
-        m.fillStyle = 'rgba(120,170,215,.55)';
-        m.beginPath(); m.moveTo(0, 0); m.lineTo(len, 0); m.lineTo(0, w / 2); m.closePath(); m.fill();
-        m.restore();
-      }
-      hotspots(gl, S, r * 0.6, 6, '170,230,255', 0.16);
-    },
-    water(m, gl, S, r) {
-      blotch(m, S, r * 0.9, [[0, 'rgba(20,35,50,.6)'], [0.75, 'rgba(25,45,65,.35)'], [1, 'rgba(25,45,65,0)']], 9, 0.35);
-      for (let i = 0; i < 5; i++) {
-        const x = S / 2 + rand(-r, r) * 0.5, y = S / 2 + rand(-r, r) * 0.4;
-        m.strokeStyle = 'rgba(200,230,255,.35)'; m.lineWidth = r * 0.025;
-        m.beginPath(); m.ellipse(x, y, r * rand(0.08, 0.2), r * rand(0.05, 0.1), 0, Math.PI * 1.1, Math.PI * 1.8); m.stroke();
-      }
-      hotspots(gl, S, r * 0.6, 4, '140,200,255', 0.2);
-    },
-    wind(m, gl, S, r) {
-      const a0 = rand(-0.4, 0.4);
-      blotch(m, S, r * 0.6, [[0, 'rgba(40,32,24,.35)'], [1, 'rgba(40,32,24,0)']], 5);
-      for (let i = 0; i < 5; i++) {
-        const off = (i - 2) * r * 0.2, rr = r * rand(0.75, 1);
-        m.lineCap = 'round';
-        m.strokeStyle = 'rgba(24,18,12,.9)'; m.lineWidth = r * 0.09;
-        m.beginPath(); m.ellipse(S / 2, S / 2 + off, rr, rr * 0.38, a0, Math.PI * 1.05, Math.PI * 1.9); m.stroke();
-        m.strokeStyle = 'rgba(225,215,195,.35)'; m.lineWidth = r * 0.025;
-        m.beginPath(); m.ellipse(S / 2, S / 2 + off - r * 0.045, rr, rr * 0.38, a0, Math.PI * 1.05, Math.PI * 1.9); m.stroke();
-      }
-      hotspots(gl, S, r * 0.6, 5, '210,245,230', 0.18);
-    },
-    blade(m, gl, S, r) {
-      const n = 2 + Math.floor(Math.random() * 2);
-      for (let i = 0; i < n; i++) {
-        const a = rand(-0.6, 0.6) + (i % 2 ? Math.PI / 2.4 : 0), len = r * rand(1.4, 1.9);
-        const x = S / 2 + rand(-r, r) * 0.2, y = S / 2 + rand(-r, r) * 0.2;
-        const dx = Math.cos(a) * len / 2, dy = Math.sin(a) * len / 2;
-        m.lineCap = 'round';
-        m.strokeStyle = 'rgba(25,18,14,.8)'; m.lineWidth = r * 0.07;
-        m.beginPath(); m.moveTo(x - dx, y - dy); m.lineTo(x + dx, y + dy); m.stroke();
-        m.strokeStyle = 'rgba(235,225,205,.3)'; m.lineWidth = r * 0.02;
-        m.beginPath(); m.moveTo(x - dx, y - dy - r * 0.04); m.lineTo(x + dx, y + dy - r * 0.04); m.stroke();
-        gl.strokeStyle = 'rgba(255,255,255,.9)'; gl.lineWidth = r * 0.025; gl.lineCap = 'round';
-        gl.beginPath(); gl.moveTo(x - dx, y - dy); gl.lineTo(x + dx, y + dy); gl.stroke();
-      }
-    },
-    wood(m, gl, S, r) {
-      blotch(m, S, r * 0.5, [[0, 'rgba(40,26,14,.6)'], [1, 'rgba(40,26,14,0)']], 5);
-      for (let i = 0; i < 7; i++) branch(m, S / 2, S / 2, (i / 7) * Math.PI * 2 + rand(-0.3, 0.3), r * rand(0.6, 1), r * 0.07, 3, 'rgba(92,62,32,.95)');
-      for (let i = 0; i < 7; i++) branch(m, S / 2, S / 2, (i / 7) * Math.PI * 2 + rand(-0.3, 0.3), r * rand(0.4, 0.7), r * 0.025, 2, 'rgba(160,120,70,.6)');
-      hotspots(gl, S, r * 0.7, 6, '140,230,110', 0.16);
-    },
-    sand(m, gl, S, r) {
-      blotch(m, S, r * 0.9, [[0, 'rgba(196,160,98,.8)'], [0.7, 'rgba(180,145,85,.45)'], [1, 'rgba(180,145,85,0)']], 10, 0.4);
-      for (let i = 0; i < 120; i++) {
-        const a = rand(0, Math.PI * 2), d = r * Math.sqrt(Math.random()) * 0.95;
-        m.fillStyle = Math.random() < 0.5 ? 'rgba(120,90,50,.5)' : 'rgba(235,210,150,.55)';
-        m.fillRect(S / 2 + Math.cos(a) * d, S / 2 + Math.sin(a) * d, r * 0.02, r * 0.02);
-      }
-    },
-    explosion(m, gl, S, r) {
-      crater(m, S, r, '30,22,18');
-      blotch(m, S, r * 1.1, [[0, 'rgba(15,12,10,.0)'], [0.6, 'rgba(15,12,10,.35)'], [1, 'rgba(15,12,10,0)']], 9);
-      for (let i = 0; i < 26; i++) {
-        const a = rand(0, Math.PI * 2), d = r * rand(0.7, 1.1);
-        m.fillStyle = 'rgba(35,26,20,.75)';
-        m.beginPath(); m.arc(S / 2 + Math.cos(a) * d, S / 2 + Math.sin(a) * d, r * rand(0.015, 0.04), 0, Math.PI * 2); m.fill();
-      }
-      hotspots(gl, S, r * 0.7, 10, '255,170,70', 0.22);
-    },
-    earth(m, gl, S, r) {
-      crater(m, S, r * 0.8);
-      cracks(m, S, r, 8, 'rgba(25,18,12,.75)', r * 0.035);
-      for (let i = 0; i < 10; i++) {
-        const a = rand(0, Math.PI * 2), d = r * rand(0.6, 1);
-        m.fillStyle = 'rgba(110,90,70,.8)';
-        m.fillRect(S / 2 + Math.cos(a) * d, S / 2 + Math.sin(a) * d, r * rand(0.03, 0.07), r * rand(0.02, 0.05));
-      }
-    },
-    impact(m, gl, S, r) {
-      crater(m, S, r * 0.75);
-      cracks(m, S, r * 0.9, 6, 'rgba(25,18,12,.7)', r * 0.03);
-      hotspots(gl, S, r * 0.4, 4, '255,240,210', 0.25);
-    },
-    cracks(m, gl, S, r) {
-      cracks(m, S, r * 0.8, 5, 'rgba(25,18,12,.7)', r * 0.03);
-      blotch(m, S, r * 0.35, [[0, 'rgba(30,22,16,.5)'], [1, 'rgba(30,22,16,0)']], 4);
-    },
-    dark(m, gl, S, r) {
-      crater(m, S, r * 0.8, '28,10,36');
-      cracks(m, S, r, 6, 'rgba(30,8,40,.75)', r * 0.03);
-      gl.shadowColor = 'rgba(170,90,255,1)'; gl.shadowBlur = r * 0.1;
-      cracks(gl, S, r * 0.85, 5, 'rgba(210,150,255,.85)', r * 0.015);
-      hotspots(gl, S, r * 0.6, 6, '150,70,230', 0.22);
-    },
+  const TEX_DIR = 'assets/ui/battle-scars/';
+  const TEXTURE = {
+    fire: 'fire', blackfire: 'blackfire', lightning: 'lightning', ice: 'ice',
+    water: 'water', wind: 'wind', blade: 'blade', wood: 'wood', sand: 'sand',
+    explosion: 'explosion', earth: 'earth', dark: 'dark', impact: 'earth', cracks: 'earth',
   };
+  const texOf = (nature) => `${TEX_DIR}${TEXTURE[nature] || 'earth'}.webp`;
+  let preloaded = false;
+  function preload() {
+    if (preloaded) return;
+    preloaded = true;
+    new Set(Object.values(TEXTURE)).forEach((n) => { const i = new Image(); i.decoding = 'async'; i.src = `${TEX_DIR}${n}.webp`; });
+  }
   // Light marks sit on the ground normally; dark ones multiply into it.
   const LIGHT = new Set(['ice', 'sand', 'water']);
+  // Only hot / charged marks glow when fresh; dirt marks just grow in.
+  const HOT = new Set(['fire', 'blackfire', 'lightning', 'ice', 'explosion', 'dark']);
 
   /* ------------------------------------------------------------------
    * The layer.
@@ -285,26 +131,28 @@
     if (!enabled()) return null;
     const L = ensureLayer();
     if (!L || !Number.isFinite(x) || !Number.isFinite(y)) return null;
-    const paint = PAINT[nature] || PAINT.impact;
-    const sw = L.clientWidth || scene().clientWidth || 800;
-    const dpr = Math.min(2, window.devicePixelRatio || 1);
-    const S = Math.max(48, Math.round(sw * size * dpr));
-    const r = S * 0.46;
-
     const el = document.createElement('div');
     el.className = `battle-scar is-${nature}`;
     el.style.left = `${x}%`;
     el.style.top = `${y}%`;
-    el.style.width = `${size * 100}%`;
+    el.style.width = `${(size * rand(0.92, 1.08) * 100).toFixed(2)}%`;
     el.style.setProperty('--tilt', `${rand(-8, 8).toFixed(1)}deg`);
-    const mark = document.createElement('canvas');
-    mark.width = mark.height = S;
+    el.style.setProperty('--spin', `${Math.round(rand(0, 360))}deg`);
+    const src = texOf(nature);
+    const mark = new Image();
     mark.className = `battle-scar-mark${LIGHT.has(nature) ? ' is-light' : ''}`;
-    const glow = document.createElement('canvas');
-    glow.width = glow.height = S;
-    glow.className = 'battle-scar-glow';
-    try { paint(mark.getContext('2d'), glow.getContext('2d'), S, r); } catch (e) { return null; }
-    el.append(mark, glow);
+    mark.alt = '';
+    mark.draggable = false;
+    mark.src = src;
+    el.appendChild(mark);
+    if (HOT.has(nature)) {
+      const glow = new Image();
+      glow.className = 'battle-scar-glow';
+      glow.alt = '';
+      glow.draggable = false;
+      glow.src = src;
+      el.appendChild(glow);
+    }
     L.appendChild(el);
 
     const s = { el, nature, at: Date.now() };
@@ -376,6 +224,7 @@
     const M = window.BattleMissions;
     if (!C || C.__scars) return !!(C && C.__scars);
     C.__scars = true;
+    preload();
 
     const origDamage = C.calculateDamage;
     C.calculateDamage = function (attacker, defender, ...rest) {

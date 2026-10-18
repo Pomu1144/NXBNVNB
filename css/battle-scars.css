@@ -1,6 +1,7 @@
 /* css/battle-scars.css — marks jutsu leave on the battlefield (js/battle/battle-scars.js).
- * The layer sits on the map, under the units; each mark is flattened onto
- * the ground, grows in with a glow that cools, and fades when the stage changes. */
+ * The layer sits on the map, under the units; each mark is a painted decal
+ * texture flattened onto the ground. It grows in with a glow that cools, and
+ * fades when the stage changes. */
 .battle-scars {
   position: absolute;
   inset: 0;
@@ -21,20 +22,32 @@
   transform: translate(-50%, -50%) rotate(var(--tilt, 0deg)) scaleY(.42) scale(1);
 }
 .battle-scar.is-out { opacity: 0; transition: opacity .9s ease-in; }
-.battle-scar canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
-.battle-scar-mark { mix-blend-mode: multiply; opacity: .92; }
-.battle-scar-mark.is-light { mix-blend-mode: normal; opacity: .85; }
+.battle-scar img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transform: rotate(var(--spin, 0deg));
+  user-select: none;
+  /* soften the painted edge into the map */
+  -webkit-mask-image: radial-gradient(closest-side, #000 62%, transparent 100%);
+  mask-image: radial-gradient(closest-side, #000 62%, transparent 100%);
+}
+.battle-scar-mark { opacity: .9; }
+.battle-scar-mark.is-light { opacity: .86; }
+/* the fresh glow: the same texture, burned bright and screened over the mark */
 .battle-scar-glow {
   mix-blend-mode: screen;
-  opacity: 1;
-  filter: blur(1px);
+  opacity: .8;
+  filter: brightness(1.5) saturate(1.8) blur(1.5px);
   transition: opacity 2.6s ease-out .25s;
 }
 .battle-scar.is-cool .battle-scar-glow { opacity: 0; }
 /* ice and dark chakra keep a faint glow */
 .battle-scar.is-ice.is-cool .battle-scar-glow,
 .battle-scar.is-dark.is-cool .battle-scar-glow,
-.battle-scar.is-blackfire.is-cool .battle-scar-glow { opacity: .28; }
+.battle-scar.is-blackfire.is-cool .battle-scar-glow { opacity: .22; }
 
 @media (prefers-reduced-motion: reduce) {
   .battle-scar, .battle-scar.is-in { transition: none; }
