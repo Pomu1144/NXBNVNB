@@ -1,0 +1,42 @@
+/* css/battle-scars.css — marks jutsu leave on the battlefield (js/battle/battle-scars.js).
+ * The layer sits on the map, under the units; each mark is flattened onto
+ * the ground, grows in with a glow that cools, and fades when the stage changes. */
+.battle-scars {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.battle-scar {
+  position: absolute;
+  aspect-ratio: 1 / 1;
+  transform: translate(-50%, -50%) rotate(var(--tilt, 0deg)) scaleY(.42) scale(.55);
+  opacity: 0;
+  transition: transform .28s cubic-bezier(.2, .9, .3, 1.2), opacity .2s ease-out;
+  pointer-events: none;
+}
+.battle-scar.is-in {
+  opacity: 1;
+  transform: translate(-50%, -50%) rotate(var(--tilt, 0deg)) scaleY(.42) scale(1);
+}
+.battle-scar.is-out { opacity: 0; transition: opacity .9s ease-in; }
+.battle-scar canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.battle-scar-mark { mix-blend-mode: multiply; opacity: .92; }
+.battle-scar-mark.is-light { mix-blend-mode: normal; opacity: .85; }
+.battle-scar-glow {
+  mix-blend-mode: screen;
+  opacity: 1;
+  filter: blur(1px);
+  transition: opacity 2.6s ease-out .25s;
+}
+.battle-scar.is-cool .battle-scar-glow { opacity: 0; }
+/* ice and dark chakra keep a faint glow */
+.battle-scar.is-ice.is-cool .battle-scar-glow,
+.battle-scar.is-dark.is-cool .battle-scar-glow,
+.battle-scar.is-blackfire.is-cool .battle-scar-glow { opacity: .28; }
+
+@media (prefers-reduced-motion: reduce) {
+  .battle-scar, .battle-scar.is-in { transition: none; }
+  .battle-scar-glow { transition: none; }
+}
