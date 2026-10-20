@@ -432,6 +432,7 @@
     renderSkillsTab(c, inst, tier);
     renderSupportTab(c, inst, tier);
     renderAbilitiesTab(c, inst);
+    window.CharGearTab?.render(inst.uid);   // Equipment tab: the six gear pieces
     setActiveTab("status");
 
     // Render jutsu/ultimate slots
@@ -501,7 +502,7 @@
 
   /* ---------- Tabs ---------- */
   // Only tabs that have a button are reachable (Status, Awakening, Ninjutsu,
-  // Passives). Anything else (e.g. the removed "tools" tab from an old link
+  // Passives, Equipment). Anything else (e.g. the removed "tools" tab from an old link
   // or caller) falls back to Status instead of leaving a blank panel.
   function setActiveTab(tab) {
     const btns = MODAL.querySelectorAll(".char-tabs .tab-btn");
@@ -512,6 +513,10 @@
       b.setAttribute("aria-selected", on ? "true" : "false");
     });
     MODAL.querySelectorAll(".tab-panel").forEach(p => p.classList.toggle("is-active", p.id === `tab-${tab}`));
+    // Equipment hides the art and takes the whole panel (css/character-gear-tab.css)
+    const intoGear = tab === "gear" && !MODAL.classList.contains("is-gear-view");
+    MODAL.classList.toggle("is-gear-view", tab === "gear");
+    if (intoGear) window.CharGearTab?.playIntro(MODAL);   // ink → night sky transition
     const panels = MODAL.querySelector(".tab-panels");
     if (panels) panels.scrollTop = 0;
   }
@@ -530,7 +535,7 @@
     const out = { hp: 0, atk: 0, def: 0, spd: 0, critRate: 0, critDmg: 0, evaRate: 0, nin: 0, res: 0, uid };
     try {
       const g = window.Gear?.totalFor(uid);
-      if (g) { out.hp += g.hp; out.atk += g.atk; out.def += g.def; out.nin = g.nin; out.res = g.res; }
+      if (g) { out.hp += g.hp; out.atk += g.atk; out.def += g.def; out.spd += g.spd || 0; out.nin = g.nin; out.res = g.res; }
       const inst = window.InventoryChar?.getByUid(uid);
       if (!inst?.equippedJutsu) return out;
       const slots = ['jutsu1', 'jutsu2', 'jutsu3', 'ultimate'];
@@ -553,34 +558,15 @@
     return out;
   }
 
-  /* Status tab markup: a ruled stat list (icon · label · big number) and the
-     equip slots. The slot buttons keep their classes / data-slot so the jutsu
-     equipment code (renderJutsuSlots, slot bindings, tooltips) finds them. */
+  /* Status tab markup: a ruled stat list (icon · label · big number). The jutsu
+     slots live on the Ninjutsu tab and the gear on the Equipment tab
+     (js/character-gear-tab.js). */
   const STAT_ICONS = {
     hp:  '<img src="assets/ui/stats/health.webp" alt="" aria-hidden="true" draggable="false">',
     atk: '<img src="assets/ui/stats/attack.webp" alt="" aria-hidden="true" draggable="false">',
     spd: '<img src="assets/ui/stats/speed.webp" alt="" aria-hidden="true" draggable="false">'
   };
   const fmtInt = (n) => Math.round(safeNum(n, 0)).toLocaleString();
-  const slotBtn = (slot, label, ult) => ult
-    ? `<button class="ultimate-slot" data-slot="${slot}" aria-label="${label}">
-         <img src="assets/ui/ultimateslotemtpy.png" class="ultimate-slot-bg" alt="">
-         <img src="" class="ultimate-slot-icon" style="display:none" alt="">
-       </button>`
-    : `<button class="jutsu-slot" data-slot="${slot}" aria-label="${label}">
-         <img src="assets/ui/jutsuslotempty.png" class="jutsu-slot-bg" alt="">
-         <img src="" class="jutsu-slot-icon" style="display:none" alt="">
-       </button>`;
-  // Gear pieces (js/gear.js): icon, level; tap opens them on the Tools page
-  function gearRowHTML(uid) {
-    const G = window.Gear;
-    if (!G || !uid) return '';
-    return G.SLOTS.map(slot => {
-      const i = G.info(uid, slot);
-      return `<a class="cx-gear${i.shiny ? ' is-shiny' : ''}" href="tools.html?uid=${encodeURIComponent(uid)}&view=gear" title="${i.name} Lv${i.level}" aria-label="${i.name}, level ${i.level}">
-        <img src="${i.icon}" alt="" draggable="false"><span>Lv${i.level}</span></a>`;
-    }).join('');
-  }
   const pctTxt = (v) => `${(Math.round((+v || 0) * 10) / 10).toFixed(1)}%`;
   function statusPanelHTML(hp, atk, spd, b) {
     const major = (key, label, val) => `
@@ -604,20 +590,6 @@
         ${minor("Evasion", `${(+b.evaRate || 0).toFixed(2)}%`)}
         ${minor("Jutsu DMG", pctTxt(b.nin))}
         ${minor("Jutsu RES", pctTxt(b.res))}
-      </div>
-      <h4 class="cx-kicker">Equipment</h4>
-      <div class="stat-equip-rows cx-equip">
-        <div class="stat-equip-row">
-          <span class="cx-equip-tag">Jutsu</span>
-          ${slotBtn("jutsu1", "Jutsu Slot 1")}
-          ${slotBtn("jutsu2", "Jutsu Slot 2")}
-          ${slotBtn("jutsu3", "Jutsu Slot 3")}
-          ${slotBtn("ultimate", "Ultimate Slot", true)}
-        </div>
-        <div class="stat-equip-row cx-gear-row">
-          <span class="cx-equip-tag">Gear</span>
-          ${gearRowHTML(b.uid)}
-        </div>
       </div>`;
   }
 

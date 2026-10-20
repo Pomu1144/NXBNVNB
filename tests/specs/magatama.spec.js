@@ -72,7 +72,7 @@ test('buy, combine, split, beset, one-click beset and stat bonus on the Tools pa
   await page.goto('/tools.html');
   await waitForLoader(page);
   // Tool cards left equipment1..5 (still owned); the five gear pieces took their place
-  await expect(page.locator('#gear-left .gp[data-slot], #gear-right .gp[data-slot]')).toHaveCount(5);
+  await expect(page.locator('#gear-left .gp[data-slot], #gear-right .gp[data-slot]')).toHaveCount(6);
   await expect(page.locator('#equipment-container .tl-slot')).toHaveCount(4);
   const eq = await page.evaluate(() => window.InventoryChar.getByUid('m-naruto').equippedJutsu);
   for (let i = 1; i <= 5; i++) expect(eq[`equipment${i}`]).toBeNull();
@@ -178,7 +178,8 @@ test('socketed magatama raise the unit stats in battle', async ({ page }) => {
   const m = { hp: val('life', 9), atk: val('attack', 9) + val('attack', 5), def: val('defense', 9), nin: val('ninjutsu', 9), res: val('resistance', 8) };
   const g = r[0].gear; // starting gear (Green Lv1) adds a little of each
   const round2 = (n) => Math.round(n * 100) / 100;
-  expect(r[0].maga).toEqual({ hp: g.hp + m.hp, atk: g.atk + m.atk, def: g.def + m.def, nin: round2(g.nin + m.nin), res: round2(g.res + m.res) });
+  // Sandals add SPD and take no magatama
+  expect(r[0].maga).toEqual({ hp: g.hp + m.hp, atk: g.atk + m.atk, def: g.def + m.def, spd: g.spd, nin: round2(g.nin + m.nin), res: round2(g.res + m.res) });
   expect(r[0].maxHP).toBe(r[0].plain.maxHP + g.hp + m.hp);
   expect(r[0].def).toBe(r[0].plain.def + g.def + m.def);
   expect(r[0].atk).toBeGreaterThanOrEqual(r[0].plain.atk + g.atk + m.atk);

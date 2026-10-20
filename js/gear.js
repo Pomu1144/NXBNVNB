@@ -1,9 +1,9 @@
 // js/gear.js — Gear (Naruto Online style equipment) on every shinobi.
 //
-// The five Tool slots are fixed gear pieces:
+// The six gear pieces:
 //   Tool 1 helmet   → HP          Tool 4 scroll   → +% jutsu / ultimate damage
 //   Tool 2 weapon   → ATK         Tool 5 necklace → -% jutsu / ultimate damage taken
-//   Tool 3 armor    → DEF
+//   Tool 3 armor    → DEF         Tool 6 sandals  → SPD (no magatama sockets)
 // Every piece has a tier (0 Green · 1 Blue · 2 Purple · 3 Orange · 4 Red ·
 // 5 Red Shiny) and a level 1-120. Each tier caps the level (20/40/…/120);
 // at the cap the piece is promoted with 3 upgrade scrolls (gear_scroll_2…6,
@@ -18,7 +18,7 @@
   'use strict';
 
   const STORAGE_KEY = 'blazing_gear_v1';
-  const SLOTS = ['helmet', 'weapon', 'armor', 'scroll', 'necklace'];
+  const SLOTS = ['helmet', 'weapon', 'armor', 'scroll', 'necklace', 'sandals'];
   const TOOL_SLOTS = ['equipment1', 'equipment2', 'equipment3', 'equipment4', 'equipment5'];
   const MAX_LEVEL = 120;
 
@@ -43,18 +43,19 @@
     weapon:   { kind: 'Weapon',   tool: 'equipment2', stat: 'atk', label: 'ATK',       per: 3.5,  magatama: 'attack' },
     armor:    { kind: 'Armor',    tool: 'equipment3', stat: 'def', label: 'DEF',       per: 2,    magatama: 'defense' },
     scroll:   { kind: 'Scroll',   tool: 'equipment4', stat: 'nin', label: 'Jutsu DMG', per: 0.1,  magatama: 'ninjutsu',   unit: '%' },
-    necklace: { kind: 'Necklace', tool: 'equipment5', stat: 'res', label: 'Jutsu RES', per: 0.08, magatama: 'resistance', unit: '%' }
+    necklace: { kind: 'Necklace', tool: 'equipment5', stat: 'res', label: 'Jutsu RES', per: 0.08, magatama: 'resistance', unit: '%' },
+    sandals:  { kind: 'Sandals',  tool: null,         stat: 'spd', label: 'SPD',       per: 0.08 }
   };
   // Item names per art set, in SLOTS order
   const NAMES = {
-    green:  ['Goggles', 'Dart', 'Chainmail', 'Handbook', 'Finger Ring'],
-    blue:   ['Forehead Protector', 'Kunai', 'Chainmail', 'Handbook', 'Finger Ring'],
-    purple: ['Mask', 'Blade', 'Vest', 'Scroll', 'Necklace'],
-    orange: ['Hat', 'Blade', 'Cloak', 'Scroll', 'Necklace'],
-    red:    ['Mask', 'Scythe', 'Armor', 'Scroll', 'Prayer Beads']
+    green:  ['Goggles', 'Dart', 'Chainmail', 'Handbook', 'Finger Ring', 'Sandals'],
+    blue:   ['Forehead Protector', 'Kunai', 'Chainmail', 'Handbook', 'Finger Ring', 'Sandals'],
+    purple: ['Mask', 'Blade', 'Vest', 'Scroll', 'Necklace', 'Tabi'],
+    orange: ['Hat', 'Blade', 'Cloak', 'Scroll', 'Necklace', 'Greaves'],
+    red:    ['Mask', 'Scythe', 'Armor', 'Scroll', 'Prayer Beads', 'War Boots']
   };
-  const STATS = ['hp', 'atk', 'def', 'nin', 'res'];
-  const zero = () => ({ hp: 0, atk: 0, def: 0, nin: 0, res: 0 });
+  const STATS = ['hp', 'atk', 'def', 'spd', 'nin', 'res'];
+  const zero = () => ({ hp: 0, atk: 0, def: 0, spd: 0, nin: 0, res: 0 });
 
   /* ───────── Numbers ───────── */
   const clampTier = (t) => Math.max(0, Math.min(TIERS.length - 1, Math.floor(Number(t) || 0)));
@@ -80,6 +81,8 @@
     return `${t.rank} ${NAMES[t.art][SLOTS.indexOf(slot)] || ''}`.trim();
   }
   const iconOf = (slot, tier) => `assets/gear/${TIERS[clampTier(tier)].art}_${slot}.webp`;
+  // Painted piece without a tile frame (Equipment tab of the Shinobi Record)
+  const artOf = (slot, tier) => `assets/gear/art/${TIERS[clampTier(tier)].art}_${slot}.webp`;
   const scrollIcon = (id) => `assets/gear/scroll_${String(id).replace(/\D/g, '')}.webp`;
 
   /* ───────── State ───────── */
@@ -135,7 +138,7 @@
     const promo = !isMax && atCap ? PROMOTE[p.tier] : null;
     return {
       slot, uid, tier: p.tier, level: p.level, cap: t.cap, tierInfo: t, shiny: !!t.shiny,
-      name: nameOf(slot, p.tier), kind: def.kind, icon: iconOf(slot, p.tier),
+      name: nameOf(slot, p.tier), kind: def.kind, icon: iconOf(slot, p.tier), art: artOf(slot, p.tier),
       stat: def.stat, statLabel: def.label, unit: def.unit || '', magatama: def.magatama,
       value: statValue(slot, p.tier, p.level),
       next: atCap ? null : statValue(slot, p.tier, p.level + 1),
@@ -248,7 +251,7 @@
     out.res = Math.min(Math.round(out.res * 100) / 100, c.res);
     return out;
   }
-  // Adds gear + magatama to a battle stats object ({ hp, maxHP, atk, def }).
+  // Adds gear + magatama to a battle stats object ({ hp, maxHP, atk, def, speed }).
   // Ninjutsu / Resistance stay as percentages on stats.magatama, which
   // battle-combat.js calculateDamage applies to jutsu and ultimate damage.
   function applyToStats(stats, instance) {
@@ -258,6 +261,7 @@
     if ('maxHP' in stats) stats.maxHP = (Number(stats.maxHP) || 0) + b.hp;
     stats.atk = (Number(stats.atk) || 0) + b.atk;
     stats.def = (Number(stats.def) || 0) + b.def;
+    if (b.spd) stats.speed = (Number(stats.speed) || 0) + b.spd;
     stats.magatama = b;
     stats.gear = bonusFor(instance.uid);
     return stats;
@@ -284,7 +288,7 @@
 
   global.Gear = {
     STORAGE_KEY, SLOTS, TOOL_SLOTS, TIERS, PROMOTE, PIECES, NAMES, MAX_LEVEL, STATS,
-    get, reload, piece, unitGear, info, nameOf, iconOf, scrollIcon, capOf,
+    get, reload, piece, unitGear, info, nameOf, iconOf, artOf, scrollIcon, capOf,
     levelCost, statValue, fmtStat, plan,
     strengthen, auto, autoAll, promote,
     bonusFor, totalFor, applyToStats, migrateInventory

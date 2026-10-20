@@ -7,7 +7,7 @@ const vm = require('vm');
 const { test, expect } = require('@playwright/test');
 const { REPO_ROOT, seedSave, invEntry, allStorySeen, collectErrors, pickPlainMission, waitForLoader } = require('../helpers');
 
-const SLOTS = ['helmet', 'weapon', 'armor', 'scroll', 'necklace'];
+const SLOTS = ['helmet', 'weapon', 'armor', 'scroll', 'necklace', 'sandals'];
 const gearSave = (page) => page.evaluate(() => JSON.parse(localStorage.getItem('blazing_gear_v1') || '{}'));
 const wallet = (page) => page.evaluate(() => JSON.parse(localStorage.getItem('blazing_resources_v1') || '{}'));
 
@@ -33,15 +33,22 @@ test('gear tables: tiers, caps, promotion costs, stat curve, icons', () => {
   expect(G.statValue('armor', 5, 120)).toBe(360);
   expect(G.statValue('scroll', 5, 120)).toBe(18);
   expect(G.statValue('necklace', 5, 120)).toBe(14.4);
+  expect(G.statValue('sandals', 5, 120)).toBe(14);
   expect(G.levelCost(1)).toBe(Math.round((200 + 40) / 10) * 10);
   expect(G.levelCost(50)).toBeGreaterThan(G.levelCost(49));
   expect(G.nameOf('weapon', 1)).toBe('Chunin Kunai');
   expect(G.nameOf('necklace', 4)).toBe('Super Kage Prayer Beads');
   expect(G.nameOf('necklace', 5)).toBe('Super Kage Prayer Beads');
+  expect(G.nameOf('sandals', 0)).toBe('Genin Sandals');
+  expect(G.nameOf('sandals', 5)).toBe('Super Kage War Boots');
   for (const art of ['green', 'blue', 'purple', 'orange', 'red']) {
-    for (const s of SLOTS) expect(fs.existsSync(path.join(REPO_ROOT, `assets/gear/${art}_${s}.webp`))).toBe(true);
+    for (const s of SLOTS) {
+      expect(fs.existsSync(path.join(REPO_ROOT, `assets/gear/${art}_${s}.webp`))).toBe(true);
+      expect(fs.existsSync(path.join(REPO_ROOT, `assets/gear/art/${art}_${s}.webp`))).toBe(true);
+    }
   }
   expect(G.iconOf('helmet', 5)).toBe('assets/gear/red_helmet.webp');
+  expect(G.artOf('sandals', 3)).toBe('assets/gear/art/orange_sandals.webp');
 });
 
 test('default gear, strengthen, auto and the tier cap on the Tools page', async ({ page }) => {
@@ -58,7 +65,7 @@ test('default gear, strengthen, auto and the tier cap on the Tools page', async 
 
   // Every piece starts Green Lv1
   const pieces = page.locator('#gear-left .gp[data-slot], #gear-right .gp[data-slot]');
-  await expect(pieces).toHaveCount(5);
+  await expect(pieces).toHaveCount(6);
   expect(await page.evaluate(() => window.Gear.unitGear('g-naruto'))).toEqual(
     Object.fromEntries(SLOTS.map((s) => [s, { tier: 0, level: 1 }])));
   for (const s of SLOTS) {
@@ -95,7 +102,7 @@ test('default gear, strengthen, auto and the tier cap on the Tools page', async 
   // Strengthen view: capped row offers Upgrade, others Strengthen
   await page.locator('#view-str').click();
   await expect(page.locator('#str-app')).toBeVisible();
-  await expect(page.locator('.gs-row')).toHaveCount(5);
+  await expect(page.locator('.gs-row')).toHaveCount(6);
   await expect(page.locator('.gs-row[data-slot="helmet"] [data-act="str"]')).toHaveCount(0);
   await expect(page.locator('.gs-row[data-slot="helmet"] [data-act="up"]')).toBeVisible();
   const before = (await wallet(page)).ryo;
@@ -162,7 +169,7 @@ test('each gear piece takes only its magatama type', async ({ page }) => {
     }
     return out;
   });
-  expect(res).toEqual({ helmet: ['life'], weapon: ['attack'], armor: ['defense'], scroll: ['ninjutsu'], necklace: ['resistance'] });
+  expect(res).toEqual({ helmet: ['life'], weapon: ['attack'], armor: ['defense'], scroll: ['ninjutsu'], necklace: ['resistance'], sandals: [] });
 });
 
 test('gear stats apply in battle; the scroll raises jutsu damage', async ({ page }) => {
@@ -187,7 +194,7 @@ test('gear stats apply in battle; the scroll raises jutsu damage', async ({ page
     blazing_story_seen_v1: allStorySeen(),
     blazing_gear_v1: { units: { 't-naruto': {
       helmet: { tier: 5, level: 120 }, weapon: { tier: 4, level: 100 }, armor: { tier: 3, level: 80 },
-      scroll: { tier: 5, level: 120 }, necklace: { tier: 2, level: 60 },
+      scroll: { tier: 5, level: 120 }, necklace: { tier: 2, level: 60 }, sandals: { tier: 5, level: 120 },
     } } },
   });
   await page.goto('/battle.html');
@@ -199,17 +206,18 @@ test('gear stats apply in battle; the scroll raises jutsu damage', async ({ page
     return bm.activeTeam.map((u) => {
       const base = bm.charactersData.find((c) => c.id === u.charId);
       const plain = bm.units._baseStats(base, window.InventoryChar.getByUid(u.id));
-      return { gear: u.stats.gear, maga: u.stats.magatama, maxHP: u.stats.maxHP, atk: u.stats.atk, def: u.stats.def, plain };
+      return { gear: u.stats.gear, maga: u.stats.magatama, maxHP: u.stats.maxHP, atk: u.stats.atk, def: u.stats.def, speed: u.stats.speed, plain };
     });
   });
   const want = {
     hp: G.statValue('helmet', 5, 120), atk: G.statValue('weapon', 4, 100), def: G.statValue('armor', 3, 80),
-    nin: G.statValue('scroll', 5, 120), res: G.statValue('necklace', 2, 60),
+    spd: G.statValue('sandals', 5, 120), nin: G.statValue('scroll', 5, 120), res: G.statValue('necklace', 2, 60),
   };
   expect(r[0].gear).toEqual(want);
   expect(r[0].maxHP).toBe(r[0].plain.maxHP + want.hp);
   expect(r[0].atk).toBe(r[0].plain.atk + want.atk);
   expect(r[0].def).toBe(r[0].plain.def + want.def);
+  expect(r[0].speed).toBe(r[0].plain.speed + want.spd);
   expect(r[0].maga.nin).toBe(want.nin);
   expect(r[0].maga.res).toBe(want.res);
   // The other unit has starting gear only

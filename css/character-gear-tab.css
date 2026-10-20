@@ -1,0 +1,240 @@
+/* css/character-gear-tab.css — Equipment tab (js/character-gear-tab.js).
+ * On this tab the character art is hidden and the panel becomes a starfield
+ * (assets/ui/equip-cosmos/space_bg.webp). Six gear medallions sit on a
+ * glowing orbit with a tick ring and a sigil: four on the outer ring, two in
+ * the middle, each a gold-framed disc with its level on a pill below. The
+ * totals and the selected piece sit beside the orbit. */
+#tab-gear { container-type: inline-size; }
+
+/* ── The panel while the Equipment tab is open ── */
+#char-modal.is-gear-view .char-modal-art { display: none !important; }
+body.page-characters #char-modal.is-gear-view .char-modal-panel,
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-characters #char-modal.open.is-gear-view.is-gear-view .char-modal-panel {
+  grid-template-columns: minmax(0, 1fr) !important;
+  background:
+    radial-gradient(ellipse at 38% 55%, rgba(4, 6, 20, 0) 30%, rgba(4, 6, 20, 0.55) 100%),
+    url("../assets/ui/equip-cosmos/space_bg.webp") center / cover no-repeat,
+    #070818 !important;
+}
+body.page-characters #char-modal.is-gear-view .char-modal-info,
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-characters #char-modal.open.is-gear-view.is-gear-view .char-modal-info {
+  background: linear-gradient(180deg, rgba(5, 7, 20, 0.55), rgba(5, 7, 20, 0) 22%) !important;
+  box-shadow: none !important;
+}
+body.page-characters #char-modal.is-gear-view .char-modal-info::before,
+body.page-characters #char-modal.is-gear-view .char-modal-info::after { content: none !important; }
+#char-modal.is-gear-view .tab-panels { overflow-x: hidden; }
+
+.eqp {
+  --eqp-gold: #e5c27a;
+  --eqp-line: rgba(196, 214, 255, 0.16);
+  --eqp-text: #f2f4ff;
+  --eqp-dim: rgba(214, 222, 255, 0.62);
+  display: grid;
+  grid-template-columns: min(560px, 54vh, 56%) minmax(0, 1fr);
+  gap: 12px clamp(14px, 4cqi, 48px);
+  align-items: start;
+  padding: 4px 0 10px;
+  color: var(--eqp-text);
+}
+html[data-skin="ink"] .eqp { grid-template-columns: min(580px, 68vh, 56%) minmax(0, 1fr); }
+@container (max-width: 380px) {
+  .eqp { grid-template-columns: 1fr; }
+  .eqp-orbit { justify-self: center; width: min(100%, 320px, 56vh); }
+}
+
+/* ── Orbit ── */
+.eqp-orbit {
+  position: relative;
+  width: 100%;
+  min-width: 170px;
+  aspect-ratio: 1 / 1;
+  container-type: inline-size;
+  justify-self: center;
+}
+.eqp-ring, .eqp-ticks, .eqp-sigil, .eqp-spark {
+  position: absolute;
+  pointer-events: none;
+  background: center / contain no-repeat;
+}
+.eqp-ring  { inset: 4%;  background-image: url("../assets/ui/equip-cosmos/ring.webp"); opacity: 0.7; }
+.eqp-ticks { inset: 28%; background-image: url("../assets/ui/equip-cosmos/ticks.webp"); opacity: 0.55; animation: eqp-spin 120s linear infinite; }
+.eqp-sigil { inset: 24%; background-image: url("../assets/ui/equip-cosmos/sigil.webp"); opacity: 0.3; }
+.eqp-spark { aspect-ratio: 1 / 1; transform: translate(-50%, -50%); opacity: 0.5; animation: eqp-twinkle 6s ease-in-out infinite; }
+.eqp-spark--streak, .eqp-spark--orb, .eqp-spark--dust { display: none; }   /* only a few small stars */
+.eqp-spark--spark_cross { background-image: url("../assets/ui/equip-cosmos/spark_cross.webp"); }
+.eqp-spark--sparks      { background-image: url("../assets/ui/equip-cosmos/sparks.webp"); }
+.eqp-spark--spark_big   { background-image: url("../assets/ui/equip-cosmos/spark_big.webp"); }
+.eqp-spark--streak      { background-image: url("../assets/ui/equip-cosmos/streak.webp"); }
+.eqp-spark--orb         { background-image: url("../assets/ui/equip-cosmos/orb.webp"); }
+.eqp-spark--dust        { background-image: url("../assets/ui/equip-cosmos/dust.webp"); opacity: 0.55; }
+@keyframes eqp-spin { to { transform: rotate(360deg); } }
+@keyframes eqp-twinkle { 0%, 100% { opacity: 0.3; } 50% { opacity: 0.6; } }
+
+/* ── Pieces ── */
+.eqp-piece {
+  --size: 21%;
+  position: absolute;
+  width: var(--size);
+  display: flex; flex-direction: column; align-items: center; gap: 4%;
+  padding: 0; border: 0; background: none; cursor: pointer;
+  transform: translate(-50%, -38%);
+  -webkit-tap-highlight-color: transparent;
+  z-index: 1;
+}
+.eqp--tl { left: 25%; top: 14%; }
+.eqp--tr { left: 79%; top: 23%; }
+.eqp--bl { left: 21%; top: 66%; }
+.eqp--br { left: 77%; top: 77%; }
+.eqp--il, .eqp--ir { --size: 16%; z-index: 2; }
+.eqp--il { left: 43%; top: 39%; }
+.eqp--ir { left: 58%; top: 60%; }
+
+/* gold-framed disc: starfield fill, the piece's art, the gold frame on top */
+.eqp-medal {
+  position: relative;
+  width: 100%; aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  background: url("../assets/ui/equip-cosmos/medal_fill.webp") center / 92% no-repeat;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.6));
+  transition: transform 0.18s ease, filter 0.18s ease;
+}
+.eqp-medal img {              /* painted piece (assets/gear/art), floating in the disc */
+  position: absolute; inset: 13%;
+  width: 74%; height: 74%;
+  object-fit: contain;
+  z-index: 2;
+  user-select: none;
+  filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.55));
+}
+.eqp-medal::after {
+  content: ''; position: absolute; inset: -4%; z-index: 3;
+  background: url("../assets/ui/equip-cosmos/medal_frame.webp") center / contain no-repeat;
+  pointer-events: none;
+}
+.eqp-medal::before {        /* tier colour halo under the frame */
+  content: ''; position: absolute; inset: 7%; border-radius: 50%;
+  box-shadow: 0 0 0 1.5px var(--tc);   /* thin rarity line inside the gold frame, no halo */
+  z-index: 1; pointer-events: none;
+}
+.eqp-piece.is-shiny .eqp-medal { filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.6)) drop-shadow(0 0 5px rgba(224, 69, 60, 0.7)); }   /* Red Shiny: a faint red edge only */
+.eqp-piece:hover .eqp-medal { transform: scale(1.04); }
+.eqp-piece.is-on .eqp-medal {
+  transform: scale(1.1);
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.6)) brightness(1.12);
+}
+.eqp-piece:focus-visible { outline: none; }
+.eqp-piece:focus-visible .eqp-medal { outline: 2px solid #fff6dc; outline-offset: 5px; }
+
+/* level pill: dark capsule with a gold rim and the gold target dot */
+.eqp-lv {
+  position: relative; z-index: 3;
+  display: inline-flex; align-items: center; gap: 0.35em;
+  padding: 0.18em 0.85em 0.18em 0.3em;
+  border-radius: 999px;
+  background: rgba(10, 10, 14, 0.9);
+  box-shadow: inset 0 0 0 1.5px rgba(229, 194, 122, 0.85), 0 2px 6px rgba(0, 0, 0, 0.6);
+  font-family: var(--ink-cinzel, serif); font-weight: 700;
+  font-size: clamp(9px, 3.6cqi, 17px);
+  letter-spacing: 0.03em; white-space: nowrap; color: #fff;
+}
+.eqp-lv i {
+  width: 1.15em; height: 1.15em; flex: none;
+  background: url("../assets/ui/equip-cosmos/dot.webp") center / contain no-repeat;
+}
+
+/* ── Side: totals + selected piece ── */
+.eqp-side { position: relative; container-type: inline-size; min-width: 0; padding-right: 14px; }
+.eqp-side::before {          /* a soft dark wash so the text reads over the starfield */
+  content: ''; position: absolute; inset: -4px -6px -4px -10px; z-index: -1; pointer-events: none;
+  background: radial-gradient(ellipse closest-side at 50% 50%, rgba(4, 6, 20, 0.6), rgba(4, 6, 20, 0.35) 70%, transparent);
+}
+.eqp-side::after {           /* the thin glowing rail on the right */
+  content: ''; position: absolute; top: 4px; bottom: 4px; right: 0; width: 8px;
+  background: url("../assets/ui/equip-cosmos/scrollbar.webp") center / 100% 100% no-repeat;
+  opacity: 0.4; pointer-events: none;
+}
+.eqp-side .cx-kicker {
+  display: block !important; height: auto !important; line-height: 1.5 !important;
+  margin: 14px 0 6px !important; padding: 0 0 14px !important;
+  color: var(--eqp-gold) !important;
+  background: linear-gradient(90deg, rgba(200, 214, 255, 0.55), rgba(200, 214, 255, 0.15) 70%, transparent) left bottom / 100% 1px no-repeat !important;
+}
+.eqp-side .cx-kicker::after { content: none !important; }
+.eqp-side .cx-kicker:first-child { margin-top: 0 !important; }
+.eqp-totals { display: grid; grid-template-columns: 1fr 1fr; column-gap: 18px; }
+@container (max-width: 300px) {
+  .eqp-totals { grid-template-columns: 1fr; }
+}
+.eqp-row {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 10px;
+  padding: 7px 0;
+  border-bottom: 1px solid var(--eqp-line);
+  font-family: var(--ink-cinzel, serif); font-size: 10.5px; letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--eqp-dim);
+}
+.eqp-row span { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.eqp-row b { white-space: nowrap; font-family: var(--g-sans, sans-serif); font-size: 13px; letter-spacing: 0.02em; color: var(--eqp-text); text-transform: none; }
+.eqp-row em { font-style: normal; font-weight: 600; color: #7fe3c4; margin-left: 4px; }
+
+.eqp-detail-head { display: flex; align-items: center; gap: 12px; padding: 4px 0 8px; }
+.eqp-detail-ic {
+  position: relative; flex: none; width: 52px; height: 52px; border-radius: 50%;
+  background: url("../assets/ui/equip-cosmos/medal_fill.webp") center / cover;
+}
+.eqp-detail-ic img {
+  position: absolute; inset: 12%; width: 76%; height: 76%; object-fit: contain; display: block; z-index: 1;
+}
+.eqp-detail-ic::after {
+  content: ''; position: absolute; inset: -5%; z-index: 2;
+  background: url("../assets/ui/equip-cosmos/medal_frame.webp") center / contain no-repeat;
+}
+.eqp-detail-nm { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.eqp-detail-nm b { font-family: var(--ink-cinzel, serif); font-size: 14px; letter-spacing: 0.06em; color: var(--tc); }
+.eqp-detail-nm small { font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--eqp-dim); }
+.eqp-pips { display: inline-flex; gap: 4px; }
+.eqp-pips i {
+  width: 9px; height: 9px; border-radius: 50%;
+  background: var(--c, transparent);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.35);
+}
+.eqp-state { padding: 8px 0 2px; font-size: 11px; letter-spacing: 0.06em; color: var(--eqp-dim); }
+.eqp-go {
+  display: flex; align-items: center; justify-content: center;
+  margin-top: 12px; height: 40px;
+  font-family: var(--ink-cinzel, serif); font-weight: 700; font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase;
+  color: #eef1ff; text-decoration: none;
+  /* flat slate pill with a hairline, as on the HSR screens */
+  border-radius: 999px;
+  background: rgba(46, 54, 78, 0.92);
+  box-shadow: inset 0 0 0 1px rgba(200, 214, 255, 0.45);
+}
+.eqp-go:hover { background: rgba(62, 72, 102, 0.95); }
+.eqp-go:focus-visible { outline: 1px solid #fff6dc; outline-offset: 2px; }
+
+/* Ink: five tabs fit the row with a tighter letter spacing */
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-characters #char-modal .char-modal-info .char-tabs .tab-btn[data-tab] {
+  letter-spacing: 0.14em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .eqp-ticks, .eqp-spark { animation: none; }
+  .eqp-medal { transition: none; }
+}
+
+/* ── Entering the tab: ink dissolves into the night sky (js playIntro) ── */
+#char-modal .eqp-intro { display: none; }
+#char-modal.is-gear-view .eqp-intro {
+  display: block; position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; z-index: 0; pointer-events: none;
+  transition: opacity 0.6s ease;
+}
+#char-modal.is-gear-view .eqp-intro.is-done { opacity: 0; }
+#char-modal.is-gear-view .char-modal-info { z-index: 1; }
+#char-gear.is-intro .eqp { animation: eqp-in 1.6s ease both; }
+#char-gear.is-intro .eqp-orbit { animation: eqp-orbit-in 2s cubic-bezier(.2, .7, .2, 1) both; }
+@keyframes eqp-in { 0%, 35% { opacity: 0; } 100% { opacity: 1; } }
+@keyframes eqp-orbit-in { 0%, 30% { opacity: 0; transform: scale(0.94); } 100% { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) {
+  #char-gear.is-intro .eqp, #char-gear.is-intro .eqp-orbit { animation: none; }
+}
