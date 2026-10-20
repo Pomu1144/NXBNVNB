@@ -207,7 +207,17 @@
         };
         this.difficulty = "C";
 
-        if (this.dom.missionTitle) this.dom.missionTitle.textContent = "Arena Battle";
+        // Kage League match (js/kage-league.js): the league's team, not team 1.
+        // The match record stays until the result is applied, so a resume finds it.
+        const league = window.KageLeague?.activeMatch();
+        if (league) {
+          this.isKageLeague = true;
+          this.kageLeagueMatch = league;
+          if (league.slots) this.playerTeamSlots = league.slots;
+          this.missionData.name = "Kage League";
+        }
+
+        if (this.dom.missionTitle) this.dom.missionTitle.textContent = this.missionData.name;
 
         if (this.dom.scene) {
           this.dom.scene.style.backgroundImage = `url('${arenaMap}')`;
