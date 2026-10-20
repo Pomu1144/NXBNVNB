@@ -38,7 +38,10 @@
      */
     async awardStageChest(stageData, stageIndex, core) {
       // Get rewards for this stage
-      const rewards = stageData.rewards || this.getDefaultStageRewards(stageIndex, core?.difficulty);
+      let rewards = stageData.rewards || this.getDefaultStageRewards(stageIndex, core?.difficulty);
+      // Gear pieces (js/gear.js): a chance per chest, rarer pieces on harder ranks
+      const drops = window.Gear?.rollDrop ? window.Gear.rollDrop(core?.difficulty || 'C') : [];
+      if (drops.length) rewards = Object.assign({}, rewards, { gear: drops });
 
       if (!rewards || Object.keys(rewards).length === 0) {
         console.log("[BattleRewards] No rewards for this stage");
@@ -195,13 +198,6 @@
         rewards[randomMat] = 1;
       }
 
-      // Small chance for a gear upgrade scroll (js/gear.js promotion);
-      // harder ranks drop the higher-star scrolls
-      const gearScrollByDifficulty = { D: 2, C: 2, B: 3, A: 4, S: 5, SS: 6 };
-      if (Math.random() < 0.2) {
-        rewards[`gear_scroll_${gearScrollByDifficulty[difficulty] || 2}`] = 1;
-      }
-
       // Chance for ramen (tier scales with difficulty)
       if (Math.random() < 0.3) {
         const tier = ramenTierByDifficulty[difficulty] || 1;
@@ -292,7 +288,8 @@
           return;
         }
         const el = document.createElement('div');
-        el.className = `mr-tile${item.kind === 'character' ? ' is-char' : ''}${isBonus ? ' is-bonus' : ''}`;
+        el.className = `mr-tile${item.kind === 'character' ? ' is-char' : ''}${item.kind === 'gear' ? ' is-gear' : ''}${item.shiny ? ' is-shiny' : ''}${isBonus ? ' is-bonus' : ''}`;
+        if (item.color) el.style.setProperty('--tc', item.color);
         el.style.setProperty('--d', `${(tileCount % 6) * 0.08}s`);
         const fb = item.fallback || this.chestSprites.closed;
         el.innerHTML = `
@@ -587,6 +584,10 @@
         // character inventory, not the resource pool.
         if (item === 'characters') {
           this.grantCharacterRewards(amount);
+          continue;
+        }
+        if (item === 'gear') {
+          (Array.isArray(amount) ? amount : []).forEach(it => window.Gear?.add(it));
           continue;
         }
         if (window.Resources) {

@@ -10,9 +10,10 @@ test('equipment tab: six gear pieces, totals and the selected piece', async ({ p
   const errors = collectErrors(page);
   await seedSave(page, {
     blazing_inventory_v2: [invEntry('e-naruto', 'naruto_2115', 80, '7S')],
-    blazing_gear_v1: { units: { 'e-naruto': {
-      helmet: { tier: 3, level: 70 }, sandals: { tier: 5, level: 120 },
-    } } },
+    blazing_gear_v2: { seq: 2, starter: true, bag: {
+      h: { id: 'h', slot: 'helmet', rarity: 3, level: 9, main: 'hp', subs: [['atkPct', 3]] },
+      s: { id: 's', slot: 'sandals', rarity: 5, level: 15, main: 'spd', subs: [] },
+    }, equip: { 'e-naruto': { helmet: 'h', sandals: 's' } } },
   });
   await page.goto('/characters.html');
   await waitForLoader(page);
@@ -39,7 +40,8 @@ test('equipment tab: six gear pieces, totals and the selected piece', async ({ p
   const pieces = page.locator('#tab-gear .eqp-piece');
   await expect(pieces).toHaveCount(6);
   for (const s of SLOTS) await expect(page.locator(`#tab-gear .eqp-piece[data-slot="${s}"]`)).toBeVisible();
-  await expect(page.locator('#tab-gear .eqp-piece[data-slot="helmet"] .eqp-lv')).toHaveText('Lv 70');
+  await expect(page.locator('#tab-gear .eqp-piece[data-slot="helmet"] .eqp-lv')).toHaveText('+9');
+  await expect(page.locator('#tab-gear .eqp-piece[data-slot="weapon"] .eqp-lv')).toHaveText('Empty');
   await expect(page.locator('#tab-gear .eqp-piece[data-slot="helmet"] img')).toHaveAttribute('src', 'assets/gear/art/orange_helmet.webp');
   await expect(page.locator('#tab-gear .eqp-piece[data-slot="sandals"] img')).toHaveAttribute('src', 'assets/gear/art/red_sandals.webp');
 
@@ -48,12 +50,12 @@ test('equipment tab: six gear pieces, totals and the selected piece', async ({ p
   expect(spd).toBe(14);
   await expect(page.locator('#tab-gear .eqp-totals')).toContainText('+14');
 
-  // Selecting a piece shows it, with a link to strengthen it on the Tools page
+  // Selecting a piece shows its main stat and substats
   await page.locator('#tab-gear .eqp-piece[data-slot="sandals"]').click();
   await expect(page.locator('#tab-gear .eqp-piece[data-slot="sandals"]')).toHaveAttribute('aria-pressed', 'true');
   await expect(page.locator('#tab-gear .eqp-detail')).toContainText('Super Kage War Boots');
-  await expect(page.locator('#tab-gear .eqp-detail')).toContainText('120 / 120');
-  await expect(page.locator('#tab-gear .eqp-go')).toHaveAttribute('href', 'tools.html?uid=e-naruto&view=gear');
+  await expect(page.locator('#tab-gear .eqp-detail')).toContainText('+15 / 15');
+  await expect(page.locator('#tab-gear .eqp-detail .eqp-main')).toContainText('SPD');
 
   // Other tabs bring the art back
   await page.locator('.char-tabs .tab-btn[data-tab="status"]').click();

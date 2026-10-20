@@ -1,13 +1,16 @@
 // js/character-gear-tab.js — Equipment tab of the Shinobi Record (characters.html).
 //
-// The six gear pieces (js/gear.js) sit on an orbit around a sigil (art in
+// The six gear slots (js/gear.js) sit on an orbit around a sigil (art in
 // assets/ui/equip-cosmos, over a starfield; the character art is hidden on
-// this tab so the orbit can use the whole panel): helmet,
-// weapon, armor and sandals on the outer ring, scroll and necklace in the
-// middle. Each medallion shows the piece's art in its tier colour with its
-// level under it. Beside the orbit: what the gear and its magatama add in
-// total, and the selected piece (name, tier, level, stat) with a link to
-// strengthen it on the Tools page.
+// this tab so the orbit can use the whole panel): helmet, weapon, armor and
+// sandals on the outer ring, scroll and necklace in the middle. Each disc
+// shows the equipped piece in its rarity colour with its +level, or an empty
+// slot. Beside the orbit:
+//   Gear Bonus   what the pieces (main + substats) and magatama add
+//   the slot     the equipped piece: main stat, substats, level up with Ryo,
+//                Change / Unequip
+//   the bag      (Change) every piece for that slot that has dropped, best
+//                first; pick one to see it, then Equip or Salvage it
 (function (global) {
   'use strict';
 
@@ -24,55 +27,126 @@
     ['spark_cross', 6, 44, 7, 0], ['sparks', 88, 52, 8, 1.3], ['spark_big', 52, 3, 5, 2.1],
     ['streak', 12, 88, 10, 0.7], ['orb', 92, 8, 5, 1.8], ['dust', 70, 92, 11, 2.6]
   ];
+  // Gear Bonus rows: [stat, label]; flat and % of the same stat sit together
   const TOTALS = [
-    ['hp', 'HP'], ['atk', 'ATK'], ['def', 'DEF'], ['spd', 'SPD'],
-    ['nin', 'Jutsu DMG', '%'], ['res', 'Jutsu RES', '%']
+    ['hp', 'HP'], ['hpPct', 'HP%'], ['atk', 'ATK'], ['atkPct', 'ATK%'], ['def', 'DEF'], ['defPct', 'DEF%'],
+    ['spd', 'SPD'], ['critRate', 'Crit Rate'], ['critDmg', 'Crit DMG'], ['nin', 'Jutsu DMG'], ['res', 'Jutsu RES']
   ];
+  const RYO = 'assets/icons/currency/ryo.png';
 
-  const ui = { uid: null, slot: 'helmet' };
+  const ui = { uid: null, slot: 'helmet', bag: false, pick: null };
   const G = () => global.Gear;
   const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
-  const num = (v, unit) => unit ? `${Math.round((+v || 0) * 100) / 100}%` : Math.round(+v || 0).toLocaleString();
+  const fmt = (n) => Math.round(Number(n) || 0).toLocaleString();
+  const ryo = () => (global.Resources ? global.Resources.get('ryo') : 0);
+  const val = (stat, v) => G().fmtValue(stat, v);
+  function ownerName(uid) {
+    const inst = global.InventoryChar && global.InventoryChar.getByUid ? global.InventoryChar.getByUid(uid) : null;
+    const list = global.CharacterData || global.CHARACTERS || [];
+    const c = inst && Array.isArray(list) ? list.find(x => x.id === inst.charId) : null;
+    return (c && c.name) || 'another shinobi';
+  }
+  function toast(msg) {
+    const box = global.document.querySelector('#char-gear .eqp-toast');
+    if (!box || !msg) return;
+    box.textContent = msg;
+    box.classList.remove('is-on'); void box.offsetWidth; box.classList.add('is-on');
+  }
 
   function pieceHTML(i, pos) {
     const on = i.slot === ui.slot;
-    return `<button type="button" class="eqp-piece eqp--${pos}${on ? ' is-on' : ''}${i.shiny ? ' is-shiny' : ''}"
-        data-slot="${i.slot}" style="--tc:${i.tierInfo.color}" aria-pressed="${on}"
-        aria-label="${esc(i.name)}, level ${i.level}">
+    return `<button type="button" class="eqp-piece eqp--${pos}${on ? ' is-on' : ''}${i.shiny ? ' is-shiny' : ''}${i.empty ? ' is-empty' : ''}"
+        data-slot="${i.slot}" style="--tc:${i.empty ? 'rgba(200,210,255,.35)' : i.tierInfo.color}" aria-pressed="${on}"
+        aria-label="${esc(i.kind)}: ${i.empty ? 'empty' : `${esc(i.name)}, +${i.level}`}">
         <span class="eqp-medal"><img src="${esc(i.art)}" alt="" draggable="false"></span>
-        <span class="eqp-lv"><i aria-hidden="true"></i>Lv ${i.level}</span>
+        <span class="eqp-lv"><i aria-hidden="true"></i>${i.empty ? 'Empty' : `+${i.level}`}</span>
       </button>`;
   }
 
-  function detailHTML(i) {
+  // Name, rarity, main stat and substats of one piece
+  function statsHTML(i) {
+    const next = i.next != null ? `<em>&rarr; ${val(i.stat, i.next)}</em>` : '';
+    return `
+      <div class="eqp-detail-head" style="--tc:${i.tierInfo.color}">
+        <span class="eqp-detail-ic${i.shiny ? ' is-shiny' : ''}"><img src="${esc(i.art)}" alt="" draggable="false"></span>
+        <span class="eqp-detail-nm">
+          <b>${esc(i.name)}</b>
+          <small>${esc(i.tierInfo.label)} &middot; +${i.level} / ${i.cap}</small>
+        </span>
+      </div>
+      <div class="eqp-row eqp-main"><span>${esc(i.statLabel)}</span><b>+${val(i.stat, i.value)} ${next}</b></div>
+      ${i.subs.map(s => `<div class="eqp-row eqp-sub"><span>${esc(s.label)}</span><b>+${esc(s.text)}</b></div>`).join('')}
+      ${i.subs.length < 4 ? `<div class="eqp-row eqp-sub is-locked"><span>New substat at +${Math.ceil((i.level + 1) / 3) * 3}</span><b></b></div>` : ''}`;
+  }
+
+  function slotHTML(i) {
+    if (i.empty) {
+      const n = G().bagFor(i.slot).length;
+      return `<p class="eqp-empty">No ${esc(i.kind.toLowerCase())} equipped.</p>
+        <div class="eqp-acts"><button type="button" class="eqp-go" data-act="bag" ${n ? '' : 'disabled'}>${n ? `Choose (${n})` : 'None yet: clear missions'}</button></div>`;
+    }
     const M = global.Magatama;
     const row = M && M.FIT && M.FIT[i.slot] ? M.socketsOf(i.uid, i.slot) : null;
     const pips = row ? `<div class="eqp-row"><span>Magatama</span><span class="eqp-pips">${row.map(k => k ? `<i style="--c:${M.info(k).color}"></i>` : '<i></i>').join('')}</span></div>` : '';
-    const next = i.next != null ? `<em>&rarr; ${num(i.next, i.unit)}</em>` : '';
-    const state = i.isMax ? 'Max tier' : i.atCap ? 'Ready to upgrade' : `Next Lv: ${i.cost.toLocaleString()} Ryo`;
-    return `
-      <div class="eqp-detail-head" style="--tc:${i.tierInfo.color}">
-        <span class="eqp-detail-ic"><img src="${esc(i.art)}" alt="" draggable="false"></span>
-        <span class="eqp-detail-nm">
-          <b>${esc(i.name)}</b>
-          <small>${esc(i.kind)} &middot; ${esc(i.tierInfo.label)}</small>
-        </span>
-      </div>
-      <div class="eqp-row"><span>Level</span><b>${i.level} / ${i.cap}</b></div>
-      <div class="eqp-row"><span>${esc(i.statLabel)}</span><b>+${num(i.value, i.unit)} ${next}</b></div>
-      ${pips}
-      <div class="eqp-state">${esc(state)}</div>
-      <a class="eqp-go" href="tools.html?uid=${encodeURIComponent(i.uid)}&amp;view=gear">Strengthen</a>`;
+    let lvl;
+    if (i.atCap) lvl = '<div class="eqp-state">Max level</div>';
+    else {
+      const pl = G().plan(i.uid, i.slot);
+      lvl = `<div class="eqp-state">Next level <img src="${RYO}" alt="">${fmt(i.cost)}</div>
+        <div class="eqp-acts">
+          <button type="button" class="eqp-go" data-act="lv1" ${ryo() >= i.cost ? '' : 'disabled'}>Level Up</button>
+          <button type="button" class="eqp-go" data-act="lvmax" ${pl.levels ? '' : 'disabled'}>${pl.levels > 1 ? `+${pl.levels} Levels` : 'Auto'}</button>
+        </div>`;
+    }
+    return `${statsHTML(i)}${pips}${lvl}
+      <div class="eqp-acts">
+        <button type="button" class="eqp-go is-quiet" data-act="bag">Change</button>
+        <button type="button" class="eqp-go is-quiet" data-act="off">Unequip</button>
+      </div>`;
+  }
+
+  function bagHTML(slot) {
+    const list = G().bagFor(slot);
+    const kind = G().PIECES[slot].kind;
+    const cards = list.map(it => {
+      const t = G().TIERS[it.rarity];
+      const own = G().owner(it.id);
+      return `<button type="button" class="eqp-card${it.id === ui.pick ? ' is-on' : ''}${t.shiny ? ' is-shiny' : ''}" data-id="${esc(it.id)}" style="--tc:${t.color}"
+          aria-label="${esc(G().nameOf(it.slot, it.rarity))}, +${it.level}${own ? ', in use' : ''}">
+          <img src="${esc(G().artOf(it.slot, it.rarity))}" alt="" draggable="false">
+          <span class="eqp-card-lv">+${it.level}</span>
+          ${own ? `<span class="eqp-card-own${own === ui.uid ? ' is-mine' : ''}" aria-hidden="true">${own === ui.uid ? '&#10003;' : '&bull;'}</span>` : ''}
+          <span class="eqp-card-main">${esc(G().STAT[it.main].label)}</span>
+        </button>`;
+    }).join('');
+    let pickPane = '';
+    const p = ui.pick && G().itemInfo(ui.pick);
+    if (p) {
+      const own = p.owner;
+      pickPane = `<div class="eqp-pick">${statsHTML(p)}
+        ${own && own !== ui.uid ? `<p class="eqp-note">Worn by ${esc(ownerName(own))}; equipping takes it.</p>` : ''}
+        <div class="eqp-acts">
+          ${own === ui.uid ? '<span class="eqp-state">Equipped</span>' : '<button type="button" class="eqp-go" data-act="equip">Equip</button>'}
+          ${own ? '' : '<button type="button" class="eqp-go is-quiet" data-act="salvage">Salvage</button>'}
+        </div></div>`;
+    }
+    return `<div class="eqp-bag-head"><button type="button" class="eqp-back" data-act="back" aria-label="Back">&larr;</button><span>${esc(kind)} &middot; ${list.length}</span></div>
+      ${list.length ? `<div class="eqp-cards" role="listbox" aria-label="${esc(kind)} pieces">${cards}</div>` : '<p class="eqp-empty">None yet: clear missions to find gear.</p>'}
+      ${pickPane}`;
   }
 
   function render(uid) {
     const box = global.document.getElementById('char-gear');
     if (!box) return;
-    if (uid !== undefined) ui.uid = uid;
+    if (uid !== undefined && uid !== ui.uid) { ui.uid = uid; ui.bag = false; ui.pick = null; }
     if (!G() || !ui.uid) { box.innerHTML = ''; return; }
     if (!G().SLOTS.includes(ui.slot)) ui.slot = 'helmet';
+    if (ui.pick && !G().item(ui.pick)) ui.pick = null;
     const pieces = ORBIT.filter(o => G().SLOTS.includes(o.slot)).map(o => ({ o, i: G().info(ui.uid, o.slot) }));
-    const tot = G().totalFor(ui.uid);
+    const tot = G().bonusFor(ui.uid);
+    const m = global.Magatama && global.Magatama.bonusForUnit ? global.Magatama.bonusForUnit(ui.uid) : {};
+    ['hp', 'atk', 'def', 'nin', 'res'].forEach(k => { tot[k] = (tot[k] || 0) + (m[k] || 0); });
+    const rows = TOTALS.filter(([k]) => tot[k]);
     const sel = pieces.find(p => p.i.slot === ui.slot) || pieces[0];
     box.innerHTML = `
       <div class="eqp">
@@ -86,21 +160,43 @@
         <div class="eqp-side">
           <h4 class="cx-kicker">Gear Bonus</h4>
           <div class="eqp-totals">
-            ${TOTALS.map(([k, label, unit]) => `<div class="eqp-row"><span>${label}</span><b>+${num(tot[k], unit)}</b></div>`).join('')}
+            ${rows.length ? rows.map(([k, label]) => `<div class="eqp-row"><span>${label}</span><b>+${val(k, tot[k])}</b></div>`).join('') : '<p class="eqp-empty">No gear equipped</p>'}
           </div>
           <h4 class="cx-kicker">${esc(sel.i.kind)}</h4>
-          <div class="eqp-detail">${detailHTML(sel.i)}</div>
+          <div class="eqp-detail">${ui.bag ? bagHTML(ui.slot) : slotHTML(sel.i)}</div>
+          <div class="eqp-toast" role="status" aria-live="polite"></div>
         </div>
       </div>`;
   }
 
-  function onClick(e) {
-    const b = e.target.closest('.eqp-piece');
-    if (!b) return;
-    ui.slot = b.dataset.slot;
+  function act(res) {
+    if (res && res.msg) setTimeout(() => toast(res.msg), 0);
     render();
-    const again = global.document.querySelector(`#char-gear .eqp-piece[data-slot="${ui.slot}"]`);
-    if (again) again.focus();
+  }
+  function onClick(e) {
+    const piece = e.target.closest('.eqp-piece');
+    if (piece) {
+      if (piece.dataset.slot !== ui.slot) { ui.bag = false; ui.pick = null; }
+      ui.slot = piece.dataset.slot;
+      render();
+      const again = global.document.querySelector(`#char-gear .eqp-piece[data-slot="${ui.slot}"]`);
+      if (again) again.focus();
+      return;
+    }
+    const card = e.target.closest('.eqp-card');
+    if (card) { ui.pick = card.dataset.id; render(); return; }
+    const a = e.target.closest('[data-act]');
+    if (!a || a.disabled) return;
+    const G_ = G();
+    switch (a.dataset.act) {
+      case 'bag': ui.bag = true; ui.pick = G_.equippedId(ui.uid, ui.slot) || (G_.bagFor(ui.slot)[0] || {}).id || null; render(); break;
+      case 'back': ui.bag = false; ui.pick = null; render(); break;
+      case 'lv1': act(G_.strengthen(ui.uid, ui.slot, 1)); break;
+      case 'lvmax': act(G_.auto(ui.uid, ui.slot)); break;
+      case 'off': act(G_.unequip(ui.uid, ui.slot)); break;
+      case 'equip': { const r = G_.equip(ui.uid, ui.pick); ui.bag = false; ui.pick = null; act(r); break; }
+      case 'salvage': { const r = G_.salvage(ui.pick); ui.pick = null; act(r); break; }
+    }
   }
 
   function init() {
@@ -112,5 +208,5 @@
   if (global.document.readyState === 'loading') global.document.addEventListener('DOMContentLoaded', init, { once: true });
   else init();
 
-  global.CharGearTab = { render, select: (slot) => { ui.slot = slot; render(); } };
+  global.CharGearTab = { render, select: (slot) => { ui.slot = slot; ui.bag = false; ui.pick = null; render(); } };
 })(window);

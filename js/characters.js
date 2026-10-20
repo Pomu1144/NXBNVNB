@@ -368,7 +368,7 @@
       st = comp?.stats || {};
       if (lb) st = window.LimitBreak.applyLimitBreakToStats(st, lb);
     }
-    const bonus = getEquippedCardBonuses(uid);
+    const bonus = getEquippedCardBonuses(uid, st);
     const hp = (st.hp || 0) + bonus.hp, atk = (st.atk || 0) + bonus.atk, spd = (st.speed || 0) + bonus.spd;
     const nAb = (inst.unlockedAbilities || []).length;
     const level = safeNum(inst.level, 1);
@@ -381,6 +381,14 @@
   window.RosterInfo = { summary: unitSummary, open: (uid) => openModalByUid(uid) };
 
   /* ---------- Modal open/close ---------- */
+  // Gear equipped or levelled on the Equipment tab: keep Status / power current
+  window.addEventListener("gear:change", () => {
+    const uid = MODAL.dataset.currentUid;
+    const inst = uid && MODAL.classList.contains("open") ? window.InventoryChar.getByUid(uid) : null;
+    const c = inst && BYID[inst.charId];
+    if (c) renderStatusTab(c, inst, inst.tierCode || minTier(c));
+  });
+
   function openModalByUid(uid) {
     const inst = window.InventoryChar.getByUid(uid);
     if (!inst) return;
@@ -529,11 +537,15 @@
   // Sum stat bonuses from equipped jutsu cards, gear pieces and the magatama
   // beset in them (js/gear.js; the old Tool card slots equipment1..5 are
   // the fixed gear pieces now)
-  function getEquippedCardBonuses(uid) {
+  // `base` ({ hp, atk, def }) lets the gear's HP% / ATK% / DEF% count.
+  function getEquippedCardBonuses(uid, base) {
     const out = { hp: 0, atk: 0, def: 0, spd: 0, critRate: 0, critDmg: 0, evaRate: 0, nin: 0, res: 0, uid };
     try {
-      const g = window.Gear?.totalFor(uid);
-      if (g) { out.hp += g.hp; out.atk += g.atk; out.def += g.def; out.spd += g.spd || 0; out.nin = g.nin; out.res = g.res; }
+      const g = window.Gear?.totalFor(uid, base);
+      if (g) {
+        out.hp += g.hp; out.atk += g.atk; out.def += g.def; out.spd += g.spd || 0; out.nin = g.nin; out.res = g.res;
+        out.critRate += g.critRate || 0; out.critDmg += g.critDmg || 0;
+      }
       const inst = window.InventoryChar?.getByUid(uid);
       if (!inst?.equippedJutsu) return out;
       const slots = ['jutsu1', 'jutsu2', 'jutsu3', 'ultimate'];
@@ -614,7 +626,7 @@
       }
 
       // Apply equipped card stat bonuses
-      const cardBonuses = getEquippedCardBonuses(inst.uid);
+      const cardBonuses = getEquippedCardBonuses(inst.uid, stats);
       const displayHp  = (stats.hp    || 0) + cardBonuses.hp;
       const displayAtk = (stats.atk   || 0) + cardBonuses.atk;
       const displaySpd = (stats.speed || 0) + cardBonuses.spd;
@@ -656,7 +668,7 @@
       const s = c.statsBase || {};
 
       // Apply equipped card stat bonuses
-      const cardBonuses2 = getEquippedCardBonuses(inst.uid);
+      const cardBonuses2 = getEquippedCardBonuses(inst.uid, s);
       const displayHp2  = (s.hp    || 0) + cardBonuses2.hp;
       const displayAtk2 = (s.atk   || 0) + cardBonuses2.atk;
       const displaySpd2 = (s.speed || 0) + cardBonuses2.spd;
