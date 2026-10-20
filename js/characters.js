@@ -514,7 +514,9 @@
     });
     MODAL.querySelectorAll(".tab-panel").forEach(p => p.classList.toggle("is-active", p.id === `tab-${tab}`));
     // Equipment hides the art and takes the whole panel (css/character-gear-tab.css)
+    const intoGear = tab === "gear" && !MODAL.classList.contains("is-gear-view");
     MODAL.classList.toggle("is-gear-view", tab === "gear");
+    if (intoGear) window.CharGearTab?.playIntro(MODAL);   // ink → night sky transition
     const panels = MODAL.querySelector(".tab-panels");
     if (panels) panels.scrollTop = 0;
   }
