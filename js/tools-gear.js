@@ -1,8 +1,10 @@
 // js/tools-gear.js — Gear on the Tools page (logic in js/gear.js).
-//   Gear view      the 6 pieces around the character art; tap one for its
-//                  quick panel (Strengthen / Auto, or promote at the cap).
-//   Strengthen     all six rows: level, stat, Ryo cost, Auto, Strengthen.
-//   Upgrade        piece list · current → next tier · scroll + Ryo · Upgrade.
+//   Gear view      the 6 equipped pieces around the character art; tap one
+//                  for its quick panel (main + substats, Strengthen / Auto).
+//   Strengthen     all six rows: level, main stat, Ryo cost, Auto, Strengthen.
+//   Upgrade        retired: a piece's rarity is fixed now (pieces drop from
+//                  missions, js/gear.js); the view is hidden.
+// Pieces are equipped and swapped on the Shinobi Record's Equipment tab.
 //   Magatama       js/tools-magatama.js, beset into the selected piece.
 // Also owns the view switch (tabs at the top right).
 (function () {
@@ -14,7 +16,7 @@
   const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
   const fmt = (n) => Math.round(Number(n) || 0).toLocaleString();
   const VIEW_KEY = 'tools_ui_view_v1';
-  const VIEWS = ['gear', 'str', 'up', 'maga'];
+  const VIEWS = ['gear', 'str', 'maga'];
   const APP = { gear: 'tools-app', str: 'str-app', up: 'up-app', maga: 'maga-app' };
   const RYO = 'assets/icons/currency/ryo.png';
   const ARROW = '<svg class="gx-arrow" viewBox="0 0 64 32" aria-hidden="true"><defs><linearGradient id="gxA" x1="0" x2="1"><stop offset="0" stop-color="#2d6b73"/><stop offset=".6" stop-color="#6fc3c9"/><stop offset="1" stop-color="#f1d98a"/></linearGradient></defs><path d="M4 20c8-14 22-14 30-6s18 8 22-2" fill="none" stroke="url(#gxA)" stroke-width="4" stroke-linecap="round"/><path d="M50 4l10 8-12 4z" fill="#f1d98a"/></svg>';
@@ -26,7 +28,7 @@
   const who = () => { const s = T() && T().getSelectedCharacter(); return s ? (s.baseChar.name || '') : ''; };
   const ryo = () => (window.Resources ? window.Resources.get('ryo') : 0);
   const toast = (m) => { if (T() && T().toast) T().toast(m); };
-  const statTxt = (i, v) => `+${G().fmtStat(i.slot, v)}`;
+  const statTxt = (i, v) => `+${G().fmtValue(i.stat, v)}`;
 
   // Icon tile with the rarity frame (baked into the art); Red Shiny adds the
   // animated gold frame (css/gear.css .gx-tile.is-shiny).
@@ -85,7 +87,7 @@
     const on = ui.modal === i.slot;
     return `<button type="button" class="gp${on ? ' is-active' : ''}" data-slot="${i.slot}" style="--tc:${i.tierInfo.color}"
       aria-label="${esc(i.name)}, ${i.tierInfo.label}, level ${i.level}">
-      ${tile(i.slot, i.tier, `<span class="gp-lv">Lv${i.level}</span>${i.atCap && !i.isMax ? '<i class="gp-up" title="Ready to upgrade"></i>' : ''}`)}
+      ${tile(i.slot, i.tier, i.empty ? '<span class="gp-lv">Empty</span>' : `<span class="gp-lv">+${i.level}</span>`)}
       <span class="gp-nm">${esc(i.name)}</span>
     </button>`;
   }
@@ -131,10 +133,15 @@
         <div class="gp-hero-meta">
           <b>${esc(i.name)}</b>
           <span class="gp-tier" style="--tc:${i.tierInfo.color}">${esc(i.tierInfo.label)}</span>
-          <span class="gp-lvl">Lv <b>${i.level}</b> / ${i.cap}</span>
+          <span class="gp-lvl">${i.empty ? 'Equip a piece on the Shinobi Record' : `+<b>${i.level}</b> / ${i.cap}`}</span>
         </div>
       </div>`;
-    if (!i.atCap) {
+    if (!i.empty) {
+      body += i.subs.map(s => `<div class="gx-row gx-sub"><span>${esc(s.label)}</span><b>+${esc(s.text)}</b></div>`).join('');
+    }
+    if (i.empty) {
+      body += `<div class="gp-acts"><a class="jjk-btn is-primary gp-act" href="characters.html">Shinobi Record</a></div>`;
+    } else if (!i.atCap) {
       const pl = G().plan(id, i.slot);
       const can = ryo() >= i.cost;
       body += `<div class="gx-row"><span>${esc(i.statLabel)}</span><b>${statTxt(i, i.value)}</b><i>&#10148;</i><b class="is-up">${statTxt(i, i.next)}</b></div>
@@ -142,18 +149,6 @@
         <div class="gp-acts">
           <button type="button" class="jjk-btn gp-act" data-act="auto" ${pl.levels ? '' : 'disabled'}>Auto${pl.levels > 1 ? ` +${pl.levels}` : ''}</button>
           <button type="button" class="jjk-btn is-primary gp-act" data-act="str" ${can ? '' : 'disabled'}>Strengthen</button>
-        </div>`;
-    } else if (!i.isMax) {
-      const p = i.promote;
-      const ready = p.have >= p.count && ryo() >= p.ryo;
-      body += `<div class="gp-promo">
-          <span class="gp-next">${ARROW}${tile(i.slot, p.toTier)}<small>${esc(p.toName)}</small></span>
-          ${matCell(scrollIc(p.scroll), p.have, p.count, scrollName(p.scroll))}
-          ${matCell(`<img src="${RYO}" alt="">`, ryo(), p.ryo, 'Ryo', true)}
-        </div>
-        <div class="gx-row"><span>${esc(i.statLabel)}</span><b>${statTxt(i, i.value)}</b><i>&#10148;</i><b class="is-up">${statTxt(i, G().statValue(i.slot, p.toTier, i.level))}</b></div>
-        <div class="gp-acts">
-          <button type="button" class="jjk-btn is-primary gp-act" data-act="promote" ${ready ? '' : 'disabled'}>Upgrade</button>
         </div>`;
     } else {
       body += `<div class="gx-row"><span>${esc(i.statLabel)}</span><b>${statTxt(i, i.value)}</b></div><p class="gx-note">Max</p>`;
@@ -198,19 +193,20 @@
             <button type="button" class="jjk-btn is-primary gs-btn" data-act="str" ${can ? '' : 'disabled'}>Strengthen</button>
           </span>`;
       } else {
-        tail = `<span class="gs-cost gs-cap">${i.isMax ? 'Max' : 'Cap'}</span>
-          <span class="gs-acts">${i.isMax ? '' : '<button type="button" class="jjk-btn is-primary gs-btn" data-act="up">Upgrade</button>'}</span>`;
+        tail = `<span class="gs-cost gs-cap">${i.empty ? 'Empty' : 'Max'}</span>
+          <span class="gs-acts"></span>`;
       }
       return `<div class="gs-row" data-slot="${slot}" style="--tc:${i.tierInfo.color}">
         <span class="gs-ic">${tile(slot, i.tier)}</span>
         <span class="gs-nm"><b>${esc(i.name)}</b><small>${esc(i.tierInfo.label)}</small></span>
-        <span class="gs-lv">Lv ${i.level}${i.atCap ? `<small>/${i.cap}</small>` : `<i>&#10148;</i><em>${i.level + 1}</em>`}</span>
+        <span class="gs-lv">${i.empty ? '&mdash;' : `+${i.level}${i.atCap ? `<small>/${i.cap}</small>` : `<i>&#10148;</i><em>+${i.level + 1}</em>`}`}</span>
         <span class="gs-st"><small>${esc(i.statLabel)}</small>${statTxt(i, i.value)}${i.atCap ? '' : `<i>&#10148;</i><em>${statTxt(i, i.next)}</em>`}</span>
         ${tail}
       </div>`;
     }).join('');
     const b = G().bonusFor(id);
-    $('gs-total').innerHTML = `<b>+${fmt(b.hp)}</b> HP <b>+${fmt(b.atk)}</b> ATK <b>+${fmt(b.def)}</b> DEF <b>+${Math.round(b.nin * 100) / 100}%</b> NIN <b>+${Math.round(b.res * 100) / 100}%</b> RES`;
+    const pc = (v) => `${Math.round(v * 100) / 100}%`;
+    $('gs-total').innerHTML = `<b>+${fmt(b.hp)}</b> HP <b>+${pc(b.hpPct)}</b> HP <b>+${fmt(b.atk)}</b> ATK <b>+${pc(b.atkPct)}</b> ATK <b>+${fmt(b.def)}</b> DEF <b>+${pc(b.defPct)}</b> DEF <b>+${Math.round(b.spd * 10) / 10}</b> SPD <b>+${pc(b.nin)}</b> NIN <b>+${pc(b.res)}</b> RES`;
     $('gs-auto-all').disabled = !G().SLOTS.some(s => { const i = G().info(id, s); return !i.atCap && ryo() >= i.cost; });
   }
   function onStrClick(e) {

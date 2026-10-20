@@ -151,7 +151,7 @@
     return { hp: stats.hp || 0, atk: stats.atk || 0, def: stats.def || 0, speed: stats.speed || 0 };
   }
   function cardBonuses(inst) {
-    const out = { hp: 0, atk: 0, def: 0, spd: 0, critRate: 0, evaRate: 0 };
+    const out = { hp: 0, atk: 0, def: 0, spd: 0, critRate: 0, critDmg: 0, evaRate: 0 };
     const eq = inst.equippedJutsu || {};
     SLOT_KEYS.forEach(k => {
       const card = eq[k] && cardsById[eq[k]];
@@ -170,8 +170,9 @@
     const b = baseStats(inst, c);
     const x = cardBonuses(inst);
     // Gear pieces + the magatama beset in them (js/gear.js, js/magatama.js)
-    const g = window.Gear ? window.Gear.totalFor(inst.uid) : { hp: 0, atk: 0, def: 0, spd: 0, nin: 0, res: 0 };
+    const g = window.Gear ? window.Gear.totalFor(inst.uid, b) : { hp: 0, atk: 0, def: 0, spd: 0, nin: 0, res: 0 };
     x.hp += g.hp; x.atk += g.atk; x.def += g.def; x.spd += g.spd || 0; x.nin = g.nin; x.res = g.res; x.gear = g;
+    x.critRate += g.critRate || 0; x.critDmg += g.critDmg || 0;
     const hp = b.hp + x.hp, atk = b.atk + x.atk, spd = b.speed + x.spd;
     const power = hp + atk + spd;
     return { base: b, bonus: x, hp, atk, spd, def: b.def + x.def, power, total: power + abilityCount(inst) * ABILITY_POWER };

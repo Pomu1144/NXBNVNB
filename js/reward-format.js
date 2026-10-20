@@ -233,6 +233,7 @@
    * [{ key, name, qty, icon, fallback, kind }]. `characters` arrays become
    * character items with portraits.
    */
+  let gearSeq = 0;   // every dropped gear piece gets its own tile
   function items(rewards) {
     const out = [];
     if (!rewards) return out;
@@ -257,6 +258,20 @@
             icon: `assets/characters/${ch.characterId}/portrait_${ch.tierCode || '6S'}.webp`,
             fallback: 'assets/icons/characters_icon.png',
             tier: ch.tierCode || ''
+          });
+        });
+        return;
+      }
+      if (k === 'gear') {
+        // Gear pieces dropped by a mission (js/gear.js roll objects)
+        const G = global.Gear;
+        (Array.isArray(v) ? v : []).forEach((it, i) => {
+          if (!it || !G) return;
+          out.push({
+            key: `gear_${++gearSeq}`, kind: 'gear',
+            name: G.nameOf(it.slot, it.rarity), qty: 1,
+            icon: G.artOf(it.slot, it.rarity), fallback: G.iconOf(it.slot, it.rarity),
+            color: (G.TIERS[it.rarity] || {}).color, shiny: !!(G.TIERS[it.rarity] || {}).shiny
           });
         });
         return;

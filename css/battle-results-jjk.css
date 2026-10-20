@@ -621,3 +621,9 @@
   #battle-result .summary-row { flex-direction: column; align-items: flex-start; gap: 0; }
   #battle-result .summary-value { text-align: left; }
 }
+
+/* Gear pieces (js/gear.js drops): the piece's painted art, ringed in its rarity colour */
+.mr-tile.is-gear .mr-socket { box-shadow: inset 0 0 0 2px var(--tc, #888); border-radius: 50%; }
+.mr-tile.is-gear .mr-icon { object-fit: contain; }
+.mr-tile.is-gear.is-shiny .mr-socket { box-shadow: inset 0 0 0 2px #e0453c, inset 0 0 0 4px rgba(243, 197, 82, 0.55); }
+.mr-tile.is-gear .mr-name { color: var(--tc, inherit); }

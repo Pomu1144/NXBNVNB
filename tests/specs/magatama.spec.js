@@ -77,7 +77,11 @@ test('buy, combine, split, beset, one-click beset and stat bonus on the Tools pa
   const eq = await page.evaluate(() => window.InventoryChar.getByUid('m-naruto').equippedJutsu);
   for (let i = 1; i <= 5; i++) expect(eq[`equipment${i}`]).toBeNull();
 
-  const atkBonus = async () => Number((await page.locator('#stats-display [data-stat="atk"] .tl-bonus').innerText()).replace(/[^\d]/g, ''));
+  // no gear equipped: the ATK row only shows a bonus once magatama add one
+  const atkBonus = async () => {
+    const el = page.locator('#stats-display [data-stat="atk"] .tl-bonus');
+    return (await el.count()) ? Number((await el.innerText()).replace(/[^\d]/g, '')) || 0 : 0;
+  };
   const atkBefore = await atkBonus();
 
   await page.locator('#view-maga').click();
@@ -172,11 +176,13 @@ test('socketed magatama raise the unit stats in battle', async ({ page }) => {
       const base = bm.charactersData.find((c) => c.id === u.charId);
       const inst = window.InventoryChar.getByUid(u.id);
       const plain = bm.units._baseStats(base, inst);
-      return { charId: u.charId, maga: u.stats.magatama || null, gear: window.Gear.bonusFor(u.id), maxHP: u.stats.maxHP, atk: u.stats.atk, def: u.stats.def, plain };
+      const g = window.Gear.bonusFor(u.id);
+      const gear = { hp: g.hp, atk: g.atk, def: g.def, spd: g.spd, nin: g.nin, res: g.res };
+      return { charId: u.charId, maga: u.stats.magatama || null, gear, maxHP: u.stats.maxHP, atk: u.stats.atk, def: u.stats.def, plain };
     });
   });
   const m = { hp: val('life', 9), atk: val('attack', 9) + val('attack', 5), def: val('defense', 9), nin: val('ninjutsu', 9), res: val('resistance', 8) };
-  const g = r[0].gear; // starting gear (Green Lv1) adds a little of each
+  const g = r[0].gear; // nothing equipped: gear adds nothing
   const round2 = (n) => Math.round(n * 100) / 100;
   // Sandals add SPD and take no magatama
   expect(r[0].maga).toEqual({ hp: g.hp + m.hp, atk: g.atk + m.atk, def: g.def + m.def, spd: g.spd, nin: round2(g.nin + m.nin), res: round2(g.res + m.res) });
