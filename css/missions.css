@@ -573,6 +573,39 @@ body.page-missions .error-message {
   border: 1px solid rgba(201, 162, 78, 0.25);
 }
 .md-rw-block.is-claimed .md-tiles { opacity: 0.5; }
+
+/* Set Trials (missions with a gearSet): set chip on the card, set drop block in the sheet */
+.mc-trial {
+  position: absolute;
+  left: 8px; top: 6px;
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 2px 8px;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.03em;
+  color: #f4ecd8;
+  background: rgba(6, 10, 14, 0.72);
+  border-left: 3px solid var(--set, #c9a24e);
+  pointer-events: none;
+}
+.mc-trial b {
+  padding: 0 5px;
+  color: #1a1206;
+  background: var(--jjk-gold-hi, #f1d98a);
+  font-size: 10px;
+}
+.md-trial { border-color: color-mix(in srgb, var(--set, #c9a24e) 55%, transparent); }
+.md-trial-row { display: flex; align-items: center; gap: 8px; margin-top: 4px; }
+.md-trial-row img { width: 46px; height: 46px; object-fit: contain; flex: none; }
+.md-trial-row span { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.md-trial-row b { color: var(--set, #f1d98a); font-size: 13px; }
+.md-trial-row small { color: var(--jjk-muted, #b8b0a0); font-size: 11px; line-height: 1.3; }
+.md-odds { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
+.md-odds-r {
+  font-style: normal; font-size: 10px; font-weight: 700;
+  padding: 1px 5px;
+  color: var(--c);
+  border: 1px solid color-mix(in srgb, var(--c) 60%, transparent);
+  background: rgba(0, 0, 0, 0.35);
+}
 .md-tiles { display: flex; flex-wrap: wrap; gap: 6px; }
 .md-none { color: var(--jjk-muted); }
 .mr-tile {

@@ -301,3 +301,28 @@ html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-characters #char-moda
 @media (prefers-reduced-motion: reduce) {
   #char-gear.is-intro .eqp, #char-gear.is-intro .eqp-orbit { animation: none; }
 }
+
+/* Gear sets (js/gear.js SETS): set line on a piece, worn set bonuses, set dot on bag cards */
+.eqp-set {
+  display: flex; flex-direction: column; gap: 3px;
+  margin-top: 6px; padding: 6px 8px;
+  border-left: 2px solid var(--set);
+  background: rgba(255, 255, 255, 0.03);
+}
+.eqp-set-nm { font-size: 12px; font-weight: 700; color: var(--set); }
+.eqp-set-nm i { font-style: normal; font-weight: 600; color: rgba(225, 230, 245, 0.6); margin-left: 4px; }
+.eqp-set-b { font-size: 11px; line-height: 1.35; color: rgba(225, 230, 245, 0.45); }
+.eqp-set-b b { display: inline-block; min-width: 30px; margin-right: 4px; font-weight: 700; }
+.eqp-set-b.is-on { color: rgba(240, 242, 250, 0.92); }
+.eqp-set-b.is-on b { color: var(--set); }
+.eqp-sets { display: flex; flex-direction: column; gap: 2px; margin: 4px 0 2px; }
+.eqp-setrow span { color: var(--set); }
+.eqp-setrow b { font-size: 11px; text-align: right; font-weight: 600; }
+.eqp-card { position: relative; }
+.eqp-card-set {
+  position: absolute; left: 4px; top: 4px;
+  width: 7px; height: 7px;
+  transform: rotate(45deg);
+  background: var(--set);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.6);
+}

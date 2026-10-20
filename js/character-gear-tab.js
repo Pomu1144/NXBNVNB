@@ -76,7 +76,30 @@
       </div>
       <div class="eqp-row eqp-main"><span>${esc(i.statLabel)}</span><b>+${val(i.stat, i.value)} ${next}</b></div>
       ${i.subs.map(s => `<div class="eqp-row eqp-sub"><span>${esc(s.label)}</span><b>+${esc(s.text)}</b></div>`).join('')}
-      ${i.subs.length < 4 ? `<div class="eqp-row eqp-sub is-locked"><span>New substat at +${Math.ceil((i.level + 1) / 3) * 3}</span><b></b></div>` : ''}`;
+      ${i.subs.length < 4 ? `<div class="eqp-row eqp-sub is-locked"><span>New substat at +${Math.ceil((i.level + 1) / 3) * 3}</span><b></b></div>` : ''}
+      ${setLineHTML(i.set)}`;
+  }
+
+  // A piece's set: its two bonuses, lit when this shinobi wears enough pieces
+  function setLineHTML(set) {
+    const d = set && G().SETS[set];
+    if (!d) return '';
+    const n = G().setCounts(ui.uid)[set] || 0;
+    return `<div class="eqp-set" style="--set:${d.color}">
+        <span class="eqp-set-nm">${esc(d.name)} Set <i>${Math.min(n, 4)}/4</i></span>
+        <span class="eqp-set-b${n >= 2 ? ' is-on' : ''}"><b>2 pc</b>${esc(G().setTwoText(set))}</span>
+        <span class="eqp-set-b${n >= 4 ? ' is-on' : ''}"><b>4 pc</b>${esc(d.four)}</span>
+      </div>`;
+  }
+
+  // Sets this shinobi wears 2+ pieces of
+  function setBonusHTML() {
+    const act = G().activeSets(ui.uid);
+    if (!act.length) return '';
+    return `<div class="eqp-sets">${act.map(b => {
+      const d = G().SETS[b.set];
+      return `<div class="eqp-row eqp-setrow" style="--set:${d.color}"><span>${esc(d.name)} ${b.pieces} pc</span><b>${esc(b.text)}</b></div>`;
+    }).join('')}</div>`;
   }
 
   function slotHTML(i) {
@@ -112,11 +135,12 @@
       const t = G().TIERS[it.rarity];
       const own = G().owner(it.id);
       return `<button type="button" class="eqp-card${it.id === ui.pick ? ' is-on' : ''}${t.shiny ? ' is-shiny' : ''}" data-id="${esc(it.id)}" style="--tc:${t.color}"
-          aria-label="${esc(G().nameOf(it.slot, it.rarity))}, +${it.level}${own ? ', in use' : ''}">
-          <img src="${esc(G().artOf(it.slot, it.rarity))}" alt="" draggable="false">
+          aria-label="${esc(G().nameOf(it.slot, it.rarity, it.set))}${G().SETS[it.set] ? `, ${esc(G().SETS[it.set].name)} set` : ''}, +${it.level}${own ? ', in use' : ''}">
+          <img src="${esc(G().artOf(it.slot, it.rarity, it.set))}" alt="" draggable="false">
           <span class="eqp-card-lv">+${it.level}</span>
           ${own ? `<span class="eqp-card-own${own === ui.uid ? ' is-mine' : ''}" aria-hidden="true">${own === ui.uid ? '&#10003;' : '&bull;'}</span>` : ''}
           <span class="eqp-card-main">${esc(G().STAT[it.main].label)}</span>
+          ${G().SETS[it.set] ? `<span class="eqp-card-set" style="--set:${G().SETS[it.set].color}" title="${esc(G().SETS[it.set].name)}" aria-hidden="true"></span>` : ''}
         </button>`;
     }).join('');
     let pickPane = '';
@@ -162,6 +186,7 @@
           <div class="eqp-totals">
             ${rows.length ? rows.map(([k, label]) => `<div class="eqp-row"><span>${label}</span><b>+${val(k, tot[k])}</b></div>`).join('') : '<p class="eqp-empty">No gear equipped</p>'}
           </div>
+          ${setBonusHTML()}
           <h4 class="cx-kicker">${esc(sel.i.kind)}</h4>
           <div class="eqp-detail">${ui.bag ? bagHTML(ui.slot) : slotHTML(sel.i)}</div>
           <div class="eqp-toast" role="status" aria-live="polite"></div>
@@ -232,7 +257,12 @@
     const p = v.play();
     if (p && p.catch) p.catch(() => v.classList.add('is-done'));
     const box = global.document.getElementById('char-gear');
-    if (box) { box.classList.remove('is-intro'); void box.offsetWidth; box.classList.add('is-intro'); }
+    if (box) {
+      box.classList.remove('is-intro'); void box.offsetWidth; box.classList.add('is-intro');
+      // Only the first paint fades in: re-renders (every click) must not replay it
+      clearTimeout(playIntro.t);
+      playIntro.t = global.setTimeout(() => box.classList.remove('is-intro'), 2100);
+    }
   }
 
   global.CharGearTab = { render, playIntro, select: (slot) => { ui.slot = slot; ui.bag = false; ui.pick = null; render(); } };
