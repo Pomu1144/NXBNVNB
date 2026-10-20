@@ -1,6 +1,8 @@
 // js/character-gear-tab.js — Equipment tab of the Shinobi Record (characters.html).
 //
-// The six gear pieces (js/gear.js) sit on an orbit around a sigil: helmet,
+// The six gear pieces (js/gear.js) sit on an orbit around a sigil (art in
+// assets/ui/equip-cosmos, over a starfield; the character art is hidden on
+// this tab so the orbit can use the whole panel): helmet,
 // weapon, armor and sandals on the outer ring, scroll and necklace in the
 // middle. Each medallion shows the piece's art in its tier colour with its
 // level under it. Beside the orbit: what the gear and its magatama add in
@@ -16,6 +18,11 @@
     { slot: 'sandals',  pos: 'br' },
     { slot: 'scroll',   pos: 'il' },
     { slot: 'necklace', pos: 'ir' }
+  ];
+  // Decorative glints on the orbit: [art, x %, y %, width %, twinkle delay s]
+  const SPARKS = [
+    ['spark_cross', 6, 44, 7, 0], ['sparks', 88, 52, 8, 1.3], ['spark_big', 52, 3, 5, 2.1],
+    ['streak', 12, 88, 10, 0.7], ['orb', 92, 8, 5, 1.8], ['dust', 70, 92, 11, 2.6]
   ];
   const TOTALS = [
     ['hp', 'HP'], ['atk', 'ATK'], ['def', 'DEF'], ['spd', 'SPD'],
@@ -33,7 +40,7 @@
         data-slot="${i.slot}" style="--tc:${i.tierInfo.color}" aria-pressed="${on}"
         aria-label="${esc(i.name)}, level ${i.level}">
         <span class="eqp-medal"><img src="${esc(i.icon)}" alt="" draggable="false"></span>
-        <span class="eqp-lv"><i></i>Lv ${i.level}</span>
+        <span class="eqp-lv"><i aria-hidden="true"></i>Lv ${i.level}</span>
       </button>`;
   }
 
@@ -73,6 +80,7 @@
           <span class="eqp-ring" aria-hidden="true"></span>
           <span class="eqp-ticks" aria-hidden="true"></span>
           <span class="eqp-sigil" aria-hidden="true"></span>
+          ${SPARKS.map(([k, x, y, w, d]) => `<span class="eqp-spark eqp-spark--${k}" style="left:${x}%;top:${y}%;width:${w}%;animation-delay:${d}s" aria-hidden="true"></span>`).join('')}
           ${pieces.map(p => pieceHTML(p.i, p.o.pos)).join('')}
         </div>
         <div class="eqp-side">

@@ -32,6 +32,10 @@ test('equipment tab: six gear pieces, totals and the selected piece', async ({ p
   await expect(page.locator('#tab-skills .ultimate-slot')).toBeVisible();
 
   await page.locator('.char-tabs .tab-btn[data-tab="gear"]').click();
+  // The art steps aside so the orbit can use the whole panel
+  await expect(page.locator('#char-modal')).toHaveClass(/is-gear-view/);
+  await expect(page.locator('#char-modal .char-modal-art')).toBeHidden();
+  await expect(page.locator('#tab-gear .eqp-ring')).toBeVisible();
   const pieces = page.locator('#tab-gear .eqp-piece');
   await expect(pieces).toHaveCount(6);
   for (const s of SLOTS) await expect(page.locator(`#tab-gear .eqp-piece[data-slot="${s}"]`)).toBeVisible();
@@ -50,6 +54,11 @@ test('equipment tab: six gear pieces, totals and the selected piece', async ({ p
   await expect(page.locator('#tab-gear .eqp-detail')).toContainText('Super Kage War Boots');
   await expect(page.locator('#tab-gear .eqp-detail')).toContainText('120 / 120');
   await expect(page.locator('#tab-gear .eqp-go')).toHaveAttribute('href', 'tools.html?uid=e-naruto&view=gear');
+
+  // Other tabs bring the art back
+  await page.locator('.char-tabs .tab-btn[data-tab="status"]').click();
+  await expect(page.locator('#char-modal')).not.toHaveClass(/is-gear-view/);
+  await expect(page.locator('#char-modal .char-modal-art')).toBeVisible();
 
   errors.assertClean('equipment tab');
 });

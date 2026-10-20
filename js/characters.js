@@ -513,6 +513,8 @@
       b.setAttribute("aria-selected", on ? "true" : "false");
     });
     MODAL.querySelectorAll(".tab-panel").forEach(p => p.classList.toggle("is-active", p.id === `tab-${tab}`));
+    // Equipment hides the art and takes the whole panel (css/character-gear-tab.css)
+    MODAL.classList.toggle("is-gear-view", tab === "gear");
     const panels = MODAL.querySelector(".tab-panels");
     if (panels) panels.scrollTop = 0;
   }
