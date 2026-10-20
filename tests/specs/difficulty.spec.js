@@ -79,6 +79,24 @@ test.describe('mission difficulty', () => {
     expect(wrong).toEqual([]);
   });
 
+  test('SS enemies hold up against a full team of maxed 7★ units', () => {
+    // A max-level 7★ in max gear (CFG.SS.FLOOR_UNIT): a crit 7x jutsu and a
+    // crit 20x ultimate at 1.5x crit damage.
+    const atk = D.CFG.SS.FLOOR_UNIT.atk;
+    const jutsu = atk * 7 * 1.5, ultimate = atk * 20 * 1.5;
+    const soft = [];
+    for (const m of missions) {
+      const stages = m.difficulties?.SS;
+      if (!stages?.length) continue;
+      stages.forEach((_, si) => entries(m, 'SS', si).forEach(({ e, wi }) => {
+        const s = scaled(m, 'SS', si, wi, e);
+        // grunts survive a crit jutsu, bosses take at least four crit ultimates
+        if (s.boss ? s.hp < 4 * ultimate : s.hp <= jutsu) soft.push(`${m.id} s${si + 1} ${e.id}`);
+      }));
+    }
+    expect(soft).toEqual([]);
+  });
+
   test('the story gets harder chapter by chapter', () => {
     const story = missions.filter((m) => /^Shinobi Chronicles/.test(m.category))
       .sort((a, b) => (/Part 1/.test(a.category) ? 0 : 1) - (/Part 1/.test(b.category) ? 0 : 1) || (a.sortOrder || 0) - (b.sortOrder || 0));

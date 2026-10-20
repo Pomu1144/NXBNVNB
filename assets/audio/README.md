@@ -45,4 +45,5 @@ extracted with `tools/audio/extract_acb.py` (HCA decoded by ffmpeg):
 
 `original/manifest.json` lists every file with its cue name, length and loop points.
 `js/audio-manager.js` plays the sound effects (its `SFX` table maps game events to clips);
+`js/title-call.js` plays a random `voice_ui_titlecall_*` on the first tap on the title page (`AudioManager.playVoice`);
 the music player still uses `music/`.
