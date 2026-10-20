@@ -14,6 +14,9 @@
 //    (e.g. "Lightning Style / Tactical Support", under the version).
 //  - optional `fx: "lightning"` + `fxOrigin: [x, y]` (fractions of the art)
 //    animate lightning striking out from that point (js/ink-lightning.js).
+//  - optional `zoom` (e.g. 1.1): how far the card art is pushed in on the
+//    face, in place of the default (--ia-zoom in css/ink/characters.css);
+//    lower shows more of art that is already framed close.
 // It never touches game state and never delays opening the modal: the quote
 // file is fetched once in the background and applied when it arrives.
 (function () {
@@ -24,6 +27,7 @@
   const NAME = document.getElementById("nameplate-name");
   const VJA = $(".ink-vname-ja"), VEN = $(".ink-vname-en");
   const QUOTE = $(".ink-dossier-quote"), QJA = $(".ink-quote-ja"), QEN = $(".ink-quote-en");
+  const ART_COL = MODAL.querySelector(".char-modal-art");
   const ART = $(".ink-dossier-art"), FX = $(".ink-dossier-fx"), VIMG = $(".ink-vname-img"), QIMG = $(".ink-quote-img");
   const MOTTO = $(".ink-motto"), ROLE = $(".ink-role");
 
@@ -78,6 +82,10 @@
     else MODAL.style.removeProperty("--ink-art");
     if (q && q.art && q.artShift) MODAL.style.setProperty("--ink-art-dx", String(+q.artShift || 0));
     else MODAL.style.removeProperty("--ink-art-dx");
+    if (ART_COL) {
+      if (q && +q.zoom > 0) ART_COL.style.setProperty("--ia-zoom", String(+q.zoom));
+      else ART_COL.style.removeProperty("--ia-zoom");
+    }
     if (MOTTO) { MOTTO.textContent = (q && q.motto) || ""; MOTTO.hidden = !(q && q.motto); }
     if (ROLE) { ROLE.textContent = (q && q.role) || ""; ROLE.hidden = !(q && q.role); }
     setImg(VIMG, q && q.nameImg, "ink-has-nameimg");

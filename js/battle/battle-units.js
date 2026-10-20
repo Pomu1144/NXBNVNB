@@ -346,7 +346,7 @@
       // smaller on phones) so it scales with the layout.
       const cssH = parseFloat(getComputedStyle(unitEl).getPropertyValue('--sprite-h'));
       // The player's units wear their equipped skin (js/skins.js); enemies use the base art.
-      const base = window.SpritePlayer.pathFor(unit.charId, { skin: !!unit.isPlayer });
+      const base = window.SpritePlayer.pathFor(unit.charId, { skin: !!unit.isPlayer && !unit.isGuest });
       unit._spriteBase = base;
       const player = window.SpritePlayer.create(slot, base, {
         height: Number.isFinite(cssH) && cssH > 0 ? Math.round(cssH) : 101,

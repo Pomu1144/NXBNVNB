@@ -1,4 +1,4 @@
-const CACHE = 'blazing-shell-v179';
+const CACHE = 'blazing-shell-v213';
 const BASE = new URL('./', self.location.href).pathname;
 const SHELL = [
   'index.html',
@@ -15,6 +15,7 @@ const SHELL = [
   'settings.html',
   'arena.html',
   'ninja-road.html',
+  'kage-league.html',
   'tools.html',
 ].map(f => BASE + f);
 
