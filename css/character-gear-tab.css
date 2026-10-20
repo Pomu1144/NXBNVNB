@@ -285,3 +285,19 @@ html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-characters #char-moda
 .eqp-toast:empty { display: none; }
 .eqp-toast.is-on { opacity: 1; transform: translate(-50%, 0); animation: eqp-toast 2.4s forwards; }
 @keyframes eqp-toast { 0%, 80% { opacity: 1; } 100% { opacity: 0; } }
+/* ── Entering the tab: ink dissolves into the night sky (js playIntro) ── */
+#char-modal .eqp-intro { display: none; }
+#char-modal.is-gear-view .eqp-intro {
+  display: block; position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; z-index: 0; pointer-events: none;
+  transition: opacity 0.6s ease;
+}
+#char-modal.is-gear-view .eqp-intro.is-done { opacity: 0; }
+#char-modal.is-gear-view .char-modal-info { z-index: 1; }
+#char-gear.is-intro .eqp { animation: eqp-in 1.6s ease both; }
+#char-gear.is-intro .eqp-orbit { animation: eqp-orbit-in 2s cubic-bezier(.2, .7, .2, 1) both; }
+@keyframes eqp-in { 0%, 35% { opacity: 0; } 100% { opacity: 1; } }
+@keyframes eqp-orbit-in { 0%, 30% { opacity: 0; transform: scale(0.94); } 100% { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) {
+  #char-gear.is-intro .eqp, #char-gear.is-intro .eqp-orbit { animation: none; }
+}

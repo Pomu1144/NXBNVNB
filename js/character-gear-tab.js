@@ -208,5 +208,32 @@
   if (global.document.readyState === 'loading') global.document.addEventListener('DOMContentLoaded', init, { once: true });
   else init();
 
-  global.CharGearTab = { render, select: (slot) => { ui.slot = slot; ui.bag = false; ui.pick = null; render(); } };
+  // Entering the tab: the ink ground of the record dissolves into the night
+  // sky (assets/ui/equip-cosmos/intro.mp4, ends on space_bg) behind the gear,
+  // which fades in over it. Skipped for reduced motion.
+  function playIntro(modal) {
+    const panel = modal && modal.querySelector('.char-modal-panel');
+    if (!panel) return;
+    const reduce = global.matchMedia && global.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let v = panel.querySelector('.eqp-intro');
+    if (reduce) { if (v) v.remove(); return; }
+    if (!v) {
+      v = global.document.createElement('video');
+      v.className = 'eqp-intro';
+      v.muted = true; v.playsInline = true; v.preload = 'auto';
+      v.setAttribute('aria-hidden', 'true');
+      v.innerHTML = '<source src="assets/ui/equip-cosmos/intro.webm" type="video/webm"><source src="assets/ui/equip-cosmos/intro.mp4" type="video/mp4">';
+      v.addEventListener('ended', () => v.classList.add('is-done'));
+      v.addEventListener('error', () => v.classList.add('is-done'), true);
+      panel.insertBefore(v, panel.firstChild);
+    }
+    v.classList.remove('is-done');
+    try { v.currentTime = 0; } catch (e) { /* not loaded yet */ }
+    const p = v.play();
+    if (p && p.catch) p.catch(() => v.classList.add('is-done'));
+    const box = global.document.getElementById('char-gear');
+    if (box) { box.classList.remove('is-intro'); void box.offsetWidth; box.classList.add('is-intro'); }
+  }
+
+  global.CharGearTab = { render, playIntro, select: (slot) => { ui.slot = slot; ui.bag = false; ui.pick = null; render(); } };
 })(window);
