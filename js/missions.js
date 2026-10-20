@@ -27,7 +27,8 @@ document.addEventListener('DOMContentLoaded', () => {
     'Boss Battles',
     'Impact Missions',
     'Limited Time Event',
-    'Growth Missions'
+    'Growth Missions',
+    'Set Trials'
   ];
   // Short line shown above each tab's list
   const TAB_BLURB = {
@@ -37,7 +38,8 @@ document.addEventListener('DOMContentLoaded', () => {
     'Boss Battles': 'One giant boss that stalks the whole field. Move out of the red zones, Guard against map-wide blasts.',
     'Impact Missions': 'Much tougher missions; the top rank recruits the featured unit.',
     'Limited Time Event': 'Raids: defeat the featured shinobi for a chance to recruit a new unit.',
-    'Growth Missions': 'EXP ramen, ryo and Awakening Scroll missions for building your team.'
+    'Growth Missions': 'EXP ramen, ryo and Awakening Scroll missions for building your team.',
+    'Set Trials': 'Farm gear sets. The last stage always drops a piece of the trial’s set; harder ranks drop rarer pieces. Two trials drop double each day.'
   };
   const RANK_ORDER = ['D', 'C', 'B', 'A', 'S', 'SS', 'SSS'];
   const PROGRESS_KEY = 'blazing_mission_progress_v1';
@@ -233,6 +235,31 @@ document.addEventListener('DOMContentLoaded', () => {
     return { kicker, title: m.name };
   }
 
+  // Set Trials (gearSet missions): the set's name, and a badge on the two
+  // trials that drop double today (js/gear.js featuredSets)
+  const isFeaturedTrial = (m) => !!(m.gearSet && window.Gear?.featuredSets && window.Gear.featuredSets().includes(m.gearSet));
+  function trialBadge(m) {
+    const info = m.gearSet && window.Gear?.SETS?.[m.gearSet];
+    if (!info) return '';
+    return `<span class="mc-trial" style="--set:${esc(info.color)}">${esc(info.name)} Set${isFeaturedTrial(m) ? '<b>2× today</b>' : ''}</span>`;
+  }
+  function trialDrops(m, rank) {
+    const G = window.Gear, info = m.gearSet && G?.SETS?.[m.gearSet];
+    if (!info || !G.TRIAL) return '';
+    const w = (G.TRIAL[rank] || G.TRIAL.B).w;
+    const odds = w.map((v, i) => v ? `<i class="md-odds-r" style="--c:${esc(G.TIERS[i].color)}" title="${esc(G.TIERS[i].label)}">${v}%</i>` : '').join('');
+    const n = isFeaturedTrial(m) ? 2 : 1;
+    return `
+      <div class="md-rw-block md-trial" style="--set:${esc(info.color)}">
+        <span class="md-label">Set Drop · Last Stage${n > 1 ? ' · 2× today' : ''}</span>
+        <div class="md-trial-row">
+          <img src="${esc(G.artOf('weapon', 3, m.gearSet))}" alt="" loading="lazy">
+          <span><b>${n}× ${esc(info.name)} piece${n > 1 ? 's' : ''}</b><small>2 pc: ${esc(G.setTwoText(m.gearSet))} · 4 pc: ${esc(info.four)}</small></span>
+        </div>
+        <div class="md-odds">${odds}</div>
+      </div>`;
+  }
+
   function renderMissionsForCategory(categoryName) {
     const missionsToRender = allMissions
       .filter(m => m.category === categoryName)
@@ -290,6 +317,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <span class="mc-stat" title="Stamina"><i class="ic-stamina"></i>${esc(mission.stamina?.[r0] ?? '-')}</span>
           <span class="mc-stat" title="Recommended power"><i class="ic-power"></i>${esc(((mission.power?.[r0] || 0) / 1000).toFixed(1))}k</span>
         </div>
+        ${trialBadge(mission)}
         ${allClear ? '<img class="mc-stamp" src="assets/ui/jjk/stamp_claimed.webp" alt="Cleared">' : ''}
         ${isLocked && !own ? lockNote : ''}`;
       // banner cards: the lock reason sits in the bar, clear of the lettering
@@ -420,6 +448,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="md-tiles">${bossTile(mission, selected, false)}${rewardTiles(repeat) || '<span class="md-none">—</span>'}</div>
               </div>
             </div>
+            ${trialDrops(mission, selected)}
             <div class="md-go">
               ${lockText ? `<span class="mission-lock-note">${esc(lockText)}</span>` : ''}
               ${storyReplay ? '<button type="button" class="md-story-btn">Story</button>' : ''}

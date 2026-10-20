@@ -269,8 +269,8 @@
           if (!it || !G) return;
           out.push({
             key: `gear_${++gearSeq}`, kind: 'gear',
-            name: G.nameOf(it.slot, it.rarity), qty: 1,
-            icon: G.artOf(it.slot, it.rarity), fallback: G.iconOf(it.slot, it.rarity),
+            name: G.nameOf(it.slot, it.rarity, it.set), qty: 1,
+            icon: G.artOf(it.slot, it.rarity, it.set), fallback: G.iconOf(it.slot, it.rarity),
             color: (G.TIERS[it.rarity] || {}).color, shiny: !!(G.TIERS[it.rarity] || {}).shiny
           });
         });

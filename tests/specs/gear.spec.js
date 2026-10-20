@@ -294,7 +294,7 @@ test('missions drop gear into the bag', async ({ page }) => {
   const r = await page.evaluate(() => {
     const G = window.Gear;
     const before = G.bagCount();
-    const drop = G.roll({ slot: 'necklace', rarity: 4 });
+    const drop = G.roll({ slot: 'necklace', rarity: 4, set: 'sound' });
     // what battle-rewards.js does with a chest's `gear` list
     const added = G.add(drop);
     const tiles = window.RewardFormat ? window.RewardFormat.items({ ryo: 100, gear: [drop] }) : null;
@@ -302,6 +302,6 @@ test('missions drop gear into the bag', async ({ page }) => {
   });
   expect(r.after).toBe(r.before + 1);
   expect(r.added).toBe(true);
-  if (r.tiles) expect(r.tiles).toContainEqual(['gear', 'Super Kage Prayer Beads']);
+  if (r.tiles) expect(r.tiles).toContainEqual(['gear', 'Hidden Sound Serpent Necklace']);
   errors.assertClean('gear drops');
 });

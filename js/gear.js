@@ -71,6 +71,23 @@
     orange: ['Hat', 'Katana', 'Cloak', 'Forbidden Scroll', 'Magatama Necklace', 'Greaves'],
     red:    ['Oni Mask', 'War Scythe', 'War Armor', 'Sealing Scroll', 'Prayer Beads', 'War Boots']
   };
+  // Themed sets (Set Trials drop them; every new drop belongs to one).
+  // 2 pieces: a stat. 4 pieces: a battle effect (setDamageMod).
+  const SETS = {
+    leaf:     { name: 'Hidden Leaf', color: '#5fae5a', items: ['Forehead Protector', 'Twin Kunai', 'Flak Vest', 'Scroll', 'Leaf Pendant', 'Sandals'],
+                two: ['hpPct', 12], four: 'Deal 18% more damage while at 80% HP or more.' },
+    akatsuki: { name: 'Akatsuki', color: '#c8323a', items: ['Straw Hat', 'Greatsword', 'Cloak', 'Sealed Scroll', 'Ring', 'Sandals'],
+                two: ['atkPct', 12], four: 'Jutsu and ultimates deal 20% more damage.' },
+    sand:     { name: 'Hidden Sand', color: '#d4a25c', items: ['Headwrap', 'Sand Gourd', 'Desert Vest', 'Sand Scroll', 'Bronze Necklace', 'Desert Boots'],
+                two: ['defPct', 15], four: 'Take 15% less damage.' },
+    sound:    { name: 'Hidden Sound', color: '#8b5cc7', items: ['Forehead Protector', 'Serpent Blade', 'Rope-Belt Tunic', 'Curse Scroll', 'Serpent Necklace', 'Boots'],
+                two: ['spd', 6], four: 'Deal 25% more damage while below 50% HP.' },
+    mist:     { name: 'Hidden Mist', color: '#4fa3a8', items: ['Hunter-nin Mask', 'Cleaver', 'Mist Vest', 'Water Scroll', 'Aquamarine', 'Leg Warmers'],
+                two: ['critRate', 8], four: 'Deal 20% more damage to targets above 70% HP.' },
+    hokage:   { name: 'Hokage', color: '#e8902e', items: ['Ceremonial Hat', 'Adamantine Staff', 'Haori', 'Ceremonial Scroll', 'Crystal Necklace', 'Sandals'],
+                two: ['res', 10], four: 'Deal 20% more damage to bosses.' }
+  };
+  const SET_IDS = Object.keys(SETS);
   // Mission drops: chance per stage chest and rarity weights by rank
   const DROPS = {
     D:  { chance: 0.20, w: [60, 30, 10, 0, 0, 0] },
@@ -110,13 +127,15 @@
     if (s && s.dp) return String(Math.round((Number(v) || 0) * 10) / 10);
     return Math.round(Number(v) || 0).toLocaleString();
   }
-  function nameOf(slot, rarity) {
+  function nameOf(slot, rarity, set) {
+    if (SETS[set]) return `${SETS[set].name} ${SETS[set].items[SLOTS.indexOf(slot)] || ''}`.trim();
     const t = TIERS[clampTier(rarity)];
     return `${t.rank} ${NAMES[t.art][SLOTS.indexOf(slot)] || ''}`.trim();
   }
   const iconOf = (slot, rarity) => `assets/gear/${TIERS[clampTier(rarity)].art}_${slot}.webp`;
   // Painted piece without a tile frame (Equipment tab, bag, drops)
-  const artOf = (slot, rarity) => `assets/gear/art/${TIERS[clampTier(rarity)].art}_${slot}.webp`;
+  const artOf = (slot, rarity, set) => SETS[set] ? `assets/gear/sets/${set}_${slot}.webp`
+    : `assets/gear/art/${TIERS[clampTier(rarity)].art}_${slot}.webp`;
   const scrollIcon = (id) => `assets/gear/scroll_${String(id).replace(/\D/g, '')}.webp`;
 
   /* ───────── Rolling ───────── */
@@ -136,13 +155,16 @@
     const k = item.subs[item.subs.length - 1][0];
     item.subs[item.subs.length - 1][1] = subRoll(k, item.rarity);
   }
-  // A fresh +0 piece. slot / rarity / main can be fixed; the rest is random.
+  // A fresh +0 piece. slot / rarity / main / set can be fixed; the rest is
+  // random (a random set unless `set: null` asks for a plain piece).
   function roll(opts = {}) {
     const slot = SLOTS.includes(opts.slot) ? opts.slot : pick(SLOTS);
     const rarity = opts.rarity == null ? 0 : clampTier(opts.rarity);
     const mains = PIECES[slot].mains;
     const main = mains.includes(opts.main) ? opts.main : pick(mains);
+    const set = opts.set === null ? null : (SETS[opts.set] ? opts.set : pick(SET_IDS));
     const item = { id: null, slot, rarity, level: 0, main, subs: [] };
+    if (set) item.set = set;
     let n = TIERS[rarity].subs + (rand() < 0.2 ? 1 : 0);
     n = Math.min(4, n);
     while (item.subs.length < n) addSub(item);
@@ -172,6 +194,7 @@
         .filter(s => Array.isArray(s) && STAT[s[0]] && s[0] !== main).slice(0, 4)
         .map(s => [s[0], Number(s[1]) || 0]);
       bag[it.id] = { id: String(it.id), slot: it.slot, rarity, level: Math.max(0, Math.min(capOf(rarity), Math.floor(Number(it.level) || 0))), main, subs };
+      if (SETS[it.set]) bag[it.id].set = it.set;
     });
     const equip = {};
     Object.entries((raw && raw.equip) || {}).forEach(([uid, row]) => {
@@ -201,7 +224,7 @@
         const p = row && row[slot];
         if (!p) return;
         const rarity = clampTier(p.tier);
-        const it = roll({ slot, rarity, main: OLD_MAIN[slot] });
+        const it = roll({ slot, rarity, main: OLD_MAIN[slot], set: null });
         it.id = newId(s);
         const lv = Math.round(Math.max(1, Number(p.level) || 1) / OLD_CAP[rarity] * capOf(rarity));
         growSubs(it, 0, Math.min(capOf(rarity), lv));
@@ -221,7 +244,7 @@
       fromOld(s);
       // A Green piece for every slot so a new player has something to wear
       if (!s.starter) {
-        SLOTS.forEach(slot => { const it = roll({ slot, rarity: 0 }); it.id = newId(s); s.bag[it.id] = it; });
+        SLOTS.forEach(slot => { const it = roll({ slot, rarity: 0, set: null }); it.id = newId(s); s.bag[it.id] = it; });
         s.starter = true;
       }
       try { localStorage.setItem(STORAGE_KEY, JSON.stringify(s)); } catch (e) { /* ignore */ }
@@ -265,6 +288,28 @@
     if (rand() >= d.chance) return [];
     return [roll({ rarity: pickWeighted(d.w) })];
   }
+  // Set Trials (missions with `gearSet`): a piece of that set from every
+  // stage chest, rarer on harder ranks; the two featured sets of the day
+  // drop a second piece.
+  const TRIAL = {
+    B:  { w: [10, 40, 35, 14, 1, 0] },
+    A:  { w: [0, 15, 40, 35, 9, 1] },
+    S:  { w: [0, 0, 20, 45, 30, 5] },
+    SS: { w: [0, 0, 5, 35, 45, 15] }
+  };
+  // Two sets a day, in a fixed rotation (UTC days)
+  function featuredSets(date = new Date()) {
+    const day = Math.floor(date.getTime() / 86400000);
+    const i = day % SET_IDS.length;
+    return [SET_IDS[i], SET_IDS[(i + 3) % SET_IDS.length]];
+  }
+  function rollTrialDrop(set, rank, date) {
+    const t = TRIAL[rank] || TRIAL.B;
+    const n = featuredSets(date).includes(set) ? 2 : 1;
+    const out = [];
+    for (let i = 0; i < n; i++) out.push(roll({ set, rarity: pickWeighted(t.w) }));
+    return out;
+  }
   function equip(uid, id) {
     const it = item(id);
     if (!uid || !it) return { ok: false, msg: 'Pick a piece' };
@@ -273,7 +318,7 @@
     if (prev) { delete s.equip[prev][it.slot]; if (!Object.keys(s.equip[prev]).length) delete s.equip[prev]; }
     (s.equip[uid] = s.equip[uid] || {})[it.slot] = id;
     save();
-    return { ok: true, msg: `Equipped ${nameOf(it.slot, it.rarity)}`, from: prev };
+    return { ok: true, msg: `Equipped ${nameOf(it.slot, it.rarity, it.set)}`, from: prev };
   }
   function unequip(uid, slot) {
     const row = get().equip[uid];
@@ -302,14 +347,15 @@
     return {
       id: it.id, slot: it.slot, item: it, empty: false,
       tier: it.rarity, rarity: it.rarity, level: it.level, cap: t.cap, tierInfo: t, shiny: !!t.shiny,
-      name: nameOf(it.slot, it.rarity), kind: PIECES[it.slot].kind,
-      icon: iconOf(it.slot, it.rarity), art: artOf(it.slot, it.rarity),
+      name: nameOf(it.slot, it.rarity, it.set), kind: PIECES[it.slot].kind,
+      icon: iconOf(it.slot, it.rarity), art: artOf(it.slot, it.rarity, it.set),
       stat: it.main, statLabel: STAT[it.main].label, unit: STAT[it.main].unit || '',
       value: mainValue(it.main, it.rarity, it.level),
       next: atCap ? null : mainValue(it.main, it.rarity, it.level + 1),
       cost: atCap ? 0 : levelCost(it.level, it.rarity),
       atCap, isMax: atCap, promote: null,
       subs: it.subs.map(([k, v]) => ({ stat: k, label: STAT[k].label, unit: STAT[k].unit || '', value: v, text: fmtValue(k, v) })),
+      set: it.set || null, setInfo: it.set ? SETS[it.set] : null,
       owner: owner(it.id),
       magatama: PIECES[it.slot].magatama
     };
@@ -357,7 +403,7 @@
     growSubs(it, it.level, pl.level);
     it.level = pl.level;
     save();
-    return { ok: true, levels: pl.levels, spent: pl.cost, level: pl.level, msg: `${nameOf(it.slot, it.rarity)} +${pl.level}` };
+    return { ok: true, levels: pl.levels, spent: pl.cost, level: pl.level, msg: `${nameOf(it.slot, it.rarity, it.set)} +${pl.level}` };
   }
   function plan(uid, slot, max = Infinity, budget = ryo()) {
     const it = item(equippedId(uid, slot));
@@ -395,6 +441,27 @@
 
   /* ───────── Stat bonuses ───────── */
   // Sum of every equipped piece (main + substats), percents kept as percents
+  // Pieces worn per set: { akatsuki: 4, sand: 2 }
+  function setCounts(uid) {
+    const out = {};
+    SLOTS.forEach(slot => {
+      const it = item(equippedId(uid, slot));
+      if (it && it.set) out[it.set] = (out[it.set] || 0) + 1;
+    });
+    return out;
+  }
+  // Active bonuses: [{ set, pieces: 2|4, stat?, value?, text }]
+  // The 2-piece line of a set, e.g. "HP +12%"
+  const setTwoText = (set) => { const d = SETS[set]; return d ? `${STAT[d.two[0]].label} +${fmtValue(d.two[0], d.two[1])}` : ''; };
+  function activeSets(uid) {
+    const out = [];
+    Object.entries(setCounts(uid)).forEach(([set, n]) => {
+      const d = SETS[set];
+      if (n >= 2) out.push({ set, pieces: 2, stat: d.two[0], value: d.two[1], text: setTwoText(set) });
+      if (n >= 4) out.push({ set, pieces: 4, text: d.four });
+    });
+    return out;
+  }
   function bonusFor(uid) {
     const out = zero();
     if (!uid) return out;
@@ -404,8 +471,29 @@
       out[it.main] += mainValue(it.main, it.rarity, it.level);
       it.subs.forEach(([k, v]) => { out[k] += v; });
     });
+    activeSets(uid).forEach(b => { if (b.stat) out[b.stat] += b.value; });
     Object.keys(out).forEach(k => { out[k] = round(k, out[k]); });
     return out;
+  }
+  // 4-piece battle effects, applied in battle-combat.js calculateDamage to
+  // every hit: the attacker's set may raise it, the defender's may lower it.
+  const hpFrac = (u) => {
+    const s = u && u.stats;
+    const max = Number(s && (s.maxHP || s.maxHp)) || 0;
+    return max > 0 ? (Number(s.hp) || 0) / max : 1;
+  };
+  function setDamageMod(attacker, defender, ctx) {
+    let m = 1;
+    ctx = ctx || {}; // basic attacks pass null
+    const a = (attacker && attacker.stats && attacker.stats.gearSets4) || [];
+    const d = (defender && defender.stats && defender.stats.gearSets4) || [];
+    if (a.includes('leaf') && hpFrac(attacker) >= 0.8) m *= 1.18;
+    if (a.includes('akatsuki') && ctx.kind && ctx.kind !== 'attack') m *= 1.2;
+    if (a.includes('sound') && hpFrac(attacker) < 0.5) m *= 1.25;
+    if (a.includes('mist') && hpFrac(defender) > 0.7) m *= 1.2;
+    if (a.includes('hokage') && defender && (defender.isBoss || defender.isMissionBoss)) m *= 1.2;
+    if (d.includes('sand')) m *= 0.85;
+    return m;
   }
   const caps = () => {
     const d = global.Magatama && global.Magatama.data ? global.Magatama.data() : null;
@@ -448,6 +536,7 @@
     stats.magatama = { hp: t.hp, atk: t.atk, def: t.def, spd: t.spd, nin: t.nin, res: t.res };
     const g = bonusFor(instance.uid);
     stats.gear = { hp: g.hp, atk: g.atk, def: g.def, spd: g.spd, nin: g.nin, res: g.res };
+    stats.gearSets4 = activeSets(instance.uid).filter(b => b.pieces === 4).map(b => b.set);
     return stats;
   }
 
@@ -472,6 +561,7 @@
 
   global.Gear = {
     STORAGE_KEY, OLD_KEY, SLOTS, TOOL_SLOTS, TIERS, PIECES, STAT, NAMES, DROPS, MAX_LEVEL, BAG_MAX, STATS, PROMOTE: [],
+    SETS, SET_IDS, TRIAL, setTwoText, setCounts, activeSets, setDamageMod, featuredSets, rollTrialDrop,
     get, reload, item, itemInfo, info, unitGear, owner, equippedId, bagFor, bagCount,
     nameOf, iconOf, artOf, scrollIcon, capOf, levelCost, mainValue, fmtValue,
     // fmtStat / statValue: the main stat of a slot's equipped piece (Tools page)

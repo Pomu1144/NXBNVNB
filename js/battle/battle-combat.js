@@ -308,6 +308,8 @@
         if (nin) damage *= 1 + nin / 100;
         if (res) damage *= Math.max(0, 1 - res / 100);
       }
+      // Gear set 4-piece effects (js/gear.js setDamageMod)
+      if (window.Gear?.setDamageMod) damage *= window.Gear.setDamageMod(attacker, defender, ctx);
 
       // Random variance (90% - 110%)
       damage *= (0.9 + Math.random() * 0.2);

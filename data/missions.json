@@ -27894,5 +27894,4375 @@
     "portrait": "assets/sprites/bosses/susanoo_perfect/thumb.webp"
    }
   }
+ },
+ {
+  "id": "trial_leaf",
+  "category": "Set Trials",
+  "arc": "Gear",
+  "name": "Trial of the Will of Fire",
+  "description": "Kakashi tests anyone who wants the Leaf’s gear. Drops Hidden Leaf set pieces.",
+  "banner": "assets/missions/banners/trials/trial_leaf.webp",
+  "feature": "kakashi_008",
+  "featureArt": "assets/characters/kakashi_008/full_4S.webp",
+  "sortOrder": 1,
+  "gearSet": "leaf",
+  "rankNames": {
+   "B": "Normal",
+   "A": "Hard",
+   "S": "Extreme",
+   "SS": "Nightmare"
+  },
+  "rankGate": true,
+  "stamina": {
+   "B": 12,
+   "A": 20,
+   "S": 30,
+   "SS": 40
+  },
+  "power": {
+   "B": 26100,
+   "A": 44000,
+   "S": 64400,
+   "SS": 92000
+  },
+  "clearRewards": {
+   "B": {
+    "firstTime": {
+     "ninja_pearls": 2
+    },
+    "completion": {}
+   },
+   "A": {
+    "firstTime": {
+     "ninja_pearls": 3
+    },
+    "completion": {}
+   },
+   "S": {
+    "firstTime": {
+     "ninja_pearls": 5
+    },
+    "completion": {}
+   },
+   "SS": {
+    "firstTime": {
+     "ninja_pearls": 10
+    },
+    "completion": {}
+   }
+  },
+  "cast": {
+   "kakashi_008": {
+    "name": "Kakashi Hatake",
+    "portrait": "assets/characters/kakashi_008/portrait_4S.webp"
+   },
+   "leaf_122": {
+    "name": "Leaf Chunin Male",
+    "portrait": "assets/characters/leaf_122/portrait_1S.webp"
+   },
+   "leaf_123": {
+    "name": "Leaf Anbu Male",
+    "portrait": "assets/characters/leaf_123/portrait_2S.webp"
+   },
+   "leaf_124": {
+    "name": "Leaf Anbu Female",
+    "portrait": "assets/characters/leaf_124/portrait_2S.webp"
+   }
+  },
+  "difficulties": {
+   "B": [
+    {
+     "stage": 1,
+     "title": "Village Gate",
+     "map": "assets/maps/bg_330101_konohasato.png",
+     "waves": [
+      {
+       "enemies": [
+        {
+         "id": "leaf_122",
+         "hp": 7100,
+         "atk": 480,
+         "def": 19,
+         "speed": 107
+        },
+        {
+         "id": "leaf_123",
+         "hp": 7100,
+         "atk": 480,
+         "def": 19,
+         "speed": 107
+        },
+        {
+         "id": "leaf_124",
+         "hp": 7100,
+         "atk": 480,
+         "def": 19,
+         "speed": 107
+        }
+       ]
+      },
+      {
+       "enemies": [
+        {
+         "id": "leaf_123",
+         "hp": 7100,
+         "atk": 480,
+         "def": 19,
+         "speed": 107
+        },
+        {
+         "id": "leaf_124",
+         "hp": 7100,
+         "atk": 480,
+         "def": 19,
+         "speed": 107
+        },
+        {
+         "id": "leaf_122",
+         "hp": 7100,
+         "atk": 480,
+         "def": 19,
+         "speed": 107
+        }
+       ]
+      }
+     ],
+     "rewards": {
+      "ryo": 500
+     }
+    },
+    {
+     "stage": 2,
+     "title": "Training Grounds",
+     "map": "assets/maps/bg_020101_mori.png",
+     "waves": [
+      {
+       "enemies": [
+        {
+         "id": "leaf_122",
+         "hp": 7100,
+         "atk": 480,
+         "def": 19,
+         "speed": 107
+        },
+        {
+         "id": "leaf_123",
+         "hp": 7100,
+         "atk": 480,
+         "def": 19,
+         "speed": 107
+        },
+        {
+         "id": "leaf_124",
+         "hp": 7100,
+         "atk": 480,
+         "def": 19,
+         "speed": 107
+        }
+       ]
+      },
+      {
+       "enemies": [
+        {
+         "id": "leaf_122",
+         "hp": 7100,
+         "atk": 480,
+         "def": 19,
+         "speed": 107
+        },
+        {
+         "id": "leaf_123",
+         "hp": 14200,
+         "atk": 552,
+         "def": 19,
+         "speed": 107
+        }
+       ]
+      }
+     ],
+     "rewards": {
+      "ryo": 500
+     }
+    },
+    {
+     "stage": 3,
+     "title": "The Copy Ninja",
+     "map": "assets/maps/bg_330102_konohasato.png",
+     "waves": [
+      {
+       "enemies": [
+        {
+         "id": "leaf_122",
+         "hp": 7100,
+         "atk": 480,
+         "def": 19,
+         "speed": 107
+        },
+        {
+         "id": "leaf_123",
+         "hp": 7100,
+         "atk": 480,
+         "def": 19,
+         "speed": 107
+        },
+        {
+         "id": "leaf_124",
+         "hp": 7100,
+         "atk": 480,
+         "def": 19,
+         "speed": 107
+        }
+       ]
+      },
+      {
+       "enemies": [
+        {
+         "id": "kakashi_008",
+         "hp": 21300,
+         "atk": 648,
+         "def": 23,
+         "speed": 107,
+         "boss": true
+        }
+       ]
+      }
+     ],
+     "boss": "kakashi_008",
+     "rewards": {
+      "ryo": 500
+     }
+    }
+   ],
+   "A": [
+    {
+     "stage": 1,
+     "title": "Village Gate",
+     "map": "assets/maps/bg_330101_konohasato.png",
+     "waves": [
+      {
+       "enemies": [
+        {
+         "id": "leaf_122",
+         "hp": 12000,
+         "atk": 795,
+         "def": 26,
+         "speed": 110
+        },
+        {
+         "id": "leaf_123",
+         "hp": 12000,
+         "atk": 795,
+         "def": 26,
+         "speed": 110
+        },
+        {
+         "id": "leaf_124",
+         "hp": 12000,
+         "atk": 795,
+         "def": 26,
+         "speed": 110
+        }
+       ]
+      },
+      {
+       "enemies": [
+        {
+         "id": "leaf_123",
+         "hp": 12000,
+         "atk": 795,
+         "def": 26,
+         "speed": 110
+        },
+        {
+         "id": "leaf_124",
+         "hp": 12000,
+         "atk": 795,
+         "def": 26,
+         "speed": 110
+        },
+        {
+         "id": "leaf_122",
+         "hp": 12000,
+         "atk": 795,
+         "def": 26,
+         "speed": 110
+        }
+       ]
+      }
+     ],
+     "rewards": {
+      "ryo": 833
+     }
+    },
+    {
+     "stage": 2,
+     "title": "Training Grounds",
+     "map": "assets/maps/bg_020101_mori.png",
+     "waves": [
+      {
+       "enemies": [
+        {
+         "id": "leaf_122",
+         "hp": 12000,
+         "atk": 795,
+         "def": 26,
+         "speed": 110
+        },
+        {
+         "id": "leaf_123",
+         "hp": 12000,
+         "atk": 795,
+         "def": 26,
+         "speed": 110
+        },
+        {
+         "id": "leaf_124",
+         "hp": 12000,
+         "atk": 795,
+         "def": 26,
+         "speed": 110
+        }
+       ]
+      },
+      {
+       "enemies": [
+        {
+         "id": "leaf_122",
+         "hp": 12000,
+         "atk": 795,
+         "def": 26,
+         "speed": 110
+        },
+        {
+         "id": "leaf_123",
+         "hp": 24000,
+         "atk": 914,
+         "def": 26,
+         "speed": 110
+        }
+       ]
+      }
+     ],
+     "rewards": {
+      "ryo": 833
+     }
+    },
+    {
+     "stage": 3,
+     "title": "The Copy Ninja",
+     "map": "assets/maps/bg_330102_konohasato.png",
+     "waves": [
+      {
+       "enemies": [
+        {
+         "id": "leaf_122",
+         "hp": 12000,
+         "atk": 795,
+         "def": 26,
+         "speed": 110
+        },
+        {
+         "id": "leaf_123",
+         "hp": 12000,
+         "atk": 795,
+         "def": 26,
+         "speed": 110
+        },
+        {
+         "id": "leaf_124",
+         "hp": 12000,
+         "atk": 795,
+         "def": 26,
+         "speed": 110
+        }
+       ]
+      },
+      {
+       "enemies": [
+        {
+         "id": "kakashi_008",
+         "hp": 36000,
+         "atk": 1073,
+         "def": 32,
+         "speed": 110,
+         "boss": true
+        }
+       ]
+      }
+     ],
+     "boss": "kakashi_008",
+     "rewards": {
+      "ryo": 834
+     }
+    }
+   ],
+   "S": [
+    {
+     "stage": 1,
+     "title": "Village Gate",
+     "map": "assets/maps/bg_330101_konohasato.png",
+     "waves": [
+      {
+       "enemies": [
+        {
+         "id": "leaf_122",
+         "hp": 17600,
+         "atk": 1155,
+         "def": 34,
+         "speed": 110
+        },
+        {
+         "id": "leaf_123",
+         "hp": 17600,
+         "atk": 1155,
+         "def": 34,
+         "speed": 110
+        },
+        {
+         "id": "leaf_124",
+         "hp": 17600,
+         "atk": 1155,
+         "def": 34,
+         "speed": 110
+        }
+       ]
+      },
+      {
+       "enemies": [
+        {
+         "id": "leaf_123",
+         "hp": 17600,
+         "atk": 1155,
+         "def": 34,
+         "speed": 110
+        },
+        {
+         "id": "leaf_124",
+         "hp": 17600,
+         "atk": 1155,
+         "def": 34,
+         "speed": 110
+        },
+        {
+         "id": "leaf_122",
+         "hp": 17600,
+         "atk": 1155,
+         "def": 34,
+         "speed": 110
+        }
+       ]
+      }
+     ],
+     "rewards": {
+      "ryo": 1333
+     }
+    },
+    {
+     "stage": 2,
+     "title": "Training Grounds",
+     "map": "assets/maps/bg_020101_mori.png",
+     "waves": [
+      {
+       "enemies": [
+        {
+         "id": "leaf_122",
+         "hp": 17600,
+         "atk": 1155,
+         "def": 34,
+         "speed": 110
+        },
+        {
+         "id": "leaf_123",
+         "hp": 17600,
+         "atk": 1155,
+         "def": 34,
+         "speed": 110
+        },
+        {
+         "id": "leaf_124",
+         "hp": 17600,
+         "atk": 1155,
+         "def": 34,
+         "speed": 110
+        }
+       ]
+      },
+      {
+       "enemies": [
+        {
+         "id": "leaf_122",
+         "hp": 17600,
+         "atk": 1155,
+         "def": 34,
+         "speed": 110
+        },
+        {
+         "id": "leaf_123",
+         "hp": 35200,
+         "atk": 1328,
+         "def": 34,
+         "speed": 110
+        }
+       ]
+      }
+     ],
+     "rewards": {
+      "ryo": 1333
+     }
+    },
+    {
+     "stage": 3,
+     "title": "The Copy Ninja",
+     "map": "assets/maps/bg_330102_konohasato.png",
+     "waves": [
+      {
+       "enemies": [
+        {
+         "id": "leaf_122",
+         "hp": 17600,
+         "atk": 1155,
+         "def": 34,
+         "speed": 110
+        },
+        {
+         "id": "leaf_123",
+         "hp": 17600,
+         "atk": 1155,
+         "def": 34,
+         "speed": 110
+        },
+        {
+         "id": "leaf_124",
+         "hp": 17600,
+         "atk": 1155,
+         "def": 34,
+         "speed": 110
+        }
+       ]
+      },
+      {
+       "enemies": [
+        {
+         "id": "kakashi_008",
+         "hp": 52800,
+         "atk": 1559,
+         "def": 42,
+         "speed": 110,
+         "boss": true
+        }
+       ]
+      }
+     ],
+     "boss": "kakashi_008",
+     "rewards": {
+      "ryo": 1334
+     }
+    }
+   ],
+   "SS": [
+    {
+     "stage": 1,
+     "title": "Village Gate",
+     "map": "assets/maps/bg_330101_konohasato.png",
+     "waves": [
+      {
+       "enemies": [
+        {
+         "id": "leaf_122",
+         "hp": 25500,
+         "atk": 1650,
+         "def": 46,
+         "speed": 114
+        },
+        {
+         "id": "leaf_123",
+         "hp": 25500,
+         "atk": 1650,
+         "def": 46,
+         "speed": 114
+        },
+        {
+         "id": "leaf_124",
+         "hp": 25500,
+         "atk": 1650,
+         "def": 46,
+         "speed": 114
+        }
+       ]
+      },
+      {
+       "enemies": [
+        {
+         "id": "leaf_123",
+         "hp": 25500,
+         "atk": 1650,
+         "def": 46,
+         "speed": 114
+        },
+        {
+         "id": "leaf_124",
+         "hp": 25500,
+         "atk": 1650,
+         "def": 46,
+         "speed": 114
+        },
+        {
+         "id": "leaf_122",
+         "hp": 25500,
+         "atk": 1650,
+         "def": 46,
+         "speed": 114
+        }
+       ]
+      }
+     ],
+     "rewards": {
+      "ryo": 2000
+     }
+    },
+    {
+     "stage": 2,
+     "title": "Training Grounds",
+     "map": "assets/maps/bg_020101_mori.png",
+     "waves": [
+      {
+       "enemies": [
+        {
+         "id": "leaf_122",
+         "hp": 25500,
+         "atk": 1650,
+         "def": 46,
+         "speed": 114
+        },
+        {
+         "id": "leaf_123",
+         "hp": 25500,
+         "atk": 1650,
+         "def": 46,
+         "speed": 114
+        },
+        {
+         "id": "leaf_124",
+         "hp": 25500,
+         "atk": 1650,
+         "def": 46,
+         "speed": 114
+        }
+       ]
+      },
+      {
+       "enemies": [
+        {
+         "id": "leaf_122",
+         "hp": 25500,
+         "atk": 1650,
+         "def": 46,
+         "speed": 114
+        },
+        {
+         "id": "leaf_123",
+         "hp": 51000,
+         "atk": 1897,
+         "def": 46,
+         "speed": 114
+        }
+       ]
+      }
+     ],
+     "rewards": {
+      "ryo": 2000
+     }
+    },
+    {
+     "stage": 3,
+     "title": "The Copy Ninja",
+     "map": "assets/maps/bg_330102_konohasato.png",
+     "waves": [
+      {
+       "enemies": [
+        {
+         "id": "leaf_122",
+         "hp": 25500,
+         "atk": 1650,
+         "def": 46,
+         "speed": 114
+        },
+        {
+         "id": "leaf_123",
+         "hp": 25500,
+         "atk": 1650,
+         "def": 46,
+         "speed": 114
+        },
+        {
+         "id": "leaf_124",
+         "hp": 25500,
+         "atk": 1650,
+         "def": 46,
+         "speed": 114
+        }
+       ]
+      },
+      {
+       "enemies": [
+        {
+         "id": "kakashi_008",
+         "hp": 76500,
+         "atk": 2227,
+         "def": 57,
+         "speed": 114,
+         "boss": true
+        }
+       ]
+      }
+     ],
+     "boss": "kakashi_008",
+     "rewards": {
+      "ryo": 2000
+     }
+    }
+   ]
+  }
+ },
+ {
+  "id": "trial_akatsuki",
+  "category": "Set Trials",
+  "arc": "Gear",
+  "name": "Trial of the Red Clouds",
+  "description": "Break into an Akatsuki hideout and take what they guard. Drops Akatsuki set pieces.",
+  "banner": "assets/missions/banners/trials/trial_akatsuki.webp",
+  "feature": "itachi_088",
+  "featureArt": "assets/characters/itachi_088/full_4S.webp",
+  "sortOrder": 2,
+  "gearSet": "akatsuki",
+  "rankNames": {
+   "B": "Normal",
+   "A": "Hard",
+   "S": "Extreme",
+   "SS": "Nightmare"
+  },
+  "rankGate": true,
+  "stamina": {
+   "B": 12,
+   "A": 20,
+   "S": 30,
+   "SS": 40
+  },
+  "power": {
+   "B": 26100,
+   "A": 44000,
+   "S": 64400,
+   "SS": 92000
+  },
+  "clearRewards": {
+   "B": {
+    "firstTime": {
+     "ninja_pearls": 2
+    },
+    "completion": {}
+   },
+   "A": {
+    "firstTime": {
+     "ninja_pearls": 3
+    },
+    "completion": {}
+   },
+   "S": {
+    "firstTime": {
+     "ninja_pearls": 5
+    },
+    "completion": {}
+   },
+   "SS": {
+    "firstTime": {
+     "ninja_pearls": 10
+    },
+    "completion": {}
+   }
+  },
+  "cast": {
+   "deidara_219": {
+    "name": "Deidara",
+    "portrait": "assets/characters/deidara_219/portrait_5S.webp"
+   },
+   "itachi_088": {
+    "name": "Itachi Uchiha",
+    "portrait": "assets/characters/itachi_088/portrait_4S.webp"
+   },
+   "kisame_090": {
+    "name": "Kisame Hoshigaki",
+    "portrait": "assets/characters/kisame_090/portrait_4S.webp"
+   }
+  },
+  "difficulties": {
+   "B": [
+    {
+     "stage": 1,
+     "title": "Hideout Entrance",
+     "map": "assets/maps/bg_160101_akatuki.png",
+     "waves": [
+      {
+       "enemies": [
+        {
+         "id": "kisame_090",
+         "hp": 7100,
+         "atk": 480,
+         "def": 19,
+         "speed": 107
+        },
+        {
+         "id": "deidara_219",
+         "hp": 7100,
+         "atk": 480,
+         "def": 19,
+         "speed": 107
+        },
+        {
+         "id": "kisame_090",
+         "hp": 7100,
+         "atk": 480,
+         "def": 19,
+         "speed": 107
+        }
+       ]
+      },
+      {
+       "enemies": [
+        {
+         "id": "deidara_219",
+         "hp": 7100,
+         "atk": 480,
+         "def": 19,
+         "speed": 107
+        },
+        {
+         "id": "kisame_090",
+         "hp": 7100,
+         "atk": 480,
+         "def": 19,
+         "speed": 107
+        },
+        {
+         "id": "deidara_219",
+         "hp": 7100,
+         "atk": 480,
+         "def": 19,
+         "speed": 107
+        }
+       ]
+      }
+     ],
+     "rewards": {
+      "ryo": 500
+     }
+    },
+    {
+     "stage": 2,
+     "title": "Partners",
+     "map": "assets/maps/bg_160102_akatuki.png",
+     "waves": [
+      {
+       "enemies": [
+        {
+         "id": "kisame_090",
+         "hp": 7100,
+         "atk": 480,
+         "def": 19,
+         "speed": 107
+        },
+        {
+         "id": "deidara_219",
+         "hp": 7100,
+         "atk": 480,
+         "def": 19,
+         "speed": 107
+        },
+        {
+         "id": "kisame_090",
+         "hp": 7100,
+         "atk": 480,
+         "def": 19,
+         "speed": 107
+        }
+       ]
+      },
+      {
+       "enemies": [
+        {
+         "id": "kisame_090",
+         "hp": 7100,
+         "atk": 480,
+         "def": 19,
+         "speed": 107
+        },
+        {
+         "id": "kisame_090",
+         "hp": 14200,
+         "atk": 552,
+         "def": 19,
+         "speed": 107
+        }
+       ]
+      }
+     ],
+     "rewards": {
+      "ryo": 500
+     }
+    },
+    {
+     "stage": 3,
+     "title": "Crow’s Eye",
+     "map": "assets/maps/bg_160103_akatuki.png",
+     "waves": [
+      {
+       "enemies": [
+        {
+         "id": "kisame_090",
+         "hp": 7100,
+         "atk": 480,
+         "def": 19,
+         "speed": 107
+        },
+        {
+         "id": "deidara_219",
+         "hp": 7100,
+         "atk": 480,
+         "def": 19,
+         "speed": 107
+        },
+        {
+         "id": "kisame_090",
+         "hp": 7100,
+         "atk": 480,
+         "def": 19,
+         "speed": 107
+        }
+       ]
+      },
+      {
+       "enemies": [
+        {
+         "id": "itachi_088",
+         "hp": 21300,
+         "atk": 648,
+         "def": 23,
+         "speed": 107,
+         "boss": true
+        }
+       ]
+      }
+     ],
+     "boss": "itachi_088",
+     "rewards": {
+      "ryo": 500
+     }
+    }
+   ],
+   "A": [
+    {
+     "stage": 1,
+     "title": "Hideout Entrance",
+     "map": "assets/maps/bg_160101_akatuki.png",
+     "waves": [
+      {
+       "enemies": [
+        {
+         "id": "kisame_090",
+         "hp": 12000,
+         "atk": 795,
+         "def": 26,
+         "speed": 110
+        },
+        {
+         "id": "deidara_219",
+         "hp": 12000,
+         "atk": 795,
+         "def": 26,
+         "speed": 110
+        },
+        {
+         "id": "kisame_090",
+         "hp": 12000,
+         "atk": 795,
+         "def": 26,
+         "speed": 110
+        }
+       ]
+      },
+      {
+       "enemies": [
+        {
+         "id": "deidara_219",
+         "hp": 12000,
+         "atk": 795,
+         "def": 26,
+         "speed": 110
+        },
+        {
+         "id": "kisame_090",
+         "hp": 12000,
+         "atk": 795,
+         "def": 26,
+         "speed": 110
+        },
+        {
+         "id": "deidara_219",
+         "hp": 12000,
+         "atk": 795,
+         "def": 26,
+         "speed": 110
+        }
+       ]
+      }
+     ],
+     "rewards": {
+      "ryo": 833
+     }
+    },
+    {
+     "stage": 2,
+     "title": "Partners",
+     "map": "assets/maps/bg_160102_akatuki.png",
+     "waves": [
+      {
+       "enemies": [
+        {
+         "id": "kisame_090",
+         "hp": 12000,
+         "atk": 795,
+         "def": 26,
+         "speed": 110
+        },
+        {
+         "id": "deidara_219",
+         "hp": 12000,
+         "atk": 795,
+         "def": 26,
+         "speed": 110
+        },
+        {
+         "id": "kisame_090",
+         "hp": 12000,
+         "atk": 795,
+         "def": 26,
+         "speed": 110
+        }
+       ]
+      },
+      {
+       "enemies": [
+        {
+         "id": "kisame_090",
+         "hp": 12000,
+         "atk": 795,
+         "def": 26,
+         "speed": 110
+        },
+        {
+         "id": "kisame_090",
+         "hp": 24000,
+         "atk": 914,
+         "def": 26,
+         "speed": 110
+        }
+       ]
+      }
+     ],
+     "rewards": {
+      "ryo": 833
+     }
+    },
+    {
+     "stage": 3,
+     "title": "Crow’s Eye",
+     "map": "assets/maps/bg_160103_akatuki.png",
+     "waves": [
+      {
+       "enemies": [
+        {
+         "id": "kisame_090",
+         "hp": 12000,
+         "atk": 795,
+         "def": 26,
+         "speed": 110
+        },
+        {
+         "id": "deidara_219",
+         "hp": 12000,
+         "atk": 795,
+         "def": 26,
+         "speed": 110
+        },
+        {
+         "id": "kisame_090",
+         "hp": 12000,
+         "atk": 795,
+         "def": 26,
+         "speed": 110
+        }
+       ]
+      },
+      {
+       "enemies": [
+        {
+         "id": "itachi_088",
+         "hp": 36000,
+         "atk": 1073,
+         "def": 32,
+         "speed": 110,
+         "boss": true
+        }
+       ]
+      }
+     ],
+     "boss": "itachi_088",
+     "rewards": {
+      "ryo": 834
+     }
+    }
+   ],
+   "S": [
+    {
+     "stage": 1,
+     "title": "Hideout Entrance",
+     "map": "assets/maps/bg_160101_akatuki.png",
+     "waves": [
+      {
+       "enemies": [
+        {
+         "id": "kisame_090",
+         "hp": 17600,
+         "atk": 1155,
+         "def": 34,
+         "speed": 110
+        },
+        {
+         "id": "deidara_219",
+         "hp": 17600,
+         "atk": 1155,
+         "def": 34,
+         "speed": 110
+        },
+        {
+         "id": "kisame_090",
+         "hp": 17600,
+         "atk": 1155,
+         "def": 34,
+         "speed": 110
+        }
+       ]
+      },
+      {
+       "enemies": [
+        {
+         "id": "deidara_219",
+         "hp": 17600,
+         "atk": 1155,
+         "def": 34,
+         "speed": 110
+        },
+        {
+         "id": "kisame_090",
+         "hp": 17600,
+         "atk": 1155,
+         "def": 34,
+         "speed": 110
+        },
+        {
+         "id": "deidara_219",
+         "hp": 17600,
+         "atk": 1155,
+         "def": 34,
+         "speed": 110
+        }
+       ]
+      }
+     ],
+     "rewards": {
+      "ryo": 1333
+     }
+    },
+    {
+     "stage": 2,
+     "title": "Partners",
+     "map": "assets/maps/bg_160102_akatuki.png",
+     "waves": [
+      {
+       "enemies": [
+        {
+         "id": "kisame_090",
+         "hp": 17600,
+         "atk": 1155,
+         "def": 34,
+         "speed": 110
+        },
+        {
+         "id": "deidara_219",
+         "hp": 17600,
+         "atk": 1155,
+         "def": 34,
+         "speed": 110
+        },
+        {
+         "id": "kisame_090",
+         "hp": 17600,
+         "atk": 1155,
+         "def": 34,
+         "speed": 110
+        }
+       ]
+      },
+      {
+       "enemies": [
+        {
+         "id": "kisame_090",
+         "hp": 17600,
+         "atk": 1155,
+         "def": 34,
+         "speed": 110
+        },
+        {
+         "id": "kisame_090",
+         "hp": 35200,
+         "atk": 1328,
+         "def": 34,
+         "speed": 110
+        }
+       ]
+      }
+     ],
+     "rewards": {
+      "ryo": 1333
+     }
+    },
+    {
+     "stage": 3,
+     "title": "Crow’s Eye",
+     "map": "assets/maps/bg_160103_akatuki.png",
+     "waves": [
+      {
+       "enemies": [
+        {
+         "id": "kisame_090",
+         "hp": 17600,
+         "atk": 1155,
+         "def": 34,
+         "speed": 110
+        },
+        {
+         "id": "deidara_219",
+         "hp": 17600,
+         "atk": 1155,
+         "def": 34,
+         "speed": 110
+        },
+        {
+         "id": "kisame_090",
+         "hp": 17600,
+         "atk": 1155,
+         "def": 34,
+         "speed": 110
+        }
+       ]
+      },
+      {
+       "enemies": [
+        {
+         "id": "itachi_088",
+         "hp": 52800,
+         "atk": 1559,
+         "def": 42,
+         "speed": 110,
+         "boss": true
+        }
+       ]
+      }
+     ],
+     "boss": "itachi_088",
+     "rewards": {
+      "ryo": 1334
+     }
+    }
+   ],
+   "SS": [
+    {
+     "stage": 1,
+     "title": "Hideout Entrance",
+     "map": "assets/maps/bg_160101_akatuki.png",
+     "waves": [
+      {
+       "enemies": [
+        {
+         "id": "kisame_090",
+         "hp": 25500,
+         "atk": 1650,
+         "def": 46,
+         "speed": 114
+        },
+        {
+         "id": "deidara_219",
+         "hp": 25500,
+         "atk": 1650,
+         "def": 46,
+         "speed": 114
+        },
+        {
+         "id": "kisame_090",
+         "hp": 25500,
+         "atk": 1650,
+         "def": 46,
+         "speed": 114
+        }
+       ]
+      },
+      {
+       "enemies": [
+        {
+         "id": "deidara_219",
+         "hp": 25500,
+         "atk": 1650,
+         "def": 46,
+         "speed": 114
+        },
+        {
+         "id": "kisame_090",
+         "hp": 25500,
+         "atk": 1650,
+         "def": 46,
+         "speed": 114
+        },
+        {
+         "id": "deidara_219",
+         "hp": 25500,
+         "atk": 1650,
+         "def": 46,
+         "speed": 114
+        }
+       ]
+      }
+     ],
+     "rewards": {
+      "ryo": 2000
+     }
+    },
+    {
+     "stage": 2,
+     "title": "Partners",
+     "map": "assets/maps/bg_160102_akatuki.png",
+     "waves": [
+      {
+       "enemies": [
+        {
+         "id": "kisame_090",
+         "hp": 25500,
+         "atk": 1650,
+         "def": 46,
+         "speed": 114
+        },
+        {
+         "id": "deidara_219",
+         "hp": 25500,
+         "atk": 1650,
+         "def": 46,
+         "speed": 114
+        },
+        {
+         "id": "kisame_090",
+         "hp": 25500,
+         "atk": 1650,
+         "def": 46,
+         "speed": 114
+        }
+       ]
+      },
+      {
+       "enemies": [
+        {
+         "id": "kisame_090",
+         "hp": 25500,
+         "atk": 1650,
+         "def": 46,
+         "speed": 114
+        },
+        {
+         "id": "kisame_090",
+         "hp": 51000,
+         "atk": 1897,
+         "def": 46,
+         "speed": 114
+        }
+       ]
+      }
+     ],
+     "rewards": {
+      "ryo": 2000
+     }
+    },
+    {
+     "stage": 3,
+     "title": "Crow’s Eye",
+     "map": "assets/maps/bg_160103_akatuki.png",
+     "waves": [
+      {
+       "enemies": [
+        {
+         "id": "kisame_090",
+         "hp": 25500,
+         "atk": 1650,
+         "def": 46,
+         "speed": 114
+        },
+        {
+         "id": "deidara_219",
+         "hp": 25500,
+         "atk": 1650,
+         "def": 46,
+         "speed": 114
+        },
+        {
+         "id": "kisame_090",
+         "hp": 25500,
+         "atk": 1650,
+         "def": 46,
+         "speed": 114
+        }
+       ]
+      },
+      {
+       "enemies": [
+        {
+         "id": "itachi_088",
+         "hp": 76500,
+         "atk": 2227,
+         "def": 57,
+         "speed": 114,
+         "boss": true
+        }
+       ]
+      }
+     ],
+     "boss": "itachi_088",
+     "rewards": {
+      "ryo": 2000
+     }
+    }
+   ]
+  }
+ },
+ {
+  "id": "trial_sand",
+  "category": "Set Trials",
+  "arc": "Gear",
+  "name": "Trial of the Desert Wind",
+  "description": "Cross the desert and face the Sand Siblings. Drops Hidden Sand set pieces.",
+  "banner": "assets/missions/banners/trials/trial_sand.webp",
+  "feature": "gaara_050",
+  "featureArt": "assets/characters/gaara_050/full_5S.webp",
+  "sortOrder": 3,
+  "gearSet": "sand",
+  "rankNames": {
+   "B": "Normal",
+   "A": "Hard",
+   "S": "Extreme",
+   "SS": "Nightmare"
+  },
+  "rankGate": true,
+  "stamina": {
+   "B": 12,
+   "A": 20,
+   "S": 30,
+   "SS": 40
+  },
+  "power": {
+   "B": 26100,
+   "A": 44000,
+   "S": 64400,
+   "SS": 92000
+  },
+  "clearRewards": {
+   "B": {
+    "firstTime": {
+     "ninja_pearls": 2
+    },
+    "completion": {}
+   },
+   "A": {
+    "firstTime": {
+     "ninja_pearls": 3
+    },
+    "completion": {}
+   },
+   "S": {
+    "firstTime": {
+     "ninja_pearls": 5
+    },
+    "completion": {}
+   },
+   "SS": {
+    "firstTime": {
+     "ninja_pearls": 10
+    },
+    "completion": {}
+   }
+  },
+  "cast": {
+   "gaara_050": {
+    "name": "Gaara",
+    "portrait": "assets/characters/gaara_050/portrait_5S.webp"
+   },
+   "kankuro_165": {
+    "name": "Kankuro",
+    "portrait": "assets/characters/kankuro_165/portrait_4S.webp"
+   },
+   "temari_163": {
+    "name": "Temari",
+    "portrait": "assets/characters/temari_163/portrait_4S.webp"
+   }
+  },
+  "difficulties": {
+   "B": [
+    {
+     "stage": 1,
+     "title": "Sandstorm",
+     "map": "assets/maps/bg_300101_sabaku.png",
+     "waves": [
+      {
+       "enemies": [
+        {
+         "id": "kankuro_165",
+         "hp": 7100,
+         "atk": 480,
+         "def": 19,
+         "speed": 107
+        },
+        {
+         "id": "temari_163",
+         "hp": 7100,
+         "atk": 480,
+         "def": 19,
+         "speed": 107
+        },
+        {
+         "id": "kankuro_165",
+         "hp": 7100,
+         "atk": 480,
+         "def": 19,
+         "speed": 107
+        }
+       ]
+      },
+      {
+       "enemies": [
+        {
+         "id": "temari_163",
+         "hp": 7100,
+         "atk": 480,
+         "def": 19,
+         "speed": 107
+        },
+        {
+         "id": "kankuro_165",
+         "hp": 7100,
+         "atk": 480,
+         "def": 19,
+         "speed": 107
+        },
+        {
+         "id": "temari_163",
+         "hp": 7100,
+         "atk": 480,
+         "def": 19,
+         "speed": 107
+        }
+       ]
+      }
+     ],
+     "rewards": {
+      "ryo": 500
+     }
+    },
+    {
+     "stage": 2,
+     "title": "Village Walls",
+     "map": "assets/maps/bg_150101_suna.png",
+     "waves": [
+      {
+       "enemies": [
+        {
+         "id": "kankuro_165",
+         "hp": 7100,
+         "atk": 480,
+         "def": 19,
+         "speed": 107
+        },
+        {
+         "id": "temari_163",
+         "hp": 7100,
+         "atk": 480,
+         "def": 19,
+         "speed": 107
+        },
+        {
+         "id": "kankuro_165",
+         "hp": 7100,
+         "atk": 480,
+         "def": 19,
+         "speed": 107
+        }
+       ]
+      },
+      {
+       "enemies": [
+        {
+         "id": "kankuro_165",
+         "hp": 7100,
+         "atk": 480,
+         "def": 19,
+         "speed": 107
+        },
+        {
+         "id": "temari_163",
+         "hp": 14200,
+         "atk": 552,
+         "def": 19,
+         "speed": 107
+        }
+       ]
+      }
+     ],
+     "rewards": {
+      "ryo": 500
+     }
+    },
+    {
+     "stage": 3,
+     "title": "The Gourd",
+     "map": "assets/maps/bg_150102_suna.png",
+     "waves": [
+      {
+       "enemies": [
+        {
+         "id": "kankuro_165",
+         "hp": 7100,
+         "atk": 480,
+         "def": 19,
+         "speed": 107
+        },
+        {
+         "id": "temari_163",
+         "hp": 7100,
+         "atk": 480,
+         "def": 19,
+         "speed": 107
+        },
+        {
+         "id": "kankuro_165",
+         "hp": 7100,
+         "atk": 480,
+         "def": 19,
+         "speed": 107
+        }
+       ]
+      },
+      {
+       "enemies": [
+        {
+         "id": "gaara_050",
+         "hp": 21300,
+         "atk": 648,
+         "def": 23,
+         "speed": 107,
+         "boss": true
+        }
+       ]
+      }
+     ],
+     "boss": "gaara_050",
+     "rewards": {
+      "ryo": 500
+     }
+    }
+   ],
+   "A": [
+    {
+     "stage": 1,
+     "title": "Sandstorm",
+     "map": "assets/maps/bg_300101_sabaku.png",
+     "waves": [
+      {
+       "enemies": [
+        {
+         "id": "kankuro_165",
+         "hp": 12000,
+         "atk": 795,
+         "def": 26,
+         "speed": 110
+        },
+        {
+         "id": "temari_163",
+         "hp": 12000,
+         "atk": 795,
+         "def": 26,
+         "speed": 110
+        },
+        {
+         "id": "kankuro_165",
+         "hp": 12000,
+         "atk": 795,
+         "def": 26,
+         "speed": 110
+        }
+       ]
+      },
+      {
+       "enemies": [
+        {
+         "id": "temari_163",
+         "hp": 12000,
+         "atk": 795,
+         "def": 26,
+         "speed": 110
+        },
+        {
+         "id": "kankuro_165",
+         "hp": 12000,
+         "atk": 795,
+         "def": 26,
+         "speed": 110
+        },
+        {
+         "id": "temari_163",
+         "hp": 12000,
+         "atk": 795,
+         "def": 26,
+         "speed": 110
+        }
+       ]
+      }
+     ],
+     "rewards": {
+      "ryo": 833
+     }
+    },
+    {
+     "stage": 2,
+     "title": "Village Walls",
+     "map": "assets/maps/bg_150101_suna.png",
+     "waves": [
+      {
+       "enemies": [
+        {
+         "id": "kankuro_165",
+         "hp": 12000,
+         "atk": 795,
+         "def": 26,
+         "speed": 110
+        },
+        {
+         "id": "temari_163",
+         "hp": 12000,
+         "atk": 795,
+         "def": 26,
+         "speed": 110
+        },
+        {
+         "id": "kankuro_165",
+         "hp": 12000,
+         "atk": 795,
+         "def": 26,
+         "speed": 110
+        }
+       ]
+      },
+      {
+       "enemies": [
+        {
+         "id": "kankuro_165",
+         "hp": 12000,
+         "atk": 795,
+         "def": 26,
+         "speed": 110
+        },
+        {
+         "id": "temari_163",
+         "hp": 24000,
+         "atk": 914,
+         "def": 26,
+         "speed": 110
+        }
+       ]
+      }
+     ],
+     "rewards": {
+      "ryo": 833
+     }
+    },
+    {
+     "stage": 3,
+     "title": "The Gourd",
+     "map": "assets/maps/bg_150102_suna.png",
+     "waves": [
+      {
+       "enemies": [
+        {
+         "id": "kankuro_165",
+         "hp": 12000,
+         "atk": 795,
+         "def": 26,
+         "speed": 110
+        },
+        {
+         "id": "temari_163",
+         "hp": 12000,
+         "atk": 795,
+         "def": 26,
+         "speed": 110
+        },
+        {
+         "id": "kankuro_165",
+         "hp": 12000,
+         "atk": 795,
+         "def": 26,
+         "speed": 110
+        }
+       ]
+      },
+      {
+       "enemies": [
+        {
+         "id": "gaara_050",
+         "hp": 36000,
+         "atk": 1073,
+         "def": 32,
+         "speed": 110,
+         "boss": true
+        }
+       ]
+      }
+     ],
+     "boss": "gaara_050",
+     "rewards": {
+      "ryo": 834
+     }
+    }
+   ],
+   "S": [
+    {
+     "stage": 1,
+     "title": "Sandstorm",
+     "map": "assets/maps/bg_300101_sabaku.png",
+     "waves": [
+      {
+       "enemies": [
+        {
+         "id": "kankuro_165",
+         "hp": 17600,
+         "atk": 1155,
+         "def": 34,
+         "speed": 110
+        },
+        {
+         "id": "temari_163",
+         "hp": 17600,
+         "atk": 1155,
+         "def": 34,
+         "speed": 110
+        },
+        {
+         "id": "kankuro_165",
+         "hp": 17600,
+         "atk": 1155,
+         "def": 34,
+         "speed": 110
+        }
+       ]
+      },
+      {
+       "enemies": [
+        {
+         "id": "temari_163",
+         "hp": 17600,
+         "atk": 1155,
+         "def": 34,
+         "speed": 110
+        },
+        {
+         "id": "kankuro_165",
+         "hp": 17600,
+         "atk": 1155,
+         "def": 34,
+         "speed": 110
+        },
+        {
+         "id": "temari_163",
+         "hp": 17600,
+         "atk": 1155,
+         "def": 34,
+         "speed": 110
+        }
+       ]
+      }
+     ],
+     "rewards": {
+      "ryo": 1333
+     }
+    },
+    {
+     "stage": 2,
+     "title": "Village Walls",
+     "map": "assets/maps/bg_150101_suna.png",
+     "waves": [
+      {
+       "enemies": [
+        {
+         "id": "kankuro_165",
+         "hp": 17600,
+         "atk": 1155,
+         "def": 34,
+         "speed": 110
+        },
+        {
+         "id": "temari_163",
+         "hp": 17600,
+         "atk": 1155,
+         "def": 34,
+         "speed": 110
+        },
+        {
+         "id": "kankuro_165",
+         "hp": 17600,
+         "atk": 1155,
+         "def": 34,
+         "speed": 110
+        }
+       ]
+      },
+      {
+       "enemies": [
+        {
+         "id": "kankuro_165",
+         "hp": 17600,
+         "atk": 1155,
+         "def": 34,
+         "speed": 110
+        },
+        {
+         "id": "temari_163",
+         "hp": 35200,
+         "atk": 1328,
+         "def": 34,
+         "speed": 110
+        }
+       ]
+      }
+     ],
+     "rewards": {
+      "ryo": 1333
+     }
+    },
+    {
+     "stage": 3,
+     "title": "The Gourd",
+     "map": "assets/maps/bg_150102_suna.png",
+     "waves": [
+      {
+       "enemies": [
+        {
+         "id": "kankuro_165",
+         "hp": 17600,
+         "atk": 1155,
+         "def": 34,
+         "speed": 110
+        },
+        {
+         "id": "temari_163",
+         "hp": 17600,
+         "atk": 1155,
+         "def": 34,
+         "speed": 110
+        },
+        {
+         "id": "kankuro_165",
+         "hp": 17600,
+         "atk": 1155,
+         "def": 34,
+         "speed": 110
+        }
+       ]
+      },
+      {
+       "enemies": [
+        {
+         "id": "gaara_050",
+         "hp": 52800,
+         "atk": 1559,
+         "def": 42,
+         "speed": 110,
+         "boss": true
+        }
+       ]
+      }
+     ],
+     "boss": "gaara_050",
+     "rewards": {
+      "ryo": 1334
+     }
+    }
+   ],
+   "SS": [
+    {
+     "stage": 1,
+     "title": "Sandstorm",
+     "map": "assets/maps/bg_300101_sabaku.png",
+     "waves": [
+      {
+       "enemies": [
+        {
+         "id": "kankuro_165",
+         "hp": 25500,
+         "atk": 1650,
+         "def": 46,
+         "speed": 114
+        },
+        {
+         "id": "temari_163",
+         "hp": 25500,
+         "atk": 1650,
+         "def": 46,
+         "speed": 114
+        },
+        {
+         "id": "kankuro_165",
+         "hp": 25500,
+         "atk": 1650,
+         "def": 46,
+         "speed": 114
+        }
+       ]
+      },
+      {
+       "enemies": [
+        {
+         "id": "temari_163",
+         "hp": 25500,
+         "atk": 1650,
+         "def": 46,
+         "speed": 114
+        },
+        {
+         "id": "kankuro_165",
+         "hp": 25500,
+         "atk": 1650,
+         "def": 46,
+         "speed": 114
+        },
+        {
+         "id": "temari_163",
+         "hp": 25500,
+         "atk": 1650,
+         "def": 46,
+         "speed": 114
+        }
+       ]
+      }
+     ],
+     "rewards": {
+      "ryo": 2000
+     }
+    },
+    {
+     "stage": 2,
+     "title": "Village Walls",
+     "map": "assets/maps/bg_150101_suna.png",
+     "waves": [
+      {
+       "enemies": [
+        {
+         "id": "kankuro_165",
+         "hp": 25500,
+         "atk": 1650,
+         "def": 46,
+         "speed": 114
+        },
+        {
+         "id": "temari_163",
+         "hp": 25500,
+         "atk": 1650,
+         "def": 46,
+         "speed": 114
+        },
+        {
+         "id": "kankuro_165",
+         "hp": 25500,
+         "atk": 1650,
+         "def": 46,
+         "speed": 114
+        }
+       ]
+      },
+      {
+       "enemies": [
+        {
+         "id": "kankuro_165",
+         "hp": 25500,
+         "atk": 1650,
+         "def": 46,
+         "speed": 114
+        },
+        {
+         "id": "temari_163",
+         "hp": 51000,
+         "atk": 1897,
+         "def": 46,
+         "speed": 114
+        }
+       ]
+      }
+     ],
+     "rewards": {
+      "ryo": 2000
+     }
+    },
+    {
+     "stage": 3,
+     "title": "The Gourd",
+     "map": "assets/maps/bg_150102_suna.png",
+     "waves": [
+      {
+       "enemies": [
+        {
+         "id": "kankuro_165",
+         "hp": 25500,
+         "atk": 1650,
+         "def": 46,
+         "speed": 114
+        },
+        {
+         "id": "temari_163",
+         "hp": 25500,
+         "atk": 1650,
+         "def": 46,
+         "speed": 114
+        },
+        {
+         "id": "kankuro_165",
+         "hp": 25500,
+         "atk": 1650,
+         "def": 46,
+         "speed": 114
+        }
+       ]
+      },
+      {
+       "enemies": [
+        {
+         "id": "gaara_050",
+         "hp": 76500,
+         "atk": 2227,
+         "def": 57,
+         "speed": 114,
+         "boss": true
+        }
+       ]
+      }
+     ],
+     "boss": "gaara_050",
+     "rewards": {
+      "ryo": 2000
+     }
+    }
+   ]
+  }
+ },
+ {
+  "id": "trial_sound",
+  "category": "Set Trials",
+  "arc": "Gear",
+  "name": "Trial of the Serpent",
+  "description": "Orochimaru’s lair holds forbidden gear. Drops Hidden Sound set pieces.",
+  "banner": "assets/missions/banners/trials/trial_sound.webp",
+  "feature": "orochimaru_074",
+  "featureArt": "assets/characters/orochimaru_074/full_4S.webp",
+  "sortOrder": 4,
+  "gearSet": "sound",
+  "rankNames": {
+   "B": "Normal",
+   "A": "Hard",
+   "S": "Extreme",
+   "SS": "Nightmare"
+  },
+  "rankGate": true,
+  "stamina": {
+   "B": 12,
+   "A": 20,
+   "S": 30,
+   "SS": 40
+  },
+  "power": {
+   "B": 26100,
+   "A": 44000,
+   "S": 64400,
+   "SS": 92000
+  },
+  "clearRewards": {
+   "B": {
+    "firstTime": {
+     "ninja_pearls": 2
+    },
+    "completion": {}
+   },
+   "A": {
+    "firstTime": {
+     "ninja_pearls": 3
+    },
+    "completion": {}
+   },
+   "S": {
+    "firstTime": {
+     "ninja_pearls": 5
+    },
+    "completion": {}
+   },
+   "SS": {
+    "firstTime": {
+     "ninja_pearls": 10
+    },
+    "completion": {}
+   }
+  },
+  "cast": {
+   "dosu_033": {
+    "name": "Dosu Kinuta",
+    "portrait": "assets/characters/dosu_033/portrait_3S.webp"
+   },
+   "kabuto_076": {
+    "name": "Kabuto Yakushi",
+    "portrait": "assets/characters/kabuto_076/portrait_4S.webp"
+   },
+   "orochimaru_074": {
+    "name": "Orochimaru",
+    "portrait": "assets/characters/orochimaru_074/portrait_4S.webp"
+   },
+   "sound_134": {
+    "name": "Sound Ninja",
+    "portrait": "assets/characters/sound_134/portrait_1S.webp"
+   },
+   "zaku_034": {
+    "name": "Zaku Abumi",
+    "portrait": "assets/characters/zaku_034/portrait_3S.webp"
+   }
+  },
+  "difficulties": {
+   "B": [
+    {
+     "stage": 1,
+     "title": "Hidden Lair",
+     "map": "assets/maps/bg_180101_oroti.png",
+     "waves": [
+      {
+       "enemies": [
+        {
+         "id": "sound_134",
+         "hp": 7100,
+         "atk": 480,
+         "def": 19,
+         "speed": 107
+        },
+        {
+         "id": "dosu_033",
+         "hp": 7100,
+         "atk": 480,
+         "def": 19,
+         "speed": 107
+        },
+        {
+         "id": "zaku_034",
+         "hp": 7100,
+         "atk": 480,
+         "def": 19,
+         "speed": 107
+        }
+       ]
+      },
+      {
+       "enemies": [
+        {
+         "id": "dosu_033",
+         "hp": 7100,
+         "atk": 480,
+         "def": 19,
+         "speed": 107
+        },
+        {
+         "id": "zaku_034",
+         "hp": 7100,
+         "atk": 480,
+         "def": 19,
+         "speed": 107
+        },
+        {
+         "id": "sound_134",
+         "hp": 7100,
+         "atk": 480,
+         "def": 19,
+         "speed": 107
+        }
+       ]
+      }
+     ],
+     "rewards": {
+      "ryo": 500
+     }
+    },
+    {
+     "stage": 2,
+     "title": "The Medic",
+     "map": "assets/maps/bg_180102_oroti.png",
+     "waves": [
+      {
+       "enemies": [
+        {
+         "id": "sound_134",
+         "hp": 7100,
+         "atk": 480,
+         "def": 19,
+         "speed": 107
+        },
+        {
+         "id": "dosu_033",
+         "hp": 7100,
+         "atk": 480,
+         "def": 19,
+         "speed": 107
+        },
+        {
+         "id": "zaku_034",
+         "hp": 7100,
+         "atk": 480,
+         "def": 19,
+         "speed": 107
+        }
+       ]
+      },
+      {
+       "enemies": [
+        {
+         "id": "sound_134",
+         "hp": 7100,
+         "atk": 480,
+         "def": 19,
+         "speed": 107
+        },
+        {
+         "id": "kabuto_076",
+         "hp": 14200,
+         "atk": 552,
+         "def": 19,
+         "speed": 107
+        }
+       ]
+      }
+     ],
+     "rewards": {
+      "ryo": 500
+     }
+    },
+    {
+     "stage": 3,
+     "title": "Snake Pit",
+     "map": "assets/maps/bg_180103_oroti.png",
+     "waves": [
+      {
+       "enemies": [
+        {
+         "id": "sound_134",
+         "hp": 7100,
+         "atk": 480,
+         "def": 19,
+         "speed": 107
+        },
+        {
+         "id": "dosu_033",
+         "hp": 7100,
+         "atk": 480,
+         "def": 19,
+         "speed": 107
+        },
+        {
+         "id": "zaku_034",
+         "hp": 7100,
+         "atk": 480,
+         "def": 19,
+         "speed": 107
+        }
+       ]
+      },
+      {
+       "enemies": [
+        {
+         "id": "orochimaru_074",
+         "hp": 21300,
+         "atk": 648,
+         "def": 23,
+         "speed": 107,
+         "boss": true
+        }
+       ]
+      }
+     ],
+     "boss": "orochimaru_074",
+     "rewards": {
+      "ryo": 500
+     }
+    }
+   ],
+   "A": [
+    {
+     "stage": 1,
+     "title": "Hidden Lair",
+     "map": "assets/maps/bg_180101_oroti.png",
+     "waves": [
+      {
+       "enemies": [
+        {
+         "id": "sound_134",
+         "hp": 12000,
+         "atk": 795,
+         "def": 26,
+         "speed": 110
+        },
+        {
+         "id": "dosu_033",
+         "hp": 12000,
+         "atk": 795,
+         "def": 26,
+         "speed": 110
+        },
+        {
+         "id": "zaku_034",
+         "hp": 12000,
+         "atk": 795,
+         "def": 26,
+         "speed": 110
+        }
+       ]
+      },
+      {
+       "enemies": [
+        {
+         "id": "dosu_033",
+         "hp": 12000,
+         "atk": 795,
+         "def": 26,
+         "speed": 110
+        },
+        {
+         "id": "zaku_034",
+         "hp": 12000,
+         "atk": 795,
+         "def": 26,
+         "speed": 110
+        },
+        {
+         "id": "sound_134",
+         "hp": 12000,
+         "atk": 795,
+         "def": 26,
+         "speed": 110
+        }
+       ]
+      }
+     ],
+     "rewards": {
+      "ryo": 833
+     }
+    },
+    {
+     "stage": 2,
+     "title": "The Medic",
+     "map": "assets/maps/bg_180102_oroti.png",
+     "waves": [
+      {
+       "enemies": [
+        {
+         "id": "sound_134",
+         "hp": 12000,
+         "atk": 795,
+         "def": 26,
+         "speed": 110
+        },
+        {
+         "id": "dosu_033",
+         "hp": 12000,
+         "atk": 795,
+         "def": 26,
+         "speed": 110
+        },
+        {
+         "id": "zaku_034",
+         "hp": 12000,
+         "atk": 795,
+         "def": 26,
+         "speed": 110
+        }
+       ]
+      },
+      {
+       "enemies": [
+        {
+         "id": "sound_134",
+         "hp": 12000,
+         "atk": 795,
+         "def": 26,
+         "speed": 110
+        },
+        {
+         "id": "kabuto_076",
+         "hp": 24000,
+         "atk": 914,
+         "def": 26,
+         "speed": 110
+        }
+       ]
+      }
+     ],
+     "rewards": {
+      "ryo": 833
+     }
+    },
+    {
+     "stage": 3,
+     "title": "Snake Pit",
+     "map": "assets/maps/bg_180103_oroti.png",
+     "waves": [
+      {
+       "enemies": [
+        {
+         "id": "sound_134",
+         "hp": 12000,
+         "atk": 795,
+         "def": 26,
+         "speed": 110
+        },
+        {
+         "id": "dosu_033",
+         "hp": 12000,
+         "atk": 795,
+         "def": 26,
+         "speed": 110
+        },
+        {
+         "id": "zaku_034",
+         "hp": 12000,
+         "atk": 795,
+         "def": 26,
+         "speed": 110
+        }
+       ]
+      },
+      {
+       "enemies": [
+        {
+         "id": "orochimaru_074",
+         "hp": 36000,
+         "atk": 1073,
+         "def": 32,
+         "speed": 110,
+         "boss": true
+        }
+       ]
+      }
+     ],
+     "boss": "orochimaru_074",
+     "rewards": {
+      "ryo": 834
+     }
+    }
+   ],
+   "S": [
+    {
+     "stage": 1,
+     "title": "Hidden Lair",
+     "map": "assets/maps/bg_180101_oroti.png",
+     "waves": [
+      {
+       "enemies": [
+        {
+         "id": "sound_134",
+         "hp": 17600,
+         "atk": 1155,
+         "def": 34,
+         "speed": 110
+        },
+        {
+         "id": "dosu_033",
+         "hp": 17600,
+         "atk": 1155,
+         "def": 34,
+         "speed": 110
+        },
+        {
+         "id": "zaku_034",
+         "hp": 17600,
+         "atk": 1155,
+         "def": 34,
+         "speed": 110
+        }
+       ]
+      },
+      {
+       "enemies": [
+        {
+         "id": "dosu_033",
+         "hp": 17600,
+         "atk": 1155,
+         "def": 34,
+         "speed": 110
+        },
+        {
+         "id": "zaku_034",
+         "hp": 17600,
+         "atk": 1155,
+         "def": 34,
+         "speed": 110
+        },
+        {
+         "id": "sound_134",
+         "hp": 17600,
+         "atk": 1155,
+         "def": 34,
+         "speed": 110
+        }
+       ]
+      }
+     ],
+     "rewards": {
+      "ryo": 1333
+     }
+    },
+    {
+     "stage": 2,
+     "title": "The Medic",
+     "map": "assets/maps/bg_180102_oroti.png",
+     "waves": [
+      {
+       "enemies": [
+        {
+         "id": "sound_134",
+         "hp": 17600,
+         "atk": 1155,
+         "def": 34,
+         "speed": 110
+        },
+        {
+         "id": "dosu_033",
+         "hp": 17600,
+         "atk": 1155,
+         "def": 34,
+         "speed": 110
+        },
+        {
+         "id": "zaku_034",
+         "hp": 17600,
+         "atk": 1155,
+         "def": 34,
+         "speed": 110
+        }
+       ]
+      },
+      {
+       "enemies": [
+        {
+         "id": "sound_134",
+         "hp": 17600,
+         "atk": 1155,
+         "def": 34,
+         "speed": 110
+        },
+        {
+         "id": "kabuto_076",
+         "hp": 35200,
+         "atk": 1328,
+         "def": 34,
+         "speed": 110
+        }
+       ]
+      }
+     ],
+     "rewards": {
+      "ryo": 1333
+     }
+    },
+    {
+     "stage": 3,
+     "title": "Snake Pit",
+     "map": "assets/maps/bg_180103_oroti.png",
+     "waves": [
+      {
+       "enemies": [
+        {
+         "id": "sound_134",
+         "hp": 17600,
+         "atk": 1155,
+         "def": 34,
+         "speed": 110
+        },
+        {
+         "id": "dosu_033",
+         "hp": 17600,
+         "atk": 1155,
+         "def": 34,
+         "speed": 110
+        },
+        {
+         "id": "zaku_034",
+         "hp": 17600,
+         "atk": 1155,
+         "def": 34,
+         "speed": 110
+        }
+       ]
+      },
+      {
+       "enemies": [
+        {
+         "id": "orochimaru_074",
+         "hp": 52800,
+         "atk": 1559,
+         "def": 42,
+         "speed": 110,
+         "boss": true
+        }
+       ]
+      }
+     ],
+     "boss": "orochimaru_074",
+     "rewards": {
+      "ryo": 1334
+     }
+    }
+   ],
+   "SS": [
+    {
+     "stage": 1,
+     "title": "Hidden Lair",
+     "map": "assets/maps/bg_180101_oroti.png",
+     "waves": [
+      {
+       "enemies": [
+        {
+         "id": "sound_134",
+         "hp": 25500,
+         "atk": 1650,
+         "def": 46,
+         "speed": 114
+        },
+        {
+         "id": "dosu_033",
+         "hp": 25500,
+         "atk": 1650,
+         "def": 46,
+         "speed": 114
+        },
+        {
+         "id": "zaku_034",
+         "hp": 25500,
+         "atk": 1650,
+         "def": 46,
+         "speed": 114
+        }
+       ]
+      },
+      {
+       "enemies": [
+        {
+         "id": "dosu_033",
+         "hp": 25500,
+         "atk": 1650,
+         "def": 46,
+         "speed": 114
+        },
+        {
+         "id": "zaku_034",
+         "hp": 25500,
+         "atk": 1650,
+         "def": 46,
+         "speed": 114
+        },
+        {
+         "id": "sound_134",
+         "hp": 25500,
+         "atk": 1650,
+         "def": 46,
+         "speed": 114
+        }
+       ]
+      }
+     ],
+     "rewards": {
+      "ryo": 2000
+     }
+    },
+    {
+     "stage": 2,
+     "title": "The Medic",
+     "map": "assets/maps/bg_180102_oroti.png",
+     "waves": [
+      {
+       "enemies": [
+        {
+         "id": "sound_134",
+         "hp": 25500,
+         "atk": 1650,
+         "def": 46,
+         "speed": 114
+        },
+        {
+         "id": "dosu_033",
+         "hp": 25500,
+         "atk": 1650,
+         "def": 46,
+         "speed": 114
+        },
+        {
+         "id": "zaku_034",
+         "hp": 25500,
+         "atk": 1650,
+         "def": 46,
+         "speed": 114
+        }
+       ]
+      },
+      {
+       "enemies": [
+        {
+         "id": "sound_134",
+         "hp": 25500,
+         "atk": 1650,
+         "def": 46,
+         "speed": 114
+        },
+        {
+         "id": "kabuto_076",
+         "hp": 51000,
+         "atk": 1897,
+         "def": 46,
+         "speed": 114
+        }
+       ]
+      }
+     ],
+     "rewards": {
+      "ryo": 2000
+     }
+    },
+    {
+     "stage": 3,
+     "title": "Snake Pit",
+     "map": "assets/maps/bg_180103_oroti.png",
+     "waves": [
+      {
+       "enemies": [
+        {
+         "id": "sound_134",
+         "hp": 25500,
+         "atk": 1650,
+         "def": 46,
+         "speed": 114
+        },
+        {
+         "id": "dosu_033",
+         "hp": 25500,
+         "atk": 1650,
+         "def": 46,
+         "speed": 114
+        },
+        {
+         "id": "zaku_034",
+         "hp": 25500,
+         "atk": 1650,
+         "def": 46,
+         "speed": 114
+        }
+       ]
+      },
+      {
+       "enemies": [
+        {
+         "id": "orochimaru_074",
+         "hp": 76500,
+         "atk": 2227,
+         "def": 57,
+         "speed": 114,
+         "boss": true
+        }
+       ]
+      }
+     ],
+     "boss": "orochimaru_074",
+     "rewards": {
+      "ryo": 2000
+     }
+    }
+   ]
+  }
+ },
+ {
+  "id": "trial_mist",
+  "category": "Set Trials",
+  "arc": "Gear",
+  "name": "Trial of the Silent Mist",
+  "description": "Fight through the fog on the Great Naruto Bridge. Drops Hidden Mist set pieces.",
+  "banner": "assets/missions/banners/trials/trial_mist.webp",
+  "feature": "zabuza_144",
+  "featureArt": "assets/characters/zabuza_144/full_4S.webp",
+  "sortOrder": 5,
+  "gearSet": "mist",
+  "rankNames": {
+   "B": "Normal",
+   "A": "Hard",
+   "S": "Extreme",
+   "SS": "Nightmare"
+  },
+  "rankGate": true,
+  "stamina": {
+   "B": 12,
+   "A": 20,
+   "S": 30,
+   "SS": 40
+  },
+  "power": {
+   "B": 26100,
+   "A": 44000,
+   "S": 64400,
+   "SS": 92000
+  },
+  "clearRewards": {
+   "B": {
+    "firstTime": {
+     "ninja_pearls": 2
+    },
+    "completion": {}
+   },
+   "A": {
+    "firstTime": {
+     "ninja_pearls": 3
+    },
+    "completion": {}
+   },
+   "S": {
+    "firstTime": {
+     "ninja_pearls": 5
+    },
+    "completion": {}
+   },
+   "SS": {
+    "firstTime": {
+     "ninja_pearls": 10
+    },
+    "completion": {}
+   }
+  },
+  "cast": {
+   "haku_137": {
+    "name": "Haku",
+    "portrait": "assets/characters/haku_137/portrait_4S.webp"
+   },
+   "mist_125": {
+    "name": "Mist Chunin Male",
+    "portrait": "assets/characters/mist_125/portrait_1S.webp"
+   },
+   "mist_126": {
+    "name": "Mist Anbu Male",
+    "portrait": "assets/characters/mist_126/portrait_2S.webp"
+   },
+   "zabuza_144": {
+    "name": "Zabuza Momochi",
+    "portrait": "assets/characters/zabuza_144/portrait_4S.webp"
+   }
+  },
+  "difficulties": {
+   "B": [
+    {
+     "stage": 1,
+     "title": "Fog Bank",
+     "map": "assets/maps/bg_090101_oohashi.png",
+     "waves": [
+      {
+       "enemies": [
+        {
+         "id": "mist_125",
+         "hp": 7100,
+         "atk": 480,
+         "def": 19,
+         "speed": 107
+        },
+        {
+         "id": "mist_126",
+         "hp": 7100,
+         "atk": 480,
+         "def": 19,
+         "speed": 107
+        },
+        {
+         "id": "mist_125",
+         "hp": 7100,
+         "atk": 480,
+         "def": 19,
+         "speed": 107
+        }
+       ]
+      },
+      {
+       "enemies": [
+        {
+         "id": "mist_126",
+         "hp": 7100,
+         "atk": 480,
+         "def": 19,
+         "speed": 107
+        },
+        {
+         "id": "mist_125",
+         "hp": 7100,
+         "atk": 480,
+         "def": 19,
+         "speed": 107
+        },
+        {
+         "id": "mist_126",
+         "hp": 7100,
+         "atk": 480,
+         "def": 19,
+         "speed": 107
+        }
+       ]
+      }
+     ],
+     "rewards": {
+      "ryo": 500
+     }
+    },
+    {
+     "stage": 2,
+     "title": "Ice Mirrors",
+     "map": "assets/maps/bg_090102_oohashi.png",
+     "waves": [
+      {
+       "enemies": [
+        {
+         "id": "mist_125",
+         "hp": 7100,
+         "atk": 480,
+         "def": 19,
+         "speed": 107
+        },
+        {
+         "id": "mist_126",
+         "hp": 7100,
+         "atk": 480,
+         "def": 19,
+         "speed": 107
+        },
+        {
+         "id": "mist_125",
+         "hp": 7100,
+         "atk": 480,
+         "def": 19,
+         "speed": 107
+        }
+       ]
+      },
+      {
+       "enemies": [
+        {
+         "id": "mist_125",
+         "hp": 7100,
+         "atk": 480,
+         "def": 19,
+         "speed": 107
+        },
+        {
+         "id": "haku_137",
+         "hp": 14200,
+         "atk": 552,
+         "def": 19,
+         "speed": 107
+        }
+       ]
+      }
+     ],
+     "rewards": {
+      "ryo": 500
+     }
+    },
+    {
+     "stage": 3,
+     "title": "The Demon of the Mist",
+     "map": "assets/maps/bg_090103_oohashi.png",
+     "waves": [
+      {
+       "enemies": [
+        {
+         "id": "mist_125",
+         "hp": 7100,
+         "atk": 480,
+         "def": 19,
+         "speed": 107
+        },
+        {
+         "id": "mist_126",
+         "hp": 7100,
+         "atk": 480,
+         "def": 19,
+         "speed": 107
+        },
+        {
+         "id": "mist_125",
+         "hp": 7100,
+         "atk": 480,
+         "def": 19,
+         "speed": 107
+        }
+       ]
+      },
+      {
+       "enemies": [
+        {
+         "id": "zabuza_144",
+         "hp": 21300,
+         "atk": 648,
+         "def": 23,
+         "speed": 107,
+         "boss": true
+        }
+       ]
+      }
+     ],
+     "boss": "zabuza_144",
+     "rewards": {
+      "ryo": 500
+     }
+    }
+   ],
+   "A": [
+    {
+     "stage": 1,
+     "title": "Fog Bank",
+     "map": "assets/maps/bg_090101_oohashi.png",
+     "waves": [
+      {
+       "enemies": [
+        {
+         "id": "mist_125",
+         "hp": 12000,
+         "atk": 795,
+         "def": 26,
+         "speed": 110
+        },
+        {
+         "id": "mist_126",
+         "hp": 12000,
+         "atk": 795,
+         "def": 26,
+         "speed": 110
+        },
+        {
+         "id": "mist_125",
+         "hp": 12000,
+         "atk": 795,
+         "def": 26,
+         "speed": 110
+        }
+       ]
+      },
+      {
+       "enemies": [
+        {
+         "id": "mist_126",
+         "hp": 12000,
+         "atk": 795,
+         "def": 26,
+         "speed": 110
+        },
+        {
+         "id": "mist_125",
+         "hp": 12000,
+         "atk": 795,
+         "def": 26,
+         "speed": 110
+        },
+        {
+         "id": "mist_126",
+         "hp": 12000,
+         "atk": 795,
+         "def": 26,
+         "speed": 110
+        }
+       ]
+      }
+     ],
+     "rewards": {
+      "ryo": 833
+     }
+    },
+    {
+     "stage": 2,
+     "title": "Ice Mirrors",
+     "map": "assets/maps/bg_090102_oohashi.png",
+     "waves": [
+      {
+       "enemies": [
+        {
+         "id": "mist_125",
+         "hp": 12000,
+         "atk": 795,
+         "def": 26,
+         "speed": 110
+        },
+        {
+         "id": "mist_126",
+         "hp": 12000,
+         "atk": 795,
+         "def": 26,
+         "speed": 110
+        },
+        {
+         "id": "mist_125",
+         "hp": 12000,
+         "atk": 795,
+         "def": 26,
+         "speed": 110
+        }
+       ]
+      },
+      {
+       "enemies": [
+        {
+         "id": "mist_125",
+         "hp": 12000,
+         "atk": 795,
+         "def": 26,
+         "speed": 110
+        },
+        {
+         "id": "haku_137",
+         "hp": 24000,
+         "atk": 914,
+         "def": 26,
+         "speed": 110
+        }
+       ]
+      }
+     ],
+     "rewards": {
+      "ryo": 833
+     }
+    },
+    {
+     "stage": 3,
+     "title": "The Demon of the Mist",
+     "map": "assets/maps/bg_090103_oohashi.png",
+     "waves": [
+      {
+       "enemies": [
+        {
+         "id": "mist_125",
+         "hp": 12000,
+         "atk": 795,
+         "def": 26,
+         "speed": 110
+        },
+        {
+         "id": "mist_126",
+         "hp": 12000,
+         "atk": 795,
+         "def": 26,
+         "speed": 110
+        },
+        {
+         "id": "mist_125",
+         "hp": 12000,
+         "atk": 795,
+         "def": 26,
+         "speed": 110
+        }
+       ]
+      },
+      {
+       "enemies": [
+        {
+         "id": "zabuza_144",
+         "hp": 36000,
+         "atk": 1073,
+         "def": 32,
+         "speed": 110,
+         "boss": true
+        }
+       ]
+      }
+     ],
+     "boss": "zabuza_144",
+     "rewards": {
+      "ryo": 834
+     }
+    }
+   ],
+   "S": [
+    {
+     "stage": 1,
+     "title": "Fog Bank",
+     "map": "assets/maps/bg_090101_oohashi.png",
+     "waves": [
+      {
+       "enemies": [
+        {
+         "id": "mist_125",
+         "hp": 17600,
+         "atk": 1155,
+         "def": 34,
+         "speed": 110
+        },
+        {
+         "id": "mist_126",
+         "hp": 17600,
+         "atk": 1155,
+         "def": 34,
+         "speed": 110
+        },
+        {
+         "id": "mist_125",
+         "hp": 17600,
+         "atk": 1155,
+         "def": 34,
+         "speed": 110
+        }
+       ]
+      },
+      {
+       "enemies": [
+        {
+         "id": "mist_126",
+         "hp": 17600,
+         "atk": 1155,
+         "def": 34,
+         "speed": 110
+        },
+        {
+         "id": "mist_125",
+         "hp": 17600,
+         "atk": 1155,
+         "def": 34,
+         "speed": 110
+        },
+        {
+         "id": "mist_126",
+         "hp": 17600,
+         "atk": 1155,
+         "def": 34,
+         "speed": 110
+        }
+       ]
+      }
+     ],
+     "rewards": {
+      "ryo": 1333
+     }
+    },
+    {
+     "stage": 2,
+     "title": "Ice Mirrors",
+     "map": "assets/maps/bg_090102_oohashi.png",
+     "waves": [
+      {
+       "enemies": [
+        {
+         "id": "mist_125",
+         "hp": 17600,
+         "atk": 1155,
+         "def": 34,
+         "speed": 110
+        },
+        {
+         "id": "mist_126",
+         "hp": 17600,
+         "atk": 1155,
+         "def": 34,
+         "speed": 110
+        },
+        {
+         "id": "mist_125",
+         "hp": 17600,
+         "atk": 1155,
+         "def": 34,
+         "speed": 110
+        }
+       ]
+      },
+      {
+       "enemies": [
+        {
+         "id": "mist_125",
+         "hp": 17600,
+         "atk": 1155,
+         "def": 34,
+         "speed": 110
+        },
+        {
+         "id": "haku_137",
+         "hp": 35200,
+         "atk": 1328,
+         "def": 34,
+         "speed": 110
+        }
+       ]
+      }
+     ],
+     "rewards": {
+      "ryo": 1333
+     }
+    },
+    {
+     "stage": 3,
+     "title": "The Demon of the Mist",
+     "map": "assets/maps/bg_090103_oohashi.png",
+     "waves": [
+      {
+       "enemies": [
+        {
+         "id": "mist_125",
+         "hp": 17600,
+         "atk": 1155,
+         "def": 34,
+         "speed": 110
+        },
+        {
+         "id": "mist_126",
+         "hp": 17600,
+         "atk": 1155,
+         "def": 34,
+         "speed": 110
+        },
+        {
+         "id": "mist_125",
+         "hp": 17600,
+         "atk": 1155,
+         "def": 34,
+         "speed": 110
+        }
+       ]
+      },
+      {
+       "enemies": [
+        {
+         "id": "zabuza_144",
+         "hp": 52800,
+         "atk": 1559,
+         "def": 42,
+         "speed": 110,
+         "boss": true
+        }
+       ]
+      }
+     ],
+     "boss": "zabuza_144",
+     "rewards": {
+      "ryo": 1334
+     }
+    }
+   ],
+   "SS": [
+    {
+     "stage": 1,
+     "title": "Fog Bank",
+     "map": "assets/maps/bg_090101_oohashi.png",
+     "waves": [
+      {
+       "enemies": [
+        {
+         "id": "mist_125",
+         "hp": 25500,
+         "atk": 1650,
+         "def": 46,
+         "speed": 114
+        },
+        {
+         "id": "mist_126",
+         "hp": 25500,
+         "atk": 1650,
+         "def": 46,
+         "speed": 114
+        },
+        {
+         "id": "mist_125",
+         "hp": 25500,
+         "atk": 1650,
+         "def": 46,
+         "speed": 114
+        }
+       ]
+      },
+      {
+       "enemies": [
+        {
+         "id": "mist_126",
+         "hp": 25500,
+         "atk": 1650,
+         "def": 46,
+         "speed": 114
+        },
+        {
+         "id": "mist_125",
+         "hp": 25500,
+         "atk": 1650,
+         "def": 46,
+         "speed": 114
+        },
+        {
+         "id": "mist_126",
+         "hp": 25500,
+         "atk": 1650,
+         "def": 46,
+         "speed": 114
+        }
+       ]
+      }
+     ],
+     "rewards": {
+      "ryo": 2000
+     }
+    },
+    {
+     "stage": 2,
+     "title": "Ice Mirrors",
+     "map": "assets/maps/bg_090102_oohashi.png",
+     "waves": [
+      {
+       "enemies": [
+        {
+         "id": "mist_125",
+         "hp": 25500,
+         "atk": 1650,
+         "def": 46,
+         "speed": 114
+        },
+        {
+         "id": "mist_126",
+         "hp": 25500,
+         "atk": 1650,
+         "def": 46,
+         "speed": 114
+        },
+        {
+         "id": "mist_125",
+         "hp": 25500,
+         "atk": 1650,
+         "def": 46,
+         "speed": 114
+        }
+       ]
+      },
+      {
+       "enemies": [
+        {
+         "id": "mist_125",
+         "hp": 25500,
+         "atk": 1650,
+         "def": 46,
+         "speed": 114
+        },
+        {
+         "id": "haku_137",
+         "hp": 51000,
+         "atk": 1897,
+         "def": 46,
+         "speed": 114
+        }
+       ]
+      }
+     ],
+     "rewards": {
+      "ryo": 2000
+     }
+    },
+    {
+     "stage": 3,
+     "title": "The Demon of the Mist",
+     "map": "assets/maps/bg_090103_oohashi.png",
+     "waves": [
+      {
+       "enemies": [
+        {
+         "id": "mist_125",
+         "hp": 25500,
+         "atk": 1650,
+         "def": 46,
+         "speed": 114
+        },
+        {
+         "id": "mist_126",
+         "hp": 25500,
+         "atk": 1650,
+         "def": 46,
+         "speed": 114
+        },
+        {
+         "id": "mist_125",
+         "hp": 25500,
+         "atk": 1650,
+         "def": 46,
+         "speed": 114
+        }
+       ]
+      },
+      {
+       "enemies": [
+        {
+         "id": "zabuza_144",
+         "hp": 76500,
+         "atk": 2227,
+         "def": 57,
+         "speed": 114,
+         "boss": true
+        }
+       ]
+      }
+     ],
+     "boss": "zabuza_144",
+     "rewards": {
+      "ryo": 2000
+     }
+    }
+   ]
+  }
+ },
+ {
+  "id": "trial_hokage",
+  "category": "Set Trials",
+  "arc": "Gear",
+  "name": "Trial of the Hokage",
+  "description": "The past Hokage test your resolve. Drops Hokage set pieces.",
+  "banner": "assets/missions/banners/trials/trial_hokage.webp",
+  "feature": "hashirama_2017",
+  "featureArt": "assets/characters/hashirama_2017/full_6S.webp",
+  "sortOrder": 6,
+  "gearSet": "hokage",
+  "rankNames": {
+   "B": "Normal",
+   "A": "Hard",
+   "S": "Extreme",
+   "SS": "Nightmare"
+  },
+  "rankGate": true,
+  "stamina": {
+   "B": 12,
+   "A": 20,
+   "S": 30,
+   "SS": 40
+  },
+  "power": {
+   "B": 26100,
+   "A": 44000,
+   "S": 64400,
+   "SS": 92000
+  },
+  "clearRewards": {
+   "B": {
+    "firstTime": {
+     "ninja_pearls": 2
+    },
+    "completion": {}
+   },
+   "A": {
+    "firstTime": {
+     "ninja_pearls": 3
+    },
+    "completion": {}
+   },
+   "S": {
+    "firstTime": {
+     "ninja_pearls": 5
+    },
+    "completion": {}
+   },
+   "SS": {
+    "firstTime": {
+     "ninja_pearls": 10
+    },
+    "completion": {}
+   }
+  },
+  "cast": {
+   "hashirama_2017": {
+    "name": "Hashirama Senju",
+    "portrait": "assets/characters/hashirama_2017/portrait_6S.webp"
+   },
+   "leaf_123": {
+    "name": "Leaf Anbu Male",
+    "portrait": "assets/characters/leaf_123/portrait_2S.webp"
+   },
+   "leaf_124": {
+    "name": "Leaf Anbu Female",
+    "portrait": "assets/characters/leaf_124/portrait_2S.webp"
+   },
+   "tobirama_762": {
+    "name": "Tobirama Senju",
+    "portrait": "assets/characters/tobirama_762/portrait_6S.webp"
+   }
+  },
+  "difficulties": {
+   "B": [
+    {
+     "stage": 1,
+     "title": "Hokage Rock",
+     "map": "assets/maps/bg_010103_kaoiwa.png",
+     "waves": [
+      {
+       "enemies": [
+        {
+         "id": "leaf_123",
+         "hp": 7100,
+         "atk": 480,
+         "def": 19,
+         "speed": 107
+        },
+        {
+         "id": "leaf_124",
+         "hp": 7100,
+         "atk": 480,
+         "def": 19,
+         "speed": 107
+        },
+        {
+         "id": "leaf_123",
+         "hp": 7100,
+         "atk": 480,
+         "def": 19,
+         "speed": 107
+        }
+       ]
+      },
+      {
+       "enemies": [
+        {
+         "id": "leaf_124",
+         "hp": 7100,
+         "atk": 480,
+         "def": 19,
+         "speed": 107
+        },
+        {
+         "id": "leaf_123",
+         "hp": 7100,
+         "atk": 480,
+         "def": 19,
+         "speed": 107
+        },
+        {
+         "id": "leaf_124",
+         "hp": 7100,
+         "atk": 480,
+         "def": 19,
+         "speed": 107
+        }
+       ]
+      }
+     ],
+     "rewards": {
+      "ryo": 500
+     }
+    },
+    {
+     "stage": 2,
+     "title": "The Second",
+     "map": "assets/maps/bg_330301_konohasato.png",
+     "waves": [
+      {
+       "enemies": [
+        {
+         "id": "leaf_123",
+         "hp": 7100,
+         "atk": 480,
+         "def": 19,
+         "speed": 107
+        },
+        {
+         "id": "leaf_124",
+         "hp": 7100,
+         "atk": 480,
+         "def": 19,
+         "speed": 107
+        },
+        {
+         "id": "leaf_123",
+         "hp": 7100,
+         "atk": 480,
+         "def": 19,
+         "speed": 107
+        }
+       ]
+      },
+      {
+       "enemies": [
+        {
+         "id": "leaf_123",
+         "hp": 7100,
+         "atk": 480,
+         "def": 19,
+         "speed": 107
+        },
+        {
+         "id": "tobirama_762",
+         "hp": 14200,
+         "atk": 552,
+         "def": 19,
+         "speed": 107
+        }
+       ]
+      }
+     ],
+     "rewards": {
+      "ryo": 500
+     }
+    },
+    {
+     "stage": 3,
+     "title": "The First",
+     "map": "assets/maps/bg_010103_kaoiwa.png",
+     "waves": [
+      {
+       "enemies": [
+        {
+         "id": "leaf_123",
+         "hp": 7100,
+         "atk": 480,
+         "def": 19,
+         "speed": 107
+        },
+        {
+         "id": "leaf_124",
+         "hp": 7100,
+         "atk": 480,
+         "def": 19,
+         "speed": 107
+        },
+        {
+         "id": "leaf_123",
+         "hp": 7100,
+         "atk": 480,
+         "def": 19,
+         "speed": 107
+        }
+       ]
+      },
+      {
+       "enemies": [
+        {
+         "id": "hashirama_2017",
+         "hp": 21300,
+         "atk": 648,
+         "def": 23,
+         "speed": 107,
+         "boss": true
+        }
+       ]
+      }
+     ],
+     "boss": "hashirama_2017",
+     "rewards": {
+      "ryo": 500
+     }
+    }
+   ],
+   "A": [
+    {
+     "stage": 1,
+     "title": "Hokage Rock",
+     "map": "assets/maps/bg_010103_kaoiwa.png",
+     "waves": [
+      {
+       "enemies": [
+        {
+         "id": "leaf_123",
+         "hp": 12000,
+         "atk": 795,
+         "def": 26,
+         "speed": 110
+        },
+        {
+         "id": "leaf_124",
+         "hp": 12000,
+         "atk": 795,
+         "def": 26,
+         "speed": 110
+        },
+        {
+         "id": "leaf_123",
+         "hp": 12000,
+         "atk": 795,
+         "def": 26,
+         "speed": 110
+        }
+       ]
+      },
+      {
+       "enemies": [
+        {
+         "id": "leaf_124",
+         "hp": 12000,
+         "atk": 795,
+         "def": 26,
+         "speed": 110
+        },
+        {
+         "id": "leaf_123",
+         "hp": 12000,
+         "atk": 795,
+         "def": 26,
+         "speed": 110
+        },
+        {
+         "id": "leaf_124",
+         "hp": 12000,
+         "atk": 795,
+         "def": 26,
+         "speed": 110
+        }
+       ]
+      }
+     ],
+     "rewards": {
+      "ryo": 833
+     }
+    },
+    {
+     "stage": 2,
+     "title": "The Second",
+     "map": "assets/maps/bg_330301_konohasato.png",
+     "waves": [
+      {
+       "enemies": [
+        {
+         "id": "leaf_123",
+         "hp": 12000,
+         "atk": 795,
+         "def": 26,
+         "speed": 110
+        },
+        {
+         "id": "leaf_124",
+         "hp": 12000,
+         "atk": 795,
+         "def": 26,
+         "speed": 110
+        },
+        {
+         "id": "leaf_123",
+         "hp": 12000,
+         "atk": 795,
+         "def": 26,
+         "speed": 110
+        }
+       ]
+      },
+      {
+       "enemies": [
+        {
+         "id": "leaf_123",
+         "hp": 12000,
+         "atk": 795,
+         "def": 26,
+         "speed": 110
+        },
+        {
+         "id": "tobirama_762",
+         "hp": 24000,
+         "atk": 914,
+         "def": 26,
+         "speed": 110
+        }
+       ]
+      }
+     ],
+     "rewards": {
+      "ryo": 833
+     }
+    },
+    {
+     "stage": 3,
+     "title": "The First",
+     "map": "assets/maps/bg_010103_kaoiwa.png",
+     "waves": [
+      {
+       "enemies": [
+        {
+         "id": "leaf_123",
+         "hp": 12000,
+         "atk": 795,
+         "def": 26,
+         "speed": 110
+        },
+        {
+         "id": "leaf_124",
+         "hp": 12000,
+         "atk": 795,
+         "def": 26,
+         "speed": 110
+        },
+        {
+         "id": "leaf_123",
+         "hp": 12000,
+         "atk": 795,
+         "def": 26,
+         "speed": 110
+        }
+       ]
+      },
+      {
+       "enemies": [
+        {
+         "id": "hashirama_2017",
+         "hp": 36000,
+         "atk": 1073,
+         "def": 32,
+         "speed": 110,
+         "boss": true
+        }
+       ]
+      }
+     ],
+     "boss": "hashirama_2017",
+     "rewards": {
+      "ryo": 834
+     }
+    }
+   ],
+   "S": [
+    {
+     "stage": 1,
+     "title": "Hokage Rock",
+     "map": "assets/maps/bg_010103_kaoiwa.png",
+     "waves": [
+      {
+       "enemies": [
+        {
+         "id": "leaf_123",
+         "hp": 17600,
+         "atk": 1155,
+         "def": 34,
+         "speed": 110
+        },
+        {
+         "id": "leaf_124",
+         "hp": 17600,
+         "atk": 1155,
+         "def": 34,
+         "speed": 110
+        },
+        {
+         "id": "leaf_123",
+         "hp": 17600,
+         "atk": 1155,
+         "def": 34,
+         "speed": 110
+        }
+       ]
+      },
+      {
+       "enemies": [
+        {
+         "id": "leaf_124",
+         "hp": 17600,
+         "atk": 1155,
+         "def": 34,
+         "speed": 110
+        },
+        {
+         "id": "leaf_123",
+         "hp": 17600,
+         "atk": 1155,
+         "def": 34,
+         "speed": 110
+        },
+        {
+         "id": "leaf_124",
+         "hp": 17600,
+         "atk": 1155,
+         "def": 34,
+         "speed": 110
+        }
+       ]
+      }
+     ],
+     "rewards": {
+      "ryo": 1333
+     }
+    },
+    {
+     "stage": 2,
+     "title": "The Second",
+     "map": "assets/maps/bg_330301_konohasato.png",
+     "waves": [
+      {
+       "enemies": [
+        {
+         "id": "leaf_123",
+         "hp": 17600,
+         "atk": 1155,
+         "def": 34,
+         "speed": 110
+        },
+        {
+         "id": "leaf_124",
+         "hp": 17600,
+         "atk": 1155,
+         "def": 34,
+         "speed": 110
+        },
+        {
+         "id": "leaf_123",
+         "hp": 17600,
+         "atk": 1155,
+         "def": 34,
+         "speed": 110
+        }
+       ]
+      },
+      {
+       "enemies": [
+        {
+         "id": "leaf_123",
+         "hp": 17600,
+         "atk": 1155,
+         "def": 34,
+         "speed": 110
+        },
+        {
+         "id": "tobirama_762",
+         "hp": 35200,
+         "atk": 1328,
+         "def": 34,
+         "speed": 110
+        }
+       ]
+      }
+     ],
+     "rewards": {
+      "ryo": 1333
+     }
+    },
+    {
+     "stage": 3,
+     "title": "The First",
+     "map": "assets/maps/bg_010103_kaoiwa.png",
+     "waves": [
+      {
+       "enemies": [
+        {
+         "id": "leaf_123",
+         "hp": 17600,
+         "atk": 1155,
+         "def": 34,
+         "speed": 110
+        },
+        {
+         "id": "leaf_124",
+         "hp": 17600,
+         "atk": 1155,
+         "def": 34,
+         "speed": 110
+        },
+        {
+         "id": "leaf_123",
+         "hp": 17600,
+         "atk": 1155,
+         "def": 34,
+         "speed": 110
+        }
+       ]
+      },
+      {
+       "enemies": [
+        {
+         "id": "hashirama_2017",
+         "hp": 52800,
+         "atk": 1559,
+         "def": 42,
+         "speed": 110,
+         "boss": true
+        }
+       ]
+      }
+     ],
+     "boss": "hashirama_2017",
+     "rewards": {
+      "ryo": 1334
+     }
+    }
+   ],
+   "SS": [
+    {
+     "stage": 1,
+     "title": "Hokage Rock",
+     "map": "assets/maps/bg_010103_kaoiwa.png",
+     "waves": [
+      {
+       "enemies": [
+        {
+         "id": "leaf_123",
+         "hp": 25500,
+         "atk": 1650,
+         "def": 46,
+         "speed": 114
+        },
+        {
+         "id": "leaf_124",
+         "hp": 25500,
+         "atk": 1650,
+         "def": 46,
+         "speed": 114
+        },
+        {
+         "id": "leaf_123",
+         "hp": 25500,
+         "atk": 1650,
+         "def": 46,
+         "speed": 114
+        }
+       ]
+      },
+      {
+       "enemies": [
+        {
+         "id": "leaf_124",
+         "hp": 25500,
+         "atk": 1650,
+         "def": 46,
+         "speed": 114
+        },
+        {
+         "id": "leaf_123",
+         "hp": 25500,
+         "atk": 1650,
+         "def": 46,
+         "speed": 114
+        },
+        {
+         "id": "leaf_124",
+         "hp": 25500,
+         "atk": 1650,
+         "def": 46,
+         "speed": 114
+        }
+       ]
+      }
+     ],
+     "rewards": {
+      "ryo": 2000
+     }
+    },
+    {
+     "stage": 2,
+     "title": "The Second",
+     "map": "assets/maps/bg_330301_konohasato.png",
+     "waves": [
+      {
+       "enemies": [
+        {
+         "id": "leaf_123",
+         "hp": 25500,
+         "atk": 1650,
+         "def": 46,
+         "speed": 114
+        },
+        {
+         "id": "leaf_124",
+         "hp": 25500,
+         "atk": 1650,
+         "def": 46,
+         "speed": 114
+        },
+        {
+         "id": "leaf_123",
+         "hp": 25500,
+         "atk": 1650,
+         "def": 46,
+         "speed": 114
+        }
+       ]
+      },
+      {
+       "enemies": [
+        {
+         "id": "leaf_123",
+         "hp": 25500,
+         "atk": 1650,
+         "def": 46,
+         "speed": 114
+        },
+        {
+         "id": "tobirama_762",
+         "hp": 51000,
+         "atk": 1897,
+         "def": 46,
+         "speed": 114
+        }
+       ]
+      }
+     ],
+     "rewards": {
+      "ryo": 2000
+     }
+    },
+    {
+     "stage": 3,
+     "title": "The First",
+     "map": "assets/maps/bg_010103_kaoiwa.png",
+     "waves": [
+      {
+       "enemies": [
+        {
+         "id": "leaf_123",
+         "hp": 25500,
+         "atk": 1650,
+         "def": 46,
+         "speed": 114
+        },
+        {
+         "id": "leaf_124",
+         "hp": 25500,
+         "atk": 1650,
+         "def": 46,
+         "speed": 114
+        },
+        {
+         "id": "leaf_123",
+         "hp": 25500,
+         "atk": 1650,
+         "def": 46,
+         "speed": 114
+        }
+       ]
+      },
+      {
+       "enemies": [
+        {
+         "id": "hashirama_2017",
+         "hp": 76500,
+         "atk": 2227,
+         "def": 57,
+         "speed": 114,
+         "boss": true
+        }
+       ]
+      }
+     ],
+     "boss": "hashirama_2017",
+     "rewards": {
+      "ryo": 2000
+     }
+    }
+   ]
+  }
  }
 ]

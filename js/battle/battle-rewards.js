@@ -40,7 +40,12 @@
       // Get rewards for this stage
       let rewards = stageData.rewards || this.getDefaultStageRewards(stageIndex, core?.difficulty);
       // Gear pieces (js/gear.js): a chance per chest, rarer pieces on harder ranks
-      const drops = window.Gear?.rollDrop ? window.Gear.rollDrop(core?.difficulty || 'C') : [];
+      // Set Trials (missions with a gearSet): the last stage always drops pieces of that set
+      const G = window.Gear, set = core?.missionData?.gearSet;
+      const stageCount = core?.missionData?.difficulties?.[core?.difficulty]?.length || 0;
+      const drops = !G ? []
+        : set && G.rollTrialDrop && stageIndex === stageCount - 1 ? G.rollTrialDrop(set, core.difficulty)
+        : G.rollDrop ? G.rollDrop(core?.difficulty || 'C') : [];
       if (drops.length) rewards = Object.assign({}, rewards, { gear: drops });
 
       if (!rewards || Object.keys(rewards).length === 0) {
