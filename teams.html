@@ -300,6 +300,8 @@
   <script src="js/team_manager.js"></script>
   <script src="js/teams-dev-panel.js"></script>
   <script src="js/seven-star-fx.js"></script>
+  <script src="js/sprite-player.js"></script>
+  <script src="js/support-shinobi.js"></script>
 
   <script>
     (function () {
@@ -323,6 +325,7 @@
     footer.id = "prebattle-footer";
     footer.innerHTML = `
       <span class="ctx" id="mission-context"></span>
+      <button id="btn-support" class="ss-btn" type="button" aria-label="Choose a support shinobi"></button>
       <button id="btn-start-battle" class="btn-darkgold">Start Mission</button>
     `;
     document.body.appendChild(footer);
@@ -340,7 +343,9 @@
         border-top: 1px solid rgba(255,215,120,.15);
         box-shadow: 0 -8px 24px rgba(0,0,0,.35);
       }
+      #prebattle-footer{ flex-wrap: wrap; }
       #prebattle-footer .ctx { color:#d9b362; font-weight:700; white-space:nowrap; }
+      html.is-mobile.is-compact #prebattle-footer .ctx{ display:none; }
       #btn-start-battle[disabled]{ opacity:.5; cursor:not-allowed; }
       .team-content{ padding-bottom: calc(var(--bottom-bar-h) + 90px); }
       /* phones: the page itself scrolls; keep the last row clear of the bar */
@@ -371,6 +376,27 @@
       }
       document.getElementById("mission-context").textContent = `Ready: ${name} — Rank ${diff}`;
     })();
+
+    // Support shinobi (js/support-shinobi.js): a borrowed unit for the 4th slot
+    const SS = window.SupportShinobi;
+    const supportBtn = document.getElementById("btn-support");
+    if (SS) {
+      SS.injectCSS();
+      const sMission = localStorage.getItem("currentMissionId") || "";
+      const sRank = localStorage.getItem("currentDifficulty") || "C";
+      const paintSupport = () => { supportBtn.innerHTML = SS.buttonHTML(SS.current(sMission, sRank)); };
+      paintSupport();
+      let chars = null;
+      supportBtn.addEventListener("click", async () => {
+        if (!chars) {
+          try { const d = await (await fetch("data/characters.json")).json(); chars = Array.isArray(d) ? d : (d.characters || []); }
+          catch (e) { chars = []; }
+        }
+        SS.openPicker({ missionId: sMission, rank: sRank, chars, onChange: paintSupport });
+      });
+    } else if (supportBtn) {
+      supportBtn.remove();
+    }
 
     const btn = document.getElementById("btn-start-battle");
     function hasTeam() {

@@ -4,7 +4,7 @@ const { seedSave, collectErrors, waitForLoader, dismissLoginBonus } = require('.
 
 const PAGES = [
   'village', 'missions', 'characters', 'summon', 'fusion', 'shop', 'arena',
-  'ninja-road', 'teams', 'inventory', 'resources', 'tools', 'settings',
+  'ninja-road', 'kage-league', 'teams', 'inventory', 'resources', 'tools', 'settings',
 ];
 
 // index.html is the login screen: a fresh visitor stays there, a logged-in

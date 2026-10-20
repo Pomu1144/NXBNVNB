@@ -430,6 +430,38 @@
     },
 
     /**
+     * Play a voice clip (an mp3 URL) at the sound-effect volume, ducking the
+     * music under it. Resolves to the playing source, or null when muted or
+     * the clip can't be played (call it inside a user gesture on iOS).
+     */
+    playVoice(src, { duck = 0.35 } = {}) {
+      if (this.muted || this.sfxMuted) return Promise.resolve(null);
+      const ctx = this._ensureContext();
+      if (!ctx) return Promise.resolve(null);
+      if (ctx.state !== 'running') ctx.resume().catch(() => {});
+      return fetch(src)
+        .then(r => { if (!r.ok) throw new Error(r.status); return r.arrayBuffer(); })
+        .then(b => new Promise((res, rej) => ctx.decodeAudioData(b, res, rej)))
+        .then(buf => {
+          const s = ctx.createBufferSource();
+          const g = ctx.createGain();
+          s.buffer = buf;
+          g.gain.value = this.getEffectiveVolume('sfx');
+          s.connect(g);
+          g.connect(ctx.destination);
+          if (this.musicBus && duck < 1) {
+            const mg = this.musicBus.gain, now = ctx.currentTime;
+            mg.cancelScheduledValues(now);
+            mg.setTargetAtTime(this._musicLevel() * duck, now, 0.08);
+            s.onended = () => this._applyMusicVolume();
+          }
+          s.start();
+          return s;
+        })
+        .catch(e => { console.warn('[AudioManager] voice failed', src, e); return null; });
+    },
+
+    /**
      * Play sound effect
      */
     playSFX(soundName) {

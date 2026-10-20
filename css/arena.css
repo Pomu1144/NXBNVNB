@@ -1001,3 +1001,9 @@ svg.wb-star {
 .wb-rules-line .wb-line-text { color: var(--wb-dim); flex: 1 1 auto; }
 .wb-rules-line .help-tip { margin-left: auto; }
 @media (max-height: 400px) { .wb-rules-line { min-height: 24px; } }
+
+/* Kage League link (kage-league.html): purple, after the PvP screens */
+a.wb-chip { text-decoration: none; }
+.wb-chip-league { color: #ead7ff; background: rgba(70, 30, 120, .72); }
+.wb-chip-league svg { color: #c99bff; }
+.wb-chip-league:hover { background: rgba(96, 44, 160, .8); }
