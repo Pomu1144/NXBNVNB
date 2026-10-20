@@ -9,22 +9,22 @@
   --eqp-text: var(--g-text, #f1ebdc);
   --eqp-dim: var(--g-dim, rgba(241, 235, 220, 0.55));
   display: grid;
-  grid-template-columns: min(340px, 54vh, 52%) minmax(200px, 1fr);
-  gap: 18px 22px;
+  grid-template-columns: min(340px, 54vh, 52%) minmax(0, 1fr);
+  gap: 18px clamp(10px, 3cqi, 22px);
   align-items: start;
   padding: 6px 0 10px;
   color: var(--eqp-text);
 }
-@container (max-width: 520px) {
+@container (max-width: 380px) {
   .eqp { grid-template-columns: 1fr; }
-  .eqp-orbit { justify-self: center; width: min(100%, 340px); }
+  .eqp-orbit { justify-self: center; width: min(100%, 300px, 54vh); }
 }
 
 /* ── Orbit ── */
 .eqp-orbit {
   position: relative;
   width: 100%;
-  min-width: 190px;
+  min-width: 150px;
   aspect-ratio: 1 / 1;
   border-radius: 50%;
   container-type: inline-size;
@@ -71,7 +71,7 @@
 .eqp--br { left: 80%; top: 78%; }
 .eqp--il, .eqp--ir { --size: 16%; z-index: 2; }
 .eqp--il { left: 42%; top: 45%; }
-.eqp--ir { left: 60%; top: 63%; }
+.eqp--ir { left: 62%; top: 65%; }
 
 .eqp-medal {
   position: relative;
@@ -118,6 +118,7 @@
 .eqp-piece:focus-visible .eqp-medal { outline: 2px solid #fff6dc; outline-offset: 6px; }
 
 .eqp-lv {
+  position: relative; z-index: 3;
   display: inline-flex; align-items: center; gap: 4px;
   padding: 1px 8px 1px 5px;
   border-radius: 999px;
@@ -133,8 +134,12 @@
 }
 
 /* ── Side: totals + selected piece ── */
+.eqp-side { container-type: inline-size; min-width: 0; }
 .eqp-side .cx-kicker:first-child { margin-top: 0; }
 .eqp-totals { display: grid; grid-template-columns: 1fr 1fr; column-gap: 18px; }
+@container (max-width: 300px) {
+  .eqp-totals { grid-template-columns: 1fr; }
+}
 .eqp-row {
   display: flex; align-items: baseline; justify-content: space-between; gap: 10px;
   padding: 7px 0;
@@ -142,7 +147,8 @@
   font-family: var(--ink-cinzel, serif); font-size: 10.5px; letter-spacing: 0.16em; text-transform: uppercase;
   color: var(--eqp-dim);
 }
-.eqp-row b { font-family: var(--g-sans, sans-serif); font-size: 13px; letter-spacing: 0.02em; color: var(--eqp-text); text-transform: none; }
+.eqp-row span { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.eqp-row b { white-space: nowrap; font-family: var(--g-sans, sans-serif); font-size: 13px; letter-spacing: 0.02em; color: var(--eqp-text); text-transform: none; }
 .eqp-row em { font-style: normal; font-weight: 600; color: #8fd18a; margin-left: 4px; }
 
 .eqp-detail-head { display: flex; align-items: center; gap: 12px; padding: 4px 0 8px; }
@@ -175,4 +181,9 @@
 @media (prefers-reduced-motion: reduce) {
   .eqp-ticks { animation: none; }
   .eqp-medal { transition: none; }
+}
+
+/* Ink: five tabs fit the row with a tighter letter spacing */
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-characters #char-modal .char-modal-info .char-tabs .tab-btn[data-tab] {
+  letter-spacing: 0.14em;
 }
