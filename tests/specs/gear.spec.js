@@ -42,9 +42,13 @@ test('gear tables: tiers, caps, promotion costs, stat curve, icons', () => {
   expect(G.nameOf('sandals', 0)).toBe('Genin Sandals');
   expect(G.nameOf('sandals', 5)).toBe('Super Kage War Boots');
   for (const art of ['green', 'blue', 'purple', 'orange', 'red']) {
-    for (const s of SLOTS) expect(fs.existsSync(path.join(REPO_ROOT, `assets/gear/${art}_${s}.webp`))).toBe(true);
+    for (const s of SLOTS) {
+      expect(fs.existsSync(path.join(REPO_ROOT, `assets/gear/${art}_${s}.webp`))).toBe(true);
+      expect(fs.existsSync(path.join(REPO_ROOT, `assets/gear/art/${art}_${s}.webp`))).toBe(true);
+    }
   }
   expect(G.iconOf('helmet', 5)).toBe('assets/gear/red_helmet.webp');
+  expect(G.artOf('sandals', 3)).toBe('assets/gear/art/orange_sandals.webp');
 });
 
 test('default gear, strengthen, auto and the tier cap on the Tools page', async ({ page }) => {

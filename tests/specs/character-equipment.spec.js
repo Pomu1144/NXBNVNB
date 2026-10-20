@@ -40,8 +40,8 @@ test('equipment tab: six gear pieces, totals and the selected piece', async ({ p
   await expect(pieces).toHaveCount(6);
   for (const s of SLOTS) await expect(page.locator(`#tab-gear .eqp-piece[data-slot="${s}"]`)).toBeVisible();
   await expect(page.locator('#tab-gear .eqp-piece[data-slot="helmet"] .eqp-lv')).toHaveText('Lv 70');
-  await expect(page.locator('#tab-gear .eqp-piece[data-slot="helmet"] img')).toHaveAttribute('src', 'assets/gear/orange_helmet.webp');
-  await expect(page.locator('#tab-gear .eqp-piece[data-slot="sandals"] img')).toHaveAttribute('src', 'assets/gear/red_sandals.webp');
+  await expect(page.locator('#tab-gear .eqp-piece[data-slot="helmet"] img')).toHaveAttribute('src', 'assets/gear/art/orange_helmet.webp');
+  await expect(page.locator('#tab-gear .eqp-piece[data-slot="sandals"] img')).toHaveAttribute('src', 'assets/gear/art/red_sandals.webp');
 
   // Totals include the sandals' SPD
   const spd = await page.evaluate(() => window.Gear.totalFor('e-naruto').spd);

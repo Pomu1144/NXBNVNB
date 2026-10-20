@@ -81,6 +81,8 @@
     return `${t.rank} ${NAMES[t.art][SLOTS.indexOf(slot)] || ''}`.trim();
   }
   const iconOf = (slot, tier) => `assets/gear/${TIERS[clampTier(tier)].art}_${slot}.webp`;
+  // Painted piece without a tile frame (Equipment tab of the Shinobi Record)
+  const artOf = (slot, tier) => `assets/gear/art/${TIERS[clampTier(tier)].art}_${slot}.webp`;
   const scrollIcon = (id) => `assets/gear/scroll_${String(id).replace(/\D/g, '')}.webp`;
 
   /* ───────── State ───────── */
@@ -136,7 +138,7 @@
     const promo = !isMax && atCap ? PROMOTE[p.tier] : null;
     return {
       slot, uid, tier: p.tier, level: p.level, cap: t.cap, tierInfo: t, shiny: !!t.shiny,
-      name: nameOf(slot, p.tier), kind: def.kind, icon: iconOf(slot, p.tier),
+      name: nameOf(slot, p.tier), kind: def.kind, icon: iconOf(slot, p.tier), art: artOf(slot, p.tier),
       stat: def.stat, statLabel: def.label, unit: def.unit || '', magatama: def.magatama,
       value: statValue(slot, p.tier, p.level),
       next: atCap ? null : statValue(slot, p.tier, p.level + 1),
@@ -286,7 +288,7 @@
 
   global.Gear = {
     STORAGE_KEY, SLOTS, TOOL_SLOTS, TIERS, PROMOTE, PIECES, NAMES, MAX_LEVEL, STATS,
-    get, reload, piece, unitGear, info, nameOf, iconOf, scrollIcon, capOf,
+    get, reload, piece, unitGear, info, nameOf, iconOf, artOf, scrollIcon, capOf,
     levelCost, statValue, fmtStat, plan,
     strengthen, auto, autoAll, promote,
     bonusFor, totalFor, applyToStats, migrateInventory

@@ -39,7 +39,7 @@
     return `<button type="button" class="eqp-piece eqp--${pos}${on ? ' is-on' : ''}${i.shiny ? ' is-shiny' : ''}"
         data-slot="${i.slot}" style="--tc:${i.tierInfo.color}" aria-pressed="${on}"
         aria-label="${esc(i.name)}, level ${i.level}">
-        <span class="eqp-medal"><img src="${esc(i.icon)}" alt="" draggable="false"></span>
+        <span class="eqp-medal"><img src="${esc(i.art)}" alt="" draggable="false"></span>
         <span class="eqp-lv"><i aria-hidden="true"></i>Lv ${i.level}</span>
       </button>`;
   }
@@ -52,7 +52,7 @@
     const state = i.isMax ? 'Max tier' : i.atCap ? 'Ready to upgrade' : `Next Lv: ${i.cost.toLocaleString()} Ryo`;
     return `
       <div class="eqp-detail-head" style="--tc:${i.tierInfo.color}">
-        <span class="eqp-detail-ic"><img src="${esc(i.icon)}" alt="" draggable="false"></span>
+        <span class="eqp-detail-ic"><img src="${esc(i.art)}" alt="" draggable="false"></span>
         <span class="eqp-detail-nm">
           <b>${esc(i.name)}</b>
           <small>${esc(i.kind)} &middot; ${esc(i.tierInfo.label)}</small>
