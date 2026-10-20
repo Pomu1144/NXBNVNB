@@ -429,6 +429,16 @@
       if (!bm.isArena || bm._arenaResultRecorded) return bm._arenaOutcome || null;
       bm._arenaResultRecorded = true;
 
+      // Kage League match: League Points instead of arena stars
+      if (bm.isKageLeague && window.KageLeague) {
+        const out = window.KageLeague.applyResult(bm.kageLeagueMatch, isVictory) || {};
+        if (isVictory && window.ExpRewards) {
+          try { window.ExpRewards.onBattleWin({}); } catch (e) {}
+        }
+        bm._arenaOutcome = { kage: true, ...out };
+        return bm._arenaOutcome;
+      }
+
       let opponent = null;
       try { opponent = JSON.parse(localStorage.getItem("arena_opponent") || "null"); } catch (e) {}
       localStorage.removeItem("arena_opponent");
@@ -668,16 +678,35 @@
       // Create professional stats HTML
       const isArena = !!bm.isArena;
       const isRoad = !!bm.isNinjaRoad;
-      const subtitle = isArena
+      const isLeague = isArena && !!bm.isKageLeague;
+      const subtitle = isLeague
+        ? (isVictory ? "Kage League Victory" : "Kage League Defeat")
+        : isArena
         ? (isVictory ? "Arena Victory" : "Arena Defeat")
         : isRoad
           ? (isVictory ? "Floor Cleared" : "Squad Defeated")
           : (isVictory ? "Mission Accomplished" : "Mission Failed");
-      const returnUrl = isArena ? 'arena.html' : isRoad ? 'ninja-road.html' : 'missions.html';
+      const returnUrl = isLeague ? 'kage-league.html' : isArena ? 'arena.html' : isRoad ? 'ninja-road.html' : 'missions.html';
 
-      // Arena outcome rows (stars, streak, ryo)
+      // Arena outcome rows (stars, streak, ryo); Kage League: LP and place
       const arena = bm._arenaOutcome;
-      const arenaRowsHTML = (isArena && arena) ? `
+      const ord = (n) => { const v = n % 100; return n + (['th', 'st', 'nd', 'rd'][(v - 20) % 10] || ['th', 'st', 'nd', 'rd'][v] || 'th'); };
+      const leagueRowsHTML = (isLeague && arena && arena.kage) ? `
+          <div class="stat-divider"></div>
+          <div class="stat-row">
+            <span class="stat-label">Opponent</span>
+            <span class="stat-value gold">${arena.opponent || 'Rival'}</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">League Points</span>
+            <span class="stat-value ${arena.lpGained >= 0 ? 'gold' : ''}">${arena.lpGained > 0 ? '+' : ''}${arena.lpGained} LP &nbsp;(${arena.lpAfter} total)</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">Bracket Place</span>
+            <span class="stat-value">${ord(arena.placeBefore)} → ${ord(arena.placeAfter)}</span>
+          </div>
+          ${arena.stale ? `<div class="stat-row"><span class="stat-label">Season</span><span class="stat-value">Ended before this match finished</span></div>` : ''}` : '';
+      const arenaRowsHTML = isLeague ? leagueRowsHTML : (isArena && arena) ? `
           <div class="stat-divider"></div>
 
           <div class="stat-row">
@@ -704,6 +733,24 @@
             <span class="stat-value">${arena.ryoGained.toLocaleString()}</span>
           </div>` : ''}
       ` : '';
+
+      // Support shinobi row: who lent the 4th unit, with a friend request
+      // for a non-friend (js/support-shinobi.js). The pick stays for Retry and
+      // is spent on Continue.
+      const SS = window.SupportShinobi;
+      const guest = (!isArena && !isRoad && bm.guestSupport) ? bm.guestSupport : null;
+      const esc = (v) => String(v ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+      const guestRowHTML = guest ? `
+          <div class="stat-divider"></div>
+          <div class="stat-row">
+            <span class="stat-label">Support</span>
+            <span class="stat-value gold">${esc(guest.unit.name)} · ${esc(guest.name)}</span>
+          </div>
+          <div class="stat-row" id="support-friend-row">
+            <span class="stat-label">${guest.isFriend ? 'Friend' : 'Add as friend?'}</span>
+            <span class="stat-value">${guest.isFriend ? 'Already a friend'
+              : `<button type="button" class="result-btn secondary" id="btn-support-friend" style="min-height:32px;padding:4px 12px">Send Friend Request</button>`}</span>
+          </div>` : '';
 
       bm.dom.resultStats.innerHTML = `
         <div class="result-subtitle">
@@ -735,6 +782,7 @@
             <span class="stat-value">${stats.wave}</span>
           </div>
           ${arenaRowsHTML}
+          ${guestRowHTML}
 
           <div class="stat-divider"></div>
 
@@ -765,7 +813,7 @@
           <button class="result-btn primary" id="btn-continue-battle">
             ${isVictory ? "Continue" : "Return"}
           </button>
-          ${(!isVictory && !isRoad) ? '<button class="result-btn secondary" id="btn-retry-battle">Retry</button>' : ''}
+          ${(!isVictory && !isRoad && !isLeague) ? '<button class="result-btn secondary" id="btn-retry-battle">Retry</button>' : ''}
         </div>
       `;
 
@@ -773,8 +821,18 @@
       const btnContinue = document.getElementById('btn-continue-battle');
       const btnRetry = document.getElementById('btn-retry-battle');
 
+      const btnFriend = document.getElementById('btn-support-friend');
+      if (btnFriend && guest && SS) {
+        btnFriend.addEventListener('click', () => {
+          const r = SS.addFriend(guest);
+          const label = r.ok ? 'Friend added' : r.reason === 'full' ? `Friend list full (${SS.FRIEND_CAP})` : 'Already a friend';
+          btnFriend.replaceWith(document.createTextNode(label));
+        });
+      }
+
       if (btnContinue) {
         btnContinue.addEventListener('click', () => {
+          if (guest && SS) SS.finish();
           // Clean up any lingering arena state
           if (isArena) {
             localStorage.removeItem('arena_enemies');

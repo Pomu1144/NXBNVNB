@@ -267,12 +267,14 @@
           <div class="mr-stages">${stageChips}</div>
           ${this.goalsMarkup(core?._missionGoals, esc)}
           ${this.unitExpMarkup(core?._unitExp, esc)}
+          ${this.supportMarkup(core, esc)}
           <div class="mr-label"><span>Rewards Obtained</span></div>
           <div class="mr-grid" aria-live="polite"></div>
           <div class="mr-extra"></div>
           <div class="mr-actions"></div>
         </div>`;
       document.body.appendChild(overlay);
+      this.wireSupport(overlay, core);
 
       const card = overlay.querySelector('.mr-card');
       const grid = overlay.querySelector('.mr-grid');
@@ -368,6 +370,34 @@
         this.closeResultsScreen();
       };
       overlay.querySelector('.mr-actions').appendChild(continueBtn);
+    },
+
+    /**
+     * Support shinobi (js/support-shinobi.js): who lent the 4th unit, with a
+     * friend request when they aren't a friend yet.
+     */
+    supportMarkup(core, esc) {
+      const g = core?.guestSupport;
+      if (!g || !window.SupportShinobi) return '';
+      return `
+        <div class="mr-support" id="support-friend-row" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px 12px;margin:10px 0 2px;font-size:13px;color:#e9dcc0">
+          <span>Support: <b>${esc(g.unit.name)}</b> · ${esc(g.name)}</span>
+          ${g.isFriend ? '<span class="jjk-chip mr-chip">Friend</span>'
+            : '<button type="button" class="jjk-btn" id="btn-support-friend" style="min-height:32px;padding:4px 14px;font-size:13px">Send Friend Request</button>'}
+        </div>`;
+    },
+
+    wireSupport(overlay, core) {
+      const btn = overlay.querySelector('#btn-support-friend');
+      const SS = window.SupportShinobi;
+      if (!btn || !SS || !core?.guestSupport) return;
+      btn.addEventListener('click', () => {
+        const r = SS.addFriend(core.guestSupport);
+        const span = document.createElement('span');
+        span.className = 'jjk-chip mr-chip';
+        span.textContent = r.ok ? 'Friend added' : r.reason === 'full' ? `Friend list full (${SS.FRIEND_CAP})` : 'Already a friend';
+        btn.replaceWith(span);
+      });
     },
 
     /**
@@ -633,6 +663,8 @@
       const resultsScreen = document.getElementById('results-screen');
       if (resultsScreen) {
         resultsScreen.classList.add('is-leaving');
+        // The borrowed support unit is spent with the mission
+        window.SupportShinobi?.finish();
         setTimeout(() => {
           resultsScreen.remove();
           // Return to missions page

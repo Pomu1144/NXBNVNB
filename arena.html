@@ -137,6 +137,9 @@
         <button class="wb-chip" id="tile-record" onclick="toggleHistoryTable()">
           <svg><use href="#i-record"/></svg><span class="wb-chip-label">Record</span>
         </button>
+        <a class="wb-chip wb-chip-league" id="tile-kage-league" href="kage-league.html">
+          <svg><use href="#i-ladder"/></svg><span class="wb-chip-label">Kage League</span>
+        </a>
       </div>
       <button class="wb-start" id="btn-battle-arena" onclick="openArenaBattle()">
         <span class="wb-start-label"><i class="wb-diamond" aria-hidden="true"></i>Start Battle</span>
@@ -1007,6 +1010,8 @@
   }
 
   function startArenaBattle(enemyTeam, mapPath) {
+    // An abandoned Kage League match must not turn this into a league battle
+    localStorage.removeItem('kage_league_match');
     localStorage.setItem('arena_battle_mode', '1');
     localStorage.setItem('arena_enemies', JSON.stringify(enemyTeam));
     localStorage.setItem('arena_map', mapPath);

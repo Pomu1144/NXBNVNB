@@ -207,7 +207,17 @@
         };
         this.difficulty = "C";
 
-        if (this.dom.missionTitle) this.dom.missionTitle.textContent = "Arena Battle";
+        // Kage League match (js/kage-league.js): the league's team, not team 1.
+        // The match record stays until the result is applied, so a resume finds it.
+        const league = window.KageLeague?.activeMatch();
+        if (league) {
+          this.isKageLeague = true;
+          this.kageLeagueMatch = league;
+          if (league.slots) this.playerTeamSlots = league.slots;
+          this.missionData.name = "Kage League";
+        }
+
+        if (this.dom.missionTitle) this.dom.missionTitle.textContent = this.missionData.name;
 
         if (this.dom.scene) {
           this.dom.scene.style.backgroundImage = `url('${arenaMap}')`;
@@ -406,7 +416,20 @@
       const teamsData = JSON.parse(localStorage.getItem("blazing_teams_v1") || "{}");
       const currentTeamNum = 1;
       // Ninja Road fields its own squad (living units only, see battle-ninja-road.js)
-      const teamSlots = this.playerTeamSlots || teamsData[currentTeamNum] || {};
+      let teamSlots = this.playerTeamSlots || teamsData[currentTeamNum] || {};
+
+      // Support shinobi (js/support-shinobi.js): a borrowed unit fights in
+      // front-4 for this mission only. It isn't in the inventory, so it gets a
+      // stand-in instance and earns no EXP (BattleUnitExp skips unknown uids).
+      const guest = (!this.isArena && !this.isNinjaRoad && this.missionData)
+        ? window.SupportShinobi?.current(this.missionData.id, this.difficulty) : null;
+      if (guest && this.charactersData.some(c => c.id === guest.unit.charId)) {
+        this.guestSupport = guest;
+        teamSlots = { ...teamSlots, "front-4": {
+          uid: guest.uid, charId: guest.unit.charId,
+          guestInst: { uid: guest.uid, charId: guest.unit.charId, tierCode: guest.unit.tierCode, level: guest.unit.level, isGuest: true },
+        } };
+      }
 
       console.log("[BattleCore] Loading team slots:", teamSlots);
       console.log("[BattleCore] window.InventoryChar available?", !!window.InventoryChar);
@@ -423,7 +446,7 @@
         const slot = teamSlots[slotId];
         if (!slot?.uid) return null;
 
-        const inst = window.InventoryChar?.getByUid(slot.uid);
+        const inst = slot.guestInst || window.InventoryChar?.getByUid(slot.uid);
         const base = this.charactersData.find(c => c.id === slot.charId);
 
         if (!inst || !base) {
@@ -465,6 +488,7 @@
           });
 
         unit._ref = { base, inst, tier };
+        if (slot.guestInst) { unit.isGuest = true; unit.guestOf = this.guestSupport?.name || ""; }
 
         // Initialize passive abilities
         if (window.BattlePassives) {
