@@ -1,0 +1,55 @@
+// Equipment tab of the Shinobi Record (js/character-gear-tab.js): the six gear
+// pieces on an orbit, their totals and the selected piece. The Status tab no
+// longer lists equipment; the jutsu slots stay on the Ninjutsu tab.
+const { test, expect } = require('@playwright/test');
+const { seedSave, invEntry, collectErrors, waitForLoader } = require('../helpers');
+
+const SLOTS = ['helmet', 'weapon', 'armor', 'scroll', 'necklace', 'sandals'];
+
+test('equipment tab: six gear pieces, totals and the selected piece', async ({ page }) => {
+  const errors = collectErrors(page);
+  await seedSave(page, {
+    blazing_inventory_v2: [invEntry('e-naruto', 'naruto_2115', 80, '7S')],
+    blazing_gear_v1: { units: { 'e-naruto': {
+      helmet: { tier: 3, level: 70 }, sandals: { tier: 5, level: 120 },
+    } } },
+  });
+  await page.goto('/characters.html');
+  await waitForLoader(page);
+  await page.locator('.char-grid .char-slot[data-uid="e-naruto"]').click();
+  await expect(page.locator('#char-modal')).toHaveClass(/open/);
+
+  // Status: stats only
+  await expect(page.locator('#tab-status .cx-stats')).toBeVisible();
+  await expect(page.locator('#tab-status .cx-equip, #tab-status .jutsu-slot, #tab-status .cx-gear')).toHaveCount(0);
+
+  // Tabs end with Equipment, after Passives
+  await expect(page.locator('.char-tabs .tab-btn')).toHaveText(['Status', 'Awakening', 'Ninjutsu', 'Passives', 'Equipment']);
+
+  // Ninjutsu keeps the jutsu / ultimate slots
+  await page.locator('.char-tabs .tab-btn[data-tab="skills"]').click();
+  await expect(page.locator('#tab-skills .jutsu-slot')).toHaveCount(3);
+  await expect(page.locator('#tab-skills .ultimate-slot')).toBeVisible();
+
+  await page.locator('.char-tabs .tab-btn[data-tab="gear"]').click();
+  const pieces = page.locator('#tab-gear .eqp-piece');
+  await expect(pieces).toHaveCount(6);
+  for (const s of SLOTS) await expect(page.locator(`#tab-gear .eqp-piece[data-slot="${s}"]`)).toBeVisible();
+  await expect(page.locator('#tab-gear .eqp-piece[data-slot="helmet"] .eqp-lv')).toHaveText('Lv 70');
+  await expect(page.locator('#tab-gear .eqp-piece[data-slot="helmet"] img')).toHaveAttribute('src', 'assets/gear/orange_helmet.webp');
+  await expect(page.locator('#tab-gear .eqp-piece[data-slot="sandals"] img')).toHaveAttribute('src', 'assets/gear/red_sandals.webp');
+
+  // Totals include the sandals' SPD
+  const spd = await page.evaluate(() => window.Gear.totalFor('e-naruto').spd);
+  expect(spd).toBe(14);
+  await expect(page.locator('#tab-gear .eqp-totals')).toContainText('+14');
+
+  // Selecting a piece shows it, with a link to strengthen it on the Tools page
+  await page.locator('#tab-gear .eqp-piece[data-slot="sandals"]').click();
+  await expect(page.locator('#tab-gear .eqp-piece[data-slot="sandals"]')).toHaveAttribute('aria-pressed', 'true');
+  await expect(page.locator('#tab-gear .eqp-detail')).toContainText('Super Kage War Boots');
+  await expect(page.locator('#tab-gear .eqp-detail')).toContainText('120 / 120');
+  await expect(page.locator('#tab-gear .eqp-go')).toHaveAttribute('href', 'tools.html?uid=e-naruto&view=gear');
+
+  errors.assertClean('equipment tab');
+});

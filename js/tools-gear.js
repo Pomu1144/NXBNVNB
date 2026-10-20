@@ -1,7 +1,7 @@
 // js/tools-gear.js — Gear on the Tools page (logic in js/gear.js).
-//   Gear view      the 5 pieces around the character art; tap one for its
+//   Gear view      the 6 pieces around the character art; tap one for its
 //                  quick panel (Strengthen / Auto, or promote at the cap).
-//   Strengthen     all five rows: level, stat, Ryo cost, Auto, Strengthen.
+//   Strengthen     all six rows: level, stat, Ryo cost, Auto, Strengthen.
 //   Upgrade        piece list · current → next tier · scroll + Ryo · Upgrade.
 //   Magatama       js/tools-magatama.js, beset into the selected piece.
 // Also owns the view switch (tabs at the top right).
@@ -159,7 +159,7 @@
       body += `<div class="gx-row"><span>${esc(i.statLabel)}</span><b>${statTxt(i, i.value)}</b></div><p class="gx-note">Max</p>`;
     }
     const M = window.Magatama;
-    if (M) {
+    if (M && M.FIT[i.slot]) {
       const row = M.socketsOf(id, i.slot);
       body += `<div class="gp-maga">
           <span class="mg-pips">${row.map(k => k ? `<i style="--c:${M.info(k).color}"></i>` : '<i></i>').join('')}</span>

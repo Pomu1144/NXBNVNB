@@ -3322,7 +3322,8 @@ body.page-characters .cx-equip .ultimate-slot:hover { transform: translateY(-2px
 
 /* ── Ninjutsu: ticket stubs separated by perforations ── */
 body.page-characters #char-skills.skills-wrap { display: block; min-height: 0; padding: 0 2px; background: none; }
-body.page-characters #tab-skills .jutsu-slots-container { display: none; }   /* same slots live on Status */
+/* the jutsu / ultimate slots sit under the skills (gear is on the Equipment tab) */
+body.page-characters #tab-skills .jutsu-slots-container { justify-content: flex-start; margin: 4px 0 8px; padding: 12px 0 4px; border-top: 1px solid rgba(241, 235, 220, 0.12); }
 .cx-stub { --kc: #6fa6e0; position: relative; padding: 14px 0 16px; font-family: var(--jjk-font); }
 .cx-stub:first-child { padding-top: 2px; }
 .cx-stub + .cx-stub::before {

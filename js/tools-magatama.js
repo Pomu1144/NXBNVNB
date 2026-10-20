@@ -1,5 +1,5 @@
 // js/tools-magatama.js — "Magatama" view of the Tools page.
-// Left: the selected shinobi's 5 gear pieces. Centre: the piece on a tomoe
+// Left: the selected shinobi's gear pieces that take magatama. Centre: the piece on a tomoe
 // ring with 5 sockets. Right: Besetable / Backpack grids. Logic lives in
 // js/magatama.js; each type fits one piece (Magatama.FIT). The view switch
 // and the selected piece live in js/tools-gear.js.
@@ -22,7 +22,9 @@
   function currentTool() {
     const id = uid();
     if (!id || !G()) return null;
-    const slot = (TG() && TG().slot()) || 'helmet';
+    // Sandals take no magatama; fall back to the helmet
+    const picked = TG() && TG().slot();
+    const slot = picked && M().FIT[picked] ? picked : 'helmet';
     return { slot, info: G().info(id, slot) };
   }
   const typeName = (id) => (M().data().types.find(x => x.id === id) || {}).name || id;
@@ -61,7 +63,7 @@
     if (!id) {
       box.innerHTML = '<div class="mg-none">Select a shinobi in Gear</div>';
     } else {
-      box.innerHTML = G().SLOTS.map(slot => {
+      box.innerHTML = G().SLOTS.filter(slot => M().FIT[slot]).map(slot => {
         const i = G().info(id, slot);
         const row = M().socketsOf(id, slot);
         const on = cur && cur.slot === slot;

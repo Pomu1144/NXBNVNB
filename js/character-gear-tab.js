@@ -1,0 +1,108 @@
+// js/character-gear-tab.js — Equipment tab of the Shinobi Record (characters.html).
+//
+// The six gear pieces (js/gear.js) sit on an orbit around a sigil: helmet,
+// weapon, armor and sandals on the outer ring, scroll and necklace in the
+// middle. Each medallion shows the piece's art in its tier colour with its
+// level under it. Beside the orbit: what the gear and its magatama add in
+// total, and the selected piece (name, tier, level, stat) with a link to
+// strengthen it on the Tools page.
+(function (global) {
+  'use strict';
+
+  const ORBIT = [
+    { slot: 'helmet',   pos: 'tl' },
+    { slot: 'weapon',   pos: 'tr' },
+    { slot: 'armor',    pos: 'bl' },
+    { slot: 'sandals',  pos: 'br' },
+    { slot: 'scroll',   pos: 'il' },
+    { slot: 'necklace', pos: 'ir' }
+  ];
+  const TOTALS = [
+    ['hp', 'HP'], ['atk', 'ATK'], ['def', 'DEF'], ['spd', 'SPD'],
+    ['nin', 'Jutsu DMG', '%'], ['res', 'Jutsu RES', '%']
+  ];
+
+  const ui = { uid: null, slot: 'helmet' };
+  const G = () => global.Gear;
+  const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
+  const num = (v, unit) => unit ? `${Math.round((+v || 0) * 100) / 100}%` : Math.round(+v || 0).toLocaleString();
+
+  function pieceHTML(i, pos) {
+    const on = i.slot === ui.slot;
+    return `<button type="button" class="eqp-piece eqp--${pos}${on ? ' is-on' : ''}${i.shiny ? ' is-shiny' : ''}"
+        data-slot="${i.slot}" style="--tc:${i.tierInfo.color}" aria-pressed="${on}"
+        aria-label="${esc(i.name)}, level ${i.level}">
+        <span class="eqp-medal"><img src="${esc(i.icon)}" alt="" draggable="false"></span>
+        <span class="eqp-lv"><i></i>Lv ${i.level}</span>
+      </button>`;
+  }
+
+  function detailHTML(i) {
+    const M = global.Magatama;
+    const row = M && M.FIT && M.FIT[i.slot] ? M.socketsOf(i.uid, i.slot) : null;
+    const pips = row ? `<div class="eqp-row"><span>Magatama</span><span class="eqp-pips">${row.map(k => k ? `<i style="--c:${M.info(k).color}"></i>` : '<i></i>').join('')}</span></div>` : '';
+    const next = i.next != null ? `<em>&rarr; ${num(i.next, i.unit)}</em>` : '';
+    const state = i.isMax ? 'Max tier' : i.atCap ? 'Ready to upgrade' : `Next Lv: ${i.cost.toLocaleString()} Ryo`;
+    return `
+      <div class="eqp-detail-head" style="--tc:${i.tierInfo.color}">
+        <span class="eqp-detail-ic"><img src="${esc(i.icon)}" alt="" draggable="false"></span>
+        <span class="eqp-detail-nm">
+          <b>${esc(i.name)}</b>
+          <small>${esc(i.kind)} &middot; ${esc(i.tierInfo.label)}</small>
+        </span>
+      </div>
+      <div class="eqp-row"><span>Level</span><b>${i.level} / ${i.cap}</b></div>
+      <div class="eqp-row"><span>${esc(i.statLabel)}</span><b>+${num(i.value, i.unit)} ${next}</b></div>
+      ${pips}
+      <div class="eqp-state">${esc(state)}</div>
+      <a class="eqp-go" href="tools.html?uid=${encodeURIComponent(i.uid)}&amp;view=gear">Strengthen</a>`;
+  }
+
+  function render(uid) {
+    const box = global.document.getElementById('char-gear');
+    if (!box) return;
+    if (uid !== undefined) ui.uid = uid;
+    if (!G() || !ui.uid) { box.innerHTML = ''; return; }
+    if (!G().SLOTS.includes(ui.slot)) ui.slot = 'helmet';
+    const pieces = ORBIT.filter(o => G().SLOTS.includes(o.slot)).map(o => ({ o, i: G().info(ui.uid, o.slot) }));
+    const tot = G().totalFor(ui.uid);
+    const sel = pieces.find(p => p.i.slot === ui.slot) || pieces[0];
+    box.innerHTML = `
+      <div class="eqp">
+        <div class="eqp-orbit" role="group" aria-label="Gear">
+          <span class="eqp-ring" aria-hidden="true"></span>
+          <span class="eqp-ticks" aria-hidden="true"></span>
+          <span class="eqp-sigil" aria-hidden="true"></span>
+          ${pieces.map(p => pieceHTML(p.i, p.o.pos)).join('')}
+        </div>
+        <div class="eqp-side">
+          <h4 class="cx-kicker">Gear Bonus</h4>
+          <div class="eqp-totals">
+            ${TOTALS.map(([k, label, unit]) => `<div class="eqp-row"><span>${label}</span><b>+${num(tot[k], unit)}</b></div>`).join('')}
+          </div>
+          <h4 class="cx-kicker">${esc(sel.i.kind)}</h4>
+          <div class="eqp-detail">${detailHTML(sel.i)}</div>
+        </div>
+      </div>`;
+  }
+
+  function onClick(e) {
+    const b = e.target.closest('.eqp-piece');
+    if (!b) return;
+    ui.slot = b.dataset.slot;
+    render();
+    const again = global.document.querySelector(`#char-gear .eqp-piece[data-slot="${ui.slot}"]`);
+    if (again) again.focus();
+  }
+
+  function init() {
+    const box = global.document.getElementById('char-gear');
+    if (box) box.addEventListener('click', onClick);
+    global.addEventListener('gear:change', () => render());
+    global.addEventListener('magatama:change', () => render());
+  }
+  if (global.document.readyState === 'loading') global.document.addEventListener('DOMContentLoaded', init, { once: true });
+  else init();
+
+  global.CharGearTab = { render, select: (slot) => { ui.slot = slot; render(); } };
+})(window);

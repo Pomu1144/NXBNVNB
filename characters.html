@@ -32,6 +32,7 @@
   <link rel="stylesheet" href="css/character_dupe_abilities.css" />
   <link rel="stylesheet" href="css/character-equip.css" />
   <link rel="stylesheet" href="css/character-profile-equipment.css" />
+  <link rel="stylesheet" href="css/character-gear-tab.css" />
   <link rel="stylesheet" href="css/settings-modal.css?v=3" />
   <link rel="stylesheet" href="css/awakening-animation.css" />
   <link rel="stylesheet" href="css/blazing-awakening-anim.css" />
@@ -114,6 +115,7 @@
           <button class="tab-btn" data-tab="awakening">Awakening</button>
           <button class="tab-btn" data-tab="skills">Ninjutsu</button>
           <button class="tab-btn" data-tab="support">Passives</button>
+          <button class="tab-btn" data-tab="gear">Equipment</button>
         </div>
 
         <div class="cx-perf" aria-hidden="true"></div>
@@ -150,7 +152,7 @@
           <section class="tab-panel" id="tab-skills">
             <div id="char-skills" class="skills-wrap"></div>
             <!-- Jutsu/Ultimate Slots -->
-            <div class="jutsu-slots-container" id="jutsu-slots-container">
+            <div class="jutsu-slots-container cx-equip" id="jutsu-slots-container">
               <button class="jutsu-slot" data-slot="jutsu1">
                 <img src="assets/ui/jutsuslotempty.png" alt="Jutsu Slot 1" class="jutsu-slot-bg">
                 <img src="" alt="" class="jutsu-slot-icon" style="display:none;">
@@ -172,6 +174,10 @@
 
           <section class="tab-panel" id="tab-support">
             <div class="support-wrap" id="char-support"></div>
+          </section>
+
+          <section class="tab-panel" id="tab-gear">
+            <div class="gear-wrap" id="char-gear"></div>
           </section>
 
           <section class="tab-panel" id="tab-abilities">
@@ -348,6 +354,7 @@
   <script src="js/magatama.js"></script>
   <script src="js/gear.js"></script>
   <script src="js/characters.js"></script>
+  <script src="js/character-gear-tab.js"></script>
   <script src="js/ink-lightning.js"></script>
   <script src="js/ink-dossier.js"></script>
   <script src="js/ink-roster.js"></script>

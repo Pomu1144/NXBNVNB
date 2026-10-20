@@ -170,8 +170,8 @@
     const b = baseStats(inst, c);
     const x = cardBonuses(inst);
     // Gear pieces + the magatama beset in them (js/gear.js, js/magatama.js)
-    const g = window.Gear ? window.Gear.totalFor(inst.uid) : { hp: 0, atk: 0, def: 0, nin: 0, res: 0 };
-    x.hp += g.hp; x.atk += g.atk; x.def += g.def; x.nin = g.nin; x.res = g.res; x.gear = g;
+    const g = window.Gear ? window.Gear.totalFor(inst.uid) : { hp: 0, atk: 0, def: 0, spd: 0, nin: 0, res: 0 };
+    x.hp += g.hp; x.atk += g.atk; x.def += g.def; x.spd += g.spd || 0; x.nin = g.nin; x.res = g.res; x.gear = g;
     const hp = b.hp + x.hp, atk = b.atk + x.atk, spd = b.speed + x.spd;
     const power = hp + atk + spd;
     return { base: b, bonus: x, hp, atk, spd, def: b.def + x.def, power, total: power + abilityCount(inst) * ABILITY_POWER };
