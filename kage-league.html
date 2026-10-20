@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Ultimate Ninja Legends — Kage League</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <link rel="stylesheet" href="css/page-loader.css" />
+  <script src="js/session-gate.js"></script>
+  <script src="js/page-loader.js"></script>
+  <script src="js/device-detect.js"></script>
+  <script src="js/ui-theme.js"></script>
+  <script src="js/modal-manager.js?v=3"></script>
+  <link rel="manifest" href="manifest.json" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Ninja Legends" />
+  <meta name="theme-color" content="#000000" />
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/app/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/app/favicon-32.png" />
+  <script src="js/pwa-register.js"></script>
+  <link rel="stylesheet" href="css/fonts.css" />
+  <link rel="stylesheet" href="css/help-tip.css" />
+  <script src="js/help-tip.js"></script>
+  <link rel="stylesheet" href="css/kage-league.css" />
+</head>
+<body class="page-kage-league" data-music="arena">
+  <div class="kl-bg" aria-hidden="true"><div class="kl-bg-tower"></div><div class="kl-bg-scrim"></div></div>
+
+  <main class="kl-page" id="kl-page">
+    <header class="kl-head">
+      <a href="arena.html" class="kl-icon-btn" aria-label="Back to the Arena">
+        <svg viewBox="0 0 24 24"><path d="M14.5 5.5 8 12l6.5 6.5"/></svg>
+      </a>
+      <div class="kl-scroll">
+        <h1 class="kl-title">Kage League</h1>
+        <span class="kl-season" id="kl-season"></span>
+      </div>
+      <button type="button" class="help-tip" aria-label="How the Kage League works" aria-expanded="false"
+        data-help-title="Kage League"
+        data-help="Climb the six floors of the Kage Tower, one season (7 days) at a time.&#10;Each floor is a bracket of 20 shinobi ranked by League Points (LP). Beat rivals from your bracket for LP: more against higher-ranked rivals and on a win streak. A loss costs a little LP.&#10;When the season ends, the top 3 are promoted a floor and the bottom 4 drop a floor. Rewards are paid by floor and place.&#10;A match costs a ticket (5 max, one back every 2 hours). League Potions refill your tickets.&#10;Skip a season and you keep your floor but earn nothing.">?</button>
+      <span class="kl-head-gap"></span>
+      <div class="kl-res" title="Tickets"><span class="kl-pips" id="kl-tickets" aria-label="Tickets"></span><small id="kl-ticket-next"></small></div>
+      <button type="button" class="kl-res kl-potion" id="kl-potion" title="Use a League Potion to refill tickets">
+        <i class="kl-potion-ico" aria-hidden="true"></i><b id="kl-potions">0</b>
+      </button>
+    </header>
+
+    <div class="kl-mid">
+      <section class="kl-tower" aria-label="Kage Tower floors">
+        <ol class="kl-floors" id="kl-floors"></ol>
+      </section>
+
+      <section class="kl-me" aria-label="Your standing">
+        <div class="kl-me-floor" id="kl-me-floor"></div>
+        <div class="kl-me-place">
+          <img class="kl-me-kunai" id="kl-me-kunai" alt="" hidden>
+          <span class="kl-me-num" id="kl-me-place">—</span>
+          <span class="kl-me-of">of <b id="kl-bracket">20</b></span>
+        </div>
+        <div class="kl-zone" id="kl-zone"></div>
+        <dl class="kl-stats">
+          <div><dt>LP</dt><dd id="kl-lp">0</dd></div>
+          <div><dt>Won</dt><dd id="kl-w">0</dd></div>
+          <div><dt>Lost</dt><dd id="kl-l">0</dd></div>
+          <div><dt>Streak</dt><dd id="kl-streak">0</dd></div>
+        </dl>
+        <button type="button" class="kl-team" id="kl-team" aria-label="Choose your league team"></button>
+        <div class="kl-preview" id="kl-preview"></div>
+        <div class="kl-me-tabs">
+          <button type="button" class="kl-tab" id="kl-btn-standings">Standings</button>
+          <button type="button" class="kl-tab" id="kl-btn-rewards">Rewards</button>
+          <button type="button" class="kl-tab" id="kl-btn-records">Records</button>
+        </div>
+      </section>
+
+      <section class="kl-challengers" aria-label="Challengers">
+        <div class="kl-sec-head">
+          <h2>Challengers</h2>
+          <button type="button" class="kl-link" id="kl-rescout">Find others</button>
+        </div>
+        <ol class="kl-opps" id="kl-opps"></ol>
+      </section>
+    </div>
+  </main>
+
+  <script src="js/vendor/howler.min.js"></script>
+  <script src="js/audio-manager.js"></script>
+  <script src="js/resources.js"></script>
+  <script src="js/character_inv.js"></script>
+  <script src="js/sprite-player.js"></script>
+  <script src="js/kage-league.js"></script>
+  <script src="js/kage-league-page.js"></script>
+</body>
+</html>
