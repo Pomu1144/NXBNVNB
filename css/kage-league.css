@@ -1,0 +1,276 @@
+/* css/kage-league.css — Kage League (kage-league.html).
+ * Purple PvP look of the original game's league screens; art in
+ * assets/ui/kage-league/ is cut from the IPA's PvPAtlas. Landscape phone first. */
+:root {
+  --kl-ink: #0b0712;
+  --kl-panel: rgba(22, 14, 34, .86);
+  --kl-line: rgba(186, 132, 255, .32);
+  --kl-purple: #a66bff;
+  --kl-purple-hi: #d6b3ff;
+  --kl-gold: #f0cf7a;
+  --kl-text: #efe6ff;
+  --kl-dim: #b7a6d6;
+  --kl-up: #7fe3a0;
+  --kl-down: #ff8a8a;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; }
+body.page-kage-league {
+  background: var(--kl-ink);
+  color: var(--kl-text);
+  font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+  overflow: hidden;
+  transition: opacity .2s linear;
+}
+body.is-leaving { opacity: 0; }
+button { font-family: inherit; }
+
+/* background: tower art + purple haze */
+.kl-bg { position: fixed; inset: 0; z-index: 0; overflow: hidden; }
+.kl-bg-tower {
+  position: absolute; inset: -4%;
+  background: url('../assets/ui/kage-league/tower_bg.webp') center 30% / cover no-repeat;
+  filter: blur(2px) saturate(1.2);
+  opacity: .55;
+  image-rendering: auto;
+}
+.kl-bg-scrim {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse at 18% 60%, rgba(150, 70, 255, .35), transparent 55%),
+    linear-gradient(180deg, rgba(8, 4, 16, .55), rgba(8, 4, 16, .92));
+}
+
+.kl-page {
+  position: relative; z-index: 1;
+  height: 100%;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  padding: max(8px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) max(8px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
+  gap: 8px;
+}
+
+/* ---------- header ---------- */
+.kl-head { display: flex; align-items: center; gap: 10px; min-height: 48px; }
+.kl-icon-btn {
+  flex: none; width: 40px; height: 40px; display: grid; place-items: center;
+  border-radius: 10px; border: 1px solid var(--kl-line); background: rgba(30, 18, 48, .8); color: var(--kl-text); cursor: pointer;
+}
+.kl-icon-btn svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.kl-scroll {
+  position: relative; display: flex; flex-direction: column; justify-content: center;
+  flex: 0 1 300px; min-width: 0; height: 56px; padding: 7px 46px 2px;
+  background: url('../assets/ui/kage-league/scroll.webp') center / 100% 100% no-repeat;
+}
+.kl-title { margin: 0; font: 700 15px/1.1 'Cinzel', serif; color: #3b1f5c; letter-spacing: .4px; white-space: nowrap; }
+.kl-season { font-size: 10px; line-height: 1.2; color: #5d4377; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.kl-head-gap { flex: 1; }
+.kl-res {
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+  padding: 4px 10px; border-radius: 10px; border: 1px solid var(--kl-line); background: rgba(30, 18, 48, .8); color: var(--kl-text);
+  min-height: 40px; justify-content: center;
+}
+.kl-res small { font-size: 10px; color: var(--kl-dim); }
+.kl-pips { display: flex; gap: 4px; }
+.kl-pips i { width: 12px; height: 12px; border-radius: 50%; background: #2c1d42; box-shadow: inset 0 0 0 1px rgba(214, 179, 255, .35); }
+.kl-pips i.is-on { background: radial-gradient(circle at 40% 35%, #f7e3ff, var(--kl-purple) 60%, #5b25a8); box-shadow: 0 0 6px rgba(166, 107, 255, .8); }
+.kl-potion { flex-direction: row; gap: 6px; cursor: pointer; font-size: 15px; }
+.kl-potion-ico { width: 26px; height: 26px; background: url('../assets/ui/kage-league/orb_glow.webp') center / contain no-repeat; }
+.kl-potion.is-nope { animation: kl-nope .35s; }
+@keyframes kl-nope { 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
+
+/* ---------- middle ---------- */
+.kl-mid {
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(150px, .8fr) minmax(220px, 1fr) minmax(300px, 1.6fr);
+  gap: 10px;
+}
+.kl-tower, .kl-me, .kl-challengers {
+  min-height: 0; border: 1px solid var(--kl-line); border-radius: 12px; background: var(--kl-panel);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, .35), inset 0 0 0 1px rgba(255, 255, 255, .03);
+}
+
+/* tower of floors, with the pagoda silhouette behind */
+.kl-tower {
+  position: relative; overflow: hidden; padding: 8px;
+  background: var(--kl-panel) url('../assets/ui/kage-league/pagoda.webp') center bottom / auto 96% no-repeat;
+}
+.kl-floors { list-style: none; margin: 0; padding: 0; height: 100%; display: flex; flex-direction: column; justify-content: space-between; gap: 4px; }
+.kl-fl {
+  position: relative; flex: 1; max-height: 44px; display: flex; align-items: center; gap: 6px;
+  padding: 0 8px; border-radius: 8px; font-size: 12px; color: var(--kl-dim);
+  background: rgba(14, 8, 24, .72); border: 1px solid rgba(186, 132, 255, .14);
+}
+.kl-fl.is-below { color: #8b7aa8; }
+.kl-fl-n { font: 700 13px 'Cinzel', serif; color: var(--kl-gold); min-width: 22px; }
+.kl-fl-name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.kl-fl.is-current {
+  color: #fff; border-color: rgba(214, 179, 255, .8);
+  background: linear-gradient(90deg, rgba(120, 50, 220, .85), rgba(70, 25, 140, .7));
+  box-shadow: 0 0 14px rgba(166, 107, 255, .65);
+}
+.kl-fl-arrow { margin-left: auto; font-size: 11px; }
+.kl-fl-arrow.is-up { color: var(--kl-up); }
+.kl-fl-arrow.is-down { color: var(--kl-down); }
+
+/* player standing */
+.kl-me { display: flex; flex-direction: column; gap: 6px; padding: 10px 12px; overflow: auto; }
+.kl-me-floor { font-size: 12px; color: var(--kl-dim); }
+.kl-me-floor span { font: 700 13px 'Cinzel', serif; color: var(--kl-gold); margin-right: 2px; }
+.kl-me-place {
+  position: relative; display: flex; align-items: baseline; gap: 6px; padding: 4px 0 2px;
+  background: url('../assets/ui/kage-league/brush_purple.webp') left center / 100% 80% no-repeat;
+}
+.kl-me-kunai { position: absolute; right: 0; top: 50%; width: 64px; transform: translateY(-50%) rotate(-8deg); filter: drop-shadow(0 2px 4px rgba(0, 0, 0, .6)); }
+.kl-me-num { font: 700 30px/1 'Cinzel', serif; color: #fff; text-shadow: 0 2px 10px rgba(166, 107, 255, .8); padding-left: 8px; }
+.kl-me-of { font-size: 12px; color: var(--kl-dim); }
+.kl-zone { font-size: 11.5px; font-weight: 600; padding: 3px 8px; border-radius: 6px; align-self: flex-start; background: rgba(255, 255, 255, .06); color: var(--kl-dim); }
+.kl-zone.is-promote { background: rgba(127, 227, 160, .14); color: var(--kl-up); }
+.kl-zone.is-relegate { background: rgba(255, 138, 138, .14); color: var(--kl-down); }
+.kl-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; margin: 0; }
+.kl-stats div { text-align: center; padding: 4px 0; border-radius: 8px; background: rgba(255, 255, 255, .04); }
+.kl-stats dt { font-size: 10px; color: var(--kl-dim); text-transform: uppercase; letter-spacing: .5px; }
+.kl-stats dd { margin: 0; font: 700 15px 'Cinzel', serif; color: var(--kl-text); }
+.kl-team, .kl-team-card {
+  display: flex; align-items: center; justify-content: space-between; gap: 8px; width: 100%;
+  min-height: 44px; padding: 6px 8px; border-radius: 10px; cursor: pointer; text-align: left;
+  border: 1px solid var(--kl-line); background: rgba(40, 24, 66, .7); color: var(--kl-text);
+}
+.kl-team-label { display: flex; flex-direction: column; font-size: 10px; color: var(--kl-dim); }
+.kl-team-label b { font-size: 13px; color: var(--kl-text); }
+.kl-team-faces { display: flex; gap: 3px; }
+.kl-team-faces img { width: 30px; height: 30px; border-radius: 6px; object-fit: cover; background: #1a1026; border: 1px solid rgba(240, 207, 122, .45); }
+.kl-team-faces em { font-size: 11px; color: var(--kl-down); font-style: normal; }
+.kl-preview { display: flex; flex-direction: column; gap: 4px; padding: 6px 8px; border-radius: 10px; background: rgba(255, 255, 255, .04); }
+.kl-preview small { font-size: 10.5px; color: var(--kl-dim); }
+.kl-me-tabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: auto; }
+.kl-tab {
+  min-height: 36px; border-radius: 8px; cursor: pointer; font-size: 12px; font-weight: 600; color: #2a1640;
+  border: 0; background: url('../assets/ui/kage-league/plate_gold.webp') center / 100% 100% no-repeat;
+}
+
+/* challengers */
+.kl-challengers { display: flex; flex-direction: column; padding: 8px 10px; min-width: 0; }
+.kl-sec-head { display: flex; align-items: center; justify-content: space-between; padding: 0 2px 6px; }
+.kl-sec-head h2 { margin: 0; font: 700 14px 'Cinzel', serif; color: var(--kl-purple-hi); letter-spacing: .5px; }
+.kl-link { min-height: 32px; border: 0; background: none; color: var(--kl-gold); font-size: 12px; font-weight: 600; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+.kl-opps { list-style: none; margin: 0; padding: 0; overflow: auto; display: grid; gap: 8px; min-height: 0; }
+.kl-opp {
+  display: grid; grid-template-columns: 1fr auto; grid-template-areas: "who team" "foot foot"; gap: 4px 10px;
+  padding: 8px 10px; border-radius: 10px;
+  background: url('../assets/ui/kage-league/cloud_bar.webp') center / 100% 100% no-repeat, rgba(30, 16, 54, .6);
+  border: 1px solid rgba(186, 132, 255, .25);
+}
+.kl-opp-who { grid-area: who; display: flex; flex-direction: column; min-width: 0; }
+.kl-opp-place { display: flex; align-items: center; gap: 4px; font: 700 12px 'Cinzel', serif; color: var(--kl-gold); }
+.kl-opp-place img { width: 34px; }
+.kl-opp-name { font-weight: 700; font-size: 13.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.kl-opp-name small { font-weight: 500; color: var(--kl-dim); font-size: 11px; }
+.kl-opp-lp { font-size: 11.5px; color: var(--kl-dim); }
+.kl-opp-team { grid-area: team; display: flex; gap: 3px; align-items: center; }
+.kl-opp-team img { width: 36px; height: 36px; border-radius: 6px; object-fit: cover; background: #1a1026; border: 1px solid rgba(214, 179, 255, .4); }
+.kl-opp-foot { grid-area: foot; display: flex; align-items: center; gap: 10px; font-size: 11.5px; color: var(--kl-dim); }
+.kl-opp-power b { color: var(--kl-text); }
+.up { color: var(--kl-up); }
+.down { color: var(--kl-down); }
+.kl-empty, .kl-note { font-size: 12px; color: var(--kl-dim); }
+
+/* the purple gem button from the PvP atlas */
+.kl-gem {
+  margin-left: auto; position: relative; min-width: 112px; min-height: 40px; padding: 0 14px;
+  border: 0; cursor: pointer; color: #fff; font-weight: 700; font-size: 13px; letter-spacing: .4px;
+  background: url('../assets/ui/kage-league/gem.webp') center / 100% 100% no-repeat;
+  text-shadow: 0 1px 3px rgba(40, 0, 80, .9);
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, .45));
+}
+.kl-gem span { position: relative; top: -2px; }
+.kl-gem:hover:not([disabled]) { filter: drop-shadow(0 0 8px rgba(186, 132, 255, .9)); }
+.kl-gem[disabled] { filter: grayscale(1) brightness(.7); cursor: not-allowed; }
+.kl-gem-lg { min-width: 180px; min-height: 52px; font-size: 16px; }
+.kl-icon-btn:focus-visible, .kl-gem:focus-visible, .kl-tab:focus-visible, .kl-team:focus-visible, .kl-team-card:focus-visible, .kl-link:focus-visible, .kl-potion:focus-visible {
+  outline: 2px solid var(--kl-gold); outline-offset: 2px;
+}
+
+/* ---------- sheets ---------- */
+.kl-sheet { position: fixed; inset: 0; z-index: 50; display: flex; align-items: center; justify-content: center; padding: 12px 16px; }
+.kl-sheet-scrim { position: absolute; inset: 0; background: rgba(6, 2, 12, .72); }
+.kl-sheet-panel {
+  position: relative; width: min(620px, 100%); max-height: 100%; display: flex; flex-direction: column;
+  background: #150d22; border: 1px solid rgba(214, 179, 255, .4); border-radius: 14px; box-shadow: 0 24px 60px rgba(0, 0, 0, .65);
+}
+.kl-sheet-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 10px 12px 8px 16px; border-bottom: 1px solid var(--kl-line); }
+.kl-sheet-head small { font-size: 11px; color: var(--kl-dim); }
+.kl-sheet-head h2 { margin: 0; font: 700 17px 'Cinzel', serif; color: var(--kl-purple-hi); }
+.kl-sheet-body { overflow: auto; padding: 10px 16px 14px; }
+.kl-sheet-foot { display: flex; justify-content: center; padding: 8px 16px 12px; border-top: 1px solid var(--kl-line); }
+.kl-h3 { margin: 6px 0 6px; font: 700 13px 'Cinzel', serif; color: var(--kl-gold); }
+.kl-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+.kl-table th { text-align: left; font-size: 10.5px; color: var(--kl-dim); text-transform: uppercase; letter-spacing: .5px; padding: 4px 6px; }
+.kl-table td { padding: 5px 6px; border-top: 1px solid rgba(186, 132, 255, .12); }
+.kl-table td small { color: var(--kl-dim); font-size: 11px; }
+.kl-table tr.z-promote td:first-child { box-shadow: inset 3px 0 0 var(--kl-up); }
+.kl-table tr.z-relegate td:first-child { box-shadow: inset 3px 0 0 var(--kl-down); }
+.kl-table tr.is-me td { background: rgba(166, 107, 255, .22); font-weight: 700; }
+.kl-t-place { display: flex; align-items: center; gap: 4px; white-space: nowrap; }
+.kl-t-place img { width: 34px; }
+.kl-t-lp { text-align: right; font-variant-numeric: tabular-nums; }
+.kl-table .win { color: var(--kl-up); }
+.kl-table .loss { color: var(--kl-down); }
+.kl-table .m-promote { color: var(--kl-up); }
+.kl-table .m-relegate { color: var(--kl-down); }
+.kl-key { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin: 0 4px 0 10px; vertical-align: -1px; }
+.kl-key.z-promote { background: var(--kl-up); }
+.kl-key.z-relegate { background: var(--kl-down); }
+.kl-rws { display: flex; flex-wrap: wrap; gap: 6px; }
+.kl-rw { display: inline-flex; align-items: center; gap: 4px; padding: 3px 8px 3px 4px; border-radius: 99px; background: rgba(255, 255, 255, .06); font-weight: 700; font-size: 12.5px; }
+.kl-rw img { width: 20px; height: 20px; object-fit: contain; }
+.kl-rw small { font-weight: 500; color: var(--kl-dim); font-size: 10.5px; }
+.kl-warn { color: var(--kl-down); }
+.kl-team-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+.kl-team-card.is-picked { border-color: var(--kl-gold); box-shadow: 0 0 0 1px var(--kl-gold) inset; }
+.kl-team-card[disabled] { opacity: .45; cursor: not-allowed; }
+
+/* lineup / VS */
+.kl-vs { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 6px; padding: 6px 0; }
+.kl-vs-side { display: flex; flex-direction: column; align-items: center; gap: 6px; text-align: center; }
+.kl-vs-side small { font-size: 12px; color: var(--kl-dim); }
+.kl-vs-side.is-opp small { color: var(--kl-purple-hi); }
+.kl-vs-faces { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; }
+.kl-vs-faces img { width: 46px; height: 46px; border-radius: 8px; object-fit: cover; background: #1a1026; border: 1px solid rgba(240, 207, 122, .5); }
+.kl-vs-side.is-opp .kl-vs-faces img { border-color: rgba(214, 179, 255, .6); }
+.kl-vs-bar { width: 120px; height: 52px; background: url('../assets/ui/kage-league/vs.webp') center / 300% auto no-repeat; filter: drop-shadow(0 0 10px rgba(186, 132, 255, .8)); }
+
+/* season report */
+.kl-report { position: relative; display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 8px 0 4px; text-align: center;
+  background: url('../assets/ui/kage-league/ring_gold.webp') center 20% / 90% auto no-repeat; }
+.kl-report.is-relegate { background-image: url('../assets/ui/kage-league/ring_silver.webp'); }
+.kl-report-kunai { width: 120px; }
+.kl-report-place { font: 700 34px/1 'Cinzel', serif; color: #fff; text-shadow: 0 2px 12px rgba(166, 107, 255, .9); }
+.kl-report-place small { display: block; font: 500 12px 'Inter', sans-serif; color: var(--kl-dim); margin-top: 4px; }
+.kl-report-move { font-weight: 700; color: var(--kl-gold); }
+.kl-report.is-promote .kl-report-move { color: var(--kl-up); }
+.kl-report.is-relegate .kl-report-move { color: var(--kl-down); }
+.kl-report-title { font-size: 13px; }
+.kl-report-stats { font-size: 12px; color: var(--kl-dim); }
+
+/* ---------- smaller screens ---------- */
+@media (max-height: 420px) {
+  .kl-head { min-height: 42px; }
+  .kl-scroll { height: 48px; flex-basis: 250px; padding: 3px 38px 1px; }
+  .kl-title { font-size: 13px; }
+  .kl-me-num { font-size: 24px; }
+  .kl-fl { max-height: 36px; font-size: 11px; }
+  .kl-opp-team img { width: 30px; height: 30px; }
+  .kl-gem { min-height: 36px; min-width: 100px; }
+}
+@media (max-width: 760px) and (orientation: portrait) {
+  body.page-kage-league { overflow: auto; }
+  .kl-page { height: auto; }
+  .kl-mid { grid-template-columns: 1fr; }
+  .kl-tower { min-height: 220px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .kl-potion.is-nope { animation: none; }
+  body.page-kage-league { transition: none; }
+}

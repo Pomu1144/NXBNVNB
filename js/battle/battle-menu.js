@@ -110,6 +110,10 @@
             <span>Auto battle</span>
             <button type="button" class="bm-toggle${bm?.turns?.autoMode ? ' is-on' : ''}" data-act="auto">${bm?.turns?.autoMode ? 'On' : 'Off'}</button>
           </div>
+          ${window.BattleScars ? `<div class="bm-row">
+            <span>Field marks</span>
+            <button type="button" class="bm-toggle${window.BattleScars.isEnabled() ? ' is-on' : ''}" data-act="scars">${window.BattleScars.isEnabled() ? 'On' : 'Off'}</button>
+          </div>` : ''}
         </div>
         <div class="bm-foot">
           <button type="button" class="jjk-btn bm-retreat" data-act="retreat">Retreat</button>
@@ -143,6 +147,13 @@
       e.currentTarget.classList.toggle('is-on', bm2.turns.autoMode);
       e.currentTarget.textContent = bm2.turns.autoMode ? 'On' : 'Off';
       syncQuick();
+    });
+    // Marks jutsu leave on the battlefield (js/battle/battle-scars.js)
+    panel.querySelector('[data-act="scars"]')?.addEventListener('click', e => {
+      const on = !window.BattleScars.isEnabled();
+      window.BattleScars.setEnabled(on);
+      e.currentTarget.classList.toggle('is-on', on);
+      e.currentTarget.textContent = on ? 'On' : 'Off';
     });
     panel.querySelector('[data-act="resume"]').addEventListener('click', close);
     panel.querySelector('[data-act="retreat"]').addEventListener('click', e => confirmRetreat(e.currentTarget));
