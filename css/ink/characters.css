@@ -94,6 +94,12 @@ html[data-skin="ink"] body.page-characters .char-modal-art > .a7 {
   transform: translateX(-50%);
   -webkit-mask-image: none; mask-image: none; filter: none;
 }
+/* edge-to-edge (remade) art: show the whole painting, centred, no face zoom */
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-characters .char-modal-art.is-full-bleed,
+html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compact body.page-characters .char-modal-art.is-full-bleed { --ia-zoom: 1; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-characters .char-modal-art.is-full-bleed #char-modal-img {
+  left: 50%; top: 50%; object-position: 50% 50%; transform: translate(-50%, -50%);
+}
 /* fades: right edge into the record, bottom for the power, top/left for the keys */
 html[data-skin="ink"] body.page-characters .char-modal-art::after {
   z-index: 2; box-shadow: none;
