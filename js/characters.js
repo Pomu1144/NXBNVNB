@@ -17,16 +17,6 @@
   MODAL_IMG?.addEventListener("load", () => {
     MODAL_IMG.closest(".char-modal-art")?.style.setProperty("--art", `url("${MODAL_IMG.currentSrc || MODAL_IMG.src}")`);
   });
-  // Art painted edge to edge (data/full-bleed-art.json, tools/art/full_bleed.py)
-  // is shown whole; the original cards, drawn small on a shared backdrop, are
-  // zoomed in on the unit (css/ink/characters.css --ia-zoom).
-  let FULL_BLEED = null;
-  fetch("data/full-bleed-art.json").then(r => r.ok ? r.json() : []).catch(() => [])
-    .then(list => { FULL_BLEED = new Set(list); markFullBleed(); });
-  function markFullBleed() {
-    const src = (MODAL_IMG?.getAttribute("src") || "").split("?")[0];
-    MODAL_IMG?.closest(".char-modal-art")?.classList.toggle("is-full-bleed", !!FULL_BLEED && FULL_BLEED.has(src));
-  }
   const MODAL_CLOSE   = document.getElementById("char-modal-close");
 
   const NP_NAME       = document.getElementById("nameplate-name");
@@ -442,7 +432,8 @@
 
     MODAL_IMG.src = safeStr(art.full, art.portrait);
     MODAL_IMG.alt = `${c.name} full artwork`;
-    markFullBleed();
+    // edge-to-edge art is shown whole (js/full-bleed-art.js)
+    window.FullBleedArt?.mark(MODAL_IMG.closest(".char-modal-art"), MODAL_IMG.getAttribute("src"));
     mountModalAnim(c, tier, art);
     // Skins button over the art (js/skin-picker.js); hidden for units without skins
     window.SkinPicker?.mount(MODAL_ART, { charId: inst.charId, name: c.name, portrait: safeStr(art.portrait, c.portrait) });

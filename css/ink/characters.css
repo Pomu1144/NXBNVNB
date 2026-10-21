@@ -857,6 +857,8 @@ html[data-skin="ink"] body.page-characters .ink-pv-art img {
   position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 12%;
   -webkit-mask-image: linear-gradient(180deg, #000 62%, transparent); mask-image: linear-gradient(180deg, #000 62%, transparent);
 }
+/* edge-to-edge (remade) art: the whole square across the top, no side crop */
+html[data-skin="ink"] body.page-characters .ink-pv-art.is-full-bleed img { object-fit: contain; object-position: 50% 0; }
 html[data-skin="ink"] body.page-characters .ink-pv-body { position: relative; flex: none; padding: 0 26px max(18px, var(--safe-b, 0px)) 24px; margin-top: -54px; }
 html[data-skin="ink"] body.page-characters .ink-pv-fav {
   position: absolute; right: 22px; top: -6px; width: 32px; height: 32px; padding: 7px; border: 0; border-radius: 0; cursor: pointer;
