@@ -713,6 +713,11 @@ body.page-teams {
   max-height: 300px;
   object-fit: cover;
 }
+/* edge-to-edge (remade) art is shown whole (js/full-bleed-art.js) */
+#preview-img.is-full-bleed {
+  max-height: none;
+  aspect-ratio: 1;
+}
 
 .preview-info {
   padding: 15px;

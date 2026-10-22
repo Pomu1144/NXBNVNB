@@ -190,6 +190,7 @@
     const img = $p(".ink-pv-art img");
     const art = s.art.full || s.art.portrait || c.full || c.portrait;
     if (img.getAttribute("src") !== art) img.src = art;
+    window.FullBleedArt?.mark(img.parentElement, art);
     img.alt = `${c.name} art`;
     $p(".ink-pv-name").textContent = c.name || "";
     $p(".ink-pv-quote").textContent = q.en ? `“${q.en}”` : (c.version || "");

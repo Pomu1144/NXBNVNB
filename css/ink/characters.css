@@ -94,6 +94,25 @@ html[data-skin="ink"] body.page-characters .char-modal-art > .a7 {
   transform: translateX(-50%);
   -webkit-mask-image: none; mask-image: none; filter: none;
 }
+/* edge-to-edge (remade) art: show the whole painting, centred, no face zoom */
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-characters .char-modal-art.is-full-bleed,
+html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compact body.page-characters .char-modal-art.is-full-bleed { --ia-zoom: 1; }
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-characters .char-modal-art.is-full-bleed #char-modal-img {
+  left: 50%; top: 50%; object-position: 50% 50%; transform: translate(-50%, -50%);
+}
+/* original art with a known unit box (js/full-bleed-art.js): zoom in only as
+   far as the whole unit still fits, centred on it, never past the edges */
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-characters .char-modal-art.has-art-box {
+  --ia-cover: max(100cqw, 100cqh);
+  --ia-side: clamp(var(--ia-cover),
+    min(100cqw / (var(--abw) + 0.08), 100cqh / (var(--abh) + 0.1)),
+    var(--ia-cover) * var(--ia-zoom));
+}
+html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-characters .char-modal-art.has-art-box #char-modal-img {
+  left: clamp(100cqw - var(--ia-side), 50cqw - var(--ia-side) * var(--abx), 0px);
+  top: clamp(100cqh - var(--ia-side), 50cqh - var(--ia-side) * var(--aby), 0px);
+  transform: none;
+}
 /* fades: right edge into the record, bottom for the power, top/left for the keys */
 html[data-skin="ink"] body.page-characters .char-modal-art::after {
   z-index: 2; box-shadow: none;
@@ -850,6 +869,16 @@ html[data-skin="ink"] body.page-characters .ink-pv-art { position: relative; fle
 html[data-skin="ink"] body.page-characters .ink-pv-art img {
   position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 12%;
   -webkit-mask-image: linear-gradient(180deg, #000 62%, transparent); mask-image: linear-gradient(180deg, #000 62%, transparent);
+}
+/* edge-to-edge (remade) art: the whole square across the top, no side crop */
+html[data-skin="ink"] body.page-characters .ink-pv-art.is-full-bleed img { object-fit: contain; object-position: 50% 0; }
+/* original art: cover the panel, centred on the unit box instead of the top */
+html[data-skin="ink"] body.page-characters .ink-pv-art.has-art-box { container-type: size; }
+html[data-skin="ink"] body.page-characters .ink-pv-art.has-art-box img {
+  --pv-side: max(100cqw, 100cqh);
+  inset: auto; width: var(--pv-side); height: var(--pv-side); max-width: none; object-fit: fill;
+  left: clamp(100cqw - var(--pv-side), 50cqw - var(--pv-side) * var(--abx), 0px);
+  top: clamp(100cqh - var(--pv-side), 50cqh - var(--pv-side) * var(--aby), 0px);
 }
 html[data-skin="ink"] body.page-characters .ink-pv-body { position: relative; flex: none; padding: 0 26px max(18px, var(--safe-b, 0px)) 24px; margin-top: -54px; }
 html[data-skin="ink"] body.page-characters .ink-pv-fav {

@@ -1181,6 +1181,7 @@
     const art = resolveTierArt(char, tier);
 
     previewImg.src = art.full || art.portrait;
+    window.FullBleedArt?.mark(previewImg, previewImg.getAttribute("src"));
     previewName.textContent = char.name;
     if (previewVersion) previewVersion.textContent = char.version || "";
     previewStars.innerHTML = renderStars(starsFromTier(tier));

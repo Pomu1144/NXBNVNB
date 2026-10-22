@@ -432,6 +432,8 @@
 
     MODAL_IMG.src = safeStr(art.full, art.portrait);
     MODAL_IMG.alt = `${c.name} full artwork`;
+    // edge-to-edge art is shown whole (js/full-bleed-art.js)
+    window.FullBleedArt?.mark(MODAL_IMG.closest(".char-modal-art"), MODAL_IMG.getAttribute("src"));
     mountModalAnim(c, tier, art);
     // Skins button over the art (js/skin-picker.js); hidden for units without skins
     window.SkinPicker?.mount(MODAL_ART, { charId: inst.charId, name: c.name, portrait: safeStr(art.portrait, c.portrait) });
