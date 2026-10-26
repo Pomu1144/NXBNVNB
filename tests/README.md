@@ -50,6 +50,7 @@ benign).
 | `sprite-registry.spec.js` | `REGISTRY` / `SHARED` in `js/sprite-player.js`: every folder resolves idle/run/attack/hit/ko (+ jutsu/ultimate where the family has them), sheet JSON is well-formed |
 | `battle.spec.js` | seeded team of animated units on a non-story mission: units render, forced win through every wave shows the results screen and pays rewards; one real pointer-drag attack damages an enemy |
 | `economy.spec.js` | shop ramen purchase (ryo and legacy `pearls` price) deducts and grants; refused when broke; single/multi summon deducts pearls and adds valid characters |
+| `summon-reveal.spec.js` | 10-pull reveal: ten face-down papers dealt with their decoded tier art (600×767 `scroll_{2..7}.webp`), Skip opens all, results panel + Continue show; screenshots of both stages attached to the report |
 | `save-compat.spec.js` | an old save (legacy ids such as `ramen_5star`, `pearls`, retired scrolls, `stars` inventory) converts on load without errors |
 | `mobile-layout.spec.js` | phone only: village right banner panel and bottom icon bar fully on screen and not overlapping at 932x375 and 932x340 |
 
