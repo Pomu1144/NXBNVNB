@@ -324,8 +324,8 @@ html:not(.is-compact) .summon-modal .result-grid.single .sr-slot.is-open:has(> .
 .summon-modal .sr-slot.is-flash .sr-paper-body,
 .summon-modal .sr-slot.is-open .sr-paper-body { animation: none; }
 
-/* Paper art (600×767, transparent: one sheet with a slightly lifted
-   bottom-left corner) or its placeholder, full slot width. Two stacked tight
+/* Paper art (600×767, transparent: one dossier sheet with a curled
+   bottom-right corner) or its placeholder, full slot width. Two stacked tight
    shadows give the sheet an edge and sit it on the stage. */
 .summon-modal .sr-paper-art,
 .summon-modal .sr-paper-ph,
