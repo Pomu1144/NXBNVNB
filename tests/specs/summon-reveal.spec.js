@@ -44,3 +44,34 @@ test('multi summon shows the paper reveal and the results', async ({ page }, tes
 
   errors.assertClean('summon reveal');
 });
+
+// One paper per star tier, 7★ down to 2★, dealt through the game's own
+// displayResults, so every paper style can be compared side by side.
+test('every paper tier deals with its own art', async ({ page }, testInfo) => {
+  const errors = collectErrors(page);
+  await seedSave(page);
+  await page.goto('/summon.html');
+  await waitForLoader(page);
+  await page.waitForFunction(() => window.SummonUI && window.SummonReveal && window.loadCharactersData);
+
+  const tiers = await page.evaluate(async () => {
+    const all = await window.loadCharactersData();
+    const results = [7, 6, 5, 4, 3, 2].map(r => ({
+      character: all.find(c => Number(c.rarity) === r),
+      summonData: { rarity: 'gold', isFeatured: false },
+      isNew: false,
+    }));
+    window.SummonUI.displayResults(results);
+    return results.map(r => Number(r.character.rarity));
+  });
+  expect(tiers).toEqual([7, 6, 5, 4, 3, 2]);
+
+  for (const t of tiers) {
+    const img = page.locator(`#result-grid .sr-slot.tier-${t} .sr-paper.has-art .sr-paper-art`);
+    await expect(img).toHaveAttribute('src', new RegExp(`scroll_${t}\\.webp$`));
+  }
+  await expect(page.locator('.summon-modal.sr-dealt')).toBeAttached();
+  await page.waitForTimeout(1_200);
+  await testInfo.attach('paper-tiers', { body: await page.screenshot(), contentType: 'image/png' });
+  errors.assertClean('paper tiers');
+});
