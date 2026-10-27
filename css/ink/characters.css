@@ -484,8 +484,8 @@ html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compa
   grid-template-columns: minmax(0, 55fr) minmax(0, 45fr) !important;
 }
 html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compact body.page-characters .char-modal-art {
-  --ia-l: max(10px, var(--safe-l, 0px)); --ia-t: max(8px, var(--safe-t, 0px));
-  --ia-btn: 28px; --ia-ic: 26px; --ia-gap: 4px; --ia-zoom: 1.38;
+  --ia-l: max(10px, var(--safe-l, 0px)); --ia-t: max(12px, var(--safe-t, 0px));
+  --ia-btn: 32px; --ia-ic: 26px; --ia-gap: 4px; --ia-zoom: 1.38;
 }
 html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-characters .ink-dossier-head { gap: 12px; }
 html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-characters .ink-dossier-cap { font-size: 7.5px; letter-spacing: 0.44em; padding-bottom: 4px; background-size: 10px 1px; }
@@ -564,10 +564,19 @@ html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-characters .gr
 html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-characters .no-requirements { padding-top: 4px; font-size: 10.5px; }
 html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-characters .material-name { font-size: 11px; }
 html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compact body.page-characters .char-modal-info .char-modal-actions {
-  top: max(8px, var(--safe-t, 0px)); right: max(12px, var(--safe-r, 0px));
+  top: max(12px, var(--safe-t, 0px)); right: max(12px, var(--safe-r, 0px));
 }
 html[data-skin="ink"]:not(._g):not(._l):not(._s).is-mobile.is-landscape.is-compact body.page-characters .char-close-btn.jjk-btn {
-  height: 24px !important; padding: 0 9px 0 7px !important; gap: 5px; font-size: 7.5px !important; letter-spacing: 0.2em;
+  height: 30px !important; padding: 0 12px 0 9px !important; gap: 6px; font-size: 9px !important; letter-spacing: 0.2em;
+}
+/* Close and back sit near the top edge, where landscape iPhone Safari often
+   takes a tap for its own toolbar: give both a 44px touch target (invisible
+   halo past the drawn key) so a quick tap still lands. */
+html[data-skin="ink"].is-mobile body.page-characters .char-close-btn.jjk-btn,
+html[data-skin="ink"].is-mobile body.page-characters .ink-dossier-back { position: relative; }
+html[data-skin="ink"].is-mobile body.page-characters .char-close-btn.jjk-btn::after,
+html[data-skin="ink"].is-mobile body.page-characters .ink-dossier-back::after {
+  content: ''; position: absolute; inset: -7px;
 }
 html[data-skin="ink"].is-mobile.is-landscape.is-compact body.page-characters .char-close-btn.jjk-btn::before { font-size: 13px; }
 

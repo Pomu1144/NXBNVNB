@@ -80,6 +80,15 @@ html.is-mobile [role="button"],
 html.is-mobile [onclick] {
   touch-action: manipulation;
 }
+/* touch-action is not inherited and stops at scroll containers (a sheet's tab
+   panel, a list), so the rules above leave most of a modal double-tap
+   zoomable: quick taps on iPhone Safari zoom the page and push fixed controls
+   such as Close off screen. Every element opts out of double-tap zoom (pan and
+   pinch still work); :where() keeps this at zero specificity, so an explicit
+   touch-action (drag areas: none) still wins. */
+:where(html.is-mobile) :where(*) {
+  touch-action: manipulation;
+}
 /* Sticky :hover transforms feel broken on touch; neutralise the common ones */
 @media (hover: none) {
   html.is-mobile .bottom-bar .hud-button:hover:not(.active) {
