@@ -233,7 +233,7 @@
    * [{ key, name, qty, icon, fallback, kind }]. `characters` arrays become
    * character items with portraits.
    */
-  let gearSeq = 0;   // every dropped gear piece gets its own tile
+  let gearSeq = 0;   // every dropped ninja tool gets its own tile
   function items(rewards) {
     const out = [];
     if (!rewards) return out;
@@ -263,15 +263,16 @@
         return;
       }
       if (k === 'gear') {
-        // Gear pieces dropped by a mission (js/gear.js roll objects)
+        // Ninja tools dropped by a mission (js/gear.js roll objects)
         const G = global.Gear;
-        (Array.isArray(v) ? v : []).forEach((it, i) => {
+        (Array.isArray(v) ? v : []).forEach(it => {
           if (!it || !G) return;
+          const d = G.dropView(it);
           out.push({
             key: `gear_${++gearSeq}`, kind: 'gear',
-            name: G.nameOf(it.slot, it.rarity, it.set), qty: 1,
-            icon: G.artOf(it.slot, it.rarity, it.set), fallback: G.iconOf(it.slot, it.rarity),
-            color: (G.TIERS[it.rarity] || {}).color, shiny: !!(G.TIERS[it.rarity] || {}).shiny
+            name: `${d.name} ${d.stars}★`, qty: 1,
+            icon: d.icon, fallback: CHEST,
+            color: d.color, shiny: d.stars >= 7
           });
         });
         return;

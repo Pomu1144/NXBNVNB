@@ -382,3 +382,12 @@ html.is-mobile.is-landscape.is-compact .gp-next { padding-left: 42px; }
   .gs-row { grid-template-columns: var(--gp) 1fr; row-gap: 4px; }
   .gs-head { display: none; }
 }
+
+/* ── Ninja tools (js/tools-gear.js): round frames in the tool's star colour ── */
+.gx-tile[style*="--tc"], .gx-tile.is-empty {
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 38%, #2a2f4a, #0c0f20 70%);
+  box-shadow: inset 0 0 0 2px var(--tc, rgba(200,210,255,0.35)), 0 0 0 2px #b28a3e, 0 3px 8px rgba(0,0,0,0.65);
+}
+.gx-tile[style*="--tc"] > img { position: absolute; inset: 12%; width: 76%; height: 76%; object-fit: contain; }
+.gx-plus { position: absolute; inset: 0; display: grid; place-items: center; font: 700 24px/1 sans-serif; color: rgba(241,217,138,0.85); }

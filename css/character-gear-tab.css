@@ -1,9 +1,8 @@
 /* css/character-gear-tab.css — Equipment tab (js/character-gear-tab.js).
  * On this tab the character art is hidden and the panel becomes a starfield
- * (assets/ui/equip-cosmos/space_bg.webp). Six gear medallions sit on a
- * glowing orbit with a tick ring and a sigil: four on the outer ring, two in
- * the middle, each a gold-framed disc with its level on a pill below. The
- * totals and the selected piece sit beside the orbit. */
+ * (assets/ui/equip-cosmos/space_bg.webp). "Ninja Tool Equip": 8 round tool
+ * frames in two rows of 4 (empty ones show a "+"), the totals and the
+ * selected slot beside them, and the tool card a long press opens. */
 #tab-gear { container-type: inline-size; }
 
 /* ── The panel while the Equipment tab is open ── */
@@ -24,7 +23,7 @@ html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-characters #char-moda
 body.page-characters #char-modal.is-gear-view .char-modal-info::before,
 body.page-characters #char-modal.is-gear-view .char-modal-info::after { content: none !important; }
 #char-modal.is-gear-view .tab-panels { overflow-x: hidden; }
-/* the panel list scrolls; the tab itself must not, so the orbit can stick */
+/* the panel list scrolls; the tab itself must not, so the tool grid can stick */
 #char-modal.is-gear-view #tab-gear { overflow: visible !important; }
 
 .eqp {
@@ -42,107 +41,6 @@ body.page-characters #char-modal.is-gear-view .char-modal-info::after { content:
 html[data-skin="ink"] .eqp { grid-template-columns: min(580px, 68vh, 56%) minmax(0, 1fr); }
 @container (max-width: 380px) {
   .eqp { grid-template-columns: 1fr; }
-  .eqp-orbit { justify-self: center; width: min(100%, 320px, 56vh); }
-}
-
-/* ── Orbit ── */
-.eqp-orbit {
-  position: sticky; top: 0;        /* stays in view while the side panel scrolls */
-  width: 100%;
-  min-width: 170px;
-  aspect-ratio: 1 / 1;
-  container-type: inline-size;
-  justify-self: center;
-}
-.eqp-ring, .eqp-ticks, .eqp-sigil, .eqp-spark {
-  position: absolute;
-  pointer-events: none;
-  background: center / contain no-repeat;
-}
-.eqp-ring  { inset: 4%;  background-image: url("../assets/ui/equip-cosmos/ring.webp"); opacity: 0.7; }
-.eqp-ticks { inset: 28%; background-image: url("../assets/ui/equip-cosmos/ticks.webp"); opacity: 0.55; animation: eqp-spin 120s linear infinite; }
-.eqp-sigil { inset: 24%; background-image: url("../assets/ui/equip-cosmos/sigil.webp"); opacity: 0.3; }
-.eqp-spark { aspect-ratio: 1 / 1; transform: translate(-50%, -50%); opacity: 0.5; animation: eqp-twinkle 6s ease-in-out infinite; }
-.eqp-spark--streak, .eqp-spark--orb, .eqp-spark--dust { display: none; }   /* only a few small stars */
-.eqp-spark--spark_cross { background-image: url("../assets/ui/equip-cosmos/spark_cross.webp"); }
-.eqp-spark--sparks      { background-image: url("../assets/ui/equip-cosmos/sparks.webp"); }
-.eqp-spark--spark_big   { background-image: url("../assets/ui/equip-cosmos/spark_big.webp"); }
-.eqp-spark--streak      { background-image: url("../assets/ui/equip-cosmos/streak.webp"); }
-.eqp-spark--orb         { background-image: url("../assets/ui/equip-cosmos/orb.webp"); }
-.eqp-spark--dust        { background-image: url("../assets/ui/equip-cosmos/dust.webp"); opacity: 0.55; }
-@keyframes eqp-spin { to { transform: rotate(360deg); } }
-@keyframes eqp-twinkle { 0%, 100% { opacity: 0.3; } 50% { opacity: 0.6; } }
-
-/* ── Pieces ── */
-.eqp-piece {
-  --size: 21%;
-  position: absolute;
-  width: var(--size);
-  display: flex; flex-direction: column; align-items: center; gap: 4%;
-  padding: 0; border: 0; background: none; cursor: pointer;
-  transform: translate(-50%, -38%);
-  -webkit-tap-highlight-color: transparent;
-  z-index: 1;
-}
-.eqp--tl { left: 25%; top: 14%; }
-.eqp--tr { left: 79%; top: 23%; }
-.eqp--bl { left: 21%; top: 66%; }
-.eqp--br { left: 77%; top: 77%; }
-.eqp--il, .eqp--ir { --size: 16%; z-index: 2; }
-.eqp--il { left: 43%; top: 39%; }
-.eqp--ir { left: 58%; top: 60%; }
-
-/* gold-framed disc: starfield fill, the piece's art, the gold frame on top */
-.eqp-medal {
-  position: relative;
-  width: 100%; aspect-ratio: 1 / 1;
-  border-radius: 50%;
-  background: url("../assets/ui/equip-cosmos/medal_fill.webp") center / 92% no-repeat;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.6));
-  transition: transform 0.18s ease, filter 0.18s ease;
-}
-.eqp-medal img {              /* painted piece (assets/gear/art), floating in the disc */
-  position: absolute; inset: 13%;
-  width: 74%; height: 74%;
-  object-fit: contain;
-  z-index: 2;
-  user-select: none;
-  filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.55));
-}
-.eqp-medal::after {
-  content: ''; position: absolute; inset: -4%; z-index: 3;
-  background: url("../assets/ui/equip-cosmos/medal_frame.webp") center / contain no-repeat;
-  pointer-events: none;
-}
-.eqp-medal::before {        /* tier colour halo under the frame */
-  content: ''; position: absolute; inset: 7%; border-radius: 50%;
-  box-shadow: 0 0 0 1.5px var(--tc);   /* thin rarity line inside the gold frame, no halo */
-  z-index: 1; pointer-events: none;
-}
-.eqp-piece.is-shiny .eqp-medal { filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.6)) drop-shadow(0 0 5px rgba(224, 69, 60, 0.7)); }   /* Red Shiny: a faint red edge only */
-.eqp-piece:hover .eqp-medal { transform: scale(1.04); }
-.eqp-piece.is-on .eqp-medal {
-  transform: scale(1.1);
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.6)) brightness(1.12);
-}
-.eqp-piece:focus-visible { outline: none; }
-.eqp-piece:focus-visible .eqp-medal { outline: 2px solid #fff6dc; outline-offset: 5px; }
-
-/* level pill: dark capsule with a gold rim and the gold target dot */
-.eqp-lv {
-  position: relative; z-index: 3;
-  display: inline-flex; align-items: center; gap: 0.35em;
-  padding: 0.18em 0.85em 0.18em 0.3em;
-  border-radius: 999px;
-  background: rgba(10, 10, 14, 0.9);
-  box-shadow: inset 0 0 0 1.5px rgba(229, 194, 122, 0.85), 0 2px 6px rgba(0, 0, 0, 0.6);
-  font-family: var(--ink-cinzel, serif); font-weight: 700;
-  font-size: clamp(9px, 3.6cqi, 17px);
-  letter-spacing: 0.03em; white-space: nowrap; color: #fff;
-}
-.eqp-lv i {
-  width: 1.15em; height: 1.15em; flex: none;
-  background: url("../assets/ui/equip-cosmos/dot.webp") center / contain no-repeat;
 }
 
 /* ── Side: totals + selected piece ── */
@@ -180,26 +78,9 @@ html[data-skin="ink"] .eqp { grid-template-columns: min(580px, 68vh, 56%) minmax
 .eqp-row em { font-style: normal; font-weight: 600; color: #7fe3c4; margin-left: 4px; }
 
 .eqp-detail-head { display: flex; align-items: center; gap: 12px; padding: 4px 0 8px; }
-.eqp-detail-ic {
-  position: relative; flex: none; width: 52px; height: 52px; border-radius: 50%;
-  background: url("../assets/ui/equip-cosmos/medal_fill.webp") center / cover;
-}
-.eqp-detail-ic img {
-  position: absolute; inset: 12%; width: 76%; height: 76%; object-fit: contain; display: block; z-index: 1;
-}
-.eqp-detail-ic::after {
-  content: ''; position: absolute; inset: -5%; z-index: 2;
-  background: url("../assets/ui/equip-cosmos/medal_frame.webp") center / contain no-repeat;
-}
 .eqp-detail-nm { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
 .eqp-detail-nm b { font-family: var(--ink-cinzel, serif); font-size: 14px; letter-spacing: 0.06em; color: var(--tc); }
 .eqp-detail-nm small { font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--eqp-dim); }
-.eqp-pips { display: inline-flex; gap: 4px; }
-.eqp-pips i {
-  width: 9px; height: 9px; border-radius: 50%;
-  background: var(--c, transparent);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.35);
-}
 .eqp-state { padding: 8px 0 2px; font-size: 11px; letter-spacing: 0.06em; color: var(--eqp-dim); }
 .eqp-go {
   display: flex; align-items: center; justify-content: center;
@@ -219,19 +100,7 @@ html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-characters #char-moda
   letter-spacing: 0.14em;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .eqp-ticks, .eqp-spark { animation: none; }
-  .eqp-medal { transition: none; }
-}
-
-/* ── Dropped pieces: empty slots, main + substats, the bag ── */
-.eqp-piece.is-empty .eqp-medal img { opacity: 0.22; filter: grayscale(1) brightness(1.4); }
-.eqp-piece.is-empty .eqp-lv { color: var(--eqp-dim); }
-.eqp-detail-ic.is-shiny { filter: drop-shadow(0 0 4px rgba(224, 69, 60, 0.7)); }
-.eqp-main b { color: var(--eqp-gold); font-size: 14px; }
-.eqp-sub span::before { content: '\25C6'; margin-right: 7px; font-size: 7px; color: rgba(150, 185, 255, 0.8); vertical-align: 2px; }
-.eqp-sub.is-locked span { color: rgba(214, 222, 255, 0.35); font-style: italic; letter-spacing: 0.06em; text-transform: none; }
-.eqp-sub.is-locked span::before { color: rgba(214, 222, 255, 0.25); }
+/* ── The bag ── */
 .eqp-state img { width: 14px; height: 14px; vertical-align: -2px; margin: 0 3px 0 6px; }
 .eqp-empty { margin: 6px 0; font-size: 12px; letter-spacing: 0.04em; color: var(--eqp-dim); }
 .eqp-note { margin: 6px 0 0; font-size: 11px; color: #f0c674; }
@@ -251,23 +120,6 @@ html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-characters #char-moda
   display: grid; grid-template-columns: repeat(auto-fill, minmax(62px, 1fr)); gap: 8px;
   max-height: 168px; overflow-y: auto; padding: 4px 4px 6px; margin: 0 -4px;
   scrollbar-width: thin; scrollbar-color: rgba(150, 185, 255, 0.5) transparent;
-}
-.eqp-card {
-  position: relative; aspect-ratio: 1 / 1; padding: 0; border: 0; cursor: pointer; border-radius: 10px;
-  background: url("../assets/ui/equip-cosmos/medal_fill.webp") center / cover, #0b0f24;
-  box-shadow: inset 0 0 0 2px var(--tc);
-}
-.eqp-card img { position: absolute; inset: 10%; width: 80%; height: 80%; object-fit: contain; filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.6)); }
-.eqp-card.is-shiny { box-shadow: inset 0 0 0 2px #e0453c, inset 0 0 0 4px rgba(243, 197, 82, 0.55); }
-.eqp-card.is-on { outline: 2px solid #fff3c4; outline-offset: 2px; }
-.eqp-card-lv {
-  position: absolute; left: 4px; bottom: 3px; font-family: var(--ink-cinzel, serif); font-weight: 700; font-size: 11px;
-  color: #fff; text-shadow: 0 1px 2px #000, 0 0 4px #000;
-}
-.eqp-card-main {
-  position: absolute; right: 3px; top: 3px; max-width: 70%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-  font-size: 8px; letter-spacing: 0.06em; padding: 1px 4px; border-radius: 6px; color: #fff;
-  background: rgba(6, 8, 20, 0.75);
 }
 .eqp-card-own {
   position: absolute; right: 3px; bottom: 3px; width: 16px; height: 16px; border-radius: 50%; display: grid; place-items: center;
@@ -295,34 +147,137 @@ html[data-skin="ink"]:not(._g):not(._l):not(._s) body.page-characters #char-moda
 #char-modal.is-gear-view .eqp-intro.is-done { opacity: 0; }
 #char-modal.is-gear-view .char-modal-info { z-index: 1; }
 #char-gear.is-intro .eqp { animation: eqp-in 1.6s ease both; }
-#char-gear.is-intro .eqp-orbit { animation: eqp-orbit-in 2s cubic-bezier(.2, .7, .2, 1) both; }
+#char-gear.is-intro .ntl-grid { animation: eqp-orbit-in 2s cubic-bezier(.2, .7, .2, 1) both; }
 @keyframes eqp-in { 0%, 35% { opacity: 0; } 100% { opacity: 1; } }
 @keyframes eqp-orbit-in { 0%, 30% { opacity: 0; transform: scale(0.94); } 100% { opacity: 1; transform: none; } }
 @media (prefers-reduced-motion: reduce) {
-  #char-gear.is-intro .eqp, #char-gear.is-intro .eqp-orbit { animation: none; }
+  #char-gear.is-intro .eqp, #char-gear.is-intro .ntl-grid { animation: none; }
 }
 
-/* Gear sets (js/gear.js SETS): set line on a piece, worn set bonuses, set dot on bag cards */
-.eqp-set {
-  display: flex; flex-direction: column; gap: 3px;
-  margin-top: 6px; padding: 6px 8px;
-  border-left: 2px solid var(--set);
-  background: rgba(255, 255, 255, 0.03);
+
+/* ── Ninja Tool Equip: 2 rows of 4 round frames ── */
+.ntl { --ntl-w: min(440px, 52%, calc((100vh - 190px) * 1.9)); grid-template-columns: max(240px, var(--ntl-w)) minmax(0, 1fr) !important; }
+@container (max-width: 380px) { .ntl { grid-template-columns: 1fr !important; } }
+.ntl-equip { position: sticky; top: 0; min-width: 0; }
+.ntl-title { text-align: center; }
+html.is-mobile.is-landscape .ntl-hint { display: none; }
+.ntl-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(8px, 2.4cqi, 18px);
+  padding: 4px 6px;
 }
-.eqp-set-nm { font-size: 12px; font-weight: 700; color: var(--set); }
-.eqp-set-nm i { font-style: normal; font-weight: 600; color: rgba(225, 230, 245, 0.6); margin-left: 4px; }
-.eqp-set-b { font-size: 11px; line-height: 1.35; color: rgba(225, 230, 245, 0.45); }
-.eqp-set-b b { display: inline-block; min-width: 30px; margin-right: 4px; font-weight: 700; }
-.eqp-set-b.is-on { color: rgba(240, 242, 250, 0.92); }
-.eqp-set-b.is-on b { color: var(--set); }
-.eqp-sets { display: flex; flex-direction: column; gap: 2px; margin: 4px 0 2px; }
-.eqp-setrow span { color: var(--set); }
-.eqp-setrow b { font-size: 11px; text-align: right; font-weight: 600; }
-.eqp-card { position: relative; }
-.eqp-card-set {
-  position: absolute; left: 4px; top: 4px;
-  width: 7px; height: 7px;
-  transform: rotate(45deg);
-  background: var(--set);
-  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.6);
+.ntl-slot {
+  position: relative; display: flex; flex-direction: column; align-items: center; gap: 3px;
+  padding: 0; border: 0; background: none; cursor: pointer; color: inherit;
+  -webkit-tap-highlight-color: transparent; -webkit-touch-callout: none; user-select: none; touch-action: manipulation;
+}
+/* round frame: dark disc, a gold rim, the star colour as an inner ring */
+.ntl-frame {
+  --sc: rgba(200, 210, 255, 0.35);
+  position: relative; display: block; width: 100%; aspect-ratio: 1 / 1; border-radius: 50%;
+  background: radial-gradient(circle at 50% 38%, #2a2f4a, #0c0f20 70%);
+  box-shadow:
+    inset 0 0 0 2px var(--sc),
+    inset 0 0 14px rgba(0, 0, 0, 0.7),
+    0 0 0 3px #b28a3e, 0 0 0 4px #f1d98a, 0 3px 8px rgba(0, 0, 0, 0.6);
+  transition: transform 0.15s ease, filter 0.15s ease;
+}
+.ntl-frame img {
+  position: absolute; inset: 12%; width: 76%; height: 76%; object-fit: contain;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.6)); pointer-events: none;
+}
+.ntl-plus {
+  position: absolute; inset: 0; display: grid; place-items: center;
+  font: 700 clamp(20px, 7cqi, 36px)/1 var(--g-sans, sans-serif); color: rgba(241, 217, 138, 0.85);
+  text-shadow: 0 1px 3px #000;
+}
+.ntl-slot.is-empty .ntl-frame { background: radial-gradient(circle at 50% 40%, rgba(40, 48, 80, 0.75), rgba(8, 10, 24, 0.85) 70%); }
+.ntl-slot:hover .ntl-frame { transform: scale(1.04); }
+.ntl-slot.is-on .ntl-frame { transform: scale(1.08); filter: brightness(1.15); box-shadow:
+  inset 0 0 0 2px var(--sc), inset 0 0 14px rgba(0, 0, 0, 0.7),
+  0 0 0 3px #b28a3e, 0 0 0 4px #fff3c4, 0 0 14px rgba(241, 217, 138, 0.55); }
+.ntl-slot:focus-visible { outline: none; }
+.ntl-slot:focus-visible .ntl-frame { outline: 2px solid #fff6dc; outline-offset: 6px; }
+.ntl-stars { color: #f3c552; letter-spacing: -0.05em; text-shadow: 0 1px 2px #000; white-space: nowrap; }
+.ntl-slot-st { font-size: clamp(7px, 2.2cqi, 11px); line-height: 1; }
+.ntl-maga-n {
+  position: absolute; right: -2px; bottom: -2px; min-width: 17px; height: 17px; padding: 0 4px; border-radius: 9px;
+  display: grid; place-items: center; font: 700 10px/1 var(--g-sans, sans-serif); color: #fff;
+  background: #6b3fb0; box-shadow: 0 0 0 1.5px #f1d98a;
+}
+.ntl-hint { margin: 10px 0 0; text-align: center; font-size: 10.5px; letter-spacing: 0.06em; color: var(--eqp-dim); }
+
+/* side panel: the selected tool's head */
+.ntl-head .ntl-frame { flex: none; width: 52px; }
+.ntl-head small .ntl-stars { letter-spacing: 0; }
+.ntl-cards { grid-template-columns: repeat(auto-fill, minmax(58px, 1fr)); }
+.ntl-card {
+  position: relative; padding: 6px; border: 0; border-radius: 10px; cursor: pointer; background: rgba(10, 14, 34, 0.55);
+  -webkit-touch-callout: none; user-select: none; touch-action: manipulation;
+}
+.ntl-card .ntl-frame { box-shadow: inset 0 0 0 2px var(--sc), inset 0 0 10px rgba(0, 0, 0, 0.7), 0 0 0 2px #b28a3e; }
+.ntl-card.is-on { outline: 2px solid #fff3c4; outline-offset: 1px; }
+.ntl-card-st {
+  position: absolute; left: 3px; bottom: 2px; font: 700 10px/1 var(--g-sans, sans-serif); color: #f3c552;
+  text-shadow: 0 1px 2px #000, 0 0 3px #000;
+}
+
+/* ── Tool card (long press): parchment, slot stats around the tool ── */
+.ntl-pop {
+  position: fixed; inset: 0; z-index: 4000; display: grid; place-items: center; padding: 12px;
+  background: rgba(0, 0, 0, 0.55);
+  animation: ntl-fade 0.15s ease both;
+}
+@keyframes ntl-fade { from { opacity: 0; } }
+.ntl-pop-card {
+  position: relative; width: min(560px, 100%); max-height: calc(100vh - 24px); overflow-y: auto;
+  padding: 14px 18px 14px; border-radius: 6px; color: #3a2a16;
+  background: linear-gradient(180deg, #f3e6c4, #e6d3a3);
+  box-shadow: inset 0 0 0 2px #8a6a36, inset 0 0 0 5px #f6ecd0, inset 0 0 0 6px #b0905a, 0 10px 30px rgba(0, 0, 0, 0.7);
+  font-family: var(--g-sans, sans-serif);
+}
+.ntl-x {
+  position: absolute; right: 8px; top: 8px; width: 30px; height: 30px; border-radius: 50%; border: 2px solid #fff; cursor: pointer;
+  font: 700 18px/1 var(--g-sans, sans-serif); color: #fff; background: #c3332b; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+.ntl-pop-title { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 0 34px 8px; text-align: center; }
+.ntl-pop-title b { font-family: var(--ink-cinzel, serif); font-size: 17px; letter-spacing: 0.04em; color: #2b1d0c; }
+.ntl-pop-title .ntl-stars { font-size: 13px; }
+.ntl-pop-body { display: grid; grid-template-columns: 1fr 96px 1fr; gap: 8px 10px; align-items: center; }
+.ntl-col { display: flex; flex-direction: column; gap: 6px; }
+.ntl-stat {
+  display: flex; align-items: center; justify-content: space-between; gap: 6px;
+  min-height: 30px; padding: 4px 10px; border-radius: 15px;
+  background: linear-gradient(180deg, #4a3f36, #2c241e); color: #fff;
+  box-shadow: inset 0 0 0 1px rgba(255, 230, 170, 0.35);
+}
+.ntl-stat b { font-size: 13px; }
+.ntl-stat span { font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: #e8d7a8; text-align: right; }
+.ntl-core .ntl-frame { width: 96px; }
+.ntl-pop-row { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 10px; margin-top: 10px; padding-top: 8px; border-top: 1px solid rgba(120, 90, 40, 0.35); }
+.ntl-lbl { font-family: var(--ink-cinzel, serif); font-weight: 700; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: #6a4a1c; }
+.ntl-whos { display: flex; flex-wrap: wrap; gap: 4px; }
+.ntl-who { padding: 2px 8px; border-radius: 10px; font-size: 11px; color: #fff; background: #5a4630; }
+.ntl-who.is-any { background: #4f6b3a; }
+.ntl-socks { display: flex; gap: 8px; }
+.ntl-sock, .ntl-gem {
+  --c: #8a6a36;
+  position: relative; width: 38px; height: 38px; padding: 0; border-radius: 50%; cursor: pointer;
+  border: 2px dashed #8a6a36; background: rgba(255, 255, 255, 0.35);
+  font: 700 20px/1 var(--g-sans, sans-serif); color: #8a6a36;
+}
+.ntl-sock.is-picked { border-style: solid; border-color: #c3332b; color: #c3332b; background: #fff6dc; }
+.ntl-sock.is-filled, .ntl-gem { border: 2px solid var(--c); background: #1a1626; }
+.ntl-sock img, .ntl-gem img { position: absolute; inset: 3px; width: calc(100% - 6px); height: calc(100% - 6px); object-fit: contain; }
+.ntl-sock i, .ntl-gem i {
+  position: absolute; right: -3px; bottom: -3px; min-width: 14px; height: 14px; border-radius: 7px;
+  font: 700 9px/14px var(--g-sans, sans-serif); font-style: normal; color: #fff; background: var(--c);
+}
+.ntl-gem em { position: absolute; left: -2px; top: -6px; font: 700 9px/1 var(--g-sans, sans-serif); font-style: normal; color: #3a2a16; }
+.ntl-mbonus { flex: 1 1 auto; font-size: 11px; color: #4a3a20; }
+.ntl-one { margin: 0 !important; height: 30px !important; padding: 0 14px !important; border: 0; cursor: pointer; }
+.ntl-mpick { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; padding: 10px; border-radius: 6px; background: rgba(120, 90, 40, 0.15); }
+.ntl-mpick .eqp-empty { color: #6a4a1c; }
+@media (max-width: 520px) {
+  .ntl-pop-body { grid-template-columns: 1fr 1fr; }
+  .ntl-core { grid-column: 1 / -1; grid-row: 1; justify-self: center; }
 }
