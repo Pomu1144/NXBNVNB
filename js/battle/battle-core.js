@@ -146,7 +146,7 @@
       // Ninja Road floor (js/battle/battle-ninja-road.js): consumes its flag
       const ninjaRoad = !isArenaBattle ? (window.BattleNinjaRoad?.take() || null) : null;
       // Music starts while the stage loads; boss fights switch below
-      window.AudioManager?.playMusic(isArenaBattle ? "arena" : "battle");
+      window.AudioManager?.playMusic(isArenaBattle ? "arena_battle" : "battle");
       const missionId = localStorage.getItem("currentMissionId") || "m_001";
       const preferredDifficulty = localStorage.getItem("currentDifficulty") || "C";
 

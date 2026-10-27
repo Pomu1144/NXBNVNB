@@ -19,23 +19,32 @@
    *   { master, music, sfx, muted, musicEnabled, sfxMuted }
    */
 
-  const MUSIC_DIR = 'assets/audio/music/';
+  const MUSIC_DIR = 'assets/audio/';
 
-  // Loop tracks carry a copy of the loop's tail before loopStart and of its
-  // head after loopEnd, so any window of (loopEnd - loopStart) loops cleanly
-  // whatever MP3 decoder delay the browser does or doesn't trim.
+  // The original game's BGM (assets/audio/original/music, from the IPA),
+  // rebuilt as loop files by tools/audio/make_music_loops.py: each carries a
+  // copy of the loop's tail before loopStart and of its head after loopEnd, so
+  // any window of (loopEnd - loopStart) loops cleanly whatever MP3 decoder
+  // delay the browser does or doesn't trim. Results are the original jingles.
   const MUSIC_TRACKS = {
-    title:   { file: 'title.mp3',   loopStart: 0.25, loopEnd: 76.0395 },
-    village: { file: 'village.mp3', loopStart: 0.25, loopEnd: 57.85 },
-    battle:  { file: 'battle.mp3',  loopStart: 0.25, loopEnd: 45.9643 },
-    boss:    { file: 'boss.mp3',    loopStart: 0.25, loopEnd: 60.25 },
-    summon:  { file: 'summon.mp3',  loopStart: 0.25, loopEnd: 48.25 },
-    arena:   { file: 'arena.mp3',   loopStart: 0.25, loopEnd: 55.9022 },
-    shop:    { file: 'shop.mp3',    loopStart: 0.25, loopEnd: 45.9643 },
-    victory: { file: 'victory.mp3', loop: false },
-    defeat:  { file: 'defeat.mp3',  loop: false }
+    title:        { file: 'music/title.mp3',        loopStart: 0.25, loopEnd: 48.25 },   // BGM_2_tittle
+    home:         { file: 'music/home.mp3',         loopStart: 0.25, loopEnd: 48.25 },   // BGM_1_menu_home
+    arena:        { file: 'music/arena.mp3',        loopStart: 0.25, loopEnd: 48.25 },   // BGM_3_menu_pvp
+    arena_battle: { file: 'music/arena_battle.mp3', loopStart: 0.25, loopEnd: 43.327 },  // BGM_4_battle_pvp
+    battle:       { file: 'music/battle.mp3',       loopStart: 0.25, loopEnd: 43.327 },  // BGM_5_battle_normal
+    boss:         { file: 'music/boss.mp3',         loopStart: 0.25, loopEnd: 39.523 },  // BGM_6_battle_boss
+    summon:       { file: 'music/summon.mp3',       loopStart: 0.25, loopEnd: 24.74 },   // BGM_7_Gasha
+    discipline:   { file: 'music/discipline.mp3',   loopStart: 0.25, loopEnd: 39.274 },  // BGM_008_discipline
+    tension:      { file: 'music/tension.mp3',      loopStart: 0.25, loopEnd: 27.25 },   // BGM_009_tension
+    intrigue:     { file: 'music/intrigue.mp3',     loopStart: 0.25, loopEnd: 27.679 },  // BGM_010_intrigue
+    sorrow:       { file: 'music/sorrow.mp3',       loopStart: 0.25, loopEnd: 32.25 },   // BGM_011_sorrow
+    battle_event: { file: 'music/battle_event.mp3', loopStart: 0.25, loopEnd: 49.481 },  // BGM_012_battle_event
+    victory:      { file: 'original/jingles/JG_3_mission_clear.mp3', loop: false },
+    defeat:       { file: 'original/jingles/JG_4_mission_fail.mp3',  loop: false }
   };
-  const MUSIC_ALIASES = { menu: 'shop', login: 'title', index: 'title' };
+  // The village and every menu page share the home theme (one track name, so
+  // it carries on across pages instead of restarting).
+  const MUSIC_ALIASES = { village: 'home', shop: 'home', menu: 'home', login: 'title', index: 'title' };
 
   // Page -> track. Unlisted pages get 'menu'. null = the page picks its own
   // track in code (battle.html: battle / arena / boss via BattleCore).
@@ -362,9 +371,17 @@
      * iOS (and autoplay-blocking browsers) only start audio inside a gesture.
      */
     setupMobileUnlock() {
+      // iOS: Web Audio follows the ring/silent switch unless the page asks for
+      // the playback session (Safari 17+), so music was silent on muted phones.
+      try { if (navigator.audioSession) navigator.audioSession.type = 'playback'; } catch (e) { /* older Safari */ }
+      // Stays armed for the whole page: iOS also suspends the context after a
+      // call, Siri or an app switch ('interrupted'), and only a gesture can
+      // resume it again.
       const events = ['pointerdown', 'touchend', 'click', 'keydown'];
+      let unlocked = false;
       const done = () => {
-        events.forEach((ev) => document.removeEventListener(ev, unlock, true));
+        if (unlocked) return;
+        unlocked = true;
         console.log('[AudioManager] Audio unlocked');
       };
       const unlock = () => {
