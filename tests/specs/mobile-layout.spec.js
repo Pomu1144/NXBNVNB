@@ -1,6 +1,6 @@
 // 7. Mobile layout guard (phone project): village.html in short landscape.
 const { test, expect } = require('@playwright/test');
-const { seedSave, collectErrors, waitForLoader, dismissLoginBonus } = require('../helpers');
+const { seedSave, invEntry, collectErrors, waitForLoader, dismissLoginBonus } = require('../helpers');
 
 // Safari with and without its bars (932x375 / 932x340) and full-screen
 // home-screen apps on 430- and 390-tall iPhones.
@@ -92,6 +92,50 @@ test.describe('summon page on landscape phones', () => {
       expect(rail.height, 'banner list visible').toBeGreaterThan(80);
       expect(rail.bottom, 'banner list above the bottom bar').toBeLessThanOrEqual(bar.top + 1);
       errors.assertClean();
+    });
+  }
+});
+
+// Character sheet on a landscape phone: quick taps must not double-tap zoom
+// the page (iPhone Safari would push Close off screen), and the Ink Close /
+// back keys near the top edge keep a 44px touch target.
+test.describe('character sheet on landscape phones', () => {
+  test.beforeEach(({}, testInfo) => {
+    test.skip(testInfo.project.name !== 'phone', 'phone layout only');
+  });
+
+  for (const style of ['ink', 'classic']) {
+    test(`${style}: no double-tap zoom in the sheet, Close is easy to hit`, async ({ page }) => {
+      const errors = collectErrors(page);
+      await seedSave(page, {
+        blazing_ui_theme_v1: style,
+        blazing_inventory_v2: [invEntry('u1', 'naruto_2115', 80, '7S')],
+      });
+      await page.goto('/characters.html');
+      await waitForLoader(page);
+      await page.locator('.char-slot').first().tap();
+      await expect(page.locator('#char-modal.open')).toBeVisible();
+
+      // every element allows pan/pinch but not double-tap zoom
+      const zoomable = await page.$$eval('#char-modal, #char-modal *', els =>
+        els.filter(e => !['manipulation', 'none', 'pan-x', 'pan-y', 'pan-x pan-y'].includes(getComputedStyle(e).touchAction)).length);
+      expect(zoomable, 'sheet elements still double-tap zoomable').toBe(0);
+
+      // touch target height of a control: how far around its centre taps still land on it
+      const tapHeight = (sel) => page.$eval(sel, e => {
+        const r = e.getBoundingClientRect(), cx = r.x + r.width / 2, cy = r.y + r.height / 2;
+        const on = (y) => { const t = document.elementFromPoint(cx, y); return !!t && (t === e || e.contains(t)); };
+        let up = 0, dn = 0;
+        while (up < 40 && on(cy - up - 1)) up++;
+        while (dn < 40 && on(cy + dn + 1)) dn++;
+        return up + dn + 1;
+      });
+      expect(await tapHeight('#char-modal-close')).toBeGreaterThanOrEqual(style === 'ink' ? 44 : 30);
+      if (style === 'ink') expect(await tapHeight('.ink-dossier-back')).toBeGreaterThanOrEqual(44);
+
+      await page.locator('#char-modal-close').tap();
+      await expect(page.locator('#char-modal.open')).toHaveCount(0);
+      errors.assertClean(`characters sheet (${style})`);
     });
   }
 });
