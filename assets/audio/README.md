@@ -2,34 +2,40 @@
 
 ## Music (`music/`)
 
-Original instrumental BGM, MP3 128 kbps, played by `js/audio-manager.js`
-(Web Audio, per-page tracks, crossfades, gapless loops).
+The original game's BGM (`original/music/BGM_*`), rebuilt as loop files by
+`tools/audio/make_music_loops.py` and played by `js/audio-manager.js` (Web
+Audio, per-page tracks, crossfades, gapless loops).
 
-| File | Where it plays |
-|------|----------------|
-| title.mp3 | index.html (login) |
-| village.mp3 | village.html |
-| battle.mp3 | battle.html |
-| boss.mp3 | boss battles (`BattleCore.isBoss`, or `AudioManager.playMusic('boss')`) |
-| summon.mp3 | summon.html |
-| arena.mp3 | arena.html and arena battles |
-| shop.mp3 | shop.html and every other menu page |
-| victory.mp3 / defeat.mp3 | battle results (one-shot) |
+| File | Original cue | Where it plays |
+|------|--------------|----------------|
+| title.mp3 | BGM_2_tittle | index.html (login) |
+| home.mp3 | BGM_1_menu_home | village.html and every other menu page (track names `home`, alias `village` / `shop` / `menu`) |
+| summon.mp3 | BGM_7_Gasha | summon.html |
+| arena.mp3 | BGM_3_menu_pvp | arena.html, kage-league.html |
+| battle.mp3 | BGM_5_battle_normal | battle.html |
+| arena_battle.mp3 | BGM_4_battle_pvp | arena / Kage League battles |
+| boss.mp3 | BGM_6_battle_boss | boss battles (`BattleCore.isBoss`, or `AudioManager.playMusic('boss')`) |
+| discipline / tension / intrigue / sorrow / battle_event.mp3 | BGM_008..012 | available to `playMusic()` (story, domains) |
 
-Loop tracks have 0.25 s of wrapped audio before the loop start and after the
-loop end; the loop points are listed in `MUSIC_TRACKS` in
-`js/audio-manager.js`. Replace a file only together with its loop points.
+Battle results play the original jingles `original/jingles/JG_3_mission_clear.mp3` /
+`JG_4_mission_fail.mp3` (one-shot).
 
-A page can pick its track with `<body data-music="village">` (`none` = silent).
+Each original cue starts with 0.183 s of codec lead-in before its loop; the
+script cuts the loop (length from `original/manifest.json`) and adds 0.25 s of
+wrapped audio before the loop start and after the loop end, so the loop points
+in `MUSIC_TRACKS` (`js/audio-manager.js`) work whatever MP3 decoder delay the
+browser trims. Rebuild with the script rather than replacing a file by hand.
+
+A page can pick its track with `<body data-music="home">` (`none` = silent).
+
+On iOS the page asks for the `playback` audio session (Safari 17+), so music
+plays with the ring/silent switch on, and any tap resumes audio that iOS
+suspended (call, app switch).
 
 ## Sound Effects (`sfx/`)
 
 Howler.js sounds defined in `AudioManager.defineSounds()` (ui_click, hit,
 critical, jutsu, ultimate, summon, victory, defeat). Missing files fail quietly.
-
-## Credits
-
-Music is original, rendered with the FluidR3_GM soundfont (MIT licence, Copyright Frank Wen).
 
 ## Original game sound bank (`original/`)
 
@@ -46,4 +52,4 @@ extracted with `tools/audio/extract_acb.py` (HCA decoded by ffmpeg):
 `original/manifest.json` lists every file with its cue name, length and loop points.
 `js/audio-manager.js` plays the sound effects (its `SFX` table maps game events to clips);
 `js/title-call.js` plays a random `voice_ui_titlecall_*` on the first tap on the title page (`AudioManager.playVoice`);
-the music player still uses `music/`.
+`music/` holds the loop-ready copies of `original/music/` the music player uses.
