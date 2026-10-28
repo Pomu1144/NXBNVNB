@@ -1,11 +1,14 @@
 // 8. Village home characters (js/character-vignette.js): one or two busts
-// standing between the featured banner and the menu panel.
+// standing between the featured banner and the menu panel. They live on the
+// Classic village, which the game no longer offers (Ink only): pinned with
+// pinStyle.
 const { test, expect } = require('@playwright/test');
-const { seedSave, collectErrors, waitForLoader, dismissLoginBonus } = require('../helpers');
+const { seedSave, pinStyle, collectErrors, waitForLoader, dismissLoginBonus } = require('../helpers');
 
 const KEY = 'blazing_home_character_v1';
 
 async function openVillage(page, saved) {
+  await pinStyle(page, 'classic');
   await seedSave(page, saved === undefined ? {} : { [KEY]: saved });
   await page.goto('/village.html');
   await waitForLoader(page);

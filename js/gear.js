@@ -3,7 +3,8 @@
 // Every shinobi has 8 tool slots (two rows of 4). Tools come from the
 // catalogue in data/ninja-tools.json (name, stars, icon, who can equip it)
 // and drop from missions into a bag. An owned tool has:
-//   stars   1–7, from the catalogue
+//   stars   1–7, from the catalogue (919 tools, icons in assets/ninja-tools,
+//           imported by tools/ninja-tools/import.py)
 //   stats   its slot stats; how many depends on the stars (SLOT_COUNT):
 //           6★ / 7★ six, 5★ four, 4★ three, 3★ two, 2★ / 1★ one. Fixed by the
 //           catalogue entry (`slots`) or rolled once from its `pool`.
@@ -198,13 +199,37 @@
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify(get())); } catch (e) { console.error('[Tools] save failed', e); }
     try { global.dispatchEvent(new CustomEvent('gear:change')); } catch (e) { /* old browsers */ }
   }
-  // New players: one copy of every catalogue tool of 3★ or less
+  // New players: a full row of 8 different 1★ / 2★ tools anyone can wear
+  const STARTER_N = 8;
   function giveStarter() {
     const s = get();
     if (s.starter || !CATALOG.length) return;
-    CATALOG.filter(t => t.stars <= 3).forEach(t => { const it = roll({ toolId: t.id }); it.id = newId(s); s.bag[it.id] = it; });
+    const pool = CATALOG.filter(t => t.stars <= 2 && !(Array.isArray(t.equip) && t.equip.length));
+    for (let n = 0; n < STARTER_N && pool.length; n++) {
+      const t = pool.splice(Math.floor(rand() * pool.length), 1)[0];
+      const it = roll({ toolId: t.id }); it.id = newId(s); s.bag[it.id] = it;
+    }
     s.starter = true;
     save();
+  }
+  // Tools whose catalogue entry is gone (the placeholder set before the
+  // full catalogue): sold back for Ryo, their magatama back in the bag
+  function dropRetired() {
+    const s = get();
+    // only where magatama can be handed back too (not on missions.html)
+    if (!CATALOG.length || !global.Magatama) return 0;
+    const gone = Object.values(s.bag).filter(it => !byId[it.toolId]);
+    gone.forEach(it => {
+      Object.keys(s.equip).forEach(uid => {
+        const r = s.equip[uid].map(x => (x === it.id ? null : x));
+        if (r.some(Boolean)) s.equip[uid] = r; else delete s.equip[uid];
+      });
+      if (global.Magatama && global.Magatama.removeAll) global.Magatama.removeAll(it.id);
+      if (global.Resources) global.Resources.add('ryo', SELL[it.stars]);
+      delete s.bag[it.id];
+    });
+    if (gone.length) save();
+    return gone.length;
   }
 
   /* ───────── Bag ───────── */
@@ -391,7 +416,7 @@
   const migrate = () => { try { migrateInventory(); } catch (e) { console.warn('[Tools] migration skipped', e); } };
   if (global.InventoryChar) migrate();
   else if (global.document) global.document.addEventListener('DOMContentLoaded', migrate, { once: true });
-  load().then(giveStarter);
+  load().then(() => { dropRetired(); giveStarter(); });
 
   global.Gear = {
     STORAGE_KEY, OLD_KEY, SLOT_N, SLOTS, TOOL_SLOTS, STAT, DROPS, BAG_MAX, MAX_STARS,

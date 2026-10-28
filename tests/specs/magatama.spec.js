@@ -79,8 +79,8 @@ test('buy, combine, split, beset, one-click beset and stat bonus on the Tools pa
     tools_ui_prefs_v1: { uid: 'm-naruto' },
     tools_ui_view_v1: 'gear',
     blazing_tools_v1: { seq: 2, starter: true, bag: {
-      small: { id: 'small', toolId: 'kunai', stars: 2, stats: [['atk', 20]] },
-      big: { id: 'big', toolId: 'hokage_hat', stars: 6, stats: [['hp', 900]] },
+      small: { id: 'small', toolId: 'heart_pill', stars: 2, stats: [['atk', 20]] },
+      big: { id: 'big', toolId: 'a_mark_made_by_two_naruto_6', stars: 6, stats: [['hp', 900]] },
     }, equip: { 'm-naruto': ['small', null, null, 'big', null, null, null, null] } },
   });
   await page.goto('/tools.html');
@@ -170,8 +170,8 @@ test('socketed magatama raise the unit stats in battle', async ({ page }) => {
     currentDifficulty: rank,
     blazing_story_seen_v1: allStorySeen(),
     blazing_tools_v1: { seq: 2, starter: true, bag: {
-      a: { id: 'a', toolId: 'hokage_hat', stars: 6, stats: [['hp', 100]] },
-      b: { id: 'b', toolId: 'sand_gourd', stars: 5, stats: [['def', 10]] },
+      a: { id: 'a', toolId: 'a_mark_made_by_two_naruto_6', stars: 6, stats: [['hp', 100]] },
+      b: { id: 'b', toolId: '3_point_shuriken_of_devotion', stars: 5, stats: [['def', 10]] },
     }, equip: { 't-naruto': ['a', 'b', null, null, null, null, null, null] } },
     blazing_magatama_v1: { bag: {}, tools: {
       a: ['life:9', 'attack:9', 'attack:5'],

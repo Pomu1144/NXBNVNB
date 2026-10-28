@@ -37,6 +37,16 @@ async function seedSave(page, extra = {}) {
   }, entries);
 }
 
+/**
+ * Load pages in a style the game no longer offers (js/ui-theme.js: only Ink
+ * is enabled), so that style's layout guards keep running.
+ * @param {import('@playwright/test').Page} page
+ * @param {'classic'|'glass'} style
+ */
+async function pinStyle(page, style) {
+  await page.addInitScript((v) => { window.__BLAZING_UI_STYLE = v; }, style);
+}
+
 /** A deterministic inventory entry as js/character_inv.js stores it. */
 function invEntry(uid, charId, level = 80, tierCode = '6S') {
   return { uid, charId, level, tierCode, dupeUnlocks: 0, cost: 50, luck: 50 };
@@ -171,6 +181,7 @@ module.exports = {
   SESSION_KEYS,
   KNOWN_MISSING_CODE,
   seedSave,
+  pinStyle,
   invEntry,
   allStorySeen,
   collectErrors,
