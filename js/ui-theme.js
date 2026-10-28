@@ -1,9 +1,14 @@
 // js/ui-theme.js — Interface style switch (Settings › Display).
-//   classic  the original ink / washi-ticket look (default)
-//   glass    frosted-glass panels, pill buttons, line icons (css/ui-glass.css)
-//   ink      a skin on top of Glass: charcoal ink, cream paper and gold,
-//            serif type, thin square frames, left nav rail and a layered
-//            hero on the village (css/ui-ink.css)
+//   ink      the default and, for now, the only style offered: a skin on
+//            top of Glass: charcoal ink, cream paper and gold, serif type,
+//            thin square frames, left nav rail and a layered hero on the
+//            village (css/ui-ink.css)
+//   classic  the original ink / washi-ticket look (disabled)
+//   glass    frosted-glass panels, pill buttons, line icons (css/ui-glass.css,
+//            disabled as a style of its own; Ink still builds on it)
+// A saved Classic / Glass choice loads as Ink. Add a style back to ENABLED
+// (and its button in settings.html) to offer it again. The specs keep the
+// Classic layout guards running through window.__BLAZING_UI_STYLE.
 // Loaded in <head> before the page paints, so the chosen style shows from the
 // first frame. Ink keeps html[data-ui="glass"] (so every Glass page rule
 // applies) and adds html[data-skin="ink"]; html[data-style] holds the choice.
@@ -13,14 +18,18 @@
 
   const KEY = 'blazing_ui_theme_v1';
   const STYLES = ['classic', 'glass', 'ink'];
+  const ENABLED = ['ink'];
+  const DEFAULT = 'ink';
   const root = document.documentElement;
 
   function read() {
+    // Tests pin a disabled style to keep its layout guards running
+    if (STYLES.includes(global.__BLAZING_UI_STYLE)) return global.__BLAZING_UI_STYLE;
     try {
       const v = localStorage.getItem(KEY);
-      return STYLES.includes(v) ? v : 'classic';
+      return ENABLED.includes(v) ? v : DEFAULT;
     } catch (e) {
-      return 'classic';
+      return DEFAULT;
     }
   }
 
@@ -34,10 +43,10 @@
   apply(read());
 
   global.UITheme = {
-    STYLES,
-    get: () => root.getAttribute('data-style') || 'classic',
+    STYLES, ENABLED,
+    get: () => root.getAttribute('data-style') || DEFAULT,
     set(v) {
-      if (!STYLES.includes(v)) return;
+      if (!ENABLED.includes(v)) return;
       try { localStorage.setItem(KEY, v); } catch (e) { /* private mode: this page only */ }
       apply(v);
       global.dispatchEvent(new CustomEvent('uitheme:change', { detail: { style: v } }));

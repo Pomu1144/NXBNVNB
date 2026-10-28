@@ -1,6 +1,8 @@
 // 7. Mobile layout guard (phone project): village.html in short landscape.
+// The village and summon guards cover the Classic layout, which the game no
+// longer offers (Ink only); they pin it with pinStyle.
 const { test, expect } = require('@playwright/test');
-const { seedSave, invEntry, collectErrors, waitForLoader, dismissLoginBonus } = require('../helpers');
+const { seedSave, pinStyle, invEntry, collectErrors, waitForLoader, dismissLoginBonus } = require('../helpers');
 
 // Safari with and without its bars (932x375 / 932x340) and full-screen
 // home-screen apps on 430- and 390-tall iPhones.
@@ -15,6 +17,7 @@ test.describe('village layout on landscape phones', () => {
     test(`${width}x${height}: right banner panel and bottom icon bar fit and do not overlap`, async ({ page }) => {
       const errors = collectErrors(page);
       await page.setViewportSize({ width, height });
+      await pinStyle(page, 'classic');
       await seedSave(page);
       await page.goto('/village.html');
       await waitForLoader(page);
@@ -79,6 +82,7 @@ test.describe('summon page on landscape phones', () => {
     test(`${width}x${height}: title, tabs and banner list are clear of each other and the bottom bar`, async ({ page }) => {
       const errors = collectErrors(page);
       await page.setViewportSize({ width, height });
+      await pinStyle(page, 'classic');
       await seedSave(page);
       await page.goto('/summon.html');
       await waitForLoader(page);
@@ -107,6 +111,7 @@ test.describe('character sheet on landscape phones', () => {
   for (const style of ['ink', 'classic']) {
     test(`${style}: no double-tap zoom in the sheet, Close is easy to hit`, async ({ page }) => {
       const errors = collectErrors(page);
+      if (style !== 'ink') await pinStyle(page, style);
       await seedSave(page, {
         blazing_ui_theme_v1: style,
         blazing_inventory_v2: [invEntry('u1', 'naruto_2115', 80, '7S')],
