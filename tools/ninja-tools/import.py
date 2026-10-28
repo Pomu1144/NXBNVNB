@@ -6,7 +6,9 @@ as exported from the "ninja tools" Drive folder (1 Star … 7 Star), and
   - writes each icon as assets/ninja-tools/<id>.webp (max 160 px)
   - rebuilds data/ninja-tools.json: one entry per icon with its name, stars
     and icon. Hand-set fields of an entry already in the file (equip, slots,
-    pool) are kept; new entries get a slot stat pool guessed from the name.
+    pool) are kept; new entries get a slot stat pool guessed from the name,
+    and a name ending in a shinobi ("… (Itachi)", "… (7th Hokage)") limits
+    who can equip it to that shinobi's cards.
 
 Usage:  python3 tools/ninja-tools/import.py <folder with the pngs>
 """
@@ -42,6 +44,34 @@ POOLS = [
 ]
 
 
+# "(…)" name tags that name a shinobi but not by a charId prefix
+CHAR_TAGS = {
+    '5th kazekage': 'gaara', '7th hokage': 'naruto', 'asura': 'ashura', 'guy': 'might',
+    'tendo': 'pain', 'wandering ninja sasuke': 'sasuke', 'rinne sharingan sasuke- shadow': 'sasuke',
+}
+NOT_CHARS = {'attack'}   # "(Attack)" is a tool kind, not Attack-prefixed cards
+
+
+def char_prefixes():
+    data = json.loads((ROOT / 'data' / 'characters.json').read_text())
+    if isinstance(data, dict):
+        data = data.get('characters', [])
+    return {c['id'].split('_')[0] for c in data if c.get('id')}
+
+
+def equip_for(name, prefixes):
+    m = re.search(r'\(([^)]*)\)\s*$', name)
+    if not m:
+        return None
+    tag = m.group(1).strip().lower()
+    if tag in CHAR_TAGS:
+        return [CHAR_TAGS[tag]]
+    first = tag.split()[0] if tag else ''
+    if first in prefixes and first not in NOT_CHARS:
+        return [first]
+    return None
+
+
 def slug(name):
     s = re.sub(r"[’']", '', name.lower())
     return re.sub(r'[^a-z0-9]+', '_', s).strip('_')
@@ -64,6 +94,7 @@ def main(src):
         for t in json.loads(DATA.read_text()).get('tools', []):
             old[t['id']] = t
     OUT_DIR.mkdir(parents=True, exist_ok=True)
+    prefixes = char_prefixes()
     tools, seen, skipped = [], set(), []
     for f in sorted(src.rglob('*')):
         m = NAME_RE.match(f.name)
@@ -88,19 +119,24 @@ def main(src):
         for k in ('equip', 'slots', 'pool'):
             if k in prev:
                 entry[k] = prev[k]
+        if 'equip' not in entry:
+            who = equip_for(name, prefixes)
+            if who:
+                entry['equip'] = who
         if 'pool' not in entry and 'slots' not in entry:
             p = pool_for(name)
             if p:
                 entry['pool'] = p
         tools.append(entry)
     tools.sort(key=lambda t: (t['stars'], t['name'].lower()))
-    DATA.write_text(json.dumps({
+    head = json.dumps({
         'version': 2,
         'source': 'Ninja tool icons from the "ninja tools" Drive folder (1-7 Star), imported with tools/ninja-tools/import.py. '
                   'Fields: id, name, stars (1-7), icon, optional equip (charId prefixes, e.g. "itachi"; omitted = anyone), '
                   'optional slots ([[stat, value], ...] fixed slot stats), optional pool ([stat, ...] for rolled slots; omitted = every stat).',
-        'tools': tools,
-    }, indent=1, ensure_ascii=False) + '\n')
+    }, indent=1, ensure_ascii=False)[:-2]
+    rows = ',\n'.join('  ' + json.dumps(t, ensure_ascii=False) for t in tools)
+    DATA.write_text(f'{head},\n "tools": [\n{rows}\n ]\n}}\n')   # one tool per line
     by = {}
     for t in tools:
         by[t['stars']] = by.get(t['stars'], 0) + 1

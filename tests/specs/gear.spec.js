@@ -27,7 +27,15 @@ function loadGear(store = {}) {
   return win.Gear;
 }
 
-test('catalogue: valid stars, icons on disk, unique ids', () => {
+test('catalogue: the 919 Drive tools, valid stars, icons on disk, unique ids, named shinobi only', () => {
+  expect(CATALOG).toHaveLength(919);
+  const byStars = {};
+  for (const t of CATALOG) byStars[t.stars] = (byStars[t.stars] || 0) + 1;
+  expect(byStars).toEqual({ 1: 33, 2: 5, 3: 91, 4: 171, 5: 377, 6: 201, 7: 41 });
+  const chars = readJSON('data/characters.json');
+  const prefixes = new Set((Array.isArray(chars) ? chars : chars.characters).map((c) => c.id.split('_')[0]));
+  for (const t of CATALOG) for (const p of t.equip || []) expect(prefixes.has(p), `${t.id} equip ${p}`).toBe(true);
+  expect(CATALOG.find((t) => t.id === 'anbu_mask_itachi_6').equip).toEqual(['itachi']);
   const ids = new Set();
   for (const t of CATALOG) {
     expect(ids.has(t.id)).toBe(false);
@@ -50,15 +58,18 @@ test('slot stats by stars: 6/7 six, 5 four, 4 three, 3 two, 2/1 one', () => {
       if (t.pool) for (const [k] of it.stats) if (!(t.slots || []).some((s) => s[0] === k)) expect(t.pool).toContain(k);
     }
   }
-  // Fixed slots come straight from the catalogue
-  const brother = G.roll({ toolId: 'thoughts_from_a_brother' });
-  expect(brother.stats).toEqual(CATALOG.find((t) => t.id === 'thoughts_from_a_brother').slots);
+  // Fixed slots come straight from the catalogue entry; the rest roll
+  G.setCatalog([{ id: 'fx', name: 'Fixed', stars: 5, slots: [['atkPct', 15], ['nin', 15]], pool: ['def'] }]);
+  const fx = G.roll({ toolId: 'fx' });
+  expect(fx.stats.slice(0, 2)).toEqual([['atkPct', 15], ['nin', 15]]);
+  expect(fx.stats.slice(2).map((s) => s[0])).toEqual(['def', 'def']);
+  G.setCatalog(CATALOG);
   // A random tool of a star level the catalogue lacks: the nearest level
   expect(G.roll({ stars: 7 }).stars).toBe(Math.max(...CATALOG.map((t) => t.stars)));
   expect(G.fmtValue('atkPct', 15)).toBe('15.00%');
 });
 
-test('new players get the low-star tools; the old generic gear is refunded in Ryo', async ({ page }) => {
+test('new players get 8 low-star tools; the old generic gear is refunded in Ryo', async ({ page }) => {
   const errors = collectErrors(page);
   await seedSave(page, {
     blazing_inventory_v2: [invEntry('g-naruto', 'naruto_2115', 80, '7S')],
@@ -68,7 +79,10 @@ test('new players get the low-star tools; the old generic gear is refunded in Ry
   await page.goto('/characters.html');
   await waitForLoader(page);
   await page.waitForFunction(() => window.Gear.catalog().length > 0);
-  await expect.poll(async () => Object.keys((await toolSave(page)).bag || {}).length).toBe(CATALOG.filter((t) => t.stars <= 3).length);
+  await expect.poll(async () => Object.keys((await toolSave(page)).bag || {}).length).toBe(8);
+  const bag = Object.values((await toolSave(page)).bag);
+  expect(new Set(bag.map((t) => t.toolId)).size).toBe(8);
+  for (const t of bag) expect(t.stars).toBeLessThanOrEqual(2);
   // Blue piece: 800 salvage + levels 0→1 (2400) and 1→2 (4800)
   expect((await wallet(page)).ryo).toBe(800 + 2400 + 4800);
   errors.assertClean('starter tools');
@@ -80,10 +94,10 @@ test('equip rules: 8 slots, who can equip, one copy each, moves between shinobi,
     blazing_inventory_v2: [invEntry('u-itachi', 'itachi_088', 80, '6S'), invEntry('u-naruto', 'naruto_2115', 80, '7S')],
     blazing_resources_v1: { ryo: 0, ninja_pearls: 0, shinobites: 0, granny_coin: 0 },
     blazing_tools_v1: { seq: 4, starter: true, bag: {
-      a: own('a', 'thoughts_from_a_brother', 6, [['atkPct', 15]]),
-      k1: own('k1', 'kunai', 2, [['atk', 20]]),
-      k2: own('k2', 'kunai', 2, [['atk', 18]]),
-      s: own('s', 'shuriken', 2, [['spd', 1]]),
+      a: own('a', 'anbu_mask_itachi_6', 6, [['atkPct', 15]]),
+      k1: own('k1', 'heart_pill', 2, [['atk', 20]]),
+      k2: own('k2', 'heart_pill', 2, [['atk', 18]]),
+      s: own('s', 'hokage_hat_replica', 2, [['spd', 1]]),
     }, equip: {} },
   });
   await page.goto('/characters.html');
@@ -119,8 +133,8 @@ test('equipment tab: 2 rows of 4, equip from the bag, long press opens the tool 
   await seedSave(page, {
     blazing_inventory_v2: [invEntry('u-itachi', 'itachi_088', 80, '6S')],
     blazing_tools_v1: { seq: 3, starter: true, bag: {
-      a: own('a', 'thoughts_from_a_brother', 6, CATALOG.find((t) => t.id === 'thoughts_from_a_brother').slots),
-      h: own('h', 'akatsuki_straw_hat', 5, [['hpPct', 4], ['atkPct', 4], ['nin', 3], ['res', 3]]),
+      a: own('a', 'anbu_mask_itachi_6', 6, [['atkPct', 15], ['atkPct', 15], ['atkPct', 15], ['atkPct', 15], ['atkPct', 15], ['nin', 15]]),
+      h: own('h', '3_point_shuriken_of_devotion', 5, [['hpPct', 4], ['atkPct', 4], ['nin', 3], ['res', 3]]),
     }, equip: { 'u-itachi': EIGHT('a') } },
     blazing_magatama_v1: { bag: { 'attack:5': 2 } },
   });
@@ -148,7 +162,7 @@ test('equipment tab: 2 rows of 4, equip from the bag, long press opens the tool 
   const pop = page.locator('#char-gear .ntl-pop');
   await expect(pop).toBeVisible();
   await expect(pop.locator('.ntl-stat')).toHaveCount(6);
-  await expect(pop.locator('.ntl-who')).toHaveCount(2);
+  await expect(pop.locator('.ntl-who')).toHaveCount(1);
   await expect(pop.locator('.ntl-sock')).toHaveCount(3);
   // the click after the release does not change the selected slot
   await expect(page.locator('#tab-gear .ntl-slot[data-slot="5"]')).toHaveAttribute('aria-pressed', 'true');
@@ -181,9 +195,9 @@ test('tool stats apply in battle: flat, percent, speed, crit, jutsu damage', asy
     currentDifficulty: rank,
     blazing_story_seen_v1: allStorySeen(),
     blazing_tools_v1: { seq: 3, starter: true, bag: {
-      a: own('a', 'hokage_hat', 6, [['hp', 900], ['hpPct', 6], ['atk', 60], ['atkPct', 6], ['nin', 5], ['def', 20]]),
-      b: own('b', 'kunai', 2, [['critRate', 5]]),
-      c: own('c', 'shuriken', 2, [['spd', 3]]),
+      a: own('a', 'a_mark_made_by_two_naruto_6', 6, [['hp', 900], ['hpPct', 6], ['atk', 60], ['atkPct', 6], ['nin', 5], ['def', 20]]),
+      b: own('b', 'heart_pill', 2, [['critRate', 5]]),
+      c: own('c', 'hokage_hat_replica', 2, [['spd', 3]]),
     }, equip: { 't-naruto': EIGHT('a', 'b', 'c') } },
   });
   await page.goto('/battle.html');
@@ -218,13 +232,35 @@ test('missions drop ninja tools into the bag', async ({ page }) => {
   const r = await page.evaluate(() => {
     const G = window.Gear;
     const before = G.bagCount();
-    const drop = G.roll({ toolId: 'sand_gourd' });
+    const drop = G.roll({ toolId: 'gaaras_gourd_5th_kazekage' });
     const added = G.add(drop);
     const tiles = window.RewardFormat ? window.RewardFormat.items({ ryo: 100, gear: [drop] }) : null;
     return { before, after: G.bagCount(), added: !!added, tiles: tiles && tiles.map((t) => [t.kind, t.name]) };
   });
   expect(r.after).toBe(r.before + 1);
   expect(r.added).toBe(true);
-  if (r.tiles) expect(r.tiles).toContainEqual(['gear', 'Sand Gourd 5★']);
+  if (r.tiles) expect(r.tiles).toContainEqual(['gear', "Gaara's Gourd (5th Kazekage) 5★"]);
   errors.assertClean('tool drops');
+});
+
+test('tools no longer in the catalogue are sold back and their magatama return', async ({ page }) => {
+  const errors = collectErrors(page);
+  await seedSave(page, {
+    blazing_inventory_v2: [invEntry('u-naruto', 'naruto_2115', 80, '7S')],
+    blazing_resources_v1: { ryo: 0, ninja_pearls: 0, shinobites: 0, granny_coin: 0 },
+    blazing_tools_v1: { seq: 2, starter: true, bag: {
+      old: own('old', 'kunai', 2, [['atk', 20]]),
+      keep: own('keep', 'heart_pill', 2, [['hp', 300]]),
+    }, equip: { 'u-naruto': EIGHT('old', 'keep') } },
+    blazing_magatama_v1: { bag: {}, tools: { old: ['attack:3'] } },
+  });
+  await page.goto('/characters.html');
+  await waitForLoader(page);
+  await expect.poll(async () => Object.keys((await toolSave(page)).bag)).toEqual(['keep']);
+  expect((await toolSave(page)).equip['u-naruto']).toEqual(EIGHT(null, 'keep'));
+  expect((await wallet(page)).ryo).toBe(400);
+  const maga = await page.evaluate(() => JSON.parse(localStorage.getItem('blazing_magatama_v1')));
+  expect(maga.bag).toEqual({ 'attack:3': 1 });
+  expect(maga.tools.old).toBeUndefined();
+  errors.assertClean('retired tools');
 });
