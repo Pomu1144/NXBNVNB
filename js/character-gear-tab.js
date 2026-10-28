@@ -1,241 +1,325 @@
 // js/character-gear-tab.js — Equipment tab of the Shinobi Record (characters.html).
 //
-// The six gear slots (js/gear.js) sit on an orbit around a sigil (art in
-// assets/ui/equip-cosmos, over a starfield; the character art is hidden on
-// this tab so the orbit can use the whole panel): helmet, weapon, armor and
-// sandals on the outer ring, scroll and necklace in the middle. Each disc
-// shows the equipped piece in its rarity colour with its +level, or an empty
-// slot. Beside the orbit:
-//   Gear Bonus   what the pieces (main + substats) and magatama add
-//   the slot     the equipped piece: main stat, substats, level up with Ryo,
-//                Change / Unequip
-//   the bag      (Change) every piece for that slot that has dropped, best
-//                first; pick one to see it, then Equip or Salvage it
+// "Ninja Tool Equip": the shinobi's 8 tool slots (js/gear.js) in two rows of
+// 4, each a round frame with the tool's icon in its star colour, or a "+".
+// Beside them:
+//   Tool Bonus   what the tools' slot stats and their magatama add
+//   the slot     tap a slot: the tool in it (Change / Unequip / Details), or
+//                the bag of tools this shinobi can wear; pick one to Equip
+//                or Sell it
+// Long-press a tool (in a slot or in the bag; right-click on desktop) for its
+// card: name, stars, slot stats (count by stars), who can equip it, and its
+// magatama sockets: tap "+" to beset one from the bag, a gem to take it off.
 (function (global) {
   'use strict';
 
-  const ORBIT = [
-    { slot: 'helmet',   pos: 'tl' },
-    { slot: 'weapon',   pos: 'tr' },
-    { slot: 'armor',    pos: 'bl' },
-    { slot: 'sandals',  pos: 'br' },
-    { slot: 'scroll',   pos: 'il' },
-    { slot: 'necklace', pos: 'ir' }
-  ];
-  // Decorative glints on the orbit: [art, x %, y %, width %, twinkle delay s]
-  const SPARKS = [
-    ['spark_cross', 6, 44, 7, 0], ['sparks', 88, 52, 8, 1.3], ['spark_big', 52, 3, 5, 2.1],
-    ['streak', 12, 88, 10, 0.7], ['orb', 92, 8, 5, 1.8], ['dust', 70, 92, 11, 2.6]
-  ];
-  // Gear Bonus rows: [stat, label]; flat and % of the same stat sit together
+  // Tool Bonus rows: [stat, label]; flat and % of the same stat sit together
   const TOTALS = [
     ['hp', 'HP'], ['hpPct', 'HP%'], ['atk', 'ATK'], ['atkPct', 'ATK%'], ['def', 'DEF'], ['defPct', 'DEF%'],
     ['spd', 'SPD'], ['critRate', 'Crit Rate'], ['critDmg', 'Crit DMG'], ['nin', 'Jutsu DMG'], ['res', 'Jutsu RES']
   ];
-  const RYO = 'assets/icons/currency/ryo.png';
+  const HOLD_MS = 450;
 
-  const ui = { uid: null, slot: 'helmet', bag: false, pick: null };
+  const ui = { uid: null, slot: 0, pick: null, pop: null, socket: -1 };
   const G = () => global.Gear;
+  const M = () => global.Magatama;
+  const doc = global.document;
   const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
-  const fmt = (n) => Math.round(Number(n) || 0).toLocaleString();
-  const ryo = () => (global.Resources ? global.Resources.get('ryo') : 0);
   const val = (stat, v) => G().fmtValue(stat, v);
+  const stars = (n) => `<span class="ntl-stars" aria-label="${n} stars">${'&#9733;'.repeat(n)}</span>`;
+  const charList = () => global.CharacterData || global.CHARACTERS || [];
   function ownerName(uid) {
     const inst = global.InventoryChar && global.InventoryChar.getByUid ? global.InventoryChar.getByUid(uid) : null;
-    const list = global.CharacterData || global.CHARACTERS || [];
+    const list = charList();
     const c = inst && Array.isArray(list) ? list.find(x => x.id === inst.charId) : null;
     return (c && c.name) || 'another shinobi';
   }
+  // "itachi" → "Itachi Uchiha" (first character with that id prefix)
+  function prefixName(p) {
+    const list = charList();
+    const c = Array.isArray(list) ? list.find(x => String(x.id).startsWith(p + '_')) : null;
+    return (c && c.name) || p.charAt(0).toUpperCase() + p.slice(1);
+  }
   function toast(msg) {
-    const box = global.document.querySelector('#char-gear .eqp-toast');
+    const box = doc.querySelector('#char-gear .eqp-toast');
     if (!box || !msg) return;
     box.textContent = msg;
     box.classList.remove('is-on'); void box.offsetWidth; box.classList.add('is-on');
   }
 
-  function pieceHTML(i, pos) {
+  /* ───────── Pieces ───────── */
+  function frameHTML(i, extra = '') {
+    return `<span class="ntl-frame" style="--sc:${i.color}"><img src="${esc(i.icon)}" alt="" draggable="false">${extra}</span>`;
+  }
+  function slotHTML(i) {
     const on = i.slot === ui.slot;
-    return `<button type="button" class="eqp-piece eqp--${pos}${on ? ' is-on' : ''}${i.shiny ? ' is-shiny' : ''}${i.empty ? ' is-empty' : ''}"
-        data-slot="${i.slot}" style="--tc:${i.empty ? 'rgba(200,210,255,.35)' : i.tierInfo.color}" aria-pressed="${on}"
-        aria-label="${esc(i.kind)}: ${i.empty ? 'empty' : `${esc(i.name)}, +${i.level}`}">
-        <span class="eqp-medal"><img src="${esc(i.art)}" alt="" draggable="false"></span>
-        <span class="eqp-lv"><i aria-hidden="true"></i>${i.empty ? 'Empty' : `+${i.level}`}</span>
+    if (i.empty) {
+      return `<button type="button" class="ntl-slot is-empty${on ? ' is-on' : ''}" data-slot="${i.slot}" aria-pressed="${on}" aria-label="Tool slot ${i.slot + 1}: empty">
+          <span class="ntl-frame"><span class="ntl-plus" aria-hidden="true">+</span></span>
+        </button>`;
+    }
+    const n = M() ? M().socketsOf(i.id).filter(Boolean).length : 0;
+    return `<button type="button" class="ntl-slot${on ? ' is-on' : ''}" data-slot="${i.slot}" data-id="${esc(i.id)}" aria-pressed="${on}"
+        aria-label="Tool slot ${i.slot + 1}: ${esc(i.name)}, ${i.stars} stars. Hold for details">
+        ${frameHTML(i, n ? `<span class="ntl-maga-n" aria-hidden="true">${n}</span>` : '')}
+        <span class="ntl-slot-st">${stars(i.stars)}</span>
       </button>`;
   }
 
-  // Name, rarity, main stat and substats of one piece
-  function statsHTML(i) {
-    const next = i.next != null ? `<em>&rarr; ${val(i.stat, i.next)}</em>` : '';
+  // Short summary of one tool (side panel)
+  function summaryHTML(i) {
     return `
-      <div class="eqp-detail-head" style="--tc:${i.tierInfo.color}">
-        <span class="eqp-detail-ic${i.shiny ? ' is-shiny' : ''}"><img src="${esc(i.art)}" alt="" draggable="false"></span>
-        <span class="eqp-detail-nm">
-          <b>${esc(i.name)}</b>
-          <small>${esc(i.tierInfo.label)} &middot; +${i.level} / ${i.cap}</small>
-        </span>
+      <div class="eqp-detail-head ntl-head" style="--tc:${i.color}">
+        ${frameHTML(i)}
+        <span class="eqp-detail-nm"><b>${esc(i.name)}</b><small>${stars(i.stars)} &middot; ${i.slots} slot${i.slots > 1 ? 's' : ''}</small></span>
       </div>
-      <div class="eqp-row eqp-main"><span>${esc(i.statLabel)}</span><b>+${val(i.stat, i.value)} ${next}</b></div>
-      ${i.subs.map(s => `<div class="eqp-row eqp-sub"><span>${esc(s.label)}</span><b>+${esc(s.text)}</b></div>`).join('')}
-      ${i.subs.length < 4 ? `<div class="eqp-row eqp-sub is-locked"><span>New substat at +${Math.ceil((i.level + 1) / 3) * 3}</span><b></b></div>` : ''}
-      ${setLineHTML(i.set)}`;
+      ${i.stats.map(s => `<div class="eqp-row"><span>${esc(s.label)}</span><b>${esc(s.text)}</b></div>`).join('')}`;
   }
 
-  // A piece's set: its two bonuses, lit when this shinobi wears enough pieces
-  function setLineHTML(set) {
-    const d = set && G().SETS[set];
-    if (!d) return '';
-    const n = G().setCounts(ui.uid)[set] || 0;
-    return `<div class="eqp-set" style="--set:${d.color}">
-        <span class="eqp-set-nm">${esc(d.name)} Set <i>${Math.min(n, 4)}/4</i></span>
-        <span class="eqp-set-b${n >= 2 ? ' is-on' : ''}"><b>2 pc</b>${esc(G().setTwoText(set))}</span>
-        <span class="eqp-set-b${n >= 4 ? ' is-on' : ''}"><b>4 pc</b>${esc(d.four)}</span>
-      </div>`;
-  }
-
-  // Sets this shinobi wears 2+ pieces of
-  function setBonusHTML() {
-    const act = G().activeSets(ui.uid);
-    if (!act.length) return '';
-    return `<div class="eqp-sets">${act.map(b => {
-      const d = G().SETS[b.set];
-      return `<div class="eqp-row eqp-setrow" style="--set:${d.color}"><span>${esc(d.name)} ${b.pieces} pc</span><b>${esc(b.text)}</b></div>`;
-    }).join('')}</div>`;
-  }
-
-  function slotHTML(i) {
-    if (i.empty) {
-      const n = G().bagFor(i.slot).length;
-      return `<p class="eqp-empty">No ${esc(i.kind.toLowerCase())} equipped.</p>
-        <div class="eqp-acts"><button type="button" class="eqp-go" data-act="bag" ${n ? '' : 'disabled'}>${n ? `Choose (${n})` : 'None yet: clear missions'}</button></div>`;
-    }
-    const M = global.Magatama;
-    const row = M && M.FIT && M.FIT[i.slot] ? M.socketsOf(i.uid, i.slot) : null;
-    const pips = row ? `<div class="eqp-row"><span>Magatama</span><span class="eqp-pips">${row.map(k => k ? `<i style="--c:${M.info(k).color}"></i>` : '<i></i>').join('')}</span></div>` : '';
-    let lvl;
-    if (i.atCap) lvl = '<div class="eqp-state">Max level</div>';
-    else {
-      const pl = G().plan(i.uid, i.slot);
-      lvl = `<div class="eqp-state">Next level <img src="${RYO}" alt="">${fmt(i.cost)}</div>
+  function sideHTML() {
+    const i = G().info(ui.uid, ui.slot);
+    if (!i.empty && !ui.pick) {
+      return `${summaryHTML(i)}
         <div class="eqp-acts">
-          <button type="button" class="eqp-go" data-act="lv1" ${ryo() >= i.cost ? '' : 'disabled'}>Level Up</button>
-          <button type="button" class="eqp-go" data-act="lvmax" ${pl.levels ? '' : 'disabled'}>${pl.levels > 1 ? `+${pl.levels} Levels` : 'Auto'}</button>
+          <button type="button" class="eqp-go" data-act="pop" data-id="${esc(i.id)}">Details</button>
+          <button type="button" class="eqp-go is-quiet" data-act="bag">Change</button>
+          <button type="button" class="eqp-go is-quiet" data-act="off">Unequip</button>
         </div>`;
     }
-    return `${statsHTML(i)}${pips}${lvl}
-      <div class="eqp-acts">
-        <button type="button" class="eqp-go is-quiet" data-act="bag">Change</button>
-        <button type="button" class="eqp-go is-quiet" data-act="off">Unequip</button>
-      </div>`;
+    return bagHTML(i);
   }
 
-  function bagHTML(slot) {
-    const list = G().bagFor(slot);
-    const kind = G().PIECES[slot].kind;
+  // Tools this shinobi can wear, best first
+  function bagHTML(cur) {
+    const list = G().bagList().filter(it => G().canEquip(ui.uid, it.toolId));
     const cards = list.map(it => {
-      const t = G().TIERS[it.rarity];
-      const own = G().owner(it.id);
-      return `<button type="button" class="eqp-card${it.id === ui.pick ? ' is-on' : ''}${t.shiny ? ' is-shiny' : ''}" data-id="${esc(it.id)}" style="--tc:${t.color}"
-          aria-label="${esc(G().nameOf(it.slot, it.rarity, it.set))}${G().SETS[it.set] ? `, ${esc(G().SETS[it.set].name)} set` : ''}, +${it.level}${own ? ', in use' : ''}">
-          <img src="${esc(G().artOf(it.slot, it.rarity, it.set))}" alt="" draggable="false">
-          <span class="eqp-card-lv">+${it.level}</span>
+      const v = G().itemInfo(it.id);
+      const own = v.owner;
+      return `<button type="button" class="ntl-card${it.id === ui.pick ? ' is-on' : ''}" data-id="${esc(it.id)}"
+          aria-label="${esc(v.name)}, ${v.stars} stars${own ? ', in use' : ''}. Hold for details">
+          ${frameHTML(v)}
+          <span class="ntl-card-st">${v.stars}&#9733;</span>
           ${own ? `<span class="eqp-card-own${own === ui.uid ? ' is-mine' : ''}" aria-hidden="true">${own === ui.uid ? '&#10003;' : '&bull;'}</span>` : ''}
-          <span class="eqp-card-main">${esc(G().STAT[it.main].label)}</span>
-          ${G().SETS[it.set] ? `<span class="eqp-card-set" style="--set:${G().SETS[it.set].color}" title="${esc(G().SETS[it.set].name)}" aria-hidden="true"></span>` : ''}
         </button>`;
     }).join('');
     let pickPane = '';
     const p = ui.pick && G().itemInfo(ui.pick);
     if (p) {
       const own = p.owner;
-      pickPane = `<div class="eqp-pick">${statsHTML(p)}
-        ${own && own !== ui.uid ? `<p class="eqp-note">Worn by ${esc(ownerName(own))}; equipping takes it.</p>` : ''}
+      const here = own === ui.uid;
+      pickPane = `<div class="eqp-pick">${summaryHTML(p)}
+        ${own && !here ? `<p class="eqp-note">Worn by ${esc(ownerName(own))}; equipping takes it.</p>` : ''}
         <div class="eqp-acts">
-          ${own === ui.uid ? '<span class="eqp-state">Equipped</span>' : '<button type="button" class="eqp-go" data-act="equip">Equip</button>'}
-          ${own ? '' : '<button type="button" class="eqp-go is-quiet" data-act="salvage">Salvage</button>'}
+          <button type="button" class="eqp-go is-quiet" data-act="pop" data-id="${esc(p.id)}">Details</button>
+          ${here ? '<span class="eqp-state">Equipped</span>' : '<button type="button" class="eqp-go" data-act="equip">Equip</button>'}
+          ${own ? '' : '<button type="button" class="eqp-go is-quiet" data-act="sell">Sell</button>'}
         </div></div>`;
     }
-    return `<div class="eqp-bag-head"><button type="button" class="eqp-back" data-act="back" aria-label="Back">&larr;</button><span>${esc(kind)} &middot; ${list.length}</span></div>
-      ${list.length ? `<div class="eqp-cards" role="listbox" aria-label="${esc(kind)} pieces">${cards}</div>` : '<p class="eqp-empty">None yet: clear missions to find gear.</p>'}
+    return `<div class="eqp-bag-head">${cur.empty ? '' : '<button type="button" class="eqp-back" data-act="back" aria-label="Back">&larr;</button>'}<span>Tool Bag &middot; ${list.length}</span></div>
+      ${list.length ? `<div class="eqp-cards ntl-cards" role="listbox" aria-label="Ninja tools">${cards}</div>` : '<p class="eqp-empty">No tools this shinobi can equip yet: clear missions to find ninja tools.</p>'}
       ${pickPane}`;
   }
 
-  function render(uid) {
-    const box = global.document.getElementById('char-gear');
+  /* ───────── Tool card (long press) ───────── */
+  function popHTML(id) {
+    const i = G().itemInfo(id);
+    if (!i) return '';
+    const rows = i.stats.map(s => `<div class="ntl-stat"><b>${esc(s.text)}</b><span>${esc(s.label)}</span></div>`);
+    const left = rows.filter((_, n) => n % 2 === 0), right = rows.filter((_, n) => n % 2 === 1);
+    const who = i.equip && i.equip.length
+      ? i.equip.map(p => `<span class="ntl-who">${esc(prefixName(p))}</span>`).join('')
+      : '<span class="ntl-who is-any">Any shinobi</span>';
+    const socks = M() ? M().socketsOf(id) : [];
+    const sockHTML = socks.map((k, n) => {
+      const m = k && M().info(k);
+      return m
+        ? `<button type="button" class="ntl-sock is-filled" data-sock="${n}" style="--c:${m.color}" aria-label="${esc(m.name)} Lv${m.level}, ${esc(m.text)}. Tap to remove"><img src="${esc(m.icon)}" alt="" draggable="false"><i>${m.level}</i></button>`
+        : `<button type="button" class="ntl-sock${ui.socket === n ? ' is-picked' : ''}" data-sock="${n}" aria-label="Empty magatama socket. Tap to beset">+</button>`;
+    }).join('');
+    const mb = M() ? M().bonusForPiece(id) : {};
+    const mText = ['hp', 'atk', 'def'].filter(k => mb[k]).map(k => `+${Math.round(mb[k]).toLocaleString()} ${k.toUpperCase()}`)
+      .concat(['nin', 'res'].filter(k => mb[k]).map(k => `+${Math.round(mb[k] * 10) / 10}% ${k === 'nin' ? 'Jutsu DMG' : 'Jutsu RES'}`));
+    let picker = '';
+    if (ui.socket >= 0 && M()) {
+      const bag = M().get().bag;
+      const keys = Object.keys(bag).filter(k => bag[k] > 0 && M().parse(k))
+        .sort((a, b) => M().parse(b).level - M().parse(a).level);
+      picker = `<div class="ntl-mpick">
+          ${keys.length ? keys.map(k => { const m = M().info(k); return `<button type="button" class="ntl-gem" data-key="${esc(k)}" style="--c:${m.color}" title="${esc(m.name)} Lv${m.level} ${esc(m.text)}"><img src="${esc(m.icon)}" alt="" draggable="false"><i>${m.level}</i><em>&times;${bag[k]}</em></button>`; }).join('')
+            : '<p class="eqp-empty">No magatama: buy some on the Tools page.</p>'}
+        </div>`;
+    }
+    return `<div class="ntl-pop-card" role="dialog" aria-modal="true" aria-label="${esc(i.name)}" style="--sc:${i.color}">
+        <button type="button" class="ntl-x" data-act="close" aria-label="Close">&times;</button>
+        <div class="ntl-pop-title"><b>${esc(i.name)}</b>${stars(i.stars)}</div>
+        <div class="ntl-pop-body ntl-slots-${i.slots}">
+          <div class="ntl-col">${left.join('')}</div>
+          <div class="ntl-core">${frameHTML(i)}</div>
+          <div class="ntl-col">${right.join('')}</div>
+        </div>
+        <div class="ntl-pop-row"><span class="ntl-lbl">Equippable By</span><div class="ntl-whos">${who}</div></div>
+        <div class="ntl-pop-row"><span class="ntl-lbl">Magatama</span>
+          <div class="ntl-socks">${sockHTML || '<span class="eqp-empty">No sockets</span>'}</div>
+          <span class="ntl-mbonus">${esc(mText.join(' · '))}</span>
+          ${socks.length ? `<button type="button" class="eqp-go is-quiet ntl-one" data-act="oneclick">Auto</button>` : ''}
+        </div>
+        ${picker}
+      </div>`;
+  }
+  function openPop(id) {
+    if (!G().item(id)) return;
+    ui.pop = id; ui.socket = -1;
+    renderPop();
+  }
+  function closePop() { ui.pop = null; ui.socket = -1; renderPop(); }
+  function renderPop() {
+    const box = doc.getElementById('char-gear');
     if (!box) return;
-    if (uid !== undefined && uid !== ui.uid) { ui.uid = uid; ui.bag = false; ui.pick = null; }
+    let el = box.querySelector('.ntl-pop');
+    if (!ui.pop || !G().item(ui.pop)) {
+      ui.pop = null;
+      if (el) el.remove();
+      return;
+    }
+    if (!el) {
+      el = doc.createElement('div');
+      el.className = 'ntl-pop';
+      box.appendChild(el);
+    }
+    el.innerHTML = popHTML(ui.pop);
+  }
+
+  /* ───────── Render ───────── */
+  function render(uid) {
+    const box = doc.getElementById('char-gear');
+    if (!box) return;
+    if (uid !== undefined && uid !== ui.uid) { ui.uid = uid; ui.slot = 0; ui.pick = null; ui.pop = null; }
     if (!G() || !ui.uid) { box.innerHTML = ''; return; }
-    if (!G().SLOTS.includes(ui.slot)) ui.slot = 'helmet';
     if (ui.pick && !G().item(ui.pick)) ui.pick = null;
-    const pieces = ORBIT.filter(o => G().SLOTS.includes(o.slot)).map(o => ({ o, i: G().info(ui.uid, o.slot) }));
     const tot = G().bonusFor(ui.uid);
-    const m = global.Magatama && global.Magatama.bonusForUnit ? global.Magatama.bonusForUnit(ui.uid) : {};
+    const m = M() && M().bonusForUnit ? M().bonusForUnit(ui.uid) : {};
     ['hp', 'atk', 'def', 'nin', 'res'].forEach(k => { tot[k] = (tot[k] || 0) + (m[k] || 0); });
     const rows = TOTALS.filter(([k]) => tot[k]);
-    const sel = pieces.find(p => p.i.slot === ui.slot) || pieces[0];
+    const slots = G().SLOTS.map(s => G().info(ui.uid, s));
     box.innerHTML = `
-      <div class="eqp">
-        <div class="eqp-orbit" role="group" aria-label="Gear">
-          <span class="eqp-ring" aria-hidden="true"></span>
-          <span class="eqp-ticks" aria-hidden="true"></span>
-          <span class="eqp-sigil" aria-hidden="true"></span>
-          ${SPARKS.map(([k, x, y, w, d]) => `<span class="eqp-spark eqp-spark--${k}" style="left:${x}%;top:${y}%;width:${w}%;animation-delay:${d}s" aria-hidden="true"></span>`).join('')}
-          ${pieces.map(p => pieceHTML(p.i, p.o.pos)).join('')}
+      <div class="eqp ntl">
+        <div class="ntl-equip">
+          <h4 class="cx-kicker ntl-title">Ninja Tool Equip</h4>
+          <div class="ntl-grid" role="group" aria-label="Ninja tools">${slots.map(slotHTML).join('')}</div>
+          <p class="ntl-hint">Tap a slot to equip &middot; hold a tool for details</p>
         </div>
         <div class="eqp-side">
-          <h4 class="cx-kicker">Gear Bonus</h4>
+          <h4 class="cx-kicker">Tool Bonus</h4>
           <div class="eqp-totals">
-            ${rows.length ? rows.map(([k, label]) => `<div class="eqp-row"><span>${label}</span><b>+${val(k, tot[k])}</b></div>`).join('') : '<p class="eqp-empty">No gear equipped</p>'}
+            ${rows.length ? rows.map(([k, label]) => `<div class="eqp-row"><span>${label}</span><b>+${val(k, tot[k])}</b></div>`).join('') : '<p class="eqp-empty">No tools equipped</p>'}
           </div>
-          ${setBonusHTML()}
-          <h4 class="cx-kicker">${esc(sel.i.kind)}</h4>
-          <div class="eqp-detail">${ui.bag ? bagHTML(ui.slot) : slotHTML(sel.i)}</div>
+          <h4 class="cx-kicker">Slot ${ui.slot + 1}</h4>
+          <div class="eqp-detail">${sideHTML()}</div>
           <div class="eqp-toast" role="status" aria-live="polite"></div>
         </div>
       </div>`;
+    renderPop();
   }
 
   function act(res) {
     if (res && res.msg) setTimeout(() => toast(res.msg), 0);
     render();
   }
+
+  /* ───────── Input ───────── */
+  // Long press: a held pointer on a tool opens its card; the click that
+  // follows the release is swallowed.
+  const hold = { t: 0, fired: false, x: 0, y: 0 };
+  function holdTarget(e) {
+    const el = e.target.closest('.ntl-slot[data-id], .ntl-card[data-id]');
+    return el && !e.target.closest('.ntl-pop') ? el : null;
+  }
+  function onDown(e) {
+    const el = holdTarget(e);
+    hold.fired = false;
+    clearTimeout(hold.t);
+    if (!el || (e.button != null && e.button !== 0)) return;
+    hold.x = e.clientX; hold.y = e.clientY;
+    hold.t = setTimeout(() => { hold.fired = true; openPop(el.dataset.id); }, HOLD_MS);
+  }
+  function onMove(e) {
+    if (Math.abs(e.clientX - hold.x) > 10 || Math.abs(e.clientY - hold.y) > 10) clearTimeout(hold.t);
+  }
+  const onUp = () => clearTimeout(hold.t);
+  function onContext(e) {
+    const el = holdTarget(e);
+    if (!el) return;
+    e.preventDefault();
+    clearTimeout(hold.t);
+    if (!hold.fired) openPop(el.dataset.id);
+    hold.fired = true;
+  }
+
+  function onPopClick(e) {
+    const pop = e.target.closest('.ntl-pop');
+    if (e.target === pop || e.target.closest('[data-act="close"]')) return closePop();
+    const id = ui.pop;
+    const sock = e.target.closest('.ntl-sock');
+    if (sock) {
+      const n = Number(sock.dataset.sock);
+      if (sock.classList.contains('is-filled')) { ui.socket = -1; return act(M().remove(id, n)); }
+      ui.socket = ui.socket === n ? -1 : n;
+      return renderPop();
+    }
+    const gem = e.target.closest('.ntl-gem');
+    if (gem) { const r = M().beset(id, gem.dataset.key, ui.socket); ui.socket = -1; return act(r); }
+    if (e.target.closest('[data-act="oneclick"]')) { ui.socket = -1; return act(M().oneClick(id)); }
+  }
+
   function onClick(e) {
-    const piece = e.target.closest('.eqp-piece');
-    if (piece) {
-      if (piece.dataset.slot !== ui.slot) { ui.bag = false; ui.pick = null; }
-      ui.slot = piece.dataset.slot;
+    if (hold.fired) { hold.fired = false; e.preventDefault(); return; }
+    if (e.target.closest('.ntl-pop')) return onPopClick(e);
+    const slot = e.target.closest('.ntl-slot');
+    if (slot) {
+      const n = Number(slot.dataset.slot);
+      ui.pick = n === ui.slot && !slot.dataset.id ? ui.pick : null;
+      ui.slot = n;
       render();
-      const again = global.document.querySelector(`#char-gear .eqp-piece[data-slot="${ui.slot}"]`);
+      const again = doc.querySelector(`#char-gear .ntl-slot[data-slot="${n}"]`);
       if (again) again.focus();
       return;
     }
-    const card = e.target.closest('.eqp-card');
+    const card = e.target.closest('.ntl-card');
     if (card) { ui.pick = card.dataset.id; render(); return; }
     const a = e.target.closest('[data-act]');
     if (!a || a.disabled) return;
     const G_ = G();
     switch (a.dataset.act) {
-      case 'bag': ui.bag = true; ui.pick = G_.equippedId(ui.uid, ui.slot) || (G_.bagFor(ui.slot)[0] || {}).id || null; render(); break;
-      case 'back': ui.bag = false; ui.pick = null; render(); break;
-      case 'lv1': act(G_.strengthen(ui.uid, ui.slot, 1)); break;
-      case 'lvmax': act(G_.auto(ui.uid, ui.slot)); break;
+      case 'pop': openPop(a.dataset.id); break;
+      case 'bag': ui.pick = (G_.bagList().find(it => !G_.owner(it.id) && G_.canEquip(ui.uid, it.toolId)) || {}).id || null; render(); break;
+      case 'back': ui.pick = null; render(); break;
       case 'off': act(G_.unequip(ui.uid, ui.slot)); break;
-      case 'equip': { const r = G_.equip(ui.uid, ui.pick); ui.bag = false; ui.pick = null; act(r); break; }
-      case 'salvage': { const r = G_.salvage(ui.pick); ui.pick = null; act(r); break; }
+      case 'equip': { const r = G_.equip(ui.uid, ui.pick, ui.slot); if (r.ok) ui.pick = null; act(r); break; }
+      case 'sell': { const r = G_.sell(ui.pick); ui.pick = null; act(r); break; }
     }
   }
+  function onKey(e) { if (e.key === 'Escape' && ui.pop) { e.stopPropagation(); closePop(); } }
 
   function init() {
-    const box = global.document.getElementById('char-gear');
-    if (box) box.addEventListener('click', onClick);
+    const box = doc.getElementById('char-gear');
+    if (box) {
+      box.addEventListener('click', onClick);
+      box.addEventListener('pointerdown', onDown);
+      box.addEventListener('pointermove', onMove);
+      box.addEventListener('pointerup', onUp);
+      box.addEventListener('pointercancel', onUp);
+      box.addEventListener('contextmenu', onContext);
+      box.addEventListener('keydown', onKey);
+    }
     global.addEventListener('gear:change', () => render());
     global.addEventListener('magatama:change', () => render());
   }
-  if (global.document.readyState === 'loading') global.document.addEventListener('DOMContentLoaded', init, { once: true });
+  if (doc.readyState === 'loading') doc.addEventListener('DOMContentLoaded', init, { once: true });
   else init();
 
   // Entering the tab: the ink ground of the record dissolves into the night
-  // sky (assets/ui/equip-cosmos/intro.mp4, ends on space_bg) behind the gear,
-  // which fades in over it. Skipped for reduced motion.
+  // sky (assets/ui/equip-cosmos/intro.mp4, ends on space_bg) behind the
+  // tools, which fade in over it. Skipped for reduced motion.
   function playIntro(modal) {
     const panel = modal && modal.querySelector('.char-modal-panel');
     if (!panel) return;
@@ -243,7 +327,7 @@
     let v = panel.querySelector('.eqp-intro');
     if (reduce) { if (v) v.remove(); return; }
     if (!v) {
-      v = global.document.createElement('video');
+      v = doc.createElement('video');
       v.className = 'eqp-intro';
       v.muted = true; v.playsInline = true; v.preload = 'auto';
       v.setAttribute('aria-hidden', 'true');
@@ -256,7 +340,7 @@
     try { v.currentTime = 0; } catch (e) { /* not loaded yet */ }
     const p = v.play();
     if (p && p.catch) p.catch(() => v.classList.add('is-done'));
-    const box = global.document.getElementById('char-gear');
+    const box = doc.getElementById('char-gear');
     if (box) {
       box.classList.remove('is-intro'); void box.offsetWidth; box.classList.add('is-intro');
       // Only the first paint fades in: re-renders (every click) must not replay it
@@ -265,5 +349,8 @@
     }
   }
 
-  global.CharGearTab = { render, playIntro, select: (slot) => { ui.slot = slot; ui.bag = false; ui.pick = null; render(); } };
+  global.CharGearTab = {
+    render, playIntro, openDetails: openPop, close: closePop,
+    select: (slot) => { ui.slot = slot; ui.pick = null; render(); }
+  };
 })(window);

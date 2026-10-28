@@ -1,29 +1,33 @@
 // js/magatama.js — Magatama (Naruto Online "Beset Magatama") core.
 //
-// Each gear piece (js/gear.js) has 5 sockets. Magatama are Attack (ATK),
-// Life (HP), Defense (DEF), Ninjutsu (+% jutsu/ultimate damage dealt) or
-// Resistance (-% jutsu/ultimate damage taken) jewels, levels 1-9 as in game,
-// each level its own shape (data/magatama.json). Four of one level combine
-// into one of the next; splitting reverses that.
-//
-// Each type fits one piece only: Life → helmet, Attack → weapon,
-// Defense → armor, Ninjutsu → scroll, Resistance → necklace.
+// Magatama are beset into ninja tools (js/gear.js): a tool has 1 / 2 / 3
+// sockets by its stars (Gear.socketCount). Attack (ATK), Life (HP),
+// Defense (DEF), Ninjutsu (+% jutsu/ultimate damage dealt) or Resistance
+// (-% jutsu/ultimate damage taken) jewels, levels 1-9 as in game, each
+// level its own shape (data/magatama.json). Any type fits any tool. Four of
+// one level combine into one of the next; splitting reverses that.
+// Magatama stay on their tool when it moves to another shinobi.
 //
 // Save (localStorage "blazing_magatama_v1"):
-//   { bag: { "attack:3": 2, ... }, gear: { [uid]: { helmet: ["life:4", null, ...] } } }
-// Older saves socketed magatama per tool card ("sockets": { [cardId]: [...] });
-// those go back into the bag on load.
+//   { bag: { "attack:3": 2, ... }, tools: { [toolId]: ["life:4", null, ...] } }
+// Older saves socketed magatama per gear piece ("gear") or tool card
+// ("sockets"); those go back into the bag on load.
 (function (global) {
   'use strict';
 
   const STORAGE_KEY = 'blazing_magatama_v1';
-  const SLOTS = ['helmet', 'weapon', 'armor', 'scroll', 'necklace'];
-  const FIT = { helmet: 'life', weapon: 'attack', armor: 'defense', scroll: 'ninjutsu', necklace: 'resistance' };
+  const MAX_SOCKETS = 3;   // = data socketsPerTool (a 6★ / 7★ tool)
+  const G = () => global.Gear;
+  // Sockets a tool has (by its stars); unknown tools get none
+  function socketN(toolId) {
+    const it = G() && G().item ? G().item(toolId) : null;
+    return it ? G().socketCount(it.stars) : 0;
+  }
 
   // Same numbers as data/magatama.json so battle stats never wait on a fetch.
   // load() refreshes from the JSON (tests keep the two in sync).
   let DATA = {
-    socketsPerTool: 5, combineCount: 4, splitCount: 4, maxLevel: 9,
+    socketsPerTool: 3, combineCount: 4, splitCount: 4, maxLevel: 9,
     types: [
       {id: 'attack', name: 'Attack', color: '#e0563a', stat: 'atk', statLabel: 'ATK', values: [4, 10, 15, 21, 28, 36, 46, 58, 72]},
       {id: 'life', name: 'Life', color: '#3fb46a', stat: 'hp', statLabel: 'HP', values: [10, 25, 38, 53, 70, 90, 115, 145, 180]},
@@ -94,22 +98,18 @@
       if (!Array.isArray(arr)) return;
       arr.forEach(k => { k = cap(k); if (parse(k)) bag[k] = (bag[k] || 0) + 1; });
     });
-    const gear = {};
-    Object.entries(s.gear || {}).forEach(([uid, pieces]) => {
-      if (!pieces || typeof pieces !== 'object') return;
-      Object.entries(pieces).forEach(([slot, arr]) => {
-        if (!FIT[slot] || !Array.isArray(arr)) return;
-        const row = new Array(DATA.socketsPerTool).fill(null).map((_, i) => {
-          const k = cap(arr[i]);
-          const p = parse(k);
-          if (!p) return null;
-          if (p.type !== FIT[slot]) { bag[k] = (bag[k] || 0) + 1; return null; }
-          return k;
-        });
-        if (row.some(Boolean)) (gear[uid] = gear[uid] || {})[slot] = row;
-      });
+    // Old per-gear-piece sockets: back into the bag
+    Object.values(s.gear || {}).forEach(pieces => Object.values(pieces || {}).forEach(arr => {
+      if (!Array.isArray(arr)) return;
+      arr.forEach(k => { k = cap(k); if (parse(k)) bag[k] = (bag[k] || 0) + 1; });
+    }));
+    const tools = {};
+    Object.entries(s.tools || {}).forEach(([id, arr]) => {
+      if (!Array.isArray(arr)) return;
+      const r = new Array(MAX_SOCKETS).fill(null).map((_, i) => (parse(cap(arr[i])) ? cap(arr[i]) : null));
+      if (r.some(Boolean)) tools[id] = r;
     });
-    return { bag, gear };
+    return { bag, tools };
   }
   function get() { if (!state) state = read(); return state; }
   function save() {
@@ -124,19 +124,21 @@
     s.bag[k] = (s.bag[k] || 0) + n;
     if (s.bag[k] <= 0) delete s.bag[k];
   }
-  function socketsOf(uid, slot) {
-    const row = (get().gear[uid] || {})[slot];
-    return row ? row.slice() : new Array(DATA.socketsPerTool).fill(null);
+  // A tool's sockets (length = its socket count). Magatama on sockets the
+  // tool no longer has (or on a tool that is gone) are left where they are
+  // until removeAll / the tool is sold.
+  function socketsOf(toolId) {
+    const n = socketN(toolId);
+    const r = get().tools[toolId] || [];
+    return new Array(n).fill(null).map((_, i) => r[i] || null);
   }
-  function setSockets(uid, slot, row) {
+  function setSockets(toolId, r) {
     const s = get();
-    const g = s.gear[uid] || (s.gear[uid] = {});
-    if (row.some(Boolean)) g[slot] = row; else delete g[slot];
-    if (!Object.keys(g).length) delete s.gear[uid];
+    if (r.some(Boolean)) s.tools[toolId] = r.slice(); else delete s.tools[toolId];
   }
 
-  /* ───────── Which type a gear piece accepts ───────── */
-  function fits(slot) { return FIT[slot] ? [FIT[slot]] : []; }
+  // Any type fits any tool
+  function fits() { return DATA.types.map(t => t.id); }
 
   /* ───────── Actions (return { ok, msg }) ───────── */
   const R = () => global.Resources;
@@ -154,59 +156,60 @@
     return { ok: true, msg: `+${qty} ${typesById[type].name} Lv${level}` };
   }
 
-  function beset(uid, slot, k, idx) {
+  function beset(toolId, k, idx) {
     const p = parse(k);
-    if (!uid || !FIT[slot] || !p) return { ok: false, msg: 'Pick a magatama' };
+    if (!toolId || !p) return { ok: false, msg: 'Pick a magatama' };
     if (count(k) < 1) return { ok: false, msg: 'None left' };
-    if (FIT[slot] !== p.type) return { ok: false, msg: `${typesById[p.type].name} does not fit this piece` };
-    const row = socketsOf(uid, slot);
+    const row = socketsOf(toolId);
+    if (!row.length) return { ok: false, msg: 'This tool has no sockets' };
     if (idx == null || idx < 0) idx = row.indexOf(null);
-    if (idx < 0) return { ok: false, msg: 'All 5 sockets are full' };
+    if (idx < 0 || idx >= row.length) return { ok: false, msg: 'All sockets are full' };
     if (row[idx]) addBag(row[idx], 1);          // swap the old one back
     row[idx] = k;
     addBag(k, -1);
-    setSockets(uid, slot, row);
+    setSockets(toolId, row);
     save();
     return { ok: true, msg: `Beset ${typesById[p.type].name} Lv${p.level}` };
   }
 
-  function remove(uid, slot, idx) {
-    const row = socketsOf(uid, slot);
+  function remove(toolId, idx) {
+    const row = socketsOf(toolId);
     const k = row[idx];
     if (!k) return { ok: false, msg: 'Empty socket' };
     row[idx] = null;
     addBag(k, 1);
-    setSockets(uid, slot, row);
+    setSockets(toolId, row);
     save();
     return { ok: true, msg: 'Removed' };
   }
 
-  function removeAll(uid, slot) {
-    const row = socketsOf(uid, slot);
+  // Every magatama on a tool back to the bag (also those on sockets it lost)
+  function removeAll(toolId) {
+    const row = get().tools[toolId] || [];
     const n = row.filter(Boolean).length;
     if (!n) return { ok: false, msg: 'No magatama beset' };
     row.forEach(k => { if (k) addBag(k, 1); });
-    setSockets(uid, slot, row.map(() => null));
+    delete get().tools[toolId];
     save();
     return { ok: true, msg: `Removed ${n}` };
   }
 
-  // Fill empty sockets with the highest-level fitting magatama in the bag.
-  function oneClick(uid, slot) {
-    const row = socketsOf(uid, slot);
-    const type = FIT[slot];
+  // Fill empty sockets with the highest-level magatama in the bag
+  // (`type` limits it to one type).
+  function oneClick(toolId, type) {
+    const row = socketsOf(toolId);
     let added = 0;
-    for (let i = 0; i < row.length && type; i++) {
+    for (let i = 0; i < row.length; i++) {
       if (row[i]) continue;
       const best = Object.keys(get().bag)
-        .map(parse).filter(p => p && p.type === type && count(key(p.type, p.level)) > 0)
+        .map(parse).filter(p => p && (!type || p.type === type) && count(key(p.type, p.level)) > 0)
         .sort((a, b) => b.level - a.level)[0];
       if (!best) break;
       const k = key(best.type, best.level);
       row[i] = k; addBag(k, -1); added++;
     }
-    if (!added) return { ok: false, msg: row.every(Boolean) ? 'All 5 sockets are full' : 'No fitting magatama' };
-    setSockets(uid, slot, row);
+    if (!added) return { ok: false, msg: !row.length ? 'This tool has no sockets' : row.every(Boolean) ? 'All sockets are full' : 'No magatama in the bag' };
+    setSockets(toolId, row);
     save();
     return { ok: true, msg: `Beset ${added}` };
   }
@@ -238,24 +241,23 @@
   /* ───────── Stat bonuses ───────── */
   const zero = () => ({ hp: 0, atk: 0, def: 0, nin: 0, res: 0 });
   const STATS = ['hp', 'atk', 'def', 'nin', 'res'];
-  function bonusForPiece(uid, slot) {
+  function bonusForPiece(toolId) {
     const out = zero();
-    const row = (get().gear[uid] || {})[slot];
-    if (!row) return out;
-    row.forEach(k => { const i = k && info(k); if (i) out[i.stat] += i.value; });
+    socketsOf(toolId).forEach(k => { const i = k && info(k); if (i) out[i.stat] += i.value; });
     return out;
   }
+  // Magatama on every tool the shinobi wears
   function bonusForUnit(uid) {
     const out = zero();
-    if (!uid) return out;
-    SLOTS.forEach(slot => {
-      const b = bonusForPiece(uid, slot);
+    if (!uid || !G() || !G().equippedIds) return out;
+    G().equippedIds(uid).forEach(id => {
+      const b = bonusForPiece(id);
       STATS.forEach(k => { out[k] += b[k]; });
     });
     return out;
   }
   // Adds the bonus to a battle stats object ({ hp, maxHP, atk, def }).
-  // With js/gear.js loaded this is Gear.applyToStats (gear + magatama);
+  // With js/gear.js loaded this is Gear.applyToStats (tools + magatama);
   // Ninjutsu / Resistance stay as percentages on stats.magatama and are
   // applied to jutsu and ultimate damage (battle-combat.js calculateDamage).
   function applyToStats(stats, instance) {
@@ -274,7 +276,7 @@
   }
 
   global.Magatama = {
-    STORAGE_KEY, SLOTS, FIT,
+    STORAGE_KEY, MAX_SOCKETS,
     load, reload, get, data: () => DATA, types: () => DATA.types.slice(),
     key, parse, info, iconFor, valueOf, priceOf, count, socketsOf, fits,
     buy, beset, remove, removeAll, oneClick, combine, split,

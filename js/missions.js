@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
     'Impact Missions': 'Much tougher missions; the top rank recruits the featured unit.',
     'Limited Time Event': 'Raids: defeat the featured shinobi for a chance to recruit a new unit.',
     'Growth Missions': 'EXP ramen, ryo and Awakening Scroll missions for building your team.',
-    'Set Trials': 'Farm gear sets. The last stage always drops a piece of the trial’s set; harder ranks drop rarer pieces. Two trials drop double each day.'
+    'Set Trials': 'Farm ninja tools: every stage chest can drop one, and harder ranks drop higher-star tools.'
   };
   const RANK_ORDER = ['D', 'C', 'B', 'A', 'S', 'SS', 'SSS'];
   const PROGRESS_KEY = 'blazing_mission_progress_v1';

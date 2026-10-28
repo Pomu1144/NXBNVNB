@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "source": "Placeholder catalogue built from the reference screenshots. Replace / extend with the NxB NV wiki ninja tool list. Fields: id, name, stars (1-7), icon, equip (charId prefixes, e.g. \"itachi\"; omit = anyone), optional slots ([[stat, value], ...] fixed slot stats; omitted slots are rolled from pool or every stat), optional pool ([stat, ...]).",
+  "tools": [
+    { "id": "kunai", "name": "Kunai", "stars": 2, "icon": "assets/gear/art/blue_weapon.webp", "pool": ["atk", "atkPct", "critRate"] },
+    { "id": "shuriken", "name": "Shuriken", "stars": 2, "icon": "assets/gear/art/green_weapon.webp", "pool": ["atk", "spd", "critRate"] },
+    { "id": "leaf_forehead_protector", "name": "Hidden Leaf Forehead Protector", "stars": 3, "icon": "assets/gear/sets/leaf_helmet.webp", "pool": ["hp", "hpPct", "def", "res"] },
+    { "id": "ninja_info_cards", "name": "Ninja Info Cards", "stars": 3, "icon": "assets/gear/art/blue_scroll.webp", "pool": ["nin", "critRate", "spd"] },
+    { "id": "leaf_flak_vest", "name": "Leaf Flak Vest", "stars": 4, "icon": "assets/gear/sets/leaf_armor.webp", "pool": ["def", "defPct", "hp", "hpPct", "res"] },
+    { "id": "summoning_scroll", "name": "Summoning Scroll", "stars": 4, "icon": "assets/gear/art/purple_scroll.webp", "pool": ["nin", "atkPct", "critDmg"] },
+    { "id": "akatsuki_straw_hat", "name": "Akatsuki Straw Hat", "stars": 5, "icon": "assets/gear/sets/akatsuki_helmet.webp", "pool": ["hpPct", "atkPct", "nin", "res"] },
+    { "id": "sand_gourd", "name": "Sand Gourd", "stars": 5, "icon": "assets/gear/sets/sand_weapon.webp", "equip": ["gaara"], "pool": ["def", "defPct", "res", "hpPct"] },
+    { "id": "kubikiribocho", "name": "Kubikiribocho", "stars": 6, "icon": "assets/gear/sets/mist_weapon.webp", "equip": ["zabuza", "suigetsu"], "pool": ["atk", "atkPct", "critRate", "critDmg"] },
+    { "id": "sword_of_kusanagi", "name": "Sword of Kusanagi", "stars": 6, "icon": "assets/gear/sets/sound_weapon.webp", "equip": ["sasuke", "orochimaru"], "pool": ["atkPct", "critRate", "critDmg", "spd"] },
+    { "id": "hokage_hat", "name": "Hokage's Hat", "stars": 6, "icon": "assets/gear/sets/hokage_helmet.webp", "equip": ["naruto", "hashirama", "tobirama", "hiruzen", "minato", "tsunade", "kakashi"], "pool": ["hpPct", "atkPct", "defPct", "res"] },
+    {
+      "id": "thoughts_from_a_brother", "name": "Thoughts From a Brother", "stars": 6, "icon": "assets/gear/sets/akatsuki_necklace.webp",
+      "equip": ["itachi", "sasuke"],
+      "slots": [["atkPct", 15], ["atkPct", 15], ["atkPct", 15], ["atkPct", 15], ["atkPct", 15], ["nin", 15]]
+    }
+  ]
+}

@@ -299,7 +299,7 @@
       if (sm.vulnPct) damage *= (1 + sm.vulnPct / 100);
       if (sm.dmgPct) damage *= (1 + sm.dmgPct / 100);
 
-      // Gear scroll / necklace + magatama: Ninjutsu raises jutsu / ultimate
+      // Ninja tools + magatama: Jutsu DMG raises jutsu / ultimate
       // damage dealt, Resistance lowers jutsu / ultimate damage taken
       // (capped percentage totals on stats.magatama, js/gear.js totalFor)
       if (ctx.kind && ctx.kind !== 'attack') {
@@ -308,8 +308,6 @@
         if (nin) damage *= 1 + nin / 100;
         if (res) damage *= Math.max(0, 1 - res / 100);
       }
-      // Gear set 4-piece effects (js/gear.js setDamageMod)
-      if (window.Gear?.setDamageMod) damage *= window.Gear.setDamageMod(attacker, defender, ctx);
 
       // Random variance (90% - 110%)
       damage *= (0.9 + Math.random() * 0.2);

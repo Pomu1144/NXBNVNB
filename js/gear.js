@@ -1,142 +1,110 @@
-// js/gear.js — Gear: pieces that drop from missions, Honkai Star Rail style.
+// js/gear.js — Ninja Tools: the equipment of a shinobi (window.Gear).
 //
-// Every shinobi has six slots. Missions drop gear pieces into a bag; each
-// slot holds one piece. A piece has:
-//   slot     helmet · weapon · armor · scroll · necklace · sandals
-//   rarity   0 Green · 1 Blue · 2 Purple · 3 Orange · 4 Red · 5 Red Shiny
-//   level    +0 … +cap (cap by rarity: 3 / 6 / 9 / 12 / 15 / 15), bought with Ryo
-//   main     one stat, fixed for helmet (HP) and weapon (ATK), rolled from a
-//            list for the other four; it grows with every level
-//   subs     1–4 random substats (more at higher rarity); every 3 levels a
-//            new substat is added, or a random one is rolled up once there
-//            are four
+// Every shinobi has 8 tool slots (two rows of 4). Tools come from the
+// catalogue in data/ninja-tools.json (name, stars, icon, who can equip it)
+// and drop from missions into a bag. An owned tool has:
+//   stars   1–7, from the catalogue
+//   stats   its slot stats; how many depends on the stars (SLOT_COUNT):
+//           6★ / 7★ six, 5★ four, 4★ three, 3★ two, 2★ / 1★ one. Fixed by the
+//           catalogue entry (`slots`) or rolled once from its `pool`.
+//   magatama sockets (js/magatama.js, keyed by tool id): 1 / 2 / 3 by stars
+// A tool sits on one shinobi at most, a shinobi wears one copy of a tool,
+// and a catalogue `equip` list (charId prefixes) limits who can wear it.
 // Percent stats (HP% / ATK% / DEF%) count against the unit's own base stats.
 // Crit Rate / Crit DMG feed stats.critRate / critDmg in battle; Jutsu DMG /
-// Jutsu RES ride on stats.magatama with the socketed magatama
-// (js/magatama.js, keyed by uid + slot, capped together).
+// Jutsu RES ride on stats.magatama with the socketed magatama (capped).
 //
-// Save (localStorage "blazing_gear_v2"):
-//   { seq, starter, bag: { [id]: { id, slot, rarity, level, main, subs: [[stat, value], …] } },
-//     equip: { [uid]: { [slot]: id } } }
-// The old level-per-slot save ("blazing_gear_v1") is turned into pieces once.
+// Save (localStorage "blazing_tools_v1"):
+//   { seq, starter, bag: { [id]: { id, toolId, stars, stats: [[stat, value], …] } },
+//     equip: { [uid]: [id|null × 8] } }
+// The old generic gear ("blazing_gear_v2") is refunded in Ryo once.
 (function (global) {
   'use strict';
 
-  const STORAGE_KEY = 'blazing_gear_v2';
-  const OLD_KEY = 'blazing_gear_v1';
-  const SLOTS = ['helmet', 'weapon', 'armor', 'scroll', 'necklace', 'sandals'];
+  const STORAGE_KEY = 'blazing_tools_v1';
+  const OLD_KEY = 'blazing_gear_v2';
+  const SLOT_N = 8;
+  const SLOTS = Array.from({ length: SLOT_N }, (_, i) => i);
   const TOOL_SLOTS = ['equipment1', 'equipment2', 'equipment3', 'equipment4', 'equipment5'];
-  const MAX_LEVEL = 15;
   const BAG_MAX = 300;
+  const MAX_STARS = 7;
 
-  const TIERS = [
-    { id: 'green',  label: 'Green',     rank: 'Genin',      cap: 3,  main: 0.30, sub: 0.40, subs: 1, art: 'green',  color: '#5dae55' },
-    { id: 'blue',   label: 'Blue',      rank: 'Chunin',     cap: 6,  main: 0.45, sub: 0.55, subs: 1, art: 'blue',   color: '#4b8fe0' },
-    { id: 'purple', label: 'Purple',    rank: 'Jonin',      cap: 9,  main: 0.60, sub: 0.70, subs: 2, art: 'purple', color: '#a266e0' },
-    { id: 'orange', label: 'Orange',    rank: 'Kage',       cap: 12, main: 0.75, sub: 0.85, subs: 2, art: 'orange', color: '#e8902e' },
-    { id: 'red',    label: 'Red',       rank: 'Super Kage', cap: 15, main: 0.90, sub: 1.00, subs: 3, art: 'red',    color: '#e0453c' },
-    { id: 'shiny',  label: 'Red Shiny', rank: 'Super Kage', cap: 15, main: 1.00, sub: 1.10, subs: 3, art: 'red',    color: '#f3c552', shiny: true }
-  ];
-
-  // Every stat a piece can carry. `main` is the value at +15 on a Red Shiny
-  // piece; `sub` is one substat roll on a Red piece.
+  // Slot stats per star level (index = stars)
+  const SLOT_COUNT = [0, 1, 1, 2, 3, 4, 6, 6];
+  const SOCKETS = [0, 1, 1, 1, 2, 2, 3, 3];
+  const STAR_COLOR = [null, '#9a8f80', '#5dae55', '#4b8fe0', '#a266e0', '#e8902e', '#e0453c', '#f3c552'];
+  // A slot stat on a 6★ tool is STAT[k].slot; other stars scale it
+  const STAR_MULT = [0, 0.25, 0.35, 0.5, 0.65, 0.8, 1, 1.2];
   const STAT = {
-    hp:       { label: 'HP',        main: 10000, sub: 280 },
-    atk:      { label: 'ATK',       main: 600,   sub: 18 },
-    def:      { label: 'DEF',       main: 360,   sub: 14 },
-    hpPct:    { label: 'HP',        main: 25,    sub: 3,   unit: '%' },
-    atkPct:   { label: 'ATK',       main: 25,    sub: 3,   unit: '%' },
-    defPct:   { label: 'DEF',       main: 30,    sub: 3.6, unit: '%' },
-    spd:      { label: 'SPD',       main: 14,    sub: 1.5, dp: 1 },
-    critRate: { label: 'Crit Rate', main: 18,    sub: 2.4, unit: '%' },
-    critDmg:  { label: 'Crit DMG',  main: 36,    sub: 4.8, unit: '%' },
-    nin:      { label: 'Jutsu DMG', main: 18,    sub: 2,   unit: '%' },
-    res:      { label: 'Jutsu RES', main: 15,    sub: 1.8, unit: '%' }
+    hp:       { label: 'HP',        slot: 900 },
+    atk:      { label: 'ATK',       slot: 60 },
+    def:      { label: 'DEF',       slot: 45 },
+    hpPct:    { label: 'HP',        slot: 6,   unit: '%' },
+    atkPct:   { label: 'ATK',       slot: 6,   unit: '%' },
+    defPct:   { label: 'DEF',       slot: 7,   unit: '%' },
+    spd:      { label: 'SPD',       slot: 3,   dp: 1 },
+    critRate: { label: 'Crit Rate', slot: 5,   unit: '%' },
+    critDmg:  { label: 'Crit DMG',  slot: 10,  unit: '%' },
+    nin:      { label: 'Jutsu DMG', slot: 5,   unit: '%' },
+    res:      { label: 'Jutsu RES', slot: 4.5, unit: '%' }
   };
-  const SUB_POOL = Object.keys(STAT);
-
-  const PIECES = {
-    helmet:   { kind: 'Helmet',   mains: ['hp'],                                           magatama: 'life' },
-    weapon:   { kind: 'Weapon',   mains: ['atk'],                                          magatama: 'attack' },
-    armor:    { kind: 'Armor',    mains: ['defPct', 'hpPct', 'atkPct', 'critRate', 'critDmg'], magatama: 'defense' },
-    scroll:   { kind: 'Scroll',   mains: ['nin', 'atkPct', 'hpPct', 'defPct'],             magatama: 'ninjutsu' },
-    necklace: { kind: 'Necklace', mains: ['res', 'hpPct', 'atkPct', 'defPct'],             magatama: 'resistance' },
-    sandals:  { kind: 'Sandals',  mains: ['spd', 'atkPct', 'hpPct', 'defPct'] }
-  };
-  // Item names per art set, in SLOTS order
-  const NAMES = {
-    green:  ['Goggles', 'Shuriken', 'Chainmail', 'Handbook', 'Jade Ring', 'Sandals'],
-    blue:   ['Forehead Protector', 'Kunai', 'Chainmail Vest', 'Jutsu Handbook', 'Sapphire Ring', 'Sandals'],
-    purple: ['ANBU Mask', 'Tanto', 'Flak Vest', 'Summoning Scroll', 'Amethyst Pendant', 'Tabi'],
-    orange: ['Hat', 'Katana', 'Cloak', 'Forbidden Scroll', 'Magatama Necklace', 'Greaves'],
-    red:    ['Oni Mask', 'War Scythe', 'War Armor', 'Sealing Scroll', 'Prayer Beads', 'War Boots']
-  };
-  // Themed sets (Set Trials drop them; every new drop belongs to one).
-  // 2 pieces: a stat. 4 pieces: a battle effect (setDamageMod).
-  const SETS = {
-    leaf:     { name: 'Hidden Leaf', color: '#5fae5a', items: ['Forehead Protector', 'Twin Kunai', 'Flak Vest', 'Scroll', 'Leaf Pendant', 'Sandals'],
-                two: ['hpPct', 12], four: 'Deal 18% more damage while at 80% HP or more.' },
-    akatsuki: { name: 'Akatsuki', color: '#c8323a', items: ['Straw Hat', 'Greatsword', 'Cloak', 'Sealed Scroll', 'Ring', 'Sandals'],
-                two: ['atkPct', 12], four: 'Jutsu and ultimates deal 20% more damage.' },
-    sand:     { name: 'Hidden Sand', color: '#d4a25c', items: ['Headwrap', 'Sand Gourd', 'Desert Vest', 'Sand Scroll', 'Bronze Necklace', 'Desert Boots'],
-                two: ['defPct', 15], four: 'Take 15% less damage.' },
-    sound:    { name: 'Hidden Sound', color: '#8b5cc7', items: ['Forehead Protector', 'Serpent Blade', 'Rope-Belt Tunic', 'Curse Scroll', 'Serpent Necklace', 'Boots'],
-                two: ['spd', 6], four: 'Deal 25% more damage while below 50% HP.' },
-    mist:     { name: 'Hidden Mist', color: '#4fa3a8', items: ['Hunter-nin Mask', 'Cleaver', 'Mist Vest', 'Water Scroll', 'Aquamarine', 'Leg Warmers'],
-                two: ['critRate', 8], four: 'Deal 20% more damage to targets above 70% HP.' },
-    hokage:   { name: 'Hokage', color: '#e8902e', items: ['Ceremonial Hat', 'Adamantine Staff', 'Haori', 'Ceremonial Scroll', 'Crystal Necklace', 'Sandals'],
-                two: ['res', 10], four: 'Deal 20% more damage to bosses.' }
-  };
-  const SET_IDS = Object.keys(SETS);
-  // Mission drops: chance per stage chest and rarity weights by rank
+  const STAT_KEYS = Object.keys(STAT);
+  // Mission drops: chance per stage chest and star weights (1★…7★) by rank
   const DROPS = {
-    D:  { chance: 0.20, w: [60, 30, 10, 0, 0, 0] },
-    C:  { chance: 0.30, w: [40, 40, 17, 3, 0, 0] },
-    B:  { chance: 0.35, w: [20, 40, 30, 9, 1, 0] },
-    A:  { chance: 0.40, w: [5, 25, 40, 25, 5, 0] },
-    S:  { chance: 0.50, w: [0, 10, 35, 38, 15, 2] },
-    SS: { chance: 0.60, w: [0, 0, 20, 45, 28, 7] }
+    D:  { chance: 0.20, w: [45, 40, 15, 0, 0, 0, 0] },
+    C:  { chance: 0.30, w: [20, 40, 30, 10, 0, 0, 0] },
+    B:  { chance: 0.35, w: [5, 25, 40, 25, 5, 0, 0] },
+    A:  { chance: 0.40, w: [0, 10, 30, 35, 20, 5, 0] },
+    S:  { chance: 0.50, w: [0, 0, 15, 35, 35, 14, 1] },
+    SS: { chance: 0.60, w: [0, 0, 5, 25, 40, 26, 4] }
   };
-  const SALVAGE = [300, 800, 2000, 5000, 12000, 25000];
-  const STATS = ['hp', 'atk', 'def', 'spd', 'nin', 'res'];
+  const SELL = [0, 200, 400, 900, 2000, 4500, 10000, 20000];
   const zero = () => ({ hp: 0, atk: 0, def: 0, spd: 0, nin: 0, res: 0, critRate: 0, critDmg: 0, hpPct: 0, atkPct: 0, defPct: 0 });
 
+  /* ───────── Catalogue (data/ninja-tools.json) ───────── */
+  let CATALOG = [];
+  let byId = {};
+  function setCatalog(list) {
+    CATALOG = (Array.isArray(list) ? list : []).filter(t => t && t.id && t.name)
+      .map(t => Object.assign({}, t, { stars: clampStars(t.stars) }));
+    byId = {};
+    CATALOG.forEach(t => { byId[t.id] = t; });
+  }
+  let loadP = null;
+  function load() {
+    if (!loadP) {
+      loadP = Promise.resolve()
+        .then(() => fetch('data/ninja-tools.json'))
+        .then(r => (r.ok ? r.json() : null))
+        .then(j => {
+          if (j && Array.isArray(j.tools)) setCatalog(j.tools);
+          try { global.dispatchEvent(new CustomEvent('gear:change')); } catch (e) { /* old browsers */ }
+          return CATALOG;
+        })
+        .catch(() => CATALOG);
+    }
+    return loadP;
+  }
+  const tool = (toolId) => byId[toolId] || null;
+
   /* ───────── Numbers ───────── */
-  const clampTier = (t) => Math.max(0, Math.min(TIERS.length - 1, Math.floor(Number(t) || 0)));
-  const capOf = (rarity) => TIERS[clampTier(rarity)].cap;
+  function clampStars(s) { return Math.max(1, Math.min(MAX_STARS, Math.floor(Number(s) || 1))); }
+  const slotCount = (stars) => SLOT_COUNT[clampStars(stars)];
+  const socketCount = (stars) => SOCKETS[clampStars(stars)];
+  const starColor = (stars) => STAR_COLOR[clampStars(stars)];
   const round = (stat, v) => {
     const s = STAT[stat];
     if (s && s.unit) return Math.round(v * 100) / 100;
     if (s && s.dp) return Math.round(v * 10) / 10;
     return Math.round(v);
   };
-  // Ryo to go from +level to +level+1
-  function levelCost(level, rarity = 0) {
-    const l = Math.max(0, Math.floor(Number(level) || 0));
-    return Math.round(((l + 1) * 1500 * (1 + clampTier(rarity) * 0.6)) / 10) * 10;
-  }
-  function mainValue(stat, rarity, level) {
-    const s = STAT[stat];
-    if (!s) return 0;
-    const lv = Math.max(0, Math.min(MAX_LEVEL, Number(level) || 0));
-    return round(stat, s.main * TIERS[clampTier(rarity)].main * (0.16 + 0.84 * lv / MAX_LEVEL));
-  }
   function fmtValue(stat, v) {
     const s = STAT[stat];
-    if (s && s.unit) return `${Math.round((Number(v) || 0) * 100) / 100}%`;
+    if (s && s.unit) return `${(Math.round((Number(v) || 0) * 100) / 100).toFixed(2)}%`;
     if (s && s.dp) return String(Math.round((Number(v) || 0) * 10) / 10);
     return Math.round(Number(v) || 0).toLocaleString();
   }
-  function nameOf(slot, rarity, set) {
-    if (SETS[set]) return `${SETS[set].name} ${SETS[set].items[SLOTS.indexOf(slot)] || ''}`.trim();
-    const t = TIERS[clampTier(rarity)];
-    return `${t.rank} ${NAMES[t.art][SLOTS.indexOf(slot)] || ''}`.trim();
-  }
-  const iconOf = (slot, rarity) => `assets/gear/${TIERS[clampTier(rarity)].art}_${slot}.webp`;
-  // Painted piece without a tile frame (Equipment tab, bag, drops)
-  const artOf = (slot, rarity, set) => SETS[set] ? `assets/gear/sets/${set}_${slot}.webp`
-    : `assets/gear/art/${TIERS[clampTier(rarity)].art}_${slot}.webp`;
-  const scrollIcon = (id) => `assets/gear/scroll_${String(id).replace(/\D/g, '')}.webp`;
+  const statLabel = (stat) => (STAT[stat] ? STAT[stat].label + (STAT[stat].unit && /Pct$/.test(stat) ? '%' : '') : stat);
 
   /* ───────── Rolling ───────── */
   const rand = () => Math.random();
@@ -147,39 +115,29 @@
     for (let i = 0; i < w.length; i++) { r -= w[i]; if (r < 0) return i; }
     return w.length - 1;
   }
-  const subRoll = (stat, rarity) => round(stat, STAT[stat].sub * TIERS[clampTier(rarity)].sub * pick([0.8, 0.9, 1]));
-  function addSub(item) {
-    const taken = new Set([item.main, ...item.subs.map(s => s[0])]);
-    const open = SUB_POOL.filter(k => !taken.has(k));
-    if (open.length) item.subs.push([pick(open), 0]);
-    const k = item.subs[item.subs.length - 1][0];
-    item.subs[item.subs.length - 1][1] = subRoll(k, item.rarity);
+  const slotRoll = (stat, stars) => round(stat, STAT[stat].slot * STAR_MULT[clampStars(stars)] * pick([0.8, 0.9, 1]));
+  // The slot stats of a fresh copy: the catalogue's fixed slots first, the
+  // rest rolled from its pool (or every stat)
+  function rollStats(def) {
+    const n = slotCount(def.stars);
+    const fixed = (Array.isArray(def.slots) ? def.slots : [])
+      .filter(s => Array.isArray(s) && STAT[s[0]]).slice(0, n).map(s => [s[0], Number(s[1]) || 0]);
+    const pool = (Array.isArray(def.pool) ? def.pool : []).filter(k => STAT[k]);
+    const from = pool.length ? pool : STAT_KEYS;
+    while (fixed.length < n) { const k = pick(from); fixed.push([k, slotRoll(k, def.stars)]); }
+    return fixed;
   }
-  // A fresh +0 piece. slot / rarity / main / set can be fixed; the rest is
-  // random (a random set unless `set: null` asks for a plain piece).
+  // A fresh copy of a catalogue tool (`toolId`), or of a random tool with
+  // `stars` (nearest star level the catalogue has)
   function roll(opts = {}) {
-    const slot = SLOTS.includes(opts.slot) ? opts.slot : pick(SLOTS);
-    const rarity = opts.rarity == null ? 0 : clampTier(opts.rarity);
-    const mains = PIECES[slot].mains;
-    const main = mains.includes(opts.main) ? opts.main : pick(mains);
-    const set = opts.set === null ? null : (SETS[opts.set] ? opts.set : pick(SET_IDS));
-    const item = { id: null, slot, rarity, level: 0, main, subs: [] };
-    if (set) item.set = set;
-    let n = TIERS[rarity].subs + (rand() < 0.2 ? 1 : 0);
-    n = Math.min(4, n);
-    while (item.subs.length < n) addSub(item);
-    return item;
-  }
-  // Every 3 levels: a new substat, or one of the four rolled up
-  function growSubs(item, fromLevel, toLevel) {
-    for (let l = fromLevel + 1; l <= toLevel; l++) {
-      if (l % 3) continue;
-      if (item.subs.length < 4) addSub(item);
-      else {
-        const s = pick(item.subs);
-        s[1] = round(s[0], s[1] + subRoll(s[0], item.rarity));
-      }
+    let def = tool(opts.toolId);
+    if (!def && CATALOG.length) {
+      const want = clampStars(opts.stars);
+      const best = CATALOG.reduce((b, t) => Math.min(b, Math.abs(t.stars - want)), 99);
+      def = pick(CATALOG.filter(t => Math.abs(t.stars - want) === best));
     }
+    if (!def) return null;
+    return { id: null, toolId: def.id, stars: def.stars, stats: rollStats(def) };
   }
 
   /* ───────── State ───────── */
@@ -187,66 +145,49 @@
   function clean(raw) {
     const bag = {};
     Object.values((raw && raw.bag) || {}).forEach(it => {
-      if (!it || !it.id || !PIECES[it.slot]) return;
-      const rarity = clampTier(it.rarity);
-      const main = PIECES[it.slot].mains.includes(it.main) ? it.main : PIECES[it.slot].mains[0];
-      const subs = (Array.isArray(it.subs) ? it.subs : [])
-        .filter(s => Array.isArray(s) && STAT[s[0]] && s[0] !== main).slice(0, 4)
+      if (!it || !it.id || !it.toolId) return;
+      const stars = clampStars(it.stars);
+      const stats = (Array.isArray(it.stats) ? it.stats : [])
+        .filter(s => Array.isArray(s) && STAT[s[0]]).slice(0, slotCount(stars))
         .map(s => [s[0], Number(s[1]) || 0]);
-      bag[it.id] = { id: String(it.id), slot: it.slot, rarity, level: Math.max(0, Math.min(capOf(rarity), Math.floor(Number(it.level) || 0))), main, subs };
-      if (SETS[it.set]) bag[it.id].set = it.set;
+      bag[it.id] = { id: String(it.id), toolId: String(it.toolId), stars, stats };
     });
     const equip = {};
-    Object.entries((raw && raw.equip) || {}).forEach(([uid, row]) => {
-      const out = {};
-      SLOTS.forEach(slot => { const id = row && row[slot]; if (id && bag[id] && bag[id].slot === slot) out[slot] = id; });
-      if (Object.keys(out).length) equip[uid] = out;
-    });
-    // a piece sits on one shinobi at most
     const seen = new Set();
-    Object.values(equip).forEach(row => SLOTS.forEach(slot => {
-      if (!row[slot]) return;
-      if (seen.has(row[slot])) delete row[slot]; else seen.add(row[slot]);
-    }));
-    return { seq: Math.max(0, Number(raw && raw.seq) || 0), starter: !!(raw && raw.starter), bag, equip };
+    Object.entries((raw && raw.equip) || {}).forEach(([uid, row]) => {
+      if (!Array.isArray(row)) return;
+      const out = SLOTS.map(i => {
+        const id = row[i];
+        if (!id || !bag[id] || seen.has(id)) return null;
+        seen.add(id);
+        return id;
+      });
+      if (out.some(Boolean)) equip[uid] = out;
+    });
+    return { seq: Math.max(0, Number(raw && raw.seq) || 0), starter: !!(raw && raw.starter), refunded: !!(raw && raw.refunded), bag, equip };
   }
-  function newId(s) { s.seq += 1; return `g${Date.now().toString(36)}${s.seq.toString(36)}`; }
-  // Old saves: each upgraded slot becomes a piece of that rarity, level
-  // scaled to the new cap, main stat the slot's old stat, equipped as before.
-  function fromOld(s) {
+  function newId(s) { s.seq += 1; return `t${Date.now().toString(36)}${s.seq.toString(36)}`; }
+  // The old generic gear pieces: what was spent levelling them comes back as Ryo
+  function refundOld() {
     let old = null;
     try { old = JSON.parse(localStorage.getItem(OLD_KEY) || 'null'); } catch (e) { old = null; }
-    const OLD_CAP = [20, 40, 60, 80, 100, 120];
-    const OLD_MAIN = { helmet: 'hp', weapon: 'atk', armor: 'defPct', scroll: 'nin', necklace: 'res', sandals: 'spd' };
-    let n = 0;
-    Object.entries((old && old.units) || {}).forEach(([uid, row]) => {
-      SLOTS.forEach(slot => {
-        const p = row && row[slot];
-        if (!p) return;
-        const rarity = clampTier(p.tier);
-        const it = roll({ slot, rarity, main: OLD_MAIN[slot], set: null });
-        it.id = newId(s);
-        const lv = Math.round(Math.max(1, Number(p.level) || 1) / OLD_CAP[rarity] * capOf(rarity));
-        growSubs(it, 0, Math.min(capOf(rarity), lv));
-        it.level = Math.min(capOf(rarity), lv);
-        s.bag[it.id] = it;
-        (s.equip[uid] = s.equip[uid] || {})[slot] = it.id;
-        n++;
-      });
+    if (!old || !old.bag) return 0;
+    const SAL = [300, 800, 2000, 5000, 12000, 25000];
+    let ryo = 0;
+    Object.values(old.bag).forEach(it => {
+      const t = Math.max(0, Math.min(5, Math.floor(Number(it && it.rarity) || 0)));
+      ryo += SAL[t];
+      for (let l = 0; l < (Number(it && it.level) || 0); l++) ryo += Math.round(((l + 1) * 1500 * (1 + t * 0.6)) / 10) * 10;
     });
-    return n;
+    if (ryo && global.Resources) global.Resources.add('ryo', ryo);
+    return ryo;
   }
   function read() {
     let raw = null;
     try { raw = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null'); } catch (e) { raw = null; }
     const s = clean(raw);
     if (!raw) {
-      fromOld(s);
-      // A Green piece for every slot so a new player has something to wear
-      if (!s.starter) {
-        SLOTS.forEach(slot => { const it = roll({ slot, rarity: 0, set: null }); it.id = newId(s); s.bag[it.id] = it; });
-        s.starter = true;
-      }
+      try { if (refundOld()) s.refunded = true; } catch (e) { /* ignore */ }
       try { localStorage.setItem(STORAGE_KEY, JSON.stringify(s)); } catch (e) { /* ignore */ }
     }
     return s;
@@ -254,27 +195,37 @@
   function get() { if (!state) state = read(); return state; }
   function reload() { state = read(); return state; }
   function save() {
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(get())); } catch (e) { console.error('[Gear] save failed', e); }
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(get())); } catch (e) { console.error('[Tools] save failed', e); }
     try { global.dispatchEvent(new CustomEvent('gear:change')); } catch (e) { /* old browsers */ }
+  }
+  // New players: one copy of every catalogue tool of 3★ or less
+  function giveStarter() {
+    const s = get();
+    if (s.starter || !CATALOG.length) return;
+    CATALOG.filter(t => t.stars <= 3).forEach(t => { const it = roll({ toolId: t.id }); it.id = newId(s); s.bag[it.id] = it; });
+    s.starter = true;
+    save();
   }
 
   /* ───────── Bag ───────── */
   const item = (id) => get().bag[id] || null;
+  const row = (uid) => get().equip[uid] || SLOTS.map(() => null);
   function owner(id) {
     const eq = get().equip;
-    for (const uid of Object.keys(eq)) for (const slot of SLOTS) if (eq[uid][slot] === id) return uid;
+    for (const uid of Object.keys(eq)) if (eq[uid].includes(id)) return uid;
     return null;
   }
-  const equippedId = (uid, slot) => ((get().equip[uid] || {})[slot]) || null;
-  // Pieces for a slot, best first (rarity, level, then newest)
-  function bagFor(slot) {
-    return Object.values(get().bag).filter(it => !slot || it.slot === slot)
-      .sort((a, b) => b.rarity - a.rarity || b.level - a.level || (b.id > a.id ? 1 : -1));
+  const equippedId = (uid, slot) => row(uid)[slot] || null;
+  const equippedIds = (uid) => row(uid).filter(Boolean);
+  // Owned tools, best first (stars, then name, then newest)
+  function bagList() {
+    return Object.values(get().bag).sort((a, b) => b.stars - a.stars
+      || nameOf(a).localeCompare(nameOf(b)) || (b.id > a.id ? 1 : -1));
   }
   const bagCount = () => Object.keys(get().bag).length;
   function add(it) {
     const s = get();
-    if (Object.keys(s.bag).length >= BAG_MAX) return null;
+    if (!it || Object.keys(s.bag).length >= BAG_MAX) return null;
     const copy = clean({ bag: { x: Object.assign({}, it, { id: 'x' }) } }).bag.x;
     if (!copy) return null;
     copy.id = newId(s);
@@ -282,224 +233,109 @@
     save();
     return copy;
   }
-  // Roll the drops for one stage chest of a mission at `rank`
   function rollDrop(rank) {
     const d = DROPS[rank] || DROPS.C;
     if (rand() >= d.chance) return [];
-    return [roll({ rarity: pickWeighted(d.w) })];
+    const it = roll({ stars: pickWeighted(d.w) + 1 });
+    return it ? [it] : [];
   }
-  // Set Trials (missions with `gearSet`): a piece of that set from every
-  // stage chest, rarer on harder ranks; the two featured sets of the day
-  // drop a second piece.
-  const TRIAL = {
-    B:  { w: [10, 40, 35, 14, 1, 0] },
-    A:  { w: [0, 15, 40, 35, 9, 1] },
-    S:  { w: [0, 0, 20, 45, 30, 5] },
-    SS: { w: [0, 0, 5, 35, 45, 15] }
-  };
-  // Two sets a day, in a fixed rotation (UTC days)
-  function featuredSets(date = new Date()) {
-    const day = Math.floor(date.getTime() / 86400000);
-    const i = day % SET_IDS.length;
-    return [SET_IDS[i], SET_IDS[(i + 3) % SET_IDS.length]];
+
+  /* ───────── Who can equip ───────── */
+  function charIdOf(uid) {
+    const inst = global.InventoryChar && global.InventoryChar.getByUid ? global.InventoryChar.getByUid(uid) : null;
+    return inst ? String(inst.charId || '') : '';
   }
-  function rollTrialDrop(set, rank, date) {
-    const t = TRIAL[rank] || TRIAL.B;
-    const n = featuredSets(date).includes(set) ? 2 : 1;
-    const out = [];
-    for (let i = 0; i < n; i++) out.push(roll({ set, rarity: pickWeighted(t.w) }));
-    return out;
+  function canEquip(uid, toolId, charId) {
+    const def = tool(toolId);
+    if (!def || !Array.isArray(def.equip) || !def.equip.length) return true;
+    const cid = String(charId || charIdOf(uid)).toLowerCase();
+    return def.equip.some(p => cid === p || cid.startsWith(String(p).toLowerCase() + '_'));
   }
-  function equip(uid, id) {
+  function equip(uid, id, slot) {
     const it = item(id);
-    if (!uid || !it) return { ok: false, msg: 'Pick a piece' };
+    if (!uid || !it) return { ok: false, msg: 'Pick a tool' };
+    if (!canEquip(uid, it.toolId)) return { ok: false, msg: 'This shinobi cannot equip it' };
     const s = get();
+    const r = row(uid).slice();
+    const dupe = r.findIndex((x, i) => x && x !== id && item(x) && item(x).toolId === it.toolId && i !== slot);
+    if (dupe >= 0) return { ok: false, msg: 'Already wearing that tool' };
+    if (slot == null || slot < 0 || slot >= SLOT_N) slot = r.indexOf(null);
+    if (slot < 0) return { ok: false, msg: 'All 8 slots are full' };
     const prev = owner(id);
-    if (prev) { delete s.equip[prev][it.slot]; if (!Object.keys(s.equip[prev]).length) delete s.equip[prev]; }
-    (s.equip[uid] = s.equip[uid] || {})[it.slot] = id;
+    if (prev) {
+      const pr = prev === uid ? r : s.equip[prev].slice();
+      pr[pr.indexOf(id)] = null;
+      if (prev !== uid) { if (pr.some(Boolean)) s.equip[prev] = pr; else delete s.equip[prev]; }
+    }
+    r[slot] = id;
+    s.equip[uid] = r;
     save();
-    return { ok: true, msg: `Equipped ${nameOf(it.slot, it.rarity, it.set)}`, from: prev };
+    return { ok: true, msg: `Equipped ${nameOf(it)}`, from: prev };
   }
   function unequip(uid, slot) {
-    const row = get().equip[uid];
-    if (!row || !row[slot]) return { ok: false, msg: 'Nothing equipped' };
-    delete row[slot];
-    if (!Object.keys(row).length) delete get().equip[uid];
+    const r = row(uid).slice();
+    if (!r[slot]) return { ok: false, msg: 'Nothing equipped' };
+    r[slot] = null;
+    if (r.some(Boolean)) get().equip[uid] = r; else delete get().equip[uid];
     save();
     return { ok: true, msg: 'Unequipped' };
   }
-  function salvage(id) {
+  function sell(id) {
     const it = item(id);
-    if (!it) return { ok: false, msg: 'Pick a piece' };
+    if (!it) return { ok: false, msg: 'Pick a tool' };
     if (owner(id)) return { ok: false, msg: 'Unequip it first' };
-    const ryoBack = SALVAGE[it.rarity] + Math.round(spentOn(it) * 0.8);
+    if (global.Magatama && global.Magatama.removeAll) global.Magatama.removeAll(id);
+    const ryoBack = SELL[it.stars];
     delete get().bag[id];
-    if (R()) R().add('ryo', ryoBack);
+    if (global.Resources) global.Resources.add('ryo', ryoBack);
     save();
     return { ok: true, ryo: ryoBack, msg: `+${ryoBack.toLocaleString()} Ryo` };
   }
-  function spentOn(it) { let c = 0; for (let l = 0; l < it.level; l++) c += levelCost(l, it.rarity); return c; }
 
   /* ───────── Info for the UI ───────── */
+  function nameOf(it) { const d = it && tool(it.toolId); return d ? d.name : (it && it.toolId ? String(it.toolId).replace(/_/g, ' ') : 'Ninja Tool'); }
+  const ICON_FALLBACK = 'assets/gear/art/blue_scroll.webp';
+  function iconOf(it) { const d = it && tool(it.toolId); return (d && d.icon) || ICON_FALLBACK; }
   function describe(it) {
-    const t = TIERS[it.rarity];
-    const atCap = it.level >= t.cap;
+    const def = tool(it.toolId);
     return {
-      id: it.id, slot: it.slot, item: it, empty: false,
-      tier: it.rarity, rarity: it.rarity, level: it.level, cap: t.cap, tierInfo: t, shiny: !!t.shiny,
-      name: nameOf(it.slot, it.rarity, it.set), kind: PIECES[it.slot].kind,
-      icon: iconOf(it.slot, it.rarity), art: artOf(it.slot, it.rarity, it.set),
-      stat: it.main, statLabel: STAT[it.main].label, unit: STAT[it.main].unit || '',
-      value: mainValue(it.main, it.rarity, it.level),
-      next: atCap ? null : mainValue(it.main, it.rarity, it.level + 1),
-      cost: atCap ? 0 : levelCost(it.level, it.rarity),
-      atCap, isMax: atCap, promote: null,
-      subs: it.subs.map(([k, v]) => ({ stat: k, label: STAT[k].label, unit: STAT[k].unit || '', value: v, text: fmtValue(k, v) })),
-      set: it.set || null, setInfo: it.set ? SETS[it.set] : null,
-      owner: owner(it.id),
-      magatama: PIECES[it.slot].magatama
+      id: it.id, toolId: it.toolId, item: it, empty: false,
+      name: nameOf(it), icon: iconOf(it), stars: it.stars, color: starColor(it.stars),
+      slots: slotCount(it.stars), sockets: socketCount(it.stars),
+      stats: it.stats.map(([k, v]) => ({ stat: k, label: statLabel(k), value: v, text: `+${fmtValue(k, v)}` })),
+      equip: def && Array.isArray(def.equip) ? def.equip.slice() : null,
+      owner: owner(it.id)
     };
   }
   function itemInfo(id) { const it = item(id); return it ? describe(it) : null; }
-  // What a slot of a shinobi shows: its piece, or an empty slot
   function info(uid, slot) {
     const id = equippedId(uid, slot);
-    if (id && item(id)) return Object.assign(describe(item(id)), { uid });
-    const t = TIERS[0];
-    return {
-      id: null, slot, uid, item: null, empty: true, tier: 0, rarity: 0, level: 0, cap: 0, tierInfo: t, shiny: false,
-      name: `No ${PIECES[slot].kind}`, kind: PIECES[slot].kind,
-      icon: iconOf(slot, 0), art: artOf(slot, 0),
-      stat: PIECES[slot].mains[0], statLabel: STAT[PIECES[slot].mains[0]].label, unit: '',
-      value: 0, next: null, cost: 0, atCap: true, isMax: true, promote: null, subs: [],
-      owner: null, magatama: PIECES[slot].magatama
-    };
+    if (id && item(id)) return Object.assign(describe(item(id)), { uid, slot });
+    return { id: null, uid, slot, empty: true, name: 'Empty', stats: [], stars: 0 };
   }
-  function unitGear(uid) {
-    const out = {};
-    SLOTS.forEach(slot => { const id = equippedId(uid, slot); out[slot] = id ? Object.assign({}, item(id)) : null; });
-    return out;
+  // A dropped roll object as a reward tile
+  function dropView(it) {
+    return { name: nameOf(it), icon: iconOf(it), color: starColor(it.stars), stars: clampStars(it.stars) };
   }
-
-  /* ───────── Levelling (Ryo) ───────── */
-  const R = () => global.Resources;
-  const ryo = () => (R() ? R().get('ryo') : 0);
-  function planItem(it, max = Infinity, budget = ryo()) {
-    let level = it.level, cost = 0, levels = 0;
-    while (level < capOf(it.rarity) && levels < max) {
-      const c = levelCost(level, it.rarity);
-      if (cost + c > budget) break;
-      cost += c; level++; levels++;
-    }
-    return { levels, cost, level };
-  }
-  function levelItem(id, times = 1) {
-    const it = item(id);
-    if (!it) return { ok: false, msg: 'Pick a piece' };
-    if (it.level >= capOf(it.rarity)) return { ok: false, msg: 'Max level' };
-    const pl = planItem(it, times === 'auto' ? Infinity : Math.max(1, Math.floor(times) || 1));
-    if (!pl.levels) return { ok: false, msg: 'Not enough Ryo' };
-    R().subtract('ryo', pl.cost);
-    growSubs(it, it.level, pl.level);
-    it.level = pl.level;
-    save();
-    return { ok: true, levels: pl.levels, spent: pl.cost, level: pl.level, msg: `${nameOf(it.slot, it.rarity, it.set)} +${pl.level}` };
-  }
-  function plan(uid, slot, max = Infinity, budget = ryo()) {
-    const it = item(equippedId(uid, slot));
-    return it ? planItem(it, max, budget) : { levels: 0, cost: 0, level: 0 };
-  }
-  function strengthen(uid, slot, times = 1) {
-    if (!uid || !PIECES[slot]) return { ok: false, msg: 'Pick a gear piece' };
-    const id = equippedId(uid, slot);
-    if (!id) return { ok: false, msg: 'Nothing equipped' };
-    return levelItem(id, times);
-  }
-  const auto = (uid, slot) => strengthen(uid, slot, 'auto');
-  // Level every equipped piece evenly (lowest level first) with the Ryo on hand
-  function autoAll(uid) {
-    if (!uid) return { ok: false, msg: 'Pick a shinobi' };
-    let spent = 0, levels = 0;
-    for (;;) {
-      const open = SLOTS.map(slot => item(equippedId(uid, slot))).filter(Boolean)
-        .filter(it => it.level < capOf(it.rarity) && levelCost(it.level, it.rarity) <= ryo())
-        .sort((a, b) => a.level - b.level);
-      if (!open.length) break;
-      const it = open[0];
-      const c = levelCost(it.level, it.rarity);
-      R().subtract('ryo', c);
-      growSubs(it, it.level, it.level + 1);
-      it.level += 1;
-      spent += c; levels++;
-    }
-    if (!levels) return { ok: false, msg: 'Not enough Ryo' };
-    save();
-    return { ok: true, levels, spent, msg: `+${levels} Lv` };
-  }
-  // Rarity is fixed on a piece; a better one has to drop
-  const promote = () => ({ ok: false, msg: 'Rarity is fixed: find a better drop' });
 
   /* ───────── Stat bonuses ───────── */
-  // Sum of every equipped piece (main + substats), percents kept as percents
-  // Pieces worn per set: { akatsuki: 4, sand: 2 }
-  function setCounts(uid) {
-    const out = {};
-    SLOTS.forEach(slot => {
-      const it = item(equippedId(uid, slot));
-      if (it && it.set) out[it.set] = (out[it.set] || 0) + 1;
-    });
+  function bonusOfItem(it, out) {
+    it.stats.forEach(([k, v]) => { out[k] += v; });
     return out;
   }
-  // Active bonuses: [{ set, pieces: 2|4, stat?, value?, text }]
-  // The 2-piece line of a set, e.g. "HP +12%"
-  const setTwoText = (set) => { const d = SETS[set]; return d ? `${STAT[d.two[0]].label} +${fmtValue(d.two[0], d.two[1])}` : ''; };
-  function activeSets(uid) {
-    const out = [];
-    Object.entries(setCounts(uid)).forEach(([set, n]) => {
-      const d = SETS[set];
-      if (n >= 2) out.push({ set, pieces: 2, stat: d.two[0], value: d.two[1], text: setTwoText(set) });
-      if (n >= 4) out.push({ set, pieces: 4, text: d.four });
-    });
-    return out;
-  }
+  // Sum of every equipped tool's slot stats, percents kept as percents
   function bonusFor(uid) {
     const out = zero();
     if (!uid) return out;
-    SLOTS.forEach(slot => {
-      const it = item(equippedId(uid, slot));
-      if (!it) return;
-      out[it.main] += mainValue(it.main, it.rarity, it.level);
-      it.subs.forEach(([k, v]) => { out[k] += v; });
-    });
-    activeSets(uid).forEach(b => { if (b.stat) out[b.stat] += b.value; });
+    equippedIds(uid).forEach(id => { const it = item(id); if (it) bonusOfItem(it, out); });
     Object.keys(out).forEach(k => { out[k] = round(k, out[k]); });
     return out;
-  }
-  // 4-piece battle effects, applied in battle-combat.js calculateDamage to
-  // every hit: the attacker's set may raise it, the defender's may lower it.
-  const hpFrac = (u) => {
-    const s = u && u.stats;
-    const max = Number(s && (s.maxHP || s.maxHp)) || 0;
-    return max > 0 ? (Number(s.hp) || 0) / max : 1;
-  };
-  function setDamageMod(attacker, defender, ctx) {
-    let m = 1;
-    ctx = ctx || {}; // basic attacks pass null
-    const a = (attacker && attacker.stats && attacker.stats.gearSets4) || [];
-    const d = (defender && defender.stats && defender.stats.gearSets4) || [];
-    if (a.includes('leaf') && hpFrac(attacker) >= 0.8) m *= 1.18;
-    if (a.includes('akatsuki') && ctx.kind && ctx.kind !== 'attack') m *= 1.2;
-    if (a.includes('sound') && hpFrac(attacker) < 0.5) m *= 1.25;
-    if (a.includes('mist') && hpFrac(defender) > 0.7) m *= 1.2;
-    if (a.includes('hokage') && defender && (defender.isBoss || defender.isMissionBoss)) m *= 1.2;
-    if (d.includes('sand')) m *= 0.85;
-    return m;
   }
   const caps = () => {
     const d = global.Magatama && global.Magatama.data ? global.Magatama.data() : null;
     return { nin: (d && d.caps && d.caps.nin) || 60, res: (d && d.caps && d.caps.res) || 50 };
   };
-  // Gear + socketed magatama as flat numbers. `base` ({ hp, atk, def }) turns
+  // Tools + socketed magatama as flat numbers. `base` ({ hp, atk, def }) turns
   // HP% / ATK% / DEF% into flat amounts; without it they are left out.
   function totalFor(uid, base) {
     const g = bonusFor(uid);
@@ -519,9 +355,7 @@
     out.res = Math.min(Math.round(out.res * 100) / 100, c.res);
     return out;
   }
-  // Adds gear + magatama to a battle stats object ({ hp, maxHP, atk, def, speed }).
-  // Jutsu DMG / RES stay as percentages on stats.magatama, which
-  // battle-combat.js calculateDamage applies to jutsu and ultimate damage.
+  // Adds tools + magatama to a battle stats object ({ hp, maxHP, atk, def, speed }).
   function applyToStats(stats, instance) {
     if (!stats || !instance || !instance.uid) return stats;
     const base = { hp: Number(stats.hp) || 0, atk: Number(stats.atk) || 0, def: Number(stats.def) || 0 };
@@ -536,7 +370,6 @@
     stats.magatama = { hp: t.hp, atk: t.atk, def: t.def, spd: t.spd, nin: t.nin, res: t.res };
     const g = bonusFor(instance.uid);
     stats.gear = { hp: g.hp, atk: g.atk, def: g.def, spd: g.spd, nin: g.nin, res: g.res };
-    stats.gearSets4 = activeSets(instance.uid).filter(b => b.pieces === 4).map(b => b.set);
     return stats;
   }
 
@@ -555,20 +388,19 @@
     });
     return n;
   }
-  const migrate = () => { try { migrateInventory(); } catch (e) { console.warn('[Gear] migration skipped', e); } };
+  const migrate = () => { try { migrateInventory(); } catch (e) { console.warn('[Tools] migration skipped', e); } };
   if (global.InventoryChar) migrate();
   else if (global.document) global.document.addEventListener('DOMContentLoaded', migrate, { once: true });
+  load().then(giveStarter);
 
   global.Gear = {
-    STORAGE_KEY, OLD_KEY, SLOTS, TOOL_SLOTS, TIERS, PIECES, STAT, NAMES, DROPS, MAX_LEVEL, BAG_MAX, STATS, PROMOTE: [],
-    SETS, SET_IDS, TRIAL, setTwoText, setCounts, activeSets, setDamageMod, featuredSets, rollTrialDrop,
-    get, reload, item, itemInfo, info, unitGear, owner, equippedId, bagFor, bagCount,
-    nameOf, iconOf, artOf, scrollIcon, capOf, levelCost, mainValue, fmtValue,
-    // fmtStat / statValue: the main stat of a slot's equipped piece (Tools page)
-    fmtStat: (slot, v) => fmtValue(PIECES[slot] ? PIECES[slot].mains[0] : 'hp', v),
-    statValue: () => 0,
-    roll, rollDrop, add, equip, unequip, salvage,
-    plan, strengthen, auto, autoAll, promote, levelItem,
+    STORAGE_KEY, OLD_KEY, SLOT_N, SLOTS, TOOL_SLOTS, STAT, DROPS, BAG_MAX, MAX_STARS,
+    SLOT_COUNT, SOCKETS, STAR_COLOR, SETS: {},
+    load, setCatalog, catalog: () => CATALOG.slice(), tool,
+    get, reload, item, itemInfo, info, owner, equippedId, equippedIds, bagList, bagCount,
+    nameOf, iconOf, dropView, slotCount, socketCount, starColor, fmtValue, statLabel,
+    roll, rollDrop, add, equip, unequip, sell, canEquip,
     bonusFor, totalFor, applyToStats, migrateInventory
   };
+  global.NinjaTools = global.Gear;
 })(window);

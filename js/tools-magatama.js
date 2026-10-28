@@ -1,8 +1,8 @@
 // js/tools-magatama.js — "Magatama" view of the Tools page.
-// Left: the selected shinobi's gear pieces that take magatama. Centre: the piece on a tomoe
-// ring with 5 sockets. Right: Besetable / Backpack grids. Logic lives in
-// js/magatama.js; each type fits one piece (Magatama.FIT). The view switch
-// and the selected piece live in js/tools-gear.js.
+// Left: the selected shinobi's ninja tools. Centre: the tool on a tomoe
+// ring with its sockets (1–3 by stars). Right: Besetable / Backpack grids.
+// Logic lives in js/magatama.js; any type fits any tool. The view switch
+// and the selected tool slot live in js/tools-gear.js.
 (function () {
   'use strict';
 
@@ -18,16 +18,18 @@
   /* ───────── Helpers ───────── */
   function selected() { const s = T() && T().getSelectedCharacter(); return s || null; }
   const uid = () => { const s = selected(); return s ? s.inst.uid : null; };
-  // The piece being beset: { slot, info } for the selected shinobi
+  // The tool being beset: { slot, id, info } for the selected shinobi
+  // (the picked slot, else the first slot holding a tool)
   function currentTool() {
     const id = uid();
     if (!id || !G()) return null;
-    // Sandals take no magatama; fall back to the helmet
-    const picked = TG() && TG().slot();
-    const slot = picked && M().FIT[picked] ? picked : 'helmet';
-    return { slot, info: G().info(id, slot) };
+    const picked = TG() ? TG().slot() : 0;
+    const slot = G().equippedId(id, picked) ? picked : G().SLOTS.find(s => G().equippedId(id, s));
+    if (slot == null) return null;
+    const info = G().info(id, slot);
+    return { slot, id: info.id, info };
   }
-  const typeName = (id) => (M().data().types.find(x => x.id === id) || {}).name || id;
+  const row0 = (t) => M().socketsOf(t.id);
   const pct = v => String(Math.round(v * 10) / 10);
   function bonusText(b, sep = ' ') {
     const parts = [];
@@ -61,21 +63,21 @@
     const id = uid();
     const cur = currentTool();
     if (!id) {
-      box.innerHTML = '<div class="mg-none">Select a shinobi in Gear</div>';
+      box.innerHTML = '<div class="mg-none">Select a shinobi in Tools</div>';
     } else {
-      box.innerHTML = G().SLOTS.filter(slot => M().FIT[slot]).map(slot => {
-        const i = G().info(id, slot);
-        const row = M().socketsOf(id, slot);
-        const on = cur && cur.slot === slot;
-        return `<button type="button" class="mg-tool${on ? ' is-active' : ''}" role="option" aria-selected="${on}" data-slot="${slot}">
-          <span class="mg-tool-ic">${TG().tile(slot, i.tier)}</span>
+      const worn = G().SLOTS.map(slot => G().info(id, slot)).filter(i => !i.empty);
+      box.innerHTML = worn.length ? worn.map(i => {
+        const row = M().socketsOf(i.id);
+        const on = cur && cur.slot === i.slot;
+        return `<button type="button" class="mg-tool${on ? ' is-active' : ''}" role="option" aria-selected="${on}" data-slot="${i.slot}">
+          <span class="mg-tool-ic">${TG().tile(i)}</span>
           <span class="mg-tool-meta">
             <span class="mg-tool-nm">${esc(i.name)}</span>
             <span class="mg-pips">${row.map(k => k ? `<i style="--c:${M().info(k).color}"></i>` : '<i></i>').join('')}</span>
           </span>
-          <span class="mg-tool-lv"><small>${esc(typeName(M().FIT[slot]))}</small>Lv${i.level}</span>
+          <span class="mg-tool-lv">${i.stars}&#9733;</span>
         </button>`;
-      }).join('');
+      }).join('') : '<div class="mg-none">No ninja tools equipped</div>';
     }
     const b = id ? M().bonusForUnit(id) : { hp: 0, atk: 0, def: 0, nin: 0, res: 0 };
     const LABEL = { hp: 'HP', atk: 'ATK', def: 'DEF', nin: 'NIN', res: 'RES' };
@@ -95,15 +97,15 @@
       sockets.innerHTML = '';
       return;
     }
-    const id = uid();
     $('mg-tool-name').textContent = t.info.name;
-    const b = M().bonusForPiece(id, t.slot);
-    $('mg-tool-bonus').textContent = bonusText(b) || `${typeName(M().FIT[t.slot])} only`;
-    core.innerHTML = TG().tile(t.slot, t.info.tier);
-    const row = M().socketsOf(id, t.slot);
+    const b = M().bonusForPiece(t.id);
+    $('mg-tool-bonus').textContent = bonusText(b) || `${row0(t).length} socket${row0(t).length === 1 ? '' : 's'}`;
+    core.innerHTML = TG().tile(t.info);
+    const row = M().socketsOf(t.id);
     if (ui.socket >= 0 && row[ui.socket]) ui.socket = -1;
+    const step = 360 / Math.max(1, row.length);
     sockets.innerHTML = row.map((k, i) => {
-      const a = (-90 + i * 72) * Math.PI / 180;
+      const a = (-90 + i * step) * Math.PI / 180;
       const x = 50 + 39 * Math.cos(a), y = 50 + 39 * Math.sin(a);
       const i2 = k && M().info(k);
       return `<button type="button" class="mg-socket${k ? ' is-filled' : ''}${ui.socket === i ? ' is-picked' : ''}" style="left:${x.toFixed(2)}%;top:${y.toFixed(2)}%${i2 ? `;--c:${i2.color}` : ''}" data-socket="${i}"
@@ -114,11 +116,6 @@
   function gridKeys() {
     const bag = M().get().bag;
     let keys = Object.keys(bag).filter(k => bag[k] > 0 && M().parse(k));
-    if (ui.tab === 'fit') {
-      const t = currentTool();
-      const allowed = t ? M().fits(t.slot) : [];
-      keys = keys.filter(k => allowed.includes(M().parse(k).type));
-    }
     const order = M().data().types.map(x => x.id);
     return keys.sort((a, b) => {
       const pa = M().parse(a), pb = M().parse(b);
@@ -136,7 +133,7 @@
     const grid = $('mg-grid');
     if (ui.sel && !M().count(ui.sel)) ui.sel = null;
     if (!keys.length) {
-      grid.innerHTML = `<div class="mg-empty">${ui.tab === 'fit' && Object.keys(M().get().bag).length ? 'Nothing fits this piece' : 'Empty'}<button type="button" class="jjk-btn tl-mini" data-open-shop>Buy</button></div>`;
+      grid.innerHTML = `<div class="mg-empty">Empty<button type="button" class="jjk-btn tl-mini" data-open-shop>Buy</button></div>`;
       return;
     }
     grid.innerHTML = keys.map(k => {
@@ -168,7 +165,7 @@
   function besetKey(k) {
     const t = currentTool();
     if (!t) return toast('Select a shinobi first');
-    const res = M().beset(uid(), t.slot, k, ui.socket);
+    const res = M().beset(t.id, k, ui.socket);
     if (res.ok) ui.socket = -1;
     report(res);
   }
@@ -176,8 +173,8 @@
   function onSocket(i) {
     const t = currentTool();
     if (!t) return;
-    const row = M().socketsOf(uid(), t.slot);
-    if (row[i]) { ui.socket = -1; return report(M().remove(uid(), t.slot, i)); }
+    const row = M().socketsOf(t.id);
+    if (row[i]) { ui.socket = -1; return report(M().remove(t.id, i)); }
     ui.socket = ui.socket === i ? -1 : i;
     renderStage();
   }
@@ -238,7 +235,7 @@
     $('mg-tool-list').addEventListener('click', e => {
       const row = e.target.closest('.mg-tool');
       if (!row) return;
-      TG().setSlot(row.dataset.slot); ui.socket = -1;
+      TG().setSlot(Number(row.dataset.slot)); ui.socket = -1;
       render();
     });
     $('mg-sockets').addEventListener('click', e => {
@@ -258,7 +255,7 @@
     $('mg-buy').addEventListener('click', openShop);
     $('mg-split').addEventListener('click', () => { if (ui.sel) { const k = ui.sel; const p = M().parse(k); const r = M().split(k); if (r.ok) ui.sel = M().count(k) ? k : M().key(p.type, p.level - 1); report(r); } });
     $('mg-combine').addEventListener('click', () => { if (ui.sel) { const k = ui.sel; const p = M().parse(k); const r = M().combine(k); if (r.ok && !M().count(k)) ui.sel = M().key(p.type, p.level + 1); report(r); } });
-    $('mg-oneclick').addEventListener('click', () => { const t = currentTool(); if (t) { ui.socket = -1; report(M().oneClick(uid(), t.slot)); } });
+    $('mg-oneclick').addEventListener('click', () => { const t = currentTool(); if (t) { ui.socket = -1; report(M().oneClick(t.id)); } });
 
     $('mg-shop').addEventListener('click', onShopClick);
     $('mg-shop-close').addEventListener('click', closeShop);
@@ -266,7 +263,7 @@
 
     // Another tab changed the save
     window.addEventListener('storage', e => { if (e.key === M().STORAGE_KEY) { M().reload(); render(); } });
-    // The roster selection lives in the Gear view; follow it.
+    // The roster selection lives in the Tools view; follow it.
     document.getElementById('tools-roster-list').addEventListener('click', () => { ui.socket = -1; });
   }
 
