@@ -89,16 +89,33 @@
     return bagHTML(i);
   }
 
-  // Tools this shinobi can wear, best first
+  // Tools this shinobi can wear, best first; copies of one tool share a card
+  // (×N), and the picked copy's pane steps through them
+  function bagGroups() {
+    const groups = [], at = {};
+    G().bagList().forEach(it => {
+      if (!G().canEquip(ui.uid, it.toolId)) return;
+      if (at[it.toolId] == null) { at[it.toolId] = groups.length; groups.push({ toolId: it.toolId, ids: [] }); }
+      groups[at[it.toolId]].ids.push(it.id);
+    });
+    // the copy a card shows: the picked one, else one this shinobi wears, else a free one
+    groups.forEach(g => {
+      g.show = g.ids.includes(ui.pick) ? ui.pick
+        : g.ids.find(id => G().owner(id) === ui.uid) || g.ids.find(id => !G().owner(id)) || g.ids[0];
+    });
+    return groups;
+  }
   function bagHTML(cur) {
-    const list = G().bagList().filter(it => G().canEquip(ui.uid, it.toolId));
-    const cards = list.map(it => {
-      const v = G().itemInfo(it.id);
+    const groups = bagGroups();
+    const total = groups.reduce((n, g) => n + g.ids.length, 0);
+    const cards = groups.map(g => {
+      const v = G().itemInfo(g.show);
       const own = v.owner;
-      return `<button type="button" class="ntl-card${it.id === ui.pick ? ' is-on' : ''}" data-id="${esc(it.id)}"
-          aria-label="${esc(v.name)}, ${v.stars} stars${own ? ', in use' : ''}. Hold for details">
-          ${frameHTML(v)}
+      return `<button type="button" class="ntl-card${g.ids.includes(ui.pick) ? ' is-on' : ''}" data-id="${esc(g.show)}"
+          aria-label="${esc(v.name)}, ${v.stars} stars${g.ids.length > 1 ? `, ${g.ids.length} copies` : ''}${own ? ', in use' : ''}. Hold for details">
+          ${frameHTML(v).replace('<img ', '<img loading="lazy" ')}
           <span class="ntl-card-st">${v.stars}&#9733;</span>
+          ${g.ids.length > 1 ? `<span class="ntl-card-n">&times;${g.ids.length}</span>` : ''}
           ${own ? `<span class="eqp-card-own${own === ui.uid ? ' is-mine' : ''}" aria-hidden="true">${own === ui.uid ? '&#10003;' : '&bull;'}</span>` : ''}
         </button>`;
     }).join('');
@@ -107,7 +124,10 @@
     if (p) {
       const own = p.owner;
       const here = own === ui.uid;
+      const g = groups.find(x => x.ids.includes(p.id));
+      const k = g ? g.ids.indexOf(p.id) : 0, n = g ? g.ids.length : 1;
       pickPane = `<div class="eqp-pick">${summaryHTML(p)}
+        ${n > 1 ? `<div class="ntl-copies"><button type="button" class="eqp-back" data-act="copy" data-step="-1" aria-label="Previous copy">&lsaquo;</button><span>Copy ${k + 1} / ${n}</span><button type="button" class="eqp-back" data-act="copy" data-step="1" aria-label="Next copy">&rsaquo;</button></div>` : ''}
         ${own && !here ? `<p class="eqp-note">Worn by ${esc(ownerName(own))}; equipping takes it.</p>` : ''}
         <div class="eqp-acts">
           <button type="button" class="eqp-go is-quiet" data-act="pop" data-id="${esc(p.id)}">Details</button>
@@ -115,8 +135,8 @@
           ${own ? '' : '<button type="button" class="eqp-go is-quiet" data-act="sell">Sell</button>'}
         </div></div>`;
     }
-    return `<div class="eqp-bag-head">${cur.empty ? '' : '<button type="button" class="eqp-back" data-act="back" aria-label="Back">&larr;</button>'}<span>Tool Bag &middot; ${list.length}</span></div>
-      ${list.length ? `<div class="eqp-cards ntl-cards" role="listbox" aria-label="Ninja tools">${cards}</div>` : '<p class="eqp-empty">No tools this shinobi can equip yet: clear missions to find ninja tools.</p>'}
+    return `<div class="eqp-bag-head">${cur.empty ? '' : '<button type="button" class="eqp-back" data-act="back" aria-label="Back">&larr;</button>'}<span>Tool Bag &middot; ${total}</span></div>
+      ${groups.length ? `<div class="eqp-cards ntl-cards" role="listbox" aria-label="Ninja tools">${cards}</div>` : '<p class="eqp-empty">No tools this shinobi can equip yet: clear missions to find ninja tools.</p>'}
       ${pickPane}`;
   }
 
@@ -293,6 +313,12 @@
       case 'pop': openPop(a.dataset.id); break;
       case 'bag': ui.pick = (G_.bagList().find(it => !G_.owner(it.id) && G_.canEquip(ui.uid, it.toolId)) || {}).id || null; render(); break;
       case 'back': ui.pick = null; render(); break;
+      case 'copy': {
+        const g = bagGroups().find(x => x.ids.includes(ui.pick));
+        if (g) ui.pick = g.ids[(g.ids.indexOf(ui.pick) + Number(a.dataset.step) + g.ids.length) % g.ids.length];
+        render();
+        break;
+      }
       case 'off': act(G_.unequip(ui.uid, ui.slot)); break;
       case 'equip': { const r = G_.equip(ui.uid, ui.pick, ui.slot); if (r.ok) ui.pick = null; act(r); break; }
       case 'sell': { const r = G_.sell(ui.pick); ui.pick = null; act(r); break; }

@@ -281,3 +281,8 @@ html.is-mobile.is-landscape .ntl-hint { display: none; }
   .ntl-pop-body { grid-template-columns: 1fr 1fr; }
   .ntl-core { grid-column: 1 / -1; grid-row: 1; justify-self: center; }
 }
+.ntl-card-n {
+  position: absolute; right: 3px; top: 3px; padding: 0 4px; border-radius: 7px;
+  font: 700 10px/14px var(--g-sans, sans-serif); color: #fff; background: rgba(6, 8, 20, 0.85);
+}
+.ntl-copies { display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 6px; font-size: 11px; letter-spacing: 0.1em; color: var(--eqp-dim); }

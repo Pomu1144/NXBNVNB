@@ -157,6 +157,17 @@
         "resources": [{ "type": "ryo", "amount": 500000 }],
         "message": "Received all Kakashi Legacy fusion ingredients! Check your inventory."
       }
+    },
+    {
+      "code": "ALLTOOL10",
+      "description": "Developer Gift - 10 of every ninja tool",
+      "expiryDate": null,
+      "maxRedemptions": null,
+      "rewards": {
+        "allTools": 10,
+        "resources": [],
+        "message": "You've received 10 of every ninja tool! Check your present box to claim them."
+      }
     }
   ]
 }

@@ -27,7 +27,7 @@
   const SLOT_N = 8;
   const SLOTS = Array.from({ length: SLOT_N }, (_, i) => i);
   const TOOL_SLOTS = ['equipment1', 'equipment2', 'equipment3', 'equipment4', 'equipment5'];
-  const BAG_MAX = 300;
+  const BAG_MAX = 12000;   // room for a gift of 10 of every tool (ALLTOOL10)
   const MAX_STARS = 7;
 
   // Slot stats per star level (index = stars)
@@ -258,6 +258,20 @@
     save();
     return copy;
   }
+  // `copies` of every catalogue tool, each with its own slot stat rolls,
+  // saved once (gift codes: data/gift-codes.json "allTools")
+  function grantAll(copies) {
+    const s = get();
+    const n = Math.max(1, Math.floor(Number(copies) || 1));
+    let added = 0;
+    CATALOG.forEach(t => {
+      for (let i = 0; i < n && Object.keys(s.bag).length < BAG_MAX; i++) {
+        const it = roll({ toolId: t.id }); it.id = newId(s); s.bag[it.id] = it; added++;
+      }
+    });
+    if (added) save();
+    return added;
+  }
   function rollDrop(rank) {
     const d = DROPS[rank] || DROPS.C;
     if (rand() >= d.chance) return [];
@@ -424,7 +438,7 @@
     load, setCatalog, catalog: () => CATALOG.slice(), tool,
     get, reload, item, itemInfo, info, owner, equippedId, equippedIds, bagList, bagCount,
     nameOf, iconOf, dropView, slotCount, socketCount, starColor, fmtValue, statLabel,
-    roll, rollDrop, add, equip, unequip, sell, canEquip,
+    roll, rollDrop, add, grantAll, equip, unequip, sell, canEquip,
     bonusFor, totalFor, applyToStats, migrateInventory
   };
   global.NinjaTools = global.Gear;
