@@ -192,10 +192,10 @@
     renderPop();
   }
   function closePop() { ui.pop = null; ui.socket = -1; renderPop(); }
+  // The card hangs off <body>: the Ink record's panels make their own
+  // containing block, which would trap a fixed overlay inside the column
   function renderPop() {
-    const box = doc.getElementById('char-gear');
-    if (!box) return;
-    let el = box.querySelector('.ntl-pop');
+    let el = doc.querySelector('body > .ntl-pop');
     if (!ui.pop || !G().item(ui.pop)) {
       ui.pop = null;
       if (el) el.remove();
@@ -204,7 +204,8 @@
     if (!el) {
       el = doc.createElement('div');
       el.className = 'ntl-pop';
-      box.appendChild(el);
+      el.addEventListener('click', onPopClick);
+      doc.body.appendChild(el);
     }
     el.innerHTML = popHTML(ui.pop);
   }
@@ -293,7 +294,6 @@
 
   function onClick(e) {
     if (hold.fired) { hold.fired = false; e.preventDefault(); return; }
-    if (e.target.closest('.ntl-pop')) return onPopClick(e);
     const slot = e.target.closest('.ntl-slot');
     if (slot) {
       const n = Number(slot.dataset.slot);
@@ -301,7 +301,10 @@
       ui.slot = n;
       render();
       const again = doc.querySelector(`#char-gear .ntl-slot[data-slot="${n}"]`);
-      if (again) again.focus();
+      if (again) again.focus({ preventScroll: true });
+      // the slot's tool / bag sits below the grid: bring it into view
+      const detail = doc.querySelector('#char-gear .eqp-detail');
+      if (detail && detail.scrollIntoView) detail.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
       return;
     }
     const card = e.target.closest('.ntl-card');
@@ -335,7 +338,7 @@
       box.addEventListener('pointerup', onUp);
       box.addEventListener('pointercancel', onUp);
       box.addEventListener('contextmenu', onContext);
-      box.addEventListener('keydown', onKey);
+      doc.addEventListener('keydown', onKey, true);
     }
     global.addEventListener('gear:change', () => render());
     global.addEventListener('magatama:change', () => render());
@@ -348,7 +351,7 @@
   // tools, which fade in over it. Skipped for reduced motion.
   function playIntro(modal) {
     const panel = modal && modal.querySelector('.char-modal-panel');
-    if (!panel) return;
+    if (!panel || doc.documentElement.dataset.skin === 'ink') return;   // Ink keeps the record
     const reduce = global.matchMedia && global.matchMedia('(prefers-reduced-motion: reduce)').matches;
     let v = panel.querySelector('.eqp-intro');
     if (reduce) { if (v) v.remove(); return; }

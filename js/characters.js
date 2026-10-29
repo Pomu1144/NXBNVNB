@@ -523,9 +523,11 @@
       b.setAttribute("aria-selected", on ? "true" : "false");
     });
     MODAL.querySelectorAll(".tab-panel").forEach(p => p.classList.toggle("is-active", p.id === `tab-${tab}`));
-    // Equipment hides the art and takes the whole panel (css/character-gear-tab.css)
-    const intoGear = tab === "gear" && !MODAL.classList.contains("is-gear-view");
-    MODAL.classList.toggle("is-gear-view", tab === "gear");
+    // Equipment hides the art and takes the whole panel over a night sky
+    // (css/character-gear-tab.css); Ink keeps the record as on every other tab
+    const sky = tab === "gear" && document.documentElement.dataset.skin !== "ink";
+    const intoGear = sky && !MODAL.classList.contains("is-gear-view");
+    MODAL.classList.toggle("is-gear-view", sky);
     if (intoGear) window.CharGearTab?.playIntro(MODAL);   // ink → night sky transition
     const panels = MODAL.querySelector(".tab-panels");
     if (panels) panels.scrollTop = 0;

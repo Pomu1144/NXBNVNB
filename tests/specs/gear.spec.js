@@ -159,7 +159,7 @@ test('equipment tab: 2 rows of 4, equip from the bag, long press opens the tool 
   await page.mouse.down();
   await page.waitForTimeout(700);
   await page.mouse.up();
-  const pop = page.locator('#char-gear .ntl-pop');
+  const pop = page.locator('body > .ntl-pop');
   await expect(pop).toBeVisible();
   await expect(pop.locator('.ntl-stat')).toHaveCount(6);
   await expect(pop.locator('.ntl-who')).toHaveCount(1);

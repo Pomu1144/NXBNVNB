@@ -2,7 +2,7 @@
 // tool slots in two rows of 4, their totals and the selected slot. The Status
 // tab no longer lists equipment; the jutsu slots stay on the Ninjutsu tab.
 const { test, expect } = require('@playwright/test');
-const { seedSave, invEntry, collectErrors, waitForLoader } = require('../helpers');
+const { seedSave, pinStyle, invEntry, collectErrors, waitForLoader } = require('../helpers');
 
 test('equipment tab: eight tool slots, totals and the selected tool', async ({ page }) => {
   const errors = collectErrors(page);
@@ -31,9 +31,12 @@ test('equipment tab: eight tool slots, totals and the selected tool', async ({ p
   await expect(page.locator('#tab-skills .ultimate-slot')).toBeVisible();
 
   await page.locator('.char-tabs .tab-btn[data-tab="gear"]').click();
-  // The art steps aside so the tools can use the whole panel
-  await expect(page.locator('#char-modal')).toHaveClass(/is-gear-view/);
-  await expect(page.locator('#char-modal .char-modal-art')).toBeHidden();
+  // Ink keeps the record as on every other tab: art stays, no night sky
+  await expect(page.locator('#char-modal')).not.toHaveClass(/is-gear-view/);
+  await expect(page.locator('#char-modal .char-modal-art')).toBeVisible();
+  await expect(page.locator('#char-modal .eqp-intro')).toHaveCount(0);
+  // square Ink frames
+  expect(await page.locator('#tab-gear .ntl-slot[data-slot="0"] .ntl-frame').evaluate((e) => getComputedStyle(e).borderRadius)).toBe('0px');
   await expect(page.locator('#tab-gear .ntl-title')).toHaveText(/Ninja Tool Equip/i);
   await expect(page.locator('#tab-gear .ntl-slot')).toHaveCount(8);
   await expect(page.locator('#tab-gear .ntl-slot.is-empty')).toHaveCount(6);
@@ -55,10 +58,24 @@ test('equipment tab: eight tool slots, totals and the selected tool', async ({ p
   await expect(page.locator('#tab-gear .eqp-detail')).toContainText('A Mark Made by Two (Naruto)');
   await expect(page.locator('#tab-gear .eqp-detail')).toContainText('6 slots');
 
-  // Other tabs bring the art back
   await page.locator('.char-tabs .tab-btn[data-tab="status"]').click();
-  await expect(page.locator('#char-modal')).not.toHaveClass(/is-gear-view/);
   await expect(page.locator('#char-modal .char-modal-art')).toBeVisible();
 
   errors.assertClean('equipment tab');
+});
+
+test('classic (disabled style) still gets the night-sky equipment view', async ({ page }) => {
+  const errors = collectErrors(page);
+  await pinStyle(page, 'classic');
+  await seedSave(page, { blazing_inventory_v2: [invEntry('e-naruto', 'naruto_2115', 80, '7S')] });
+  await page.goto('/characters.html');
+  await waitForLoader(page);
+  await page.locator('.char-grid .char-slot[data-uid="e-naruto"]').click();
+  await page.locator('.char-tabs .tab-btn[data-tab="gear"]').click();
+  await expect(page.locator('#char-modal')).toHaveClass(/is-gear-view/);
+  await expect(page.locator('#char-modal .char-modal-art')).toBeHidden();
+  await page.locator('.char-tabs .tab-btn[data-tab="status"]').click();
+  await expect(page.locator('#char-modal')).not.toHaveClass(/is-gear-view/);
+  await expect(page.locator('#char-modal .char-modal-art')).toBeVisible();
+  errors.assertClean('classic equipment tab');
 });
