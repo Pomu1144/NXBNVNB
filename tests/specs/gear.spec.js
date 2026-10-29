@@ -264,3 +264,47 @@ test('tools no longer in the catalogue are sold back and their magatama return',
   expect(maga.tools.old).toBeUndefined();
   errors.assertClean('retired tools');
 });
+
+test('gift code ALLTOOL10: 10 of every tool through the present box', async ({ page }) => {
+  test.setTimeout(120_000);
+  const errors = collectErrors(page);
+  await seedSave(page, { blazing_inventory_v2: [invEntry('u-itachi', 'itachi_088', 80, '6S')] });
+  // Redeemed on Settings, claimed from the village present box
+  await page.goto('/settings.html');
+  await waitForLoader(page);
+  await page.waitForFunction(() => window.GiftCodeSystem && window.DashboardMailbox);
+  const res = await page.evaluate(() => window.GiftCodeSystem.redeemCode('alltool10'));
+  expect(res.success).toBe(true);
+  await page.goto('/village.html');
+  await waitForLoader(page);
+  await page.waitForFunction(() => window.DashboardMailbox && window.Gear && window.Gear.catalog().length > 0);
+  const before = await page.evaluate(() => window.Gear.bagCount());
+  const r = await page.evaluate(async () => {
+    const M = window.DashboardMailbox;
+    const i = M.messages.findIndex((m) => m.title === 'Gift Code: ALLTOOL10');
+    const items = M._collectRewards(M.messages[i]).map((x) => [x.key, x.name, !!x.unavailable]);
+    await M.claimRewards(i);
+    return { items, claimed: M.messages[i].claimed };
+  });
+  expect(r.items).toEqual([['all_tools', `All Ninja Tools ×10 (${CATALOG.length * 10})`, false]]);
+  expect(r.claimed).toContain('all_tools');
+  const bag = Object.values((await toolSave(page)).bag);
+  expect(bag.length).toBe(before + CATALOG.length * 10);
+  const per = {};
+  for (const t of bag) per[t.toolId] = (per[t.toolId] || 0) + 1;
+  for (const t of CATALOG) expect(per[t.id], t.id).toBeGreaterThanOrEqual(10);
+
+  // The Equipment tab groups the copies: one card per tool Itachi can wear
+  await page.goto('/characters.html');
+  await waitForLoader(page);
+  await page.locator('.char-grid .char-slot[data-uid="u-itachi"]').click();
+  await page.locator('.char-tabs .tab-btn[data-tab="gear"]').click();
+  await page.locator('#tab-gear .ntl-slot[data-slot="0"]').click();
+  const open = CATALOG.filter((t) => !t.equip || t.equip.includes('itachi')).length;
+  await expect(page.locator('#tab-gear .ntl-card')).toHaveCount(open);
+  await page.locator('#tab-gear .ntl-card').first().click();
+  await expect(page.locator('#tab-gear .ntl-copies')).toContainText(/Copy 1 \/ 1\d/);
+  await page.locator('#tab-gear [data-act="copy"][data-step="1"]').click();
+  await expect(page.locator('#tab-gear .ntl-copies')).toContainText(/Copy 2 \//);
+  errors.assertClean('ALLTOOL10');
+});

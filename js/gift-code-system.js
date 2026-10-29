@@ -119,7 +119,8 @@ class GiftCodeSystem {
       rewards: {
         characters: rewards.characters || [],
         resources: rewards.resources || [],
-        ...(rewards.allCharacters ? { allCharacters: true } : {})
+        ...(rewards.allCharacters ? { allCharacters: true } : {}),
+        ...(rewards.allTools ? { allTools: Number(rewards.allTools) || 1 } : {})
       },
       rewardType: 'giftCode' // Special type for gift code rewards
     };

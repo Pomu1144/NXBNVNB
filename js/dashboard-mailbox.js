@@ -247,6 +247,22 @@ class DashboardMailbox {
       });
     }
 
+    // Developer "all ninja tools" reward: `allTools` copies of every tool (js/gear.js)
+    if (r.allTools) {
+      const G = window.Gear;
+      const n = G && G.catalog ? G.catalog().length : 0;
+      out.push({
+        key: 'all_tools', kind: 'resource',
+        name: n ? `All Ninja Tools ×${r.allTools} (${n * r.allTools})` : `All Ninja Tools ×${r.allTools}`,
+        qty: 1,
+        icon: 'assets/ninja-tools/adamantine_whorl_shuriken.webp',
+        fallback: 'assets/icons/inventory_icon.png',
+        claimed: claimed.includes('all_tools'),
+        // Tools load with js/gear.js; without them it stays to claim later
+        unavailable: !n
+      });
+    }
+
     const charKeys = this._charKeys(r.characters);
     (r.characters || []).forEach((ch, i) => {
       const key = charKeys[i];
@@ -262,7 +278,7 @@ class DashboardMailbox {
       });
     });
 
-    Object.keys(r).filter(k => !['characters', 'resources', 'allCharacters'].includes(k)).forEach(name => {
+    Object.keys(r).filter(k => !['characters', 'resources', 'allCharacters', 'allTools'].includes(k)).forEach(name => {
       const key = `legacy_${name}`;
       out.push({
         key, kind: 'resource',
@@ -561,6 +577,11 @@ class DashboardMailbox {
       message.claimed.push('all_characters');
     }
 
+    if (r.allTools && !message.claimed.includes('all_tools') && window.Gear && window.Gear.catalog().length) {
+      window.Gear.grantAll(r.allTools);
+      message.claimed.push('all_tools');
+    }
+
     const charKeys = this._charKeys(r.characters);
     (r.characters || []).forEach((ch, i) => {
       const key = charKeys[i];
@@ -580,7 +601,7 @@ class DashboardMailbox {
       message.claimed.push(key);
     });
 
-    Object.keys(r).filter(k => !['characters', 'resources', 'allCharacters'].includes(k)).forEach(name => {
+    Object.keys(r).filter(k => !['characters', 'resources', 'allCharacters', 'allTools'].includes(k)).forEach(name => {
       const key = `legacy_${name}`;
       if (message.claimed.includes(key)) return;
       const id = this._resourceNameToId(name);
@@ -596,6 +617,7 @@ class DashboardMailbox {
 
   async claimRewards(index) {
     const cat = await this._catalog();
+    if (window.Gear && window.Gear.load) await window.Gear.load();
     const message = this.messages[index];
     if (!message || !message.rewards) {
       this.showCustomAlert('No Rewards', 'This present has nothing to claim.', 'error');
@@ -627,6 +649,7 @@ class DashboardMailbox {
 
   async claimAll() {
     const cat = await this._catalog();
+    if (window.Gear && window.Gear.load) await window.Gear.load();
     const totals = new Map();
     let hasChars = false;
     let skippedNoCatalog = false;
