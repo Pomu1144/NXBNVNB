@@ -1,4 +1,4 @@
-const CACHE = 'blazing-shell-v225';
+const CACHE = 'blazing-shell-v227';
 const BASE = new URL('./', self.location.href).pathname;
 const SHELL = [
   'index.html',
@@ -21,7 +21,7 @@ const SHELL = [
 
 self.addEventListener('install', e => {
   e.waitUntil(
-    caches.open(CACHE).then(c => c.addAll(SHELL)).then(() => self.skipWaiting())
+    caches.open(CACHE).then(c => c.addAll(SHELL.map(u => new Request(u, { cache: 'no-cache' })))).then(() => self.skipWaiting())
   );
 });
 
@@ -33,10 +33,16 @@ self.addEventListener('activate', e => {
   );
 });
 
+// GitHub Pages serves every file with max-age=600, so a plain fetch can hand
+// back the browser's copy from before a deploy. 'no-cache' always asks the
+// server (a cheap 304 when unchanged), so the cache never keeps an old file.
+// (A navigation Request can't take init options, so pages go by URL.)
+const fresh = (request) => fetch(request.mode === 'navigate' ? request.url : request, { cache: 'no-cache' });
+
 // Try the network (bounded wait); on failure or timeout use the cached copy.
 function networkFirst(request, timeoutMs = 3000) {
   return caches.open(CACHE).then(async cache => {
-    const network = fetch(request).then(res => {
+    const network = fresh(request).then(res => {
       if (res && res.ok) cache.put(request, res.clone());
       return res;
     });
@@ -74,7 +80,7 @@ self.addEventListener('fetch', e => {
       caches.open(CACHE).then(async cache => {
         const cached = await cache.match(key);
         if (cached) return cached;
-        const res = await fetch(e.request);
+        const res = await fresh(e.request);
         if (res && res.ok) cache.put(key, res.clone());
         return res;
       })
