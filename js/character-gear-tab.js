@@ -62,7 +62,6 @@
     return `<button type="button" class="ntl-slot${on ? ' is-on' : ''}" data-slot="${i.slot}" data-id="${esc(i.id)}" aria-pressed="${on}"
         aria-label="Tool slot ${i.slot + 1}: ${esc(i.name)}, ${i.stars} stars. Hold for details">
         ${frameHTML(i, n ? `<span class="ntl-maga-n" aria-hidden="true">${n}</span>` : '')}
-        <span class="ntl-slot-st">${stars(i.stars)}</span>
       </button>`;
   }
 
@@ -71,7 +70,7 @@
     return `
       <div class="eqp-detail-head ntl-head" style="--tc:${i.color}">
         ${frameHTML(i)}
-        <span class="eqp-detail-nm"><b>${esc(i.name)}</b><small>${stars(i.stars)} &middot; ${i.slots} slot${i.slots > 1 ? 's' : ''}</small></span>
+        <span class="eqp-detail-nm"><b>${esc(i.name)}</b><small>${i.slots} slot${i.slots > 1 ? 's' : ''}</small></span>
       </div>
       ${i.stats.map(s => `<div class="eqp-row"><span>${esc(s.label)}</span><b>${esc(s.text)}</b></div>`).join('')}`;
   }
@@ -114,7 +113,6 @@
       return `<button type="button" class="ntl-card${g.ids.includes(ui.pick) ? ' is-on' : ''}" data-id="${esc(g.show)}"
           aria-label="${esc(v.name)}, ${v.stars} stars${g.ids.length > 1 ? `, ${g.ids.length} copies` : ''}${own ? ', in use' : ''}. Hold for details">
           ${frameHTML(v).replace('<img ', '<img loading="lazy" ')}
-          <span class="ntl-card-st">${v.stars}&#9733;</span>
           ${g.ids.length > 1 ? `<span class="ntl-card-n">&times;${g.ids.length}</span>` : ''}
           ${own ? `<span class="eqp-card-own${own === ui.uid ? ' is-mine' : ''}" aria-hidden="true">${own === ui.uid ? '&#10003;' : '&bull;'}</span>` : ''}
         </button>`;

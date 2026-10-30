@@ -75,7 +75,6 @@
             <span class="mg-tool-nm">${esc(i.name)}</span>
             <span class="mg-pips">${row.map(k => k ? `<i style="--c:${M().info(k).color}"></i>` : '<i></i>').join('')}</span>
           </span>
-          <span class="mg-tool-lv">${i.stars}&#9733;</span>
         </button>`;
       }).join('') : '<div class="mg-none">No ninja tools equipped</div>';
     }
