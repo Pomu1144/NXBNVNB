@@ -57,7 +57,7 @@
     const on = ui.modal === i.slot;
     return `<button type="button" class="gp${on ? ' is-active' : ''}" data-slot="${i.slot}"
       aria-label="${i.empty ? `Tool slot ${i.slot + 1}: empty` : `${esc(i.name)}, ${i.stars} stars`}">
-      ${tile(i, i.empty ? '' : `<span class="gp-lv">${i.stars}&#9733;</span>`)}
+      ${tile(i)}
       <span class="gp-nm">${i.empty ? 'Empty' : esc(i.name)}</span>
     </button>`;
   }
