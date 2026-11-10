@@ -77904,6 +77904,10 @@
    "6SB": {
     "portrait": "assets/characters/sasuke_667/portrait_6S.webp",
     "full": "assets/characters/sasuke_667/full_6S.webp"
+   },
+   "7S": {
+    "portrait": "assets/characters/sasuke_2210/portrait_7S.webp",
+    "full": "assets/characters/sasuke_2210/full_7S.webp"
    }
   },
   "statsBase": {
@@ -78026,7 +78030,7 @@
   "element": "Skill",
   "rarity": 6,
   "starMinCode": "6S",
-  "starMaxCode": "6SB",
+  "starMaxCode": "7S",
   "lbEligible": false,
   "portrait": "assets/characters/sasuke_668/portrait_6S.webp",
   "full": "assets/characters/sasuke_668/full_6S.webp",
@@ -78040,6 +78044,10 @@
    "6SB": {
     "portrait": "assets/characters/sasuke_668/portrait_6S.webp",
     "full": "assets/characters/sasuke_668/full_6S.webp"
+   },
+   "7S": {
+    "portrait": "assets/characters/sasuke_2210/portrait_7S.webp",
+    "full": "assets/characters/sasuke_2210/full_7S.webp"
    }
   },
   "statsBase": {
@@ -78151,6 +78159,146 @@
   ],
   "metadata": {
    "cardNumber": 668,
+   "maxLevel": 100,
+   "hitCount": 10
+  }
+ },
+ {
+  "id": "sasuke_2210",
+  "name": "Sasuke Uchiha",
+  "version": "One Step to Hokage",
+  "element": "Skill",
+  "rarity": 7,
+  "starMinCode": "7S",
+  "starMaxCode": "7S",
+  "lbEligible": false,
+  "portrait": "assets/characters/sasuke_2210/portrait_7S.webp",
+  "full": "assets/characters/sasuke_2210/full_7S.webp",
+  "ultimateAnimation": null,
+  "secretAnimation": null,
+  "artByTier": {
+   "7S": {
+    "portrait": "assets/characters/sasuke_2210/portrait_7S.webp",
+    "full": "assets/characters/sasuke_2210/full_7S.webp"
+   }
+  },
+  "statsBase": {
+   "hp": 22503,
+   "atk": 2154,
+   "speed": 131
+  },
+  "statsMax": {
+   "hp": 45006,
+   "atk": 4308,
+   "speed": 263
+  },
+  "growthCurve": {
+   "hp": 1,
+   "atk": 1,
+   "def": 1,
+   "speed": 1,
+   "chakra": 1
+  },
+  "powerRank": 15273,
+  "powerWeights": {
+   "hp": 0.3,
+   "atk": 0.4,
+   "def": 0.1,
+   "speed": 0.15,
+   "chakra": 0.05
+  },
+  "range": "Short",
+  "luck": {
+   "base": 1,
+   "max": 99
+  },
+  "cost": {
+   "base": 150,
+   "max": 60
+  },
+  "affiliation": [
+   "Hidden Leaf",
+   "Uchiha Clan"
+  ],
+  "passiveIcons": {},
+  "skills": {
+   "fieldSkill": {
+    "name": "Field Skill",
+    "type": "Field",
+    "description": "Reduces the chance of receiving immobilization by 30%-35% (Not Field Skills)."
+   },
+   "buddySkill": {
+    "name": "Buddy Skill",
+    "type": "Buddy",
+    "description": "Reduces the chance of receiving immobilization by 35% (Not Field Skills)."
+   },
+   "jutsu": {
+    "name": "Heavenly Hand Power",
+    "type": "Jutsu",
+    "byTier": {
+     "7S": {
+      "chakraCost": 4,
+      "hits": 10,
+      "shape": "H. Rectangle (Fat)",
+      "range": "Short",
+      "position": "Right",
+      "description": "6x attack toward 1 enemy(s) in range, knocks them back, and rolls back targeted enemies' Speed gauge slightly.",
+      "nwusDescription": "6x attack toward 1 enemy(s) in range, knocks them back, and rolls back targeted enemies' Speed gauge slightly."
+     }
+    }
+   },
+   "secret": {
+    "name": "Takemikazuchi-no-Kami",
+    "type": "Secret",
+    "byTier": {
+     "7S": {
+      "chakraCost": 8,
+      "range": "Short",
+      "description": "13x attack toward 1 enemy(s) in range, knocking them back, with a 70% chance of immobilization for 1 second(s). Also gives you 20% damage reduction for 2 second(s)."
+     }
+    }
+   },
+   "latent": {
+    "name": "Rinnegan: Chidori of the Shadow Hokage",
+    "type": "Latent",
+    "unlockTier": "7S",
+    "byTier": {
+     "7S": {
+      "chakraCost": 7,
+      "range": "On-Screen",
+      "description": "25x attack toward all enemies on-screen and knocks them back, 70% chance of immobilization for 2 turn(s). Swaps places with an ally using Amenotejikara and gives all allies 20% damage reduction for 2 turn(s)."
+     }
+    }
+   }
+  },
+  "abilities": [
+   {
+    "name": "Attack Boost",
+    "description": "Boosts attack by 150."
+   },
+   {
+    "name": "Attack Boost",
+    "description": "Boosts attack by 150."
+   },
+   {
+    "name": "0 Chakra Req'd for Ninjutsu",
+    "description": "15% chance to reduce chakra consumed by Ninjutsu to 0."
+   },
+   {
+    "name": "Immobilization Resistance",
+    "description": "Lowers rate of getting immobilized by 20% (Not F Skills)."
+   },
+   {
+    "name": "0 Chakra Req'd for Ninjutsu",
+    "description": "15% chance to reduce chakra consumed by Ninjutsu to 0."
+   },
+   {
+    "name": "Attack Boost",
+    "description": "Boosts attack by 150."
+   }
+  ],
+  "metadata": {
+   "cardNumber": 2210,
    "maxLevel": 100,
    "hitCount": 10
   }
@@ -86325,6 +86473,10 @@
    "6S": {
     "portrait": "assets/characters/kakashi_735/portrait_6S.webp",
     "full": "assets/characters/kakashi_735/full_6S.webp"
+   },
+   "7S": {
+    "portrait": "assets/characters/kakashi_2208/portrait_7S.webp",
+    "full": "assets/characters/kakashi_2208/full_7S.webp"
    }
   },
   "statsBase": {
@@ -86428,7 +86580,7 @@
   "element": "Bravery",
   "rarity": 6,
   "starMinCode": "6S",
-  "starMaxCode": "6S",
+  "starMaxCode": "7S",
   "lbEligible": false,
   "portrait": "assets/characters/kakashi_735/portrait_6S.webp",
   "full": "assets/characters/kakashi_735/full_6S.webp",
@@ -86438,6 +86590,14 @@
    "6S": {
     "portrait": "assets/characters/kakashi_735/portrait_6S.webp",
     "full": "assets/characters/kakashi_735/full_6S.webp"
+   },
+   "6SB": {
+    "portrait": "assets/characters/kakashi_735/portrait_6S.webp",
+    "full": "assets/characters/kakashi_735/full_6S.webp"
+   },
+   "7S": {
+    "portrait": "assets/characters/kakashi_2208/portrait_7S.webp",
+    "full": "assets/characters/kakashi_2208/full_7S.webp"
    }
   },
   "statsBase": {
@@ -86553,6 +86713,150 @@
   ],
   "metadata": {
    "cardNumber": 735,
+   "maxLevel": 100,
+   "hitCount": 10
+  }
+ },
+ {
+  "id": "kakashi_2208",
+  "name": "Kakashi Hatake",
+  "version": "Iron Resolve",
+  "element": "Bravery",
+  "rarity": 7,
+  "starMinCode": "7S",
+  "starMaxCode": "7S",
+  "lbEligible": false,
+  "portrait": "assets/characters/kakashi_2208/portrait_7S.webp",
+  "full": "assets/characters/kakashi_2208/full_7S.webp",
+  "ultimateAnimation": null,
+  "secretAnimation": null,
+  "artByTier": {
+   "7S": {
+    "portrait": "assets/characters/kakashi_2208/portrait_7S.webp",
+    "full": "assets/characters/kakashi_2208/full_7S.webp"
+   }
+  },
+  "statsBase": {
+   "hp": 30948,
+   "atk": 3303,
+   "speed": 135
+  },
+  "statsMax": {
+   "hp": 61896,
+   "atk": 6606,
+   "speed": 271
+  },
+  "growthCurve": {
+   "hp": 1,
+   "atk": 1,
+   "def": 1,
+   "speed": 1,
+   "chakra": 1
+  },
+  "powerRank": 21262,
+  "powerWeights": {
+   "hp": 0.3,
+   "atk": 0.4,
+   "def": 0.1,
+   "speed": 0.15,
+   "chakra": 0.05
+  },
+  "range": "Mid",
+  "luck": {
+   "base": 10,
+   "max": 99
+  },
+  "cost": {
+   "base": 150,
+   "max": 60
+  },
+  "affiliation": [
+   "Hidden Leaf",
+   "Ninja Alliance"
+  ],
+  "passiveIcons": {},
+  "skills": {
+   "fieldSkill": {
+    "name": "Field Skill",
+    "type": "Field",
+    "description": "Reduces Wisdom-elemental damage by 35%-40%."
+   },
+   "buddySkill": {
+    "name": "Buddy Skill",
+    "type": "Buddy",
+    "description": "Reduces Wisdom-elemental damage by 40%."
+   },
+   "jutsu": {
+    "name": "Lightning Blade: Beam of Light",
+    "type": "Jutsu",
+    "byTier": {
+     "7S": {
+      "chakraCost": 4,
+      "hits": 10,
+      "shape": "H. Rectangle (Fat)",
+      "range": "Long",
+      "position": "Center",
+      "description": "Ignores Substitution and damage reduction effects (Reduce Damage) for 1 enemy(s) in range with 7x attack toward them.",
+      "nwusDescription": "Ignores Substitution and damage reduction effects (Reduce Damage) for 1 enemy(s) in range with 7x attack toward them."
+     }
+    }
+   },
+   "secret": {
+    "name": "Lightning Blade: Twin Lightning Shiver",
+    "type": "Secret",
+    "byTier": {
+     "7S": {
+      "chakraCost": 8,
+      "range": "Short",
+      "description": "Ignores Substitution and damage reduction effects (Reduce Damage) for 1 enemy(s) in range with 19x attack toward them."
+     }
+    }
+   },
+   "latent": {
+    "name": "Lightning Blade: Iron Resolve",
+    "type": "Latent",
+    "unlockTier": "7S",
+    "byTier": {
+     "7S": {
+      "chakraCost": 7,
+      "range": "On-Screen",
+      "description": "Ignores Substitution and damage reduction effects (Reduce Damage) for all enemies on-screen with 25x attack toward them, 80% chance of immobilization for 2 turn(s). Plus, when your health is 30% or below, gives you an attack boost of 100% for 1 turn(s) before performing the above attack."
+     }
+    }
+   }
+  },
+  "abilities": [
+   {
+    "name": "Damage Boost Against Wisdom",
+    "description": "Increases damage dealt to Wisdom Elementals by 30%."
+   },
+   {
+    "name": "Immobilization Resistance",
+    "description": "Lowers rate of getting immobilized by 35% (Not F Skills)."
+   },
+   {
+    "name": "0 Chakra Req'd for Ninjutsu",
+    "description": "25% chance to reduce chakra consumed by Ninjutsu to 0."
+   },
+   {
+    "name": "Jutsu Sealing Resistance",
+    "description": "Lowers rate of getting jutsu sealed by 35% (Not F Skills)."
+   },
+   {
+    "name": "Reduce Damage",
+    "description": "Reduces damage taken by 25%."
+   },
+   {
+    "name": "0 Chakra Req'd for Secret Technique",
+    "description": "20% chance to reduce chakra consumed by Secret Techniques to 0."
+   },
+   {
+    "name": "Reduce Damage",
+    "description": "Reduces damage taken by 25%."
+   }
+  ],
+  "metadata": {
+   "cardNumber": 2208,
    "maxLevel": 100,
    "hitCount": 10
   }
@@ -115682,6 +115986,10 @@
    "6S": {
     "portrait": "assets/characters/sasuke_2030/portrait_6S.webp",
     "full": "assets/characters/sasuke_2030/full_6S.webp"
+   },
+   "7S": {
+    "portrait": "assets/characters/sasuke_2209/portrait_7S.webp",
+    "full": "assets/characters/sasuke_2209/full_7S.webp"
    }
   },
   "statsBase": {
@@ -115785,7 +116093,7 @@
   "element": "Body",
   "rarity": 6,
   "starMinCode": "6S",
-  "starMaxCode": "6S",
+  "starMaxCode": "7S",
   "lbEligible": false,
   "portrait": "assets/characters/sasuke_2030/portrait_6S.webp",
   "full": "assets/characters/sasuke_2030/full_6S.webp",
@@ -115795,6 +116103,14 @@
    "6S": {
     "portrait": "assets/characters/sasuke_2030/portrait_6S.webp",
     "full": "assets/characters/sasuke_2030/full_6S.webp"
+   },
+   "6SB": {
+    "portrait": "assets/characters/sasuke_2030/portrait_6S.webp",
+    "full": "assets/characters/sasuke_2030/full_6S.webp"
+   },
+   "7S": {
+    "portrait": "assets/characters/sasuke_2209/portrait_7S.webp",
+    "full": "assets/characters/sasuke_2209/full_7S.webp"
    }
   },
   "statsBase": {
@@ -115910,6 +116226,150 @@
   ],
   "metadata": {
    "cardNumber": 2030,
+   "maxLevel": 100,
+   "hitCount": 8
+  }
+ },
+ {
+  "id": "sasuke_2209",
+  "name": "Sasuke Uchiha",
+  "version": "Battling with your eyes",
+  "element": "Body",
+  "rarity": 7,
+  "starMinCode": "7S",
+  "starMaxCode": "7S",
+  "lbEligible": false,
+  "portrait": "assets/characters/sasuke_2209/portrait_7S.webp",
+  "full": "assets/characters/sasuke_2209/full_7S.webp",
+  "ultimateAnimation": null,
+  "secretAnimation": null,
+  "artByTier": {
+   "7S": {
+    "portrait": "assets/characters/sasuke_2209/portrait_7S.webp",
+    "full": "assets/characters/sasuke_2209/full_7S.webp"
+   }
+  },
+  "statsBase": {
+   "hp": 30744,
+   "atk": 3342,
+   "speed": 106
+  },
+  "statsMax": {
+   "hp": 61488,
+   "atk": 6684,
+   "speed": 213
+  },
+  "growthCurve": {
+   "hp": 1,
+   "atk": 1,
+   "def": 1,
+   "speed": 1,
+   "chakra": 1
+  },
+  "powerRank": 21158,
+  "powerWeights": {
+   "hp": 0.3,
+   "atk": 0.4,
+   "def": 0.1,
+   "speed": 0.15,
+   "chakra": 0.05
+  },
+  "range": "Mid",
+  "luck": {
+   "base": 10,
+   "max": 99
+  },
+  "cost": {
+   "base": 150,
+   "max": 60
+  },
+  "affiliation": [
+   "Taka",
+   "Uchiha Clan"
+  ],
+  "passiveIcons": {},
+  "skills": {
+   "fieldSkill": {
+    "name": "Field Skill",
+    "type": "Field",
+    "description": "Reduces the chance of receiving chakra recovery sealing and immobilization by 35%-45% each (Not Field Skills)."
+   },
+   "buddySkill": {
+    "name": "Buddy Skill",
+    "type": "Buddy",
+    "description": "Reduces the chance of receiving slip damage and Health Recovery to Damage Conversion by 45% each (Not Field Skills)."
+   },
+   "jutsu": {
+    "name": "Amaterasu",
+    "type": "Jutsu",
+    "byTier": {
+     "7S": {
+      "chakraCost": 4,
+      "hits": 8,
+      "shape": "Circle",
+      "range": "Mid",
+      "position": "Right (lowered)",
+      "description": "Ignores Substitution for all enemies in range, with 5x attack toward them and a 80% chance of immobilization for 1 second(s). Creates a black flame area that ignores defense and causes 3000 damage for 6 turn(s).",
+      "nwusDescription": "Ignores Substitution for all enemies in range, with 5x attack toward them and a 80% chance of immobilization for 1 second(s). Creates a black flame area that ignores defense and causes 3000 damage for 6 turn(s)."
+     }
+    }
+   },
+   "secret": {
+    "name": "Susano'o: Flame Control Arrow",
+    "type": "Secret",
+    "byTier": {
+     "7S": {
+      "chakraCost": 8,
+      "range": "Short",
+      "description": "Ignores damage reduction effects (Reduce Damage) and Substitution for 1 enemy(s) on-screen with 15x attack toward them. 80% chance of Health Recovery to Damage Conversion for 3 turn(s)."
+     }
+    }
+   },
+   "latent": {
+    "name": "Eternal Mangekyo: Brothers' Inferno",
+    "type": "Latent",
+    "unlockTier": "7S",
+    "byTier": {
+     "7S": {
+      "chakraCost": 7,
+      "range": "On-Screen",
+      "description": "Ignores damage reduction effects (Reduce Damage) and Substitution for all enemies on-screen with 26x attack toward them. Creates a black flame area that ignores defense and causes 5000 damage for 6 turn(s). Plus, when your health is 30% or below, gives you an attack boost of 100% for 1 turn(s) before performing the above attack."
+     }
+    }
+   }
+  },
+  "abilities": [
+   {
+    "name": "Nullifies Chakra Recovery Sealing",
+    "description": "Nullifies chakra recovery sealing (not Field Effects and F Skills)."
+   },
+   {
+    "name": "Chakra Recovery When Receiving Direct Attacks",
+    "description": "20% chance of restoring 1 Chakra Gauge when receiving direct attacks."
+   },
+   {
+    "name": "Chakra Recovery When Dealing Direct Attacks",
+    "description": "25% chance of restoring 1 Chakra Gauge when dealing direct attacks."
+   },
+   {
+    "name": "Immobilization Rate Boost",
+    "description": "Boosts rate of immobilization by 15%."
+   },
+   {
+    "name": "0 Chakra Req'd for Ninjutsu",
+    "description": "40% chance to reduce chakra consumed by Ninjutsu to 0."
+   },
+   {
+    "name": "0 Chakra Req'd for Secret Technique",
+    "description": "50% chance to reduce chakra consumed by Secret Techniques to 0."
+   },
+   {
+    "name": "0 Chakra Req'd for Secret Technique",
+    "description": "50% chance to reduce chakra consumed by Secret Techniques to 0."
+   }
+  ],
+  "metadata": {
+   "cardNumber": 2209,
    "maxLevel": 100,
    "hitCount": 8
   }

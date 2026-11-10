@@ -630,6 +630,11 @@
     "tier": "6S"
   },
   {
+    "fromId": "kakashi_735",
+    "toId": "kakashi_2208",
+    "tier": "7S"
+  },
+  {
     "fromId": "kakashi_854",
     "toId": "kakashi_855",
     "tier": "6S"
@@ -1393,6 +1398,11 @@
     "fromId": "sasuke_2029",
     "toId": "sasuke_2030",
     "tier": "6S"
+  },
+  {
+    "fromId": "sasuke_2030",
+    "toId": "sasuke_2209",
+    "tier": "7S"
   },
   {
     "fromId": "sasuke_2116",
@@ -2323,6 +2333,11 @@
     "fromId": "sasuke_667",
     "toId": "sasuke_668",
     "tier": "6SB"
+  },
+  {
+    "fromId": "sasuke_668",
+    "toId": "sasuke_2210",
+    "tier": "7S"
   },
   {
     "fromId": "sasuke_456",
